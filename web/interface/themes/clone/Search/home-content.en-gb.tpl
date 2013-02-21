@@ -3,9 +3,7 @@
 <div class="home-section first columns clearfix">
   <div class="container_24">
     <div>
-      <h2 class="color-finnaBlue">For seekers of information and inspiration</h2>
-      <p class="big">Finna is a new kind of information search service for all users of archives, libraries and museums.</p>
-      <p class="big">Finna is currently in test use. Try the search, <a href="{$path}/Feedback/Home">give feedback</a> or <a class="color-violet" href="{$path}/Content/about">read more</a> about the service!</p>
+
     </div>
     <div>
       <h2>From Finna you can find...</h2>
@@ -30,9 +28,7 @@
 </div>
 <div class="home-section second clearfix">
   <div class="container_24">
-    <div id="carousel">
-      {include file="Search/home-carousel.$userLang.tpl"}
-    </div>
+
   </div>
 </div>
 <div class="home-section third columns clearfix">

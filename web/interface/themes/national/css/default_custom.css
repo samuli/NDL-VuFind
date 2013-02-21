@@ -1,15 +1,44 @@
-/* Logo image on search results, overwritten by admin panel */
-#logo {
-    background: url("../images/finna-logo_small.png") no-repeat scroll center center transparent;
-    display: block;
-    height: 60px;
-    margin: 20px 18px;
-    width: 190px;
+body {
+    background: #4D4D4D;
 }
-#logoHeader {
-    float: left;
+#header .header-inner {
+    background: url("../images/header_top_gradient.png") repeat-x scroll top left transparent;
 }
-/* Logo background, overwritten by admin panel */
-.header {
-    background-color: #f3f3f3;
+#header, #header.header-home {
+    background: url("../images/header_bottom_gradient.png") repeat-x scroll bottom left transparent;
+}
+.menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a {
+    color: #fff;
+}
+#headerSeparator {
+    border-color: #fff;
+}
+.menuLogin {
+    border-color: #eee;
+}
+
+.lang a {
+    color: #fff;
+}
+#header {
+    color:#fff;
+}
+#header .lang li {
+    border-color: #eee;
+}
+#headerMenu ul li span {
+    color: #eee;
+}
+#headerMenu ul li span:first-child {
+    color: #fff;
+}
+#headerMenu li a:hover span, #headerMenu li a:focus span {
+    color: #fff;
+}
+#headerMenu ul.subMenu li {
+    border-color: #eee;
+}
+.advancedLink,
+.advancedLink:hover {
+    color:#fff;
 }
