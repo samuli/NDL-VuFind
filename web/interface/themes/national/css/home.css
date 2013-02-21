@@ -1,156 +1,76 @@
-/****** Homepage ******/
+/*** Front page ***/
 
-.searchHomeContent {
-    padding: 3em 0 3em 0;
-    margin: 0 auto;
-    text-align: left;
-}
-
-.main-home {              /* Fix for bleeding white background on some mobile */
-    overflow-x: hidden;   /* platforms apparently due to homeFacers.*/
-}
-
-.container .header-home {
-    background:transparent;
-}
+/* Header: Search Box */
 
 .header-home #searchFormHeader {
     padding-top:290px;
 }
 
-/*** Logo ***/
+/*** Header: Blurb */
 
-.searchHomeLogo {
-    text-align: center;
-}
-.searchHomeLogoMetaLib {
-    background: url("../images/finna-ml-logo_small.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100px;
-    margin: 0 auto 2em auto;
-    text-align: center;
-}
-.searchHomeLogo img {
-    display: block;
-    margin: 1em auto 1em auto;
-}
-
-
-/** Search Box **/
-
-.searchHome .searchbox {
-    margin: 0;
-}
-
-.searchHomeForm {
-/*
-    background-color: #E6EFC2;
-    -moz-border-radius: 5px 5px 5px 5px;
-    border: 2px solid #C6D880;
-    padding:2em 0;
-*/
-    margin: 0 auto;
-    text-align: left;
-/*
-    font-size: 12pt;
-*/
-    color: #264409;
-}
-div.searchHomeForm div.searchform {
-    float:none;
-    margin:0 auto;
-}
-div.searchHomeForm div.searchform #searchForm {
-    width:506px;
-    margin:0 auto;
-}
-
-.searchHomeForm #searchForm_input {
-    width: 200px;
-/*
-    background: url("../images/searchbox.png") no-repeat scroll -2px -3px transparent;
-    border: none;
-    color: #333333;
-    height: 16px;
-    width: 220px;
-    padding: 10px 4px 8px 8px;
-*/
-}
-.searchHomeForm div.styled_select { /* to get rid of unstylable down-arrow */
-/*
-    border-right: 1px solid #969696;
-    width: 145px;
-    height: 34px;
-    overflow: hidden;
-    background: none no-repeat right transparent;
-*/
-}
-.searchHomeForm .searchForm_select {
-/*
-    background: url("../images/searchselect_bg.png") transparent no-repeat;
-    border: none;
-    color: #555555;
-    cursor: pointer;
-    height: 34px;
-    width: 169px;
-    padding: 8px 9px;
-*/
-/*    -webkit-border-radius: 0;*/ /* to fix round left corners on mac webkit-browsers */
-}
-
-/** Dropdown **/
-.searchHomeForm .dropdown dd, .searchHomeForm .dropdown dt, .searchHomeForm .dropdown ul {
-/*
-    font-size: .9em;
-*/
-}
-
-.searchHomeForm #searchForm_searchButton {
-/*
-    background: url("../images/searchbox.png") no-repeat scroll -240px -3px transparent;
-    border: none;
-    color: #555555;
-    cursor: pointer;
-    height: 34px;
-    width: 89px;
-    margin-left: 5px;
-*/
-}
-
-.searchHomeForm #searchForm_searchButton:hover {
-/*
-    background: url("../images/searchbox.png") no-repeat scroll -240px -38px transparent;
-    color: #333333;
-*/
-}
-.searchHomeForm a, .searchHomeForm a:hover {
-/*
-    color:#264409;
-*/
-}
-
-/*** Header text content ***/
-
-.headerHomeContent {
+#blurb {
     margin:30px 0 0;
     padding:0;
     line-height: 1.4;
-    width:525px;
-    position:absolute;
 }
 .blurbLine {
     padding:0 5px 0 7px;
 }
-.headerHomeContent h2, 
-.headerHomeContent h3 {
+#blurb h2, 
+#blurb h3 {
     display:inline;
     background:#4d4d4d;
     background: url(../images/ribbon_grey.png);
     box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
 }
 
-/*** Carousel ***/
+/* Main */
+
+.main-home#main {              /* Fix for bleeding white background on some mobile */
+    overflow-x: hidden;   /* platforms apparently due to homeFacers.*/
+}
+
+/* Sections */
+
+.section div[class*="grid"] > div {
+    padding:10px 0 20px;
+}
+
+/* Section: Introduction */
+
+.section#introduction div[class*="grid"] {
+    padding-bottom: 500px; /* Make floated divs seem equally long */
+    margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
+}
+.section#introduction div[class*="container"] {
+    overflow:hidden;
+}
+
+.section#introduction {
+    background:#d8f4ed;
+}
+.section#introduction .grid_10 {
+    background:#fff;
+}
+.section#introduction div.grid_10 > div {
+    overflow:auto;
+    padding:10px 30px 30px;
+}
+.section#introduction ul {
+    float:left;
+    margin:0;
+    padding-left:0;
+}
+.section#introduction span {
+    display: block;
+    line-height:1.12em;
+}
+
+/* Home section: Carousel */
+
+.section#content-carousel {
+    background:#808080;
+}
 
 #carousel {
     position:relative;
@@ -163,6 +83,7 @@ div.searchHomeForm div.searchform #searchForm {
     position: absolute;
     white-space:nowrap;
     z-index: 100;
+    padding:5px 7px 6px;
 }
 #carousel .slides_container {
     text-align:left;
@@ -177,27 +98,18 @@ div.searchHomeForm div.searchform #searchForm {
 #carousel .slide li {
     position:relative;
     float:left;
-    height:313px;
     overflow:hidden;
-    width:230px;
-    margin-left:10px;
     cursor:pointer;
 }
-#carousel .slide li:first-child {
-    margin-left:0;
-}
 #carousel .slide img {
-    background:url(../images/beta-overlay.png) no-repeat 0 0 rgba(0,0,0,.1); /* Remove in production */
-    display: block;
-    height: 313px;
-    position:absolute;
-    width: 230px;
+    width:100%;
+    height:auto;
 }
 #carousel .slide .pickup-content {
     background:url(../images/black_75.png) repeat;
-    position:relative;
+    position:absolute;
     z-index:101;
-    top:253px;
+    top: 253px;
 }
 #carousel .slide .pickup-header {
     height:60px;
@@ -297,86 +209,27 @@ div.searchHomeForm div.searchform #searchForm {
     background-position: 8px 8px;
 }
 
-/*** Custom content ***/
-.home-section p {
-    margin-bottom:20px;
+/* Section: Popular Searches & Map Search */
+
+.section#popular-map {
+    background:#e1eff4;
 }
-.home-section.columns {
-    background:rgb(216,244,237);
-    overflow:auto;
+
+#popularSearches ul:first-child {
+    margin-right:10px;
 }
-.home-section.columns .content {
-    background: #FFFFFF;
-    overflow: auto;
-}
-.home-section.columns .content > div:first-child {
-    background:rgb(216,244,237);
-    float:left;
-    width:520px;
-    padding:10px 40px 30px 0;
-}
-.home-section.first .content > div:first-child {
-    width:480px;
-    padding-right: 80px;
-}
-.home-section.columns.first ul {
-    padding-bottom:30px;
-}
-.home-section span.iconlabel {
-    float:left;
-    padding:0px 0.5em 3px 25px;
-}
-.home-section.columns .content > div {
-    background:#fff;
-    float:right;
-    width:310px;
-    padding:10px 40px 30px;
-}
-.home-section.columns ul {
-    padding:0;
-    float:left;
+#popularSearches ul {
+    float: left;
     margin:0;
-    width:155px;
-}
-.home-section.columns ul li {
-    padding-bottom:3px;
-}
-.home-section.second {
-    background:#808080;
-}
-.home-section.third {
-    background:#e1eff4;
-}
-.home-section.third .content {
-    background:#E1EFF4;
-    overflow:hidden;
-}
-.home-section.first .content {
-    overflow:hidden;
-}
-.home-section.columns.third .content > div:first-child {
-    background:#e1eff4;
-    height:auto;
-    width:auto;
-}
-.home-section.columns.third .content > div,
-.home-section.columns.first .content > div {
-    padding-bottom: 500px; /* Make floated divs seem equally long */
-    margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
-}
-.home-section.third ul:first-child {
-    margin-left:0;
-}
-.home-section.third ul {
-    width:230px;
-    margin-left:10px;
     font-size: 1.1em;
+    padding: 0;
+    width: 230px;
 }
-.home-section.third li span {
+#popularSearches li span {
     padding:6px 0 10px;
     display:block;
 }
-.home-section.third li span:first-child {
+#popularSearches li span:first-child {
     background: url("../images/circle.png") no-repeat scroll 0 0 transparent;
     color: #FFFFFF;
     display: block;
@@ -389,31 +242,47 @@ div.searchHomeForm div.searchform #searchForm {
     text-align: center;
     width: 31px;
 }
-.home-section.third li {
+#popularSearches li {
     display:block;
     clear:both;
     margin-bottom:5px;
     line-height:15px;
 }
-.home-section.columns.third .content > div {
-    height:294px;
-    padding: 0 0px 500px;
-    width:390px;
+
+#popularSearches a {
+    color: #00a3b5;
+    font-weight: bold;
+    text-decoration: none;
 }
-.home-section.columns.third .content .popularSearchesWrap{
-    padding-top: 10px;
+
+#popularSearches a:hover, #popularSearches a:focus {
+    text-decoration: underline;
 }
-.home-section.columns.third #popularSearches .loading {
+
+#popularSearches .loading {
     background: url("../images/ajax_loading.gif") no-repeat scroll 0 0 transparent;
     height: 20px;
     width: 20px;
 }
-.home-section.third .mapSearchHome {
+
+#mapSearchHome {
     background:url(../images/map_search_bg.jpg) no-repeat;
     padding:10px 40px 30px;
     height:254px;
     color:#fff;
 }
+#mapSearchHome p {
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5em;
+}
+#mapSearchHome .button {
+    margin-top:15px;
+    z-index:5;
+}
+
+
+
 .home-section.third .loginBoxHome {
     padding:10px 40px;
 }
@@ -426,107 +295,3 @@ div.searchHomeForm div.searchform #searchForm {
     margin-top:15px;
     z-index:5;
 }
-.home-section.fourth {
-    width:1280px;
-    margin:0 auto;
-    background:url(../images/map_background_home.jpg) 50% 0;
-    text-align:center;
-    color:#fff;
-    overflow:auto;
-}
-.home-section.fourth .content {
-    background: -moz-linear-gradient(left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 90%, rgba(0,0,0,1) 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,1)), color-stop(10%,rgba(0,0,0,0)), color-stop(90%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1)));
-    background: -webkit-linear-gradient(left, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 10%,rgba(0,0,0,0) 90%,rgba(0,0,0,1) 100%);
-    background: -o-linear-gradient(left, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 10%,rgba(0,0,0,0) 90%,rgba(0,0,0,1) 100%);
-    background: -ms-linear-gradient(left, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 10%,rgba(0,0,0,0) 90%,rgba(0,0,0,1) 100%);
-    background: linear-gradient(to right, rgba(0,0,0,1) 0%,rgba(0,0,0,0) 10%,rgba(0,0,0,0) 90%,rgba(0,0,0,1) 100%);
-    padding: 10px 315px 25px;
-    width: 650px;
-    overflow: auto;
-}
-.home-section.fourth .ribbon {
-    float:none;
-    display:inline-block;
-}
-.homeCustomContent {
-    background-color: #f3f3f3;
-    padding: 0 24px 4em;
-}
-
-.homeCustomCol1, .homeCustomCol2, .homeCustomCol3 {
-    float: left;
-    margin-left: 24px;
-}
-
-.homeCustomCol1 {
-    margin-left: 0;
-    width: 340px;
-}
-/*
-.homeCustomContent .homeCustomCol1 h2 {
-    font-size: 2em;
-    font-weight: bold;
-    line-height: 1em;
-    margin-bottom: 1em;
-}
-.homeCustomContent .homeCustomCol1 p {
-    line-height: 1.25em;
-    font-size: 1.2em;
-    margin-bottom: 0.5em;
-}
-*/
-.homeCustomCol2 {
-    margin-top: .8em;
-    width: 304px;
-}
-.homeCustomContent .homeCustomCol2 ul {
-    padding: 0;
-    margin: 0;
-}
-.homeCustomContent .homeCustomCol2 ul li {
-    float: left;
-    width: 140px;
-    margin: 0.5em 10px 0.5em 0;
-    font-size: 1em;
-}
-.homeCustomContent .homeCustomCol2 .iconlabel {
-    font-size: 0.9em;
-    margin-right: 0;
-}
-.homeCustomContent .homeCustomCol3 {
-    width: 210px;
-}
-
-/*** Browse Search ***/
-
-.searchHomeBrowse {
-    margin-left:auto;
-    margin-right:auto;
-    width:950px;
-}
-.searchHomeBrowseHeader h5 {
-    border-bottom: 1px solid #94c632;
-    margin-bottom:12px;
-}
-.searchHomeBrowseInner div {
-    margin-left:0;    
-}
-
-.searchHomeBrowse ul {
-    list-style-type: none;
-    padding:0;
-}
-
-/*** Popular searches ***/
-
-#popularSearches a {
-    color: #00a3b5;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#popularSearches a:hover, #popularSearches a:focus {
-    text-decoration: underline;
-}
-

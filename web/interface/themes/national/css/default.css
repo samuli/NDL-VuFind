@@ -31,7 +31,7 @@ body {
     overflow: hidden;
     z-index:3;
 }
-.container {
+#page-wrapper {
     position:relative;
     width:100%;
     z-index:4;
@@ -44,13 +44,9 @@ body {
     display: block;
 }
 
-#header .content {
+#header .header-inner {
     width:100%;
     background: url("../images/header_top_gradient.png") repeat-x scroll top left transparent;
-}
-#header .content > div {
-    width:950px;
-    margin:0 auto;
 }
 
 #beta-wrapper {
@@ -68,10 +64,14 @@ body {
 #main {
     background:#fff;
     overflow: auto;
+    position:relative;
 }
 #main.main-home {
     padding:0;
     background:#000;
+}
+#main > .menu div[class*="grid"] {
+    position:absolute;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 only screen and (moz--min-device-pixel-ratio: 1.5),
@@ -263,7 +263,10 @@ div.sidegroup {
 
 #headerTop {
     height:95px;
-    border-bottom:6px solid #fff;
+    position:relative;
+}
+#headerSeparator {
+    border-bottom: 6px solid #FFFFFF;
 }
 #headerBottom {
     position:relative;
@@ -272,7 +275,7 @@ div.sidegroup {
     background: url("../images/finna_logos_white.png") repeat scroll -20px -20px transparent;
     display: block;
     height: 59px;
-    margin: 20px 50px 0 0;
+    margin-top:20px;
     float:left;
     width: 248px;
 }
@@ -294,10 +297,8 @@ div.sidegroup {
 #headerMenu ul {
     display:none;
     position:absolute;
-    margin-left:-475px;
-    padding:25px 0 0;
-    left:50%;
-    width:950px;
+    left:0;
+    padding-top:25px;
 }
 
 .menuLogin {
@@ -470,8 +471,6 @@ div.sidegroup {
     float:left;
     height: 46px;
     position:relative;
-    width: 636px;
-
     behavior: url(/interface/themes/national/js/css3pie/PIE.php);
 }
 
@@ -511,7 +510,7 @@ a.clear_input {
     width: 15px;
     text-indent:-9999px;
     margin-right:10px;
-    left: 370px !important;
+    left: 365px !important;
     top: 8px !important;
 }
 a.clear_input:hover {
@@ -556,6 +555,7 @@ a.clear_input:hover {
     line-height:25px;
     width:24px;
     top:3px;
+    z-index:10;
 }
 .closeInfoBox,
 .infoBoxText .moreButton {
@@ -564,10 +564,12 @@ a.clear_input:hover {
 .infoBoxText {
     color: #333333;
     position: absolute;
-    right: 50px;
     margin: 14px 0 18px;
     visibility: hidden;
-    width: 325px;
+    right:0;
+}
+.infoBoxText > * {
+    padding:0 15px;
 }
 .infoBoxText .strong {
     clear:both;
@@ -879,7 +881,7 @@ body > .ui-widget .button {
     font-weight:bold;
     height: 24px;
     line-height: 24px;
-    margin: 10px 0 0 30px;
+    margin: 10px 0 0 0px;
     padding-right: 50px;
 }
 .advancedLink:hover {
@@ -1912,14 +1914,11 @@ dl.narrowList a {
 }
 
 .module-Content .main .menu ul {
-    position:absolute;
-    left:0;
     margin:0;
     padding:0;
-    top:0;
     display:block;
-    width:230px;
     z-index:2;
+    width:100%;
 }
 .module-Content .main .menu ul li {
     list-style:none;

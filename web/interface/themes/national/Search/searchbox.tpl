@@ -1,6 +1,6 @@
 <!-- START of: Search/searchbox.tpl -->
 
-<div id="searchFormContainer" class="searchform last">
+<div id="searchFormContainer" class="searchform last container_24">
 
 {if $searchType != 'advanced'}
   <script type="text/javascript">
@@ -11,7 +11,7 @@
   {/literal}
   </script>
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="search">
-    <div class="searchFormWrapper">
+    <div class="searchFormWrapper grid_16">
       <div class="overLabelWrapper">
         <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
         <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" title='{translate text="Find"}&hellip;' />
@@ -29,7 +29,7 @@
       <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
       <div class="clear"></div>
     </div>
-    <div class="advanced-link-wrapper clear">
+    <div class="advanced-link-wrapper grid_7 push_1">
       <a href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
   {if $metalibEnabled}
       <a href="{$path}/MetaLib/Home" class="small last metalibLink">{translate text="MetaLib Search"}</a>

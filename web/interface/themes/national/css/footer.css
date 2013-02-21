@@ -3,6 +3,7 @@
     background: #4d4d4d;
     position:relative;
     z-index:100;
+    padding-bottom:20px;
 }
 
 #footer h4 {
@@ -26,24 +27,11 @@
     text-decoration: none;
 }
 
-#footerCol1, #footerCol2, #footerCol3 {
-    margin: 0;
-    padding: 0;
-    width: 33%;
-    float: left;
-    
-}
 
-#footerCol4, #footerCol5, #footerCol6 {
-    margin: 0;
-    padding: 0;
-    width: 33%;
-    float: left;
-}
-
-.footerWrapper {
-    margin: 0;
-    padding: 0 0 40px 0;
+#footerSeparator {
+    clear:both;
+    height:30px;
+    width:100€;
 }
 
 

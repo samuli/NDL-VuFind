@@ -57,6 +57,15 @@ function initHeaderMenu() {
 
 // Front page content carousel
 function initCarousel() {
+    var topPosition = $('#carousel .pickup-content').css('top');
+    var imgHeight = $('#carousel .slide img').height();
+    $(window).resize(function () { 
+        $('#carousel .pickup-content').removeAttr('style');
+        topPosition = $('#carousel .pickup-content').css('top'); 
+        imgHeight = $('#carousel .slide img').height();
+        
+    });    
+    
     var ribbonH = $('#carousel h2.ribbon').height();
     $("#carousel").slides({
          play: 9000,
@@ -69,13 +78,13 @@ function initCarousel() {
    
     function slideOver() {
         pickupHeight = $(this).children('.pickup-content').height();
-        $(this).children('.pickup-content').stop().animate({top:314-pickupHeight}, 300);
+        $(this).children('.pickup-content').stop().animate({top:imgHeight-pickupHeight +1}, 300);
         if ($(this).index() == 0) $('#carousel h2.ribbon').stop()
             .animate({height:0,padding:'0 7px',opacity:0}, 400);
     }
 
     function slideOut() {
-        $(this).children('.pickup-content').stop().delay(100).animate({top:253}, 300);
+        $(this).children('.pickup-content').stop().delay(100).animate({top:topPosition}, 300);
         if ($(this).index() == 0) $('#carousel h2.ribbon').stop().delay(100)
             .animate({height:ribbonH,padding:'5px 7px',opacity:1}, 100);
     }
@@ -98,7 +107,7 @@ function initInfoBox() {
 function toggleInfoBox() {
     var box = $('.headerInfoBox');
     box.toggleClass('visible');
-    var boxWidth = box.hasClass('visible') ? 395 : 25;
+    var boxWidth = box.hasClass('visible') ? box.parent().width() : 25;
     var boxHeight = box.hasClass('visible') ? $('.infoBoxText').height() +30 : 25;
     $('.openInfoBox, .closeInfoBox, .infoBoxText').stop(true, true).toggle();
     box.stop(true, true).animate({ width: boxWidth, height: boxHeight}, 200);
@@ -138,12 +147,12 @@ function initDateVisHandle() {
 // Content pages menu 
 function initContentMenu() {
     if ( $(".module-Content .main .menu").length > 0 ) {
-        var menu = '<div class="content"><ul>';
+        var menu = '<div class="container_24"><div class="grid_6"><ul>';
         $('.module-Content .main h2').each(function() {
             var text = $(this).text(); 
             menu += '<li>'+text+'</li>';
         });
-        menu += '</ul></div>';
+        menu += '</ul></div></div>';
         $('.module-Content .main .menu').append(menu);
         $('.module-Content .main .menu li').click(function(event){		
             $('html,body').animate({

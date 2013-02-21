@@ -1,7 +1,7 @@
 <!-- START of: Search/home-content.fi.tpl -->
 
-<div class="home-section first columns clear">
-  <div class="content">
+<div class="home-section first columns clearfix">
+  <div class="container_24">
     <div>
       <h2 class="color-finnaBlue">For seekers of information and inspiration</h2>
       <p class="big">Finna is a new kind of information search service for all users of archives, libraries and museums.</p>
@@ -28,15 +28,15 @@
     </div>
   </div>
 </div>
-<div class="home-section second clear">
-  <div class="content">
+<div class="home-section second clearfix">
+  <div class="container_24">
     <div id="carousel">
       {include file="Search/home-carousel.$userLang.tpl"}
     </div>
   </div>
 </div>
-<div class="home-section third columns clear">
-  <div class="content">
+<div class="home-section third columns clearfix">
+  <div class="container_24">
     <div class="popularSearchesWrap">
       <h2 class="color-finnaBlue">10 most popular searches</h2>
       <div id="popularSearches" class="recent-searches"><div class="loading"></div></div>

@@ -44,6 +44,7 @@
     {css media="screen, projection" filename="blueprint/blueprint-adjust.css"}
 
     {* Load VuFind specific stylesheets *}
+    {css media="screen, projection" filename="grid.css"}
     {css media="screen" filename="ui.dynatree.css"}
     {css media="screen" filename="datatables.css"}
     
@@ -52,14 +53,15 @@
         License: http://opensource.org/licenses/mit-license.php  *}
     {css media="screen, projection" filename="typography.css"}
     {css media="screen, projection" filename="default.css"}
+    {css media="screen, projection" filename="layout.css"}
     {* css media="screen, projection" filename="default_custom.css" *}
     {css media="screen, projection" filename="icons.css"}
     {css media="screen, projection" filename="home.css"}
     {* css media="screen, projection" filename="home_custom.css" *}
     {css media="screen, projection" filename="breadcrumbs.css"}
     {css media="screen, projection" filename="footer.css"}
-{* Mobile styles not used just yet. When it's time, remember to enable viewport!
     {css media="screen, projection" filename="768tablet.css"}
+{* The mobile styles below not used just yet. 
     {css media="screen, projection" filename="480mobilewide.css"}
     {css media="screen, projection" filename="320mobile.css"}
 *}
@@ -167,9 +169,8 @@ $(document).ready(function() {
     <![endif]-->
 
     {* For mobile devices *}
-{*
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-*}
+
 
   </head>
   <body>
@@ -189,7 +190,7 @@ $(document).ready(function() {
     <div id="popupbox" class="popupBox"><b class="btop"><b></b></b></div>
     {* End LightBox *}
     <div class="backgroundContainer"></div>
-    <div class="container module-{$module}">
+    <div id="page-wrapper" class="module-{$module}">
 
       {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}
       {* <=== Remove/comment out when not in beta anymore - End BETA BANNER *}
@@ -205,20 +206,22 @@ $(document).ready(function() {
       </div>
       -->
 
-      <div id="header" class="header{if !$showTopSearchBox}-home{/if} {if $module!='Search'}header{$module}{/if} clear">
-        <div class="content">
-          {include file="header.tpl"}
+      <div id="header" class="header{if !$showTopSearchBox}-home{/if} {if $module!='Search'}header{$module}{/if} clearfix">
+        <div class="header-inner">
+          <div class="container_24">
+            {include file="header.tpl"}
+          </div>
         </div>
       </div>
 
-      <div id="main" class="main{if !$showTopSearchBox}-home{/if} clear">
+      <div id="main" class="main{if !$showTopSearchBox}-home{/if}" class="clearfix">
         {if $errorPage}{$errorContent}{else}
         {include file="$module/$pageTemplate"}
         {/if}
       </div>
 
-      <div id="footer" class= "clear">
-        <div class="content">
+      <div id="footer" class="clearfix">
+        <div class="container_24">
           {include file="footer.tpl"}
         </div>
       </div>
