@@ -1,24 +1,64 @@
-/*** Header text content ***/
+/*** Front page ***/
 
-.headerHomeContent {
+/*** Header: Blurb */
+
+#blurb {
     margin:30px 0 0;
     padding:0;
     line-height: 1.4;
-    width:525px;
-    position:absolute;
 }
 .blurbLine {
     padding:0 5px 0 7px;
 }
-.headerHomeContent h2, 
-.headerHomeContent h3 {
+#blurb h2, 
+#blurb h3 {
     display:inline;
     background:#4d4d4d;
     background: url(../images/ribbon_grey.png);
     box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
 }
 
-/*** Carousel ***/
+/* Sections */
+
+.section div[class*="grid"] > div {
+    padding:10px 0 20px;
+}
+
+/* Section: Introduction */
+
+.section#introduction div[class*="grid"] {
+    padding-bottom: 500px; /* Make floated divs seem equally long */
+    margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
+}
+.section#introduction div[class*="container"] {
+    overflow:hidden;
+}
+
+.section#introduction {
+    background:#d8f4ed;
+}
+.section#introduction .grid_10 {
+    background:#fff;
+}
+.section#introduction div.grid_10 > div {
+    overflow:auto;
+    padding:10px 30px 30px;
+}
+.section#introduction ul {
+    float:left;
+    margin:0;
+    padding-left:0;
+}
+.section#introduction span {
+    display: block;
+    line-height:1.12em;
+}
+
+/* Home section: Carousel */
+
+.section#content-carousel {
+    background:#808080;
+}
 
 #carousel {
     position:relative;
@@ -31,6 +71,7 @@
     position: absolute;
     white-space:nowrap;
     z-index: 100;
+    padding:5px 7px 6px;
 }
 #carousel .slides_container {
     text-align:left;
@@ -45,27 +86,18 @@
 #carousel .slide li {
     position:relative;
     float:left;
-    height:313px;
     overflow:hidden;
-    width:230px;
-    margin-left:10px;
     cursor:pointer;
 }
-#carousel .slide li:first-child {
-    margin-left:0;
-}
 #carousel .slide img {
-    background:url(../images/beta-overlay.png) no-repeat 0 0 rgba(0,0,0,.1); /* Remove in production */
-    display: block;
-    height: 313px;
-    position:absolute;
-    width: 230px;
+    width:100%;
+    height:auto;
 }
 #carousel .slide .pickup-content {
     background:url(../images/black_75.png) repeat;
-    position:relative;
+    position:absolute;
     z-index:101;
-    top:253px;
+    top: 253px;
 }
 #carousel .slide .pickup-header {
     height:60px;
@@ -165,10 +197,89 @@
     background-position: 8px 8px;
 }
 
-.home-section.columns {
-    background:rgb(216,244,237);
+/* Section: Popular Searches & Map Search */
+
+.section#popular-map {
+    background:#e1eff4;
 }
 
-.home-section.third {
-    background:#e1eff4;
+#popularSearches ul:first-child {
+    margin-right:10px;
+}
+#popularSearches ul {
+    float: left;
+    margin:0;
+    font-size: 1.1em;
+    padding: 0;
+    width: 230px;
+}
+#popularSearches li span {
+    padding:6px 0 10px;
+    display:block;
+}
+#popularSearches li span:first-child {
+    background: url("../images/circle.png") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 6px;
+    padding: 0;
+    text-align: center;
+    width: 31px;
+}
+#popularSearches li {
+    display:block;
+    clear:both;
+    margin-bottom:5px;
+    line-height:15px;
+}
+
+#popularSearches a {
+    color: #00a3b5;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#popularSearches a:hover, #popularSearches a:focus {
+    text-decoration: underline;
+}
+
+#popularSearches .loading {
+    background: url("../images/ajax_loading.gif") no-repeat scroll 0 0 transparent;
+    height: 20px;
+    width: 20px;
+}
+
+#mapSearchHome {
+    background:url(../images/map_search_bg.jpg) no-repeat;
+    padding:10px 40px 30px;
+    height:254px;
+    color:#fff;
+}
+#mapSearchHome p {
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5em;
+}
+#mapSearchHome .button {
+    margin-top:15px;
+    z-index:5;
+}
+
+
+
+.home-section.third .loginBoxHome {
+    padding:10px 40px;
+}
+.home-section.third .mapSearchHome p {
+    font-size:1.1em;
+    font-weight:bold;
+    line-height: 1.5em;
+}
+.home-section.third .mapSearchHome .button {
+    margin-top:15px;
+    z-index:5;
 }
