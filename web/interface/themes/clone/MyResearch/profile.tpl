@@ -37,7 +37,7 @@
         </tr>
       {/if}
     </table>
-        <input class="button buttonTurquoise" type="submit" value="{translate text='Save'}" />
+        <input class="button buttonFinna" type="submit" value="{translate text='Save'}" />
     </form>
     <div class="clear"></div>
     

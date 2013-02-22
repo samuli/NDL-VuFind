@@ -270,6 +270,9 @@
 }
 
 
+.section#introduction {
+    background:#d8f4ed;
+}
 
 .home-section.third .loginBoxHome {
     padding:10px 40px;

@@ -122,7 +122,7 @@ ul {
 
 /*** Links ***/
 a, .ui-widget-content a {
-    color: #00a3b5;
+    color: #c67;
     text-decoration: none;
 }
 a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
@@ -269,7 +269,7 @@ div.sidegroup {
     position:relative;
 }
 #header #logo {
-    background: url("../images/finna_logos_white.png") repeat scroll -20px -20px transparent;
+    background: url("../images/finna_logos_black.png") repeat scroll -20px -20px transparent;
     display: block;
     height: 59px;
     margin-top:20px;
@@ -1047,7 +1047,7 @@ div.bulkActionButtons select {
     margin: 2px;
 }
 
-#renewals .buttonTurquoise {
+#renewals .buttonFinna {
     padding:7px;
     font-size:1em;
 }
@@ -1760,8 +1760,6 @@ ul.filters span {
     margin-top: 1.2em;
 }
 .resultListContainer div.sidegroup h4 {
-    background-color: #00A3B5;
-    color: #FFFFFF;
     font-size: 1.6em;
     margin: 0;
     padding: 20px 10px;
@@ -1873,7 +1871,7 @@ dl.narrowList a {
 }
 .main .contentHeader,
 .main .browseHeader {
-    background:#f3ec7a;
+    background:#ddd;
     padding: 22px 0 24px;
     margin-bottom: 40px;
 }
@@ -2253,7 +2251,7 @@ ul.recordSet .addToFavLink a {
 .resultTerms,
 .module-Collection #collectionHeader {
     padding: 22px 0 22px;
-    background: #b3e3e9;
+    background: #ddd;
 }
 .module-Search h2.account,
 .module-MyResearch h2.account,
@@ -2356,7 +2354,7 @@ ul.recordSet .addToFavLink a {
 }
 .dropdown dt a {
     display:block;
-    background: #00a3b5;
+    background: #777;
     border: none;
     border-radius: 10px 10px 10px 10px;
     color: #FFFFFF;
@@ -4249,13 +4247,11 @@ span.dynatree-node {
 }
 span.dynatree-node a:hover {
     border: none;
-    color:#00A3B5;
     background:none;
 }
 span.dynatree-node a {
     text-decoration: none;
     padding: 0;
-    color:#00A3B5;
     border: none;
 }
 span.dynatree-node .facetTitle {
@@ -4418,15 +4414,15 @@ span.mapMarker  {
     text-decoration:underline;
     color:#444;
 }
-.buttonTurquoise {
-    background: #00a3b5;
+.buttonFinna {
+    background: #777;
 }
 .buttonGrey {
     background:#c1c1c1;
 }
-.buttonTurquoise,
+.buttonFinna,
 .buttonGrey,
-.button.buttonTurquoise:hover,
+.button.buttonFinna:hover,
 .button.buttonGrey:hover {
     color:#fff;
 }

@@ -1,6 +1,9 @@
 body {
     background: #4D4D4D;
 }
+a, .ui-widget-content a {
+    color: #00a3b5;
+}
 #header .header-inner {
     background: url("../images/header_top_gradient.png") repeat-x scroll top left transparent;
 }
@@ -23,6 +26,9 @@ body {
 #header {
     color:#fff;
 }
+#header #logo {
+    background-image: url("../images/finna_logos_white.png");
+}
 #header .lang li {
     border-color: #eee;
 }
@@ -41,4 +47,39 @@ body {
 .advancedLink,
 .advancedLink:hover {
     color:#fff;
+}
+
+div.breadcrumbinner a, div.breadcrumbinner em, div.breadcrumbinner span, div.breadcrumbinner form,
+div.breadcrumbs a, div.breadcrumbs li {
+    color: #ffffff;
+}
+
+.dropdown dt a,
+.buttonFinna {
+    background-color: #00a3b5;
+}
+.module-Search h2.account,
+.module-MyResearch h2.account,
+.module-MyResearch h1,
+.module-Cart h2,
+.resultLinks,
+.advSearchHeader,
+.resultTerms,
+.module-Collection #collectionHeader {
+    background: #b3e3e9;
+}
+.main .contentHeader,
+.main .browseHeader {
+    background:#f3ec7a;
+}
+
+.resultListContainer div.sidegroup h4 {
+    background-color: #00A3B5;
+    color: #FFFFFF;
+}
+span.dynatree-node a:hover {
+    color:#00A3B5;
+}
+span.dynatree-node a {
+    color:#00A3B5;
 }

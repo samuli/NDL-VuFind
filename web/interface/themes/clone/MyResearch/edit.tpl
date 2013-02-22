@@ -23,7 +23,7 @@
       <textarea id="edit_notes{$current.listId}" class="displayBlock" name="notes{$current.listId}" rows="3" cols="50">{$current.notes|escape:"html"}</textarea>
       <br/>
     {/foreach}
-    <input class="button buttonTurquoise" type="submit" name="submit" value="{translate text='Save'}"/>
+    <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Save'}"/>
   {/if}
   </form>
   </div>

@@ -57,7 +57,7 @@
         {/if}
         <h1>{$collShortTitle|escape}</h1>
         <p>{$collSummary|escape}</p>
-        <a id="moreInfoToggle" href="#" class="button buttonTurquoise" style="display:none">{translate text="Show/hide more info."}</a>
+        <a id="moreInfoToggle" href="#" class="button buttonFinna" style="display:none">{translate text="Show/hide more info."}</a>
         {include file=$info}
       </div>
       <div style="clear: left;"></div>
