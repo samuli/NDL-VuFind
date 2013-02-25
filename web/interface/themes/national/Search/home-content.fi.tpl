@@ -9,7 +9,7 @@
         <p class="big">Finna on nyt testikäytössä. Kokeile hakua, <a href="{$path}/Feedback/Home">anna palautetta</a> tai <a class="color-violet" href="{$path}/Content/about">lue lisää</a> palvelusta!</p>
       </div>
     </div>
-    <div class="grid_10">
+    <div class="grid_10 push_right">
       <div>
         <h2>Haulla löydät...</h2>
         <ul class="first grid_4 suffix_1">
@@ -48,7 +48,7 @@
         {include file="AJAX/loadPopularSearches.tpl"}
       </div>
     </div>
-    <div class="grid_10">
+    <div class="grid_10 push_right">
       <div id="mapSearchHome">
         <h2>Kokeile karttahakua</h2>
         <p>Voit rajata hakuasi myös kartalla. Karttarajauksen piirissä on tällä hetkellä noin 12630 aineistotietoa.</p>

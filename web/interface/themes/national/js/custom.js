@@ -12,12 +12,9 @@ $(document).ready(function() {
 // Front page content carousel
 function initCarousel() {
     var topPosition = $('#carousel .pickup-content').css('top');
-    var imgHeight = $('#carousel .slide img').height();
     $(window).resize(function () { 
         $('#carousel .pickup-content').removeAttr('style');
-        topPosition = $('#carousel .pickup-content').css('top'); 
-        imgHeight = $('#carousel .slide img').height();
-        
+        topPosition = $('#carousel .pickup-content').css('top');  
     });    
 
     var ribbonH = $('#carousel h2.ribbon').height();
@@ -32,6 +29,7 @@ function initCarousel() {
    
     function slideOver() {
         pickupHeight = $(this).children('.pickup-content').height();
+        imgHeight = $(this).children('img').height();
         $(this).children('.pickup-content').stop().animate({top:imgHeight-pickupHeight +1}, 300);
         if ($(this).index() == 0) $('#carousel h2.ribbon').stop()
             .animate({height:0,padding:'0 7px',opacity:0}, 400);

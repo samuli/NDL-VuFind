@@ -4,7 +4,7 @@
 <div class="slides_container">
   <div class="slide">
     <ul>
-      <li>
+      <li class="grid_6">
         {image src="constantinus.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Constantine of Africa: Theorica Pantegni</span></div>
@@ -14,7 +14,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="kamera.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>A.K. Cajander’s camera</span></div>
@@ -24,7 +24,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="tyyppitalo.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Drawings for prefabricated houses</span></div>
@@ -34,7 +34,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="jyx.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>The JYX publications archive</span></div>
@@ -48,7 +48,7 @@
   </div>
   <div class="slide">
     <ul> 
-      <li>
+      <li class="grid_6">
         {image src="valskari.jpg"}
         <div class="pickup-content">
           <div class="pickup-header-small"><span>Z. Topelius: Välskärin kertomuksia (Tales of a Barber-Surgeon)</span></div>
@@ -58,7 +58,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="moottorisaha.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Chainsaw Valmet-Stihl-BLK/105</span></div>

@@ -1,6 +1,6 @@
 <!-- START of: Search/home-header.tpl -->
 
-<div class="grid_14">
+<div class="grid_14 static">
   <div id="blurb">
     {include file="Search/home-blurb.$userLang.tpl"}
   </div>
