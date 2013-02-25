@@ -88,7 +88,7 @@ $(document).ready(function() {
       <br class="clear"/>
       <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
       <br class="clear"/>
-      <input class="button buttonTurquoise" type="submit" name="submit" value="{translate text='Login'}"/>
+      <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Login'}"/>
       {if $followup}<input type="hidden" name="followup" value="{$followup}"/>{/if}
       {if $followupModule}<input type="hidden" name="followupModule" value="{$followupModule}"/>{/if}
       {if $followupAction}<input type="hidden" name="followupAction" value="{$followupAction}"/>{/if}

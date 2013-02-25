@@ -17,6 +17,17 @@
     background: url(../images/ribbon_grey.png);
     box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
 }
+#blurb em {
+    font-style: normal;
+}
+#blurb h2 em {
+    color: #addfdb;
+}
+#blurb h3 em,
+#siteDescription h2,
+#topSearches h2 {
+    color: #00a3b5;
+}
 
 /* Sections */
 
@@ -270,6 +281,9 @@
 }
 
 
+.section#introduction {
+    background:#d8f4ed;
+}
 
 .home-section.third .loginBoxHome {
     padding:10px 40px;

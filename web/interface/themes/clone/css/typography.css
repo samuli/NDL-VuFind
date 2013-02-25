@@ -139,7 +139,6 @@ body { -webkit-tap-highlight-color: #bbddff; }
 
 /* Header */
 #header {
-    color:#fff;
 }
 #headerMenu {
     font-size:1.230em;
@@ -528,12 +527,6 @@ span.dynatree-node {
 }
 
 /* Color classes */
-.color-turquoise {
-    color: #addfdb;
-}
-.color-finnaBlue {
-    color: #00a3b5;
-}
 .color-violet,
 .color-violet:hover {
     color:#9b26b6;

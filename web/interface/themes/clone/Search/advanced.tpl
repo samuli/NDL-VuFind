@@ -174,7 +174,7 @@
       {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 
       <div class="advSearchFooter advSearchSection">
-          <input type="submit" class="button buttonTurquoise searchButton right" name="submit" value="{translate text="Find"}"/>
+          <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
     </div>
   </div>
 

@@ -4,7 +4,7 @@
   <div class="container_24">
     <div class="grid_14">
       <div>
-        <h2 class="color-finnaBlue">For seekers of information and inspiration</h2>
+        <h2>For seekers of information and inspiration</h2>
         <p class="big">Finna is a new kind of information search service for all users of archives, libraries and museums.</p>
         <p class="big">Finna is currently in test use. Try the search, <a href="{$path}/Feedback/Home">give feedback</a> or <a class="color-violet" href="{$path}/Content/about">read more</a> about the service!</p>
       </div>
@@ -43,7 +43,7 @@
   <div class="container_24">
     <div class="grid_14">
       <div>
-        <h2 class="color-finnaBlue">10 most popular searches</h2>
+        <h2>10 most popular searches</h2>
         <div id="popularSearches" class="recent-searches"><div class="loading"></div></div>
         {include file="AJAX/loadPopularSearches.tpl"}
       </div>

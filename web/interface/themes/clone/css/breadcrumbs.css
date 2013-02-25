@@ -6,7 +6,7 @@ div.breadcrumbinner {
 div.breadcrumbinner a, div.breadcrumbinner em, div.breadcrumbinner span, div.breadcrumbinner form {
     float: left;
     overflow: hidden;
-    color: #ffffff;
+    color: #000;
     height: 30px;
     padding: 0 8px 0 0;
     font-size: .9em;
@@ -22,7 +22,7 @@ div.breadcrumbs {
     line-height: 30px;
 }
 div.breadcrumbs a, div.breadcrumbs li {
-    color: #ffffff;
+    color: #000;
 }
 div.breadcrumbs span {
     background: url("../images/bg_breadcrumb.png") no-repeat left center;

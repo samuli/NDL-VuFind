@@ -39,7 +39,7 @@
   <div class="container_24">
     <div class="grid_14">
       <div>
-        <h2 class="color-finnaBlue">10 suosituinta hakua</h2>
+        <h2>10 suosituinta hakua</h2>
         <div id="popularSearches" class="recent-searches"><div class="loading"></div></div>
         {include file="AJAX/loadPopularSearches.tpl"}
       </div>

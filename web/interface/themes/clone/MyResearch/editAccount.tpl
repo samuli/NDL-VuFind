@@ -35,7 +35,7 @@
     <input id="password" type="password" name="password" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
     <br class="clear"/>
 
-  <input class="button buttonTurquoise" type="submit" name="submit" value="{translate text="Save"}"/>
+  <input class="button buttonFinna" type="submit" name="submit" value="{translate text="Save"}"/>
 </form>
 </div>
 
