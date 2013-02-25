@@ -1187,7 +1187,6 @@ fieldset.publishDateLimit .ui-slider {
 #sidebarFacets {
     float: right;
     margin-top: 25px;
-    width: 240px;
 /*
     width: 210px;
 */
@@ -1459,7 +1458,7 @@ table.profileGroup caption {
 
 /*** Result List ***/
 
-.advSearchContent, #resultList, #authorList, #resultsCollection,  #bottomPagination, .searchtools {
+.advSearchContent, #authorList, #resultsCollection,  #bottomPagination, .searchtools {
     width: 670px;
     float: left;
     margin: 0;
@@ -1517,7 +1516,6 @@ ul.recordSet .resultColumn1 {
 }
 ul.recordSet .resultColumn2 {
     float: left;
-    width: 500px;
     margin-left: 10px;
 }
 #recordSet ul.recordSet .resultColumn2 > * {

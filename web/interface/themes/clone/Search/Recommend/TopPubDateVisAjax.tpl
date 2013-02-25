@@ -15,10 +15,13 @@
               <div id="clearButtonText" style="display: none">x</div>  
           </div>
         {/foreach}
+        
         <script type="text/javascript">
           //<![CDATA[
+          {literal} function loadVisNow() { {/literal}
           loadVis('{$facetFields|escape:'javascript'}', '{$searchParams|escape:'javascript'}', '{$url}', {$zooming}{if $collectionName}, '{$collectionID|urlencode}', '{$collectionAction}'{/if});
           //]]>
+          {literal} } {/literal}
         </script>
         </div>
     </div>

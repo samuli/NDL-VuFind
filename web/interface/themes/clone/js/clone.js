@@ -6,7 +6,7 @@ $(document).ready(function() {
     initHeaderMenu();
     initContentMenu();
     initSidebarFacets();
-    initDateVisHandle();
+    initDateVis();
     initCustomEyeCandy();
 });
 
@@ -61,7 +61,24 @@ jQuery.fn.vToggle = function() {
 };
 
 // Date range selector 
-function initDateVisHandle() {
+function initDateVis() {
+    
+    // Load date visualizer
+    loadVisNow();
+    
+    // Refresh on screen resize
+    detector = $('.resultDates .content');
+    if (detector)
+        prevWidth = detector.width();
+        $(window).resize(function(){
+            if(detector.width()!=prevWidth){
+                prevWidth = detector.width();
+                
+                loadVisNow();
+        }
+
+    });
+    
     $('.dateVisHandle').click(function() {
         showDateVis();
     });

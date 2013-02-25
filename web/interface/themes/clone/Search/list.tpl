@@ -104,14 +104,14 @@
 {* Main Listing *}
 <div class="resultListContainer">
   <div class="content">
-    <div id="resultList" class="{if $sidebarOnLeft}sidebarOnLeft last{/if}">
+    <div id="resultList" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_17">
       {if $subpage}
         {include file=$subpage}
       {else}
         {$pageContent}
       {/if}
     </div>
-    <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+    <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
       {if $sideRecommendations}
         {foreach from=$sideRecommendations item="recommendations"}
           {include file=$recommendations}

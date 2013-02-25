@@ -88,6 +88,17 @@
         
     }
     
+    /* Search results: header */
+    
+    .dateVis { 
+        width:720px;
+    }
+    
+    /* Search results: sidebar */
+    span.dynatree-node .facetTitle {
+        max-width:110px;
+    }
+    
     .backgroundContainer {
         background-size: auto 680px;
     }
