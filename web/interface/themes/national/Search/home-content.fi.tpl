@@ -3,8 +3,8 @@
 <div id="introduction" class="section clearfix">
   <div class="container_24">
     <div class="grid_14">
-      <div>
-        <h2 class="color-finnaBlue">Tietoa tarvitseville ja elämyksiä etsiville</h2>
+      <div id="siteDescription">
+        <h2>Tietoa tarvitseville ja elämyksiä etsiville</h2>
         <p class="big">Finna on uudenlainen tiedonhakupalvelu kaikille arkistojen, kirjastojen ja museoiden palveluiden käyttäjille.</p>
         <p class="big">Finna on nyt testikäytössä. Kokeile hakua, <a href="{$path}/Feedback/Home">anna palautetta</a> tai <a class="color-violet" href="{$path}/Content/about">lue lisää</a> palvelusta!</p>
       </div>
@@ -42,8 +42,8 @@
 <div id="popular-map" class="section clearfix">
   <div class="container_24">
     <div class="grid_14">
-      <div>
-        <h2 class="color-finnaBlue">10 suosituinta hakua</h2>
+      <div id="topSearches">
+        <h2>10 suosituinta hakua</h2>
         <div id="popularSearches" class="recent-searches"><div class="loading"></div></div>
         {include file="AJAX/loadPopularSearches.tpl"}
       </div>

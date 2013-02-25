@@ -2,8 +2,8 @@
 
 <div class="home-section first columns clearfix">
   <div class="container_24">
-    <div>
-      <h2 class="color-finnaBlue">För dig som söker information och intressanta upplevelser</h2>
+    <div id="siteDescription">
+      <h2>För dig som söker information och intressanta upplevelser</h2>
       <p class="big">Finna är en ny sökportal för alla som använder arkivens, bibliotekens och museernas tjänster. </p>
       <p class="big">Testa sökfunktionen, <a href="{$path}/Feedback/Home">ge respons</a> eller <a class="color-violet" href="{$path}/Content/about">läs mer</a> om tjänsten i testversionen av Finna!</p>
     </div>
@@ -37,8 +37,8 @@
 </div>
 <div class="home-section third columns clearfix">
   <div class="container_24">
-    <div class="popularSearchesWrap">
-      <h2 class="color-finnaBlue">De 10 populäraste sökningarna</h2>
+    <div id="topSearches">
+      <h2>De 10 populäraste sökningarna</h2>
       <div id="popularSearches" class="recent-searches"><div class="loading"></div></div>
       {include file="AJAX/loadPopularSearches.tpl"}
     </div>

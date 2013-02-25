@@ -34,7 +34,7 @@
 <div class="home-section third columns clearfix">
   <div class="container_24">
     <div class="popularSearchesWrap">
-      <h2 class="color-finnaBlue">De 10 populäraste sökningarna</h2>
+      <h2>De 10 populäraste sökningarna</h2>
       <div id="popularSearches" class="recent-searches"><div class="loading"></div></div>
       {include file="AJAX/loadPopularSearches.tpl"}
     </div>
