@@ -64,13 +64,12 @@ jQuery.fn.vToggle = function() {
 function initDateVis() {
     
     // Load date visualizer
-    loadVisNow();
-    
-    // Refresh on screen resize
     detector = $('.resultDates .content');
-    if (detector)
+    if (detector.length > 0)
+        loadVisNow();
         prevWidth = detector.width();
         $(window).resize(function(){
+            // Refresh on screen resize
             if(detector.width()!=prevWidth){
                 prevWidth = detector.width();
                 
