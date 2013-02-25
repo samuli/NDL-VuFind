@@ -214,7 +214,7 @@ $(document).ready(function() {
 
       <div id="header" class="header{if !$showTopSearchBox}-home{/if} {if $module!='Search'}header{$module}{/if} clearfix">
         <div class="header-inner">
-          <div class="container_24">
+          <div class="content">
           {include file="header.tpl"}
         </div>
       </div>
@@ -227,7 +227,7 @@ $(document).ready(function() {
       </div>
 
       <div id="footer" class="clearfix">
-        <div class="container_24">
+        <div class="content">
           {include file="footer.tpl"}
         </div>
       </div>

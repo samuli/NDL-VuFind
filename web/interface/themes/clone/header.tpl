@@ -38,13 +38,15 @@
 
 <div id="headerBottom" class="clearfix">
   {if $showBreadcrumbs}
-    <div class="container_24">
-  <div class="breadcrumbs">
-    <div class="breadcrumbinner">
-      <a href="{$url}">{translate text="Home"}</a><span></span>
-      {include file="$module/breadcrumbs.tpl"}
+  <div class="content">
+    <div class="grid_24">
+      <div class="breadcrumbs">
+        <div class="breadcrumbinner">
+          <a href="{$url}">{translate text="Home"}</a><span></span>
+          {include file="$module/breadcrumbs.tpl"}
+        </div>
+      </div>
     </div>
-  </div>
   </div>
   {/if}
   

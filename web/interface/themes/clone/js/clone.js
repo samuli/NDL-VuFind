@@ -86,7 +86,7 @@ function initDateVisHandle() {
 // Content pages menu 
 function initContentMenu() {
     if ( $(".module-Content .main .menu").length > 0 ) {
-        var menu = '<div class="container_24"><div class="grid_6"><ul>';
+        var menu = '<div class="content"><div class="grid_6"><ul>';
 
         $('.module-Content .main h2').each(function() {
             var text = $(this).text(); 

@@ -1,7 +1,7 @@
 <!-- START of: Search/home-content.fi.tpl -->
 
 <div id="introduction" class="section clearfix">
-  <div class="container_24">
+  <div class="content">
     <div class="grid_14">
       <div>
 
@@ -31,12 +31,12 @@
   </div>
 </div>
 <div id="content-carousel" class="section clearfix">
-  <div class="container_24">
+  <div class="content">
 
   </div>
 </div>
 <div id="popular-map" class="section clearfix">
-  <div class="container_24">
+  <div class="content">
     <div class="grid_14">
       <div>
         <h2>10 suosituinta hakua</h2>

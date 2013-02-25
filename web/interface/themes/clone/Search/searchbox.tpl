@@ -1,6 +1,6 @@
 <!-- START of: Search/searchbox.tpl -->
 
-<div id="searchFormContainer" class="searchform last container_24">
+<div id="searchFormContainer" class="searchform last content">
 
 {if $searchType != 'advanced'}
   <script type="text/javascript">

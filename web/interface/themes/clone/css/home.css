@@ -42,7 +42,7 @@
     padding-bottom: 500px; /* Make floated divs seem equally long */
     margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
 }
-.section#introduction div[class*="container"] {
+.section#introduction > .content {
     overflow:hidden;
 }
 

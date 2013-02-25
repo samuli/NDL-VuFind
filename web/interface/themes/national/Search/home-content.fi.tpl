@@ -1,7 +1,7 @@
 <!-- START of: Search/home-content.fi.tpl -->
 
 <div id="introduction" class="section clearfix">
-  <div class="container_24">
+  <div class="content">
     <div class="grid_14">
       <div id="siteDescription">
         <h2>Tietoa tarvitseville ja elämyksiä etsiville</h2>
@@ -33,14 +33,14 @@
   </div>
 </div>
 <div id="content-carousel" class="section clearfix">
-  <div class="container_24">
+  <div class="content">
     <div id="carousel">
       {include file="Search/home-carousel.$userLang.tpl"}
     </div>
   </div>
 </div>
 <div id="popular-map" class="section clearfix">
-  <div class="container_24">
+  <div class="content">
     <div class="grid_14">
       <div id="topSearches">
         <h2>10 suosituinta hakua</h2>
