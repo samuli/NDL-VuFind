@@ -103,6 +103,12 @@
         background-size: auto 680px;
     }
     
+    /* Record */
+    
+    .recordcover {
+        max-width:110px;
+    }
+    
     /* Footer */
     
     #footer {

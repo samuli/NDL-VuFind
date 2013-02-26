@@ -1,7 +1,9 @@
 <!-- START of: Record/view-details.tpl -->
 
 <div class="content">
-{include file=$staffDetails}
+  <div class="grid_24">
+    {include file=$staffDetails}
+  </div>
 </div>
 
 <!-- END of: Record/view-details.tpl -->

@@ -1,6 +1,7 @@
 <!-- START of: Record/view-comments.tpl -->
 
 <div class="content">
+<div class="grid_24">
 <ul class="commentList" id="commentList{$id|escape}">
 {* Pull in comments from a separate file -- this separation allows the same template
    to be used for refreshing this list via AJAX. *}
@@ -14,5 +15,5 @@
   <input type="submit" class="button buttonFinna" value="{translate text="Add your comment"}"/>
 </form>
 </div>
-
+</div>
 <!-- END of: Record/view-comments.tpl -->

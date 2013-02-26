@@ -13,6 +13,7 @@ vufindString.hideTree = "{translate text="hierarchy_hide_tree"}";
 {js filename="hierarchyTree_JSTree.js"}
 
 <div class="content">
+  <div class="grid_24">
     {if $showTreeSelector}
     <div id="treeSelector">
     {foreach from=$hasHierarchyTree item=hierarchyTitle key=hierarchy}
@@ -45,6 +46,7 @@ vufindString.hideTree = "{translate text="hierarchy_hide_tree"}";
         </div>
     </div>
     {/if}
+  </div>
 </div>
 
 <!-- END of: Record/view-hierarchyTree_JSTree.tpl -->

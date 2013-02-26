@@ -5,6 +5,7 @@
 {literal}
 
 <div class="content">
+<div class="grid_24">
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -95,6 +96,7 @@ $(document).ready(function() {
       <div id="zoomControlMinus" class="ui-widget-content ui-corner-all ui-icon ui-icon-minus"></div>
     </div>
   </div>
+</div>
 </div>
 </div>
 

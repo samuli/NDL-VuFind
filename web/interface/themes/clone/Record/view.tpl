@@ -47,12 +47,12 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   </div>
   {/if}
   {if $lastsearch}
-    <div class="backToResults">
+    <div class="backToResults grid_12">
         <a href="{$lastsearch|escape}#record{$id|escape:"url"}"><div class="button buttonFinna icon"><span class="icon">&laquo</span></div>{translate text="Back to Search Results"}</a>
     </div>
   {/if}
   {if $previousRecord || $nextRecord}
-    <div class="resultscroller">
+    <div class="resultscroller grid_5 push_7">
     {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></a>
     {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></span>{/if}
     {$currentRecordPosition} / {$resultTotal}
@@ -74,7 +74,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     
   <div id="resultMain">
   
-  <div id="resultSide">
+  <div id="resultSide" class="grid_4">
   
     {* Display Cover Image *}
     <div class="coverImages">
@@ -176,19 +176,19 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       {js filename="qrcodeNDL.js"}
       </div> *}
   </div>
-  
+   <div class="grid_12 prefix_1">
    {include file=$coreMetadata}
-  
   </div>
+  
    
-  <div id="resultSidebar" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+  <div id="resultSidebar" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6 prefix_1">
     <div class="similarItems" id="similarItems{$id}"><div class="sidegroup">{image src="ajax_loading.gif" width="16" height="16" alt="Loading..."}</div></div>
     
     {if $bXEnabled}
       {include file="Record/bx.tpl"}
     {/if}
   </div>
-
+  </div>
   </div>
   
 
@@ -196,7 +196,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   <a name="tabnav"></a>
     <div id="{if $dynamicTabs}dyn{/if}tabnav">
     {if !$dynamicTabs || ($tab != 'Hold' && $tab != 'CallSlip')}
-      <ul>
+      <ul class="content">
         {if $hasHoldings}
         <li{if $tab == 'Holdings' || $tab == 'Hold' || $tab == 'CallSlip'} class="active"{/if}>
           <a id="holdingstab" href="{$url}/Record/{$id|escape:"url"}/Holdings{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Holdings'}</a>
@@ -255,7 +255,9 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     </div>
     {else}
     <div class="recordsubcontent">
+        <div class="content">
           {include file="Record/$subTemplate"}
+        </div>
     </div>
     {/if}
   

@@ -1431,6 +1431,7 @@ table.profileGroup caption {
     float: left;
     width: 240px;
     margin-right: 56px;
+    margin-left:5px;
 }
 .loginForm .loginTitle {
     margin-bottom: 1em;
@@ -1751,7 +1752,6 @@ ul.filters span {
     margin-left:30px;
     margin-top:3px;
     display:inline-block;
-    width: 170px;
     word-wrap: break-word;
 }
 #sidebarRecommend div.sidegroup {
@@ -1878,7 +1878,7 @@ dl.narrowList a {
 }
 .main .contentHeader h1,
 .main .browseHeader h1 {
-    margin:0;
+    margin:0 0 0 5px;
     padding:0;
 }
 .main .contentHeader.loginContentHeader,
@@ -2631,25 +2631,19 @@ div.resultLinks a {
     margin: -1em 0 0 .5em;
 }
 #resultMain {
-    width: 728px;
-    margin-right: 12px;
     float: left;
 }
 #resultToolbar ul {
     padding: 0;
     margin: 0;
 }
-#resultSide {
-    width: 210px;
-    float: left;
-    margin-right: 27px;
+
+#recordMetadata .citation {
+    table-layout:fixed;
 }
 
 /* Note: background colors required here for field truncation */
 #recordMetadata {
-    width: 476px;
-    padding-right: 15px;
-    float: left;
     background-color: white;
 }
 #recordMetadata tr, .citation tr {
@@ -2676,9 +2670,7 @@ div.resultLinks a {
     margin-top:0;
 }
 div.recordsubcontent {
-    margin: 0 auto;
-    padding: 1em 1.5em 5em;
-    width: 950px;
+    padding-bottom:20px;
 }
 div.recordsubcontent .call-slip-form form > p  {
     margin: 0 0 0.8em;
@@ -2898,13 +2890,13 @@ table.authors th {
 
 #dyntabnav {
     border: none;
-    width: 100%;
     clear: both;
-    float: left;
 }
+
 #dyntabnav .ui-tabs-nav li {
-    margin-right: 5px;
+    margin-left: 5px;
 }
+
 #dyntabnav, #dyntabnav .ui-tabs-nav {
     padding: 0;
     -moz-border-radius: 0px; -webkit-border-radius: 0px; border-radius: 0px;
@@ -2982,10 +2974,6 @@ table.authors th {
 
 /** Similar Items (record view) **/
 
-#resultSidebar {
-    width: 210px;
-    float: right;
-}
 ul.similar {
     background-color: #E6E6E6;
     list-style: none;
@@ -3010,13 +2998,10 @@ h5.recordTabHeader {
 }
 /*********** Toolbar (Record View) ************/
 
-.record .toolbar {
-    width: 210px;
-}
 .toolbar {
-    float: right;
     margin: 0 0 40px 0;
     background-color:#fff;
+    line-height: 1.23em;
 }
 .toolbar #addThis {
     margin-left: -5px;
@@ -3081,14 +3066,11 @@ h5.recordTabHeader {
 }
 .backToResults {
     float: left;
-    width: 600px;
 }
 .backToResults span.icon {
     padding:1px 2px 2px 20px;
 }
 .resultscroller {
-    /* border-bottom: 1px solid #dddddd; */
-    float: right;
     text-align: center;
     width: 22%;
 }

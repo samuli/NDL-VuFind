@@ -1,6 +1,7 @@
 <!-- START of: Record/view-reviews.tpl -->
 
 <div class="content">
+<div class="grid_24">
 {foreach from=$reviews item=providerList key=provider}
   {foreach from=$providerList item=review}
     {if $review.Summary}
@@ -24,6 +25,7 @@
 {foreachelse}
 {translate text="No reviews were found for this record"}.
 {/foreach}
+</div>
 </div>
 
 <!-- END of: Record/view-reviews.tpl -->
