@@ -5,13 +5,13 @@
   <div class="resultTerms">
     <div class="content">
       {if $searchType == 'advanced'}
-      <div class="advancedOptions">
+      <div class="advancedOptions grid_24">
         <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a> |
         <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a> |
         <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
       </div>
       {/if}
-      <h3 class="searchTerms">
+      <h3 class="searchTerms grid_24">
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
         {if $searchType == 'basic'}{$lookfor|escape:"html"}

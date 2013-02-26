@@ -2292,6 +2292,7 @@ ul.recordSet .addToFavLink a {
     margin: 28px 0;
     font-size:1.230em;
     max-width:520px;
+    margin-left:5px;
 }
 .resultNumbers .currentPage {
     font-weight:bold;
@@ -2305,7 +2306,7 @@ ul.recordSet .addToFavLink a {
 .resultOptions {
     float: right;
     height: 35px;
-    margin:20px 0 0;
+    margin:20px 5px 0;
 }
 
 .resultOptionSort {
@@ -2383,6 +2384,9 @@ ul.recordSet .addToFavLink a {
 .resultOptionLimit {
     float:right;
 }
+.resultOptionLimit dd ul {
+    right:0;
+}
 
 
 /*Date Range Visualizer */
@@ -2446,6 +2450,7 @@ span.dateVisHandle {
     font-weight: bold;
     height: 35px;
     line-height: 35px;
+    margin-left:5px;
 }
 div.dateVisHandle {
     display: none;
@@ -2481,6 +2486,7 @@ div.dateVisHandle.visible {
     font-size:1.230em;
     line-height:1em;
     padding: 30px 0;
+    margin-left:5px;
 }
 .paginationPages a {
     color:#777;
@@ -2535,6 +2541,7 @@ div.dateVisHandle.visible {
 .searchtools {
     overflow:auto;
     padding: 25px 0;
+    margin-left:5px;
 }
 .searchtools > h2 {
     margin-bottom:25px;
