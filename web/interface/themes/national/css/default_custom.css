@@ -28,6 +28,7 @@ a, .ui-widget-content a {
 }
 #header #logo {
     background-image: url("../images/finna_logos_white.png");
+    background-position:  -20px -20px;
 }
 #header .lang li {
     border-color: #eee;

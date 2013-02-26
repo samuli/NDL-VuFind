@@ -3,7 +3,7 @@
 <div id="introduction" class="section clearfix">
   <div class="content">
     <div class="grid_14">
-      <div>
+      <div id="siteDescription">
         <h2>För dig som söker information och intressanta upplevelser</h2>
         <p class="big">Finna är en ny sökportal för alla som använder arkivens, bibliotekens och museernas tjänster. </p>
         <p class="big">Testa sökfunktionen, <a href="{$path}/Feedback/Home">ge respons</a> eller <a class="color-violet" href="{$path}/Content/about">läs mer</a> om tjänsten i testversionen av Finna!</p>
@@ -42,7 +42,7 @@
 <div id="popular-map" class="section clearfix">
   <div class="content">
     <div class="grid_14">
-      <div>
+      <div id="topSearches">
         <h2>De 10 populäraste sökningarna</h2>
         <div id="popularSearches" class="recent-searches"><div class="loading"></div></div>
         {include file="AJAX/loadPopularSearches.tpl"}

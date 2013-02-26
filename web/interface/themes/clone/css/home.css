@@ -212,7 +212,7 @@
 /* Section: Popular Searches & Map Search */
 
 .section#popular-map {
-    background:#e1eff4;
+    background:#def;
 }
 
 #popularSearches ul:first-child {
@@ -250,9 +250,7 @@
 }
 
 #popularSearches a {
-    color: #00a3b5;
     font-weight: bold;
-    text-decoration: none;
 }
 
 #popularSearches a:hover, #popularSearches a:focus {

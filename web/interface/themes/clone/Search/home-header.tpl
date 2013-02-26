@@ -1,9 +1,9 @@
 <!-- START of: Search/home-header.tpl -->
 
-<div class="grid_14">
-  <div id="blurb">
-    {include file="Search/home-blurb.$userLang.tpl"}
-  </div>
+<div class="grid_24">
+
+  {include file="Search/home-header.$userLang.tpl"}
+  
 </div>
 
 <!-- END of: Search/home-header.tpl -->

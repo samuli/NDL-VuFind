@@ -14,7 +14,7 @@ NOTE2! IE CSS3 support elements listed in js/css3pie/css3elements.js
  
 body {
     margin:0;
-    background: #9b9;
+    background: #abc;
     padding: 0;
     color: rgb(70,70,70);
     -webkit-text-size-adjust: 100%;
@@ -122,16 +122,16 @@ ul {
 
 /*** Links ***/
 a, .ui-widget-content a {
-    color: #c67;
+    color: #238;
     text-decoration: none;
 }
 a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
-    color: #00a3b5;
+    color: #127;
     text-decoration: underline;
 }
 
 .menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a {
-    color: #000;
+    color: #fff;
     text-decoration: none;
 }
 
@@ -139,7 +139,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     display: block;
     margin: 0;
     padding: 0 0 5px;
-    color:#000;
+    color:#fff;
 }
 
 #headerMenu ul li span {
@@ -155,7 +155,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
 }
 
 #headerMenu li a:hover span, #headerMenu li a:focus span {
-    color: #000;
+    color: #fff;
     text-decoration: none;
 }
 
@@ -181,7 +181,7 @@ div.lang li, div.lang a {
 }
 
 .lang a {
-    color: #000;
+    color: #fff;
     text-decoration: none;
 }
 
@@ -263,13 +263,14 @@ div.sidegroup {
     position:relative;
 }
 #headerSeparator {
-    border-bottom: 6px solid #000;
+    border-bottom: 6px solid #fff;
 }
 #headerBottom {
     position:relative;
+    color: #fff;
 }
-#header #logo {
-    background: url("../images/finna_logos_black.png") repeat scroll -20px -20px transparent;
+#logo {
+    background: url("../images/finna-logo_small.png") no-repeat scroll 0 center transparent;
     display: block;
     height: 59px;
     margin-top:20px;
@@ -300,7 +301,7 @@ div.sidegroup {
 
 .menuLogin {
     padding-left: 17px;
-    border-left: 2px solid #000;
+    border-left: 2px solid #fff;
 }
 
 #headerMenu ul.subMenu li {
@@ -309,7 +310,7 @@ div.sidegroup {
     min-height: 65px;
     margin: 10px 0 0 0;
     padding: 0 10px 7px 15px;
-    border-left: 2px solid #000;
+    border-left: 2px solid #fff;
 }
 
 #headerMenu ul.subMenu li:first-child {
@@ -326,7 +327,7 @@ div.sidegroup {
 #header .lang li {
     margin: 0;
     padding: 0 0 0 7px;
-    border-left: 2px solid #000;
+    border-left: 2px solid #fff;
 }
 
 #header .lang li:first-child {
