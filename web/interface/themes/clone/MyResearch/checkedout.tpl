@@ -4,6 +4,7 @@
 
 <div class="myResearch checkedoutList{if $sidebarOnLeft} last{/if}">
   <div class="content">
+  <div class="grid_24">
   <div class="resultHead">
   {if $errorMsg || $infoMsg}
     <div class="messages">
@@ -182,6 +183,7 @@
     {include file="MyResearch/catalog-login.tpl"}
   {/if}
   </div>
+</div>
 </div>
 
 <div class="clear"></div>

@@ -117,6 +117,13 @@
         max-width:110px;
     }
     
+    /* Myresearch */
+    
+    .ui-tabs .ui-tabs-nav li a {
+        padding-left:5px;
+        padding-right:5px;
+    }
+    
     /* Footer */
     
     #footer {

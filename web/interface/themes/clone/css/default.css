@@ -39,10 +39,10 @@ body {
 }
 
 .ui-tabs-nav {
-    width:950px;
     position:relative;
     margin:0 auto !important;
     display: block;
+    padding:0 !important;
 }
 
 #header .header-inner {
@@ -1334,7 +1334,7 @@ fieldset.publishDateLimit .ui-slider {
 #resultList.checkedoutList {
     width: 960px;
 }
-.checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .profileInfo, .accounts table.accountList {
+.checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
     margin: 1.8em 0 1em 0;
 }
 .checkedoutList .iconlabel, .holdsList .iconlabel {
@@ -1342,7 +1342,6 @@ fieldset.publishDateLimit .ui-slider {
 }
 .profileInfo {
     line-height: 1.8em;
-    width: 452px;
 }
 
 table.profileGroup {
@@ -1587,9 +1586,6 @@ ul.recordSet .resultClassification {
 }
 .resultImage a {
     display: block;
-}
-.resultImage img {
-    width: 126px;
 }
 .resultImages {
     float:left;
@@ -2205,6 +2201,10 @@ ul.recordSet .addToFavLink a {
 .icon { /* If using icon only */
     padding: 1px 2px 1px 20px;
     margin-right: 2px;
+}
+
+.myResearch .icon {
+    padding: 2px 2px 1px 20px;
 }
 
 /***** Results page blocks ****/
@@ -3451,10 +3451,21 @@ p.citationText {
     float: left;
 }
 .myResearch .dueDate {
+    clear: both;
     float: left;
+    margin: 0 0 0 126px;
     width: 284px;
-    margin: 0 0 0 12px;
 }
+
+.myResearch.holdsList .resultColumn2,
+.myResearch.holdsList .dueDate,
+.myResearch.checkedoutList .resultColumn2,
+.myResearch.checkedoutList .dueDate,
+.myResearch .favoritesList .resultColumn2,
+.myResearch .favoritesList .dueDate {
+    max-width:80%;
+}
+
 .myResearchMenu {
     margin-top: 0;
     padding: 0;

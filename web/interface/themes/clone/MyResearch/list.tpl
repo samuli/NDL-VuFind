@@ -21,6 +21,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
 <div class="myResearch">
   <div class="content">
+  <div class="grid_24">
   <div class="resultHead">
   {if $errorMsg || $infoMsg}
     <div class="messages">
@@ -165,6 +166,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   </div>
   {/if}
   </div>
+</div>
 </div>
 
 <div class="clear"></div>
