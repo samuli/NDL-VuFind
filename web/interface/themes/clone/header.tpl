@@ -8,7 +8,7 @@
 <div id="headerTop" class="clearfix">
     
   <div class="grid_8">
-  <a id="logo" href="{$url}" title="{translate text="Home"}"></a>
+
   </div>
   
   <div class="grid_12">
@@ -33,6 +33,10 @@
   </div>
    </div>
 </div>
+
+  <div class="grid_24 drop">
+    <a id="logo" href="{$url}" title="{translate text="Home"}"></a>
+  </div>
 
 <div id="headerSeparator" class="grid_24"></div>
 

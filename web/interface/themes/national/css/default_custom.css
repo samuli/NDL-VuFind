@@ -29,6 +29,7 @@ a, .ui-widget-content a {
 #header #logo {
     background-image: url("../images/finna_logos_white.png");
     background-position:  -20px -20px;
+    padding: 9px 0;
 }
 #header .lang li {
     border-color: #eee;

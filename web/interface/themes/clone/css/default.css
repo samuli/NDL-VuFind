@@ -21,6 +21,7 @@ body {
     width:100%;
 }
 .backgroundContainer {
+    background-image: url("../images/generic-bg.jpg");
     background-position: center 0;
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -270,12 +271,14 @@ div.sidegroup {
     color: #fff;
 }
 #logo {
-    background: url("../images/finna-logo_small.png") no-repeat scroll 0 center transparent;
+    background: url("../images/org_finnalogo_white.png") no-repeat scroll 0 center transparent;
     display: block;
     height: 59px;
-    margin-top:20px;
+    padding: 20px 0;
     float:left;
-    width: 248px;
+    width: 100%;
+    position: relative;
+    z-index: 50;
 }
 #headerMenu {
     float:left;
@@ -873,6 +876,7 @@ body > .ui-widget .button {
     width: 70px;
 }
 .advancedLink {
+    color: #fff;
     display: block;
     font-size: .923em;
     font-weight:bold;
