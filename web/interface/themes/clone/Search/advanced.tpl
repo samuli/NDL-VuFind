@@ -10,8 +10,7 @@
       </div>
   </div>
   <div class="content">
-    
-    <div class="advSearchContent">
+    <div class="advSearchContent grid_24">
       {if $editErr}
       {assign var=error value="advSearchError_$editErr"}
         <div class="error">{translate text=$error}</div>
@@ -95,7 +94,7 @@
         {js filename="jquery.dependClass-0.1.js"}
         {js filename="draggable-0.1.js"}
         {js filename="jslider/jquery.slider.js"}   
-    <div id="sliderWrapper" class="{*span-10*} advSearchSection">
+    <div id="sliderWrapper" class="grid_11 suffix_1">
         <input type="hidden" name="daterange[]" value="main_date_str"/>
           <label for="publishDatefrom" id="pubDateLegend">{translate text='Main Year'}</label>
           <input type="text" size="4" maxlength="4" class="yearbox" name="main_date_strfrom" id="publishDatefrom" value="{if $dateRangeLimit.0}{$dateRangeLimit.0|escape}{/if}" /> - 
@@ -108,7 +107,7 @@
     {/if}
     
     {if $facetList}
-        <div id="facetWrapper" class="advSearchSection">
+        <div id="facetWrapper" class="grid_12">
         {js filename="chosen/chosen.jquery.js"}
         {js filename="chosen_multiselects.js"}
         {foreach from=$facetList item="list" key="label"}
@@ -177,7 +176,6 @@
           <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
     </div>
   </div>
-
   <div class="span-3 last">
     {if $searchFilters}
       <div class="filterList">

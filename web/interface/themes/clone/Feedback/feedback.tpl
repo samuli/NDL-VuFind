@@ -2,7 +2,7 @@
 
 <div class="contentHeader"><div class="content"><h1>{translate text='feedback_heading'}</h1></div></div>
 <div class="content">
-
+<div class="grid_24">
 {if not $submitted}
 {if $errorMsg}<p class="error">{$errorMsg}</p>{/if}
 <form id="feedbackForm" action="" method="post">
@@ -47,5 +47,5 @@
 <p>{translate text="feedback_thankyou"}</p>
 {/if}
 </div>
-
+</div>
 <!-- END of: Feedback/feedback.tpl -->

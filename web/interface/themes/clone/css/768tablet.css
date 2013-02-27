@@ -45,6 +45,7 @@
     }
     
     /* Front page */
+    
     #introduction ul {
         width:230px;
     }
@@ -95,12 +96,19 @@
     }
     
     /* Search results: sidebar */
+    
     span.dynatree-node .facetTitle {
         max-width:110px;
     }
     
     .backgroundContainer {
         background-size: auto 680px;
+    }
+    
+    /* Advanced seach */
+    
+    .groupSearchHolder .terms {
+        width: 110px;
     }
     
     /* Record */

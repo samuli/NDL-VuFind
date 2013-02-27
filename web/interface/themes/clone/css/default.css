@@ -72,6 +72,7 @@ body {
 }
 #main > .menu div[class*="grid"] {
     position:absolute;
+    z-index:10;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 only screen and (moz--min-device-pixel-ratio: 1.5),
@@ -354,9 +355,8 @@ div.sidegroup {
     width: 258px;
     margin: 20px 20px 10px;
 }
-#searchFormHeader {
+#searchFormHeader #searchFormContainer {
     padding:10px 0 40px;
-    height: 50px;
 }
 
 .headerMetaLib .searchbox {
@@ -938,6 +938,11 @@ div.dialogLoading {
 }
 .no-hits #topPubDateVis {
     display: none;
+}
+.no-hits .error {
+    background:none;
+    border:none;
+    color:#555;
 }
 .highlight {
     background: none;
@@ -1882,7 +1887,8 @@ dl.narrowList a {
     background:#b3e3e9;
 }
 .main .contentHeader h1,
-.main .browseHeader h1 {
+.main .browseHeader h1,
+.main .advSearchHeader h1 {
     margin:0 0 0 5px;
     padding:0;
 }
@@ -2237,7 +2243,6 @@ ul.recordSet .addToFavLink a {
 .module-MyResearch h2.account,
 .module-MyResearch h1,
 .module-Cart h2,
-#advSearchForm h1,
 .module-Collection #collectionHeader {
     margin: 0;
     padding: 0;
@@ -2740,7 +2745,7 @@ div.recordsubcontent .call-slip-form form > p  {
 .recordcover {
     padding: 3px;
     margin: 0 auto;
-    max-width: 210px;
+    max-width: 150px;
 }
 .holdsMessage {
     margin-top: 1em;
@@ -3395,7 +3400,7 @@ p.citationText {
     line-height: 2em;
     padding-left: 30px;
     position: absolute;
-    right: 0;
+    right: 5px;
     font-weight:bold;
     top: 3px;
 }
