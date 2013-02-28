@@ -33,10 +33,6 @@
     
     /* Header: Search Box */
     
-    .header-home #searchFormHeader {
-        padding-top: 210px;
-    }   
-    
     #searchForm_input {
         width:195px;
     }
@@ -106,9 +102,20 @@
     }
     
     /* Advanced seach */
+    #searchHolder .group {
+        padding:8px;
+    }
+    #advSearchForm .groupSearchDetails select {
+        max-width: 165px;
+    }
     
     .groupSearchHolder .terms {
         width: 110px;
+    }
+    
+    #zoomSlider {
+        left: 12px;
+        top: 67px;
     }
     
     /* Record */

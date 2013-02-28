@@ -4328,9 +4328,11 @@ input#coordinates {
     border: 1px solid #ccc;
     display: block;
     float: right;
-    padding: 6px 10px;
-    width: 480px;
     position:relative;
+}
+span#selectionMapHelp {
+    display: block;
+    padding: 5px 14px;
 }
 .selectionMapHelpIcon {
     height: 16px;

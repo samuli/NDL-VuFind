@@ -3,7 +3,8 @@
 /* Header: Search Box */
 
 .header-home #searchFormHeader {
-    padding-top:290px;
+    clear: both;
+    padding-top: 20px;
 }
 
 /*** Header: Blurb */

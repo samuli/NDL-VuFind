@@ -10,7 +10,7 @@
       </div>
   </div>
   <div class="content">
-    <div class="advSearchContent grid_24">
+    <div class="advSearchContent">
       {if $editErr}
       {assign var=error value="advSearchError_$editErr"}
         <div class="error">{translate text=$error}</div>
@@ -28,7 +28,7 @@
       </div>
   
       {* An empty div. This is the target for the javascript that builds this screen *}
-      <div class="advSearchSection first">
+      <div class="advSearchSection first grid_24">
       <div id="searchHolder" class="{*span-10*} last">
         {* fallback to a fixed set of search groups/fields if JavaScript is turned off *}
         <noscript>
@@ -142,7 +142,7 @@
           <span class="small">Valitse kartalta tai syötä käsin muodossa: vasen yläkulma lat, vasen yläkulma lon, oikea alakulma lat, oikea alakulma lon</span>
           *}
           <input id="coordinates" name="coordinates"></input>
-          <div id="selectionMapHelpWrapper">
+          <div id="selectionMapHelpWrapper" class="grid_12">
             <div class="selectionMapHelpIcon"></div>
             <span id="selectionMapHelp">
               <span id="selectionMapHelpPan">{translate text="adv_search_map_pan_help"}</span>
