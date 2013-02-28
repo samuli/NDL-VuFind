@@ -2,9 +2,6 @@
     
     /* Header */
     body,html {
-        overflow:hidden;
-    }
-    .content {
         overflow-x:hidden;
     }
     

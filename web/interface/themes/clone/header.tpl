@@ -44,7 +44,7 @@
 
 <div id="headerSeparator" class="grid_24"></div>
 
-<div id="headerBottom" class="clearfix">
+<div id="headerBottom" class="grid_24">
   {if $showBreadcrumbs}
   <div class="content">
     <div class="grid_24">

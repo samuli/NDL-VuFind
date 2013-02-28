@@ -9,7 +9,6 @@ function initBgSwitcher(source, target, lang) {
         $.get(path+source, function(data) {
             // Get related info text from source
             texts = $(data).find('#headerTexts > div');
-            console.log('t: '+texts);
             if (texts.length > 0) {
 
                 // Get random number from 0 to the number of elements found - 1
