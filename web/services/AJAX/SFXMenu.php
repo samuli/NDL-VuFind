@@ -70,7 +70,7 @@ class SFXMenu extends Action
             $request = new Proxy_Request();
             $request->setMethod(HTTP_REQUEST_METHOD_GET);
             $request->setURL($url);
-            $request->addHeader('X-Forwarded-For', $_SERVER['REMOTE_ADDR']);            
+            $request->addHeader('X-Forwarded-For', $_SERVER['REMOTE_ADDR']);
             if (isset($configArray['OpenURL']['language'][$interface->lang])) {
                 $request->addCookie('user-Profile', '%2B%2B%2B' . $configArray['OpenURL']['language'][$interface->lang]);
             }
