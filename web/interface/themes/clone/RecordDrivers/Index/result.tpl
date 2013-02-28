@@ -32,8 +32,8 @@
   {/if}
   {* Cover image *}
     <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
-  {if $img_count > 0}
-      <div class="resultImage"><a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
+  {if $summThumb}
+      <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
   {/if}
 
 </div>

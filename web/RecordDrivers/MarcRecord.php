@@ -1356,13 +1356,13 @@ class MarcRecord extends IndexRecord
                 if ("IMAGE" == $type) {
                     $address = $url->getSubfield('u');
                     if ($address) {
-                        $address = $address->getData();
-                        return $address;
+                        return $configArray['Site']['url'] . '/thumbnail.php?id=' .
+                            urlencode($this->getUniqueID()) . '&size=' . urlencode($size);
                     }       
                 }    
             }
         }      
-        return false;
+        return parent::getThumbnail($size);
     }
     
     /**
