@@ -175,7 +175,7 @@ $(document).ready(function() {
     <![endif]-->
 
     {* For mobile devices *}
-    <meta name='viewport' content="width=720,initial-scale=0.45" />
+    <meta name='viewport' content="width=720" />
 
 
   </head>
