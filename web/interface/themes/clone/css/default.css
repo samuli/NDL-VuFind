@@ -1485,7 +1485,7 @@ ul.recordSet {
     list-style-type: none;
 }
 ul.recordSet li.result {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 ul.recordSet li.result:hover {
@@ -1526,7 +1526,7 @@ ul.recordSet .resultColumn1 {
 }
 ul.recordSet .resultColumn2 {
     float: left;
-    margin-left: 10px;
+    margin-left: 15px;
 }
 #recordSet ul.recordSet .resultColumn2 > * {
     line-height: 16px;
@@ -1615,8 +1615,8 @@ ul.recordSet .resultClassification {
     text-decoration:none;
 }
 div.resultItemFormat {
-    margin: 10px auto 0 10px;
-    text-align: center;
+    margin: 2px 0;
+    text-align: left;
 }
 
 #authorList .authorbio {
