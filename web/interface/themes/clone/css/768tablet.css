@@ -1,6 +1,12 @@
-@media only screen  and (max-width: 1020px) {
+@media only screen and (max-width: 1020px) {
     
     /* Header */
+    body,html {
+        overflow:hidden;
+    }
+    .content {
+        overflow-x:hidden;
+    }
     
     .feedbackButton {
         position:absolute;
@@ -98,7 +104,9 @@
     }
     
     .backgroundContainer {
-        background-size: auto 680px;
+        width:100%;
+        margin:0 auto;
+        background-size: auto 134%;
     }
     
     /* Advanced seach */
@@ -106,7 +114,7 @@
         padding:8px;
     }
     #advSearchForm .groupSearchDetails select {
-        max-width: 165px;
+        max-width: 155px;
     }
     
     .groupSearchHolder .terms {
