@@ -9,7 +9,6 @@ px      62   136   210   284   358   432   506   580   654   728    802    876  
 
 NOTE! Layout information is outdated.
 
-NOTE2! IE CSS3 support elements listed in js/css3pie/css3elements.js
 */
  
 body {
@@ -130,9 +129,27 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     text-decoration: underline;
 }
 
-.menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a {
+.menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a, .menuLibCard span {
     color: #fff;
     text-decoration: none;
+}
+
+#nav, .nav {
+    background-color: #4d4d4d;
+    height: 40px;
+}
+#nav .lang {
+    margin-top: 12px;
+}
+#nav .lang li {
+    border-left: 2px solid #FFFFFF;
+    margin: 0;
+    padding: 0 0 0 10px;
+}
+#nav .lang li:first-child {
+    border: medium none;
+    margin: 0;
+    padding: 0 10px 0 0;
 }
 
 #headerMenu ul li span:first-child {
@@ -174,7 +191,7 @@ div.lang {
     line-height: 1em;
 }
 div.lang ul {
-    margin: 5px .4em 0;
+    margin: 0/*5px*/ .4em 0;
 }
 div.lang li, div.lang a {
     float: left;
@@ -258,7 +275,7 @@ div.sidegroup {
     border:none;
 }
 
-#headerTop {
+#headerTop, #headerTopFixed {
     height:95px;
     position:relative;
 }
@@ -290,7 +307,7 @@ div.sidegroup {
 }
 #headerMenu {
     padding:0;
-    margin:40px 0 0;
+    margin: 10px 0 0 5px/*40px 0 0*/;
 }
 #headerMenu ul {
     display:none;
@@ -299,25 +316,165 @@ div.sidegroup {
     padding-top:25px;
 }
 
-.menuLogin {
+.menuLogin, .menuLibCard {
     padding-left: 17px;
     border-left: 2px solid #fff;
+    height: 20px;
 }
 
-#headerMenu ul.subMenu li {
+#headerMenu ul.subNav {
+    background: #ffffff none repeat scroll 0 0;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+/*
+    display: none;
+*/
+    padding: 0px;
+    position: absolute; 
+
+    top: 30px;
+/*
+    left: 54px;
+*/
+    width: auto;
+/*
+    min-width: 153px;
+*/
+    list-style: none;
+    z-index: 204 !important;
+    -moz-box-shadow: 0px 8px 12px #777;
+    -webkit-box-shadow: 0px 8px 12px #777;
+    box-shadow: 0px 8px 12px rgba(0,0,0,.5);
+
+    behavior: url(/interface/themes/national/js/css3pie/PIE.php);
+}
+.menuSearch > a span:after, .menuHelp > a span:after, .menuLogin > a span:after,
+.menuLibCard > span:after {
+    content: "";
+    display: inline-block;
+    height: 9px;
+    padding-left: 8px;
+    width: 11px;
+}
+#headerMenu .menuSearch_fi ul.subNav {
+    left: 54px;
+}
+#headerMenu .menuHelp_fi ul.subNav {
+    left: 124px;
+}
+#headerMenu .menuLogin_fi ul.subNav {
+    left: 281px;
+}
+#headerMenu .menuLibCard_fi ul.subNav {
+    left: 400px;
+}
+#headerMenu .menuSearch_sv ul.subNav {
+    left: 74px;
+}
+#headerMenu .menuHelp_sv ul.subNav {
+    left: 164px;
+}
+#headerMenu .menuLogin_sv ul.subNav {
+    left: 328px;
+}
+#headerMenu .menuSearch_en-gb ul.subNav {
+    left: 52px;
+}
+#headerMenu .menuHelp_en-gb ul.subNav {
+    left: 134px;
+}
+#headerMenu .menuLogin_en-gb ul.subNav {
+    left: 310px;
+}
+
+#headerMenu ul.subNav li {
+/*
     float: left;
     width: 25%;
-    min-height: 65px;
-    margin: 10px 0 0 0;
-    padding: 0 10px 7px 15px;
+*/
+    clear: both;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+/*
     border-left: 2px solid #fff;
+*/
 }
 
-#headerMenu ul.subMenu li:first-child {
-    margin: 10px 0 0 0;
-    padding: 0 10px 7px 0;
+
+/*
+#headerMenu ul.subNav li:hover {
+    background-color: #dddddd;
+}
+*/
+
+#headerMenu ul.subNav li, #headerMenu ul.subNav li:hover,
+#headerMenu ul.subNav li span, #headerMenu ul.subNav li span:hover {
+  color: #777777;
+}
+#headerMenu ul.subNav li span:first-child {
+    color: #444444;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 0 3px;
+}
+
+#headerMenu ul.subNav li
+ {
+    color:#444;
+    padding: 7px 10px;
+    display: block;
+    cursor:pointer;
+    min-width: 374px;
+    text-decoration:none;
+    border-top:1px solid #dadada;
+    font-size:1em;
+    border-bottom-right-radius:0;
+    border-bottom-left-radius:0;
+    border-top-left-radius:0;
+    border-top-right-radius:0;
+}
+#headerMenu ul.subNav li:hover
+ { 
+    background-color: #e6e6e6; 
+    color: #444;
+    margin: 0;
+}
+#headerMenu ul.subNav li:first-child {
     border: none;
 }
+#headerMenu ul.subNav li:hover:first-child {
+    -moz-border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 10px 10px 0 0;
+    border-radius:  10px 10px 0 0;
+
+    behavior: url(/interface/themes/national/js/css3pie/PIE.php);
+}
+#headerMenu ul.subNav li:hover:last-child {   
+    -moz-border-radius: 0 0 10px 10px;
+    -webkit-border-radius: 0 0 10px 10px;
+    border-radius:  0 0 10px 10px;
+
+    behavior: url(/interface/themes/national/js/css3pie/PIE.php);
+}
+#headerMenu .menuHelp ul.subNav li:hover:first-child,
+#headerMenu .menuLibCard ul.subNav li:hover:first-child {
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border-radius:  10px 10px 10px 10px;
+
+    behavior: url(/interface/themes/national/js/css3pie/PIE.php);
+}
+
+#headerMenu .menuLibCard form {
+    float: right;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    left: -14px;
+    top: -9px;  
+}
+
 
 #header .lang {
     margin: 42px 0 0;
@@ -387,9 +544,9 @@ div.sidegroup {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     color: #FFFFFF;
     padding: 4px 12px 7px 14px;
-    position: fixed;
+    position: absolute;
     right: 0;
-    top: 0;
+    top: 40px;
     z-index: 10;
 
     behavior: url(/interface/themes/national/js/css3pie/PIE.php);
@@ -456,6 +613,15 @@ div.sidegroup {
     border:0;
     width:auto;
 }
+
+#headerMenu li #styled_catalogAccount0 dd ul {
+    top: 1px;
+}
+
+#headerMenu li #styled_catalogAccount0 dt a {
+    padding: 9px 10px 8px;
+}
+
 /*** Search Box ***/    /* also note home.css for Home Page */
 
 .searchbox {

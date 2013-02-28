@@ -2,8 +2,8 @@
 
 <li class="menuAbout"><a href="{$path}/Content/about"><span>{translate text='navigation_about'}</span></a></li>
 
-<li class="menuSearch"><a href="#"><span>{translate text='navigation_search'}</span></a>
-  <ul class="subMenu">
+<li class="menuSearch menuSearch_{$userLang}"><a href="#"><span>{translate text='navigation_search'}</span></a>
+  <ul class="subNav">
     <li>
       <a href="{$path}/Search/History">
         <span>Sökhistorik</span>
@@ -25,8 +25,8 @@
   </ul>
 </li>
 
-<li class="menuHelp"><a href="#"><span>{translate text='navigation_help'}</span></a>
-  <ul class="subMenu">
+<li class="menuHelp menuHelp_{$userLang}"><a href="#"><span>{translate text='navigation_help'}</span></a>
+  <ul class="subNav">
     <li>
       <a href="{$path}/Content/searchhelp">
         <span>Söktips</span>

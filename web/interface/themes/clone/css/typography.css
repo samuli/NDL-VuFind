@@ -137,21 +137,30 @@ body { -webkit-tap-highlight-color: #bbddff; }
 
 /**** OTHERS ****/
 
+/* Navi */
+
+#nav, #nav .lang {
+    font-size: 1em;
+    font-weight: bold;
+}
+
 /* Header */
 #header {
 }
 #headerMenu {
-    font-size:1.230em;
+    font-size: 1em /*1.230em*/;
     font-weight: bold;
 }
 #headerMenu span#userId {
-    font-size:0.751em;
+    font-size: 1em /*0.751em*/;
     font-weight:bold;
 }
+{*
 #header .lang {
     font-size: 0.923em;
     font-weight: bold;
 }
+*}
 #blurb {
     letter-spacing:.4px;
 }

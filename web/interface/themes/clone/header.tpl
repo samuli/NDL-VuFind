@@ -5,32 +5,36 @@
   {assign var=bookBagItems value=$bookBag->getItems()}
 {/if}
 
-<div id="headerTop" class="clearfix">
+<div id="headerTopFixed" class="clearfix">
     
   <div class="grid_8">
   <a id="logo" href="{$url}" title="{translate text="Home"}"></a>
   </div>
   
   <div class="grid_12">
+{*
   <ul id="headerMenu">
     {include file="header-menu.$userLang.tpl"}
   </ul>
+*}
   </div>
     
   <div class="grid_4">
-  <div class="lang">
-    {if is_array($allLangs) && count($allLangs) > 1}
-    <ul>
-      {foreach from=$allLangs key=langCode item=langName}
-        {if $userLang != $langCode}
-          <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
-            {translate text=$langName}</a>
-          </li>
-        {/if}
-      {/foreach}
-    </ul>
-    {/if}
-  </div>
+{*
+    <div class="lang">
+      {if is_array($allLangs) && count($allLangs) > 1}
+      <ul>
+        {foreach from=$allLangs key=langCode item=langName}
+          {if $userLang != $langCode}
+            <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
+              {translate text=$langName}</a>
+            </li>
+          {/if}
+        {/foreach}
+      </ul>
+      {/if}
+    </div>
+*}
    </div>
 </div>
 

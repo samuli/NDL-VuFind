@@ -212,6 +212,27 @@ $(document).ready(function() {
       </div>
       -->
 
+      <div id="nav" class="nav">
+        <div class="content">
+          <ul id="headerMenu" class="grid_18">
+            {include file="header-menu.$userLang.tpl"}
+          </ul>
+          <div class="lang">
+            {if is_array($allLangs) && count($allLangs) > 1}
+            <ul>
+              {foreach from=$allLangs key=langCode item=langName}
+                {if $userLang != $langCode}
+                  <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
+                    {translate text=$langName}</a>
+                  </li>
+                {/if}
+              {/foreach}
+            </ul>
+            {/if}
+          </div>
+        </div>
+      </div>
+
       <div id="header" class="header{if !$showTopSearchBox}-home{/if} {if $module!='Search'}header{$module}{/if} clearfix">
         <div class="header-inner">
           <div class="content">

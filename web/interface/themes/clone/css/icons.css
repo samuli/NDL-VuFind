@@ -37,7 +37,8 @@ a.clear_input,
 .checkedoutLoc, .checkedout:before,
 .holdPlace, .holdPlace:before,
 .currentTree, .hierarchyTreeLinkText,
-.selectionMapHelpIcon {
+.selectionMapHelpIcon,
+.menuSearch a span:after, .menuHelp a span:after, .menuLogin a span.loggedIn:after {
     background-image: url(../images/icons16-24px.png);
     background-repeat: no-repeat;
     background-position:0 0;
@@ -90,6 +91,13 @@ span.dynatree-drag-helper-img,
 }
 
 /*** Individual element background positions ***/
+
+/* Navi */
+
+.menuSearch a span:after, .menuHelp a span:after, .menuLogin a span.loggedIn:after {
+  background-position: -673px -3324px;
+}
+
 
 /* Common: Buttons */
 
