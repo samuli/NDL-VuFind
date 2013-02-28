@@ -1721,6 +1721,9 @@ div.sidegroup h4 {
 .sidegroup dl.collapsible.active dt {
     background:#4C4C4C;
 }
+.sidegroup dl.collapsible.active dd img {
+    display: none;
+}
 .sidegroup dd {
     padding:0 10px;
 }
