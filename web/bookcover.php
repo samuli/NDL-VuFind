@@ -270,6 +270,7 @@ function dieWithDefaultFailImage()
  */
 function processImageURL($url, $cache = true)
 {
+    global $configArray;
     global $localFile;  // this was initialized by fetchFromISBN()
 
     if ($image = @file_get_contents($url)) {
@@ -293,8 +294,8 @@ function processImageURL($url, $cache = true)
             return false;
         }
 
-        // Conversion needed -- do some normalization for non-JPEG images:
-        if ($type != IMAGETYPE_JPEG) {
+        // Conversion needed -- do some normalization for non-JPEG images, or resize:
+        if ($type != IMAGETYPE_JPEG || (isset($configArray['Content']['coverwidth']) && isset($configArray['Content']['coverheight']))) {
             // We no longer need the temp file:
             @unlink($tempFile);
 
@@ -307,14 +308,60 @@ function processImageURL($url, $cache = true)
             if (!($imageGD = @imagecreatefromstring($image))) {
                 return false;
             }
-            if (!@imagejpeg($imageGD, $finalFile)) {
-                return false;
+            
+            // Resize thumbnail if we have dimensions
+            if ($_GET['size'] == 'small'
+                && isset($configArray['Content']['coverwidth']) && isset($configArray['Content']['coverheight']) 
+            ) {
+                $reqWidth = $configArray['Content']['coverwidth'];
+                $reqHeight = $configArray['Content']['coverheight'];
+                if ($height > $reqHeight) {
+                    $reqHeight = $reqWidth * ($height / $width);
+                }
+                $imageGDResized = imagecreatetruecolor($reqWidth, $reqHeight);
+                if ($configArray['Content']['coverbackground']) {
+                    $bg = $configArray['Content']['coverbackground'];
+                    $background = imagecolorallocate(
+                        $imageGDResized, hexdec(substr($bg, 0, 2)),
+                        hexdec(substr($bg, 2, 2)), hexdec(substr($bg, 4, 2))
+                    ); 
+                } else {
+                    $background = imagecolorallocate($imageGDResized, 255, 255, 255);
+                }
+                imagefill($imageGDResized, 0, 0, $background);
+            
+                // If both dimensions are smaller than the new image, just copy to center. Otherwise resample to fit if necessary.
+                if ($width < $reqWidth && $height < $reqHeight) {
+                    $imgX = floor(($reqWidth - $width) / 2);                    
+                    $imgY = 0; // no centering here.. floor(($reqHeight - $height) / 2);                    
+                    imagecopy($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $width, $height);
+                    if (!@imagejpeg($imageGDResized, $finalFile)) {
+                        return false;
+                    }
+                } elseif ($width > $reqWidth || $height > $reqHeight) {
+                    $newWidth = $reqWidth;
+                    $newHeight = round($newWidth * ($height / $width));
+                    $imgX = 0;
+                    $imgY = round(($reqHeight - $newHeight) / 2);
+                    imagecopyresampled($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $newWidth, $newHeight, $width, $height);
+                    if (!@imagejpeg($imageGDResized, $finalFile)) {
+                        return false;
+                    }
+                } else {
+                    if (!@imagejpeg($imageGD, $finalFile)) {
+                        return false;
+                    }
+                }
+            } else {
+                if (!@imagejpeg($imageGD, $finalFile)) {
+                    return false;
+                }
             }
         } else {
             // If $tempFile is already a JPEG, let's store it in the cache.
             @rename($tempFile, $finalFile);
         }
-
+   
         // Display the image:
         header('Content-type: image/jpeg');
         readfile($finalFile);
@@ -420,7 +467,7 @@ function openlibrary()
         break;
     case 'small':
     default:
-        $size = 'S';
+        $size = 'M';
         break;
     }
 

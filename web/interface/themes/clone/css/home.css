@@ -3,7 +3,8 @@
 /* Header: Search Box */
 
 .header-home #searchFormHeader {
-    padding-top:290px;
+    clear: both;
+    padding-top: 20px;
 }
 
 /*** Header: Blurb */
@@ -212,7 +213,14 @@
 /* Section: Popular Searches & Map Search */
 
 .section#popular-map {
-    background:#def;
+    background:#fff;
+}
+
+.section#popular-map .content {
+    border-top: solid 6px #ddd;
+    padding-top: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 #popularSearches ul:first-child {

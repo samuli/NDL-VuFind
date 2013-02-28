@@ -20,6 +20,7 @@ body {
     width:100%;
 }
 .backgroundContainer {
+    background-image: url("../images/generic-bg.jpg");
     background-position: center 0;
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -37,10 +38,10 @@ body {
 }
 
 .ui-tabs-nav {
-    width:950px;
     position:relative;
     margin:0 auto !important;
     display: block;
+    padding:0 !important;
 }
 
 #header .header-inner {
@@ -70,6 +71,7 @@ body {
 }
 #main > .menu div[class*="grid"] {
     position:absolute;
+    z-index:10;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 only screen and (moz--min-device-pixel-ratio: 1.5),
@@ -287,12 +289,14 @@ div.sidegroup {
     color: #fff;
 }
 #logo {
-    background: url("../images/finna-logo_small.png") no-repeat scroll 0 center transparent;
+    background: url("../images/org_finnalogo_white.png") no-repeat scroll 0 center transparent;
     display: block;
     height: 59px;
-    margin-top:20px;
+    padding: 20px 0;
     float:left;
-    width: 248px;
+    width: 100%;
+    position: relative;
+    z-index: 50;
 }
 #headerMenu {
     float:left;
@@ -508,9 +512,8 @@ div.sidegroup {
     width: 258px;
     margin: 20px 20px 10px;
 }
-#searchFormHeader {
+#searchFormHeader #searchFormContainer {
     padding:10px 0 40px;
-    height: 50px;
 }
 
 .headerMetaLib .searchbox {
@@ -1039,6 +1042,7 @@ body > .ui-widget .button {
     width: 70px;
 }
 .advancedLink {
+    color: #fff;
     display: block;
     font-size: .923em;
     font-weight:bold;
@@ -1100,6 +1104,11 @@ div.dialogLoading {
 }
 .no-hits #topPubDateVis {
     display: none;
+}
+.no-hits .error {
+    background:none;
+    border:none;
+    color:#555;
 }
 .highlight {
     background: none;
@@ -1491,7 +1500,7 @@ fieldset.publishDateLimit .ui-slider {
 #resultList.checkedoutList {
     width: 960px;
 }
-.checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .profileInfo, .accounts table.accountList {
+.checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
     margin: 1.8em 0 1em 0;
 }
 .checkedoutList .iconlabel, .holdsList .iconlabel {
@@ -1499,7 +1508,6 @@ fieldset.publishDateLimit .ui-slider {
 }
 .profileInfo {
     line-height: 1.8em;
-    width: 452px;
 }
 
 table.profileGroup {
@@ -1643,7 +1651,7 @@ ul.recordSet {
     list-style-type: none;
 }
 ul.recordSet li.result {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 ul.recordSet li.result:hover {
@@ -1684,7 +1692,7 @@ ul.recordSet .resultColumn1 {
 }
 ul.recordSet .resultColumn2 {
     float: left;
-    margin-left: 10px;
+    margin-left: 15px;
 }
 #recordSet ul.recordSet .resultColumn2 > * {
     line-height: 16px;
@@ -1745,9 +1753,6 @@ ul.recordSet .resultClassification {
 .resultImage a {
     display: block;
 }
-.resultImage img {
-    width: 126px;
-}
 .resultImages {
     float:left;
     margin:0 10px 0 0;
@@ -1776,8 +1781,8 @@ ul.recordSet .resultClassification {
     text-decoration:none;
 }
 div.resultItemFormat {
-    margin: 10px auto 0 10px;
-    text-align: center;
+    margin: 2px 0;
+    text-align: left;
 }
 
 #authorList .authorbio {
@@ -1881,6 +1886,9 @@ div.sidegroup h4 {
 }
 .sidegroup dl.collapsible.active dt {
     background:#4C4C4C;
+}
+.sidegroup dl.collapsible.active dd img {
+    display: none;
 }
 .sidegroup dd {
     padding:0 10px;
@@ -2044,16 +2052,17 @@ dl.narrowList a {
     background:#b3e3e9;
 }
 .main .contentHeader h1,
-.main .browseHeader h1 {
+.main .browseHeader h1,
+.main .advSearchHeader h1 {
     margin:0 0 0 5px;
     padding:0;
 }
 .main .contentHeader.loginContentHeader,
 .main .contentHeader.loginContentHeader h1 {
-    background: #b0e9db;
+    background: #abc;
 }
 .main .contentHeader.noResultHeader {
-    background: #B3E3E9;
+    background: #abc;
 }
 .module-Content .contentSection {
     overflow:auto;
@@ -2363,6 +2372,10 @@ ul.recordSet .addToFavLink a {
     margin-right: 2px;
 }
 
+.myResearch .icon {
+    padding: 2px 2px 1px 20px;
+}
+
 /***** Results page blocks ****/
 
 .resultTerms {
@@ -2395,31 +2408,32 @@ ul.recordSet .addToFavLink a {
 /* page titles */
 .resultLinks,
 /* module-Search h2.account is actually under user account */
-.module-Search h2.account,
-.module-MyResearch h2.account,
-.module-MyResearch h1,
+.myresearchHeader h1,
+.myresearchHeader h2,
 .module-Cart h2,
-#advSearchForm h1,
 .module-Collection #collectionHeader {
     margin: 0;
     padding: 0;
 }
-.module-Search h2.account,
-.module-MyResearch h2.account,
-.module-MyResearch h1,
-.module-Cart h2,
+.myresearchHeader,
 .resultLinks,
 .advSearchHeader,
 .resultTerms,
 .module-Collection #collectionHeader {
     padding: 22px 0 22px;
+}
+.module-Search h2.account,
+.module-Cart h2,
+.resultLinks,
+.advSearchHeader,
+.resultTerms,
+.module-Collection #collectionHeader {
     background: #ddd;
 }
 .module-Search h2.account,
-.module-MyResearch h2.account,
-.module-MyResearch h1,
+.myresearchHeader,
 .module-Cart h2 {
-    background: #b0e9db;
+    background: #abc;
 }
 
 .resultTerms .content {
@@ -2902,7 +2916,7 @@ div.recordsubcontent .call-slip-form form > p  {
 .recordcover {
     padding: 3px;
     margin: 0 auto;
-    max-width: 210px;
+    max-width: 150px;
 }
 .holdsMessage {
     margin-top: 1em;
@@ -3557,7 +3571,7 @@ p.citationText {
     line-height: 2em;
     padding-left: 30px;
     position: absolute;
-    right: 0;
+    right: 5px;
     font-weight:bold;
     top: 3px;
 }
@@ -3608,10 +3622,21 @@ p.citationText {
     float: left;
 }
 .myResearch .dueDate {
+    clear: both;
     float: left;
+    margin: 0 0 0 126px;
     width: 284px;
-    margin: 0 0 0 12px;
 }
+
+.myResearch.holdsList .resultColumn2,
+.myResearch.holdsList .dueDate,
+.myResearch.checkedoutList .resultColumn2,
+.myResearch.checkedoutList .dueDate,
+.myResearch .favoritesList .resultColumn2,
+.myResearch .favoritesList .dueDate {
+    max-width:80%;
+}
+
 .myResearchMenu {
     margin-top: 0;
     padding: 0;
@@ -4472,9 +4497,11 @@ input#coordinates {
     border: 1px solid #ccc;
     display: block;
     float: right;
-    padding: 6px 10px;
-    width: 480px;
     position:relative;
+}
+span#selectionMapHelp {
+    display: block;
+    padding: 5px 14px;
 }
 .selectionMapHelpIcon {
     height: 16px;

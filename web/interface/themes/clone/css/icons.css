@@ -116,7 +116,7 @@ span.dynatree-drag-helper-img,
 .iconlabel.formatphysicalobject {
     background-position: -46px -218px;
 }
- .iconlabel.formatmap {
+.iconlabel.formatmap {
     background-position: -47px -161px;
 }
 .iconlabel.formatbook {
@@ -484,6 +484,51 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 }
 .dataTables_paginate .paginate_disabled_next:after {
     background-position:-1292px -3368px;
+}
+
+/* Myresearch */
+
+/* Front page: search suggestion icons */
+
+.myResearch .formatdocument {
+    background-position: -45px -385px;
+}
+.myResearch .formatphysicalobject {
+    background-position: -46px -218px;
+}
+ .myResearch .formatmap {
+    background-position: -47px -161px;
+}
+.myResearch .formatbook {
+    background-position: -46px -47px;
+}
+.myResearch .formatimage {
+    background-position: -47px -495px;
+}
+.myResearch .formatjournal {
+    background-position: -47px -104px;
+}
+ .myResearch .formatmusicalscore {
+    background-position: -47px -330px;
+}
+.myResearch .formatthesis {
+    background-position: -45px -720px;
+}
+.myResearch .formatworkofart {
+    background-position: -46px -663px;
+}
+ .myResearch .formatdatabase {
+    background-position: -47px -275px;
+}
+.myResearch .formatvideo {
+    background-position: -46px -606px;
+}
+.myResearch .formatsound,
+.myResearch .formatsoundrecording {
+    background-position: -46px -551px;
+}
+.myResearch .formatother {
+    background-position: -47px -777px;
 }
 
 /*** Webkit hacks ***/

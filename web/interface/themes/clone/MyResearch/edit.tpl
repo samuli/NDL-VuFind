@@ -1,7 +1,11 @@
 <!-- START of: MyResearch/edit.tpl -->
 
 <div class="record">
-  <h1><span class="content">{$record.title|escape:"html"}</span></h1>
+  <div class="myresearchHeader">
+    <div class="content">
+      <div class="grid_24"><h1>{$record.title|escape:"html"}</h1></div>
+    </div>
+  </div>
 
   <div class="content">
   <form method="post" name="editForm" action="">

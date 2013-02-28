@@ -9,7 +9,7 @@
 {/if}
 <div class="myResearch profile{if $sidebarOnLeft} last{/if}">
   <div class="content">
-    <div class="resultHead">
+    <div class="resultHead grid_24">
   {if $userMsg}
       <p class="success">{translate text=$userMsg}</p>
   {/if}
@@ -17,9 +17,10 @@
       <p class="error">{translate text=$userError}</p>
   {/if}
     </div>
-  <span class="hefty">{translate text='Your Profile'}</span>
+  
     <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">
-    <div class="profileInfo">
+    <div class="profileInfo grid_12 static">
+      <h3>{translate text='Your Profile'}</h3>
       <table class="profileGroup">
       <caption>{translate text='Local Settings'}</caption>
       <tr>

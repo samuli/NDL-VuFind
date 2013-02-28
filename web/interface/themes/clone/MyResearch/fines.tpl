@@ -4,6 +4,7 @@
 
 <div class="myResearch finesList{if $sidebarOnLeft} last{/if}">
   <div class="content">
+    <div class="grid_24">
   {if $user->cat_username}
     <table class="datagrid fines" summary="{translate text='Your Fines'}">
       <caption>{translate text='Your Fines'}</caption>
@@ -49,6 +50,7 @@
     {include file="MyResearch/catalog-login.tpl"}
   {/if}
   </div>
+</div>
 </div>
 <div class="clear"></div>
 

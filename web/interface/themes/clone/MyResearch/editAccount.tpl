@@ -6,6 +6,7 @@
 {translate text="Add a Library Card"}
 {/if}</span></h1>
 <div class="content">
+<div class="grid_24">
 {if $errorMsg}
   <div class="messages">
     {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
@@ -38,5 +39,5 @@
   <input class="button buttonFinna" type="submit" name="submit" value="{translate text="Save"}"/>
 </form>
 </div>
-
+</div>
 <!-- END of: MyResearch/editList.tpl -->

@@ -213,6 +213,8 @@ function dieWithDefaultFailImage()
  */
 function processImageURL($url, $localFile, $size, $cache = true)
 {
+    global $configArray;
+    
     if ($image = @file_get_contents($url)) {
         // Figure out file paths -- $tempFile will be used to store the downloaded
         // image for analysis.  $finalFile will be used for long-term storage if
@@ -237,7 +239,8 @@ function processImageURL($url, $localFile, $size, $cache = true)
         // Convert to JPEG and downsize the image if necessary.
         switch ($size) {
         case 'small': 
-            $maxWidth = $maxHeight = 200; 
+            $maxWidth = isset($configArray['Content']['coverwidth']) ? $configArray['Content']['coverwidth'] : 200;
+            $maxHeight = 400; 
             break;
         case 'medium': 
             $maxWidth = 350; $maxHeight = 250; 
@@ -259,7 +262,7 @@ function processImageURL($url, $localFile, $size, $cache = true)
             }
             
             $ratio = $width / $height;
-            if ($width > $height) {
+            if ($width > $height || $size == 'small') {
                 $newWidth = $maxWidth;
                 $newHeight = $newWidth / $ratio;
             } else {
