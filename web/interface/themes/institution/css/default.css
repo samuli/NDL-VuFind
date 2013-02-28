@@ -150,11 +150,11 @@ div.sidegroup {
 /*** Header ***/
 
 #logo {
-    background: url("../images/finna_logo_small.png") no-repeat scroll center center transparent;
-    height: 60px;
-    width: 190px;
-    margin: 20px;
+    background: url("../images/finna-logo_small.png") no-repeat scroll center center transparent;
     display: block;
+    height: 60px;
+    margin: 20px 18px;
+    width: 190px;
 }
 #logoMetaLib {
     background: url("../images/finna-ml-logo_small.png") no-repeat scroll center center transparent;
