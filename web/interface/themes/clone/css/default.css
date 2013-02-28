@@ -1890,10 +1890,10 @@ dl.narrowList a {
 }
 .main .contentHeader.loginContentHeader,
 .main .contentHeader.loginContentHeader h1 {
-    background: #b0e9db;
+    background: #abc;
 }
 .main .contentHeader.noResultHeader {
-    background: #B3E3E9;
+    background: #abc;
 }
 .module-Content .contentSection {
     overflow:auto;
@@ -2239,30 +2239,32 @@ ul.recordSet .addToFavLink a {
 /* page titles */
 .resultLinks,
 /* module-Search h2.account is actually under user account */
-.module-Search h2.account,
-.module-MyResearch h2.account,
-.module-MyResearch h1,
+.myresearchHeader h1,
+.myresearchHeader h2,
 .module-Cart h2,
 .module-Collection #collectionHeader {
     margin: 0;
     padding: 0;
 }
-.module-Search h2.account,
-.module-MyResearch h2.account,
-.module-MyResearch h1,
-.module-Cart h2,
+.myresearchHeader,
 .resultLinks,
 .advSearchHeader,
 .resultTerms,
 .module-Collection #collectionHeader {
     padding: 22px 0 22px;
+}
+.module-Search h2.account,
+.module-Cart h2,
+.resultLinks,
+.advSearchHeader,
+.resultTerms,
+.module-Collection #collectionHeader {
     background: #ddd;
 }
 .module-Search h2.account,
-.module-MyResearch h2.account,
-.module-MyResearch h1,
+.myresearchHeader,
 .module-Cart h2 {
-    background: #b0e9db;
+    background: #abc;
 }
 
 .resultTerms .content {

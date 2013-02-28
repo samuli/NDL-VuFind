@@ -1,6 +1,11 @@
 <!-- START of: MyResearch/editList.tpl -->
 
-<h1><span class="content">{translate text="edit_list"}</span></h1>
+<div class="myresearchHeader">
+  <div class="content">
+    <div class="grid_24"><h1>{translate text="edit_list"}</h1></div>
+  </div>
+</div>
+
 <div class="content">
 <div class="grid_24">
 {if $infoMsg || $errorMsg}
