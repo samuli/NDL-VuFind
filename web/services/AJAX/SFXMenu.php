@@ -114,6 +114,23 @@ EOF;
             echo "$script\n";
         }
         echo <<<EOF
+<script type="text/javascript">
+function openWindow(obj, form_name)
+{
+  var form = $("form[name=" + form_name + "]");
+  var url = form.attr('action');
+  var params = '';
+  form.find("input[type=hidden]").each(function() {
+    if (params) {
+      params += '&';
+    }
+    params += encodeURIComponent($(this).attr('name')) + '=' + encodeURIComponent($(this).attr('value'));
+  });
+  var win = window.open();
+  win.location = url + '?' + params;
+}
+</script>        
+            
 </head>
 <body>
 EOF;
