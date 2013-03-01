@@ -23,10 +23,9 @@
 }
 
 #footer a:focus, #footer a:hover {
-    color: #b2e9db;
-    text-decoration: none;
+    color: #f4f4f4;
+    text-decoration: underline;
 }
-
 
 #footerSeparator {
     clear:both;

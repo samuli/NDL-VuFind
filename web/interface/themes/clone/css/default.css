@@ -123,11 +123,11 @@ ul {
 
 /*** Links ***/
 a, .ui-widget-content a {
-    color: #238;
+    color: #00A3B5;
     text-decoration: none;
 }
 a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
-    color: #127;
+    color:#00A3B5;
     text-decoration: underline;
 }
 
@@ -287,6 +287,9 @@ div.sidegroup {
 #headerBottom {
     position:relative;
     color: #fff;
+}
+#headerBottom .grid_8 {
+    position:absolute;
 }
 #logo {
     background: url("../images/org_finnalogo_white.png") no-repeat scroll 0 center transparent;
