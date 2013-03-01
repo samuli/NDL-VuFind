@@ -21,6 +21,7 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover,
 a.clear_input,
 .dateVisClear a,
 .dropdown dt a:after,
+.dropdown.catalogAccount dt a:after,
 #advancedSearchWrapper .searchButton,
 #holdingstab,
 #componentstab,
@@ -38,7 +39,8 @@ a.clear_input,
 .holdPlace, .holdPlace:before,
 .currentTree, .hierarchyTreeLinkText,
 .selectionMapHelpIcon,
-.menuSearch a span:after, .menuHelp a span:after, .menuLogin a span.loggedIn:after {
+.menuSearch a span:after, .menuHelp a span:after, .menuLogin a span.loggedIn:after,
+.menuSearch a:hover span:after, .menuHelp a:hover span:after, .menuLogin a:hover span.loggedIn:after{
     background-image: url(../images/icons16-24px.png);
     background-repeat: no-repeat;
     background-position:0 0;
@@ -95,9 +97,11 @@ span.dynatree-drag-helper-img,
 /* Navi */
 
 .menuSearch a span:after, .menuHelp a span:after, .menuLogin a span.loggedIn:after {
-  background-position: -673px -3324px;
+  background-position: -674px -3573px;
 }
-
+.menuSearch a:hover span:after, .menuHelp a:hover span:after, .menuLogin a:hover span.loggedIn:after {
+  background-position: -2201px -3573px;
+}
 
 /* Common: Buttons */
 
@@ -107,7 +111,9 @@ span.dynatree-drag-helper-img,
 .dropdown dt a:after {
     background-position: -673px -3324px;
 }
-
+.dropdown.catalogAccount dt a:after {
+    background-position: -674px -3573px;
+}
 /* Front page: search suggestion icons */
 
 .iconlabel.formatdocument {

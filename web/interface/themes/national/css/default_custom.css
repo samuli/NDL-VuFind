@@ -35,16 +35,16 @@ a, .ui-widget-content a {
     border-color: #eee;
 }
 #headerMenu ul li span {
-    color: #eee;
+    color: #444;
 }
 #headerMenu ul li span:first-child {
-    color: #fff;
+    color: #444;
 }
 #headerMenu li a:hover span, #headerMenu li a:focus span {
-    color: #fff;
+    color: #444;
 }
 #headerMenu ul.subMenu li {
-    border-color: #eee;
+    border-color: #777;
 }
 .advancedLink,
 .advancedLink:hover {
