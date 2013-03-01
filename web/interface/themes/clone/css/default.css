@@ -297,6 +297,7 @@ div.sidegroup {
     width: 100%;
     position: relative;
     z-index: 50;
+    margin-top: 15px;
 }
 #headerMenu {
     float:left;
