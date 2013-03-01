@@ -8,6 +8,10 @@
     .feedbackButton {
         position:absolute;
     }
+    .feedbackButton.fixed {
+        position:absolute;
+        top:40px;
+    }
     
     #headerTop .grid_12 {
         width: 440px;

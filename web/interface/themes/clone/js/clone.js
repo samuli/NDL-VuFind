@@ -7,6 +7,7 @@ $(document).ready(function() {
     initContentMenu();
     initSidebarFacets();
     initDateVis();
+    initFeedbackScroll();
     initCustomEyeCandy();
 });
 
@@ -167,6 +168,19 @@ function initSidebarFacets() {
         }
         
     });
+}
+
+// Scroll the feedback button 
+
+function initFeedbackScroll() {
+   var navHeight = $('#nav').height();
+   var feedbackButton = $('a.feedbackButton');
+   $(window).scroll(function () { 
+      if ($(document).scrollTop() >= navHeight) {
+          feedbackButton.addClass('fixed');
+      }
+      else feedbackButton.removeClass('fixed');
+   });
 }
 
 // Custom jQuery effects

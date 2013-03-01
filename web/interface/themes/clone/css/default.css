@@ -557,6 +557,10 @@ div.sidegroup {
 .feedbackButton:hover {
     color:#fff;
 }
+.feedbackButton.fixed {
+    position:fixed;
+    top:0;
+}
 /*** Page navigation links ***/
 
 .navigationMenu {
