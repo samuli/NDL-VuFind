@@ -396,7 +396,7 @@ authors         = Wikipedia
 ; You can select from Google, OpenLibrary, HathiTrust.  You should consult
 ; http://code.google.com/apis/books/branding.html before using Google Book Search.
 ;previews       = Google,OpenLibrary,HathiTrust
-previews       = OpenLibrary,HathiTrust
+;previews       = OpenLibrary,HathiTrust
 
 ; Possible HathiRights options = pd,ic,opb,orph,und,umall,world,nobody,pdus,cc-by,cc-by-nd,
 ; cc-by-nc-nd,cc-by-nc,cc-by-nc-sa,cc-by-sa,orphcand,cc-zero,und-world

@@ -62,6 +62,31 @@ class SFXMenu extends Action
         global $interface;
         global $configArray;
 
+        if (isset($_REQUEST['proxyitem'])) {
+            $url = $configArray['OpenURL']['url'];
+            // Strip main directory
+            $url = substr($url, 0, strrpos($url, '/'));
+            $url .= $_REQUEST['proxyitem'];
+            $request = new Proxy_Request();
+            $request->setMethod(HTTP_REQUEST_METHOD_GET);
+            $request->setURL($url);
+            $request->addHeader('X-Forwarded-For', $_SERVER['REMOTE_ADDR']);
+            if (isset($configArray['OpenURL']['language'][$interface->lang])) {
+                $request->addCookie('user-Profile', '%2B%2B%2B' . $configArray['OpenURL']['language'][$interface->lang]);
+            }
+            $result = $request->sendRequest();
+            if (PEAR::isError($result)) {
+                die($result->getMessage() . "\n");
+            }
+            foreach ($request->getResponseHeader() as $name => $value) {
+                if (strcasecmp($name, 'content-type') == 0 || strcasecmp($name, 'content-length') == 0) {
+                    header("$name: $value");
+                }
+            }
+            echo $request->getResponseBody();
+            exit;
+        }
+        
         header('Content-type: text/html; charset=UTF-8');
         header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
@@ -73,6 +98,7 @@ class SFXMenu extends Action
         
         $url = $configArray['OpenURL']['url'];
         $baseURL = substr($url, 0, strrpos($url, '/'));
+        $proxyURL = $configArray['Site']['url'] . '/AJAX/SFXMenu?action=SFXMenu&amp;proxyitem=';
         
         if (substr($_REQUEST['openurl'], 0, 1) != '?') {
             $url .= '?';
@@ -103,17 +129,36 @@ EOF;
         // Get style sheets and scripts
         foreach ($html->find('head link') as $link) {
             if (substr($link->href, 0, 1) == '/') {
-                $link->href = $baseURL . $link->href;
+                $link->href = $proxyURL . urlencode($link->href);
+            } elseif (strcasecmp(substr($link->href, 0, strlen($baseURL)), $baseURL) == 0) {
+                $link->href = $proxyURL . urlencode(substr($link->href, strlen($baseURL)));
             }
             echo "$link\n";
         }
         foreach ($html->find('head script') as $script) {
             if (substr($script->src, 0, 1) == '/') {
-                $script->src = $baseURL . $script->src;
+                $script->src = $proxyURL . urlencode($script->src);
             }
             echo "$script\n";
         }
         echo <<<EOF
+<script type="text/javascript">
+function openWindow(obj, form_name)
+{
+  var form = $("form[name=" + form_name + "]");
+  var url = form.attr('action');
+  var params = '';
+  form.find("input[type=hidden]").each(function() {
+    if (params) {
+      params += '&';
+    }
+    params += encodeURIComponent($(this).attr('name')) + '=' + encodeURIComponent($(this).attr('value'));
+  });
+  var win = window.open();
+  win.location = url + '?' + params;
+}
+</script>        
+            
 </head>
 <body>
 EOF;
@@ -127,17 +172,18 @@ EOF;
             // We have some actual items to display
             $table = $container->parent();
             
-            $update = array(
-                'img' => 'src',
-                'form' => 'action'
-            );
-            foreach ($update as $elemName => $attrName) {
-                foreach ($table->find($elemName) as $elem) {
-                    if (substr($elem->$attrName, 0, 1) == '/') {
-                        $elem->$attrName = $baseURL . $elem->$attrName;
-                    }
+            foreach ($table->find('img') as $img) {
+                if (substr($img->src, 0, 1) == '/') {
+                    $img->src = $proxyURL . urlencode($img->src);
                 }
             }
+
+            foreach ($table->find('form') as $form) {
+                if (substr($form->action, 0, 1) == '/') {
+                    $form->action = $baseURL . $form->action;
+                }
+            }
+            
             echo $table;
         }
         

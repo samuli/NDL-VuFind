@@ -6,7 +6,7 @@
         {foreach from=$electronic item=link}
           <li>
             {if $link.href}
-              <a class="availableLoc" href="{$link.href|escape}" title="{$link.service_type|escape}">{$link.title|escape}</a> {$link.coverage|escape}
+              <a class="availableLoc" href="{$link.href|escape}" title="{$link.service_type|escape}" target="_blank">{$link.title|escape}</a> {$link.coverage|escape}
             {else}
               {$link.title|escape} {$link.coverage|escape}
             {/if}
@@ -22,7 +22,7 @@
         {foreach from=$print item=link}
           <li>
             {if $link.href}
-              <a href="{$link.href|escape}" title="{$link.service_type|escape}">{$link.title|escape}</a> {$link.coverage|escape}
+              <a href="{$link.href|escape}" title="{$link.service_type|escape}" target="_blank">{$link.title|escape}</a> {$link.coverage|escape}
             {else}
               {$link.title|escape} {$link.coverage|escape}
             {/if}
@@ -39,7 +39,7 @@
         {foreach from=$services item=link}
           {if $link.href}
             <li>
-              <a href="{$link.href|escape}" title="{$link.service_type|escape}">{$link.title|escape}</a>
+              <a href="{$link.href|escape}" title="{$link.service_type|escape}" target="_blank">{$link.title|escape}</a>
             </li>
           {/if}
         {/foreach}
