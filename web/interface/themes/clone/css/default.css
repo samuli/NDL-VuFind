@@ -2065,11 +2065,7 @@ dl.narrowList a {
     margin:0 0 0 5px;
     padding:0;
 }
-.main .contentHeader.loginContentHeader,
-.main .contentHeader.loginContentHeader h1 {
-    background: #abc;
-}
-.main .contentHeader.noResultHeader {
+.main .contentHeader {
     background: #abc;
 }
 .module-Content .contentSection {
