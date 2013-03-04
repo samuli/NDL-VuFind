@@ -20,7 +20,6 @@ body {
     width:100%;
 }
 .backgroundContainer {
-    background-image: url("../images/generic-bg.jpg");
     background-position: center 0;
     background-repeat: no-repeat;
     background-size: 100% auto;
