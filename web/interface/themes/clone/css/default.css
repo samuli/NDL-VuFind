@@ -419,11 +419,11 @@ div.sidegroup {
 
 #headerMenu ul.subNav li, #headerMenu ul.subNav li:hover,
 #headerMenu ul.subNav li span, #headerMenu ul.subNav li span:hover {
-  color: #777777;
+  color: #444444;
 }
 #headerMenu ul.subNav li span:first-child {
     color: #444444;
-    font-weight: normal;
+    font-weight: bold;
     margin: 0;
     padding: 0 0 3px;
 }
@@ -604,7 +604,7 @@ div.sidegroup {
     margin-top:5px;
 }
 #headerMenu li .dropdown.catalogAccount dt a {
-    font-size: 0.8em;
+    font-size: 0.9em;
     padding: 9px 12px 10px;
 }
 #headerMenu li .dropdown.catalogAccount span.value {
@@ -621,7 +621,7 @@ div.sidegroup {
     min-height:0;
     padding:0;
     margin:0;
-    font-size:0.8em;
+    font-size:0.85em;
     border:0;
     width:auto;
 }
@@ -631,7 +631,7 @@ div.sidegroup {
 }
 
 #headerMenu li #styled_catalogAccount0 dt a {
-    padding: 9px 10px 8px;
+    padding: 8px 8px 7px 10px;
 }
 
 /*** Search Box ***/    /* also note home.css for Home Page */
@@ -2068,11 +2068,7 @@ dl.narrowList a {
     margin:0 0 0 5px;
     padding:0;
 }
-.main .contentHeader.loginContentHeader,
-.main .contentHeader.loginContentHeader h1 {
-    background: #abc;
-}
-.main .contentHeader.noResultHeader {
+.main .contentHeader {
     background: #abc;
 }
 .module-Content .contentSection {
@@ -4738,4 +4734,7 @@ form#feedbackForm label {
         padding-top: 2px;
     }
 
+    #headerMenu .menuLogin {
+        padding-top: 0px;
+    }
 } 
