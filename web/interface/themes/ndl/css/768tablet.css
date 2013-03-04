@@ -1,9 +1,17 @@
 @media only screen and (max-width: 1020px) {
     
-    /* Header */
+    /* General */
     body,html {
         overflow-x:hidden;
     }
+    
+    .backgroundContainer {
+        width:100%;
+        margin:0 auto;
+        background-size: auto 134%;
+    }
+    
+    /*  Header */
     
     .feedbackButton {
         position:absolute;
@@ -15,6 +23,10 @@
     
     #headerTop .grid_12 {
         width: 440px;
+    }
+    
+    .header-home #searchFormHeader {
+        padding-top: 20px;
     }
     
     #headerTop .grid_8 {
@@ -114,10 +126,8 @@
         max-width:110px;
     }
     
-    .backgroundContainer {
-        width:100%;
-        margin:0 auto;
-        background-size: auto 134%;
+    .sidegroup .dynatree-title {
+        white-space:normal;
     }
     
     /* Advanced seach */
