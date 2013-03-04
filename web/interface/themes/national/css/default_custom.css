@@ -46,10 +46,6 @@ a, .ui-widget-content a {
 #headerMenu ul.subMenu li {
     border-color: #eee;
 }
-.advancedLink,
-.advancedLink:hover {
-    color:#fff;
-}
 
 div.breadcrumbinner a, div.breadcrumbinner em, div.breadcrumbinner span, div.breadcrumbinner form,
 div.breadcrumbs a, div.breadcrumbs li {

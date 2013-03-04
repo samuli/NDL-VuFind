@@ -290,6 +290,7 @@ div.sidegroup {
 }
 #headerBottom .grid_8 {
     position:absolute;
+    right: 0;
 }
 #logo {
     background: url("../images/org_finnalogo_white.png") no-repeat scroll 0 center transparent;
@@ -1049,7 +1050,7 @@ body > .ui-widget .button {
     text-indent: -9999px;
     width: 70px;
 }
-.advancedLink {
+a.advancedLink {
     color: #fff;
     display: block;
     font-size: .923em;
@@ -1059,8 +1060,10 @@ body > .ui-widget .button {
     margin: 10px 0 0 0px;
     padding-right: 50px;
 }
-.advancedLink:hover {
+a.advancedLink:hover, a.advancedLink:focus  {
+    color:#fff;
 }
+
 .metalibLink, .showSearchHelp {
     display:none; /* Hide links in the national theme */
 }
