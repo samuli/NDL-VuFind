@@ -2972,6 +2972,7 @@ div.recordsubcontent .call-slip-form form > p  {
     color:#666;
     padding: 0.5em 15px 0 0;
     vertical-align: top;
+    width:100px;
 }
 .citation tr {
     border-collapse: collapse;
