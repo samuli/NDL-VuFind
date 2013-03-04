@@ -167,12 +167,13 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     color:#fff;
 }
 
-#headerMenu li a:hover span:first-child,
-#headerMenu li a:focus span:first-child {
+#headerMenu li a:hover span:first-child {
     color: #fdf07f;
     text-decoration: none;
 }
-
+#headerMenu li a:focus span:first-child {
+    color:#fff;
+}
 #headerMenu li a:hover span, #headerMenu li a:focus span {
     color: #fff;
     text-decoration: none;

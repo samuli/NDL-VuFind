@@ -13,45 +13,27 @@ $(document).ready(function() {
 
 // Header menu
 function initHeaderMenu() {
-    function headerOver() {
-        var timeoutId = $('#headerTop').data('timeoutId');
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-        var subMenu = $(this).children('ul');
-        var subMenuHeight = subMenu.height();
-        var menuHeight;
-        if (subMenuHeight == 0 || typeof subMenuHeight === 'undefined') {
-            menuHeight = 95;
-        } else {
-            menuHeight = subMenuHeight + 105;  // header + bottom padding
-        }
-        $('#headerTop').stop().animate({height: menuHeight}, 300);
-        $('#headerMenu > li > ul').each(function(index, element) {
-            if (!$(element).is(subMenu)) {
-                $(element).stop(true, true).hide();
-            }
-        });
-        subMenu.stop(true, true);
-        if (!subMenu.is(':visible')) {
-            subMenu.delay(50).fadeIn(50);
-        }
-    };
-   
-    function headerOut(e) {
-        var subMenu = $('#headerMenu > li > ul');
-        $('#headerTop').data('timeoutId', setTimeout(function() {
-            $('#headerTop').stop().animate({height: 95}, 300);
-            subMenu.stop(true, true).fadeOut(50);
-        }, 300));
-    };
+    var headerItem = $('#headerMenu > li');
 
-    $('#headerMenu > li').mouseenter(headerOver);
-    $('#headerMenu').mouseleave(headerOut);
+    headerItem.mouseenter(headerOver);
+    headerItem.mouseleave(headerOut);
     $('#headerMenu > li > a[href="#"]').click(function() {
+        $(this).blur();
         return false;
     });
-    
+
+    function headerOver() {
+        var subMenu = $(this).children('.subNav');
+        if (subMenu.length > 0) {
+            $('#headerMenu > li > ul').stop(true, true).fadeOut(50);
+            subMenu.stop(true, false).fadeIn(30);
+        }
+    };
+
+    function headerOut() {
+        var subMenu = $('#headerMenu > li > ul');
+        subMenu.stop(true, false).delay(500).fadeOut(50);
+    };
 }
 
 // Helper function: visibility toggler
