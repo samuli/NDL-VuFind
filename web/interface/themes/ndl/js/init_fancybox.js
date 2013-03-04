@@ -7,8 +7,9 @@ function launchFancybox(el) {
     hrefs.push($(el).attr('href'));
     var group = $(el).attr('rel');
     $('a[rel="'+group+'"]').each(function(){
-        if ($.inArray($(this).attr('href'), hrefs) === -1) {
-            hrefs.push($(this).attr('href'));
+        var href = $(this).attr('href').replace('&index=0', '');
+        if ($.inArray(href, hrefs) === -1) {
+            hrefs.push(href);
         }
     });
     $.fancybox.open(hrefs, { type: 'image', nextEffect: 'fade', prevEffect: 'fade' } );
