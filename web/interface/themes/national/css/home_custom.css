@@ -1,5 +1,9 @@
 /*** Front page ***/
 
+#logo {
+    height: 59px;
+}
+
 /*** Header: Blurb */
 
 #blurb {

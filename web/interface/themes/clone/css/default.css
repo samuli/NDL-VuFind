@@ -13,7 +13,7 @@ NOTE! Layout information is outdated.
  
 body {
     margin:0;
-    background: #abc;
+    background: #4d4d4d;
     padding: 0;
     color: rgb(70,70,70);
     -webkit-text-size-adjust: 100%;
@@ -295,7 +295,7 @@ div.sidegroup {
 #logo {
     background: url("../images/org_finnalogo_white.png") no-repeat scroll 0 center transparent;
     display: block;
-    height: 59px;
+    height: 75px;
     padding: 20px 0;
     float:left;
     width: 100%;
