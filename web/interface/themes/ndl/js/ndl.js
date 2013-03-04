@@ -1,5 +1,5 @@
 /**
- * Initialize Clone theme specific functions
+ * Initialize NDL theme specific functions
  */
 
 $(document).ready(function() {

@@ -1,1 +1,1 @@
-<span class="statusUnknown">{translate text="Check Holdings for availability information"}</span>
+<span class="unknown">{translate text="status_unknown_message"}</span>

@@ -1,1 +1,0 @@
-<span class="referenceDesk">{translate text="Reference Desk"}</span>
