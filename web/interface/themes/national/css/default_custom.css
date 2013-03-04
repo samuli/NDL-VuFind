@@ -62,12 +62,12 @@ div.breadcrumbs a, div.breadcrumbs li {
 .module-MyResearch h1,
 .module-Cart h2,
 .advSearchHeader,
-.resultTerms,
 .myresearchHeader,
 .module-Collection #collectionHeader {
     background: #b0e9db;
 }
 
+.resultLinks,
 .resultTerms {
      background:#B3E3E9;
 }
