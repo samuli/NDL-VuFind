@@ -61,13 +61,17 @@ div.breadcrumbs a, div.breadcrumbs li {
 .module-MyResearch h2.account,
 .module-MyResearch h1,
 .module-Cart h2,
-.resultLinks,
 .advSearchHeader,
 .resultTerms,
 .myresearchHeader,
 .module-Collection #collectionHeader {
     background: #b0e9db;
 }
+
+.resultTerms {
+     background:#B3E3E9;
+}
+
 .main .contentHeader,
 .main .browseHeader {
     background:#f3ec7a;
