@@ -1,15 +1,89 @@
-/* Logo image on search results, overwritten by admin panel */
-#logo {
-    background: url("../images/finna-logo_small.png") no-repeat scroll center center transparent;
-    display: block;
-    height: 60px;
-    margin: 20px 18px;
-    width: 190px;
+body {
+    background: #4D4D4D;
 }
-#logoHeader {
-    float: left;
+a, .ui-widget-content a {
+    color: #00a3b5;
 }
-/* Logo background, overwritten by admin panel */
-.header {
-    background-color: #f3f3f3;
+#header .header-inner {
+    background: url("../images/header_top_gradient.png") repeat-x scroll top left transparent;
+}
+#header, #header.header-home {
+    background: url("../images/header_bottom_gradient.png") repeat-x scroll bottom left transparent;
+}
+.menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a {
+    color: #fff;
+}
+#headerSeparator {
+    border-color: #fff;
+}
+.menuLogin {
+    border-color: #eee;
+}
+
+.lang a {
+    color: #fff;
+}
+#header {
+    color:#fff;
+}
+#header #logo {
+    background-image: url("../images/finna_logos_white.png");
+    background-position:  -20px -20px;
+    padding: 9px 0;
+}
+#header .lang li {
+    border-color: #eee;
+}
+#headerMenu ul li span {
+    color: #444;
+}
+#headerMenu ul li span:first-child {
+    color: #444;
+}
+#headerMenu li a:hover span, #headerMenu li a:focus span {
+    color: #444;
+}
+#headerMenu ul.subMenu li {
+    border-color: #777;
+}
+
+div.breadcrumbinner a, div.breadcrumbinner em, div.breadcrumbinner span, div.breadcrumbinner form,
+div.breadcrumbs a, div.breadcrumbs li {
+    color: #ffffff;
+}
+
+.dropdown dt a,
+.buttonFinna {
+    background-color: #00a3b5;
+}
+.main .contentHeader.loginContentHeader,
+.module-Search h2.account,
+.module-MyResearch h2.account,
+.module-MyResearch h1,
+.module-Cart h2,
+.advSearchHeader,
+.myresearchHeader,
+.module-Collection #collectionHeader {
+    background: #b0e9db;
+}
+
+.resultLinks,
+.resultTerms {
+     background:#B3E3E9;
+}
+
+.main .contentHeader,
+.main .browseHeader {
+    background:#f3ec7a;
+}
+
+.resultListContainer div.sidegroup h4 {
+    background-color: #00A3B5;
+    color: #FFFFFF;
+}
+span.dynatree-node a:hover {
+    color:#00A3B5;
+}
+span.dynatree-node a {
+    color:#00A3B5;
 }

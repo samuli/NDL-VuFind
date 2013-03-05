@@ -1,0 +1,303 @@
+/*** Front page ***/
+
+/* Header: Search Box */
+
+.header-home #searchFormHeader {
+    clear: both;
+    padding-top: 80px;
+}
+
+/*** Header: Blurb */
+
+#blurb {
+    margin:30px 0 0;
+    padding:0;
+    line-height: 1.4;
+}
+.blurbLine {
+    padding:0 5px 0 7px;
+}
+#blurb h2, 
+#blurb h3 {
+    display:inline;
+    background:#4d4d4d;
+    background: url(../images/ribbon_grey.png);
+    box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
+}
+
+/* Main */
+
+.main-home#main {              /* Fix for bleeding white background on some mobile */
+    overflow-x: hidden;   /* platforms apparently due to homeFacers.*/
+}
+
+/* Sections */
+
+.section div[class*="grid"] > div {
+    padding:10px 0 20px;
+}
+
+/* Section: Introduction */
+
+.section#introduction div[class*="grid"] {
+    padding-bottom: 500px; /* Make floated divs seem equally long */
+    margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
+}
+.section#introduction > .content {
+    overflow:hidden;
+}
+
+.section#introduction {
+    background:#fff;
+}
+.section#introduction .grid_10 {
+    background:#fff;
+}
+.section#introduction div.grid_10 > div {
+    overflow:auto;
+    padding:10px 30px 30px;
+}
+.section#introduction ul {
+    float:left;
+    margin:0;
+    padding-left:0;
+}
+.section#introduction span {
+    display: block;
+    line-height:1.12em;
+}
+
+/* Home section: Carousel */
+
+.section#content-carousel {
+    background:#808080;
+}
+
+#carousel {
+    position:relative;
+    text-align:center;
+    padding:15px 0;
+}
+#carousel .ribbon {
+    margin: 15px 0 0 -5px;
+    overflow:hidden;
+    position: absolute;
+    white-space:nowrap;
+    z-index: 100;
+    padding:5px 7px 6px;
+}
+#carousel .slides_container {
+    text-align:left;
+    width:100%;
+    height:313px;
+    overflow:hidden;
+}
+#carousel .slide ul {
+    margin:0;
+    padding:0;
+}
+#carousel .slide li {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    cursor:pointer;
+}
+#carousel .slide img {
+    width:100%;
+    height:auto;
+}
+#carousel .slide .pickup-content {
+    background:url(../images/black_75.png) repeat;
+    position:absolute;
+    z-index:101;
+    top: 253px;
+}
+#carousel .slide .pickup-header {
+    height:60px;
+    font-weight:bold;
+}
+.pickup-header-small {
+    font-size: 0.846em;
+    font-weight:bold;
+}
+#carousel .slide .pickup-header span, #carousel .slide .pickup-header-small span {
+    padding: 10px 12px;
+    display:block;
+}
+#carousel .slide .pickup-text {
+    padding:0 12px 10px;
+    color:#eee;
+    font-size:0.923em;
+}
+#carousel .slide * {
+    color:#fff;
+}
+#carousel .slide a {
+    margin: 0;
+    padding: 8px 0 0;
+    white-space:nowrap;
+    text-decoration:none;
+    font-weight:bold;
+    display: block
+}
+#carousel .slide a:hover {
+    color: #fdf07f;
+    text-decoration:none;
+}
+#carousel .caption {
+    color: #eee;
+    font-style: italic;
+}
+#carousel .slides_container ~ a {
+    background-image:url(../images/carousel_arrows.png);
+    height:24px;
+    width:12px;
+    display:block;
+    z-index:100;
+}
+#carousel .slides_container ~ a.disabled {
+    display:none;
+}
+#carousel a.prev {
+    background-position:0 0;
+    position:absolute;
+    left:-22px;
+    top:143px;
+}
+#carousel a.prev:hover {
+    background-position:0 -24px;
+}
+#carousel a.next {
+    background-position:-12px 0;
+    right:-22px;
+    top:143px;
+    position:absolute;
+}
+#carousel a.next:hover {
+    background-position:-12px -24px;
+}
+#carousel .pagination {
+    display: inline-block;
+    margin: 14px 0 0;
+    padding: 0;
+    text-align: center;
+    width: auto;
+}
+#carousel .pagination ul,
+#carousel .pagination li {
+    padding:0;
+    margin:0;
+    height:6px;
+    width:6px;
+    float:left;
+}
+    
+#carousel .pagination li {
+    margin-right:6px;
+}
+#carousel .pagination a {
+    background-image: url("../images/carousel_arrows.png");
+    background-position:-2px 8px;
+    border: 0 none;
+    display: block;
+    height: 6px;
+    margin: 0;
+    padding: 0;
+    text-indent: -9999px;
+    width: 6px;
+}
+#carousel .pagination .current a {
+    background-position: 8px 8px;
+}
+
+/* Section: Popular Searches & Map Search */
+
+.section#popular-map {
+    background:#fff;
+}
+
+.section#popular-map .content {
+    border-top: solid 6px #ddd;
+    padding-top: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+#popularSearches ul:first-child {
+    margin-right:10px;
+}
+#popularSearches ul {
+    float: left;
+    margin:0;
+    font-size: 1.1em;
+    padding: 0;
+    width: 230px;
+}
+#popularSearches li span {
+    padding:6px 0 10px;
+    display:block;
+}
+#popularSearches li span:first-child {
+    background: url("../images/circle.png") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 6px;
+    padding: 0;
+    text-align: center;
+    width: 31px;
+}
+#popularSearches li {
+    display:block;
+    clear:both;
+    margin-bottom:5px;
+    line-height:15px;
+}
+
+#popularSearches a {
+    font-weight: bold;
+}
+
+#popularSearches a:hover, #popularSearches a:focus {
+    text-decoration: underline;
+}
+
+#popularSearches .loading {
+    background: url("../images/ajax_loading.gif") no-repeat scroll 0 0 transparent;
+    height: 20px;
+    width: 20px;
+}
+
+#mapSearchHome {
+    background:url(../images/map_search_bg.jpg) no-repeat;
+    padding:10px 40px 30px;
+    height:254px;
+    color:#fff;
+}
+#mapSearchHome p {
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5em;
+}
+#mapSearchHome .button {
+    margin-top:15px;
+    z-index:5;
+}
+
+
+
+.home-section.third .loginBoxHome {
+    padding:10px 40px;
+}
+.home-section.third .mapSearchHome p {
+    font-size:1.1em;
+    font-weight:bold;
+    line-height: 1.5em;
+}
+.home-section.third .mapSearchHome .button {
+    margin-top:15px;
+    z-index:5;
+}
