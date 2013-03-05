@@ -195,6 +195,9 @@ body {
 .content .grid_24 {
   width: 950px;
 }
+#modalDialog .content .grid_24 {
+  width: 100%;
+}
 
 .content .grid_1.static {
   width: 30px;

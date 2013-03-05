@@ -129,6 +129,11 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     color:#00A3B5;
     text-decoration: underline;
 }
+.jstree a:focus,
+.jstree a:hover {
+    color:#fff;
+    text-decoration: underline;
+}
 
 .menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a, .menuLibCard span {
     color: #fff;

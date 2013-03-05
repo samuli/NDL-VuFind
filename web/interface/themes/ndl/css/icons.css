@@ -37,6 +37,7 @@ a.clear_input,
 .availableLoc, .available:before,
 .checkedoutLoc, .checkedout:before,
 .holdPlace, .holdPlace:before,
+#toggleTree,
 .currentTree, .hierarchyTreeLinkText,
 .selectionMapHelpIcon,
 .menuSearch a span:after, .menuHelp a span:after, .menuLogin a span.loggedIn:after,
@@ -232,6 +233,9 @@ a.clear_input {
     background-position: -365px -2497px;
 }
 
+#toggleTree {
+    background-position: -365px -2500px;
+}
 /* Main: Pagination */
 
 .paginationMove.paginationNext.visible {
