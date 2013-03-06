@@ -73,7 +73,7 @@
     
       <div class="profileGroup">
         <span>{translate text='Phone Number'}:</span><span>{if $profile.phone}{$profile.phone|escape}{else}-{/if}</span><br class="clear" />
-        <span>{translate text='Email'}:</span><span>{if $info.email}{$info.email|escape}{else}-{/if}</span><br class="clear" />
+        <span>{translate text='Email'}:</span><span>{if $profile.email}{$profile.email|escape}{else}-{/if}</span><br class="clear" />
       </div>
     
       <div class="profileGroup">
