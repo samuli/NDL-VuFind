@@ -62,14 +62,10 @@
     margin:0;
     padding-left:0;
 }
-.section#introduction span {
-    display: block;
-    line-height:1.12em;
-}
-
 ul.documentTypes li {
     float: left;
     width: 47%;
+    line-height: 1.7em;
 }
 
 /* Home section: Carousel */
