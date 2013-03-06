@@ -383,7 +383,8 @@ class MultiBackend implements DriverInterface
         $driver = $this->getDriver($source);
         if ($driver) {
             $holds = $driver->getMyHolds($this->stripIdPrefixes($user, $source));
-            return $this->addIdPrefixes($holds, $source);
+            $holds = $this->addIdPrefixes($holds, $source);
+            return $holds;
         }
         return new PEAR_Error('No suitable backend driver found');
     }

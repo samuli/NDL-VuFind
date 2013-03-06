@@ -646,7 +646,7 @@ class AxiellWebServices implements DriverInterface
             foreach ($reservations as $reservation) {
                 $hold = array();
                 $hold['type'] = $reservation->reservationStatus; // TODO
-                $hold['id'] = $this->arenaMember . '.' . $reservation->catalogueRecord->id;
+                $hold['id'] = $reservation->catalogueRecord->id;
                 $hold['location'] = $reservation->organisation;
                 if ($reservation->pickUpBranch) {
                     if ($reservation->organisation)
