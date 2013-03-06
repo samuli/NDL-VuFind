@@ -442,7 +442,7 @@ class AxiellWebServices implements DriverInterface
             
             foreach ($loans as $loan) {
                 $trans = array();
-                $trans['id'] = $this->arenaMember . '.' . $loan->catalogueRecord->id;
+                $trans['id'] = $loan->catalogueRecord->id;                
                 $trans['title'] = $loan->catalogueRecord->title;
                 // Convert Axiell format to display date format
                 $trans['duedate'] = $this->formatDate($loan->loanDueDate);
@@ -450,6 +450,14 @@ class AxiellWebServices implements DriverInterface
                 $trans['barcode'] = $loan->id;
                 $transList[] = $trans;
             }
+            
+            $date = array();
+            foreach ($transList as $key => $row)
+            {
+            	$date[$key] = $row['duedate'];
+            }
+            array_multisort($date, SORT_ASC, $transList);
+            
             return $transList;
 
         } catch (Exception $e) {
@@ -579,8 +587,8 @@ class AxiellWebServices implements DriverInterface
                 $fine['fine'] = $debt->debtType . ' - ' . $debt->debtNote;
                 $fine['balance'] = $debt->debtAmount * 100;
                 // Convert Axiell format to display date format
-                $fine['createdate'] = $this->formatDate($loan->debtDate);
-                $fine['duedate'] = ''; 
+                $fine['createdate'] = $this->formatDate($debt->debtDate);
+                $fine['duedate'] = $this->formatDate($debt->debtDate); 
                 $fine['id'] = ''; 
                 $finesList[] = $fine;
             }
