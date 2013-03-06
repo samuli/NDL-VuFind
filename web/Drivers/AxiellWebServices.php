@@ -444,20 +444,25 @@ class AxiellWebServices implements DriverInterface
                 $trans = array();
                 $trans['id'] = $loan->catalogueRecord->id;                
                 $trans['title'] = $loan->catalogueRecord->title;
-                // Convert Axiell format to display date format
-                $trans['duedate'] = $this->formatDate($loan->loanDueDate);
+                $trans['duedate'] = $loan->loanDueDate;
                 $trans['renewable'] = $loan->loanStatus->isRenewable == true; //'yes';
                 $trans['barcode'] = $loan->id;
                 $transList[] = $trans;
             }
             
+            // Sort the Loans
             $date = array();
             foreach ($transList as $key => $row)
             {
             	$date[$key] = $row['duedate'];
             }
             array_multisort($date, SORT_ASC, $transList);
-            
+
+            // Convert Axiell format to display date format
+            foreach ($transList as &$row) {  	
+            	$row['duedate'] = $this->formatDate($row['duedate']);
+            }
+
             return $transList;
 
         } catch (Exception $e) {
@@ -942,7 +947,7 @@ class AxiellWebServices implements DriverInterface
     protected function formatDate($dateString)
     {
         // remove timezone from Axiell obscure dateformat
-        $date =  substr($dateString, 0, strpos("$dateString*", "*"));
+        $date =  substr($dateString, 0, strpos("$dateString*", "+"));
         if (PEAR::isError($date)) {
             return $dateString;
         }
