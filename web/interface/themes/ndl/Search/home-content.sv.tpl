@@ -4,7 +4,7 @@
   <div class="content">
     <div class="grid_14">
       <div id="siteDescription">
-
+        {include file="Search/site-description.$userLang.tpl"}
       </div>
     </div>
     <div class="grid_10 push_right">
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="grid_10 push_right">
-
+      {include file="Search/fourth-box.$userLang.tpl"}
     </div>
   </div>
 </div>
