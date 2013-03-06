@@ -324,6 +324,13 @@ span.dynatree-expander:hover {
     background-position: -1298px -3369px;
 }
 
+.dynatree-loading span.dynatree-expander,
+.dynatree-loading span.dynatree-expander:hover,
+.dynatree-statusnode-wait span.dynatree-icon {
+    background-position: 1px 3px;
+    background-image: url("../images/ajax_loading_small.gif");
+}
+
 /* Main: Single record view */
 
 .resultLinks .button {

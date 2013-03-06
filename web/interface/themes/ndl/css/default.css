@@ -4455,23 +4455,6 @@ span.dynatree-node .facetTitle {
     display: inline-block;
     vertical-align: middle;
 }
-span.dynatree-empty,
-span.dynatree-vline,
-span.dynatree-connector,
-span.dynatree-expander,
-span.dynatree-icon,
-span.dynatree-checkbox,
-span.dynatree-radio,
-span.dynatree-drag-helper-img,
-#dynatree-drop-marker {
-    background-image: url("../images/dynatree_icons.gif");
-}
-.dynatree-loading span.dynatree-expander,
-.dynatree-loading span.dynatree-expander:hover,
-.dynatree-statusnode-wait span.dynatree-icon {
-    background-position: 3px 3px;
-    background-image: url("../images/ajax_loading_small.gif");
-}
 span.dynatree-expander {
     width: 14px;
     margin-top: 1px;
