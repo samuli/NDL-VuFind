@@ -67,6 +67,11 @@
     line-height:1.12em;
 }
 
+ul.documentTypes li {
+    float: left;
+    width: 47%;
+}
+
 /* Home section: Carousel */
 
 .section#content-carousel {

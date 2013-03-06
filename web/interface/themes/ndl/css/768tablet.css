@@ -74,6 +74,12 @@
     #introduction ul {
         width:230px;
     }
+    
+    ul.documentTypes li {
+        float: none;
+        width: 100%;
+    }
+    
     #carousel .slides_container {
         height: 236px;
     }
