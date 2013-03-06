@@ -327,7 +327,7 @@ span.dynatree-expander:hover {
 .dynatree-loading span.dynatree-expander,
 .dynatree-loading span.dynatree-expander:hover,
 .dynatree-statusnode-wait span.dynatree-icon {
-    background-position: 1px 3px;
+    background-position: 1px 5px;
     background-image: url("../images/ajax_loading_small.gif");
 }
 
