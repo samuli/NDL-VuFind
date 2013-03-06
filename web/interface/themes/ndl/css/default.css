@@ -4449,12 +4449,14 @@ span.dynatree-node a {
     border: none;
 }
 span.dynatree-node .facetTitle {
-    max-width: 150px;
+    max-width: 130px;
     text-overflow: ellipsis;
     overflow: hidden;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: bottom;
+    padding-left: 2px; 
 }
+
 span.dynatree-expander {
     width: 14px;
     margin-top: 1px;

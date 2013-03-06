@@ -262,7 +262,9 @@ $(document).ready(function() {
     {literal}
     
     <script type="text/javascript">
-        customInit();
+        $(document).ready(function() {
+            customInit();
+        });
     </script>
     {/literal}
   </body>
