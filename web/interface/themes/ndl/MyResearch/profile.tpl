@@ -83,7 +83,7 @@
       </tr>
 
       <tr>
-        <th>{translate text='Email'}</th><td>{if $info.email}{$info.email|escape}{else}-{/if}</td>
+        <th>{translate text='Email'}</th><td>{if $profile.email}{$profile.email|escape}{else}-{/if}</td>
       </tr>
     
       <tr>
