@@ -18,7 +18,7 @@
       <div class="breadcrumbs">
         <div class="breadcrumbinner">
           <a href="{$url}">{translate text="Home"}</a><span></span>
-          {include file="$module/breadcrumbs.tpl"}
+          {if $module}{include file="$module/breadcrumbs.tpl"}{/if}
         </div>
       </div>
     </div>
