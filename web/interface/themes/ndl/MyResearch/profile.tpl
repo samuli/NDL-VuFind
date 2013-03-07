@@ -123,7 +123,7 @@
 	        <td><input type="password" id="newPassword2" name="newPassword2" value=""></input></td>
         </tr>
       </table>
-      <input class="button buttonTurquoise" type="submit" value="{translate text='change_password_submit'}" />
+      <input class="button buttonFinna" type="submit" value="{translate text='change_password_submit'}" />
       </form>
       {/if}
       
