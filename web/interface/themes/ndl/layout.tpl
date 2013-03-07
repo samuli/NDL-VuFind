@@ -214,7 +214,7 @@ $(document).ready(function() {
 
       <div id="nav" class="nav">
         <div class="content">
-          <ul id="headerMenu" class="grid_18">
+          <ul id="headerMenu" class="grid_19">
             {include file="header-menu.$userLang.tpl"}
           </ul>
           <div class="lang">

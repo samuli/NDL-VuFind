@@ -142,7 +142,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
 
 #nav, .nav {
     background:url(../images/px_69.png);
-    height: 40px;
+    padding-bottom: 10px;
 }
 #nav .lang {
     margin-top: 12px;

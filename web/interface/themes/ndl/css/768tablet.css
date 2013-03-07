@@ -50,9 +50,6 @@
         left:480px;
     }
     
-    .logged-in #nav, .nav {
-        height: 80px;
-    }
     .menuLibCard {
         padding-left:0;
         border-left:0;

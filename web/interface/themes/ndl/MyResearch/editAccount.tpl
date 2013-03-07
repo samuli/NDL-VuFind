@@ -1,10 +1,12 @@
 <!-- START of: MyResearch/editAccount.tpl -->
 
-<h1><span class="content">{if $id}
-{translate text="Edit Library Card"}
-{else}
-{translate text="Add a Library Card"}
-{/if}</span></h1>
+<div class="myresearchHeader">
+  <div class="content">
+    <div class="grid_24">
+      <h1>{if $id}{translate text="Edit Library Card"}{else}{translate text="Add a Library Card"}{/if}</h1>
+    </div>
+  </div>
+</div>
 <div class="content">
 <div class="grid_24">
 {if $errorMsg}
