@@ -88,7 +88,6 @@
   {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 
   </form>
-  {js filename="dropdown.js"}
 {/if}
 
 </div>

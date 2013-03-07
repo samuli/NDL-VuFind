@@ -131,7 +131,7 @@
     {js filename="qrcode.js"} 
 
     {* Load dropdown menu modification *}
-    {* js filename="dropdown.js" *}
+    {js filename="dropdown.js"}
 
     {* Load Mozilla Persona support *}
     {if $mozillaPersona}
