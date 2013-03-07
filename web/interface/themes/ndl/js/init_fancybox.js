@@ -4,7 +4,7 @@ $(document).ready(function() {
 
 function launchFancybox(el) {
     var hrefs = new Array();
-    hrefs.push($(el).attr('href'));
+    hrefs.push($(el).attr('href').replace('&index=0', ''));
     var group = $(el).attr('rel');
     $('a[rel="'+group+'"]').each(function(){
         var href = $(this).attr('href').replace('&index=0', '');
