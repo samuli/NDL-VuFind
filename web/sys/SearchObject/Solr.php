@@ -1276,7 +1276,7 @@ class SearchObject_Solr extends SearchObject_Base
         
         // Spellcheck only basic search
         if (count($this->searchTerms) != 1
-            || $this->searchTerms[0]['index'] != 'AllFields'
+            || (isset($this->searchTerms[0]['index']) && $this->searchTerms[0]['index'] != 'AllFields')
         ) {
             return;    
         }
