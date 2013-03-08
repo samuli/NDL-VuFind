@@ -15,8 +15,8 @@ $(document).ready(function() {
 function initHeaderMenu() {
     var headerItem = $('#headerMenu > li a');
 
-    headerItem.mouseenter(headerOver);
-    headerItem.mouseleave(headerOut);
+    $('#headerMenu > li a').mouseenter(headerOver);
+    $('#headerMenu > li').mouseleave(headerOut);
     $('#headerMenu > li > a[href="#"]').click(function() {
         $(this).blur();
         return false;

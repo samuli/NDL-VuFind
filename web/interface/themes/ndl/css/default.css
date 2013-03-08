@@ -350,7 +350,6 @@ div.sidegroup {
 /*
     left: 54px;
 */
-    width: auto;
 /*
     min-width: 153px;
 */
@@ -443,7 +442,7 @@ div.sidegroup {
     padding: 7px 10px;
     display: block;
     cursor:pointer;
-    min-width: 374px;
+    width:220px;
     text-decoration:none;
     border-top:1px solid #dadada;
     font-size:1em;
