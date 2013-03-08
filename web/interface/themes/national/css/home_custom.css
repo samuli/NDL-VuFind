@@ -11,16 +11,7 @@
     padding:0;
     line-height: 1.4;
 }
-.blurbLine {
-    padding:0 5px 0 7px;
-}
-#blurb h2, 
-#blurb h3 {
-    display:inline;
-    background:#4d4d4d;
-    background: url(../images/ribbon_grey.png);
-    box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
-}
+
 #blurb em {
     font-style: normal;
 }
@@ -33,11 +24,6 @@
     color: #00a3b5;
 }
 
-/* Sections */
-
-.section div[class*="grid"] > div {
-    padding:10px 0 20px;
-}
 
 /* Section: Introduction */
 

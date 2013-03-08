@@ -15,14 +15,14 @@
     line-height: 1.4;
 }
 .blurbLine {
-    padding:0 5px 0 7px;
-}
-#blurb h2, 
-#blurb h3 {
-    display:inline;
     background:#4d4d4d;
     background: url(../images/ribbon_grey.png);
     box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
+    clear: both;
+    display: block;
+    float: left;
+    margin-bottom: 5px;
+    padding: 0 5px 0 7px;
 }
 
 /* Main */
@@ -53,6 +53,10 @@
 .section#introduction .grid_10 {
     background:#fff;
 }
+.section#introduction #siteDescription {
+    padding:10px 20px 20px 0;
+}
+
 .section#introduction div.grid_10 > div {
     overflow:auto;
     padding:10px 30px 30px;
@@ -62,6 +66,10 @@
     margin:0;
     padding-left:0;
 }
+.section#introduction .iconlabel {
+    padding:3px 0 6px 25px;
+}
+
 ul.documentTypes li {
     float: left;
     width: 47%;

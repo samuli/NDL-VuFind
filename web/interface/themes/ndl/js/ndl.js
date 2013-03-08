@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 // Header menu
 function initHeaderMenu() {
-    var headerItem = $('#headerMenu > li');
+    var headerItem = $('#headerMenu > li a');
 
     headerItem.mouseenter(headerOver);
     headerItem.mouseleave(headerOut);
@@ -23,7 +23,7 @@ function initHeaderMenu() {
     });
 
     function headerOver() {
-        var subMenu = $(this).children('.subNav');
+        var subMenu = $(this).siblings('.subNav');
         if (subMenu.length > 0) {
             $('#headerMenu > li > ul').stop(true, true).fadeOut(50);
             subMenu.stop(true, false).fadeIn(30);
