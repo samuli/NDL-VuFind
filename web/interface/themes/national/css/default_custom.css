@@ -53,10 +53,6 @@ div.breadcrumbs a, div.breadcrumbs li {
     color: #ffffff;
 }
 
-.dropdown dt a,
-.buttonFinna {
-    background-color: #00a3b5;
-}
 .main .contentHeader.loginContentHeader,
 .module-Search h2.account,
 .module-MyResearch h2.account,
@@ -77,13 +73,15 @@ div.breadcrumbs a, div.breadcrumbs li {
     background:#f3ec7a;
 }
 
-.resultListContainer div.sidegroup h4 {
-    background-color: #00A3B5;
-    color: #FFFFFF;
-}
 span.dynatree-node a:hover {
     color:#00A3B5;
 }
 span.dynatree-node a {
     color:#00A3B5;
 }
+
+table.profileGroup caption,
+table.datagrid caption {
+    background-color: #00A3B5;
+}
+

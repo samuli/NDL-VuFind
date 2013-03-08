@@ -116,6 +116,10 @@ textarea,
 
 /****** General ******/
 
+caption {
+    font-weight: bold;
+}
+
 ul {
     list-style-type: none;
 }
@@ -1541,12 +1545,6 @@ table.profileGroup th {
     border-bottom: solid 1px #eee;
 }
 
-table.profileGroup caption {
-    background-color: #00A3B5;
-    color: #fff;
-    font-weight: bold;
-}
-
 .profileInfo select#home_library {
     width: 210px;
     padding: 2px;
@@ -1895,6 +1893,9 @@ div.sidegroup h4 {
     padding: 10px 10px 12px;
     margin:0;
 }
+div.sidegroup h4 {
+    background: #00A3B5;
+}
 .sidegroup dl.collapsible dt {
     background: url("../images/datevis_handle_open.png") no-repeat scroll 107% 50% #4C4C4C;
 }
@@ -2061,21 +2062,18 @@ dl.narrowList a {
 }
 .main .contentHeader,
 .main .browseHeader {
-    background:#ddd;
+    background: #b2e3ea;
     padding: 22px 0 24px;
     margin-bottom: 40px;
 }
 .main .browseHeader {
-    background:#b3e3e9;
+    background:#b2e3ea;
 }
 .main .contentHeader h1,
 .main .browseHeader h1,
 .main .advSearchHeader h1 {
     margin:0 0 0 5px;
     padding:0;
-}
-.main .contentHeader {
-    background: #abc;
 }
 .module-Content .contentSection {
     overflow:auto;
@@ -2439,16 +2437,14 @@ ul.recordSet .addToFavLink a {
 .module-Cart h2,
 .resultLinks,
 .resultTerms,
+.advSearchHeader,
 .module-Collection #collectionHeader {
-    background: #ddd;
-}
- .advSearchHeader {
     background: #b2e3ea;
 }
 .module-Search h2.account,
 .myresearchHeader,
 .module-Cart h2 {
-    background: #abc;
+    background: #b2e3ea;
 }
 
 .resultTerms .content {
@@ -2546,7 +2542,7 @@ ul.recordSet .addToFavLink a {
 }
 .dropdown dt a {
     display:block;
-    background: #777;
+    background: #00a3b5;
     border: none;
     border-radius: 10px 10px 10px 10px;
     color: #FFFFFF;
@@ -3329,10 +3325,10 @@ table.datagrid {
     border-right: solid 1px #eee;
 }
 
+table.profileGroup caption,
 table.datagrid caption {
-    background-color: #00A3B5;
+    background-color: #808080;
     color: #fff;
-    font-weight: bold;
 }
 
 table.datagrid th {
@@ -4608,7 +4604,7 @@ span.mapMarker  {
     color:#444;
 }
 .buttonFinna {
-    background: #777;
+    background: #00a3b5;
 }
 .buttonGrey {
     background:#c1c1c1;

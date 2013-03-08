@@ -3,12 +3,12 @@
 {include file="MyResearch/menu.tpl"}
 
 <div class="content myResearch accounts{if $sidebarOnLeft} last{/if}">
-  <span class="hefty">{translate text='Library Cards'}</span>
   {if empty($accounts)}
     <br />
     {translate text='You do not have any library cards'}
   {else}
     <table class="datagrid accountList" summary="{translate text='Library Cards'}">
+    <caption>{translate text='Library Cards'}</caption>
     <tr>
       <th>{translate text='Name'}</th>
       <th>{translate text='Description'}</th>
