@@ -1,0 +1,10 @@
+/* this file only for examples, production Finna views are meant to override
+   it */
+
+.fb_example {
+    color: #777;
+    list-style-type: square;
+}
+.fb_example a {
+    display: block;
+}
