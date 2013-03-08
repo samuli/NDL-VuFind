@@ -5,8 +5,8 @@
     <div class="grid_14">
       <div id="siteDescription">
         <h2>For seekers of information and inspiration</h2>
-        <p class="big">Finna is a new kind of information search service for all users of archives, libraries and museums.</p>
-        <p class="big">Finna is currently in test use. Try the search, <a href="{$path}/Feedback/Home">give feedback</a> or <a class="color-violet" href="{$path}/Content/about">read more</a> about the service!</p>
+        <p>Finna is a new kind of information search service for all users of archives, libraries and museums.</p>
+        <p>Finna is currently in test use. Try the search, <a href="{$path}/Feedback/Home">give feedback</a> or <a class="color-violet" href="{$path}/Content/about">read more</a> about the service!</p>
       </div>
     </div>
     <div class="grid_10 push_right">

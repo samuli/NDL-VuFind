@@ -5,8 +5,8 @@
     <div class="grid_14">
       <div id="siteDescription">
         <h2>Tietoa tarvitseville ja elämyksiä etsiville</h2>
-        <p class="big">Finna on uudenlainen tiedonhakupalvelu kaikille arkistojen, kirjastojen ja museoiden palveluiden käyttäjille.</p>
-        <p class="big">Finna on nyt testikäytössä. Kokeile hakua, <a href="{$path}/Feedback/Home">anna palautetta</a> tai <a class="color-violet" href="{$path}/Content/about">lue lisää</a> palvelusta!</p>
+        <p>Finna on uudenlainen tiedonhakupalvelu kaikille arkistojen, kirjastojen ja museoiden palveluiden käyttäjille.</p>
+        <p>Finna on nyt testikäytössä. Kokeile hakua, <a href="{$path}/Feedback/Home">anna palautetta</a> tai <a class="color-violet" href="{$path}/Content/about">lue lisää</a> palvelusta!</p>
       </div>
     </div>
     <div class="grid_10 push_right">

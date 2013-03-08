@@ -1390,16 +1390,15 @@ fieldset.publishDateLimit .ui-slider {
 }
 #sidebarFacets.sidebarOnLeft {
     float: left;
-    margin: 0 12px 0 0;
 }
-#sidebarFacets.sidebarOnLeft .sidegroup {
+/*#sidebarFacets.sidebarOnLeft .sidegroup {
     margin-left: 0;
     border-left: none;
     border-right: 2px solid #dddddd;
     padding-left: 0;
     padding-right: 20px;
     margin-left: 0;
-}
+}*/
 
 /*** MyResearch ***/
 
