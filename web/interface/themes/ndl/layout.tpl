@@ -99,12 +99,12 @@
     {js filename="jquery.clearsearch.js"}
     {js filename="jquery.collapse.js"}
     {js filename="jquery.dynatree-1.2.2-mod.js"}
+    
+    {* Load custom javascript functions *}
+    {js filename="custom.js"}
 
     {* load Fancybox *}
     {js filename="fancybox/jquery.fancybox.pack.js"}
-
-    {* Load background switcher *}
-    {js filename="bg_switcher.js"}
     
     {* Load dynamic facets *}
     {js filename="facets.js"}
@@ -117,9 +117,6 @@
     
     {* Load common javascript functions *}
     {js filename="common.js"}
-    
-    {* Load custom javascript functions *}
-    {js filename="custom.js"}
     
     {* Load SlidesJS *}
     {js filename="slides.min.jquery.js"}
@@ -139,21 +136,21 @@
     {js filename="persona.js"}
     {/if}
 
-{literal}
-    <script type="text/javascript">
-// Long field truncation
-$(document).ready(function() {
-  $('.truncateField').not('.recordSummary').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}", less: "{/literal}{translate text="less"}{literal}"});
-  $('.recordSummary.truncateField').collapse({maxLength: 150, maxRows: 5, more: " ", less: " "});
-{/literal}
-{if $mozillaPersona}
-    mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
-{/if}
-{literal}
-});
-{/literal}
-    </script>
-
+    {literal}
+        <script type="text/javascript">
+        // Long field truncation
+        $(document).ready(function() {
+            $('.truncateField').not('.recordSummary').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}", less: "{/literal}{translate text="less"}{literal}"});
+            $('.recordSummary.truncateField').collapse({maxLength: 150, maxRows: 5, more: " ", less: " "});{/literal}
+            {if $mozillaPersona}
+                mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
+            {/if}
+            {literal}
+        });
+        // Load child theme custom functions
+        customInit();
+        </script>
+    {/literal}
     {* Apply labelOver placeholder for input fields *}
 
     <script type="text/javascript">
@@ -257,16 +254,6 @@ $(document).ready(function() {
 
     {include file="piwik.tpl"}
     {include file="AJAX/keepAlive.tpl"}
-    
-    {* Custom initialization *}
-    {literal}
-    
-    <script type="text/javascript">
-        $(document).ready(function() {
-            customInit();
-        });
-    </script>
-    {/literal}
   </body>
     
 </html>
