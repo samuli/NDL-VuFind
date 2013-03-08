@@ -34,12 +34,13 @@
       {/if}
     </div> {* content *}
   </div> {* resultTerms *}
-
   <div class="resultViewOptions">
     <div class="content">
       <div class="resultNumbers">
+        {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
         <span class="currentPage">{translate text="Search Results"} {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
         <span class="resultTotals">{$recordCount}</span>
+         {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
       </div>
       <div class="resultOptions">
         <!--
@@ -120,7 +121,8 @@
     </div>
   </div>
 </div>
-
+          
+{include file="Search/paging.tpl" position="Bottom"}
 <div class="resultSearchTools">
   <div class="content">
     <div class="searchtools">
@@ -146,14 +148,8 @@
         </li>
       </ul>  
     </div>
-<!--
-    </div>
--->
   </div>
 </div>
-          
-{include file="Search/paging.tpl" position="Bottom"}
-
   {* End Main Listing *}
   {* Narrow Search Options *}
   {* End Narrow Search Options *}

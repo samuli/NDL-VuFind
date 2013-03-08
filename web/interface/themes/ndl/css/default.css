@@ -657,7 +657,9 @@ div.sidegroup {
     position:relative;
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
-
+.searchFormWrapper.grid_16 {
+    margin-left:0;
+}
 #searchForm select, .overLabelWrapper, .styled_select { 
     float:left;
 }
@@ -2455,7 +2457,7 @@ ul.recordSet .addToFavLink a {
     float: left;
     display: block;
     font-size: 1.777em;
-    margin: 0 30px 0 0;
+    margin: 0 30px 0 5px;
 }
 
 .correction {
@@ -2482,7 +2484,7 @@ ul.recordSet .addToFavLink a {
 /* Result numbers */
 .resultNumbers {
     float:left;
-    margin: 28px 0;
+    line-height:75px;
     font-size:1.230em;
     max-width:520px;
     margin-left:5px;
@@ -2701,7 +2703,16 @@ div.dateVisHandle.visible {
     height:25px;
     position:absolute;
     text-indent:-9999px;
-   
+}
+.resultNumbers .paginationMove {
+    position:relative;
+    top:6px;
+}
+.resultNumbers .paginationNext {
+    margin-left: 5px;
+}
+.resultNumbers .paginationBack{
+    margin-right: 5px;
 }
 .paginationMove span {
     font-size: 0.7em;
