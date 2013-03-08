@@ -2439,10 +2439,12 @@ ul.recordSet .addToFavLink a {
 .module-Search h2.account,
 .module-Cart h2,
 .resultLinks,
-.advSearchHeader,
 .resultTerms,
 .module-Collection #collectionHeader {
     background: #ddd;
+}
+ .advSearchHeader {
+    background: #b2e3ea;
 }
 .module-Search h2.account,
 .myresearchHeader,
