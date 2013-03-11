@@ -361,6 +361,8 @@ class MarcRecord extends IndexRecord
             foreach ($fields as $field) {
                 $partOrderCounter++;
                 $partAuthors = array();
+                $uniformTitle = '';
+                $duration = '';
                 $subfields = $field->getSubfields();
                 foreach ($subfields as $subfield) {
                     $subfieldCode = $subfield->getCode();
@@ -377,7 +379,16 @@ class MarcRecord extends IndexRecord
                     case 'd':
                         $partAuthors[] = $subfield->getData();
                         break;          
-                    }              
+                    case 'e':
+                        $uniformTitle = $subfield->getData();
+                        break;          
+                    case 'f':
+                        $duration = $subfield->getData();
+                        if ($duration == '000000') {
+                            $duration = '';
+                        }
+                        break;      
+                    }    
                 }
                 // Filter out any empty fields
                 $partAuthors = array_filter($partAuthors);
@@ -386,10 +397,11 @@ class MarcRecord extends IndexRecord
                     'title' => $partTitle,
                     'link' => $baseURI . '/Record/' . $partCode,
                     'author' => implode('; ', $partAuthors), // For backward compatibility
-                    'authors' => $partAuthors
+                    'authors' => $partAuthors,
+                    'uniformTitle' => $uniformTitle,
+                    'duration' => $duration ? substr($duration, 0, 2) . ':' . substr($duration, 2, 2) . ':' . substr($duration, 4, 2) : '' 
                 );
             }
-            
         }   
         // Assign the appropriate variable and return the template name:
         $interface->assign('componentparts', $componentparts);
