@@ -1,5 +1,9 @@
 function mozillaPersonaSetup(currentUser, autoLogoutEnabled)
 {
+    if (navigator.id == null) {
+      // Persona support not properly loaded
+      return;
+    }
     navigator.id.watch({
       loggedInUser: currentUser,
       onlogin: function(assertion) {
