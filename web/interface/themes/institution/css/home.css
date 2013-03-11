@@ -37,7 +37,8 @@
 /* Background of the logo image */
 .header-home {
     background-color: #f3f3f3;
-    border-bottom: 1px solid #ddd;
+    background-size: cover;
+    background-position: center;
 }
 .searchHomeContent {
     margin: 0 auto;
@@ -51,7 +52,7 @@
     background-position: center;
     display: block;
     height: 165px;
-    margin: 0 auto 3em auto;
+    margin: 2em auto 0;
     text-align: center;
 }
 /* Alternating home logo image 2 */
@@ -168,7 +169,7 @@ div.searchHomeForm div.searchform #searchForm {
 
 .homeCustomContent {
     background-color: #f3f3f3;
-    padding: 0 24px 4em;
+    padding: 3em 24px 4em;
 }
 
 .homeCustomCol1, .homeCustomCol2, .homeCustomCol3 {

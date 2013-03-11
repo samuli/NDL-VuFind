@@ -110,7 +110,6 @@ $(document).ready(function() {
       {/literal}
     </script>
     {if $authMethod == 'DB'}<a class="new_account" href="{$url}/MyResearch/Account">{translate text='Create New Account'}</a>{/if}
-  {/if}
   </div>
   <div class="loginDescription{$lbSmall}">
     <div class="description">
@@ -119,6 +118,7 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+  {/if}
 {/if}
 
 <!-- END of: MyResearch/login.tpl -->

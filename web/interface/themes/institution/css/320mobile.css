@@ -50,6 +50,7 @@ px      62    136    210    284    */
         background: url("../images/finna-logo_cyan-80percent.png") no-repeat scroll center center transparent;
         height: 132px;
         margin: .5em auto 2em;
+        background-size: contain;
     }
 
     #logoHeader {
@@ -57,7 +58,7 @@ px      62    136    210    284    */
         margin: 0;
     }
     #logo {
-        margin: 0 auto;
+        margin: 0 8px;
     }
     #searchFormHeader {
         padding-top: 1.3em;

@@ -149,22 +149,21 @@ div.sidegroup {
 
 /*** Header ***/
 
-#logo {
+.searchLogo {
     background: url("../images/finna-logo_small.png") no-repeat scroll center center transparent;
     display: block;
     height: 60px;
-    margin: 20px 18px;
-    width: 190px;
+    clear: both;
+    background-size: contain;
 }
-#logoMetaLib {
+/*#logoMetaLib {
     background: url("../images/finna-ml-logo_small.png") no-repeat scroll center center transparent;
     height: 71px;
     width: 258px;
     margin: 0 0 0 10px;
     display: block;
-}
+}*/
 #logoHeader {
-    float: left;
 }
 #logoHeaderMetaLib {
     float: left;
@@ -172,13 +171,16 @@ div.sidegroup {
     margin: 20px 20px 10px;
 }
 #searchFormHeader {
-    float: left;
-    padding: 2.5em 0 .5em;
+    padding-bottom: .5em;
     width: 506px;
+    margin: auto;
+    margin-top: 10px;
 }
 .header, .headerRecord, .headerCollection, .headerContent, .headerAuthor {
     background-color: #f3f3f3;
-    border-bottom: 1px solid #dddddd;
+    padding-top: 15px;
+    background-size: cover;
+    background-position: center;
 }
 .headerMetaLib .searchbox {
     margin: 1em 0 0.5em;
