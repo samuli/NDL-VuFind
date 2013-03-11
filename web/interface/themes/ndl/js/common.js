@@ -27,8 +27,8 @@ $(document).ready(function(){
     // Do this before setting focus
     initClearable();
     
-    // put focus on the "mainFocus" element
-    $('.mainFocus').each(function(){ $(this).focus(); } );
+    // put focus on the "mainFocus" element if it's visible
+    setMainFocus();
 
     // support "jump menu" dropdown boxes
     $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
@@ -220,6 +220,21 @@ function initClearable(){
     };
     // change width
     //$(".clearable").width("200px").change();
+}
+
+function setMainFocus(){
+    $('.mainFocus').each(function() { 
+        var elem = $(this);
+        
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+
+        var elemTop = elem.offset().top;
+        var elemBottom = elemTop + elem.height();        
+        if (docViewTop < elemTop && docViewBottom > elemBottom) {
+            elem.focus(); 
+        }
+    });
 }
 
 function htmlEncode(value){

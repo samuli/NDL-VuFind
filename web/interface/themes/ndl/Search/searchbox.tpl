@@ -3,13 +3,6 @@
 <div id="searchFormContainer" class="searchform last content">
 
 {if $searchType != 'advanced'}
-  <script type="text/javascript">
-  {literal}
-      $(function(){
-          $('.mainFocus').focus();
-      });
-  {/literal}
-  </script>
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="search">
     <div class="searchFormWrapper grid_16">
       <div class="overLabelWrapper">
