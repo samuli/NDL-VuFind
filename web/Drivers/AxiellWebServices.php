@@ -445,8 +445,10 @@ class AxiellWebServices implements DriverInterface
                 $trans['id'] = $loan->catalogueRecord->id;                
                 $trans['title'] = $loan->catalogueRecord->title;
                 $trans['duedate'] = $loan->loanDueDate;
-                $trans['renewable'] = $loan->loanStatus->isRenewable == true; //'yes';
+                $trans['renewable'] = ($loan->loanStatus->isRenewable == 'yes') ? true : false;
+                $trans['message'] = $loan->loanStatus->status;
                 $trans['barcode'] = $loan->id;
+                $trans['renew'] = $loan->remainingRenewals;
                 $transList[] = $trans;
             }
             
@@ -824,10 +826,14 @@ class AxiellWebServices implements DriverInterface
     {
         $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
         try {
+        	$patronId = $this->getPatronId($cancelDetails['patron']['cat_username'], $cancelDetails['patron']['cat_password']);
+        	if (!$patronId) {
+        		return new PEAR_Error('authentication_error_technical');
+        	}
             $succeeded = 0;
             $results = array();
             foreach ($cancelDetails['details'] as $details) {
-                $result = $client->removeReservation(array('removeReservationRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $cancelDetails['patron']['cat_username'], 'language' => 'en', 'id' => $details)));
+                $result = $client->removeReservation(array('removeReservationRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'id' => $details)));
 
                 if ($result->removeReservationResponse->status->type != 'ok') {
                     $this->debugLog("Remove reservation request failed for '" . $cancelDetails['patron']['cat_username'] . "'");
