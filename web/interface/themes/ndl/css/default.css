@@ -168,8 +168,8 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     padding: 0 0 5px;
     color:#fff;
 }
-
-#headerMenu ul li span {
+#headerMenu .subNav li span {
+    line-height:.9em;
 }
 #headerMenu ul li span:hover {
     color:#fff;
@@ -437,7 +437,7 @@ div.sidegroup {
     color: #444444;
     font-weight: bold;
     margin: 0;
-    padding: 0 0 3px;
+    padding: 0 0 5px;
 }
 
 #headerMenu ul.subNav li
