@@ -10,6 +10,9 @@ a, .ui-widget-content a {
 #header, #header.header-home {
     background: url("../images/header_bottom_gradient.png") repeat-x scroll bottom left transparent;
 }
+#header #logo {
+    width:230px;
+}
 .menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a {
     color: #fff;
 }

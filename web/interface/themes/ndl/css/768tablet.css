@@ -155,6 +155,9 @@
     .recordcover {
         max-width:110px;
     }
+    .citation th { 
+        width:100px;
+    }
     
     /* Myresearch */
     
