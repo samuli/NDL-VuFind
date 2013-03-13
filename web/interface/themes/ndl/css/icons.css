@@ -78,7 +78,6 @@ span.dynatree-drag-helper-img,
 /*** Elements with 32px icons ***/
 
 .resultNoImage {
-    background-image: url(../images/icons48px-03.png);
     background-repeat: no-repeat;
     background-position:0 0;
 }
