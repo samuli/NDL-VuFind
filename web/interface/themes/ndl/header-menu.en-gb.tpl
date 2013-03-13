@@ -6,10 +6,10 @@
   <ul class="subNav">
     <li>
       <a href="{$path}/Search/History">
-        <span>Search history</span>
-        <span>Your session-specific search history. To save your searches, please log in.</span>
+        <span>Search home</span>
+        <span>Start a new search from home page.</span>
       </a>    
-      </li>
+    </li>
     <li>
       <a href="{$path}/Search/Advanced">
         <span>Advanced search</span>
@@ -21,6 +21,12 @@
         <span>Browse the catalogue</span>
         <span>Browse by author, topic, genre, area, era or tags.</span>
       </a>
+    </li>
+    <li>
+      <a href="{$path}/Search/History">
+        <span>Search history</span>
+        <span>Your session-specific search history. To save your searches, please log in.</span>
+      </a>    
     </li>
   </ul>
 </li>

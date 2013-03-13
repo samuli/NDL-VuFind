@@ -35,7 +35,7 @@
     <div class="grid_10 push_right">
       <div id="mapSearchHome">
         <h2>Pröva kartsökningen</h2>
-        <p>Du kan också begränsa sökningen på kartan. För närvarande ingår ca 12630 poster i kartsökningen.</p>
+        <p>Du kan också begränsa sökningen på kartan. För närvarande ingår ca 12 630 poster i kartsökningen.</p>
         <a class="button" href="{$url}/Search/Advanced#mapSearch">Till kartsökningen</a>
       </div>
     </div>

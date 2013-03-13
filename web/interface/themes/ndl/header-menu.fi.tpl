@@ -5,31 +5,28 @@
 <li class="menuSearch menuSearch_{$userLang}"><a href="#"><span>{translate text='navigation_search'}</span></a>
   <ul class="subNav">
     <li>
-      <a href="{$path}/Search/History">
-        <span>Hakuhistoria</span>
-        <span>Istuntokohtainen hakuhistoriasi. Kirjautumalla voit tallentaa hakusi.</span>
-{*
-        <span>Istuntokohtainen hakuhistoriasi.<br />Kirjautumalla voit tallentaa hakusi.</span>
-*}
+      <a href="{$url}">
+        <span>Haun aloitussivu</span>
+        <span>Etusivulta voit helposti aloittaa uuden perushaun.</span>
       </a>    
-      </li>
+    </li>
     <li>
       <a href="{$path}/Search/Advanced">
         <span>Tarkennettu haku</span>
         <span>Tarkemmat hakuehdot ja karttahaku</span>
-{*
-        <span>Tarkemmat hakuehdot ja kartta-<br/>haku</span>
-*}
       </a>
     </li>
     <li>
       <a href="{$path}/Browse/Home">
         <span>Selaa luetteloa</span>
         <span>Selaa tagien, tekijän, aiheen, genren, alueen tai aikakauden mukaan.</span>
-{*
-        <span>Selaa tagien, tekijän, aiheen, <br/>genren, alueen tai aikakauden<br />mukaan.</span>
-*}
       </a>
+    </li>
+    <li>
+      <a href="{$path}/Search/History">
+        <span>Hakuhistoria</span>
+        <span>Istuntokohtainen hakuhistoriasi. Kirjautumalla voit tallentaa hakusi.</span>
+      </a>    
     </li>
   </ul>
 </li>

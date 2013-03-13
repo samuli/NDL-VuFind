@@ -6,8 +6,8 @@
   <ul class="subNav">
     <li>
       <a href="{$path}/Search/History">
-        <span>Sökhistorik</span>
-        <span>Din sökhistorik enligt session. Om du loggar in kan du spara dina sökningar.</span>
+        <span>Sökningens förstasida</span>
+        <span>Från framsidan kan du lätt börja en ny sökning.</span>
       </a>    
       </li>
     <li>
@@ -21,6 +21,12 @@
         <span>Bläddra i katalogen</span>
         <span>Bläddra enligt författare, ämne, område, tidsperiod eller tagg.</span>
       </a>
+    </li>
+    <li>
+      <a href="{$path}/Search/History">
+        <span>Sökhistorik</span>
+        <span>Din sökhistorik enligt session. Om du loggar in kan du spara dina sökningar.</span>
+      </a>    
     </li>
   </ul>
 </li>
