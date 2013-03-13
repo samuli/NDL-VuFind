@@ -134,7 +134,7 @@
         <div class="clear"></div>
       {/if}
       
-        <div class="mapContainer advSearchSection">
+        <div class="mapContainer advSearchSection" id="mapSearch">
           {js filename="jquery.geo.min.js"}
           {js filename="selection_map.js"}
           <label class="displayBlock" for="coordinates">{translate text='Coordinates:'}</label>

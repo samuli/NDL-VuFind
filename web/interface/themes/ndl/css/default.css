@@ -3441,6 +3441,15 @@ p.citationText {
     float:left;
     clear:none;
 }
+#facetWrapper .chzn-choices {
+    cursor:pointer;
+}
+#facetWrapper .chzn-choices:after {
+    content: "▾";
+    float: right;
+    margin-right: 5px;
+    margin-top: 3px;
+}
 .advSearchFooter.advSearchSection {
     padding:10px 0 40px;
 }

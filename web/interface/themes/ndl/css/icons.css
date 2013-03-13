@@ -89,11 +89,7 @@ span.dynatree-drag-helper-img,
 .menuSearch > a span:after, .menuHelp > a span:after, .menuLogin > a span.loggedIn:after {
     content: "▾";
     float:right;
-}/*
-.menuSearch a:hover span:after, .menuHelp a:hover span:after, .menuLogin a:hover span.loggedIn:after {
-    content: "▾";
-    float:right;
-}*/
+}
 
 /* Common: Buttons */
 
@@ -222,7 +218,7 @@ a.clear_input {
 }
 .dateVisClear a {
     background-image: url(../images/icons16-24px-03.png);
-    background-position: -363px -128px; 
+    background-position: -995px -128px; 
 }
 .holdPlace:before {
     background-image: url(../images/icons16-24px-03.png);
