@@ -87,14 +87,14 @@ span.dynatree-drag-helper-img,
 
 /* Navi */
 
-.menuSearch a span:after, .menuHelp a span:after, .menuLogin a span.loggedIn:after {
+.menuSearch > a span:after, .menuHelp > a span:after, .menuLogin > a span.loggedIn:after {
     content: "▾";
     float:right;
-}
+}/*
 .menuSearch a:hover span:after, .menuHelp a:hover span:after, .menuLogin a:hover span.loggedIn:after {
     content: "▾";
     float:right;
-}
+}*/
 
 /* Common: Buttons */
 
