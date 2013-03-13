@@ -5,7 +5,7 @@
 <li class="menuSearch menuSearch_{$userLang}"><a href="#"><span>{translate text='navigation_search'}</span></a>
   <ul class="subNav">
     <li>
-      <a href="{$path}/Search/History">
+      <a href="{$url}">
         <span>Sökningens förstasida</span>
         <span>Från framsidan kan du lätt börja en ny sökning.</span>
       </a>    
@@ -17,7 +17,7 @@
       </a>
     </li>
     <li>
-      <a href="{$path}/Content/searchhelp">
+      <a href="{$path}/Browse/Home">
         <span>Bläddra i katalogen</span>
         <span>Bläddra enligt författare, ämne, område, tidsperiod eller tagg.</span>
       </a>
