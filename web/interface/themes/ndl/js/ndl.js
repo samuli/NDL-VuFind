@@ -13,26 +13,34 @@ $(document).ready(function() {
 
 // Header menu
 function initHeaderMenu() {
+    
     var headerItem = $('#headerMenu > li a');
 
     $('#headerMenu > li a').mouseenter(headerOver);
-    $('#headerMenu > li').mouseleave(headerOut);
+    $('#headerMenu').mouseleave(headerOut);
     $('#headerMenu > li > a[href="#"]').click(function() {
         $(this).blur();
         return false;
     });
 
     function headerOver() {
+        var timeoutId = $('#headerMenu > li > ul').data('timeoutId');
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        
         var subMenu = $(this).siblings('.subNav');
         if (subMenu.length > 0) {
             $('#headerMenu > li > ul').stop(true, true).fadeOut(50);
-            subMenu.stop(true, false).fadeIn(30);
+            subMenu.stop(false, false).fadeIn(30);
         }
     };
 
     function headerOut() {
         var subMenu = $('#headerMenu > li > ul');
-        subMenu.stop(true, false).delay(500).fadeOut(50);
+        subMenu.data('timeoutId', setTimeout(function() {
+        subMenu.stop(false, false).fadeOut(50);
+        }, 300));
     };
 }
 
