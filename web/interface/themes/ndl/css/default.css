@@ -168,7 +168,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     padding: 0 0 5px;
     color:#fff;
 }
-#headerMenu .subNav li span {
+#headerMenu .subNav li {
     line-height:.9em;
 }
 #headerMenu ul li span:hover {
