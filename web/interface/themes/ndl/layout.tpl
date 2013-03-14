@@ -36,6 +36,9 @@
     {* Load Fancybox css *}
     {css media="screen" filename="fancybox/jquery.fancybox.css"}
 
+    {* Load JSTree css *}
+    {css media="screen" filename="../js/jsTree/themes/apple/style.css"}
+
     {* Load Blueprint CSS framework *}
     {css media="screen, projection" filename="blueprint/screen.css"}
     {css media="print" filename="blueprint/print.css"}
