@@ -302,14 +302,15 @@ div.sidegroup {
     right: 0;
 }
 #logo {
-    background: url("../images/org_finnalogo_white.png") no-repeat scroll 0 center transparent;
     display: block;
-    height: 75px;
     padding: 20px 0;
     float:left;
     width: 100%;
     position: relative;
     z-index: 50;
+}
+#logo img {
+    height: auto;
 }
 #headerMenu {
     float:left;

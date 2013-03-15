@@ -18,15 +18,10 @@
 
 /*** Logo ***/
 
+.searchHomeLogoMetaLib,
 .searchHomeLogo {
-    text-align: center;
-}
-.searchHomeLogoMetaLib {
-    background: url("../images/finna-ml-logo_small.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100px;
-    margin: 0 auto 2em auto;
+    display: block;
+    margin: 3em 0 1em;
     text-align: center;
 }
 .searchHomeLogo img {
@@ -44,31 +39,6 @@
     margin: 0 auto;
     padding: 3em 0 3em 0;
     text-align: left;
-}
-/* Logo image */
-.searchHomeLogo {
-    background: url("../images/finna-logo_cyan.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    display: block;
-    height: 165px;
-    margin: 2em auto 0;
-    text-align: center;
-}
-/* Alternating home logo image 2 */
-.searchHomeLogo2 {
-    background-image: url("../images/finna-logo_purple.png");
-}
-/* Alternating home logo image 3 */
-.searchHomeLogo3 {
-    background-image: url("../images/finna-logo_violet.png");
-}
-/* Alternating home logo image 4 */
-.searchHomeLogo4 {
-    background-image: url("../images/finna-logo_black.png");
-}
-.searchHomeLogo5 {
-    background-image: url("../images/finna-logo_cyan-inverse.png");
 }
 
 /** Search Box **/

@@ -5,8 +5,12 @@
   {assign var=bookBagItems value=$bookBag->getItems()}
 {/if}
 
+{include file="homelogo.tpl" assign=logoUrl}
+
   <div class="grid_24 drop">
-    <a id="logo" href="{$url}" title="{translate text="Home"}"></a>
+    <a id="logo" href="{$url}" title="{translate text="Home"}">
+      {image src=$logoUrl}
+    </a>
   </div>
 
 <div id="headerSeparator" class="grid_24"></div>

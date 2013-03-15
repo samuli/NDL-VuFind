@@ -152,9 +152,12 @@ div.sidegroup {
 .searchLogo {
     background: url("../images/finna-logo_small.png") no-repeat scroll center center transparent;
     display: block;
-    height: 60px;
     clear: both;
-    background-size: contain;
+    text-align: center;
+    margin-top: 20px;
+}
+#logo img {
+    height: auto;
 }
 /*#logoMetaLib {
     background: url("../images/finna-ml-logo_small.png") no-repeat scroll center center transparent;

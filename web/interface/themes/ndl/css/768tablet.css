@@ -11,6 +11,12 @@
         background-size: 1020px auto;
     }
     
+    #logo {
+    }
+    #logo img {
+        max-width: 710px;
+    }
+    
     /*  Header */
     
     .feedbackButton {
