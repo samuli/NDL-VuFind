@@ -873,3 +873,10 @@ ip = true
 ; Authorization-providing authentication methods defined in Authentication section or MultiAuth
 authentication_methods[] = Shibboleth
 authentication_methods[] = LDAP
+
+; Normalization preview allows one to display an external record 
+; as it would be displayed in VuFind. This requires a backend, 
+; such as RecordManager, that provides the transformed record
+[NormalizationPreview]
+; Backend URL
+;url = http://localhost/preview
