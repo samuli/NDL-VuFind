@@ -29,10 +29,6 @@ a, .ui-widget-content a {
 #header {
     color:#fff;
 }
-#header #logo {
-    padding: 9px 0;
-    margin-top: 15px;
-}
 #header .lang li {
     border-color: #eee;
 }
