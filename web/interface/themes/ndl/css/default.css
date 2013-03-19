@@ -17,6 +17,7 @@ body {
     padding: 0;
     color: rgb(70,70,70);
     -webkit-text-size-adjust: 100%;
+    position:relative;
     width:100%;
 }
 .backgroundContainer {
