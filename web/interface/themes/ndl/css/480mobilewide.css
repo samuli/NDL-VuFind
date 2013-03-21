@@ -1,10 +1,10 @@
-@media only screen and (max-device-width: 760px) {
+@media only screen and (max-device-width: 730px) {
     body,html {
         overflow-x:hidden;
     } 
 }
 
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 730px) {
     
     /* General */
     .backgroundContainer {
@@ -34,7 +34,11 @@
     }
     
     .header-home #searchFormHeader {
-        padding-top: 20px;
+        padding-top: 10px;
+    }
+    
+    #searchFormHeader #searchFormContainer {
+        padding: 10px 0;
     }
     
     #headerTop .grid_8 {
@@ -55,7 +59,7 @@
 
     #headerBottom > .grid_8 {
         position: absolute;
-        left:313px;
+        left:167px;
     }
     
     .menuLogin {
@@ -77,13 +81,23 @@
     a.feedbackButton {
         display:none;
     }
-    
-    #blurb h2 {
-        font-size: 1.8em;
+    #blurb {
+        margin-top:20px;
     }
-    
+    #blurb h2 {
+        font-size: 1.9em;
+    }
+    #blurb h3 {
+        font-size:1.2em;
+    }
     #headerBottom .grid_14.static {
         width: 430px;
+        margin-left: 0;
+    }
+    #headerBottom .grid_8,
+    .content .infoBoxText.grid_8 {
+        width:300px;
+        z-index:2;
     }
           
     
@@ -93,6 +107,7 @@
     }
     .content .advanced-link-wrapper.grid_7 {
         width: auto;
+        margin:0;
     }
     #searchForm_input {
         width:195px;
@@ -103,27 +118,61 @@
     
     /* Front page */
     
-    #introduction ul {
-        width:230px;
+    #introduction {
+        margin-bottom:-1px;
     }
-    
+   
     ul.documentTypes li {
-        float: none;
-        width: 100%;
+        float: left;
+        line-height: 1.7em;
+        width: 47%;
     }
-    
+    #introduction .grid_9.documentTypes {
+        width:100%;
+    }
     #content-carousel {
         display:none;
     }
-    
+    #introduction .grid_10 {
+        margin: 0;
+        width: 100%;
+    }
     #introduction ul {
         clear:both;
         font-size:1.230em;
     }
     
+    
+    #introduction.section div.grid_14 {
+        clear:both;
+        width:470px;
+        margin-bottom:0;
+        padding-bottom:0;
+    }
+    #introduction.section div.grid_14 #siteDescription {
+        padding:20px;
+    }
+    #introduction.section div.grid_10 {
+        margin-bottom:0;
+        padding-bottom:0px;
+        overflow: visible;
+        width:480px;
+        margin:0;
+    }
     #popularSearches ul {
         width:180px;
         
+    }
+    #popular-map .grid_10 {
+        display:none;
+    }
+    #popular-map .grid_14 {
+        margin: 0;
+        padding: 10px 30px 30px;
+        width: 470px;
+    }
+    #popular-map #topSearches {
+        padding:0;
     }
     
     /* Search results: header */
@@ -175,10 +224,23 @@
         padding-right:5px;
     }
     
+    /* Content */
+    .module-Content #main > .menu {
+        display:none;
+    }
+    .module-Content #main .content .grid_17 {
+        width:470px;
+        padding-left:0;
+    }
+    
     /* Footer */
     
     #footer {
         text-align:center;
+    }
+    
+    .footerLogo img[alt="KDK-logo"] {
+        margin-left:15px;
     }
     
     /*
