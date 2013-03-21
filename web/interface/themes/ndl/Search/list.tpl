@@ -1,7 +1,6 @@
 <!-- START of: Search/list.tpl -->
 {* Listing Options *}
 <div class="resultHeader">
-
   <div class="resultTerms">
     <div class="content">
       {if $searchType == 'advanced'}
@@ -34,6 +33,18 @@
       {/if}
     </div> {* content *}
   </div> {* resultTerms *}
+  <div class="resultRecommendations">
+    <div class="content">
+      <div class="grid_24">
+        {* Recommendations *}
+        {if $topRecommendations}
+          {foreach from=$topRecommendations item="recommendations"}
+            {include file=$recommendations}
+          {/foreach}
+        {/if}
+      </div>
+    </div>
+  </div>
   <div class="resultViewOptions">
     <div class="content">
       <div class="resultNumbers">
@@ -81,15 +92,6 @@
       </div> {* resultOptions *}
     </div> {* content *}
   </div> {* resultViewOptions *}
-
-  <div class="resultRecommendations">
-    {* Recommendations *}
-    {if $topRecommendations}
-      {foreach from=$topRecommendations item="recommendations"}
-        {include file=$recommendations}
-      {/foreach}
-    {/if}
-  </div>
   <div class="resultDatesHeader {if !empty($visFacets.main_date_str[0])}expanded{/if}">
     <div class="content">
       <span class="dateVisHandle">{translate text='Results timeline'}<span class="dateVisHelp {if !empty($visFacets.main_date_str[0])}visible{/if}"><span class="infoIndicator">i</span>{translate text='You can narrow the search by selecting a period on the timeline'}</span></span>

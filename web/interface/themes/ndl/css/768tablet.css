@@ -1,10 +1,12 @@
+@media only screen and (max-device-width: 1020px) {
+    body,html {
+        overflow-x:hidden;
+    } 
+}
+
 @media only screen and (max-width: 1020px) {
     
     /* General */
-    body,html {
-        overflow-x:hidden;
-    }
-    
     .backgroundContainer {
         width:100%;
         margin:0 auto;
@@ -449,7 +451,7 @@
     }
 
     .content .prefix_11 {
-      padding-left: 330;
+      padding-left: 330px;
     }
 
     .content .prefix_12 {
