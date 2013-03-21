@@ -327,6 +327,9 @@ class MarcRecord extends IndexRecord
         foreach ($fields as $field) {
             $subfields = $field->getSubfields();
             foreach ($subfields as $subfield) {
+                if (in_array($subfield->getCode(), array('6', '8'))) {
+                    continue;
+                }
                 $toc .= $subfield->getData();
             }
         }
