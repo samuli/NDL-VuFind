@@ -42,8 +42,10 @@ function checkItemStatuses() {
                             for (x=0; x<result.locationList.length; x++) {
                                 locationListHTML += '<div class="groupLocation">';
                                 if (result.use_unknown_status) {
-                                    locationListHTML += '<span>' 
-                                        + result.locationList[x].location + '</span> ';
+                                    if (result.locationList[x].location) {
+                                        locationListHTML += '<span>' 
+                                            + result.locationList[x].location + '</span> ';
+                                    }
                                 } else if (result.locationList[x].availability) {
                                     locationListHTML += '<span class="availableLoc">' 
                                         + result.locationList[x].location + '</span> ';
