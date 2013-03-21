@@ -814,7 +814,8 @@ class Voyager implements DriverInterface
                     'duedate' => $dueDate,
                     'number' => $number,
                     'requests_placed' => $requests_placed,
-                    'returnDate' => $returnDate
+                    'returnDate' => $returnDate,
+                    'use_unknown_message' => in_array('No information available', $row['STATUS_ARRAY'])
                 );
 
                 // Parse Holding Record
@@ -1536,7 +1537,7 @@ class Voyager implements DriverInterface
     protected function processMyCallSlipsData($sqlRow)
     {
         $available = ($sqlRow['STATUS'] == 4) ? true : false;
-        $expireDate = translate("Unknown");
+        $expireDate = '';
         $processedDate = '';
         $statusDate = '';
         // Convert Voyager Format to display format
@@ -1573,8 +1574,9 @@ class Voyager implements DriverInterface
             'status' => $sqlRow['STATUS_DESC'],
             'statusDate' => $statusDate,
             'location' => $this->getLocationName($sqlRow['PICKUP_LOCATION_ID']),
+            'created' => $createDate,
             'processed' => $processedDate,
-            'create' => $createDate,
+            'expired' => $expireDate,
             'reply' => $sqlRow['REPLY_NOTE'],
             'available' => $available,
             'cancelled' => $sqlRow['STATUS'] == 7 ? $statusDate : false,

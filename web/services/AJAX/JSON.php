@@ -1022,7 +1022,8 @@ class JSON extends Action
                 ($record[0]['reserve'] == 'Y' ? 'true' : 'false'),
             'reserve_message' => $record[0]['reserve'] == 'Y'
                 ? translate('on_reserve') : translate('Not On Reserve'),
-            'callnumber' => htmlentities($callNumber, ENT_COMPAT, 'UTF-8')
+            'callnumber' => htmlentities($callNumber, ENT_COMPAT, 'UTF-8'),
+            'use_unknown_status' => $use_unknown_status
         );
     }
 
@@ -1094,7 +1095,8 @@ class JSON extends Action
                 ($record[0]['reserve'] == 'Y' ? 'true' : 'false'),
             'reserve_message' => $record[0]['reserve'] == 'Y'
                 ? translate('on_reserve') : translate('Not On Reserve'),
-            'callnumber' => false
+            'callnumber' => false,
+            'use_unknown_status' => $use_unknown_status
         );
     }
 

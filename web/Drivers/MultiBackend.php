@@ -4,7 +4,7 @@
  *
  * PHP version 5
  *
- * Copyright (C) The National Library of Finland 2012.
+ * Copyright (C) The National Library of Finland 2012-2013.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -680,13 +680,14 @@ class MultiBackend implements DriverInterface
      * function.
      *
      * @param array $details An array of item data
+     * @param array $patron  Patron from patronLogin
      *
      * @return string Data for use in a form field
      * @access public
      */
-    public function getCancelCallSlipDetails($details)
+    public function getCancelCallSlipDetails($details, $patron)
     {
-        $source = $this->getSource($details['id']);
+        $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
         if ($driver) {
             $details = $this->stripIdPrefixes($details, $source);
@@ -714,6 +715,75 @@ class MultiBackend implements DriverInterface
         if ($driver) {
             $details = $this->stripIdPrefixes($details, $source);
             return $driver->changePassword($details);
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+    
+    /**
+     * Get UB Request Details
+     *
+     * This is responsible for getting information on whether a UB request
+     * can be made and the possible pickup locations
+     *
+     * @param array $details BIB, item and patron information
+     *
+     * @return bool|array False if request not allowed, or an array of associative 
+     * arrays with locationID and locationDisplay keys keyed by library
+     * @access public
+     */
+    public function getUBRequestDetails($details)
+    {
+        $source = $this->getSource($details['id']);
+        $driver = $this->getDriver($source);
+        if ($driver && is_callable(array($driver, 'getUBRequestDetails'))) {
+            $details = $this->stripIdPrefixes($details, $source, array('id', 'item_id'));
+            return $driver->getUBRequestDetails($details);
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+    
+    /**
+     * Get UB Pickup Locations
+     * 
+     * This is responsible for getting a list of possible pickup locations for a library
+     *
+     * @param array $details BIB, item, pickupLib and patron information
+     *
+     * @return boo|array False if request not allowed, or an array of  
+     * locations.
+     * @access public
+     */
+    public function getUBPickupLocations($details)
+    {
+        $source = $this->getSource($details['id']);
+        $driver = $this->getDriver($source);
+        if ($driver && is_callable(array($driver, 'getUBPickupLocations'))) {
+            $details = $this->stripIdPrefixes($details, $source, array('id'));
+            return $driver->getUBPickupLocations($details);
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+    
+    /**
+     * Place UB Request
+     *
+     * Attempts to place an UB request on a particular item and returns
+     * an array with result details or a PEAR error on failure of support classes
+     *
+     * @param array $details An array of item and patron data
+     *
+     * @return mixed An array of data on the request including
+     * whether or not it was successful and a system message (if available) or a
+     * PEAR error on failure of support classes
+     * @access public
+     */
+    public function placeUBRequest($details)
+    {
+        $source = $this->getSource($details['id']);
+        $driver = $this->getDriver($source);
+        if ($driver) {
+            $details = $this->stripIdPrefixes($details, $source, array('id', 'item_id'));
+            return $driver->placeUBRequest($details);
         }
         return new PEAR_Error('No suitable backend driver found');
     }
@@ -749,20 +819,21 @@ class MultiBackend implements DriverInterface
         // If driver not available, return default values
         switch ($function) {
         case 'Holds':
-            return Array(
+            return array(
                 'function' => 'placeHold',
                 'HMACKeys' => 'id',
                 'extraHoldFields' => 'requiredByDate:pickUpLocation',
                 'defaultRequiredDate' => '1:0:0'
             );
         case 'cancelHolds':
-            return Array(
+            return array(
                 'function' => 'cancelHolds',
                 'HMACKeys' => 'id'
             );
         case 'Renewals':
         case 'CallSlips':
-            return Array();
+        case 'UBRequests':
+            return array();
         default:
             error_log("MultiBackend: unhandled getConfig function: '$function'");
         }
@@ -850,7 +921,7 @@ class MultiBackend implements DriverInterface
                     $value, $source, $modifyFields
                 );
             } else {
-                if (!is_numeric($key) && in_array($key, $modifyFields)) {
+                if (!is_numeric($key) && in_array($key, $modifyFields) && $value !== '') {
                     $array[$key] = $source . '.' . $value; 
                 }
             }

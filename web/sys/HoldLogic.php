@@ -193,6 +193,7 @@ class HoldLogic
         }
         $checkHolds = $this->catalog->checkFunction("Holds", $id);
         $checkCallSlips = $this->catalog->checkFunction("CallSlips", $id);
+        $checkUBRequests = $this->catalog->checkFunction("UBRequests", $id);
         if (count($result)) {
             foreach ($result as $copy) {
                 $show = !in_array($copy['location'], $this->hideHoldings);
@@ -223,6 +224,19 @@ class HoldLogic
                             // If we are unsure whether call slip options are available,
                             // set a flag so we can check later via AJAX:
                             $copy['checkCallSlip'] = (strcmp($copy['addCallSlipLink'], 'check') == 0)
+                                ? true : false;
+                        }
+                    }
+                    if ($checkUBRequests !== false) {
+                        if (isset($copy['addUBRequestLink']) && $copy['addUBRequestLink']) {
+                            $copy['UBRequestLink'] = (strcmp($copy['addUBRequestLink'], 'block') == 0)
+                                ? "?errorMsg=ub_request_error_blocked"
+                                : $this->_getUBRequestDetails(
+                                    $copy, $checkUBRequests['HMACKeys']
+                                );
+                            // If we are unsure whether UB request options are available,
+                            // set a flag so we can check later via AJAX:
+                            $copy['checkUBRequest'] = (strcmp($copy['addUBRequestLink'], 'check') == 0)
                                 ? true : false;
                         }
                     }
@@ -273,6 +287,7 @@ class HoldLogic
             }
             $checkHolds = $this->catalog->checkFunction("Holds", $id);
             $checkCallSlips = $this->catalog->checkFunction("CallSlips", $id);
+            $checkUBRequests = $this->catalog->checkFunction("UBRequests", $id);
             
             if (is_array($holdings)) {
                 // Generate Links
@@ -336,6 +351,21 @@ class HoldLogic
                                 // If we are unsure whether call slip options are available,
                                 // set a flag so we can check later via AJAX:
                                 $holdings[$location_key][$copy_key]['checkCallSlip'] = (strcmp($copy['addCallSlipLink'], 'check') == 0)
+                                    ? true : false;
+                            }
+                        }
+                        if ($checkUBRequests !== false) {
+                            if (isset($copy['addUBRequestLink']) && $copy['addUBRequestLink']) {
+                                unset($copy['item_id']);
+                                unset($copy['mfhd_id']);
+                                $copy['UBRequestLink'] = (strcmp($copy['addUBRequestLink'], 'block') == 0)
+                                    ? "?errorMsg=ub_request_error_blocked"
+                                    : $this->_getUBRequestDetails(
+                                        $copy, $checkUBRequests['HMACKeys']
+                                    );
+                                // If we are unsure whether UB request options are available,
+                                // set a flag so we can check later via AJAX:
+                                $copy['checkUBRequest'] = (strcmp($copy['addUBRequestLink'], 'check') == 0)
                                     ? true : false;
                             }
                         }
@@ -422,6 +452,46 @@ class HoldLogic
         $urlParams = "?" . implode("&", $queryString);
 
         $link = $siteUrl."/Record/".urlencode($id)."/CallSlip".$urlParams."#tabnav";
+
+        return $link;
+    }
+
+    /**
+     * Get UB Request Form
+     *
+     * Supplies holdLogic with the form details required to place a UB request
+     *
+     * @param array $details  An array of item data
+     * @param array $HMACKeys An array of keys to hash
+     *
+     * @return string A url link (with HMAC key)
+     * @access private
+     */
+    private function _getUBRequestDetails($details, $HMACKeys)
+    {
+        global $configArray;
+
+        $siteUrl = $configArray['Site']['url'];
+        $id = $details['id'];
+
+        // Generate HMAC
+        $HMACkey = generateHMAC($HMACKeys, $details);
+
+        // Add Params
+        foreach ($details as $key => $param) {
+            $needle = in_array($key, $HMACKeys);
+            if ($needle) {
+                $queryString[] = $key. "=" .urlencode($param);
+            }
+        }
+
+        //Add HMAC
+        $queryString[] = "hashKey=" . $HMACkey;
+
+        // Build Params
+        $urlParams = "?" . implode("&", $queryString);
+
+        $link = $siteUrl."/Record/".urlencode($id)."/UBRequest".$urlParams."#tabnav";
 
         return $link;
     }

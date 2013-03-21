@@ -33,6 +33,18 @@
     {translate text="hold_error_blocked"}
 {/if}
 
+{assign var="ublink" value=false}
+{foreach from=$holdings item=holding}
+  {if !$ublink}
+    {foreach from=$holding item=row}
+      {if !$ublink && $row.UBRequestLink}
+        <a class="UBRequestPlace checkUBRequest" href="{$row.UBRequestLink|escape}"><span>{translate text="ub_request_check"}</span></a>
+        {assign var="ublink" value=true}
+      {/if}
+    {/foreach}
+  {/if}
+{/foreach}
+
 {if !empty($holdingURLs) || $holdingsOpenURL}
   <h5>{translate text="Internet"}</h5>
   {if !empty($holdingURLs)}

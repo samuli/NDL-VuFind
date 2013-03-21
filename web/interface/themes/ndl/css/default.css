@@ -1115,7 +1115,7 @@ div.dialogLoading {
     height:100%;
 }
 
-.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability {
+.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
@@ -2332,7 +2332,7 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 20px;
     margin-right:1em;
 }
-.checkRequest, .checkCallSlipRequest {
+.checkRequest, .checkCallSlipRequest, .checkUBRequest {
     background-image:url(../images/fugue/checkRequest.png);
     background-repeat:no-repeat;
     padding-left:18px;
@@ -3660,7 +3660,7 @@ p.citationText {
 .myResearch .dueDate {
     clear: both;
     float: left;
-    margin: 0 0 0 126px;
+    margin: 0 0 0 130px;
     width: 284px;
 }
 

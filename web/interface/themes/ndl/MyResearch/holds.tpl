@@ -13,6 +13,9 @@
     {if $callSlipResults.success}
       <div class="holdsMessage"><p class="success">{translate text=$callSlipResults.status}</p></div>
     {/if}
+    {if $UBRequestResults.success}
+      <div class="holdsMessage"><p class="success">{translate text=$UBRequestResults.status}</p></div>
+    {/if}
 
     {if $errorMsg}
        <div class="holdsMessage"><p class="error">{translate text=$errorMsg}</p></div>
@@ -31,8 +34,8 @@
     <div class="bulkActionButtons">
         <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div>
         <div class="floatright">
-          <input type="submit" class="button holdCancel" name="cancelSelected" value="{translate text="hold_cancel_selected"}" onclick="return confirm('{translate text="confirm_hold_cancel_selected_text}')" />
-          <input type="submit" class="button holdCancelAll" name="cancelAll" value="{translate text='hold_cancel_all'}" onclick="return confirm('{translate text="confirm_hold_cancel_all_text}')" />
+          <input type="submit" class="button buttonFinna holdCancel" name="cancelSelected" value="{translate text="hold_cancel_selected"}" onclick="return confirm('{translate text="confirm_hold_cancel_selected_text}')" />
+          <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAll" value="{translate text='hold_cancel_all'}" onclick="return confirm('{translate text="confirm_hold_cancel_all_text}')" />
         </div>
         <div class="clear"></div>
       </div>
@@ -184,11 +187,12 @@
   <form name="cancelCallSlipForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelCallSlip">
 
     <div class="bulkActionButtons">
-        <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes floatleft" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div>
+        <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div>
         <div class="floatright">
-          <input type="submit" class="button holdCancel" name="cancelSelectedCallSlips" value="{translate text="call_slip_cancel_selected"}" onclick="return confirm('{translate text="confirm_call_slip_cancel_selected_text}')" />
-          <input type="submit" class="button holdCancelAll" name="cancelAllCallSlips" value="{translate text='call_slip_cancel_all'}" onclick="return confirm('{translate text="confirm_call_slip_cancel_all_text}')" />
+          <input type="submit" class="button buttonFinna holdCancel" name="cancelSelectedCallSlips" value="{translate text="call_slip_cancel_selected"}" onclick="return confirm('{translate text="confirm_call_slip_cancel_selected_text}')" />
+          <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAllCallSlips" value="{translate text='call_slip_cancel_all'}" onclick="return confirm('{translate text="confirm_call_slip_cancel_all_text}')" />
         </div>
+        <div class="clear"></div>
       </div>
 
     <div class="clear"></div>
@@ -261,14 +265,16 @@
               <strong>{translate text='Notes'}:</strong> {$resource.notes|escape}<br/>
             {/if}
 
-        {if is_array($resource.format)}
-        {assign var=mainFormat value=$resource.format.0} 
-        {assign var=displayFormat value=$resource.format|@end} 
-        {else}
-        {assign var=mainFormat value=$resource.format} 
-        {assign var=displayFormat value=$resource.format} 
-        {/if}
-        <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
+            {if is_array($resource.format)}
+              {assign var=mainFormat value=$resource.format.0} 
+              {assign var=displayFormat value=$resource.format|@end} 
+            {else}
+              {assign var=mainFormat value=$resource.format} 
+              {assign var=displayFormat value=$resource.format} 
+            {/if}
+            {if $displayFormat}
+              <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
+            {/if}
 
             {if $resource.ils_details.volume}
               <strong>{translate text='Volume'}:</strong> {$resource.ils_details.volume|escape}<br />
@@ -280,7 +286,11 @@
             </div>
             <div class="dueDate">
               {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-              {translate text=$source prefix='source_'},
+              {if $resource.ils_details.institution_name}
+                {translate text=$resource.ils_details.institution_name prefix='library_'}
+              {else}
+                {translate text=$source prefix='source_'}
+              {/if}
             {* Depending on the ILS driver, the "location" value may be a string or an ID; figure out the best value to display... *}
             {assign var="pickupDisplay" value=""}
             {assign var="pickupTranslate" value="0"}
@@ -298,12 +308,12 @@
               {/if}
             {/if}
             {if !empty($pickupDisplay)}
-              <strong>{translate text='pick_up_location'}:</strong>
+              , <strong>{translate text='pick_up_location'}:</strong>
               {if $pickupTranslate}{translate text=$pickupDisplay}{else}{$pickupDisplay|escape}{/if}
-              <br />
             {/if}
+            <br />
 
-            <strong>{translate text='Created'}:</strong> {$resource.ils_details.create|escape}
+            {if $resource.ils_details.created}<strong>{translate text='Created'}:</strong> {$resource.ils_details.created|escape}{/if}
             {if $resource.ils_details.processed}<br/><strong>{translate text='Processed'}:</strong> {$resource.ils_details.processed|escape}{/if}
             <br />
 

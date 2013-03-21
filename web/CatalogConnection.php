@@ -249,6 +249,35 @@ class CatalogConnection
     }
     
     /**
+     * Check UB Requests
+     *
+     * A support method for checkFunction(). This is responsible for checking
+     * the driver configuration to determine if the system supports call slips.
+     *
+     * @param string $functionConfig The UB request configuration values
+     *
+     * @return mixed On success, an associative array with specific function keys
+     * and values either for placing requests via a form; on failure, false.
+     * @access private
+     */
+    private function _checkMethodUBRequests($functionConfig)
+    {
+        global $configArray;
+        $response = false;
+
+        if (method_exists($this->driver, 'placeUBRequest')
+            && isset($functionConfig['HMACKeys'])
+        ) {
+            $response = array('function' => "placeUBRequest");
+            $response['HMACKeys'] = explode(":", $functionConfig['HMACKeys']);
+            if (isset($functionConfig['extraFields'])) {
+                $response['extraFields'] = $functionConfig['extraFields'];
+            }
+        }
+        return $response;
+    }
+    
+    /**
      * Check Change Password
      *
      * A support method for checkFunction(). This is responsible for checking
@@ -317,6 +346,35 @@ class CatalogConnection
         // all requests are valid - failure can be handled later after the user
         // attempts to place an illegal hold
         return true;
+    }
+    
+    /**
+     * Check UB Request is Valid
+     *
+     * This is responsible for checking if a universal borrowing request is valid 
+     *
+     * @param string $id     A Bibliographic ID
+     * @param array  $data   Collected Holds Data
+     * @param array  $patron Patron related data
+     *
+     * @return mixed The result of the checkRequestIsValid function if it
+     *               exists, true if it does not
+     * @access public
+     */
+    public function checkUBRequestIsValid($id, $data, $patron)
+    {
+        $method = array($this->driver, 'getUBRequestDetails');
+        if (is_callable($method)) {
+            $details = array(
+                'id' => $id,
+                'item_id' => $data['item_id'],
+                'patron' => $patron
+            );
+            return $this->driver->getUBRequestDetails($details);
+        }
+        // If the driver has no getUBRequestDetails method, we will assume that
+        // UB requests cannot be made.
+        return false;
     }
     
     /**
