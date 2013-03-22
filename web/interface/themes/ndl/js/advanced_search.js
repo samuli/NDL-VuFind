@@ -150,3 +150,8 @@ function jsEntityEncode(str)
     var new_str = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
     return new_str;
 }
+
+// Fix for the submit button in touch devices
+$('.advSearchFooter input[type="submit"]').bind('touchstart', function() {
+    $(this).click();
+});

@@ -34,7 +34,8 @@ $(document).ready(function() {
       $("#zoomPath").slider("option", "value", $("#selectionMap").geomap("option", "zoom")); 
     }
   });
-  $("#selectionMapTools input").click(function() {
+  $("#selectionMapTools input").bind('click touchstart', function() {
+    if (!$(this).is(':checked')) $(this).attr('checked', true);
     $("#selectionMap").geomap("option", "mode", $(this).val());
     $("#selectionMapHelp").children().hide();
     switch ($(this).val()) {
@@ -43,11 +44,11 @@ $(document).ready(function() {
       case 'dragBox': $("#selectionMapHelpRectangle").show(); break;
     }
   });
-  $("#zoomControlPlus").click(function() {
+  $("#zoomControlPlus").bind('click touchstart', function() {
     $("#selectionMap").geomap("zoom", 1);
     $("#zoomPath").slider("option", "value", $("#selectionMap").geomap("option", "zoom")); 
   });
-  $("#zoomControlMinus").click(function() {
+  $("#zoomControlMinus").bind('click touchstart', function() {
     $("#selectionMap").geomap("zoom", -1);
     $("#zoomPath").slider("option", "value", $("#selectionMap").geomap("option", "zoom")); 
   });

@@ -2,6 +2,17 @@
     body,html {
         overflow-x:hidden;
     } 
+    
+    #headerMenu > li > a:hover > span:first-child {
+        color: #fff;
+    }
+    
+    #selectionMapContainer #zoomRange {
+        display:none;
+    }
+    #selectionMapContainer #zoomControlMinus {
+        margin-top:5px;
+    }
 }
 
 @media only screen and (max-width: 730px) {
@@ -16,7 +27,7 @@
     #logo {
     }
     #logo img {
-        max-width: 710px;
+        max-width: 470px;
     }
     
     /*  Header */
@@ -27,6 +38,10 @@
     .feedbackButton.fixed {
         position:absolute;
         top:40px;
+    }
+    
+    #header {
+        margin-top:0px;
     }
     
     #headerTop .grid_12 {
@@ -85,10 +100,10 @@
         margin-top:20px;
     }
     #blurb h2 {
-        font-size: 1.9em;
+        font-size: 1.86em;
     }
     #blurb h3 {
-        font-size:1.2em;
+        font-size:1.15em;
     }
     #headerBottom .grid_14.static {
         width: 430px;
@@ -99,7 +114,7 @@
         width:300px;
         z-index:2;
     }
-          
+    
     
     /* Header: Search Box */
     .content .searchFormWrapper.grid_16 {
@@ -108,6 +123,8 @@
     .content .advanced-link-wrapper.grid_7 {
         width: auto;
         margin:0;
+        left: 0;
+        float:right;
     }
     #searchForm_input {
         width:195px;
@@ -119,7 +136,7 @@
     /* Front page */
     
     #introduction {
-        margin-bottom:-1px;
+        margin-bottom:-1px; /* fix for gray horizontal line */
     }
    
     ul.documentTypes li {
@@ -141,6 +158,7 @@
         clear:both;
         font-size:1.230em;
     }
+    
     
     
     #introduction.section div.grid_14 {
@@ -175,6 +193,10 @@
         padding:0;
     }
     
+    #nav {
+        font-size:1.18em;
+    }
+    
     /* Search results: header */
     
     .dateVis { 
@@ -189,6 +211,10 @@
     
     .sidegroup .dynatree-title {
         white-space:normal;
+    }
+    
+    ul.filters span {
+        max-width: 110px;
     }
     
     /* Advanced seach */

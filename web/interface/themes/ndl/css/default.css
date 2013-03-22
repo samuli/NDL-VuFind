@@ -188,6 +188,10 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     text-decoration: none;
 }
 
+#headerMenu ul.subNav.activeTouch {
+    display:block;
+}
+
 /*** Hide styled select elements ****/
 .styledDropdowns, .searchForm_styled, .jumpMenu, .resultOptionLimit select {
     visibility:hidden;
@@ -1956,6 +1960,7 @@ ul.filters span {
     margin-top:3px;
     display:inline-block;
     word-wrap: break-word;
+    max-width: 170px;
 }
 #sidebarRecommend div.sidegroup {
     margin-top: 1.2em;
@@ -3588,9 +3593,6 @@ p.citationText {
 }
 .group .searchRelated {
     position: relative;
-}
-.searchGroups {
-    margin-bottom: 30px;
 }
 .searchGroups .searchGroupDetails {
     float: right;
