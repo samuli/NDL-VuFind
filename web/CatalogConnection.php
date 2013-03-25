@@ -367,7 +367,7 @@ class CatalogConnection
         if (is_callable($method)) {
             $details = array(
                 'id' => $id,
-                'item_id' => $data['item_id'],
+                'item_id' => isset($data['item_id']) ? $data['item_id'] : null,
                 'patron' => $patron
             );
             return $this->driver->getUBRequestDetails($details);
