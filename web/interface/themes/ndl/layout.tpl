@@ -66,8 +66,8 @@
     {css media="screen, projection" filename="default_custom.css"}
     {css media="screen, projection" filename="home_custom.css"}
     {css media="screen, projection" filename="768tablet.css"}
-{* The mobile styles below not used just yet. 
     {css media="screen, projection" filename="480mobilewide.css"}
+{* The mobile styles below not used just yet. 
     {css media="screen, projection" filename="320mobile.css"}
 *}
     {css media="screen, projection" filename="settings.css"}
@@ -174,9 +174,20 @@
       {js filename="html5.js"}
     <![endif]-->
 
-    {* For mobile devices *}
-    <meta name='viewport' content="width=720" />
-
+   
+    {* Viewport *}
+    <meta name="viewport" content=""/>
+    <script type="text/javascript">
+    {literal}
+    var w = window.screen.width;
+    if (w <= 1020 && w > 480) {
+        $('meta[name=viewport]').attr('content','width=731');
+    }
+    else if (w <= 480) {
+        $('meta[name=viewport]').attr('content','width=481');
+    }
+    {/literal}
+    </script>
 
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">

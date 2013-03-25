@@ -49,7 +49,7 @@
     <div class="content">
       <div class="resultNumbers">
         {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
-        <span class="currentPage">{translate text="Search Results"} {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
+        <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
         <span class="resultTotals">{$recordCount}</span>
          {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
       </div>
@@ -119,6 +119,7 @@
         {foreach from=$sideRecommendations item="recommendations"}
           {include file=$recommendations}
         {/foreach}
+        {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}
       {/if}
     </div>
   </div>

@@ -8,6 +8,7 @@ $(document).ready(function() {
     initSidebarFacets();
     initDateVis();
     initFeedbackScroll();
+    initFixedLimitSearch();
     initCustomEyeCandy();
 });
 
@@ -179,7 +180,6 @@ function initSidebarFacets() {
 }
 
 // Scroll the feedback button 
-
 function initFeedbackScroll() {
    var navHeight = $('#nav').height();
    var feedbackButton = $('a.feedbackButton');
@@ -189,6 +189,31 @@ function initFeedbackScroll() {
       }
       else feedbackButton.removeClass('fixed');
    });
+}
+
+// Scroll the limit search button
+// TODO: Test with Android devices and iOS < 5.0
+function initFixedLimitSearch() {
+   if ($('#sidebarFacets').length > 0) {
+        var sidebarPos = $('#sidebarFacets').offset().top;
+        var sidegroupTitleHeight = $('#sidebarFacets > .sidegroup:first-child > h4:first-child').height();
+        var jumpToFacets = $('#sidebarFacets .jumpToFacets')
+        
+        $(window).scroll(function () { 
+           sidebarPos = $('#sidebarFacets').offset().top; 
+           if ($(document).scrollTop() + $(window).height() >= sidebarPos - 100) {
+               jumpToFacets.fadeOut(200);
+           }
+           else jumpToFacets.fadeIn(200);
+        });
+
+        jumpToFacets.click( function() {
+            $('html,body').animate({
+             scrollTop:sidebarPos-5
+                 }, 200);
+        })
+   }
+   
 }
 
 // Custom jQuery effects
