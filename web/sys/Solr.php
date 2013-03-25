@@ -150,6 +150,11 @@ class Solr implements IndexEngine
     private $_hideComponentParts = false;
     
     /**
+     * Unicode normalization to perform. Valid values are empty, NFC, NFD, NFKC and NFKD.
+     */
+    private $_unicodeNormalizationForm = '';
+    
+    /**
      * Constructor
      *
      * @param string $host  The URL for the local Solr Server
@@ -251,7 +256,14 @@ class Solr implements IndexEngine
         if (isset($searchSettings['General']['hide_component_parts'])) {
         	$this->_hideComponentParts
             	= $searchSettings['General']['hide_component_parts'];
-        }	    	 
+        }	    
+
+        // Use UNICODE normalization?
+        if (isset($configArray['Index']['unicode_normalization_form'])) {
+        	$this->_unicodeNormalizationForm
+            	= $configArray['Index']['unicode_normalization_form'];
+        }	    
+        
     }
 
     /**
@@ -1786,6 +1798,22 @@ class Solr implements IndexEngine
      */
     public function validateInput($input)
     {
+        // Normalize UNICODE form
+        switch ($this->_unicodeNormalizationForm) {
+        case 'NFC': 
+            $input = Normalizer::normalize($input, Normalizer::FORM_C);
+            break;
+        case 'NFD': 
+            $input = Normalizer::normalize($input, Normalizer::FORM_D);
+            break;
+        case 'NFKC': 
+            $input = Normalizer::normalize($input, Normalizer::FORM_KC);
+            break;
+        case 'NFKD': 
+            $input = Normalizer::normalize($input, Normalizer::FORM_KD);
+            break;
+        }
+        
         // Normalize fancy quotes:
         $quotes = array(
             "\xC2\xAB"     => '"', // « (U+00AB) in UTF-8
