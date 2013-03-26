@@ -86,6 +86,10 @@ ul.documentTypes li {
 
 /* Section: Carousel */
 
+#carouselContainer {
+    background-color: #808080;
+}
+
 #carousel {
     visibility: hidden;
 }

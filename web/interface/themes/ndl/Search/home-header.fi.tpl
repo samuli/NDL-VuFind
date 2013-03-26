@@ -1,1 +1,1 @@
-<h2>De crudelitate et pietate et<br />an sit melius amari quam timeri<br />vel et contra</h2>
+<h2><div class="blurbLine">De crudelitate et pietate et</div><div class="blurbLine">an sit melius amari quam timeri</div><div class="blurbLine">vel et contra</div></h2>
