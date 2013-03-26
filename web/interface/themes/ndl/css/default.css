@@ -144,11 +144,18 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     text-decoration: underline;
 }
 
-.menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a, .menuLibCard span {
+.menuHome a, .menuAbout a, .menuFeedback a, .menuHelp a, .menuSearch a, .menuLogin a, .menuLibCard span {
     color: #fff;
     text-decoration: none;
 }
-
+.menuHome a {
+    margin-right:15px;
+}
+.menuHome a span {
+    font-size:28px;
+    position:absolute;
+    top:-3px;
+}
 #nav, .nav {
     background:url(../images/px_69.png);
     padding-bottom: 10px;
@@ -389,34 +396,34 @@ div.sidegroup {
     width: 11px;
 }
 #headerMenu .menuSearch_fi ul.subNav {
-    left: 54px;
-}
-#headerMenu .menuHelp_fi ul.subNav {
-    left: 124px;
-}
-#headerMenu .menuLogin_fi ul.subNav {
-    left: 281px;
-}
-#headerMenu .menuLibCard_fi ul.subNav {
-    left: 400px;
-}
-#headerMenu .menuSearch_sv ul.subNav {
     left: 74px;
 }
+#headerMenu .menuHelp_fi ul.subNav {
+    left: 144px;
+}
+#headerMenu .menuLogin_fi ul.subNav {
+    left: 301px;
+}
+#headerMenu .menuLibCard_fi ul.subNav {
+    left: 420px;
+}
+#headerMenu .menuSearch_sv ul.subNav {
+    left: 94px;
+}
 #headerMenu .menuHelp_sv ul.subNav {
-    left: 164px;
+    left: 184px;
 }
 #headerMenu .menuLogin_sv ul.subNav {
-    left: 328px;
+    left: 348px;
 }
 #headerMenu .menuSearch_en-gb ul.subNav {
-    left: 52px;
+    left: 72px;
 }
 #headerMenu .menuHelp_en-gb ul.subNav {
-    left: 134px;
+    left: 154px;
 }
 #headerMenu .menuLogin_en-gb ul.subNav {
-    left: 310px;
+    left: 330px;
 }
 
 #headerMenu ul.subNav li {
@@ -684,8 +691,13 @@ div.sidegroup {
     top: 6px;
 }
 
+.module-MetaLib .searchbox .overLabelWrapper {
+    left:120px;
+}
+
 #searchFormLabel {
     color: #999999;
+    cursor:text;
     text-indent: -10000em;
     position: absolute;
     top: 5px;
@@ -702,7 +714,12 @@ div.sidegroup {
     box-shadow: none;
 }
 
-
+.module-MetaLib .searchbox #searchForm_input {
+    width: 235px;
+}
+.module-MetaLib .searchbox .clear_input {
+    margin-left: -110px;
+}
 a.clear_input {
     padding-left: 10px;
     position: absolute;
@@ -722,6 +739,12 @@ a.clear_input:hover {
     right: 82px;
 }
 
+.module-MetaLib .searchbox .searchFormWrapper {
+    background:url(../images/nelli-logo.png) no-repeat 7px 5px #FFFFFF;
+}
+.module-MetaLib .searchbox #searchForm_input {
+    background:transparent;
+}
 /*** Header info button ***/
 
 .headerInfoBox {
@@ -1074,22 +1097,17 @@ body > .ui-widget .button {
     text-indent: -9999px;
     width: 70px;
 }
-a.advancedLink {
+.advanced-link-wrapper a {
     color: #fff;
-    display: block;
+    display: inline-block;
     font-size: .923em;
     font-weight:bold;
     height: 24px;
     line-height: 24px;
-    margin: 10px 0 0 0px;
+    margin-top:10px;
+}
+a.advancedLink {
     padding-right: 50px;
-}
-a.advancedLink:hover, a.advancedLink:focus  {
-    color:#fff;
-}
-
-.metalibLink, .showSearchHelp {
-    display:none; /* Hide links in the national theme */
 }
 .advanced-link-wrapper  {
     float:left;
@@ -1745,7 +1763,7 @@ ul.recordSet .resultItemLine2{
     margin: 0;
     max-width: 126px;
 }
-.module-Search .resultListContainer .resultNoImage {
+.resultListContainer .resultNoImage {
     border: 4px solid #CFCFCF;
     display: table;
     height: 118px;
@@ -2093,7 +2111,7 @@ dl.narrowList a {
 .main .contentHeader h1,
 .main .browseHeader h1,
 .main .advSearchHeader h1 {
-    margin:0 0 0 5px;
+    margin:0;
     padding:0;
 }
 .module-Content .contentSection {

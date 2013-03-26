@@ -21,7 +21,7 @@
           </div>
         </div>
         
-        <div class="resultColumn2">
+        <div class="resultColumn2 grid_11">
           <div class="resultItemLine1">
             <a href="{$url}/MetaLib/Record?id={$record.ID.0|escape:"url"}"
             class="title">{if !$record.Title.0}{translate text='Title not available'}{else}{$record.Title.0|highlight}{/if}</a>
@@ -67,7 +67,7 @@
         </div>
       
         <div class="span-3 last addToFavLink">
-          <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}">{translate text='Add to favorites'}</a>
+          <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}"></a>
       
           {* Display the lists that this record is saved to *}
           <div class="savedLists info hide" id="savedLists{$record.ID.0|escape}">

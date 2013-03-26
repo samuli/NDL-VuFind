@@ -7,9 +7,9 @@
     <div class="searchFormWrapper grid_16">
       <div class="overLabelWrapper">
         <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
-        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" title='{translate text="Find"}&hellip;' />
+        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" title='{translate text="Find"}&hellip;' />
       </div>
-  {if $prefilterList}
+        {if $prefilterList}
       <div class="styled_select">
         <select id="searchForm_filter" class="searchForm_styled" name="prefilter">
     {foreach from=$prefilterList item=searchDesc key=searchVal}    
@@ -24,10 +24,9 @@
     </div>
     <div class="advanced-link-wrapper grid_7 push_1">
       <a href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
-  {if $metalibEnabled}
-      <a href="{$path}/MetaLib/Home" class="small last metalibLink">{translate text="MetaLib Search"}</a>
-  {/if}
-      <a href="{$path}/Content/searchhelp" class="small showSearchHelp">{translate text="Search Tips"}</a>
+    {if $metalibEnabled}
+        <a href="{$path}/MetaLib/Home" class="small last metalibLink">{translate text="MetaLib Search"}</a>
+    {/if}
     </div>
     <div class="searchContextHelp">
     {if isset($userLang)}

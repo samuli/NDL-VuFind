@@ -100,6 +100,10 @@
         position:absolute;
         right:5px;
     }
+    
+    .menuHome a span {
+        top: -5px;
+    }
     a.feedbackButton {
         display:none;
     }
@@ -125,6 +129,12 @@
     div.breadcrumbs {
         padding: 0;
         margin-top:6px;
+    }
+    
+    .advanced-link-wrapper a {
+        float:right;
+        margin-top:10px;
+        margin-left:20px;
     }
     
     
@@ -213,6 +223,9 @@
     
     #resultList.grid_17 {
         width:470px;
+    }
+    .content .resultColumn2.grid_11 {
+        width:300px;
     }
     
     /* Search results: header */

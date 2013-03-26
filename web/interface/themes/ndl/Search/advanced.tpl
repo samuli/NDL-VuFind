@@ -1,6 +1,5 @@
 <!-- START of: Search/advanced.tpl -->
 
-{js filename="dropdown.js"}
 <div id="advancedSearchWrapper">
 <form method="get" action="{$url}/Search/Results" id="advSearchForm" name="searchForm" class="search">
   <div class="{*span-10*}">

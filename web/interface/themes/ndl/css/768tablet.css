@@ -73,6 +73,10 @@
         border-left:0;
         margin-top:13px;
     }
+    
+    .advanced-link-wrapper a {
+        margin:0;
+    }
    
     
     /* Header: Search Box */
