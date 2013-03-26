@@ -1650,6 +1650,42 @@ EOT;
         $bibDbName = htmlspecialchars($this->config['Catalog']['database'], ENT_COMPAT, 'UTF-8');
         $localUbId = htmlspecialchars($this->ws_patronHomeUbId, ENT_COMPAT, 'UTF-8');
         
+        // Call PatronRequestsService first to check that UB is an available request type.
+        // Additionally, this seems to be mandatory, as PatronRequestService may fail otherwise.
+        $xml = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:serviceParameters xmlns:ser="http://www.endinfosys.com/Voyager/serviceParameters">
+  <ser:parameters>
+    <ser:parameter key="bibId">
+      <ser:value>$bibId</ser:value>
+    </ser:parameter>
+    <ser:parameter key="bibDbCode">
+      <ser:value>LOCAL</ser:value>
+    </ser:parameter>
+  </ser:parameters>
+  <ser:patronIdentifier lastName="$lastname" patronHomeUbId="$ubId" patronId="$patronId">
+    <ser:authFactor type="B">$barcode</ser:authFactor>
+  </ser:patronIdentifier>
+</ser:serviceParameters>
+EOT;
+        
+        $response = $this->makeRequest(array('PatronRequestsService' => false), array(), 'POST', $xml);
+        
+        if ($response === false) {
+            return false;
+        }
+        // Process
+        $response->registerXPathNamespace('ser', 'http://www.endinfosys.com/Voyager/serviceParameters');
+        $response->registerXPathNamespace('req', 'http://www.endinfosys.com/Voyager/requests');
+        foreach ($response->xpath('//ser:message') as $message) {
+            // Any message means a problem, right?
+            return false; 
+        }
+        if (count($response->xpath("//req:requestIdentifier[@requestCode='UB']")) == 0) {
+            // UB request not available
+            return false;
+        }
+
         $xml =  <<<EOT
 <?xml version="1.0" encoding="UTF-8"?>
 <ser:serviceParameters xmlns:ser="http://www.endinfosys.com/Voyager/serviceParameters">
