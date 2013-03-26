@@ -2,7 +2,8 @@
 
 {if $user->cat_username}
 
-<div class="clear" />
+<div class="clear"></div>
+
 <div class="content">
 
   <h2>{translate text='request_place_text'}</h2>
@@ -60,7 +61,7 @@
     </form>
 
   </div>
-  </div>
+</div>
 
 {else}
   {include file="MyResearch/catalog-login.tpl"}

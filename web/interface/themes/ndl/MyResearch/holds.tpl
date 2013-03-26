@@ -145,9 +145,12 @@
               <br />
             {/if}
 
-            <strong>{translate text='Created'}:</strong> {$resource.ils_details.create|escape},
-            <strong>{translate text='Expires'}:</strong> {$resource.ils_details.expire|escape}
+            {if $resource.ils_details.create}<strong>{translate text='Created'}:</strong> {$resource.ils_details.create|escape},{/if}
+            {if $resource.ils_details.expire}<strong>{translate text='Expires'}:</strong> {$resource.ils_details.expire|escape}{/if}
             <br />
+            {if $resource.ils_details.in_transit}<strong>{translate text='In Transit To'}:</strong> {$resource.ils_details.in_transit|translate_prefix:'library_'|escape}
+            <br />
+            {/if}
 
             {foreach from=$cancelResults.items item=cancelResult key=itemId}
               {if $itemId == $resource.ils_details.item_id && $cancelResult.success == false}

@@ -1299,6 +1299,93 @@ class VoyagerRestful extends Voyager
     }
     
     /**
+     * Get Patron Holds
+     *
+     * This is responsible for retrieving all holds by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's holds on success, PEAR_Error
+     * otherwise.
+     * @access public
+     */
+    public function getMyHolds($patron)
+    {
+        $holds = parent::getMyHolds($patron);
+        
+        if (PEAR::isError($holds)) {
+            return $holds;
+        } 
+
+        // Build Hierarchy
+        $hierarchy = array(
+            'patron' =>  $patron['id'],
+            'circulationActions' => 'requests',
+            'holds' => false
+        );
+
+        // Add Required Params
+        $params = array(
+            "patron_homedb" => $this->ws_patronHomeUbId,
+            "view" => "full"
+        );
+
+        $results = $this->makeRequest($hierarchy, $params);
+
+        if ($results === false) {
+            return new PEAR_Error('System error fetching holds');
+        }
+        
+        $replyCode = (string)$results->{'reply-code'};
+        if ($replyCode != 0 && $replyCode != 8) {
+            return new PEAR_Error('System error fetching holds');
+        }
+        if (isset($results->holds->institution)) {
+            foreach ($results->holds->institution as $institution) {
+                foreach ($institution->hold as $hold) {
+                    $item = $hold->requestItem;
+                    
+                    // Check that this item is not already on the list retrieved from the database
+                    $id = (string)$item->holdRecallId;
+                    foreach ($holds as $hold) {
+                        if ($hold['reqnum'] == $id) {
+                            continue 2;
+                        }
+                    }
+                    
+                    $holds[] = array(
+                        'id' => '',
+                        'type' => (string)$item->holdType,
+                        'location' => (string)$item->pickupLocation,
+                        'expired' => (string)$item->expiredDate 
+                            ? $this->dateFormat->convertToDisplayDate('Y-m-d', (string)$item->expiredDate)
+                            : '',  
+                        // Looks like expired date shows creation date for UB requests, but who knows
+                        'created' => (string)$item->expiredDate 
+                            ? $this->dateFormat->convertToDisplayDate('Y-m-d', (string)$item->expiredDate)
+                            : '',  
+                        'position' => (string)$item->queuePosition,
+                        'available' => (string)$item->status == '2',
+                        'reqnum' => (string)$item->holdRecallId,
+                        'item_id' => (string)$item->itemId,
+                        'volume' => '',
+                        'publication_year' => '',
+                        'title' => (string)$item->itemTitle,
+                        'institution_id' => (string)$institution->attributes()->id,
+                        'institution_name' => (string)$item->dbName,
+                        'institution_dbkey' => (string)$item->dbKey,
+                        'in_transit' => (substr((string)$item->statusText, 0, 13) == 'In transit to')
+                          ? substr((string)$item->statusText, 14) 
+                          : ''
+                    );
+                }
+            }
+        }
+        return $holds;        
+        
+    }
+    
+    /**
      * Get Patron Call Slips. Gets local call slips from the database, 
      * then remote callslips via the API.
      *
