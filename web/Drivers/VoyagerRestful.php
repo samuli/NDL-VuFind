@@ -1337,7 +1337,8 @@ class VoyagerRestful extends Voyager
             return new PEAR_Error('System error fetching call slips');
         }
         
-        if ((string)$results->{'reply-text'} != 'ok') {
+        $replyCode = (string)$results->{'reply-code'};
+        if ($replyCode != 0 && $replyCode != 8) {
             return new PEAR_Error('System error fetching call slips');
         }
         if (isset($results->callslips->institution)) {
