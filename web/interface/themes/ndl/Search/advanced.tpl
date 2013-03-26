@@ -16,10 +16,10 @@
         <div class="error">{translate text=$error}</div>
       {/if}
   
-      <div id="groupJoin" class="searchGroups">
+      <div id="groupJoin" class="searchGroups grid_24">
         <div class="searchGroupDetails">
           <label for="groupJoinOptions">{translate text="search_match"}:</label>
-          <select id="groupJoinOptions" name="join" class="styledDropdowns">
+          <select id="groupJoinOptions" name="join">
             <option value="AND">{translate text="group_AND"}</option>
             <option value="OR"{if $searchDetails and $searchDetails.0.join == 'OR'} selected="selected"{/if}>{translate text="group_OR"}</option>
           </select>

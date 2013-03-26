@@ -1496,7 +1496,6 @@ fieldset.publishDateLimit .ui-slider {
 
 .favoritesList {
     float: left;
-    width: 710px;
 }
 .favoritesList .paginationTop, .favoritesList .resultOptions {
     margin: 0.4em 0 0 0;
@@ -2046,6 +2045,9 @@ dl.narrowList a {
 }
 .pagingDisabled {
     color: #ddd;
+}
+.jumpToFacets {
+    display:none;
 }
 .module-Content .contentSection .content > * {
     max-width:470px;
@@ -3680,7 +3682,7 @@ p.citationText {
 .myResearch.checkedoutList .dueDate,
 .myResearch .favoritesList .resultColumn2,
 .myResearch .favoritesList .dueDate {
-    max-width:80%;
+    max-width:70%;
 }
 
 .myResearchMenu {

@@ -30,7 +30,15 @@
         max-width: 470px;
     }
     
+    #main {
+        overflow-x:hidden;
+    }
+    
     /*  Header */
+    
+    #nav {
+
+    }
     
     .feedbackButton {
         position:absolute;
@@ -115,6 +123,11 @@
         z-index:2;
     }
     
+    div.breadcrumbs {
+        padding: 0;
+        margin-top:6px;
+    }
+    
     
     /* Header: Search Box */
     .content .searchFormWrapper.grid_16 {
@@ -168,7 +181,7 @@
         padding-bottom:0;
     }
     #introduction.section div.grid_14 #siteDescription {
-        padding:20px;
+        padding:10px 20px 20px;
     }
     #introduction.section div.grid_10 {
         margin-bottom:0;
@@ -197,27 +210,78 @@
         font-size:1.18em;
     }
     
+    /* Search results */
+    
+    #resultList.grid_17 {
+        width:470px;
+    }
+    
     /* Search results: header */
     
-    .dateVis { 
-        width:720px;
+    .keepFilters {
+        clear: left;
+        top: 13px;
     }
+    
+    .resultDatesHeader  {
+        display:none;
+    }
+    .currentPage > span:first-child {
+        display:none;
+    }
+    .resultOptions label {
+        display:none;
+    }
+    .resultOptionSort {
+        margin-right:5px;
+    }
+    
+    /* Search results: bottom */
+    .advSearchContent, #authorList, #resultsCollection, #bottomPagination, .searchtools {
+        float: left;
+        margin: 0 5px;
+        width: 460px;
+    }
+    
+    .searchtools > ul li {
+        margin-left: 15px;
+    }
+    
     
     /* Search results: sidebar */
     
-    span.dynatree-node .facetTitle {
-        max-width:110px;
+    #sidebarFacets.grid_6 {
+        width:470px;
     }
-    
-    .sidegroup .dynatree-title {
-        white-space:normal;
-    }
-    
+    span.dynatree-node .facetTitle,
     ul.filters span {
-        max-width: 110px;
+        max-width:300px;
+    }
+    .dynatree-facet,
+    .sidegroup .filters,
+    .sidegroup .navmenu dd{
+        font-size:125%;
+    }
+    .sidegroup dl.collapsible.collapsed dt,
+    .sidegroup dl.collapsible dt {
+        background-position:103% 50%;
+    }
+    #sidebarFacets .jumpToFacets {
+        color:#fff;
+        background:#00A3B5;
+        display:block;
+        border-top-left-radius:10px;
+        cursor:pointer;
+        font-size: 1em;
+        padding: 10px;
+        right:0;
+        position:fixed;
+        bottom:0;
+        z-index:2000;
+        margin:0;
     }
     
-    /* Advanced seach */
+    /* Advanced search */
     #searchHolder .group {
         padding:8px;
     }
@@ -259,6 +323,18 @@
         padding-left:0;
     }
     
+    /* Tabs */
+    
+    .ui-tabs  .ui-tabs-nav > li {
+        border-bottom-left-radius:7px;
+        border-bottom-right-radius:7px;
+        margin: 0 3px 3px 0;
+    }
+    
+    .myResearchMenu {
+        padding: 10px 0;
+    }
+    
     /* Footer */
     
     #footer {
@@ -267,6 +343,12 @@
     
     .footerLogo img[alt="KDK-logo"] {
         margin-left:15px;
+    }
+    
+    /* Modal boxes */
+    
+    body > div.ui-dialog { 
+        max-width:380px;
     }
     
     /*
