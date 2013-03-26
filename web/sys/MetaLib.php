@@ -168,13 +168,16 @@ class MetaLib
             $resource = new Resource();
             $resource->record_id = $id;
             $resource->source = 'MetaLib';
-            if ($resource->find(true)) {
-                return unserialize($resource->data);
+            if ($resource->find(true) && $resource->data !== null) {
+                $data = unserialize($resource->data);
+                if ($data !== null) {
+                    return $data;
+                }
             }
-            return new PEAR_Error('Record not found');
+            PEAR::raiseError(new PEAR_Error('Record not found'));
         }
         if ($index < 1 || $index > count($result['documents'])) {
-            return new PEAR_Error('Invalid record id');
+            PEAR::raiseError(new PEAR_Error('Invalid record id'));
         }
         $result['documents'] = array_slice($result['documents'], $index - 1, 1);
         return $result['documents'][0];
