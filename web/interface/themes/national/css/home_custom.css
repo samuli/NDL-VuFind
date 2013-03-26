@@ -25,6 +25,9 @@
 
 /* Section: Introduction */
 
+.section {
+    padding: 0;
+}
 .section#introduction div[class*="grid"] {
     padding-bottom: 500px; /* Make floated divs seem equally long */
     margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
@@ -36,6 +39,12 @@
 .section#introduction {
     background:#d8f4ed;
 }
+.section#introduction #siteDescription,
+#topSearches {
+    border-right: none;
+    padding: 10px 60px 20px 0;
+}
+
 .section#introduction .grid_10 {
     background:#fff;
 }

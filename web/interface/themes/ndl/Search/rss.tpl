@@ -23,7 +23,7 @@ if ($items>0) {
 if(($type == "carousel") ||
    ($type == "carousel-small") ||
    ($type == "carousel-notext")) {
-    echo "<ul id=\"carousel\"";
+    echo "<ul id=\"NDLCarousel\"";
 
     $classes = "";
     if($type == "carousel-notext") {
@@ -59,20 +59,20 @@ if(($type == "carousel") ||
 
     {/php}
     
-    <ul id="carouselNavi"><li id="prev" /><li id="next" /></ul>
+    <ul id="NDLCarouselNavi"><li id="prev" /><li id="next" /></ul>
 
     {literal}
 
     <script>
         $(document).ready(function(){
-            $('#carousel').carouFredSel({
+            $('#NDLCarousel').carouFredSel({
                 responsive: true,
                 auto: 8000,
                 width: "100%",
                 items: {/literal}{$itemsPerPage}{literal},
                 height: 200,
-                prev: "#carouselNavi #prev",
-                next: "#carouselNavi #next",
+                prev: "#NDLCarouselNavi #prev",
+                next: "#NDLCarouselNavi #next",
                 scroll: {
                   items: 1,
                   duration: 300,
@@ -82,7 +82,7 @@ if(($type == "carousel") ||
             });
     
             $(window).resize(function() {
-                $('#carousel.includeDescription img').each(function(){
+                $('#NDLCarousel.includeDescription img').each(function(){
                     $(this).css(
                         "left",
                         "50%"
@@ -104,16 +104,16 @@ if(($type == "carousel") ||
               
             $(window).resize();
 
-            $('#carouselNavi').css(
+            $('#NDLCarouselNavi').css(
                 "display",
                 "block"
             );
-            $('#carousel').css(
+            $('#NDLCarousel').css(
                 "visibility",
                 "visible"
             );
 
-            $('#carousel li').click(function() {
+            $('#NDLCarousel li').click(function() {
                 var href = $(this).find('a').attr('href');
                 window.location.href = href;
             })

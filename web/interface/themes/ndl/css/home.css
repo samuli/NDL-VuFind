@@ -90,11 +90,11 @@ ul.documentTypes li {
     background-color: #808080;
 }
 
-#carousel {
+#NDLCarousel {
     visibility: hidden;
 }
 
-#carousel li {
+#NDLCarousel li {
     float: left;
     background-repeat: no-repeat;
     background-size: cover;
@@ -103,7 +103,7 @@ ul.documentTypes li {
     height: 200px;
     position: relative;
 }
-#carousel img {
+#NDLCarousel img {
     max-height: 127px;
     max-width: 90%;
     position: absolute;
@@ -111,12 +111,12 @@ ul.documentTypes li {
     /*top: 0;*/
     bottom: 73px;
 }
-#carousel.noText img {
+#NDLCarousel.noText img {
     max-height: 200px;
     bottom: 0;
 }
 
-#carousel h4 {
+#NDLCarousel h4 {
     font-size: 100%;
     width: 90%;
     line-height: 1em;
@@ -127,10 +127,10 @@ ul.documentTypes li {
     overflow: hidden;
     font-weight: normal;
 }
-#carousel.noText h4 {
+#NDLCarousel.noText h4 {
     display: none;
 }
-#carousel.includeDescription h4 {
+#NDLCarousel.includeDescription h4 {
     font-size: 120%;
     background: url("../images/px_69.png") repeat;
     bottom: 0;
@@ -139,12 +139,12 @@ ul.documentTypes li {
     top: auto;
     width: 94%;
 }
-#carousel.includeDescription li:hover h4 {
+#NDLCarousel.includeDescription li:hover h4 {
     position: relative;
     bottom: auto;
     top: 0;
 }
-#carousel.includeDescription p {
+#NDLCarousel.includeDescription p {
     display: none;
     background: url("../images/px_69.png") repeat;
     color: #ddd;
@@ -157,20 +157,20 @@ ul.documentTypes li {
     width: 94%;
     height: 100%;
 }
-#carousel.includeDescription li:hover p {
+#NDLCarousel.includeDescription li:hover p {
     display: block;
 }
-#carousel a,
-#carousel a:hover {
+#NDLCarousel a,
+#NDLCarousel a:hover {
     text-decoration: none;
     color: #ddd;
 }
-#carousel.includeDescription li {
+#NDLCarousel.includeDescription li {
     font-size: 100%;
     text-align: left;
     background-position: center;
 }
-#carousel.includeDescription img {
+#NDLCarousel.includeDescription img {
     max-height: 5000px;
     max-width: 5000px;
     min-height: 100%;
@@ -178,22 +178,22 @@ ul.documentTypes li {
     width: auto;
     height: auto;
 }
-#carouselNavi {
+#NDLCarouselNavi {
     display: none;
     position: relative;
     width: 100%;
 }
-#carouselNavi li {
+#NDLCarouselNavi li {
     position: absolute;
     display: block;
     width: 24px;
     height: 24px;
     top: -112px;
 }
-#carouselNavi #prev {
+#NDLCarouselNavi #prev {
     left: -32px;
 }
-#carouselNavi #next {
+#NDLCarouselNavi #next {
     right: -32px;
 }
 

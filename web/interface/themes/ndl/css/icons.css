@@ -607,17 +607,17 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 
 } 
 
-#carouselNavi #prev {
+#NDLCarouselNavi #prev {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -47px -920px;
 }
-#carouselNavi #prev:hover {
+#NDLCarouselNavi #prev:hover {
     background-position: -679px -920px;
 }
-#carouselNavi #next {
+#NDLCarouselNavi #next {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -47px -984px;
 }
-#carouselNavi #next:hover {
+#NDLCarouselNavi #next:hover {
     background-position: -679px -984px;
 }
