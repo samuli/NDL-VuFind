@@ -2,66 +2,7 @@
 
 /*** Elements with 16-24px icons ***/
 
-.iconlabel, 
-.icon,
-.toggleBox,
-.searchbox .dropdown dt a,
-.openurl_more,
-.advancedLink,
-.advancedSearchHelpButton,
-.paginationMove,
-.fav, .mail, .export, .sms, .export, .cite, .add, .delete, .edit,
-label.invalid ,
-.export img,
-#zoomControlPlus, #zoomControlMinus, 
-body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close,
-body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover,
-.deleteButton,
-.correction .expandSearch,
-a.clear_input,
-.dateVisClear a,
-.dropdown dt a:after,
-.dropdown.catalogAccount dt a:after,
-#advancedSearchWrapper .searchButton,
-#holdingstab,
-#componentstab,
-#commentstab,
-#reviewstab,
-#excerpttab,
-#hierarchytab,
-#maptab,
-#detailstab,
-.searchtools li,
-.citation .moreLink a:after,
-.citation .lessLink a:after,
-.availableLoc, .available:before,
-.checkedoutLoc, .checkedout:before,
-.holdPlace, .holdPlace:before,
-#toggleTree,
-.currentTree, .hierarchyTreeLinkText,
-.selectionMapHelpIcon,
-
-/* Dynatree */
-
-span.dynatree-empty,
-span.dynatree-vline, 
-span.dynatree-connector, 
-span.dynatree-expander, 
-span.dynatree-icon, 
-span.dynatree-checkbox,
-span.dynatree-radio, 
-span.dynatree-drag-helper-img, 
-#dynatree-drop-marker,
-
-/* Datatables */
-
-.dataTable .sorting_asc:after,
-.dataTable .sorting_desc:after,
-.dataTable .sorting:after,
-.dataTables_paginate .paginate_disabled_previous:before,
-.dataTables_paginate .paginate_enabled_previous:before,
-.dataTables_paginate .paginate_enabled_next:after,
-.dataTables_paginate .paginate_disabled_next:after {
+* {
     background-repeat: no-repeat;
     background-position:0 0;
 }
@@ -665,3 +606,18 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
     }
 
 } 
+
+#carouselNavi #prev {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -47px -920px;
+}
+#carouselNavi #prev:hover {
+    background-position: -679px -920px;
+}
+#carouselNavi #next {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -47px -984px;
+}
+#carouselNavi #next:hover {
+    background-position: -679px -984px;
+}

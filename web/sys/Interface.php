@@ -254,6 +254,11 @@ class UInterface extends Smarty
             $this->assign('metalibEnabled', true);
         }
         
+        $rssFeeds = getExtraConfigArray('rss');
+        if (isset($rssFeeds)) {
+            $this->assign('rssFeeds', $rssFeeds);
+        }
+
         $catalog = ConnectionManager::connectToCatalog();
         $this->assign("offlineMode", $catalog->getOfflineMode());
         $hideLogin = isset($configArray['Authentication']['hideLogin'])

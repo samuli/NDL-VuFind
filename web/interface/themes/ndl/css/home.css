@@ -39,6 +39,10 @@
 
 /* Section: Introduction */
 
+.section {
+    padding: 18px 0;
+}
+
 .section#introduction div[class*="grid"] {
     padding-bottom: 500px; /* Make floated divs seem equally long */
     margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
@@ -53,13 +57,17 @@
 .section#introduction .grid_10 {
     background:#fff;
 }
-.section#introduction #siteDescription {
-    padding:10px 20px 20px 0;
+.section#introduction #siteDescription,
+#topSearches {
+    border-right: 6px solid #DDDDDD;
+    margin-right: 20px;
+    padding: 10px 50px 20px 0;
+    height: 100%;
 }
 
 .section#introduction div.grid_10 > div {
     overflow:auto;
-    padding:10px 30px 30px;
+    padding:10px 0 30px;
 }
 .section#introduction ul {
     float:left;
@@ -73,150 +81,116 @@
 ul.documentTypes li {
     float: left;
     width: 47%;
-    line-height: 1.7em;
+    line-height: 1.5em;
 }
 
-/* Home section: Carousel */
-
-.section#content-carousel {
-    background:#808080;
-}
+/* Section: Carousel */
 
 #carousel {
-    position:relative;
-    text-align:center;
-    padding:15px 0;
+    visibility: hidden;
 }
-#carousel .ribbon {
-    margin: 15px 0 0 -5px;
-    overflow:hidden;
+
+#carousel li {
+    float: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: -100000px -100000px;
+    cursor: pointer;
+    height: 200px;
+    position: relative;
+}
+#carousel img {
+    max-height: 127px;
+    max-width: 90%;
     position: absolute;
-    white-space:nowrap;
-    z-index: 100;
-    padding:5px 7px 6px;
+    left: 0;
+    /*top: 0;*/
+    bottom: 73px;
 }
-#carousel .slides_container {
-    text-align:left;
-    width:100%;
-    height:313px;
-    overflow:hidden;
+#carousel.noText img {
+    max-height: 200px;
+    bottom: 0;
 }
-#carousel .slide ul {
-    margin:0;
-    padding:0;
+
+#carousel h4 {
+    font-size: 100%;
+    width: 90%;
+    line-height: 1em;
+    position: absolute;
+    left: 0;
+    top: 125px;
+    /*bottom: 0px;*/
+    overflow: hidden;
+    font-weight: normal;
 }
-#carousel .slide li {
-    position:relative;
-    float:left;
-    overflow:hidden;
-    cursor:pointer;
+#carousel.noText h4 {
+    display: none;
 }
-#carousel .slide img {
-    width:100%;
-    height:auto;
-}
-#carousel .slide .pickup-content {
-    background:url(../images/black_75.png) repeat;
-    position:absolute;
-    z-index:101;
-    top: 253px;
-}
-#carousel .slide .pickup-header {
-    height:60px;
-    font-weight:bold;
-}
-.pickup-header-small {
-    font-size: 0.846em;
-    font-weight:bold;
-}
-#carousel .slide .pickup-header span, #carousel .slide .pickup-header-small span {
-    padding: 10px 12px;
-    display:block;
-}
-#carousel .slide .pickup-text {
-    padding:0 12px 10px;
-    color:#eee;
-    font-size:0.923em;
-}
-#carousel .slide * {
-    color:#fff;
-}
-#carousel .slide a {
+#carousel.includeDescription h4 {
+    font-size: 120%;
+    background: url("../images/px_69.png") repeat;
+    bottom: 0;
     margin: 0;
-    padding: 8px 0 0;
-    white-space:nowrap;
-    text-decoration:none;
-    font-weight:bold;
-    display: block
+    padding: 6px 3%;
+    top: auto;
+    width: 94%;
 }
-#carousel .slide a:hover {
-    color: #fdf07f;
-    text-decoration:none;
+#carousel.includeDescription li:hover h4 {
+    position: relative;
+    bottom: auto;
+    top: 0;
 }
-#carousel .caption {
-    color: #eee;
-    font-style: italic;
+#carousel.includeDescription p {
+    display: none;
+    background: url("../images/px_69.png") repeat;
+    color: #ddd;
+    line-height: 1.2em;
+    position: relative;
+    top: 0;
+    margin: 0;
+    padding: 4px 3%;
+    bottom: 0;
+    width: 94%;
+    height: 100%;
 }
-#carousel .slides_container ~ a {
-    background-image:url(../images/carousel_arrows.png);
-    height:24px;
-    width:12px;
-    display:block;
-    z-index:100;
-}
-#carousel .slides_container ~ a.disabled {
-    display:none;
-}
-#carousel a.prev {
-    background-position:0 0;
-    position:absolute;
-    left:-22px;
-    top:143px;
-}
-#carousel a.prev:hover {
-    background-position:0 -24px;
-}
-#carousel a.next {
-    background-position:-12px 0;
-    right:-22px;
-    top:143px;
-    position:absolute;
-}
-#carousel a.next:hover {
-    background-position:-12px -24px;
-}
-#carousel .pagination {
-    display: inline-block;
-    margin: 14px 0 0;
-    padding: 0;
-    text-align: center;
-    width: auto;
-}
-#carousel .pagination ul,
-#carousel .pagination li {
-    padding:0;
-    margin:0;
-    height:6px;
-    width:6px;
-    float:left;
-}
-    
-#carousel .pagination li {
-    margin-right:6px;
-}
-#carousel .pagination a {
-    background-image: url("../images/carousel_arrows.png");
-    background-position:-2px 8px;
-    border: 0 none;
+#carousel.includeDescription li:hover p {
     display: block;
-    height: 6px;
-    margin: 0;
-    padding: 0;
-    text-indent: -9999px;
-    width: 6px;
 }
-#carousel .pagination .current a {
-    background-position: 8px 8px;
+#carousel a,
+#carousel a:hover {
+    text-decoration: none;
+    color: #ddd;
+}
+#carousel.includeDescription li {
+    font-size: 100%;
+    text-align: left;
+    background-position: center;
+}
+#carousel.includeDescription img {
+    max-height: 5000px;
+    max-width: 5000px;
+    min-height: 100%;
+    min-width: 100%;
+    width: auto;
+    height: auto;
+}
+#carouselNavi {
+    display: none;
+    position: relative;
+    width: 100%;
+}
+#carouselNavi li {
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    top: -112px;
+}
+#carouselNavi #prev {
+    left: -32px;
+}
+#carouselNavi #next {
+    right: -32px;
 }
 
 /* Section: Popular Searches & Map Search */
@@ -226,10 +200,13 @@ ul.documentTypes li {
 }
 
 .section#popular-map .content {
-    border-top: solid 6px #ddd;
-    padding-top: 25px;
     margin-top: 25px;
     margin-bottom: 25px;
+}
+.section#popular-map.noCarousel .content {
+    border-top: #ddd solid 6px;
+    margin-top: 0;
+    padding-top: 25px;
 }
 
 #popularSearches ul:first-child {

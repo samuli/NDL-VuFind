@@ -124,6 +124,9 @@
     {* Load SlidesJS *}
     {js filename="slides.min.jquery.js"}
     
+    {* Load carouFredSel *}
+    {js filename="jquery.carouFredSel-6.2.0-packed.js"}
+    
     {* Load ndl theme functions *}
     {js filename="ndl.js"}
     

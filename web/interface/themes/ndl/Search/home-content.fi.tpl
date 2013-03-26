@@ -14,7 +14,16 @@
     </div>
   </div>
 </div>
-<div id="popular-map" class="section clearfix">
+
+{if $rssFeeds.carousel.active}      
+<div id="carouselContainer" class="section">
+<div class="content">
+{include file="Search/rss.tpl" rssId="carousel"}
+</div>
+</div>
+{/if}
+
+<div id="popular-map" class="section clearfix{if !$rssFeeds.carousel.active} noCarousel{/if}">
   <div class="content">
     <div class="grid_14">
       <div id="topSearches">
@@ -24,7 +33,10 @@
       </div>
     </div>
     <div class="grid_10 push_right">
-      {include file="Search/fourth-box.$userLang.tpl"}
+      {if $rssFeeds.news.active}
+      <h2>Uutisia</h2>
+      {include file="Search/rss.tpl" rssId="news"}
+      {/if}
     </div>
   </div>
 </div>
