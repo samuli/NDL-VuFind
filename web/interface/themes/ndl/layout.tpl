@@ -255,7 +255,7 @@
       </div>
       </div>
 
-      <div id="main" class="main{if !$showTopSearchBox}-home{/if}" class="clearfix">
+      <div id="main" class="main{if !$showTopSearchBox}-home{/if} clearfix">
         {if $errorPage}{$errorContent}{else}
         {include file="$module/$pageTemplate"}
         {/if}
