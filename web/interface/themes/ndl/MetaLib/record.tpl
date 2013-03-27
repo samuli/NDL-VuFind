@@ -1,41 +1,86 @@
+<!-- START of: Metalib/record.tpl.tpl -->
+
+{if isset($syndetics_plus_js)}
+<script src="{$syndetics_plus_js}" type="text/javascript"></script>
+{/if}
+{if !empty($addThis)}
+<script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pub={$addThis|escape:"url"}"></script>
+{/if}
+
 {js filename="record.js"}
-{js filename="openurl.js"}
-<div class="span-10{if $sidebarOnLeft} push-3 last{/if}">
-  <div class="toolbar">
-    <ul>
-      {* TODO: citations <li><a href="{$url}/MetaLib/Cite?id={$id|escape:"url"}" class="citeRecord metalibRecord cite" id="citeRecord{$id|escape}" title="{translate text="Cite this"}">{translate text="Cite this"}</a></li> *}
-      <li><a href="{$url}/MetaLib/SMS?id={$id|escape:"url"}" class="smsRecord smsMetaLib sms" id="smsRecord{$id|escape}" title="{translate text="Text this"}">{translate text="Text this"}</a></li>
-      <li><a href="{$url}/MetaLib/Email?id={$id|escape:"url"}" class="mailRecord mailMetaLib mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li>
-      {* TODO: export 
-      {if is_array($exportFormats) && count($exportFormats) > 0}
-      <li>
-        <a href="{$url}/MetaLib/Export?id={$id|escape:"url"}&amp;style={$exportFormats.0|escape:"url"}" class="export exportMenu">{translate text="Export Record"}</a>
-        <ul class="menu offscreen" id="exportMenu">
-        {foreach from=$exportFormats item=exportFormat}
-          <li><a {if $exportFormat=="RefWorks"}target="{$exportFormat}Main" {/if}href="{$url}/MetaLib/Export?id={$id|escape:"url"}&amp;style={$exportFormat|escape:"url"}">{translate text="Export to"} {$exportFormat|escape}</a></li>
-        {/foreach}
-        </ul>
-      </li>
-      {/if}
-      *}
-      <li id="saveLink"><a href="{$url}/MetaLib/Save?id={$id|escape:"url"}" class="saveMetaLibRecord metalibRecord fav" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{translate text="Add to favorites"}</a></li>
-    </ul>
-    <div class="clear"></div>
+{js filename="check_save_statuses.js"}
+{if $showPreviews}
+  {js filename="preview.js"}
+{/if}
+{if $coreOpenURL || $holdingsOpenURL}
+  {js filename="openurl.js"}
+{/if}
+{if $metalibEnabled}
+  {js filename="metalib_links.js"}
+{/if}
+
+
+<div class="resultLinks">
+{if $errorMsg || $infoMsg || $lastsearch || $previousRecord || $nextRecord}
+  <div class="content">
+  {if $errorMsg || $infoMsg}
+  <div class="messages">
+    {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
+    {if $infoMsg}<div class="info">{$infoMsg|translate}</div>{/if}
+  </div>
+  {/if}
+  {if $lastsearch}
+    <div class="backToResults grid_12">
+        <a href="{$lastsearch|escape}#record{$id|escape:"url"}"><div class="button buttonFinna icon"><span class="icon">&laquo</span></div>{translate text="Back to Search Results"}</a>
+    </div>
+  {/if}
+  {if $previousRecord || $nextRecord}
+    <div class="resultscroller grid_5 push_7">
+    {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></a>
+    {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></span>{/if}
+    {$currentRecordPosition} / {$resultTotal}
+    {* #{$currentRecordPosition} {translate text='of'} {$resultTotal} *}
+    {if $nextRecord}<a href="{$url}/Record/{$nextRecord}" class="nextRecord icon"><span class="resultNav">{translate text="Next"}&nbsp;&raquo;</span></a>
+    {else}<span class="nextRecord inactive"><span class="resultNav">{translate text="Next"}&nbsp;&raquo;</span></span>{/if}
+	</div>
+	{/if}
+  </div>
+{else}
+  &nbsp;
+{/if}
+<div class="clear"></div>
+</div>
+<div class="record recordId" id="record{$id|escape}">
+
+  <div class="content">
+  <div id="resultMain">
+  <div id="resultSide" class="grid_4">
+    <div id="resultToolbar" class="toolbar">
+      <ul>
+        <li id="saveLink"><a href="{$url}/MetaLib/Save?id={$id|escape:"url"}" class="saveMetaLibRecord metalibRecord fav" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{translate text="Add to favorites"}</a></li>        
+        {* SMS commented out for now
+        <li><a href="{$url}/MetaLib/SMS?id={$id|escape:"url"}" class="smsRecord smsMetaLib sms" id="smsRecord{$id|escape}" title="{translate text="Text this"}">{translate text="Text this"}</a></li>
+        *}
+
+	{if !empty($addThis)}
+	  <li id="addThis">
+            <div class="addthis_toolbox addthis_default_style ">
+              <a href="{$url}/MetaLib/Email?id={$id|escape:"url"}" class="mailRecord mailMetaLib mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a>              <a class="icon addthis_button_facebook"></a>
+              <a class="icon addthis_button_twitter"></a>
+              <a class="icon addthis_button_google_plusone_share"></a>
+            </div>
+          </li>
+        {/if}
+        {* Addthis for social sharing END *}
+     
+      <div class="clear"></div>
+    </div>
   </div>
 
-  <div class="record recordId" id="record{$id|escape}">
-
-    <div class="alignright"><span class="{$record.ContentType.0|replace:" ":""|escape}">{$record.ContentType.0|escape}</span></div>
-
-    {* Display Title *}
-    <h1>{$record.Title.0|escape}</h1>
+  <div class="grid_12 prefix_1">
+    <div id="recordMetadata">
+    <h1 class="recordTitle">{$record.Title.0|escape}</h1>
     {* End Title *}
-
-    {* Display Cover Image *}
-    <div class="alignleft">
-      <img alt="{translate text='Cover Image'}" src="{$path}/bookcover.php?size=small{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}"/>
-    </div>
-    {* End Cover Image *}
     
     {* Display Abstract/Snippet *}
     {if $record.Abstract}
@@ -169,12 +214,9 @@
   
   {* Add COINS *}  
   <span class="Z3988" title="{$record.openUrl|escape}"></span>
-</div>
-
-<div class="span-3 {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
-  {if $bXEnabled}
-    {include file="Record/bx.tpl"}
-  {/if}
+  </div>
 </div>
 
 <div class="clear"></div>
+
+<!-- END of: Metalib/record.tpl.tpl -->

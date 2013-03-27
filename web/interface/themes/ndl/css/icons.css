@@ -45,6 +45,7 @@
 .dropdown.catalogAccount dt a:after {
     content: "▾";
     float:right;
+    background:none;
 }
 /* Front page: search suggestion icons */
 
