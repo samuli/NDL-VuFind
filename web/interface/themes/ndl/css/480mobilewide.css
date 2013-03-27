@@ -341,12 +341,27 @@
     }
     
     /* Record */
-    
+    .module-Record div.record, .module-MetaLib div.record {
+        margin-top: 2em;
+    }
+    .content .resultscroller.grid_5.push_7 {
+        width:130px;
+        left:100px;
+    }
     .recordcover {
         max-width:110px;
     }
     .citation th { 
         width:100px;
+    }
+    #resultSide {
+        width:120px;
+    }
+    #resultMain .grid_12 {
+        width:330px;
+    }
+    #resultSidebar {
+        display:none;
     }
     
     /* Myresearch */
@@ -406,6 +421,13 @@
         padding: 10px 0;
     }
     
+    #dyntabnav .ui-tabs-panel {
+        border-top: none;
+        margin-top: 0;
+    }
+    .ui-tabs .ui-tabs-nav li {
+        border-bottom:3px solid #B3E3E9 !important;
+    }
     /* Footer */
     
     #footer {
