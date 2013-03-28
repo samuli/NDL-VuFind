@@ -331,17 +331,36 @@
     #searchHolder .group {
         padding:8px;
     }
-    #advSearchForm .groupSearchDetails select {
-        max-width: 155px;
+    .advSearchSection.first label {
+        display:none;
     }
-    
+    .advSearchSection.first .groupSearchHolder .field {
+        margin-left: 25px;
+        margin-top: 3px;
+    }
+    #advSearchForm .groupSearchDetails select {
+        max-width: 140px;
+    }
+    .deleteSearchGroup {
+        width:auto;
+    }
     .groupSearchHolder .terms {
         width: 110px;
     }
+    .advSearchContent #facetWrapper {
+        width:210px;
+    }
+    #selectionMapTools label:after {
+        content:'';
+        display:block;
+    }
+    #mapSearch {
+    border-top: 6px solid #DDDDDD;
+}
     
     #zoomSlider {
         left: 12px;
-        top: 67px;
+        top: 87px;
     }
     
     /* Record */

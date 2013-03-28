@@ -2438,6 +2438,7 @@ ul.recordSet .addToFavLink a {
 }
 .resultDatesHeader {
     background:#4d4d4d;
+    clear:both;
 }
 .resultSearchTools {
     clear: both;
