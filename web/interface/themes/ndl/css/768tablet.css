@@ -89,7 +89,10 @@
     }
     
     /* Front page */
-    
+    #introduction.section #siteDescription, #topSearches {
+        border-right: medium none;
+        padding: 10px 20px 20px 0;
+    }
     #introduction ul {
         width:230px;
     }
