@@ -1,17 +1,11 @@
 <!-- START of: header-menu.en-gb.tpl -->
 
-<li class="menuHome"><a href="{$path}/"><span>&#x2302;</span></a></li>
+<li class="menuHome"><a href="{$path}/"><span></span></a></li>
 
 <li class="menuAbout"><a href="{$path}/Content/about"><span>{translate text='navigation_about'}</span></a></li>
 
 <li class="menuSearch menuSearch_{$userLang}"><a href="#"><span>{translate text='navigation_search'}</span></a>
   <ul class="subNav">
-    <li>
-      <a href="{$url}">
-        <span>Search home</span>
-        <span>Start a new search from home page.</span>
-      </a>    
-    </li>
     <li>
       <a href="{$path}/Search/Advanced">
         <span>Advanced search</span>

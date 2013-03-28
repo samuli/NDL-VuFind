@@ -89,7 +89,9 @@ ul.documentTypes li {
 #carouselContainer {
     background-color: #808080;
 }
-
+#carouselContainer li {
+    margin-bottom:.5em;
+}
 #NDLCarousel {
     visibility: hidden;
 }

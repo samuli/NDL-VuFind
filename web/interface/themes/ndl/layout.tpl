@@ -66,8 +66,8 @@
     {css media="screen, projection" filename="default_custom.css"}
     {css media="screen, projection" filename="home_custom.css"}
     {css media="screen, projection" filename="768tablet.css"}
-    {css media="screen, projection" filename="480mobilewide.css"}
 {* The mobile styles below not used just yet. 
+    {css media="screen, projection" filename="480mobilewide.css"}
     {css media="screen, projection" filename="320mobile.css"}
 *}
     {css media="screen, projection" filename="settings.css"}
@@ -179,6 +179,8 @@
 
    
     {* Viewport *}
+    <meta name='viewport' content="width=720" />
+{*
     <meta name="viewport" content=""/>
     <script type="text/javascript">
     {literal}
@@ -191,7 +193,7 @@
     }
     {/literal}
     </script>
-
+*}
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
     {if !$showTopSearchBox}

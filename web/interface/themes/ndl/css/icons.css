@@ -31,6 +31,13 @@
     content: "▾";
     float:right;
 }
+.menuHome > a span {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -681px -335px;
+}
+.menuHome > a:hover span {
+    background-position: -820px -335px;
+}
 
 /* Common: Buttons */
 
@@ -45,6 +52,7 @@
 .dropdown.catalogAccount dt a:after {
     content: "▾";
     float:right;
+    background:none;
 }
 /* Front page: search suggestion icons */
 

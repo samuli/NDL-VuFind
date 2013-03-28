@@ -125,9 +125,6 @@ ul {
     list-style-type: none;
     padding: 0;
 }
-li {
-    margin-bottom: 0.5em;
-}
 
 /*** Links ***/
 a, .ui-widget-content a {
@@ -148,13 +145,11 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     color: #fff;
     text-decoration: none;
 }
-.menuHome a {
-    margin-right:15px;
-}
 .menuHome a span {
-    font-size:28px;
-    position:absolute;
-    top:-3px;
+    display: block;
+    float: left;
+    width:18px;
+    padding-top:7px !important;
 }
 #nav, .nav {
     background:url(../images/px_69.png);
@@ -2443,6 +2438,7 @@ ul.recordSet .addToFavLink a {
 }
 .resultDatesHeader {
     background:#4d4d4d;
+    clear:both;
 }
 .resultSearchTools {
     clear: both;
@@ -2854,11 +2850,13 @@ div.resultLinks a {
     text-indent: -10000px;
     display: block;
 }
-.module-Record div.record {
+.module-Record div.record,
+.module-MetaLib div.record {
     padding: 0;
     margin-top: 4em;
 }
-.module-Record div.record.view-alt {
+.module-Record div.record.view-alt,
+.module-MetaLib div.record.view-alt {
     margin-top:0;
 }
 .module-MyResearch .record form {
