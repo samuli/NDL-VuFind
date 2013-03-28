@@ -137,7 +137,11 @@
         <div class="dueDate floatright">
           <div class="checkedoutSource">
             {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-            <span>{translate text=$source prefix='source_'}</span>
+            {if $resource.ils_details.institution_name}
+              <span>{translate text=$resource.ils_details.institution_name prefix='library_'}</span>
+            {else}
+              <span>{translate text=$source prefix='source_'}</span>
+            {/if}
           </div>
             {assign var="showStatus" value="show"}
             {if $renewResult[$resource.ils_details.item_id]}

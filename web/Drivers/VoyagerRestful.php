@@ -1299,6 +1299,89 @@ class VoyagerRestful extends Voyager
     }
     
     /**
+     * Get Patron Transactions
+     *
+     * This is responsible for retrieving all transactions (i.e. checked out items)
+     * by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's transactions on success,
+     * PEAR_Error otherwise.
+     * @access public
+     */
+    public function getMyTransactions($patron)
+    {
+        $transactions = parent::getMyTransactions($patron);
+        
+        if (PEAR::isError($transactions)) {
+            return $transactions;
+        }
+        
+        // Build Hierarchy
+        $hierarchy = array(
+            'patron' =>  $patron['id'],
+            'circulationActions' => 'loans'
+        );
+
+        // Add Required Params
+        $params = array(
+            "patron_homedb" => $this->ws_patronHomeUbId,
+            "view" => "full"
+        );
+
+        $results = $this->makeRequest($hierarchy, $params);
+
+        if ($results === false) {
+            return new PEAR_Error('System error fetching loans');
+        }
+        
+        $replyCode = (string)$results->{'reply-code'};
+        if ($replyCode != 0 && $replyCode != 8) {
+            return new PEAR_Error('System error fetching loans');
+        }
+        if (isset($results->loans->institution)) {
+            foreach ($results->loans->institution as $institution) {
+                if ((string)$institution->attributes()->id == 'LOCAL') {
+                    // Ignore local loans, we have them already
+                    continue;
+                }
+                foreach ($institution->loan as $loan) {
+                    
+                    $dueStatus = false;
+                    if (!empty($sqlRow['FULLDATE'])) {
+                        $now = time();
+                        $dueTimeStamp = strtotime((string)$loan->dueDate);
+                        if (!PEAR::isError($dueTimeStamp) && is_numeric($dueTimeStamp)) {
+                            if ($now > $dueTimeStamp) {
+                                $dueStatus = "overdue";
+                            } else if ($now > $dueTimeStamp-(1*24*60*60)) {
+                                $dueStatus = "due";
+                            }
+                        }
+                    }
+                    
+                    $transactions[] = array(
+                        // This is bogus, but we need something..
+                        'id' => (string)$institution->attributes()->id . '.' . (string)$loan->itemId,
+                        'item_id' => (string)$loan->itemId,
+                        'duedate' =>  $this->dateFormat->convertToDisplayDate('Y-m-d H:i', (string)$loan->dueDate),
+                        'dueTime' =>  $this->dateFormat->convertToDisplayTime('Y-m-d H:i', (string)$loan->dueDate),
+                        'dueStatus' => $dueStatus,
+                        'title' => (string)$loan->title,
+                        // This is bogus too, no idea if it's actually renewable 
+                        'renewable' => true,                       
+                        'institution_id' => (string)$institution->attributes()->id,
+                        'institution_name' => (string)$loan->dbName,
+                        'institution_dbkey' => (string)$loan->dbKey,
+                    );
+                }
+            }
+        }
+        return $transactions;           
+    }
+    
+    /**
      * Get Patron Holds
      *
      * This is responsible for retrieving all holds by a specific patron.
@@ -1382,7 +1465,6 @@ class VoyagerRestful extends Voyager
             }
         }
         return $holds;        
-        
     }
     
     /**
