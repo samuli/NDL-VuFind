@@ -257,7 +257,6 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     <div class="recordsubcontent">
         <div class="content">
           {include file="Record/$subTemplate"}
-          SUBTEMPLATE DONE
         </div>
     </div>
     {/if}
