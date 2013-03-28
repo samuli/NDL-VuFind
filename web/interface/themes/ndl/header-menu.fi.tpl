@@ -7,12 +7,6 @@
 <li class="menuSearch menuSearch_{$userLang}"><a href="#"><span>{translate text='navigation_search'}</span></a>
   <ul class="subNav">
     <li>
-      <a href="{$url}">
-        <span>Haun aloitussivu</span>
-        <span>Etusivulta voit helposti aloittaa uuden perushaun.</span>
-      </a>    
-    </li>
-    <li>
       <a href="{$path}/Search/Advanced">
         <span>Tarkennettu haku</span>
         <span>Tarkemmat hakuehdot ja karttahaku</span>

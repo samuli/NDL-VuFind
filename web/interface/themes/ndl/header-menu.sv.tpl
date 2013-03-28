@@ -7,12 +7,6 @@
 <li class="menuSearch menuSearch_{$userLang}"><a href="#"><span>{translate text='navigation_search'}</span></a>
   <ul class="subNav">
     <li>
-      <a href="{$url}">
-        <span>Sökningens förstasida</span>
-        <span>Från framsidan kan du lätt börja en ny sökning.</span>
-      </a>    
-      </li>
-    <li>
       <a href="{$path}/Search/Advanced">
         <span>Utökad sökning</span>
         <span>Fler sökvillkor och sökning på karta.</span>

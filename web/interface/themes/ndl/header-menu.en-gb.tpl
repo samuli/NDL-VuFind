@@ -7,12 +7,6 @@
 <li class="menuSearch menuSearch_{$userLang}"><a href="#"><span>{translate text='navigation_search'}</span></a>
   <ul class="subNav">
     <li>
-      <a href="{$url}">
-        <span>Search home</span>
-        <span>Start a new search from home page.</span>
-      </a>    
-    </li>
-    <li>
       <a href="{$path}/Search/Advanced">
         <span>Advanced search</span>
         <span>More refined search terms and map search.</span>
