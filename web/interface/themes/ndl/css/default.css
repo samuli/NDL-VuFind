@@ -145,13 +145,11 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     color: #fff;
     text-decoration: none;
 }
-.menuHome a {
-    margin-right:15px;
-}
 .menuHome a span {
-    font-size:28px;
-    position:absolute;
-    top:-3px;
+    display: block;
+    float: left;
+    width:18px;
+    padding-top:7px !important;
 }
 #nav, .nav {
     background:url(../images/px_69.png);

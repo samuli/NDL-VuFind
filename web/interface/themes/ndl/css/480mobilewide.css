@@ -220,6 +220,10 @@
     #introduction.section div.grid_14 {
         border-bottom:6px solid #ddd;
     }
+    .theme-national #introduction.section div.grid_10,
+    .theme-national #introduction.section div.grid_14 {
+        border:none;
+    }
     
     #popularSearches ul {
         width:180px;

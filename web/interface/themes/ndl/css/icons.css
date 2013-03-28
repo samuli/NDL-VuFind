@@ -33,12 +33,10 @@
 }
 .menuHome > a span {
     background-image: url("../images/icons16-24px-02.png");
-    background-position: -681px -322px;
-    height: 18px;
-    width: 18px;
+    background-position: -681px -335px;
 }
 .menuHome > a:hover span {
-    background-position: -820px -322px;
+    background-position: -820px -335px;
 }
 
 /* Common: Buttons */
