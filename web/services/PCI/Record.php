@@ -35,7 +35,7 @@ require_once 'services/MyResearch/lib/Resource_tags.php';
 require_once 'services/MyResearch/lib/Tags.php';
 
 /**
- * Record action for Summon module
+ * Record action for PCI module
  *
  * @category VuFind
  * @package  Controller_Summon
@@ -96,7 +96,7 @@ class Record extends Base
         );     
         
         // Display Page
-        $interface->setTemplate('xmlrecord.tpl');
+        $interface->setTemplate('record.tpl');
         $interface->display('layout.tpl');
     }
 }

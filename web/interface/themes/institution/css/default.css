@@ -1639,7 +1639,7 @@ ul.recordSet .addToFavLink a {
 .formatdocument  {background-image:url(../images/silk/page_white_text.png);}
 /*.formatdvd       {background-image:url(../images/silk/dvd.png);}*/
 .formatimage     {background-image:url(../images/silk/photo.png);}
-.formatjournal   {background-image:url(../images/silk/newspaper.png);}
+.formatjournal, .formatarticle {background-image:url(../images/silk/newspaper.png);}
 .formatmusicalscore   {background-image:url(../images/silk/music.png);}
 .formatother     {background-image:url(../images/silk/bullet_green.png);}
 .formatotherkit  {background-image:url(../images/silk/box.png);}

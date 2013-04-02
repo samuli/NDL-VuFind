@@ -1,6 +1,6 @@
 <?php
 /**
- * Home action for EBSCO module
+ * Home action for PCI module
  *
  * PHP version 5
  *
@@ -30,10 +30,10 @@
 require_once 'Base.php';
 
 /**
- * Advanced action for EBSCO module
+ * Advanced action for PCI module
  *
  * @category VuFind
- * @package  Controller_EBSCO
+ * @package  Controller_PCI
  * @author   Andrew Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Markku Hein�senaho <markku.heinasenaho@helsinki.fi>
@@ -71,7 +71,7 @@ class Advanced extends Base
 
         // Process settings to control special-purpose facets not supported by the
         //     more generic configuration options.
-        $config = getExtraConfigArray('EBSCO');
+        $config = getExtraConfigArray('PCI');
         $special = isset($config['Advanced_Facet_Settings']['special_facets']) ?
             $config['Advanced_Facet_Settings']['special_facets'] : '';
         if (stristr($special, 'daterange')) {
@@ -148,7 +148,7 @@ class Advanced extends Base
                     $minSO = unserialize($search->search_object);
                     $savedSearch = SearchObjectFactory::deminify($minSO);
                     // Make sure it's an advanced search
-                    if ($savedSearch->getSearchType() == 'EBSCOAdvanced') {
+                    if ($savedSearch->getSearchType() == 'PCIAdvanced') {
                         // Activate facets so we get appropriate descriptions
                         // in the filter list:
                         $savedSearch->activateAllFacets();

@@ -11,6 +11,11 @@ $(document).ready(function() {
         var $dialog = getLightbox('MetaLib', 'Save', id, null, this.title, 'MetaLib', 'Save', id);
         return false;
     });    
+    $('a.savePCIRecord').click(function() {
+        var id = this.id.substr('saveRecord'.length);
+        var $dialog = getLightbox('PCI', 'Save', id, null, this.title, 'PCI', 'Save', id);
+        return false;
+    });
 });
 
 function checkSaveStatuses() {

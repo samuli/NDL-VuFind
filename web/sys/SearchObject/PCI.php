@@ -26,6 +26,7 @@
  * @link     http://vufind.org/wiki/building_a_search_object Wiki
  */
 require_once 'sys/SearchObject/Base.php';
+require_once 'sys/PCI.php';
 
 /**
  * A derivative of the Search Object for use with PCI.
@@ -33,15 +34,22 @@ require_once 'sys/SearchObject/Base.php';
  * @category VuFind
  * @package  SearchObject
  * @author   Demian Katz <demian.katz@villanova.edu>
+ * @author   Kalle Pyykkönen <kalle.pyykkonen@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_search_object Wiki
  */
 class SearchObject_PCI extends SearchObject_Base
 {
-    protected $_baseUrl = '';
-    protected $_params = array();
-    protected $_indexResult; // PCI Search Response;
+    protected $baseUrl = '';
+    protected $params = array();
+    protected $indexResult; // PCI Search Response;
+    protected $PCI; // PCI API
 
+    /**
+     * Constructor. Initialise details about the server
+     *
+     * @access public
+     */
     public function __construct()
     {
         parent::__construct();
@@ -53,6 +61,8 @@ class SearchObject_PCI extends SearchObject_Base
             $facetName = trim($parts[0]);
             $this->facetConfig[$facetName] = $value;
         }
+        $this->translatedFacets = isset($config['Facet_Settings']['translated_facets']) ? $config['Facet_Settings']['translated_facets'] : null;
+        $this->facetTranslationPrefix = isset($config['Facet_Settings']['facet_translation_prefix']) ? $config['Facet_Settings']['facet_translation_prefix'] : null;
         
         // Set up basic and advanced EBSCO search types; default to basic.
         $this->searchType = $this->basicSearchType = 'PCI';
@@ -66,23 +76,19 @@ class SearchObject_PCI extends SearchObject_Base
         
         $this->recommendIni = 'PCI';
         
-        if (isset($config['General']['url'])) {
-            $this->_baseUrl = $config['General']['url'];
-        }
-        $this->_params['institution'] = $config['General']['institution'];
-        $this->_params['onCampus'] = $config['General']['onCampus'];
-        #$this->_params['indx'] = $config['General']['indx'];
-        #$this->_params['bulkSize'] = $config['General']['bulkSize'];
-        $this->_params['highlight'] = $config['General']['highlight'];
-        $this->_params['lang'] = $config['General']['lang'];
-        $this->_params['loc'] = $config['General']['loc'];
-
-        $this->_params['db'] = isset($config['General']['db']) ? $config['General']['db'] : null;
+        $this->params['institution'] = $config['General']['institution'];
+        $this->params['highlight'] = $config['General']['highlight'];
+        $this->params['lang'] = $config['General']['lang'];
+        $this->params['loc'] = $config['General']['loc'];
+        $this->params['db'] = isset($config['General']['db']) ? $config['General']['db'] : null;
 
         // Set up sort options
         $this->sortOptions = $config['Sorting'];
         // default sort for PCI is empty string
         $this->defaultSort = "";
+        
+        // Connect to PCI
+        $this->PCI = new PCI();
     }
 
     /**
@@ -97,11 +103,24 @@ class SearchObject_PCI extends SearchObject_Base
         return array();
     }
 
+    /**
+     * Return error from index, always false on PCI
+     *
+     * @return indexError
+     * @access public
+     */
     public function getIndexError()
     {
         return false;
     }
-
+    
+    /**
+     * Initialise the object from the global
+     *  search parameters in $_REQUEST.
+     *
+     * @return boolean
+     * @access public
+     */
     public function init()
     {
         global $module;
@@ -208,9 +227,12 @@ class SearchObject_PCI extends SearchObject_Base
             $order[$key] = $i++;
         }
         $list = array();
+        $translationPrefix = isset($this->facetTranslationPrefix) 
+            ? $this->facetTranslationPrefix : '';
+        
         // Loop through every field returned by the result set
         $validFields = array_keys($filter);
-        foreach ($this->_indexResult['facetFields'] as $data) {
+        foreach ($this->indexResult['facetFields'] as $data) {
             $field = $data['id'];
             $tag = $data['tag'];
             // Skip filtered fields and empty arrays:
@@ -281,13 +303,17 @@ class SearchObject_PCI extends SearchObject_Base
     * @access public
     */
     public function activateAllFacets($preferredSection = false)
-    {
-        foreach ($this->allFacetSettings as $section => $values) {
-            foreach ($values as $key => $value) {
-                $this->addFacet($key, $value);
+    {   
+        if (isset($this->allFacetSettings) 
+            && is_array($this->allFacetSettings)
+        ) {
+            foreach ($this->allFacetSettings as $section => $values) {
+                foreach ($values as $key => $value) {
+                    $this->addFacet($key, $value);
+                }
             }
         }
-
+        
         if ($preferredSection
             && is_array($this->allFacetSettings[$preferredSection])
         ) {
@@ -297,29 +323,37 @@ class SearchObject_PCI extends SearchObject_Base
         }
     }
     
-    public function processSearch($returnIndexErrors = false, 
-        $recommendations = false) 
-    {
-        // $docs = array(array("title" => "1", "id" => 'test', 'recordtype' => 'marc'), array("title" => "1"));
-        /*$docs = $this->executeSearch("foo");
-        $this->_indexResult = array('responseHeader' => array('start' => 0), 'recordCount' => 2, 'response' => array('numFound' => 2, 'start' => 0, 'maxScore' => 1, 'docs' => $docs ));*/
-
+    /**
+     * Actually process and submit the search
+     *
+     * @param bool $returnIndexErrors Should we die inside the index code if we
+     * encounter an error (false) or return it for access via the getIndexError()
+     * method (true)?
+     * @param bool $recommendations   Should we process recommendations along with
+     * the search itself?
+     *
+     * @return array                 PCI result structure
+     * @access public
+     */
+    public function processSearch($returnIndexErrors = false, $recommendations = true) 
+    {        
         // Get time before the query
         $this->startQueryTimer();
-        
         if ($recommendations) {
             $this->initRecommendations();
         }
         $startRec = ($this->page - 1) * $this->limit;
-
-        $this->_indexResult = $this->executeSearch($this->buildURL($this->searchTerms, $startRec, $this->limit));
-        
+        $this->indexResult = $this->PCI->query(
+            $this->searchTerms, 
+            $this->filterList, 
+            $startRec, 
+            $this->limit, 
+            $this->sort
+        );
         // Get time after the query
         $this->stopQueryTimer();
         
-        $this->resultsTotal = $this->_indexResult['recordCount']; // $this->getFacetList(null, false)
-        //$this->_indexResult['response']['facet_counts'] = array(array('facet_queries' => $this->getFacetList(), 'facet_fields' => $this->getFacetList()));
-        //var_export($this->searchTerms); print "<BR>";
+        $this->resultsTotal = $this->indexResult['recordCount'];
         
         // If extra processing is needed for recommendations, do it now:
         if ($recommendations && is_array($this->recommend)) {
@@ -330,170 +364,58 @@ class SearchObject_PCI extends SearchObject_Base
             }
         }
         
-        return $this->_indexResult;
+        return $this->indexResult;
     }
 
-    public function buildURL($searchTerms, $startRec, $limit, $sort = false) 
+    /**
+     * Get one record from API
+     *
+     * @param string $id record id.
+     *
+     * @return array PCI record.
+     * @access public
+     */     
+    public function getRecord($id) 
     {
-        $filterQuery = '';
-        foreach ($this->getFilterList() as $filters) {
-            foreach ($filters as $filter) {
-                $field = $filter['field'];
-                $value = $filter['value'];
-                $filterQuery .= '&query=facet_' . urlencode($field) . ',exact,' . urlencode($value);
-            }
-        }
-        $query = '';
-                
-        if ($this->searchType == 'PCIAdvanced') {
-        	foreach ($searchTerms as $term) {        	
-            	if ($query) {
-            		$join = $term['join'];
-         			$query .= '+' . $term['join'] . '+';
-           		}
-                    
-            	$group = $term['group'];
-            	foreach($group as $member) {
-            		if ($member['field'] == 'AllFields') {
-            			$query .= '&query=' . urlencode('any') . ',exact,' . urlencode($member['lookfor']);
-            			}
-            		else {
-            			$query .= '&query=' . urlencode($member['field']) . ',exact,' . urlencode($member['lookfor']);
-            		}           			
-            	}
-        	}	
-        }
-        else {
-            $terms = explode(' ', trim($searchTerms[0]['lookfor']));
-        	foreach ($terms as $term) {
-            	$query .= '&query=' . urlencode($searchTerms[0]['index']) . ',exact,' . urlencode($term); 
-        	}
-        }
-                
-        $params = array("bulkSize" => $limit);
-        $params += $this->_params;
-        if ($startRec > 0) {
-           $params = array_merge($params, array("indx" => $startRec));
-        }
-        $url = $this->_baseUrl . '?' . http_build_query($params) . $query;
-
-        $url .= "&sortField=" . urlencode($this->sort);            
-
-        if ($filterQuery) {
-            $url .= $filterQuery;
-        }
-        return $url;
-    }
-
-    public function executeSearch($url) 
-    {
-        global $configArray;
-        
-        // Need to fake user_agent so that the service returns valid data
-        ini_set("user_agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
-        $xml = simplexml_load_file($url);
-        $xml->registerXPathNamespace('prim', 'http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib');
-        $xml->registerXPathNamespace('sear', 'http://www.exlibrisgroup.com/xsd/jaguar/search');
-        $ds = $xml->xpath('//sear:DOCSET');
-        $hits = isset($ds[0]) ? (int)$ds[0]->attributes()->TOTALHITS : 0;
-        foreach ($xml->xpath('//sear:DOC') as $item) {
-            $ids = array();
-            foreach ($item->xpath('.//prim:search/prim:recordid') as $id) {
-                $ids[] = $id;
-            }    
-            $authors = array();
-            foreach ($item->xpath('.//prim:display/prim:creator') as $author) {
-                foreach (explode(';', (string) $author) as $author) {
-                    $authors[] = trim($author);
-                }
-            }    
-            foreach ($item->xpath('.//prim:display/prim:contributor') as $author) {
-                foreach (explode(';', (string) $author) as $author) {
-                    $authors[] = trim($author);
-                }
-            }
-            
-            $publications = array();
-            foreach ($item->xpath('.//prim:display/prim:ispartof') as $partof) {
-                $publications[] = trim($partof);
-            }
-
-            $identifiers = array();
-            foreach ($item->xpath('.//prim:display/prim:identifier') as $identifier) {
-                $identifiers[] = trim($identifier);
-            }
-            
-            $title = $item->xpath('.//prim:display/prim:title');
-            $title = is_array($title) ? (string) $title[0] : NULL;
-            // get url from Primo subfield
-            $url = $item->xpath('.//prim:links/prim:backlink');
-            $partsArr = array();
-            if (isset($url[0])) {
-                $partsArr = explode('http://', $url[0]);
-            }
-            if (count($partsArr) > 1) {
-                $partsArr2 = explode('$$', $partsArr[1]);
-                $url = 'http://' . $partsArr2[0];
-            } else {
-                $url = null;
-            }
-            
-            $openurl = '';
-            if (isset($configArray['OpenURL']['url']) && $configArray['OpenURL']['url']) {
-                // Parse the OpenURL and extract parameters
-                $link = $item->xpath('.//sear:LINKS/sear:openurl');
-                if ($link) {
-                    $params = explode('&', substr($link[0], strpos($link[0], '?') + 1));
-                    $openurl = 'rfr_id=' . urlencode($configArray['OpenURL']['rfr_id']);
-                    foreach ($params as $param) {
-                        if (substr($param, 0, 7) != 'rfr_id=') {
-                            $openurl .= '&' . $param;
-                        }
-                    }
-                }
-            }
-
-            $result = array('Author' => $authors, 'Title' => array($title), 'url' => $url, 
-                'PublicationTitle' => $publications, 'ID' => $ids, 'identifiers' => $identifiers,
-                'openUrl' => $openurl);
-            $results[] = $result;
-        }
-
-        $facets = array();
-        foreach ($xml->xpath('//sear:FACET') as $item) {
-            $tag = (string) $item->attributes()->NAME;
-            $values = array();
-            foreach ($item->xpath('.//sear:FACET_VALUES') as $facetValue) {
-                $key = (string) $facetValue->attributes()->KEY;
-                $count = (string) $facetValue->attributes()->VALUE;
-                $values[] = array('value'=> $key, 'count' => $count);
-            }       
-
-            $facets[] = array('id' => $tag, 'tag' => $tag, 'values' => $values);
-
-        }
-
-        return array('recordCount' => $hits, 'response' => array('numFound' => $hits, 'start' => 0, 'docs' => $results), 'facetFields' => $facets);
-    }
-    
-    public function getRecord($id) {
-
-        $params = $this->_params;
-        $query = '&query=rid,exact,' . $id;
-        $url = $this->_baseUrl . '?' . http_build_query($params) . $query;
-        
-        ini_set("user_agent","Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
-        $xml = simplexml_load_file($url);
-        $result = $this->xmlpp($xml->asXML(),true);
-
-        return $result;    
+        return $this->PCI->getRecord($id);
     }      
 
+    /**
+     * Use the record driver to build an HTML display from the search
+     * result suitable for use on a user's "favorites" page.
+     *
+     * @param array  $record    Record data.
+     * @param object $user      User object owning tag/note metadata.
+     * @param int    $listId    ID of list containing desired tags/notes (or
+     * null to show tags/notes from all user's lists).
+     * @param bool   $allowEdit Should we display edit controls?
+     *
+     * @return string HTML chunk for individual records.
+     * @access public
+     */
+    public function getResultHTML($record, $user, $listId = null, $allowEdit = true)
+    {
+        global $interface;
+    
+        $interface->assign(array('record' => $record));
+        
+        // Pass some parameters along to the template to influence edit controls:
+        $interface->assign('listSelected', $listId);
+        $interface->assign('listEditAllowed', $allowEdit);
+        
+        return $interface->fetch('PCI/listentry.tpl');
+    }
+
     /** Prettifies an XML string into a human-readable and indented work of art 
-    *  @param string $xml The XML as a string 
-    *  @param boolean $html_output True if the output should be escaped (for use in HTML) 
-    */  
-    function xmlpp($xml, $html_output=false) {  
+    *
+    * @param string  $xml         The XML as a string
+    * @param boolean $html_output True if the output should be escaped (for use in HTML)
+    *
+    * @return string prettified XML.
+    * @access public
+    */
+    protected function xmlpp($xml, $html_output=false)
+    {  
         $xml_obj = new SimpleXMLElement($xml);  
         $level = 4;  
         $indent = 0; // current indentation level  
@@ -526,5 +448,3 @@ class SearchObject_PCI extends SearchObject_Base
         return ($html_output) ? htmlentities($xml) : $xml;  
     }      
 }
-
-

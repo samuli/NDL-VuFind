@@ -51,32 +51,7 @@ class Search extends Base
         global $configArray;
 
         $config = getExtraConfigArray("PCI");
-        // TODO: something else than a hacky IP address check
-        if (isset($config['Access']['ip_ranges'])) {
-            $found = false;
-            $remote = sprintf('%u', ip2long($_SERVER['REMOTE_ADDR']));
-            $ranges = explode(',', $config['Access']['ip_ranges']);
-            foreach ($ranges as $range) {
-                $ips = explode('-', $range);
-                if (!isset($ips[0])) {
-                    continue;
-                }
-                $start = sprintf('%u', ip2long($ips[0]));
-                if (!isset($ips[1])) {
-                    $end = $start;
-                } else {
-                    $end = sprintf('%u', ip2long($ips[1]));
-                }
-                if ($remote >= $start && $remote <= $end) {
-                    $found = true;
-                    break;
-                }
-            }
-            if (!$found) {
-                die ("Access denied from '" . $_SERVER['REMOTE_ADDR'] . "'");
-            }
-        }
-        
+
         // Initialise SearchObject.
         $this->searchObject->init();
 
@@ -91,8 +66,8 @@ class Search extends Base
         $interface->assign('searchType', $this->searchObject->getSearchType());
 
         // Search PCI
-        $result = $this->searchObject->processSearch(true, true);
-
+        $result = $this->searchObject->processSearch(false, true);
+        
         // We'll need recommendations no matter how many results we found:
         $interface->assign('qtime', round($this->searchObject->getQuerySpeed(), 2));
         $interface->assign(
@@ -106,6 +81,11 @@ class Search extends Base
             'sideRecommendations',
             $this->searchObject->getRecommendationsTemplates('side')
         );
+        
+        // Whether embedded openurl autocheck is enabled
+        if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
+            $interface->assign('openUrlAutoCheck', true);
+        }
 
         if ($result['recordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
@@ -155,7 +135,7 @@ class Search extends Base
                     );
                 }
             }
-            $interface->setTemplate('PCI/list-none.tpl');
+            $interface->setTemplate('list-none.tpl');
         }
 
         // 'Finish' the search... complete timers and log search history.

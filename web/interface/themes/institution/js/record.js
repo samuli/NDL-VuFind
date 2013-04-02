@@ -35,6 +35,10 @@ $(document).ready(function(){
             module = 'Summon';
         } else if ($(this).hasClass('mailWorldCat')) {
             module = 'WorldCat';
+        } else if ($(this).hasClass('mailMetalib')) {
+            module = 'Metalib';
+        } else if ($(this).hasClass('mailPCI')) {
+            module = 'PCI';
         }
         var $dialog = getLightbox(module, 'Email', id, null, this.title);
         return false;

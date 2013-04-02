@@ -1,0 +1,62 @@
+[General]
+wsdl = 
+institution = 
+dym=true
+highlight=true
+lang=eng
+loc=adaptor,primo_central_multiple_fe
+
+default_side_recommend[] = SideFacets:Facets:CheckboxFacets:PCI
+
+[Basic_Searches]
+any           = "All Fields"
+title         = Title
+creator       = Author
+desc          = Description
+sub           = Subject
+rtype         = "Resource Type"
+cdate         = "Creation Date"
+isbn          = ISBN
+issn          = ISSN
+ftext         = "Full Text"
+abstract      = Abstract
+
+[Advanced_Searches]
+any           = "All Fields"
+title         = Title
+creator       = Author
+desc          = Description
+sub           = Subject
+rtype         = "Resource Type"
+cdate         = "Creation Date"
+isbn          = ISBN
+issn          = ISSN
+ftext         = "Full Text"
+abstract      = Abstract
+
+[Sorting]
+default = sort_relevance
+popularity = sort_popularity
+scdate = sort_year
+screator = sort_author
+
+[Facets]
+topic           = Topic
+pfilter         = TypeOfPublication
+creator         = Author
+lang            = Language
+creationdate    = Published
+jtitle          = Journal
+domain          = Domain
+
+[Facet_Settings]
+; Any facets named in the list below will have their values run through the 
+; translation code; unlisted facets will displayed as-is without translation.  For
+; translated facets, be sure that all of the necessary strings are included in the
+; language files found in the web/lang directory.  By default, no facets are 
+; translated -- uncomment or add lines below to turn on this feature.
+translated_facets[] = lang
+
+; Prefix to be used in facet translation to avoid mixing facet strings with other
+; translated content
+facet_translation_prefix = "facet_"
