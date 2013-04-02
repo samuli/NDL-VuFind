@@ -1,0 +1,1 @@
+finna-logo_small.png

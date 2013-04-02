@@ -139,6 +139,11 @@ class AddTag extends Action
             return false;
         }
 
+        $db = ConnectionManager::connectToIndex();
+        if (!($record = $db->getRecord($_GET['id']))) {
+            return false;
+        }
+        
         // Create a resource entry for the current ID if necessary (or find the
         // existing one):
         $resource = new Resource();

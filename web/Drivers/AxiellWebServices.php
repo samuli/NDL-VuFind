@@ -442,14 +442,29 @@ class AxiellWebServices implements DriverInterface
             
             foreach ($loans as $loan) {
                 $trans = array();
-                $trans['id'] = $this->arenaMember . '.' . $loan->catalogueRecord->id;
+                $trans['id'] = $loan->catalogueRecord->id;                
                 $trans['title'] = $loan->catalogueRecord->title;
-                // Convert Axiell format to display date format
-                $trans['duedate'] = $this->formatDate($loan->loanDueDate);
-                $trans['renewable'] = $loan->loanStatus->isRenewable == true; //'yes';
+                $trans['duedate'] = $loan->loanDueDate;
+                $trans['renewable'] = ($loan->loanStatus->isRenewable == 'yes') ? true : false;
+                $trans['message'] = $loan->loanStatus->status;
                 $trans['barcode'] = $loan->id;
+                $trans['renew'] = $loan->remainingRenewals;
                 $transList[] = $trans;
             }
+            
+            // Sort the Loans
+            $date = array();
+            foreach ($transList as $key => $row)
+            {
+            	$date[$key] = $row['duedate'];
+            }
+            array_multisort($date, SORT_ASC, $transList);
+
+            // Convert Axiell format to display date format
+            foreach ($transList as &$row) {  	
+            	$row['duedate'] = $this->formatDate($row['duedate']);
+            }
+
             return $transList;
 
         } catch (Exception $e) {
@@ -579,8 +594,8 @@ class AxiellWebServices implements DriverInterface
                 $fine['fine'] = $debt->debtType . ' - ' . $debt->debtNote;
                 $fine['balance'] = $debt->debtAmount * 100;
                 // Convert Axiell format to display date format
-                $fine['createdate'] = $this->formatDate($loan->debtDate);
-                $fine['duedate'] = ''; 
+                $fine['createdate'] = $this->formatDate($debt->debtDate);
+                $fine['duedate'] = $this->formatDate($debt->debtDate); 
                 $fine['id'] = ''; 
                 $finesList[] = $fine;
             }
@@ -633,7 +648,7 @@ class AxiellWebServices implements DriverInterface
             foreach ($reservations as $reservation) {
                 $hold = array();
                 $hold['type'] = $reservation->reservationStatus; // TODO
-                $hold['id'] = $this->arenaMember . '.' . $reservation->catalogueRecord->id;
+                $hold['id'] = $reservation->catalogueRecord->id;
                 $hold['location'] = $reservation->organisation;
                 if ($reservation->pickUpBranch) {
                     if ($reservation->organisation)
@@ -811,10 +826,14 @@ class AxiellWebServices implements DriverInterface
     {
         $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
         try {
+        	$patronId = $this->getPatronId($cancelDetails['patron']['cat_username'], $cancelDetails['patron']['cat_password']);
+        	if (!$patronId) {
+        		return new PEAR_Error('authentication_error_technical');
+        	}
             $succeeded = 0;
             $results = array();
             foreach ($cancelDetails['details'] as $details) {
-                $result = $client->removeReservation(array('removeReservationRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $cancelDetails['patron']['cat_username'], 'language' => 'en', 'id' => $details)));
+                $result = $client->removeReservation(array('removeReservationRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'id' => $details)));
 
                 if ($result->removeReservationResponse->status->type != 'ok') {
                     $this->debugLog("Remove reservation request failed for '" . $cancelDetails['patron']['cat_username'] . "'");
@@ -934,7 +953,7 @@ class AxiellWebServices implements DriverInterface
     protected function formatDate($dateString)
     {
         // remove timezone from Axiell obscure dateformat
-        $date =  substr($dateString, 0, strpos("$dateString*", "*"));
+        $date =  substr($dateString, 0, strpos("$dateString*", "+"));
         if (PEAR::isError($date)) {
             return $dateString;
         }

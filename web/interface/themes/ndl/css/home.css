@@ -1,0 +1,295 @@
+/*** Front page ***/
+
+/* Header: Search Box */
+
+.header-home #searchFormHeader {
+    clear: both;
+    padding-top: 80px;
+}
+
+/*** Header: Blurb */
+
+#blurb {
+    margin:30px 0 0;
+    padding:0;
+    line-height: 1.4;
+}
+.blurbLine {
+    background:#4d4d4d;
+    background: url(../images/ribbon_grey.png);
+    box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
+    clear: both;
+    display: block;
+    float: left;
+    margin-bottom: 5px;
+    padding: 0 5px 0 7px;
+}
+
+/* Main */
+
+.main-home#main {              /* Fix for bleeding white background on some mobile */
+    overflow-x: hidden;   /* platforms apparently due to homeFacers.*/
+}
+
+/* Sections */
+
+.section div[class*="grid"] > div {
+    padding:10px 0 20px;
+}
+
+/* Section: Introduction */
+
+.section {
+    padding: 18px 0;
+}
+
+.section#introduction div[class*="grid"] {
+    padding-bottom: 500px; /* Make floated divs seem equally long */
+    margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
+}
+.section#introduction > .content {
+    overflow:hidden;
+}
+
+.section#introduction {
+    background:#fff;
+}
+.section#introduction .grid_10 {
+    background:#fff;
+}
+.section#introduction #siteDescription,
+#topSearches {
+    border-right: 6px solid #DDDDDD;
+    margin-right: 20px;
+    padding: 10px 50px 20px 0;
+    height: 100%;
+}
+
+.section#introduction div.grid_10 > div {
+    overflow:auto;
+    padding:10px 0 30px;
+}
+.section#introduction ul {
+    float:left;
+    margin:0;
+    padding-left:0;
+}
+.section#introduction .iconlabel {
+    padding:3px 0 6px 25px;
+}
+
+ul.documentTypes li {
+    float: left;
+    width: 47%;
+    line-height: 1.5em;
+}
+
+/* Section: Carousel */
+
+#carouselContainer {
+    background-color: #808080;
+}
+#carouselContainer li {
+    margin-bottom:.5em;
+}
+#NDLCarousel {
+    visibility: hidden;
+}
+
+#NDLCarousel li {
+    float: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: -100000px -100000px;
+    cursor: pointer;
+    height: 200px;
+    position: relative;
+}
+#NDLCarousel img {
+    max-height: 127px;
+    max-width: 90%;
+    position: absolute;
+    left: 0;
+    /*top: 0;*/
+    bottom: 73px;
+}
+#NDLCarousel.noText img {
+    max-height: 200px;
+    bottom: 0;
+}
+
+#NDLCarousel h4 {
+    font-size: 100%;
+    width: 90%;
+    line-height: 1em;
+    position: absolute;
+    left: 0;
+    top: 125px;
+    /*bottom: 0px;*/
+    overflow: hidden;
+    font-weight: normal;
+}
+#NDLCarousel.noText h4 {
+    display: none;
+}
+#NDLCarousel.includeDescription h4 {
+    font-size: 120%;
+    background: url("../images/px_69.png") repeat;
+    bottom: 0;
+    margin: 0;
+    padding: 6px 3%;
+    top: auto;
+    width: 94%;
+}
+#NDLCarousel.includeDescription li:hover h4 {
+    position: relative;
+    bottom: auto;
+    top: 0;
+}
+#NDLCarousel.includeDescription p {
+    display: none;
+    background: url("../images/px_69.png") repeat;
+    color: #ddd;
+    line-height: 1.2em;
+    position: relative;
+    top: 0;
+    margin: 0;
+    padding: 4px 3%;
+    bottom: 0;
+    width: 94%;
+    height: 100%;
+}
+#NDLCarousel.includeDescription li:hover p {
+    display: block;
+}
+#NDLCarousel a,
+#NDLCarousel a:hover {
+    text-decoration: none;
+    color: #ddd;
+}
+#NDLCarousel.includeDescription li {
+    font-size: 100%;
+    text-align: left;
+    background-position: center;
+}
+#NDLCarousel.includeDescription img {
+    max-height: 5000px;
+    max-width: 5000px;
+    min-height: 100%;
+    min-width: 100%;
+    width: auto;
+    height: auto;
+}
+#NDLCarouselNavi {
+    display: none;
+    position: relative;
+    width: 100%;
+}
+#NDLCarouselNavi li {
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    top: -112px;
+}
+#NDLCarouselNavi #prev {
+    left: -32px;
+}
+#NDLCarouselNavi #next {
+    right: -32px;
+}
+
+/* Section: Popular Searches & Map Search */
+
+.section#popular-map {
+    background:#fff;
+}
+
+.section#popular-map .content {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.section#popular-map.noCarousel .content {
+    border-top: #ddd solid 6px;
+    margin-top: 0;
+    padding-top: 25px;
+}
+
+#popularSearches ul:first-child {
+    margin-right:10px;
+}
+#popularSearches ul {
+    float: left;
+    margin:0;
+    font-size: 1.1em;
+    padding: 0;
+    width: 230px;
+}
+#popularSearches li span {
+    padding:6px 0 10px;
+    display:block;
+}
+#popularSearches li span:first-child {
+    background: url("../images/circle.png") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 6px;
+    padding: 0;
+    text-align: center;
+    width: 31px;
+}
+#popularSearches li {
+    display:block;
+    clear:both;
+    margin-bottom:5px;
+    line-height:15px;
+}
+
+#popularSearches a {
+    font-weight: bold;
+}
+
+#popularSearches a:hover, #popularSearches a:focus {
+    text-decoration: underline;
+}
+
+#popularSearches .loading {
+    background: url("../images/ajax_loading.gif") no-repeat scroll 0 0 transparent;
+    height: 20px;
+    width: 20px;
+}
+
+#mapSearchHome {
+    background:url(../images/map_search_bg.jpg) no-repeat;
+    padding:10px 40px 30px;
+    height:254px;
+    color:#fff;
+}
+#mapSearchHome p {
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5em;
+}
+#mapSearchHome .button {
+    margin-top:15px;
+    z-index:5;
+}
+
+
+
+.home-section.third .loginBoxHome {
+    padding:10px 40px;
+}
+.home-section.third .mapSearchHome p {
+    font-size:1.1em;
+    font-weight:bold;
+    line-height: 1.5em;
+}
+.home-section.third .mapSearchHome .button {
+    margin-top:15px;
+    z-index:5;
+}

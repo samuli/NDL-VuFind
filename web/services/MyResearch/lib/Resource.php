@@ -47,6 +47,7 @@ class Resource extends DB_DataObject
     public $record_id;                       // string(30)  not_null multiple_key
     public $title;                           // string(200)  not_null
     public $source = 'VuFind';               // string(50)  not_null
+    public $data;                            // blob
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Resource',$k,$v); }

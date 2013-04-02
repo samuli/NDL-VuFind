@@ -109,12 +109,14 @@ class FavoriteHandler
                 if (empty($data)) {
                     // Fetch data from index for backwards compatibility and store it in the resource
                     $data = $searchObject->getIndexEngine()->getRecord($favorite->record_id);
-                    $resource = new Resource();
-                    $resource->id = $favorite->id;
-                    $resource->source = $favorite->source;
-                    if ($resource->find(true)) {
-                        $resource->data = serialize($data);
-                        $resource->update();
+                    if ($data) {
+                        $resource = new Resource();
+                        $resource->id = $favorite->id;
+                        $resource->source = $favorite->source;
+                        if ($resource->find(true)) {
+                            $resource->data = serialize($data);
+                            $resource->update();
+                        }
                     }
                 }
                 $record = RecordDriverFactory::initRecordDriver($data);

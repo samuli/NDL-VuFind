@@ -192,7 +192,7 @@ $(document).ready(function() {
         </div>
       </div>
 
-      <div class="header{if !$showTopSearchBox}-home{/if} {if $module!='Search'}header{$module}{/if} clear">
+      <div class="header{if !$showTopSearchBox}-home{/if} {if $module!='Search'}header{$module}{/if} clear backgroundContainer">
         {include file="header.tpl"}
         <div class="clear"></div>
       </div>

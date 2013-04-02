@@ -187,6 +187,9 @@ class Save extends Action
         
         // Get Record Information
         $record = $db->getRecord($_GET['id']);
+        if (!$record) {
+            return false;
+        }
         
         $resource = new Resource();
         $resource->record_id = $_GET['id'];

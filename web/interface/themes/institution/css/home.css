@@ -18,15 +18,10 @@
 
 /*** Logo ***/
 
+.searchHomeLogoMetaLib,
 .searchHomeLogo {
-    text-align: center;
-}
-.searchHomeLogoMetaLib {
-    background: url("../images/finna-ml-logo_small.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 100px;
-    margin: 0 auto 2em auto;
+    display: block;
+    margin: 3em 0 1em;
     text-align: center;
 }
 .searchHomeLogo img {
@@ -34,6 +29,17 @@
     margin: 1em auto 1em auto;
 }
 
+/* Background of the logo image */
+.header-home {
+    background-color: #f3f3f3;
+    background-size: cover;
+    background-position: center;
+}
+.searchHomeContent {
+    margin: 0 auto;
+    padding: 3em 0 3em 0;
+    text-align: left;
+}
 
 /** Search Box **/
 
@@ -133,7 +139,7 @@ div.searchHomeForm div.searchform #searchForm {
 
 .homeCustomContent {
     background-color: #f3f3f3;
-    padding: 0 24px 4em;
+    padding: 3em 24px 4em;
 }
 
 .homeCustomCol1, .homeCustomCol2, .homeCustomCol3 {

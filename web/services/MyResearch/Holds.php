@@ -74,6 +74,13 @@ class Holds extends MyResearch
                 );
                 $interface->assign('callSlipResults', $this->callSlipResults);
             }
+            // Get Message from UBRequest.php
+            if (isset($_GET['ub_request_success']) && $_GET['ub_request_success'] != "") {
+                $this->UBRequestResults = array(
+                    'success' => true, 'status' => "ub_request_success"
+                );
+                $interface->assign('UBRequestResults', $this->UBRequestResults);
+            }
             // Is cancelling Holds Available
             if ($this->cancelHolds != false) {
                 // Process Submitted Form
@@ -127,20 +134,25 @@ class Holds extends MyResearch
                 if ($result !== false && count($result)) {
                     $recordList = array();
                     foreach ($result as $row) {
-                        $record = $this->db->getRecord($row['id']);
-                        $record['ils_details'] = $row;
-                        $formats = array();
-                        foreach (isset($record['format']) ? $record['format'] : array() as $format) {
-                            $formats[] = preg_replace('/^\d\//', '', $format);
-                        }
-                        $record['format'] = $formats;
-                        $driver = RecordDriverFactory::initRecordDriver($record);
-                        if ($driver) {
-                            $record['summImages'] = $driver->getAllImages();
+                        if ($row['id']) {
+                            $record = $this->db->getRecord($row['id']);
+                            $record['ils_details'] = $row;
+                            $formats = array();
+                            foreach (isset($record['format']) ? $record['format'] : array() as $format) {
+                                $formats[] = preg_replace('/^\d\//', '', $format);
+                            }
+                            $record['format'] = $formats;
+                            $driver = RecordDriverFactory::initRecordDriver($record);
+                            if ($driver) {
+                                $record['summImages'] = $driver->getAllImages();
+                            }
+                        } else {
+                            $record = array();
+                            $record['ils_details'] = $row;
                         }
                         $recordList[] = $record;
                     }
-                    $recordList = $this->_addCallSlipCancelDetails($recordList);
+                    $recordList = $this->_addCallSlipCancelDetails($recordList, $patron);
                     $interface->assign('callSlipList', $recordList);
                 } else {
                     $interface->assign('callSlipList', false);
@@ -278,11 +290,12 @@ class Holds extends MyResearch
      * Adds a link or form details to existing call slip details
      *
      * @param array $recordList An array of patron call slips
+     * @param array $patron     Patron information
      *
      * @return array An array of patron call slips with links / form details
      * @access private
      */
-    private function _addCallSlipCancelDetails($recordList)
+    private function _addCallSlipCancelDetails($recordList, $patron)
     {
         global $interface;
         $session_details = array();
@@ -291,7 +304,7 @@ class Holds extends MyResearch
             // Form Details
             $interface->assign('cancelForm', true);
             $cancel_details
-                = $this->catalog->getCancelCallSlipDetails($record['ils_details']);
+                = $this->catalog->getCancelCallSlipDetails($record['ils_details'], $patron);
             $record['ils_details']['cancel_details']
                 = $session_details[] = $cancel_details;
             $holdList[] = $record;

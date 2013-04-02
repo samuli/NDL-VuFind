@@ -1,0 +1,1 @@
+org_finnalogo_white.png

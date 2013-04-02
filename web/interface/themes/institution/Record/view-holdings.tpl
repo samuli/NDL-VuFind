@@ -14,6 +14,7 @@
 <script type="text/javascript">
     setUpCheckRequest();
     setUpCheckCallSlipRequest();
+    setUpCheckUBRequest();
 </script>
 
 <!-- END of: Record/view-holdings.tpl -->

@@ -1,0 +1,631 @@
+/***** CSS descriptions for the Finna icon set sprite *****/
+
+/*** Elements with 16-24px icons ***/
+
+* {
+    background-repeat: no-repeat;
+    background-position:0 0;
+}
+
+
+/*** Elements with 32px icons ***/
+
+.SOMETHING {
+    background-image: url(../images/icons32px.png);
+    background-repeat: no-repeat;
+    background-position:0 0;
+}
+
+/*** Elements with 32px icons ***/
+
+.resultNoImage {
+    background-repeat: no-repeat;
+    background-position:0 0;
+}
+
+/*** Individual element background positions ***/
+
+/* Navi */
+
+.menuSearch > a span:after, .menuHelp > a span:after, .menuLogin > a span.loggedIn:after {
+    content: "▾";
+    float:right;
+}
+.menuHome > a span {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -681px -335px;
+}
+.menuHome > a:hover span {
+    background-position: -820px -335px;
+}
+
+/* Common: Buttons */
+
+.deleteButton {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -995px -127px;
+}
+.dropdown dt a:after {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -673px -2324px;
+}
+.dropdown.catalogAccount dt a:after {
+    content: "▾";
+    float:right;
+    background:none;
+}
+/* Front page: search suggestion icons */
+
+.iconlabel.formatdocument {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -45px -385px;
+}
+.iconlabel.formatphysicalobject {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -218px;
+}
+.iconlabel.formatmap {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -161px;
+}
+.iconlabel.formatbook {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -47px;
+}
+.iconlabel.formatimage {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -495px;
+}
+.iconlabel.formatjournal {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -104px;
+}
+ .iconlabel.formatmusicalscore {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -330px;
+}
+.iconlabel.formatthesis {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -45px -720px;
+}
+.iconlabel.formatworkofart {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -663px;
+}
+ .iconlabel.formatdatabase {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -275px;
+}
+.iconlabel.formatvideo {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -606px;
+}
+.iconlabel.formatsound,
+.iconlabel.formatsoundrecording {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -551px;
+}
+.iconlabel.formatother {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -777px;
+}
+
+/* Header: info box */
+
+.toggleBox.openInfoBox {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -679px 0;
+}
+.toggleBox.closeInfoBox {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -363px -128px;
+}
+
+
+/* Header: Search box */
+
+.advancedLink {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position:-573px -1132px;
+}
+html[lang="sv"] .advancedLink {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position:-579px -1132px;
+}
+.searchbox .dropdown dt a {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -1532px -246px; 
+}
+a.clear_input {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-1647px -2163px;
+}
+
+/* Header: Search suggestions */
+
+.correction .expandSearch {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -49px -1006px;
+}
+
+/* Main: Result header */
+.available:before {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -2047px -1439px;
+}
+.availableLoc {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -2047px -1398px;
+}
+.checkedout:before {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -994px -1439px;
+}
+.checkedoutLoc {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -994px -1398px;
+}
+.dateVisClear a {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -995px -728px; 
+}
+.holdPlace:before {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -363px -1398px;
+}
+.holdPlace {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -353px -2371px; 
+}
+
+/* Main: Search results */
+
+.openurl_more {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -365px -2371px; 
+}
+
+.openurl_more.expanded {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -365px -2321px;
+}
+
+.recordSet .fav {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -361px -2041px;
+}
+.recordSet .fav:hover {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -361px -2041px;
+}
+
+.currentTree, .hierarchyTreeLinkText {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -365px -1497px;
+}
+
+#toggleTree {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -365px -1500px;
+}
+/* Main: Pagination */
+
+.paginationMove.paginationNext.visible {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -362px -983px;
+}
+.paginationMove.paginationNext {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -1294px -983px;
+}
+
+.paginationMove.paginationBack.visible {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -362px -919px;
+}
+.paginationMove.paginationBack {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -1294px -919px;
+}
+
+/* Main: Search results image icons */
+
+.resultNoImage.formatdocument {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -8px -735px;
+}
+.resultNoImage.formatphysicalobject {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -11px -355px;
+}
+.resultNoImage.formatmap {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -14px -226px;
+}
+.resultNoImage.formatbook {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -12px 34px;
+}
+.resultNoImage.formatimage {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -14px -988px;
+}
+.resultNoImage.formatjournal {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -13px -98px;
+}
+.resultNoImage.formatmusicalscore {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -14px -612px;
+}
+.resultNoImage.formatthesis {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -7px -1499px;
+}
+.resultNoImage.formatworkofart {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -11px -1370px;
+}
+.resultNoImage.formatdatabase {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -13px -482px;
+}
+.resultNoImage.formatvideo {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -14px -1242px;
+}
+.resultNoImage.formatsound {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -12px -1113px;
+}
+.resultNoImage.formatother {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -17px -1632px;
+}
+
+/* Main: Search tools */
+
+.searchtools li.toolSavedSearch {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-49px -2050px;
+}
+.searchtools li.toolRssLink {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-49px -1061px;
+}
+.searchtools li.toolMailSearch {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-49px -1775px;
+}
+
+/* Main: facet sidebar */
+
+.dynatree-exp-e span.dynatree-expander, 
+.dynatree-exp-ed span.dynatree-expander, 
+.dynatree-exp-el span.dynatree-expander, 
+.dynatree-exp-edl span.dynatree-expander,
+.dynatree-exp-e span.dynatree-expander:hover,
+.dynatree-exp-ed span.dynatree-expander:hover, 
+.dynatree-exp-el span.dynatree-expander:hover, 
+.dynatree-exp-edl span.dynatree-expander:hover {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -1300px -2319px;
+}
+
+span.dynatree-expander,
+span.dynatree-expander:hover {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -1298px -2369px;
+}
+
+.dynatree-loading span.dynatree-expander,
+.dynatree-loading span.dynatree-expander:hover,
+.dynatree-statusnode-wait span.dynatree-icon {
+    background-position: 1px 5px;
+    background-image: url("../images/ajax_loading_small.gif");
+}
+
+/* Main: Single record view */
+
+.resultLinks .button {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -672px -2414px;
+}
+.resultLinks .button span {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -679px -950px;
+}
+.resultscroller .prevRecord {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -362px -920px;
+}
+.resultscroller .nextRecord {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -362px -984px;
+}
+#addThis .mail {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -359px -1771px;
+}
+.addthis_button_facebook {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -361px -613px;
+}
+.addthis_button_twitter {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -361px -667px;
+}
+.addthis_button_google_plusone_share {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -361px -2480px;
+}
+.fav {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -364px -2044px;
+}
+.mail {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -364px -1717px;
+        
+}
+.export {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -364px -1659px;
+        
+}
+.export img {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -363px -2317px;
+}
+.add {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -357px -49px;
+}
+.delete {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -357px -1384px;
+}
+.deleteRecordComment {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -352px -1385px;
+}
+.savedHistory .delete {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -1384px;
+}
+.accountList .delete {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -1384px;
+}
+.accountList .edit {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -2098px;
+}
+label.invalid {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -997px 0px;
+}
+
+#holdingstab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -214px;
+}
+#componentstab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -436px;
+}
+#commentstab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -1876px;
+}
+#reviewstab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -212px;
+}
+#excerpttab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -212px;
+}
+#hierarchytab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -1493px;
+}
+#maptab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -53px;
+}
+#detailstab {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -494px;
+}
+
+#tabnav .collectionContent {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -1603px;
+}
+#tabnav .collectionHierarchy {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -1493px;
+}
+
+.citation .moreLink a:after {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -362px -2318px;
+}
+.citation .lessLink a:after {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -362px -2270px;
+}
+
+/* Main: Myresearch */
+
+.sessionHistory .add {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -41px -49px;
+}
+.editItem .edit,
+#sidebarFavoritesLists .edit {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -47px -2104px;
+}
+.editItem .delete,
+#sidebarFavoritesLists .delete {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -47px -1390px;
+}
+#sidebarFavoritesLists #listAdd {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -492px -48px;
+}
+
+/* Main: Advanced Search */
+
+.advancedSearchHelpButton {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -363px 1px;
+}
+#advancedSearchWrapper .searchButton {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -668px -996px;
+}
+
+#zoomControlPlus {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -49px -56px;
+}
+#zoomControlMinus {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -49px -112px;
+}
+.selectionMapHelpIcon { 
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -365px 0;
+}
+
+/* jQuery UI Elements */
+
+body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close,
+body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close:hover,
+body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position:-47px -728px;
+}
+
+/* Datatables */
+
+.dataTable .sorting_asc:after {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-1295px -2317px;
+}
+
+.dataTable .sorting_desc:after {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-1295px -2268px;
+}
+
+.dataTable .sorting:after {
+    background:none;
+    /*background-position:-44px -3368px;*/
+}
+.dataTables_paginate .paginate_disabled_previous:before {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-1301px -2419px;
+}
+.dataTables_paginate .paginate_enabled_previous:before {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-365px -2419px;
+}
+.dataTables_paginate .paginate_enabled_next:after {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-358px -2368px;
+}
+.dataTables_paginate .paginate_disabled_next:after {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position:-1292px -2368px;
+}
+
+/* Myresearch */
+
+/* Front page: search suggestion icons */
+
+.myResearch .formatdocument {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -45px -385px;
+}
+.myResearch .formatphysicalobject {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -218px;
+}
+ .myResearch .formatmap {
+     background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -161px;
+}
+.myResearch .formatbook {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -47px;
+}
+.myResearch .formatimage {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -495px;
+}
+.myResearch .formatjournal {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -104px;
+}
+ .myResearch .formatmusicalscore {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -330px;
+}
+.myResearch .formatthesis {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -45px -720px;
+}
+.myResearch .formatworkofart {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -663px;
+}
+ .myResearch .formatdatabase {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -275px;
+}
+.myResearch .formatvideo {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -606px;
+}
+.myResearch .formatsound,
+.myResearch .formatsoundrecording {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -46px -551px;
+}
+.myResearch .formatother {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -777px;
+}
+
+/*** Webkit hacks ***/
+
+/* TODO: Remove these when a better solution has been found */
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
+    #advancedSearchWrapper .searchButton {
+        background-image: url(../images/icons16-24px-02.png);
+        background-position: -668px -999px;
+    }
+
+} 
+
+#NDLCarouselNavi #prev {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -47px -920px;
+}
+#NDLCarouselNavi #prev:hover {
+    background-position: -679px -920px;
+}
+#NDLCarouselNavi #next {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -47px -984px;
+}
+#NDLCarouselNavi #next:hover {
+    background-position: -679px -984px;
+}

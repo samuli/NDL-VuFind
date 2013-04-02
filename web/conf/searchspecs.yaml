@@ -208,7 +208,7 @@ SubjectExact:
 JournalTitle:
   DismaxFields:
     - title_short^500
-    - title_full_unstemmed^450
+    - title_full_unstemmed^4500
     - title_full^400
     - title^300
     - container_title^250
@@ -221,7 +221,7 @@ JournalTitle:
     - title_short:
       - [onephrase, 500]
     - title_full_unstemmed:
-      - [onephrase, 450]
+      - [onephrase, 4500]
       - [and, 400]
     - title_full:
       - [onephrase, 400]
@@ -257,7 +257,7 @@ JournalTitleExact:
 Title:
   DismaxFields:
     - title_short^500
-    - title_full_unstemmed^450
+    - title_full_unstemmed^4500
     - title_full^400
     - title^300
     - title_alt^200
@@ -269,7 +269,7 @@ Title:
     - title_short:
       - [onephrase, 500]
     - title_full_unstemmed:
-      - [onephrase, 450]
+      - [onephrase, 4500]
       - [and, 400]
     - title_full:
       - [onephrase, 400]

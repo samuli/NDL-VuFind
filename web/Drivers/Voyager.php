@@ -814,7 +814,8 @@ class Voyager implements DriverInterface
                     'duedate' => $dueDate,
                     'number' => $number,
                     'requests_placed' => $requests_placed,
-                    'returnDate' => $returnDate
+                    'returnDate' => $returnDate,
+                    'use_unknown_message' => in_array('No information available', $row['STATUS_ARRAY'])
                 );
 
                 // Parse Holding Record
@@ -1309,7 +1310,8 @@ class Voyager implements DriverInterface
             $this->dbName.".HOLD_RECALL",
             $this->dbName.".HOLD_RECALL_ITEMS",
             $this->dbName.".MFHD_ITEM",
-            $this->dbName.".BIB_TEXT"
+            $this->dbName.".BIB_TEXT",
+            $this->dbName.".VOYAGER_DATABASES"
         );
 
         // Where
@@ -1319,7 +1321,9 @@ class Voyager implements DriverInterface
             "HOLD_RECALL_ITEMS.ITEM_ID = MFHD_ITEM.ITEM_ID(+)",
             "(HOLD_RECALL_ITEMS.HOLD_RECALL_STATUS IS NULL OR " .
             "HOLD_RECALL_ITEMS.HOLD_RECALL_STATUS < 3)",
-            "BIB_TEXT.BIB_ID = HOLD_RECALL.BIB_ID"
+            "BIB_TEXT.BIB_ID = HOLD_RECALL.BIB_ID",
+            "HOLD_RECALL.HOLDING_DB_ID = VOYAGER_DATABASES.DB_ID",
+            "VOYAGER_DATABASES.DB_CODE = 'LOCAL'"
         );
 
         // Bind
@@ -1536,7 +1540,7 @@ class Voyager implements DriverInterface
     protected function processMyCallSlipsData($sqlRow)
     {
         $available = ($sqlRow['STATUS'] == 4) ? true : false;
-        $expireDate = translate("Unknown");
+        $expireDate = '';
         $processedDate = '';
         $statusDate = '';
         // Convert Voyager Format to display format
@@ -1573,8 +1577,9 @@ class Voyager implements DriverInterface
             'status' => $sqlRow['STATUS_DESC'],
             'statusDate' => $statusDate,
             'location' => $this->getLocationName($sqlRow['PICKUP_LOCATION_ID']),
+            'created' => $createDate,
             'processed' => $processedDate,
-            'create' => $createDate,
+            'expired' => $expireDate,
             'reply' => $sqlRow['REPLY_NOTE'],
             'available' => $available,
             'cancelled' => $sqlRow['STATUS'] == 7 ? $statusDate : false,

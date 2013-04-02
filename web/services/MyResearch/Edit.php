@@ -86,7 +86,10 @@ class Edit extends Action
      */
     private function _saveChanges($user)
     {
-        $resource = Resource::staticGet('record_id', $_GET['id']);
+        $resource = new Resource();
+        unset($resource->source);
+        $resource->record_id = $_GET['id'];
+        $resource->find(true);
         
         // Loop through the list of lists on the edit screen:
         foreach ($_POST['lists'] as $listId) {

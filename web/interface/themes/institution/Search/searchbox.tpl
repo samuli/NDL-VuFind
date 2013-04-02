@@ -17,7 +17,7 @@
   {literal}
       $(function(){
           $('label.labelOver').labelOver('labelOver')
-          $('.mainFocus').focus();
+          setMainFocus();
       });
   {/literal}
   </script>

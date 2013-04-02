@@ -4,7 +4,7 @@
 <div class="slides_container">
   <div class="slide">
     <ul>
-      <li>
+      <li class="grid_6">
         {image src="constantinus.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Constantinus Africanus: Theorica Pantegni</span></div>
@@ -14,7 +14,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="kamera.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>A. K. Cajanders kamera</span></div>
@@ -24,7 +24,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="tyyppitalo.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Typhusritningarna</span></div>
@@ -34,7 +34,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="jyx.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Publikationsarkivet JYX</span></div>
@@ -48,7 +48,7 @@
   </div>
   <div class="slide">
     <ul> 
-      <li>
+      <li class="grid_6">
         {image src="valskari.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Zacharias Topelius: Fältskärns berättelser</span></div>
@@ -58,7 +58,7 @@
           </div>
         </div>
       </li>
-      <li>
+      <li class="grid_6">
         {image src="moottorisaha.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Motorsåg, Valmet-Stihl-BLK/105</span></div>

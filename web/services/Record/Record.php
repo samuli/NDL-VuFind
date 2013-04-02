@@ -62,14 +62,9 @@ class Record extends Action
     public function __construct()
     {
         global $configArray;
-        global $interface;
         global $user;
 
         //$interface->caching = 1;
-
-        // Store ID of current record (this is needed to generate appropriate
-        // links, and it is independent of which record driver gets used).
-        $interface->assign('id', $_REQUEST['id']);
 
         // Setup Search Engine Connection
         $this->db = ConnectionManager::connectToIndex();
@@ -100,6 +95,49 @@ class Record extends Action
         if (!($record = $this->db->getRecord($_REQUEST['id']))) {
             PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
         }
+        
+        $this->setRecord($_REQUEST['id'], $record);
+    }
+
+    /**
+     * Record a record hit to the statistics index when stat tracking is enabled;
+     * this is called by the Home action.
+     *
+     * @return void
+     * @access public
+     */
+    public function recordHit()
+    {
+        global $configArray;
+
+        if ($configArray['Statistics']['enabled']) {
+            // Setup Statistics Index Connection
+            $solrStats = ConnectionManager::connectToIndex('SolrStats');
+
+            // Save Record View
+            $solrStats->saveRecordView($this->recordDriver->getUniqueID());
+            unset($solrStats);
+        }
+    }
+    
+    /**
+     * Initialize the record
+     * 
+     * @param string $id     Record ID
+     * @param array  $record Record data
+     * 
+     * @return void
+     */
+    protected function setRecord($id, $record)
+    {
+        global $interface;
+        global $configArray;
+        global $user;
+        
+        // Store ID of current record (this is needed to generate appropriate
+        // links, and it is independent of which record driver gets used).
+        $interface->assign('id', $_REQUEST['id']);
+        
         $this->recordDriver = RecordDriverFactory::initRecordDriver($record);
 
         // Define Default Tab
@@ -133,7 +171,7 @@ class Record extends Action
             );
         }
         $interface->assign('coreMetadata', $this->recordDriver->getCoreMetadata());
-
+        
         // Determine whether to display book previews
         if (isset($configArray['Content']['previews'])) {
             $interface->assignPreviews();
@@ -229,27 +267,6 @@ class Record extends Action
             'bXEnabled', isset($configArray['bX']['token'])
             ? true : false
         );
-    }
-
-    /**
-     * Record a record hit to the statistics index when stat tracking is enabled;
-     * this is called by the Home action.
-     *
-     * @return void
-     * @access public
-     */
-    public function recordHit()
-    {
-        global $configArray;
-
-        if ($configArray['Statistics']['enabled']) {
-            // Setup Statistics Index Connection
-            $solrStats = ConnectionManager::connectToIndex('SolrStats');
-
-            // Save Record View
-            $solrStats->saveRecordView($this->recordDriver->getUniqueID());
-            unset($solrStats);
-        }
     }
 }
 

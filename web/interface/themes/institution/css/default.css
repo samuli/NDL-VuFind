@@ -149,22 +149,24 @@ div.sidegroup {
 
 /*** Header ***/
 
-#logo {
-    background: url("../images/finna_logo_small.png") no-repeat scroll center center transparent;
-    height: 60px;
-    width: 190px;
-    margin: 20px;
+.searchLogo {
+    background: url("../images/finna-logo_small.png") no-repeat scroll center center transparent;
     display: block;
+    clear: both;
+    text-align: center;
+    margin-top: 20px;
 }
-#logoMetaLib {
+#logo img {
+    height: auto;
+}
+/*#logoMetaLib {
     background: url("../images/finna-ml-logo_small.png") no-repeat scroll center center transparent;
     height: 71px;
     width: 258px;
     margin: 0 0 0 10px;
     display: block;
-}
+}*/
 #logoHeader {
-    float: left;
 }
 #logoHeaderMetaLib {
     float: left;
@@ -172,13 +174,16 @@ div.sidegroup {
     margin: 20px 20px 10px;
 }
 #searchFormHeader {
-    float: left;
-    padding: 2.5em 0 .5em;
+    padding-bottom: .5em;
     width: 506px;
+    margin: auto;
+    margin-top: 10px;
 }
 .header, .headerRecord, .headerCollection, .headerContent, .headerAuthor {
     background-color: #f3f3f3;
-    border-bottom: 1px solid #dddddd;
+    padding-top: 15px;
+    background-size: cover;
+    background-position: center;
 }
 .headerMetaLib .searchbox {
     margin: 1em 0 0.5em;
@@ -543,7 +548,7 @@ div.dialogLoading {
     height:100%;
 }
 
-.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability {
+.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
@@ -881,6 +886,9 @@ fieldset.publishDateLimit .ui-slider {
     width: 210px;
     margin-left: 12px;
 }
+.profileInfo p {
+    margin-left: 12px;
+}
 .profileInfo label {
     font-weight: normal;
 }
@@ -892,7 +900,7 @@ fieldset.publishDateLimit .ui-slider {
     padding: 2px;
 }
 .profileInfo .button {
-    margin: 2em 0;
+    margin: 1em 0 2em;
     float: right;
 }
 .finesList table.fines td, .myResearch .savedHistory td, .myResearch .sessionHistory td, .accountList td {
@@ -1575,7 +1583,7 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 20px;
     margin-right:1em;
 }
-.checkRequest, .checkCallSlipRequest {
+.checkRequest, .checkCallSlipRequest, .checkUBRequest {
     background-image:url(../images/fugue/checkRequest.png);
     background-repeat:no-repeat;
     padding-left:18px;

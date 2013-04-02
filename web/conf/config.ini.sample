@@ -209,6 +209,8 @@ default_core    = biblio
 ; file; when VuFind has to look up large numbers of records using ID values, it may
 ; have to restrict the size of its result set based on this limitation.
 maxBooleanClauses = 1024
+; UNICODE normalization form to use for search terms. Valid values are empty, NFC, NFD, NFKC and NFKD.
+unicode_normalization_form = NFKC
 
 ; Enable/Disable searching reserves using the "reserves" Solr core.  When enabling
 ; this feature, you also need to uncomment the relevant line in solr/solr.xml and
@@ -356,7 +358,10 @@ lastname = SHIB_cn
 ; Contentcafe or Google Books.  Note that the Summon service takes a Serials
 ; Solutions client key, NOT a Summon API key!
 ;coverimages     = Syndetics:MySyndeticsId,Amazon:MyAccessKeyId,LibraryThing:MyLibraryThingId,Google,OpenLibrary,Summon:MySerialsSolutionsClientKey,Contentcafe:MyContentCafeID
-coverimages    = Google,OpenLibrary
+coverimages    = OpenLibrary
+coverwidth = 126
+coverheight = 126
+coverbackground = ffffff
 
 ; This setting controls the image to display when no book cover is available.
 ; The path is relative to web subdirectory of the VuFind install directory:
@@ -393,13 +398,13 @@ authors         = Wikipedia
 ; You can select from Google, OpenLibrary, HathiTrust.  You should consult
 ; http://code.google.com/apis/books/branding.html before using Google Book Search.
 ;previews       = Google,OpenLibrary,HathiTrust
-previews       = Google,OpenLibrary,HathiTrust
+;previews       = OpenLibrary,HathiTrust
 
 ; Possible HathiRights options = pd,ic,opb,orph,und,umall,world,nobody,pdus,cc-by,cc-by-nd,
 ; cc-by-nc-nd,cc-by-nc,cc-by-nc-sa,cc-by-sa,orphcand,cc-zero,und-world
 ; Default is "pd,world" if unset here.
 ; See www.hathitrust.org/rights_database#Attributes for full details
-;HathiRights    = pd,world,cc-by,cc-by-nd,cc-by-nc-nd,cc-by-nc,cc-by-nc-sa,cc-by-sa,cc-zero,und-world
+HathiRights    = pd,world,cc-by,cc-by-nd,cc-by-nc-nd,cc-by-nc,cc-by-nc-sa,cc-by-sa,cc-zero,und-world
 
 ; Possible GoogleBooks options full,partial,noview 
 ; Default is "full,partial" if unset here.
@@ -870,3 +875,10 @@ ip = true
 ; Authorization-providing authentication methods defined in Authentication section or MultiAuth
 authentication_methods[] = Shibboleth
 authentication_methods[] = LDAP
+
+; Normalization preview allows one to display an external record 
+; as it would be displayed in VuFind. This requires a backend, 
+; such as RecordManager, that provides the transformed record
+[NormalizationPreview]
+; Backend URL
+;url = http://localhost/preview

@@ -85,6 +85,8 @@ $(document).ready(function(){
     
     setUpCheckRequest();
     setUpCheckCallSlipRequest();
+    setUpCheckUBRequest();
+    setUpUBRequestForm();
 });
 
 function setUpCheckRequest() {
@@ -179,6 +181,84 @@ function checkCallSlipRequestIsValid(element, requestURL) {
             }
         }
     });   
+}
+
+function setUpCheckUBRequest() {
+    $('.checkUBRequest').each(function(i) {
+        if($(this).hasClass('checkUBRequest')) {
+            $(this).addClass('ajax_ub_request_availability');
+        }
+    });
+    
+    $('.checkUBRequest').each(function(i) {
+        if($(this).hasClass('checkUBRequest')) {
+            var isValid = checkUBRequestIsValid(this, this.href);
+        }
+    });
+}
+
+function checkUBRequestIsValid(element, requestURL) {
+    var recordId = requestURL.match(/\/Record\/([^\/]+)\//)[1];
+    var vars = {}, hash;
+    var hashes = requestURL.slice(requestURL.indexOf('?') + 1).split('&');
+
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        var x = hash[0];
+        var y = hash[1]
+        vars[x] = y;
+    }
+    vars['id'] = recordId;
+    
+    var url = path + '/AJAX/JSON_UBRequest?' + $.param({method:'checkRequestIsValid', id: recordId, data: vars});
+    $.ajax({
+        dataType: 'json',
+        cache: false,
+        url: url,
+        success: function(response) {
+            if (response.status == 'OK') {
+                if (response.data.options) {
+                    $(element).removeClass('checkUBRequest ajax_ub_request_availability').html(response.data.msg);
+                } else {
+                    $(element).remove();
+                }
+            } else if (response.status == 'NEED_AUTH') {
+                $(element).replaceWith('<span class="UBRequestBlocked">' + response.data.msg + '</span>');
+            }
+        }
+    });   
+}
+
+function setUpUBRequestForm() {
+    $("#pickupLibrary").change(function() {
+        $("#pickupLocation option").remove();
+        $("#pickupLocationLabel").addClass("ajax_ub_request_loading");
+        var recordId = location.href.match(/\/Record\/([^\/]+)\//)[1];
+        var url = path + '/AJAX/JSON_UBRequest?' + $.param({method:'getPickupLocations', id: recordId, pickupLib: $("#pickupLibrary").val() });
+        $.ajax({
+            dataType: 'json',
+            cache: false,
+            url: url,
+            success: function(response) {
+                if (response.status == 'OK') {
+                    $.each(response.data.locations, function() {
+                        var option = $("<option></option>").attr("value", this.id).text(this.name);
+                        if (this.isDefault) {
+                            option.attr("selected", "selected");
+                        }
+                        $("#pickupLocation").append(option);
+                    });
+                }
+                $("#pickupLocationLabel").removeClass("ajax_ub_request_loading");
+            },
+            fail: function() {
+                $("#pickupLocationLabel").removeClass("ajax_ub_request_loading");
+            }
+        });   
+        
+    });
+    $("#pickupLibrary").change();
 }
 
 function registerAjaxCommentRecord() {

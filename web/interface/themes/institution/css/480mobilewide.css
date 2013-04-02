@@ -55,11 +55,9 @@ px      62    136    210    284    358    432   */
     }
     .searchHomeLogo {
         background: url("../images/finna-logo_cyan-80percent.png") no-repeat scroll center center transparent;
-        height: 132px;
-        margin: 0 auto 2em;
     }
-    #logo {
-        margin: 0 143px 21px;
+    #logo img {
+        max-width: 472px;
     }
     div.searchHomeForm div.searchform #searchForm, div.searchform #searchForm {
         margin: 0 auto;
