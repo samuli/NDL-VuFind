@@ -106,12 +106,11 @@ class UserAccount
                 if (!isset($ips[0])) {
                     continue;
                 }
-                $ips[0] = UserAccount::normalizeIp($ips[0]);
                 if (!isset($ips[1])) {
                     $ips[1] = $ips[0];
-                } else {
-                    $ips[1] = UserAccount::normalizeIp($ips[1], true);
                 }
+                $ips[0] = UserAccount::normalizeIp($ips[0]);
+                $ips[1] = UserAccount::normalizeIp($ips[1], true);
                 if ($ips[0] === false || $ips[1] === false) {
                     error_log("Could not parse IP address/range: $range");
                     continue;
