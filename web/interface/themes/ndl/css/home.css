@@ -17,12 +17,13 @@
 .blurbLine {
     background:#4d4d4d;
     background: url(../images/ribbon_grey.png);
+    background:rgba(0,0,0,.5);
     box-shadow:0 2px 7px rgba(0, 0, 0, 0.3);
     clear: both;
     display: block;
     float: left;
     margin-bottom: 5px;
-    padding: 0 5px 0 7px;
+    padding: 2px 5px 3px 6px;
 }
 
 /* Main */

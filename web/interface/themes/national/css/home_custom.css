@@ -11,6 +11,10 @@
     line-height: 1.4;
 }
 
+.blurbLine {
+    padding: 0 5px 1px 7px;
+}
+
 #blurb em {
     font-style: normal;
 }
