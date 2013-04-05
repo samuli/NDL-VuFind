@@ -1,8 +1,16 @@
+<!-- START of: MetaLib/advanced.tpl -->
+
+<div id="advancedSearchWrapper">
 <form method="get" action="{$url}/MetaLib/Search" id="advSearchForm" name="searchForm" class="search">
   <input name="join" type="hidden" value="AND">
-  <div class="span-18{if $sidebarOnLeft} push-5 last{/if}">
-    <h3>{translate text='Advanced Search'}</h3>
-    <div class="advSearchContent">
+  <div class="advSearchHeader">
+    <div class="content">
+      <h1>{translate text='Advanced Search'}</h1><a class="advancedSearchHelpButton" href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a>
+    </div>
+   </div>
+    <div class="content">
+      <div class="advSearchContent">
+      <div class="advSearchSection first grid_24">
       {if $editErr}
       {assign var=error value="advSearchError_$editErr"}
         <div class="error">{translate text=$error}</div>
@@ -31,9 +39,9 @@
             {section name=rows loop=$numRows}
               {assign var=rowIndex value=$smarty.section.rows.index}
               {if $searchDetails}{assign var=currRow value=$searchDetails.$groupIndex.group.$rowIndex}{/if}
-              <div class="advRow">
+              <div class="advRow{if $rowIndex == $numGroups} last{/if}">
                 <div class="label">
-                  <label {if $rowIndex > 0}class="offscreen" {/if}for="search_lookfor{$groupIndex}_{$rowIndex}">{translate text="adv_search_label"}:</label>&nbsp;
+                  <label for="search_lookfor{$groupIndex}_{$rowIndex}">{translate text="adv_search_label"}:</label>&nbsp;
                 </div>
                 <div class="terms">
                   <input id="search_lookfor{$groupIndex}_{$rowIndex}" type="text" value="{if $currRow}{$currRow.lookfor|escape}{/if}" size="50" name="lookfor{$groupIndex}[]"/>
@@ -62,12 +70,14 @@
         <option value="{$searchVal}"{if $searchSet == $searchVal} selected="selected"{/if}>{translate text=$searchDesc}</option>
       {/foreach}
       </select>
-
-      <input type="submit" name="submit" value="{translate text="Find"}"/>
+      <div class="clear"></div>
+      <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
+    </div>
     </div>
     {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
   </div>
     
   <div class="clear"></div>
 </form>
-
+</div>
+<!-- START of: MetaLib/advanced.tpl -->

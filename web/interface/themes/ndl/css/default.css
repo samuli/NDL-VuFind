@@ -725,6 +725,9 @@ a.clear_input {
     left: 365px !important;
     top: 8px !important;
 }
+.headerPCI a.clear_input {
+    left:511px !important;
+}
 a.clear_input:hover {
     text-decoration: none;
 } 
@@ -1092,14 +1095,21 @@ body > .ui-widget .button {
     text-indent: -9999px;
     width: 70px;
 }
+.content .advanced-link-wrapper.grid_7 {
+    width: 230px;
+}
+.advanced-link-wrapper.PCIEnabled.MetaLibEnabled {
+    margin-top:-15px;
+}
 .advanced-link-wrapper a {
-    color: #fff;
-    display: inline-block;
-    font-size: .923em;
-    font-weight:bold;
+    clear: both;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    font-size: 0.923em;
+    font-weight: bold;
     height: 24px;
     line-height: 24px;
-    margin-top:10px;
 }
 a.advancedLink {
     padding-right: 50px;
@@ -2094,18 +2104,18 @@ dl.narrowList a {
        commented this out because it breaks a few things and I don't know where
        it should be applied */
 }
-.main .contentHeader,
-.main .browseHeader {
+#main .contentHeader,
+#main .browseHeader {
     background: #b2e3ea;
     padding: 22px 0 24px;
     margin-bottom: 40px;
 }
-.main .browseHeader {
+#main .browseHeader {
     background:#b2e3ea;
 }
-.main .contentHeader h1,
-.main .browseHeader h1,
-.main .advSearchHeader h1 {
+#main .contentHeader h1,
+#main .browseHeader h1,
+#main .advSearchHeader h1 {
     margin:0;
     padding:0;
 }
@@ -2850,8 +2860,7 @@ div.resultLinks a {
     text-indent: -10000px;
     display: block;
 }
-.module-Record div.record,
-.module-MetaLib div.record {
+div[id*="record"].record.recordId {
     padding: 0;
     margin-top: 4em;
 }

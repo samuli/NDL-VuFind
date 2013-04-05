@@ -1,6 +1,7 @@
-<div class="record">
-  <a href="{$url}/PCI/Record?id={$id|escape:"url"}" class="backtosearch">&laquo; {translate text="Back to Record"}</a>
+<!-- START of: PCI/view-alt.tpl -->
 
-  {if $pageTitle}<h1>{$pageTitle}</h1>{/if}
+<div class="record">
   {include file="PCI/$subTemplate"}
 </div>
+
+<!-- END of: PCI/view-alt.tpl -->

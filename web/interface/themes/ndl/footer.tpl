@@ -29,7 +29,7 @@
 <div id="footerSeparator"></div>
 
 <div class="grid_8">
-   <a href="{$url}" class="footerLogo">{image src="finna_logo_small.png" alt="Home"}</a>
+   <a href="http://finna.fi" class="footerLogo">{image src="finna_logo_small.png" alt="Home"}</a>
 </div>
 <div class="grid_8">
   {if $userLang=='en-gb'}

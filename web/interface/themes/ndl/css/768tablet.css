@@ -74,10 +74,6 @@
         margin-top:13px;
     }
     
-    .advanced-link-wrapper a {
-        margin:0;
-    }
-   
     
     /* Header: Search Box */
     
@@ -86,6 +82,9 @@
     }
     a.clear_input { 
         left:205px !important;
+    }
+    .headerPCI a.clear_input {
+        left:353px !important;
     }
     
     /* Front page */
@@ -135,7 +134,6 @@
     
     #introduction ul {
         clear:both;
-        font-size:1.230em;
     }
     
     #popularSearches ul {

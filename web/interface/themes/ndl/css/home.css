@@ -34,19 +34,21 @@
 /* Sections */
 
 .section div[class*="grid"] > div {
-    padding:10px 0 20px;
-}
 
+}
+#main.main-home h2 {
+    margin:0 0 .75em 0;
+}
+#main.main-home {
+    padding-bottom:30px;
+    background:#fff;
+}
 /* Section: Introduction */
 
 .section {
-    padding: 18px 0;
+    padding:30px 0 0;
 }
 
-.section#introduction div[class*="grid"] {
-    padding-bottom: 500px; /* Make floated divs seem equally long */
-    margin-bottom: -500px; /* Note: parent element must be overflow:hidden */
-}
 .section#introduction > .content {
     overflow:hidden;
 }
@@ -61,13 +63,12 @@
 #topSearches {
     border-right: 6px solid #DDDDDD;
     margin-right: 20px;
-    padding: 10px 50px 20px 0;
+    padding: 0px 30px 0px 0;
     height: 100%;
 }
 
 .section#introduction div.grid_10 > div {
-    overflow:auto;
-    padding:10px 0 30px;
+    overflow:visible;
 }
 .section#introduction ul {
     float:left;
@@ -80,12 +81,22 @@
 
 ul.documentTypes li {
     float: left;
-    width: 47%;
+    font-size: 1.1em;
     line-height: 1.5em;
+    padding: 0 0 2px;
+    width: 47%;
 }
 
 /* Section: Carousel */
 
+.carousel-direction-up {
+	height:400px;
+	width:430px;
+	position:relative;
+}
+.carousel-direction-up .caroufredsel_wrapper {
+	width:100% !important;
+}
 #carouselContainer {
     background-color: #808080;
 }
@@ -105,6 +116,7 @@ ul.documentTypes li {
     height: 200px;
     position: relative;
 }
+
 #NDLCarousel img {
     max-height: 127px;
     max-width: 90%;
@@ -112,6 +124,10 @@ ul.documentTypes li {
     left: 0;
     /*top: 0;*/
     bottom: 73px;
+}
+.carousel-direction-up #NDLCarousel img {
+	bottom:0;
+	max-height:120px;
 }
 #NDLCarousel.noText img {
     max-height: 200px;
@@ -128,6 +144,14 @@ ul.documentTypes li {
     /*bottom: 0px;*/
     overflow: hidden;
     font-weight: normal;
+}
+.carousel-direction-up #NDLCarousel h4 { 
+	left: 105px;
+    line-height: 1.23em;
+    overflow: visible;
+    top: 0;
+    width: 300px;
+	font-size:1.1em;
 }
 #NDLCarousel.noText h4 {
     display: none;
@@ -162,11 +186,13 @@ ul.documentTypes li {
 #NDLCarousel.includeDescription li:hover p {
     display: block;
 }
+/*
 #NDLCarousel a,
 #NDLCarousel a:hover {
     text-decoration: none;
     color: #ddd;
 }
+*/
 #NDLCarousel.includeDescription li {
     font-size: 100%;
     text-align: left;
@@ -198,6 +224,35 @@ ul.documentTypes li {
 #NDLCarouselNavi #next {
     right: -32px;
 }
+
+.carousel-direction-up #NDLCarouselNavi {
+    display: none;
+    position: absolute;
+    width: 24px;
+	left:210px;
+	top:0;
+}
+.carousel-direction-up #NDLCarouselNavi li {
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    top: 0;
+}
+.carousel-direction-up #NDLCarouselNavi #prev {
+    background-position: -363px -792px;
+    cursor: pointer;
+    left: 0;
+    margin-left: 30px;
+    top: 400px;
+}
+.carousel-direction-up #NDLCarouselNavi #next {
+    background-position: -363px -856px;
+    cursor: pointer;
+    left: 0;
+    top: 400px;
+}
+
 
 /* Section: Popular Searches & Map Search */
 

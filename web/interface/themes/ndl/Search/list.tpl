@@ -1,4 +1,5 @@
 <!-- START of: Search/list.tpl -->
+
 {* Listing Options *}
 <div class="resultHeader">
   <div class="resultTerms">
@@ -33,19 +34,28 @@
       {/if}
     </div> {* content *}
   </div> {* resultTerms *}
+  
   <div class="resultRecommendations">
     <div class="content">
       <div class="grid_24">
         {* Recommendations *}
         {if $topRecommendations}
           {foreach from=$topRecommendations item="recommendations"}
+             
             {include file=$recommendations}
           {/foreach}
         {/if}
       </div>
     </div>
   </div>
-  <div class="resultViewOptions">
+  <div class="resultDatesHeader {if !empty($visFacets.main_date_str[0])}expanded{/if}">
+    <div class="content">
+      <span class="dateVisHandle">{translate text='Results timeline'}<span class="dateVisHelp {if !empty($visFacets.main_date_str[0])}visible{/if}"><span class="infoIndicator">i</span>{translate text='You can narrow the search by selecting a period on the timeline'}</span></span>
+      <div class="dateVisHandle dateVisOpen {if empty($visFacets.main_date_str[0])}visible{/if}"></div>
+      <div class="dateVisHandle dateVisClose {if !empty($visFacets.main_date_str[0])}visible{/if}"></div>
+    </div>
+  </div>
+<div class="resultViewOptions">
     <div class="content">
       <div class="resultNumbers">
         {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
@@ -92,14 +102,6 @@
       </div> {* resultOptions *}
     </div> {* content *}
   </div> {* resultViewOptions *}
-  <div class="resultDatesHeader {if !empty($visFacets.main_date_str[0])}expanded{/if}">
-    <div class="content">
-      <span class="dateVisHandle">{translate text='Results timeline'}<span class="dateVisHelp {if !empty($visFacets.main_date_str[0])}visible{/if}"><span class="infoIndicator">i</span>{translate text='You can narrow the search by selecting a period on the timeline'}</span></span>
-      <div class="dateVisHandle dateVisOpen {if empty($visFacets.main_date_str[0])}visible{/if}"></div>
-      <div class="dateVisHandle dateVisClose {if !empty($visFacets.main_date_str[0])}visible{/if}"></div>
-    </div>
-  </div>
-
 </div> {* resultHeader *}
 {* End Listing Options *}
 {* Fancybox for images *}

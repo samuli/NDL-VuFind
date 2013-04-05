@@ -135,6 +135,11 @@
         float:right;
         margin-top:10px;
         margin-left:20px;
+        clear:none;
+    }
+
+    .advanced-link-wrapper {
+        margin-top:0 !important;
     }
     
     
@@ -153,6 +158,10 @@
     }
     a.clear_input { 
         left:205px !important;
+    }
+    
+    .headerPCI a.clear_input {
+        left:353px !important;
     }
     
     /* Front page */

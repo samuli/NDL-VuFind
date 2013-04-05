@@ -56,7 +56,8 @@
 }
 /* Front page: search suggestion icons */
 
-.iconlabel.formatdocument {
+.iconlabel.formatdocument,
+.iconlabel.formatarticle {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -385px;
 }
@@ -230,7 +231,8 @@ a.clear_input {
 
 /* Main: Search results image icons */
 
-.resultNoImage.formatdocument {
+.resultNoImage.formatdocument,
+.resultNoImage.formatarticle {
     background-image: url(../images/icons48px-03.png);
     background-position: -8px -735px;
 }

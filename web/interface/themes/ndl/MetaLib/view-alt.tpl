@@ -1,6 +1,7 @@
-<div class="record">
-  <a href="{$url}/MetaLib/Record?id={$id|escape:"url"}" class="backtosearch">&laquo; {translate text="Back to Record"}</a>
+<!-- START of: MetaLib/view-alt.tpl -->
 
-  {if $pageTitle}<h1>{$pageTitle}</h1>{/if}
+<div class="record">
   {include file="MetaLib/$subTemplate"}
 </div>
+
+<!-- END of: MetaLib/view-alt.tpl -->
