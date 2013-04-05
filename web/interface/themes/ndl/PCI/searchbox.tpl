@@ -20,12 +20,12 @@
       <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
       <div class="clear"></div>
     </div>
-    <div class="advanced-link-wrapper grid_7 push_1">
+    <div class="advanced-link-wrapper grid_7 push_1 {if $PCIEnabled}PCIEnabled{/if} {if $metalibEnabled}MetaLibEnabled{/if}">
       <a href="{$path}/PCI/Advanced" class="small advancedLink">{translate text="Advanced PCI Search"}</a>
   {if $metalibEnabled}
       <a href="{$path}/MetaLib/Home" class="small last metalibLink">{translate text="MetaLib Search"}</a>
   {/if}
-      <a href="{$path}/Content/searchhelp" class="small showPCIHelp">{translate text="Search Tips"}</a>
+      <a href="{$path}" class="small last metalibLink">{translate text="Local search"}</a>
     </div>
     <div class="searchContextHelp">
     {if isset($userLang)}

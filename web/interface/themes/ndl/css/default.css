@@ -542,7 +542,7 @@ div.sidegroup {
     margin: 20px 20px 10px;
 }
 #searchFormHeader #searchFormContainer {
-    padding:10px 0 40px;
+    padding:0 0 30px;
 }
 
 .headerMetaLib .searchbox {
@@ -1098,9 +1098,7 @@ body > .ui-widget .button {
 .content .advanced-link-wrapper.grid_7 {
     width: 230px;
 }
-.advanced-link-wrapper.PCIEnabled.MetaLibEnabled {
-    margin-top:-15px;
-}
+
 .advanced-link-wrapper a {
     clear: both;
     color: #FFFFFF;
@@ -1111,6 +1109,27 @@ body > .ui-widget .button {
     height: 24px;
     line-height: 24px;
 }
+.advanced-link-wrapper {
+    margin-top:10px;
+}
+.advanced-link-wrapper.PCIEnabled,
+.advanced-link-wrapper.MetaLibEnabled {
+    margin-top:-2px;
+}
+.advanced-link-wrapper.PCIEnabled.MetaLibEnabled {
+    clear: both;
+    margin-top: 0 !important;
+    width: 600px;
+}
+
+.advanced-link-wrapper.PCIEnabled.MetaLibEnabled a {
+    float:right;
+    margin-top:10px;
+    margin-left:20px;
+    clear:none;
+}
+
+
 a.advancedLink {
     padding-right: 50px;
 }
@@ -1118,11 +1137,11 @@ a.advancedLink {
     float:left;
     clear:none;
 }
-
 .keepFilters {
-    clear: both;
-    position: relative;
-    top: 8px;
+    position:absolute;
+    top:57px;
+}
+.advanced-link-wrapper.PCIEnabled.MetaLibEnabled ~ .keepFilters {
 }
 .keepFilters input {
     margin-top: .15em;

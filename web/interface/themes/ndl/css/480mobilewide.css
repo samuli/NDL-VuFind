@@ -138,8 +138,23 @@
         clear:none;
     }
 
-    .advanced-link-wrapper {
-        margin-top:0 !important;
+    .advanced-link-wrapper.PCIEnabled.MetaLibEnabled {
+        clear: both;
+        margin-top: 0 !important;
+        width: 450px;
+    }
+    
+    .keepFilters {
+        clear: left;
+        top: 13px;
+        padding-bottom: 13px;
+    }
+    .keepFilters > input {
+        display: block;
+        float: left;
+        margin-bottom: 25px;
+        margin-right: 7px;
+        margin-top: 3px;
     }
     
     
@@ -273,12 +288,8 @@
     
     /* Search results: header */
     
-    .keepFilters {
-        clear: left;
-        top: 13px;
-    }
-    
-    .resultDatesHeader  {
+    .resultDatesHeader,
+    .resultDates{
         display:none;
     }
     .currentPage > span:first-child {
@@ -289,6 +300,9 @@
     }
     .resultOptionSort {
         margin-right:5px;
+    }
+    .dateVisClear a {
+        right:258px;
     }
     
     /* Search results: bottom */

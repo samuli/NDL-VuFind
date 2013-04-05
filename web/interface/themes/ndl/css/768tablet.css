@@ -74,6 +74,18 @@
         margin-top:13px;
     }
     
+    .advanced-link-wrapper.PCIEnabled.MetaLibEnabled {
+        clear: both;
+        margin-top: 0 !important;
+        width: 450px;
+    }
+    .keepFilters {
+        position:relative;
+        top:11px;
+        left:5px;
+        clear:none;
+    }
+    
     
     /* Header: Search Box */
     
@@ -145,6 +157,9 @@
     
     .dateVis { 
         width:720px;
+    }
+    .dateVisClear a {
+        right:15px;
     }
     
     /* Search results: sidebar */

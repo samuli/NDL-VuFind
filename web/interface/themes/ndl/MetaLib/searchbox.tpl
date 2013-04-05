@@ -18,9 +18,12 @@
       </div>
     <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
   </div>
-  <div class="advanced-link-wrapper grid_7 push_1">
+  <div class="advanced-link-wrapper grid_7 push_1 {if $PCIEnabled}PCIEnabled{/if} {if $metalibEnabled}MetaLibEnabled{/if}">
     <a href="{$path}/MetaLib/Advanced?set={$searchSet|escape}" class="small advancedLink">{translate text="Advanced Search"}</a>
-    <a href="{$path}/" class="small last metalibLink">{translate text="Local search"}</a>
+    {if $PCIEnabled}
+        <a href="{$path}/PCI/Home" class="small last PCILink">{translate text="PCI Search"}</a>
+    {/if}
+    <a href="{$path}" class="small last metalibLink">{translate text="Local search"}</a>
   </div>
     
       {* Do we have any checkbox filters? *}

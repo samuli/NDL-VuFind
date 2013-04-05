@@ -129,6 +129,12 @@
     background-image: url(../images/icons16-24px-03.png);
     background-position:-573px -1132px;
 }
+.module-PCI .advancedLink {
+    background-position:-549px -1132px;
+}
+html[lang="sv"] .module-PCI .advancedLink {
+    background-position:-558px -1132px;
+}
 html[lang="sv"] .advancedLink {
     background-image: url(../images/icons16-24px-03.png);
     background-position:-579px -1132px;
