@@ -1169,26 +1169,29 @@ class Solr implements IndexEngine
             }
         }
 
-        if ($this->_mergedRecords) {
-            // Filter out merged children by default
-            if (!isset($filter)) {
-                $filter = array();
+        // Don't use the filters for an id query
+        if ($handler != 'ids') {
+            if ($this->_mergedRecords) {
+                // Filter out merged children by default
+                if (!isset($filter)) {
+                    $filter = array();
+                }
+                $filter[] = '-merged_child_boolean:TRUE';
+            } elseif ($this->_mergedRecords !== null) {
+                // Filter out merged records by default
+                if (!isset($filter)) {
+                    $filter = array();
+                }
+                $filter[] = '-merged_boolean:TRUE';
             }
-            $filter[] = '-merged_child_boolean:TRUE';
-        } elseif ($this->_mergedRecords !== null) {
-            // Filter out merged records by default
-            if (!isset($filter)) {
-                $filter = array();
+            
+            if ($this->_hideComponentParts) {
+                // Filter out component parts by default
+                if (!isset($filter)) {
+                    $filter = array();
+                }
+                $filter[] = '-hidden_component_boolean:TRUE';
             }
-            $filter[] = '-merged_boolean:TRUE';
-        }
-        
-        if ($this->_hideComponentParts) {
-            // Filter out component parts by default
-            if (!isset($filter)) {
-                $filter = array();
-            }
-            $filter[] = '-hidden_component_boolean:TRUE';
         }
         
         // Build Filter Query
@@ -1968,29 +1971,36 @@ class Solr implements IndexEngine
      *
      * @param string $source          Name of index to search
      * @param string $from            Starting point for browse results
-     * @param int    $page            Result page to return (starts at 0)
-     * @param int    $page_size       Number of results to return on each page
+     * @param string $rowid           Starting point rowid when known
+     * @param int    $page            If page is 0 browse forward, if page is -1 browse backwards
+     * @param int    $page_size       The numer of results to return
+     * @param string $extras          Also return these Solr db fields in the results
      * @param bool   $returnSolrError Should we fail outright on syntax error
      * (false) or treat it as an empty result set with an error key set (true)?
      *
      * @return array
      * @access public
      */
-    public function alphabeticBrowse($source, $from, $page, $page_size = 20,
-        $returnSolrError = false
+    public function alphabeticBrowse($source, $from, $rowid, $page,
+        $page_size = 20, $extras = null, $returnSolrError = false
     ) {
         $this->client->setMethod('GET');
         $this->client->setURL($this->host . "/browse");
 
-        $offset = $page * $page_size;
-
-        $this->client->addQueryString('from', $from);
-        $this->client->addQueryString('json.nl', 'arrarr');
-        $this->client->addQueryString('offset', $offset);
-        $this->client->addQueryString('rows', $page_size);
         $this->client->addQueryString('source', $source);
+        $this->client->addQueryString('from', $from);
+        $this->client->addQueryString('rowid', $rowid);
+        $this->client->addQueryString('offset', $page);
+        $this->client->addQueryString('rows', $page_size);
+        $this->client->addQueryString('extras', $extras);
+        $this->client->addQueryString('json.nl', 'arrarr');
         $this->client->addQueryString('wt', 'json');
 
+        $filters = SearchObject_Solr::getDefaultHiddenFilters();
+        if (!empty($filters)) {
+            $this->client->addQueryString('filters', implode(' AND ', $filters));
+        }
+        
         $result = $this->client->sendRequest();
 
         if (!PEAR::isError($result)) {
@@ -2001,7 +2011,7 @@ class Solr implements IndexEngine
             return $result;
         }
     }
-
+    
     /**
      * Convert a terms array (where every even entry is a term and every odd entry
      * is a count) into an associate array of terms => counts.

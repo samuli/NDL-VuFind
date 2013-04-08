@@ -804,6 +804,14 @@ lcc = "By Call Number"
 ;dewey = "By Call Number"
 ;hierarchy = "By Collection"
 
+; This section controls adding extra fields to the browse results
+; ie. adding the title to the lcc browse
+; You can return multiple fields by separating them with a colon
+; The field names must exist in the solr schema
+[AlphaBrowse_Extras]
+lcc              = title:callnumber_display_str
+; dewey            = title
+
 ; This section allows you to configure the values used for Cryptography; the
 ; HMACkey can be set to any value you like and should never be shared.  It is used
 ; to prevent users from tampering with certain URLs (for example, "place hold" form
