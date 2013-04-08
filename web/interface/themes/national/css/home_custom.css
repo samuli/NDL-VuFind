@@ -26,6 +26,9 @@
     color: #00a3b5;
 }
 
+#main.main-home {
+    padding-bottom:0;
+}
 
 /* Section: Introduction */
 
@@ -46,7 +49,7 @@
 .section#introduction #siteDescription,
 #topSearches {
     border-right: none;
-    padding: 10px 60px 20px 0;
+    padding: 25px 60px 20px 0;
 }
 
 .section#introduction .grid_10 {
@@ -54,7 +57,7 @@
 }
 .section#introduction div.grid_10 > div {
     overflow:auto;
-    padding:10px 30px 30px;
+    padding:25px 30px 30px;
 }
 .section#introduction ul {
     float:left;
@@ -274,7 +277,7 @@
 
 #mapSearchHome {
     background:url(../images/map_search_bg.jpg) no-repeat;
-    padding:10px 40px 30px;
+    padding:25px 40px 0;
     height:254px;
     color:#fff;
 }
