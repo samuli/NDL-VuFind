@@ -6,7 +6,7 @@
 /*** Header: Blurb */
 
 #blurb {
-    margin:30px 0 0;
+    margin:20px 0 0;
     padding:0;
     line-height: 1.4;
 }
@@ -32,7 +32,7 @@
 
 /* Section: Introduction */
 
-.section {
+.section .content {
     padding: 0;
 }
 .section#introduction div[class*="grid"] {
