@@ -2461,6 +2461,7 @@ ul.recordSet .addToFavLink a {
 }
 .resultViewOptions {
     height:75px;
+    clear:both;
 }
 .resultDates {
     background:#f2f2f2;
