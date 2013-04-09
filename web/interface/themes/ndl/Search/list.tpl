@@ -24,7 +24,7 @@
       {/if}
       </h3>
       {if $spellingSuggestions}
-      <div class="correction">
+      <div class="correction grid_24">
         {translate text="spell_suggest"}:
         {foreach from=$spellingSuggestions item=details key=term name=termLoop}
           <span class="correctionTerms">{foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a class="expandSearch" title="{translate text="spell_expand_alt"}" {* alt="{translate text="spell_expand_alt"}" NOT VALID ATTRIBUTE *} href="{$data.expand_url|escape}"></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}

@@ -1702,7 +1702,9 @@ table.profileGroup th {
 }
 
 /*** Result List ***/
-
+.resultListContainer {
+    clear:both;
+}
 .advSearchContent, #authorList, #resultsCollection,  #bottomPagination, .searchtools {
     width: 670px;
     float: left;
@@ -2526,7 +2528,7 @@ ul.recordSet .addToFavLink a {
     display: block;
     font-weight:bold;
     float: left;
-    margin: 4px 0 0;
+    margin: 4px 5px 0;
 }
 .correction .expandSearch {
     display: inline-block;
