@@ -1702,7 +1702,9 @@ table.profileGroup th {
 }
 
 /*** Result List ***/
-
+.resultListContainer {
+    clear:both;
+}
 .advSearchContent, #authorList, #resultsCollection,  #bottomPagination, .searchtools {
     width: 670px;
     float: left;
