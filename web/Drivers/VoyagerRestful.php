@@ -52,8 +52,7 @@ class VoyagerRestful extends Voyager
     protected $defaultPickUpLocation;
     protected $holdCheckLimit;
     protected $callSlipCheckLimit;
-    protected $checkRenewalsUpFront;
-
+    
     /**
      * Constructor
      *
@@ -84,9 +83,6 @@ class VoyagerRestful extends Voyager
         $this->callSlipCheckLimit
             = isset($this->config['CallSlips']['checkLimit'])
             ? $this->config['CallSlips']['checkLimit'] : "15";
-        $this->checkRenewalsUpFront
-            = isset($this->config['Renewals']['checkUpFront'])
-            ? $this->config['Renewals']['checkUpFront'] : true;
     }
 
     /**
@@ -428,7 +424,7 @@ class VoyagerRestful extends Voyager
      * This is responsible for determining if an item is renewable
      *
      * @param string $patronId The user's patron ID
-     * @param string $itemId   The Item Id of item
+     * @param string $itemId   The Item Id of item including db key
      *
      * @return mixed Array of the renewability status and associated
      * message
@@ -449,11 +445,8 @@ class VoyagerRestful extends Voyager
             "view" => "full"
         );
 
-        // Create Rest API Renewal Key
-        $restItemID = $this->ws_dbKey. "|" . $itemId;
-
         // Add to Hierarchy
-        $hierarchy[$restItemID] = false;
+        $hierarchy[$itemId] = false;
 
         $renewability = $this->makeRequest($hierarchy, $params, "GET");
         $renewability = $renewability->children();
@@ -489,14 +482,9 @@ class VoyagerRestful extends Voyager
     {
         $transactions = parent::processMyTransactionsData($sqlRow, $patron);
 
-        // Do we need to check renewals up front?  If so, do the check; otherwise,
-        // set up fake "success" data to move us forward.
-        $renewData = $this->checkRenewalsUpFront
-            ? $this->isRenewable($patron['id'], $transactions['item_id'])
-            : array('message' => false, 'renewable' => true);
-
-        $transactions['renewable'] = $renewData['renewable'];
-        $transactions['message'] = $renewData['message'];
+        // We'll check renewability later in getMyTransactions
+        $transactions['renewable'] = true;
+        $transactions['message'] = false;
 
         return $transactions;
     }
@@ -759,15 +747,18 @@ class VoyagerRestful extends Voyager
         if ($finalResult['blocks'] === false) {
             // Add Items and Attempt Renewal
             foreach ($renewDetails['details'] as $renewID) {
+                
+                list($dbKey, $loanId) = explode("|", $renewID);
+    
+                // Create Rest API Renewal Key
+                $restRenewID = ($dbKey ? $dbKey : $this->ws_dbKey) . '-' . $loanId;
+                
                 // Build an array of item ids which may be of use in the template
                 // file
-                $failIDs[$renewID] = "";
+                $failIDs[$loanId] = "";
 
-                // Did we need to check renewals up front?  If not, do the check now;
-                // otherwise, set up fake "success" data to avoid redundant work.
-                $renewable = !$this->checkRenewalsUpFront
-                    ? $this->isRenewable($patronId, $renewID)
-                    : array('renewable' => true);
+                // Verify renewability. We should be ok here, but verify.
+                $renewable = $this->isRenewable($patronId, $restRenewID);
 
                 // Don't even try to renew a non-renewable item; we don't want to
                 // break any rules, and Voyager's API doesn't always enforce well.
@@ -783,9 +774,6 @@ class VoyagerRestful extends Voyager
                         "patron_homedb" => $this->ws_patronHomeUbId,
                         "view" => "full"
                     );
-
-                    // Create Rest API Renewal Key
-                    $restRenewID = $this->ws_dbKey. "|" . $renewID;
 
                     // Add to Hierarchy
                     $hierarchy[$restRenewID] = false;
@@ -1274,7 +1262,8 @@ class VoyagerRestful extends Voyager
      */
     public function getRenewDetails($checkOutDetails)
     {
-        $renewDetails = $checkOutDetails['item_id'];
+        $renewDetails = (isset($checkOutDetails['institution_dbkey']) ? $checkOutDetails['institution_dbkey'] : '') 
+            . '|' . $checkOutDetails['item_id'];
         return $renewDetails;
     }
 
@@ -1342,11 +1331,21 @@ class VoyagerRestful extends Voyager
         }
         if (isset($results->loans->institution)) {
             foreach ($results->loans->institution as $institution) {
-                if ((string)$institution->attributes()->id == 'LOCAL') {
-                    // Ignore local loans, we have them already
-                    continue;
-                }
                 foreach ($institution->loan as $loan) {
+                    
+                    if ((string)$institution->attributes()->id == 'LOCAL') {
+                        // Take only renewability for local loans, other information we
+                        // have already
+                        $renewable = (string)$loan->attributes()->canRenew == 'Y';
+                        
+                        foreach ($transactions as &$transaction) {
+                            if (!isset($transaction['institution_id']) && $transaction['item_id'] == (string)$loan->itemId) {
+                                $transaction['renewable'] = $renewable;
+                                break;
+                            }
+                        }
+                        continue;
+                    }
                     
                     $dueStatus = false;
                     if (!empty($sqlRow['FULLDATE'])) {
@@ -1369,8 +1368,7 @@ class VoyagerRestful extends Voyager
                         'dueTime' =>  $this->dateFormat->convertToDisplayTime('Y-m-d H:i', (string)$loan->dueDate),
                         'dueStatus' => $dueStatus,
                         'title' => (string)$loan->title,
-                        // This is bogus too, no idea if it's actually renewable 
-                        'renewable' => true,                       
+                        'renewable' => (string)$loan->attributes()->canRenew == 'Y',
                         'institution_id' => (string)$institution->attributes()->id,
                         'institution_name' => (string)$loan->dbName,
                         'institution_dbkey' => (string)$loan->dbKey,
