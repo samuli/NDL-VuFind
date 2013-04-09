@@ -308,3 +308,16 @@
     margin-top:15px;
     z-index:5;
 }
+
+
+@media only screen and (max-width: 730px) {
+    #popular-map .grid_14 {
+        padding-top:25px !important;
+    }
+}
+
+@media only screen and (max-width: 1020px) {
+    #introduction.section #siteDescription, #topSearches {
+        padding-top:25px !important;
+    }
+}

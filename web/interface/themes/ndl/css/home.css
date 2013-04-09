@@ -46,8 +46,8 @@
 }
 /* Section: Introduction */
 
-.section {
-    padding:30px 0 0;
+.section .content {
+    padding:30px 0;
 }
 
 .section#introduction > .content {
@@ -268,7 +268,6 @@ ul.documentTypes li {
 .section#popular-map.noCarousel .content {
     border-top: #ddd solid 6px;
     margin-top: 0;
-    padding-top: 25px;
 }
 
 #popularSearches ul:first-child {
