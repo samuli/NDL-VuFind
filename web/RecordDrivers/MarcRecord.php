@@ -400,17 +400,21 @@ class MarcRecord extends IndexRecord
             $partArrangers = array();
             $partOtherAuthors = array();
             foreach ($partAuthors as $author) {
-                foreach ($configArray['Record']['presenter_roles'] as $role) {
-                    $author = trim($author);
-                    if (substr($author, -strlen($role) - 2) == ", $role") {
-                        $partPresenters[] = $author;
-                        continue 2;
+                if (isset($configArray['Record']['presenter_roles'])) {
+                    foreach ($configArray['Record']['presenter_roles'] as $role) {
+                        $author = trim($author);
+                        if (substr($author, -strlen($role) - 2) == ", $role") {
+                            $partPresenters[] = $author;
+                            continue 2;
+                        }
                     }
-                }                
-                foreach ($configArray['Record']['arranger_roles'] as $role) {
-                    if (substr($author, -strlen($role) - 2) == ", $role") {
-                        $partArrangers[] = $author;
-                        continue 2;
+                }
+                if (isset($configArray['Record']['arranger_roles'])) {                
+                    foreach ($configArray['Record']['arranger_roles'] as $role) {
+                        if (substr($author, -strlen($role) - 2) == ", $role") {
+                            $partArrangers[] = $author;
+                            continue 2;
+                        }
                     }
                 }                
                 $partOtherAuthors[] = $author;
