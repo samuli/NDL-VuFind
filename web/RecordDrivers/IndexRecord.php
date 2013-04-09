@@ -240,7 +240,6 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreContainerTitle', $this->getContainerTitle());
         $interface->assign('coreContainerReference', $this->getContainerReference());
         $interface->assign('coreInstitutions', $this->getInstitutions());
-        $interface->assign('coreHierarchyParentId', $this->getHierarchyParentId());
         $interface->assign('coreClassifications', $this->getClassifications());
         $interface->assign('coreDissertationNote', $this->getDissertationNote());
                 

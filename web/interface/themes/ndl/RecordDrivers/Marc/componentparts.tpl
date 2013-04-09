@@ -5,8 +5,8 @@
     <tr>
       <th>{translate text="No."}</th>
       <th>{translate text="Playing Time"}</th>
-      <th>{translate text="Title"}</th>
-      <th>{translate text="Author(s)"}</th>
+      <th>{translate text="Title and Authors"}</th>
+      <th>{translate text="Presenters"}</th>
     </tr>
   </thead>    
   <tbody>
@@ -15,9 +15,13 @@
     <tr valign="top">
         <td>{$componentpart.number|escape}</td>
         <td>{$componentpart.duration|escape}</td>
-        <td><a href="{$componentpart.link|escape}">{$componentpart.title|escape}</a></td>
-        <td title="{foreach from=$componentpart.authors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/foreach}">
-          {foreach from=$componentpart.authors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration < 4}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/if}{if $smarty.foreach.authorloop.iteration == 4} ...{/if}{/foreach}
+        <td><a href="{$componentpart.link|escape}">{$componentpart.title|escape}</a><br/>
+	        <span title="{foreach from=$componentpart.otherAuthors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/foreach}">
+	          {foreach from=$componentpart.otherAuthors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration < 4}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/if}{if $smarty.foreach.authorloop.iteration == 4} ...{/if}{/foreach}
+	        </span>
+	      </td>
+        <td title="{foreach from=$componentpart.presenters item=author name=authorloop}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/foreach}">
+          {foreach from=$componentpart.presenters item=author name=authorloop}{if $smarty.foreach.authorloop.iteration < 4}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/if}{if $smarty.foreach.authorloop.iteration == 4} ...{/if}{/foreach}
         </td>
     </tr>
     {/foreach}

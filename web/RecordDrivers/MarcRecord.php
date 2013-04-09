@@ -352,60 +352,83 @@ class MarcRecord extends IndexRecord
         global $interface;
         global $configArray;
         
-        $baseURI     = $configArray['Site']['url'];
+        $baseURI = $configArray['Site']['url'];
         
         // Collect the values of all the 979 fields and their subfields into 
         // an array of arrays to be handed to a template for display.
         $fields = $this->marcRecord->getFields('979');
         if (!$fields) {
             return null;
-        } else {
-            $partOrderCounter = 0;                
-            foreach ($fields as $field) {
-                $partOrderCounter++;
-                $partAuthors = array();
-                $uniformTitle = '';
-                $duration = '';
-                $subfields = $field->getSubfields();
-                foreach ($subfields as $subfield) {
-                    $subfieldCode = $subfield->getCode();
-                    switch ($subfieldCode) {
-                    case 'a':
-                        $partCode = $subfield->getData();
-                        break;
-                    case 'b':
-                        $partTitle = $subfield->getData();
-                        break;
-                    case 'c':
-                        $partAuthors[] = $subfield->getData();
-                        break;
-                    case 'd':
-                        $partAuthors[] = $subfield->getData();
-                        break;          
-                    case 'e':
-                        $uniformTitle = $subfield->getData();
-                        break;          
-                    case 'f':
-                        $duration = $subfield->getData();
-                        if ($duration == '000000') {
-                            $duration = '';
-                        }
-                        break;      
-                    }    
-                }
-                // Filter out any empty fields
-                $partAuthors = array_filter($partAuthors);
-                $componentparts[] = array(
-                    'number' => $partOrderCounter,
-                    'title' => $partTitle,
-                    'link' => $baseURI . '/Record/' . $partCode,
-                    'author' => implode('; ', $partAuthors), // For backward compatibility
-                    'authors' => $partAuthors,
-                    'uniformTitle' => $uniformTitle,
-                    'duration' => $duration ? substr($duration, 0, 2) . ':' . substr($duration, 2, 2) . ':' . substr($duration, 4, 2) : '' 
-                );
+        } 
+        $partOrderCounter = 0;                
+        foreach ($fields as $field) {
+            $partOrderCounter++;
+            $partAuthors = array();
+            $uniformTitle = '';
+            $duration = '';
+            $subfields = $field->getSubfields();
+            foreach ($subfields as $subfield) {
+                $subfieldCode = $subfield->getCode();
+                switch ($subfieldCode) {
+                case 'a':
+                    $partCode = $subfield->getData();
+                    break;
+                case 'b':
+                    $partTitle = $subfield->getData();
+                    break;
+                case 'c':
+                    $partAuthors[] = $subfield->getData();
+                    break;
+                case 'd':
+                    $partAuthors[] = $subfield->getData();
+                    break;          
+                case 'e':
+                    $uniformTitle = $subfield->getData();
+                    break;          
+                case 'f':
+                    $duration = $subfield->getData();
+                    if ($duration == '000000') {
+                        $duration = '';
+                    }
+                    break;      
+                }    
             }
-        }   
+            // Filter out any empty fields
+            $partAuthors = array_filter($partAuthors);
+            
+            $partPresenters = array();
+            $partArrangers = array();
+            $partOtherAuthors = array();
+            foreach ($partAuthors as $author) {
+                foreach ($configArray['Record']['presenter_roles'] as $role) {
+                    $author = trim($author);
+                    if (substr($author, -strlen($role) - 2) == ", $role") {
+                        $partPresenters[] = $author;
+                        continue 2;
+                    }
+                }                
+                foreach ($configArray['Record']['arranger_roles'] as $role) {
+                    if (substr($author, -strlen($role) - 2) == ", $role") {
+                        $partArrangers[] = $author;
+                        continue 2;
+                    }
+                }                
+                $partOtherAuthors[] = $author;
+            }
+            
+            $componentparts[] = array(
+                'number' => $partOrderCounter,
+                'title' => $partTitle,
+                'link' => $baseURI . '/Record/' . $partCode,
+                'author' => implode('; ', $partAuthors), // For backward compatibility
+                'authors' => $partAuthors,
+                'uniformTitle' => $uniformTitle,
+                'duration' => $duration ? substr($duration, 0, 2) . ':' . substr($duration, 2, 2) . ':' . substr($duration, 4, 2) : '',
+                'presenters' => $partPresenters,
+                'arrangers' => $partArrangers,
+                'otherAuthors' => $partOtherAuthors,
+            );
+        }
         // Assign the appropriate variable and return the template name:
         $interface->assign('componentparts', $componentparts);
         return 'RecordDrivers/Marc/componentparts.tpl';
