@@ -2930,9 +2930,6 @@ div[id*="record"].record.recordId {
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
 */
-.recordAuthors td {
-    font-weight: bold;
-}
 .recordTitle {
     margin-top:0;
 }
@@ -3016,6 +3013,9 @@ div.recordsubcontent .call-slip-form form > p  {
 }
 #recordMetadata .recordHierarchyLinks {
     margin: -6px 0 12px 0;
+}
+.recordContainerReference {
+    margin-bottom: 1em;
 }
 
 /* hack to hide redundant titles introduced by syndetics plus */
