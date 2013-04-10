@@ -344,4 +344,22 @@ class LidoRecord extends IndexRecord
         }
         return $results;
     }
+    
+    /**
+     * Get an array of alternative titles for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getAlternativeTitles()
+    {
+        $results = array();
+        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@label='teosnimi']") as $node) {
+            $results[] = (string)$node;
+        }
+        // First one is the primary title, take it out 
+        array_shift($results);
+        return $results;
+    }
+    
 }

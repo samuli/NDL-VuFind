@@ -44,6 +44,13 @@
 {if $coreTitleSection}{$coreTitleSection|escape}{/if}
 {* {if $coreTitleStatement}{$coreTitleStatement|escape}{/if} *}
 </h1>
+{if !empty($coreAlternativeTitles)}
+<div class="recordAltTitles recordAltTitlesHeading recordTitle">
+{foreach from=$coreAlternativeTitles item=field name=loop}
+  {$field|escape}<br/>
+{/foreach}
+</div>
+{/if}
 {* End Title *}
 
 {* Display Cover Image, commented out since already in view.tpl

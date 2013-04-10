@@ -1764,6 +1764,11 @@ div.record {
 .recordTitle {
     margin-top:0;
 }
+.recordAltTitlesHeading {
+    margin-top: -0.8em;
+    margin-bottom: 1em;
+    color: #666666;
+}
 div.recordsubcontent {
     padding: 1em 1.5em 5em 1.5em;
 }
