@@ -354,11 +354,12 @@ class LidoRecord extends IndexRecord
     protected function getAlternativeTitles()
     {
         $results = array();
+        $mainTitle = $this->getTitle();
         foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@label='teosnimi']") as $node) {
-            $results[] = (string)$node;
+            if ((string)$node != $mainTitle) {
+                $results[] = (string)$node;
+            }
         }
-        // First one is the primary title, take it out 
-        array_shift($results);
         return $results;
     }
     
