@@ -251,7 +251,7 @@ class UInterface extends Smarty
         
         $metalib = getExtraConfigArray('MetaLib');
         if (!empty($metalib)) {
-            $this->assign('metalibEnabled', true);
+            $this->assign('metalibEnabled', isset($metalib['General']['enabled']) ? $metalib['General']['enabled'] : true);
         }
         
         $rssFeeds = getExtraConfigArray('rss');

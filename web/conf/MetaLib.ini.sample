@@ -1,4 +1,5 @@
 [General]
+enabled = false
 url = http://metalib.server/X
 x_user = username
 x_password = password
