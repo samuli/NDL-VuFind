@@ -87,35 +87,9 @@ class LidoRecord extends IndexRecord
         if (isset($this->fields['measurements'])) {
             $interface->assign('coreMeasurements', $this->fields['measurements']);
         }
-        $mainFormat = $this->getFormats();
-        if (is_array($mainFormat)) {
-            $mainFormat = $mainFormat[0] . '_';
-        } else {
-            $mainFormat = '';
-        }
-
-        $events = array();
-        foreach ($this->xml->xpath('/lidoWrap/lido/descriptiveMetadata/eventWrap/eventSet/event') as $node) {
-            $name = isset($node->eventName->appellationValue) ? (string)$node->eventName->appellationValue : '';
-            $type = isset($node->eventType->term) ? mb_strtolower((string)$node->eventType->term) : '';
-            $date = isset($node->eventDate->displayDate) ? (string)$node->eventDate->displayDate : '';
-            $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
-            $materials = isset($node->eventMaterialsTech->displayMaterialsTech) ? (string)$node->eventMaterialsTech->displayMaterialsTech : '';
-            $place = isset($node->eventPlace->displayPlace) ? (string)$node->eventPlace->displayPlace : '';
-            $actors = array();
-            if (isset($node->eventActor->actorInRole)) {
-                foreach ($node->eventActor->actorInRole as $actor) {
-                    if (isset($actor->actor->nameActorSet->appellationValue)) {
-                        $role = isset($actor->roleActor->term) ? $actor->roleActor->term : '';
-                        $actors[] = array('name'  => $actor->actor->nameActorSet->appellationValue, 'role' => $role);
-                    }        
-                }
-            }
-            $event = array('type' => $type, 'name' => $name, 'date' => $date, 'method' => $method, 'materials' => $materials,
-                'place' => $place, 'actors' => $actors);
-            $events[$type][] = $event;
-        }
-        $interface->assign('coreEvents', $events);
+        
+        $interface->assign('coreEvents', $this->getEvents());
+        $interface->assign('coreInscriptions', $this->getInscriptions());
         
         $interface->assign('coreIdentifier', $this->getIdentifier());
         
@@ -359,6 +333,55 @@ class LidoRecord extends IndexRecord
             if ((string)$node != $mainTitle) {
                 $results[] = (string)$node;
             }
+        }
+        return $results;
+    }
+
+    /**
+     * Get an array of events for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getEvents()
+    {
+        $events = array();
+        foreach ($this->xml->xpath('/lidoWrap/lido/descriptiveMetadata/eventWrap/eventSet/event') as $node) {
+            $name = isset($node->eventName->appellationValue) ? (string)$node->eventName->appellationValue : '';
+            $type = isset($node->eventType->term) ? mb_strtolower((string)$node->eventType->term) : '';
+            $date = isset($node->eventDate->displayDate) ? (string)$node->eventDate->displayDate : '';
+            $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
+            $materials = isset($node->eventMaterialsTech->displayMaterialsTech) ? (string)$node->eventMaterialsTech->displayMaterialsTech : '';
+            $place = isset($node->eventPlace->displayPlace) ? (string)$node->eventPlace->displayPlace : '';
+            $actors = array();
+            if (isset($node->eventActor->actorInRole)) {
+                foreach ($node->eventActor->actorInRole as $actor) {
+                    if (isset($actor->actor->nameActorSet->appellationValue)) {
+                        $role = isset($actor->roleActor->term) ? $actor->roleActor->term : '';
+                        $actors[] = array('name'  => $actor->actor->nameActorSet->appellationValue, 'role' => $role);
+                    }        
+                }
+            }
+            $culture = isset($node->culture->term) ? (string)$node->culture->term : '';
+            $description = isset($node->eventDescriptionSet->descriptiveNoteValue) ? (string)$node->eventDescriptionSet->descriptiveNoteValue : '';
+            $event = array('type' => $type, 'name' => $name, 'date' => $date, 'method' => $method, 'materials' => $materials,
+                'place' => $place, 'actors' => $actors, 'culture' => $culture, 'description' => $description);
+            $events[$type][] = $event;
+        }
+        return $events;    
+    }
+
+    /**
+     * Get an array of inscriptions for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getInscriptions()
+    {
+        $results = array();
+        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/inscriptionsWrap/inscriptions/inscriptionDescription/descriptiveNoteValue") as $node) {
+            $results[] = (string)$node;
         }
         return $results;
     }
