@@ -1,10 +1,8 @@
 [General]
+enabled = false
 wsdl = 
 institution = 
-dym=true
 highlight=true
-lang=eng
-loc=adaptor,primo_central_multiple_fe
 
 default_side_recommend[] = SideFacets:Facets:CheckboxFacets:PCI
 

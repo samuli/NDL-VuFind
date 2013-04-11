@@ -53,6 +53,9 @@ class Base extends Action
     public function __construct()
     {
         global $interface;
+        if (!$interface->get_template_vars('metalibEnabled')) {
+             PEAR::raiseError(new PEAR_Error("Metalib is not enabled."));
+        }
         $interface->assign('currentTab', 'MetaLib');
 
         // Send MetaLib search types to the template so the basic search box can

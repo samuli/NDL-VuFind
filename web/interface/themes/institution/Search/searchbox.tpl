@@ -45,6 +45,9 @@
   {if $metalibEnabled}
       <a href="{$path}/MetaLib/Home" class="small last metalibLink">{translate text="MetaLib Search"}</a>
   {/if}
+  {if $pciEnabled}
+      <a href="{$path}/PCI/Home" class="small pciLink">{translate text="PCI Search"}</a>
+  {/if}
       <a href="{$path}/Content/searchhelp" class="small showSearchHelp">{translate text="Search Tips"}</a>
     </div>
     <div class="searchContextHelp">

@@ -253,6 +253,11 @@ class UInterface extends Smarty
         if (!empty($metalib)) {
             $this->assign('metalibEnabled', isset($metalib['General']['enabled']) ? $metalib['General']['enabled'] : true);
         }
+
+        $pci = getExtraConfigArray('PCI');
+        if (!empty($pci)) {
+            $this->assign('pciEnabled', isset($pci['General']['enabled']) ? $pci['General']['enabled'] : true);
+        }
         
         $rssFeeds = getExtraConfigArray('rss');
         if (isset($rssFeeds)) {

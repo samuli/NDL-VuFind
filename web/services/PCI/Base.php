@@ -48,6 +48,9 @@ class Base extends Action
     public function __construct()
     {
         global $interface;
+        if (!$interface->get_template_vars('pciEnabled')) {
+             PEAR::raiseError(new PEAR_Error("PCI is not enabled."));
+        }
         $interface->assign('currentTab', 'PCI');
 
         // Send Summon search types to the template so the basic search box can

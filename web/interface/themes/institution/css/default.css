@@ -515,7 +515,7 @@ div.styled_select { /* to get rid of the unstylable down-arrow */
     color: #333333;
 }
 
-.advancedLink, .metalibLink {
+.advancedLink, .metalibLink, pciLink {
     width: 136px;
     display: inline-block;
     margin-left: .4em;
