@@ -113,7 +113,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
     <div class="bulkActionButtons">
       <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div>
-      <div class="floatright"><strong>{translate text="with_selected"}: </strong>
+      <div><strong>{translate text="with_selected"}: </strong>
       {if $bookBag}
         <a id="updateCart" class="bookbagAdd offscreen" href="">{translate text='Add to Book Bag'}</a>
         <noscript>
