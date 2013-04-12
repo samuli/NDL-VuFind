@@ -66,6 +66,7 @@
     margin-right: 20px;
     padding: 0px 30px 0px 0;
     height: 100%;
+    overflow: auto;
 }
 
 .section#introduction div.grid_10 > div {
