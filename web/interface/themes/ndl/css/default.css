@@ -1542,6 +1542,7 @@ fieldset.publishDateLimit .ui-slider {
 
 .favoritesList {
     float: left;
+    width:670px;
 }
 .favoritesList .paginationTop, .favoritesList .resultOptions {
     margin: 0.4em 0 0 0;
@@ -1567,7 +1568,6 @@ fieldset.publishDateLimit .ui-slider {
     padding: 5px 0 0 5px;
 }
 .allCheckboxBackground {
-    margin: 3px 0 0 9px;
     float: left;
 } 
 
