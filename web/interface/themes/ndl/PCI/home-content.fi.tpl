@@ -6,7 +6,7 @@
 </div>
 <div class="content">
   <div class="grid_17">
-    <p>PCI (Primo Central Index) [KUVAUS TÄHÄN]</p>
+    <p>Haku Primo Central Indexistä</p>
   </div>
 </div>
     

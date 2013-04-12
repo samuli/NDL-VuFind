@@ -2126,8 +2126,8 @@ dl.narrowList a {
 #main .contentHeader,
 #main .browseHeader {
     background: #b2e3ea;
-    padding: 22px 0 24px;
-    margin-bottom: 40px;
+    padding: 20px 0;
+    margin-bottom: 30px;
 }
 #main .browseHeader {
     background:#b2e3ea;
@@ -2147,6 +2147,9 @@ dl.narrowList a {
 }
 .module-Content .main,
 .module-Browse .main {
+    padding-bottom:40px;
+}
+.contentHeader + .content {
     padding-bottom:40px;
 }
 
@@ -3838,7 +3841,7 @@ div.fieldValue {
 
 /** system unavailable and other fatal error pages */
 div.unavailable, div.fatalError {
-    margin-bottom:40px;
+    margin-bottom:0;
 }
 
 /** Open Library Subjects **/

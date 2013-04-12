@@ -471,8 +471,9 @@
         border-top: none;
         margin-top: 0;
     }
-    .ui-tabs .ui-tabs-nav li {
-        border-bottom:3px solid #B3E3E9 !important;
+    #dyntabnav.ui-tabs .ui-tabs-nav li {
+       border-bottom:3px solid #B3E3E9 !important;
+       
     }
     /* Footer */
     
