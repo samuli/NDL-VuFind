@@ -128,11 +128,9 @@ ul {
 
 /*** Links ***/
 a, .ui-widget-content a {
-    color: #00A3B5;
     text-decoration: none;
 }
 a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
-    color:#00A3B5;
     text-decoration: underline;
 }
 .jstree a:focus,
