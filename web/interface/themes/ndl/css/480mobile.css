@@ -385,7 +385,21 @@
         left: 12px;
         top: 87px;
     }
-    
+   
+    /** DualResults - Two Column Results */
+    #dualResults .leftColumn {
+        width: 210px;
+    }
+    #dualResults .rightColumn {
+        width: 210px;
+    }
+    #dualResults .resultColumn2 {
+        width: 120px;
+    }
+    #dualResults .title {
+        font-size: 1.128em;
+    }
+        
     /* Record */
     .module-Record div.record, .module-MetaLib div.record {
         margin-top: 2em;

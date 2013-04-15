@@ -194,6 +194,9 @@
     }
 
     /** DualResults - Two Column Results */
+    #dualResults .resultViewOptions {
+        font-size: 0.846em;
+    }
     #dualResults .leftColumn {
         width: 308px;
     }
