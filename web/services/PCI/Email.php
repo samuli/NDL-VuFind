@@ -88,7 +88,6 @@ class Email extends PCI
      * @param string $to      Message recipient address
      * @param string $from    Message sender address
      * @param string $message Message to send
-     * @param string $id      Record id of the record to be sent
      *
      * @return mixed          Boolean true on success, PEAR_Error on failure.
      * @access public

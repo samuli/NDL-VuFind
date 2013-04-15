@@ -1702,6 +1702,15 @@ table.profileGroup th {
 }
 
 /*** Result List ***/
+.resultHeader .headerLeft {
+    float: left;
+    width: 456px;
+}
+.resultHeader .headerRight {
+    float: right;
+    width: 456px;
+}
+
 .resultListContainer {
     clear:both;
 }
@@ -1921,6 +1930,65 @@ li.result blockquote {
 }
 .resultRecommendations .authorbio img.alignleft {
     margin-right:20px;
+}
+
+/** DualResults - Two Column Results */
+#dualResults h3 {
+	  margin-top: 0;
+}
+#dualResults .leftColumn {
+    float: left;
+	  width: 448px;
+	  border-right: 6px solid #e6e6e6;
+	  padding: 0 18px 0 6px;
+	  margin: 24px 0 24px 0;
+}
+#dualResults .rightColumn {
+    float: left;
+	  width: 448px;
+    padding: 0 6px 0 18px;
+    border-left: 6px solid #e6e6e6;
+    margin: 24px 0 24px -6px;
+}
+#dualResults .resultViewOptions {
+	  height: auto;
+	  padding: 12px 4px 12px 4px;
+}
+#dualResults .resultNumbers {
+    line-height: 1em;
+}
+#dualResults .resultOptions {
+	  height: auto;
+	  margin: 0.15em 6px;
+	  line-height: 1em;
+}
+#dualResults .noResultHeader {
+    background: none repeat scroll 0 0 #F3EC7A;
+}
+#dualResults .resultColumn1 {
+    width: 100px;
+}
+#dualResults .resultNoImage {
+	  width: 92px;
+    height: 92px;
+    background-position: -22px -747px;
+}
+#dualResults .resultImage {
+    margin: -100px 0 0;
+	  width: 100px;
+}
+#dualResults .summcover {
+	  max-width: 100px;
+}
+#dualResults .resultColumn2 {
+    width: 300px;
+}
+#dualResults .title {
+	  font-size: 1.23em;
+    line-height: 1.1em;
+}
+#dualResults .resultOptions a {
+    font-weight: bold;
 }
 
 /** Side facets */
@@ -2191,7 +2259,7 @@ dl.narrowList a {
     padding:.5em .5em .5em 25px;
 }
 ul.recordSet .addToFavLink a {
-    padding:.1em .5em .5em 25px;
+    padding: 0 .5em .5em 25px;
 }
 .searchtools a.mailSearch {
     display:inline-block;
@@ -2857,7 +2925,6 @@ div.resultLinks {
 .module-Collection #collectionHeader a,
 div.resultLinks a {
     font-weight: bold;
-    color: #4D4D4D;
 }
 .resultLinks .button {
     margin-right: 10px;
@@ -4698,7 +4765,20 @@ span.mapMarker  {
 .button.buttonGrey:hover {
     color:#fff;
 }
-
+.buttonSelected {
+    background-color: #ffffff;
+    color: #333333;
+    cursor: default;
+    text-decoration: none;
+}
+.buttonSelected:hover {
+    color: #333333;
+	  text-decoration: none;
+}
+.buttonFinna.buttonSelected:hover {
+    color: #333333;
+    text-decoration: none;
+}
 .roundButton {
     border-radius:13px;
     display:inline-block;

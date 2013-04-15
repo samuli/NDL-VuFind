@@ -78,8 +78,6 @@ class SearchObject_PCI extends SearchObject_Base
         
         $this->params['institution'] = $config['General']['institution'];
         $this->params['highlight'] = $config['General']['highlight'];
-        $this->params['lang'] = $config['General']['lang'];
-        $this->params['loc'] = $config['General']['loc'];
         $this->params['db'] = isset($config['General']['db']) ? $config['General']['db'] : null;
 
         // Set up sort options

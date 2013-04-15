@@ -78,7 +78,9 @@ quickAddToFavorites = true
 ; Institution code (a unique identifier of the institution the view belongs to)
 institution = 
 ; Whether index is used for new items search instead of backend driver
-indexBasedNewItems = true 
+indexBasedNewItems = true
+; Whether two-column result list (local and PCI) is enabled (defauls to false)
+;dualResultsEnabled = true
 
 ; This section allows you to configure the mechanism used for storing user
 ; sessions.  Available types: FileSession, MemcacheSession, MySQLSession.

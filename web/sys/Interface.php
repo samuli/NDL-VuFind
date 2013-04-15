@@ -273,6 +273,10 @@ class UInterface extends Smarty
         if (isset($configArray['Site']['development']) && $configArray['Site']['development']) {
             $this->assign('developmentSite', true);    
         }
+
+        if (isset($configArray['Site']['dualResultsEnabled']) && $configArray['Site']['dualResultsEnabled']) {
+            $this->assign('dualResultsEnabled', true);    
+        }
     }
 
     /**

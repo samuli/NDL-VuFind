@@ -186,7 +186,7 @@ EOE;
 
         $filterTerms = '';
         foreach ($filterList as $key => $values) {
-            $includevalues = '';
+            $includeValues = '';
             foreach ($values as $value) {
                 if ($key == 'creationdate') {
                     $value = "[$value TO $value]";
@@ -339,8 +339,7 @@ EOD;
         try {
             $xml = $client->searchBrief($searchString);
         } catch (Exception $e) {
-            echo $e->getMessage();
-            die();
+            PEAR::raiseError(new PEAR_Error($e->getMessage()));
         }
 
         return $xml;

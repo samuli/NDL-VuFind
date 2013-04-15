@@ -4,8 +4,9 @@
 {js filename="jquery.inview.min.js"}
 {literal}
 <script type="text/javascript">
+
 $(document).ready(function() {
-  $('a.openUrlEmbed').one('inview', function() { $(this).trigger('click'); });
+  $('a.openUrlEmbed').unbind('inview').one('inview', function() { $(this).trigger('click'); });
 });
 {/literal}
 </script>

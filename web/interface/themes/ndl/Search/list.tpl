@@ -11,7 +11,12 @@
         <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
       </div>
       {/if}
+      {if $dualResultsEnabled && $searchType != 'advanced'}
+      <div class="headerLeft">
+        <h3 class="searchTerms grid_12">
+      {else}
       <h3 class="searchTerms grid_24">
+      {/if}
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
         {if $searchType == 'basic'}{$lookfor|escape:"html"}
@@ -24,12 +29,24 @@
       {/if}
       </h3>
       {if $spellingSuggestions}
+      {if $dualResultsEnabled && $searchType != 'advanced'}
+      <div class="correction grid_12">
+      {else}
       <div class="correction grid_24">
+      {/if}
         {translate text="spell_suggest"}:
         {foreach from=$spellingSuggestions item=details key=term name=termLoop}
           <span class="correctionTerms">{foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a class="expandSearch" title="{translate text="spell_expand_alt"}" {* alt="{translate text="spell_expand_alt"}" NOT VALID ATTRIBUTE *} href="{$data.expand_url|escape}"></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}
           </span>
         {/foreach}
+      </div>
+      {/if}
+      {if $dualResultsEnabled && $searchType != 'advanced'}
+      </div>
+      <div class="headerRight">
+        <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
+        <a class="button buttonFinna buttonSelected" href=".">{translate text="Books etc."}</a>
+        <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
       </div>
       {/if}
     </div> {* content *}

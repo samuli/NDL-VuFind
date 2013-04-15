@@ -199,11 +199,11 @@ a.clear_input {
 
 .recordSet .fav {
     background-image: url(../images/icons16-24px-02.png);
-    background-position: -361px -2041px;
+    background-position: -361px -2049px;
 }
 .recordSet .fav:hover {
     background-image: url(../images/icons16-24px-02.png);
-    background-position: -361px -2041px;
+    background-position: -361px -2049px;
 }
 
 .currentTree, .hierarchyTreeLinkText {
@@ -347,9 +347,15 @@ span.dynatree-expander:hover {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -362px -920px;
 }
+.resultscroller .prevRecord.inactive {
+    background-position: -1294px -919px;
+}
 .resultscroller .nextRecord {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -362px -984px;
+}
+.resultscroller .nextRecord.inactive {
+    background-position: -1294px -983px;
 }
 #addThis .mail {
     background-image: url(../images/icons16-24px-02.png);

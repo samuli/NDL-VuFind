@@ -192,7 +192,21 @@
         left: 12px;
         top: 67px;
     }
-    
+
+    /** DualResults - Two Column Results */
+    #dualResults .leftColumn {
+        width: 308px;
+    }
+    #dualResults .rightColumn {
+        width: 308px;
+    }
+    #dualResults .resultColumn1 {
+        display: none;
+    }
+		#dualResults .resultColumn2 {
+		    width: 260px;
+		}
+
     /* Record */
     
     .recordcover {
