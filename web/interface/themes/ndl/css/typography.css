@@ -88,6 +88,12 @@ a {
     -ms-transition: color .1s;
 }
 
+/* link color */
+a, .ui-widget-content a,
+a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
+    color: #00A3B5;
+}
+
 /* Is this needed? Would it be better to change h3 to h5 / use class normal? */
 div.recordsubcontent h3 {
     font-size:1em;

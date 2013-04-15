@@ -128,11 +128,9 @@ ul {
 
 /*** Links ***/
 a, .ui-widget-content a {
-    color: #00A3B5;
     text-decoration: none;
 }
 a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
-    color:#00A3B5;
     text-decoration: underline;
 }
 .jstree a:focus,
@@ -1542,6 +1540,7 @@ fieldset.publishDateLimit .ui-slider {
 
 .favoritesList {
     float: left;
+    width:670px;
 }
 .favoritesList .paginationTop, .favoritesList .resultOptions {
     margin: 0.4em 0 0 0;
@@ -1567,7 +1566,6 @@ fieldset.publishDateLimit .ui-slider {
     padding: 5px 0 0 5px;
 }
 .allCheckboxBackground {
-    margin: 3px 0 0 9px;
     float: left;
 } 
 
@@ -2196,8 +2194,8 @@ dl.narrowList a {
 #main .contentHeader,
 #main .browseHeader {
     background: #b2e3ea;
-    padding: 22px 0 24px;
-    margin-bottom: 40px;
+    padding: 20px 0;
+    margin-bottom: 30px;
 }
 #main .browseHeader {
     background:#b2e3ea;
@@ -2217,6 +2215,9 @@ dl.narrowList a {
 }
 .module-Content .main,
 .module-Browse .main {
+    padding-bottom:40px;
+}
+.contentHeader + .content {
     padding-bottom:40px;
 }
 
@@ -3907,7 +3908,7 @@ div.fieldValue {
 
 /** system unavailable and other fatal error pages */
 div.unavailable, div.fatalError {
-    margin-bottom:40px;
+    margin-bottom:0;
 }
 
 /** Open Library Subjects **/

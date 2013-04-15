@@ -65,11 +65,10 @@
     {css media="screen, projection" filename="footer.css"}
     {css media="screen, projection" filename="default_custom.css"}
     {css media="screen, projection" filename="home_custom.css"}
-    {css media="screen, projection" filename="768tablet.css"}
-{* The mobile styles below not used just yet. 
-    {css media="screen, projection" filename="480mobilewide.css"}
-    {css media="screen, projection" filename="320mobile.css"}
-*}
+    
+    {css media="screen, projection" filename="720tablet.css"}
+    {css media="screen, projection" filename="480mobile.css"}
+
     {css media="screen, projection" filename="settings.css"}
     
     {css media="print" filename="print.css"}
@@ -80,7 +79,6 @@
       {css media="screen, projection" filename="chosen/chosen.css"}
     {/if}
     <!--[if lt IE 9]>{css media="screen, projection" filename="ie.css"}<![endif]-->
-    <!--[if lt IE 7]>{css media="screen, projection" filename="iepngfix/iepngfix.css"}<![endif]-->
 
     {* Set global javascript variables *}
     <script type="text/javascript">
@@ -179,8 +177,7 @@
 
    
     {* Viewport *}
-    <meta name='viewport' content="width=720" />
-{*
+
     <meta name="viewport" content=""/>
     <script type="text/javascript">
     {literal}
@@ -193,7 +190,7 @@
     }
     {/literal}
     </script>
-*}
+
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
     {if !$showTopSearchBox}

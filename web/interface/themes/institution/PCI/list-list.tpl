@@ -12,6 +12,7 @@
 <ul class="recordSet">
 {foreach from=$recordSet item=record name="recordLoop"}
 {assign var="id" value=$record.id}
+<li class="result">
 <span class="recordNumber">{$recordStart+$smarty.foreach.recordLoop.iteration-1}</span>
 <div class="result recordId" id="record{$id|escape:"html"}">
     <div class="resultColumn1">
