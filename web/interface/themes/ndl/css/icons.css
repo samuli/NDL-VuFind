@@ -56,10 +56,17 @@
 }
 /* Front page: search suggestion icons */
 
-.iconlabel.formatdocument,
-.iconlabel.formatarticle {
+.iconlabel.formatdocument {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -385px;
+}
+.iconlabel.formatarticle {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -187px -384px
+}
+.iconlabel.formatbookchapter {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -187px -47px;
 }
 .iconlabel.formatphysicalobject {
     background-image: url(../images/icons16-24px-01.png);
