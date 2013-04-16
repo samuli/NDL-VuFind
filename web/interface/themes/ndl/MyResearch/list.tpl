@@ -138,11 +138,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           {/foreach}
         </select>
       {/if}  
-        <input type="submit" class="button" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
+        <input type="submit" class="button buttonFinna" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
         {if is_array($exportOptions) && count($exportOptions) > 0}
-        <input type="submit" class="button" name="export" value="{translate text='export_expanding'}" title="{translate text='export_expanding'}"/>
+        <input type="submit" class="button buttonFinna" name="export" value="{translate text='export_expanding'}" title="{translate text='export_expanding'}"/>
         {/if}
-        {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="button" name="delete" value="{translate text='Delete'}" title="{translate text='delete_selected'}"/>{/if}
+        {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="button buttonFinna" name="delete" value="{translate text='Delete'}" title="{translate text='delete_selected'}"/>{/if}
       </div>
       <div class="clear"></div>
     </div> 

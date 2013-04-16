@@ -1,6 +1,7 @@
 {* check save statuses via AJAX *}
 {js filename="check_save_statuses.js"}
 {js filename="jquery.cookie.js"}
+{js filename="openurl.js"}
 {include file="Search/rsi.tpl"}
 {include file="Search/openurl_autocheck.tpl"}
 
@@ -63,16 +64,14 @@
             {/if}
           </div>
 
-          <span class="iconlabel {$record.ContentType.0|getSummonFormatClass|escape}">{translate text=$record.ContentType.0}</span>
-        </div>
-      
-        <div class="span-3 last addToFavLink">
-          <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}"></a>
-      
           {* Display the lists that this record is saved to *}
           <div class="savedLists info hide" id="savedLists{$record.ID.0|escape}">
             <strong>{translate text="Saved in"}:</strong>
           </div>
+        </div>
+      
+        <div class="span-3 last addToFavLink">
+          <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}"></a>
         </div>      
         <div class="clear"></div>
       </div>

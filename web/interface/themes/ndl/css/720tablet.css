@@ -232,7 +232,10 @@
     .favoritesList {
         width:470px;
     }
-    
+    .favoritesList .pagination {
+        width: 460px;
+    }
+
     /* Footer */
     
     #footer {

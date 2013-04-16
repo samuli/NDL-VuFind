@@ -7,8 +7,8 @@
     <br />
     {translate text='You do not have any library cards'}
   {else}
+    <span class="hefty">{translate text='Library Cards'}</span>
     <table class="datagrid accountList" summary="{translate text='Library Cards'}">
-    <caption>{translate text='Library Cards'}</caption>
     <tr>
       <th>{translate text='Name'}</th>
       <th>{translate text='Description'}</th>

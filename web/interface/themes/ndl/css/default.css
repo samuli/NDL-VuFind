@@ -1540,9 +1540,22 @@ fieldset.publishDateLimit .ui-slider {
 
 .favoritesList {
     float: left;
-    width:670px;
+    width: 670px;
 }
-.favoritesList .paginationTop, .favoritesList .resultOptions {
+.favoritesList .resultPagination {
+	  margin-top: 8px;
+}
+.favoritesList .resultPagination .content {
+    width: auto;
+}
+.favoritesList .pagination {
+    width: 660px;
+    padding: 15px 0;
+}
+.favoritesList .paginationMove {
+    top: 10px;
+}
+.favoritesList .resultOptions {
     margin: 0.4em 0 0 0;
 }
 .favoritesList .bulkActionButtons select {
@@ -1567,6 +1580,8 @@ fieldset.publishDateLimit .ui-slider {
 }
 .allCheckboxBackground {
     float: left;
+    margin-left: 8px;
+    margin-top: 2px;
 } 
 
 /* MyResearch/checkedout */
@@ -1715,7 +1730,7 @@ table.profileGroup th {
 .resultListContainer {
     clear:both;
 }
-.advSearchContent, #authorList, #resultsCollection,  #bottomPagination, .searchtools {
+.advSearchContent, #authorList, #resultsCollection, .pagination, .searchtools {
     width: 670px;
     float: left;
     margin: 0;
@@ -2810,7 +2825,7 @@ div.dateVisHandle.visible {
     height:110px;
 }
 /* Pagination */
-#bottomPagination {
+.pagination {
     position:relative;
     text-align:center;
     float:none;

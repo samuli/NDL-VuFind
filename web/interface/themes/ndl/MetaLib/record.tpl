@@ -12,7 +12,7 @@
 {if $showPreviews}
   {js filename="preview.js"}
 {/if}
-{if $coreOpenURL || $holdingsOpenURL}
+{if $record.openUrl}
   {js filename="openurl.js"}
 {/if}
 {if $metalibEnabled}
@@ -209,6 +209,10 @@
     </table>
     {* End Main Details *}
     
+	  {* Display the lists that this record is saved to *}
+	  <div class="savedLists info hide" id="savedLists{$id|escape}">
+	    <strong>{translate text="Saved in"}:</strong>
+	  </div>
   </div>
   {* End Record *} 
   

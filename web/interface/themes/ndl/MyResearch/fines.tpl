@@ -6,11 +6,11 @@
   <div class="content">
     <div class="grid_24">
   {if $user->cat_username}
-    <table class="datagrid fines" summary="{translate text='Your Fines'}">
-      <caption>{translate text='Your Fines'}</caption>
     {if empty($rawFinesData)}
-      <tr><td>{translate text='You do not have any fines'}</td></tr>
+      {translate text='You do not have any fines'}
     {else}
+    <span class="hefty">{translate text='Your Fines'}</span>
+    <table class="datagrid fines" summary="{translate text='Your Fines'}">
       <tr>
         <th style="width:50%;">{translate text='Title'}</th>
         <th>{translate text='Checked Out'}</th>
@@ -40,12 +40,12 @@
           <td>{$record.duedate|escape}{if $record.checkedOut} <span class="highlight">{translate text="fined_work_still_on_loan"}</span>{/if}</td>
           <td>{$record.fine|escape}</td>
           {* <td>{$record.amount/100.00|safe_money_format|escape}</td> *}
-          <td style="text-align:right;">{$record.balance/100.00|safe_money_format|escape}</td>
+          <td style="text-align:right;">{$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}</td>
         </tr>
       {/foreach}
-      <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|escape}</span></td></tr>
-    {/if}
+      <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
     </table>
+    {/if}
   {else}
     {include file="MyResearch/catalog-login.tpl"}
   {/if}
