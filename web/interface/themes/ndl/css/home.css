@@ -70,7 +70,7 @@
 }
 
 .section#introduction div.grid_10 > div {
-    overflow:visible;
+    overflow:auto;
 }
 .section#introduction ul {
     float:left;
