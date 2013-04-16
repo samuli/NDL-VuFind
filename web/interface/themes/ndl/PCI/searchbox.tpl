@@ -15,7 +15,7 @@
     <div class="searchFormWrapper grid_16">
       <div class="overLabelWrapper">
         <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
-        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" class="last clearable mainFocus" title='{translate text="Find"}&hellip;' />
+        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" autocomplete="off" class="last clearable mainFocus" title='{translate text="Find"}&hellip;' />
       </div>
       <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
       <div class="clear"></div>
