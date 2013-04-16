@@ -161,7 +161,10 @@
     .dateVisClear a {
         right:15px;
     }
-    
+    .resultHeader .headerLeft {
+        width: 300px;
+    }
+        
     /* Search results: sidebar */
     
     span.dynatree-node .facetTitle {
@@ -198,16 +201,17 @@
         font-size: 0.846em;
     }
     #dualResults .leftColumn {
-        width: 308px;
+        width: 332px;
     }
     #dualResults .rightColumn {
-        width: 308px;
+        width: 332px;
     }
     #dualResults .resultColumn1 {
         display: none;
     }
 		#dualResults .resultColumn2 {
-		    width: 260px;
+		    width: 300px;
+		    margin-left: 0;
 		}
 
     /* Record */

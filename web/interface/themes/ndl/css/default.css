@@ -1706,7 +1706,10 @@ table.profileGroup th {
 }
 .resultHeader .headerRight {
     float: right;
-    width: 456px;
+    margin: 0 5px 0;
+}
+.resultHeader .button {
+	  padding: 10px 12px 10px 12px;
 }
 
 .resultListContainer {
@@ -1936,14 +1939,14 @@ li.result blockquote {
 }
 #dualResults .leftColumn {
     float: left;
-	  width: 448px;
+	  width: 453px;
 	  border-right: 6px solid #e6e6e6;
 	  padding: 0 18px 0 6px;
 	  margin: 24px 0 24px 0;
 }
 #dualResults .rightColumn {
     float: left;
-	  width: 448px;
+    width: 453px;
     padding: 0 6px 0 18px;
     border-left: 6px solid #e6e6e6;
     margin: 24px 0 24px -6px;
@@ -1979,7 +1982,7 @@ li.result blockquote {
 	  max-width: 100px;
 }
 #dualResults .resultColumn2 {
-    width: 300px;
+    width: 310px;
 }
 #dualResults .title {
 	  font-size: 1.23em;
@@ -4763,7 +4766,9 @@ span.mapMarker  {
 .buttonFinna,
 .buttonGrey,
 .button.buttonFinna:hover,
-.button.buttonGrey:hover {
+.button.buttonGrey:hover,
+.button.buttonFinna:focus,
+.button.buttonGrey:focus {
     color:#fff;
 }
 .buttonSelected {
