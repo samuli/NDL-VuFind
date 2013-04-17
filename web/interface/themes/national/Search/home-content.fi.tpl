@@ -34,9 +34,9 @@
     </div>
     <div class="grid_10 push_right">
       <div id="mapSearchHome">
-        <h2>Kokeile karttahakua</h2>
-        <p>Voit rajata hakuasi myös kartalla. Karttarajauksen piirissä on tällä hetkellä noin 12 630 aineistotietoa.</p>
-        <a class="button" href="{$url}/Search/Advanced#mapSearch">Karttahakuun</a>
+        <h2>Kokeile maantieteellistä hakua</h2>
+        <p>Voit rajata hakuasi myös kartalla. Maantieteellisen haun piirissä on tällä hetkellä noin 12 630 aineistotietoa.</p>
+        <a class="button" href="{$url}/Search/Advanced#mapSearch">Maantieteelliseen hakuun</a>
       </div>
     </div>
   </div>

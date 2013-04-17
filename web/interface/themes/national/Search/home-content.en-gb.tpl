@@ -34,9 +34,9 @@
     </div>
     <div class="grid_10 push_right">
       <div id="mapSearchHome">
-        <h2>Try the map search</h2>
-        <p>You can also refine your search to a specific area on the map. The map search function currently encompasses some 12,630 items.</p>
-        <a class="button" href="{$url}/Search/Advanced#mapSearch">Map search</a>
+        <h2>Try the geographic search</h2>
+        <p>You can also refine your search to a specific area on the map. The geographic search function currently encompasses some 12,630 items.</p>
+        <a class="button" href="{$url}/Search/Advanced#mapSearch">Geographic search</a>
       </div>
     </div>
   </div>
