@@ -71,7 +71,8 @@ div.breadcrumbs a, div.breadcrumbs li {
      background:#B3E3E9;
 }
 
-.module-Content #main .contentHeader {
+.module-Content #main .contentHeader, 
+.module-Feedback #main .contentHeader{
     background:#f3ec7a;
 }
 
