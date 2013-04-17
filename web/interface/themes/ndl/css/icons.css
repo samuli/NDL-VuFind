@@ -244,10 +244,13 @@ a.clear_input {
 
 /* Main: Search results image icons */
 
-.resultNoImage.formatdocument,
-.resultNoImage.formatarticle {
+.resultNoImage.formatdocument {
     background-image: url(../images/icons48px-03.png);
     background-position: -8px -735px;
+}
+.resultNoImage.formatarticle {
+    background-image: url("../images/icons48px-03.png");
+    background-position: -7px -1887px;
 }
 .resultNoImage.formatphysicalobject {
     background-image: url(../images/icons48px-03.png);
@@ -260,6 +263,10 @@ a.clear_input {
 .resultNoImage.formatbook {
     background-image: url(../images/icons48px-03.png);
     background-position: -12px 34px;
+}
+.resultNoImage.formatbookchapter {
+    background-image: url(../images/icons48px-03.png);
+    background-position: -9px -1759px;
 }
 .resultNoImage.formatimage {
     background-image: url(../images/icons48px-03.png);
