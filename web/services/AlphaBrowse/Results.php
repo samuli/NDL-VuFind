@@ -128,7 +128,7 @@ class Results extends Home
                 || strstr($error, 'no such table')
                 || strstr($error, 'couldn\'t find a browse index')
             ) {
-                $result['error'] = "Alphabetic Browse index missing.  See " .
+                $error = "Alphabetic Browse index missing.  See " .
                     "http://vufind.org/wiki/alphabetical_heading_browse for " .
                     "details on generating the index.";
             }
