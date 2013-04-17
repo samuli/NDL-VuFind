@@ -415,13 +415,14 @@ class Solr implements IndexEngine
     /**
      * Retrieves documents specified by the ID array.
      *
-     * @param array $ids The document IDs to retrieve from Solr
+     * @param array $ids    The document IDs to retrieve from Solr
+     * @param bool  $merged Whether to handle merged records (defaults to true)
      *
      * @throws object    PEAR Error
      * @return string    The requested resources (or null if bad ID)
      * @access public
      */
-    public function getRecords($ids)
+    public function getRecords($ids, $merged = true)
     {
         if ($this->debug) {
             echo "<pre>Get Records: " . print_r($ids) . "</pre>\n";
@@ -437,7 +438,7 @@ class Solr implements IndexEngine
         );
         // TODO: make this nicer, such as an argument to _select
         $saveMerged = $this->_mergedRecords;
-        $this->_mergedRecords = false;
+        $this->_mergedRecords = $merged;
         $result = $this->_select('GET', $options);
         $this->_mergedRecords = $saveMerged;
         if (PEAR::isError($result)) {
@@ -1700,7 +1701,7 @@ class Solr implements IndexEngine
             }
             // Fetch records and assign them to the result
             if (!empty($idList)) {
-                $records = $this->getRecords($idList);
+                $records = $this->getRecords($idList, false);
                 foreach ($result['response']['docs'] as &$doc) {
                     if (!isset($doc['dedup_id'])) {
                         continue;
@@ -1997,8 +1998,25 @@ class Solr implements IndexEngine
         $this->client->addQueryString('wt', 'json');
 
         $filters = SearchObject_Solr::getDefaultHiddenFilters();
+        
+        if ($this->_mergedRecords) {
+            // Filter out merged children by default
+            $filters[] = '-merged_child_boolean:TRUE';
+        } elseif ($this->_mergedRecords !== null) {
+            // Filter out merged records by default
+            if (!isset($filter)) {
+                $filter = array();
+            }
+            $filters[] = '-merged_boolean:TRUE';
+        }
+        
         if (!empty($filters)) {
             $this->client->addQueryString('filters', implode(' AND ', $filters));
+        }
+        
+        if ($this->debug) {
+            echo '<pre>Browse: ' . $this->client->getUrl() . "\n";
+            echo "</pre>\n";
         }
         
         $result = $this->client->sendRequest();

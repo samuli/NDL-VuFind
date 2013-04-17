@@ -118,17 +118,21 @@ class Results extends Home
     private function _checkError($result)
     {
         if (isset($result['error'])) {
+            $error = $result['error'];
+            if (is_array($error)) {
+                $error = $error['msg'];
+            }
             // Special case --  missing alphabrowse index probably means the
             // user could use a tip about how to build the index.
-            if (strstr($result['error'], 'does not exist')
-                || strstr($result['error'], 'no such table')
-                || strstr($result['error'], 'couldn\'t find a browse index')
+            if (strstr($error, 'does not exist')
+                || strstr($error, 'no such table')
+                || strstr($error, 'couldn\'t find a browse index')
             ) {
                 $result['error'] = "Alphabetic Browse index missing.  See " .
                     "http://vufind.org/wiki/alphabetical_heading_browse for " .
                     "details on generating the index.";
             }
-            PEAR::raiseError(new PEAR_Error($result['error']));
+            PEAR::raiseError(new PEAR_Error($error));
         }
     }
 
