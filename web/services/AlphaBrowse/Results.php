@@ -96,8 +96,10 @@ class Results extends Home
 
             // Before assigning results, lets dedupe the extras
             foreach ($result['Browse']['items'] as &$item) {
-                foreach ($item['extras'] as &$extra) {
-                    $extra = array_unique($extra);
+                if (isset($item['extras'])) {
+                    foreach ($item['extras'] as &$extra) {
+                        $extra = array_unique($extra);
+                    }
                 }
             }
             $interface->assign('result', $result);
