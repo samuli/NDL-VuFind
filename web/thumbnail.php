@@ -235,48 +235,107 @@ function processImageURL($url, $localFile, $size, $cache = true)
             @unlink($tempFile);
             return false;
         }
+                
+        // Convert to JPEG and resize the image if necessary.
         
-        // Convert to JPEG and downsize the image if necessary.
-        switch ($size) {
-        case 'small': 
-            $maxWidth = isset($configArray['Content']['coverwidth']) ? $configArray['Content']['coverwidth'] : 200;
-            $maxHeight = 400; 
-            break;
-        case 'medium': 
-            $maxWidth = 350; $maxHeight = 250; 
-            break;
-        default: $maxWidth = $maxHeight = 2048; 
-        }
-        if ($type != IMAGETYPE_JPEG || $width > $maxWidth || $height > $maxHeight) {
+        // Resize thumbnail if we have dimensions
+        if ($_GET['size'] == 'small'
+            && isset($configArray['Content']['coverwidth']) && isset($configArray['Content']['coverheight']) 
+        ) {
             // We no longer need the temp file:
             @unlink($tempFile);
-
+    
             // We can't proceed if we don't have image conversion functions:
             if (!is_callable('imagecreatefromstring')) {
                 return false;
             }
-
+    
             // Try to create a GD image and rewrite as JPEG, fail if we can't:
             if (!($imageGD = @imagecreatefromstring($image))) {
                 return false;
             }
-            
-            $ratio = $width / $height;
-            if ($width > $height || $size == 'small') {
-                $newWidth = $maxWidth;
-                $newHeight = $newWidth / $ratio;
+        
+            $reqWidth = $configArray['Content']['coverwidth'];
+            $reqHeight = $configArray['Content']['coverheight'];
+            if ($height > $reqHeight) {
+                $reqHeight = $reqWidth * ($height / $width);
+            }
+            $imageGDResized = imagecreatetruecolor($reqWidth, $reqHeight);
+            if ($configArray['Content']['coverbackground']) {
+                $bg = $configArray['Content']['coverbackground'];
+                $background = imagecolorallocate(
+                    $imageGDResized, hexdec(substr($bg, 0, 2)),
+                    hexdec(substr($bg, 2, 2)), hexdec(substr($bg, 4, 2))
+                ); 
             } else {
-                $newHeight = $maxHeight;
-                $newWidth = $newHeight * $ratio;
+                $background = imagecolorallocate($imageGDResized, 255, 255, 255);
             }
-            $imageGDResized = imagecreatetruecolor($newWidth, $newHeight);
-            imagecopyresampled($imageGDResized, $imageGD, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);            
-            if (!@imagejpeg($imageGDResized, $finalFile)) {
-                return false;
+            imagefill($imageGDResized, 0, 0, $background);
+        
+            // If both dimensions are smaller than the new image, just copy to center. Otherwise resample to fit if necessary.
+            if ($width < $reqWidth && $height < $reqHeight) {
+                $imgX = floor(($reqWidth - $width) / 2);                    
+                $imgY = 0; // no centering here.. floor(($reqHeight - $height) / 2);                    
+                imagecopy($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $width, $height);
+                if (!@imagejpeg($imageGDResized, $finalFile)) {
+                    return false;
+                }
+            } elseif ($width > $reqWidth || $height > $reqHeight) {
+                $newWidth = $reqWidth;
+                $newHeight = round($newWidth * ($height / $width));
+                $imgX = 0;
+                $imgY = round(($reqHeight - $newHeight) / 2);
+                imagecopyresampled($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $newWidth, $newHeight, $width, $height);
+                if (!@imagejpeg($imageGDResized, $finalFile)) {
+                    return false;
+                }
+            } else {
+                if (!@imagejpeg($imageGD, $finalFile)) {
+                    return false;
+                }
             }
-        } else {
-            // If $tempFile is already a suitable JPEG, let's store it in the cache.
-            @rename($tempFile, $finalFile);
+        } else {            
+            switch ($size) {
+            case 'small': 
+                $maxWidth = 200;
+                $maxHeight = 400; 
+                break;
+            case 'medium': 
+                $maxWidth = 350; $maxHeight = 250; 
+                break;
+            default: $maxWidth = $maxHeight = 2048; 
+            }
+            if ($type != IMAGETYPE_JPEG || $width > $maxWidth || $height > $maxHeight) {
+                // We no longer need the temp file:
+                @unlink($tempFile);
+        
+                // We can't proceed if we don't have image conversion functions:
+                if (!is_callable('imagecreatefromstring')) {
+                    return false;
+                }
+        
+                // Try to create a GD image and rewrite as JPEG, fail if we can't:
+                if (!($imageGD = @imagecreatefromstring($image))) {
+                    return false;
+                }
+                
+                $ratio = $width / $height;
+                if ($width > $height || $size == 'small') {
+                    $newWidth = $maxWidth;
+                    $newHeight = $newWidth / $ratio;
+                } else {
+                    $newHeight = $maxHeight;
+                    $newWidth = $newHeight * $ratio;
+                }
+                $imageGDResized = imagecreatetruecolor($newWidth, $newHeight);
+                imagecopyresampled($imageGDResized, $imageGD, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);            
+                if (!@imagejpeg($imageGDResized, $finalFile)) {
+                    return false;
+                }
+            } else {
+                // If $tempFile is already a suitable JPEG, let's store it in the cache.
+                @rename($tempFile, $finalFile);
+            }
         }
 
         // Display the image:
