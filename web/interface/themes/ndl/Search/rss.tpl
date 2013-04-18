@@ -1,6 +1,6 @@
 <!-- START of: Search/rss.tpl -->
 
-<!-- requires XML_RSS (pear install XML_RSS) -->
+{* requires XML_RSS (pear install XML_RSS) *}
 
 {php}
 
@@ -42,8 +42,19 @@ if(($type == "carousel") ||
     foreach ($rssItems as $item) {
         $title = $item['title'];
         $content = strip_tags($item['description']);
-        preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
-        $imageUrl = $matches[1];
+        $imageUrl = false;
+        if(count($item['enclosures'])>0) {
+            foreach($item['enclosures'] as $enclosure) {
+                if(is_int(stripos($enclosure['type'], "image"))) {
+                    $imageUrl = $enclosure['url'];
+                    break;
+                }
+            }
+        }
+        if(!$imageUrl) {
+            preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
+            $imageUrl = $matches[1];
+        }
         $url   = $item['link'];
         echo "<li>";
         echo "<img src=\"$imageUrl\" alt=\"\" />";
