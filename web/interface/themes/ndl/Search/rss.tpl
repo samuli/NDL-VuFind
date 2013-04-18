@@ -82,7 +82,28 @@ if(($type == "carousel") ||
             });
     
             $(window).resize(function() {
+                var containerWidth = $('#NDLCarousel.includeDescription li').width();
+                var containerHeight = $('#NDLCarousel.includeDescription li').height();
+                var containerRatio = containerWidth / containerHeight;
+
                 $('#NDLCarousel.includeDescription img').each(function(){
+
+                    var imgWidth = $(this).width();
+                    var imgHeight = $(this).height();
+                    var imgRatio = imgWidth / imgHeight;
+                    var newWidth = 0;
+                    var newHeight = 0;
+                      
+                    if(containerRatio < imgRatio) {
+                        newWidth = containerHeight * imgRatio;
+                        newHeight = containerHeight;
+                    } else {
+                        newWidth = containerWidth;
+                        newHeight = containerWidth / imgRatio;
+                    }
+
+                    $(this).css("height", newHeight + "px");
+                    $(this).css("width", newWidth + "px");
                     $(this).css(
                         "left",
                         "50%"

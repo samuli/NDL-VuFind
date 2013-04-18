@@ -202,14 +202,11 @@ ul.documentTypes li {
     font-size: 100%;
     text-align: left;
     background-position: center;
+    overflow: hidden;
 }
 #NDLCarousel.includeDescription img {
     max-height: 5000px;
     max-width: 5000px;
-    min-height: 100%;
-    min-width: 100%;
-    width: auto;
-    height: auto;
 }
 #NDLCarouselNavi {
     display: none;
