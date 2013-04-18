@@ -48,9 +48,7 @@ a, .ui-widget-content a {
 .metalibLink, .showSearchHelp {
     display:none; 
 }
-a.advancedLink {
-    margin:10px 0 0;
-}
+
 div.breadcrumbinner a, div.breadcrumbinner em, div.breadcrumbinner span, div.breadcrumbinner form,
 div.breadcrumbs a, div.breadcrumbs li {
     color: #ffffff;
