@@ -921,7 +921,7 @@ class Voyager implements DriverInterface
             $sqlStmt = $this->db->prepare($sql);
             $sqlStmt->execute(array(':id' => $id));
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
-                $data[] = array('issue' => $row['ENUMCHRON']);
+                $data[] = array('issue' => utf8_encode($row['ENUMCHRON']));
             }
             return $data;
         } catch (PDOException $e) {
@@ -1233,7 +1233,7 @@ class Voyager implements DriverInterface
         }
 
         return array('amount' => $sqlRow['FINE_FEE_AMOUNT'],
-              'fine' => $sqlRow['FINE_FEE_DESC'],
+              'fine' => utf8_encode($sqlRow['FINE_FEE_DESC']),
               'balance' => $sqlRow['FINE_FEE_BALANCE'],
               'createdate' => $createDate,
               'checkout' => $chargeDate,
@@ -1573,20 +1573,20 @@ class Voyager implements DriverInterface
 
         return array(
             'id' => $sqlRow['BIB_ID'],
-            'status' => $sqlRow['STATUS_DESC'],
+            'status' => utf8_encode($sqlRow['STATUS_DESC']),
             'statusDate' => $statusDate,
             'location' => $this->getLocationName($sqlRow['PICKUP_LOCATION_ID']),
             'created' => $createDate,
             'processed' => $processedDate,
             'expired' => $expireDate,
-            'reply' => $sqlRow['REPLY_NOTE'],
+            'reply' => utf8_encode($sqlRow['REPLY_NOTE']),
             'available' => $available,
             'cancelled' => $sqlRow['STATUS'] == 7 ? $statusDate : false,
             'reqnum' => $sqlRow['CALL_SLIP_ID'],
             'item_id' => $sqlRow['ITEM_ID'],
             'volume' => str_replace("v.", "", utf8_encode($sqlRow['ITEM_ENUM'])),
             'issue' => utf8_encode($sqlRow['ITEM_CHRON']),
-            'year' => $sqlRow['ITEM_YEAR'],
+            'year' => utf8_encode($sqlRow['ITEM_YEAR']),
             'title' => empty($sqlRow['TITLE_BRIEF'])
                 ? $sqlRow['TITLE'] : $sqlRow['TITLE_BRIEF']
         );
