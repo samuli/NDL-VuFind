@@ -17,7 +17,12 @@
     <ul class="filters">
     {foreach from=$filterList item=filters key=field}
       {foreach from=$filters item=filter}
+        {assign var=facetPrefix value=$filter.display|substr:0:2}
+        {if $facetPrefix == '0/' || $facetPrefix == '1/' || $facetPrefix == '2/' || $facetPrefix == '3/'}
+        <li><a href="{$filter.removalUrl|escape}" title="{$filter.display|escape}">{image src="silk/delete.png" alt="Delete" width="16" height="16"}{translate text=$field}: {$filter.display|substr:2|escape}</a></li>
+        {else} 
         <li><a href="{$filter.removalUrl|escape}">{image src="silk/delete.png" alt="Delete" width="16" height="16"}{translate text=$field}: {$filter.display|escape}</a></li>
+        {/if}
       {/foreach}
     {/foreach}
     </ul>

@@ -16,7 +16,12 @@
     <ul class="filters">
     {foreach from=$filterList item=filters key=field}
       {foreach from=$filters item=filter}
+        {assign var=facetPrefix value=$filter.display|substr:0:2}
+        {if $facetPrefix == '0/' || $facetPrefix == '1/' || $facetPrefix == '2/' || $facetPrefix == '3/'}
+        <li><a class="roundButton deleteButton" href="{$filter.removalUrl|escape}">X</a><span title="{$filter.display|escape}">{translate text=$field}: {$filter.display|substr:2|escape}</span></li>
+        {else} 
         <li><a class="roundButton deleteButton" href="{$filter.removalUrl|escape}">X</a><span>{translate text=$field}: {$filter.display|escape}</span></li>
+        {/if}
       {/foreach}
     {/foreach}
     </ul>
