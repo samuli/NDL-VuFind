@@ -383,7 +383,7 @@ class MultiBackend implements DriverInterface
         $driver = $this->getDriver($source);
         if ($driver) {
             $holds = $driver->getMyHolds($this->stripIdPrefixes($user, $source));
-            $holds = $this->addIdPrefixes($holds, $source);
+            $holds = $this->addIdPrefixes($holds, $source, array('id', 'item_id', 'cat_username'));
             return $holds;
         }
         return new PEAR_Error('No suitable backend driver found');
@@ -610,7 +610,7 @@ class MultiBackend implements DriverInterface
      */
     public function getCancelHoldDetails($holdDetails)
     {
-        $source = $this->getSource($holdDetails['id']);
+        $source = $this->getSource($holdDetails['id'] ? $holdDetails['id'] : $holdDetails['item_id']);
         $driver = $this->getDriver($source);
         if ($driver) {
             $holdDetails = $this->stripIdPrefixes($holdDetails, $source);
