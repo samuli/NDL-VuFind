@@ -67,7 +67,9 @@ class VuFindCache
      */
     protected function getFilename($key, $createDir = true)
     {
-        $dirName = dirname(__FILE__) . '/../interface/cache/' . $this->name;
+        global $configArray;
+        
+        $dirName = $configArray['Site']['local'] . '/interface/cache/' . $this->name;
         if ($createDir && !is_dir($dirName)) {
             mkdir($dirName);
         }
