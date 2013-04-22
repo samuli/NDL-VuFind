@@ -359,8 +359,9 @@ lastname = SHIB_cn
 ; You can select from Syndetics, LibraryThing, Summon, Amazon, OpenLibrary,
 ; Contentcafe or Google Books.  Note that the Summon service takes a Serials
 ; Solutions client key, NOT a Summon API key!
-;coverimages     = Syndetics:MySyndeticsId,Amazon:MyAccessKeyId,LibraryThing:MyLibraryThingId,Google,OpenLibrary,Summon:MySerialsSolutionsClientKey,Contentcafe:MyContentCafeID
-coverimages    = OpenLibrary
+; NLF may only be used by the National Library of Finland services
+;coverimages     = NLF,Syndetics:MySyndeticsId,Amazon:MyAccessKeyId,LibraryThing:MyLibraryThingId,Google,OpenLibrary,Summon:MySerialsSolutionsClientKey,Contentcafe:MyContentCafeID
+coverimages    = NLF,OpenLibrary
 coverwidth = 126
 coverheight = 126
 coverbackground = ffffff
