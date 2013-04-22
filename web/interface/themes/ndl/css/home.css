@@ -118,24 +118,27 @@ ul.documentTypes li {
     background-size: cover;
     background-position: -100000px -100000px;
     cursor: pointer;
-    height: 200px;
+    height: 260px;
     position: relative;
+    background:#fff;
+    text-align:center;
 }
-
+#NDLCarousel li h4,
+#NDLCarousel li p {
+    text-align:left;
+}
 #NDLCarousel img {
-    max-height: 127px;
-    max-width: 90%;
-    position: absolute;
-    left: 0;
-    /*top: 0;*/
-    bottom: 73px;
+    vertical-align:middle;
+}
+#NDLCarousel.includeDescription img {
+    
 }
 .carousel-direction-up #NDLCarousel img {
 	bottom:0;
 	max-height:120px;
 }
 #NDLCarousel.noText img {
-    max-height: 200px;
+    max-height: 260px;
     bottom: 0;
 }
 
@@ -145,8 +148,7 @@ ul.documentTypes li {
     line-height: 1em;
     position: absolute;
     left: 0;
-    top: 125px;
-    /*bottom: 0px;*/
+    bottom: 0px;
     overflow: hidden;
     font-weight: normal;
 }
@@ -161,35 +163,37 @@ ul.documentTypes li {
 #NDLCarousel.noText h4 {
     display: none;
 }
-#NDLCarousel.includeDescription h4 {
-    font-size: 120%;
+#NDLCarousel.includeDescription h4  {
     background: url("../images/px_69.png") repeat;
     bottom: 0;
     margin: 0;
     padding: 6px 3%;
-    top: auto;
     width: 94%;
+    -moz-transition:all .2s;
+    -webkit-transition:all .2s;
+    line-height:1.2em;
+    transition:all .2s;
 }
-#NDLCarousel.includeDescription li:hover h4 {
-    position: relative;
-    bottom: auto;
-    top: 0;
+
+#NDLCarousel.includeDescription h4 a {
+    color:#eee;
+    font-weight:bold;
+    display:block;
+    float:left;
 }
 #NDLCarousel.includeDescription p {
     display: none;
-    background: url("../images/px_69.png") repeat;
     color: #ddd;
     line-height: 1.2em;
-    position: relative;
-    top: 0;
+    position: absolute;
+    top:100%;
     margin: 0;
     padding: 4px 3%;
-    bottom: 0;
     width: 94%;
     height: 100%;
 }
-#NDLCarousel.includeDescription li:hover p {
-    display: block;
+#NDLCarousel img {
+
 }
 /*
 #NDLCarousel a,
@@ -200,16 +204,16 @@ ul.documentTypes li {
 */
 #NDLCarousel.includeDescription li {
     font-size: 100%;
-    text-align: left;
     background-position: center;
     overflow: hidden;
+    margin:0 5px 0 5px;
 }
 #NDLCarousel.includeDescription img {
     max-height: 5000px;
     max-width: 5000px;
 }
 #NDLCarouselNavi {
-    display: none;
+    display: block;
     position: relative;
     width: 100%;
 }

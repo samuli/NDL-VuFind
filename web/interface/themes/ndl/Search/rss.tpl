@@ -3,16 +3,18 @@
 {* requires XML_RSS (pear install XML_RSS) *}
 
 {php}
-
 $confArray = $this->get_template_vars('rssFeeds');
 $feed = $confArray[$this->get_template_vars('rssId')];
 $type = $feed['type'];
 $items = $feed['items'];
 $itemsPerPage = $feed['itemsPerPage'];
+$direction = isset($feed['direction']) ? $feed['direction'] : 'left';
+$height = (!isset($feed['height']) || $feed['height'] == 0) ? false : $feed['height'];
 
 require_once "XML/RSS.php";
 $rss =& new XML_RSS($feed['url']);
 $rss->parse();
+
 
 if ($items>0) {
     $rssItems = array_slice($rss->getItems(), 0, $items);
@@ -23,6 +25,7 @@ if ($items>0) {
 if(($type == "carousel") ||
    ($type == "carousel-small") ||
    ($type == "carousel-notext")) {
+    echo "<div class=\"carousel-direction-$direction\">";
     echo "<ul id=\"NDLCarousel\"";
 
     $classes = "";
@@ -67,6 +70,8 @@ if(($type == "carousel") ||
     echo "</ul>";
 
     $this->assign("itemsPerPage", $itemsPerPage);
+    $this->assign("direction", $direction);
+    $this->assign("height", $height);
 
     {/php}
     
@@ -76,12 +81,33 @@ if(($type == "carousel") ||
 
     <script>
         $(document).ready(function(){
+            
+            // Determine height if it is not set
+            {/literal}{php}
+                if (!$height) :
+            {/php}{literal}
+            var carouselContainer = $('#carouselContainer .content');
+            var carouselWidth = carouselContainer.width();
+            var carouselHeight = 
+                (carouselWidth - ({/literal}{$itemsPerPage}{literal} * 10))  / 
+                {/literal}{$itemsPerPage}{literal} * 1.36;
+                    
+            // If height is set
+            {/literal}{php}
+                else : 
+            {/php}{literal}
+                var carouselHeight = {/literal}{$height}{literal};
+            {/literal}{php}
+                endif;
+            {/php}{literal} 
+            
             $('#NDLCarousel').carouFredSel({
                 responsive: true,
-                auto: 8000,
+                direction:{/literal}'{$direction}'{literal},
+                auto: 80000,
                 width: "100%",
                 items: {/literal}{$itemsPerPage}{literal},
-                height: 200,
+                height: carouselHeight,
                 prev: "#NDLCarouselNavi #prev",
                 next: "#NDLCarouselNavi #next",
                 scroll: {
@@ -91,16 +117,35 @@ if(($type == "carousel") ||
                   fx: "directscroll"
                 }
             });
-    
-            $(window).resize(function() {
+            
+            // Also set height to individual list items
+            $('#NDLCarousel li').css({
+                'height': carouselHeight,
+                'line-height' : carouselHeight + 'px'
+            });
+                
+            // Function to refresh carousel when layout changes
+            prevWidth = carouselWidth;
+            refreshCarousel = function() {
+                if(carouselContainer.width()!=prevWidth){
+                    prevWidth = carouselContainer.width();
+                    refreshCarousel();
+                }
+            }
+            $(window).resize(refreshCarousel());
+            
+            
+            calculateCarouselDimensions = function() {
+                
                 var containerWidth = $('#NDLCarousel.includeDescription li').width();
                 var containerHeight = $('#NDLCarousel.includeDescription li').height();
                 var containerRatio = containerWidth / containerHeight;
 
-                $('#NDLCarousel.includeDescription img').each(function(){
+                $('#NDLCarousel.includeDescription img').load(function(){
 
                     var imgWidth = $(this).width();
                     var imgHeight = $(this).height();
+                        
                     var imgRatio = imgWidth / imgHeight;
                     var newWidth = 0;
                     var newHeight = 0;
@@ -112,55 +157,77 @@ if(($type == "carousel") ||
                         newWidth = containerWidth;
                         newHeight = containerWidth / imgRatio;
                     }
+                        
+                    var verticalPosition = (newHeight - containerHeight) / 2;
+                    var horizontalPosition = (newWidth - containerWidth) / 2;
+                    
+                    $(this).css({
+                        'height'      : newHeight,
+                        'width'       : newWidth,
+                        'position'    : 'absolute',
+                        'left'        : - horizontalPosition,
+                        'top'         : - verticalPosition,
+                        'display'     : 'none',
+                        'visibility'  : 'visible'
+                    });
 
-                    $(this).css("height", newHeight + "px");
-                    $(this).css("width", newWidth + "px");
-                    $(this).css(
-                        "left",
-                        "50%"
-                    );
-                    $(this).css(
-                        "top",
-                        "50%"
-                    );
-                    $(this).css(
-                        "margin-left",
-                        "-" + parseInt($(this).width()) / 2 + "px"
-                    );
-                    $(this).css(
-                        "margin-top",
-                        "-" + parseInt($(this).height()) / 2 + "px"
-                    );
+                    $(this).fadeIn(300);
                 });
-            });
+            };
+                
+            calculateCarouselDimensions();
               
-            $(window).resize();
 
-            $('#NDLCarouselNavi').css(
-                "display",
-                "block"
-            );
             $('#NDLCarousel').css(
                 "visibility",
                 "visible"
             );
-
+            
+            // Make individual pick-ups clickable
             $('#NDLCarousel li').click(function() {
                 var href = $(this).find('a').attr('href');
                 window.location.href = href;
-            })
+            });
+            
+            // Set title and text position
+            $('#NDLCarousel.includeDescription h4').each(function() {
+                var thisHeight = $(this).find('a').height() + 12; // 6px + 6px padding
+                var topPosition = carouselHeight - thisHeight;
 
-        });
+                $(this).css('top', topPosition);
+                $(this).siblings('p').css('top', thisHeight);
+                
+            });
+            
+            $('#NDLCarousel.includeDescription li').mouseenter(function() {
+                 $(this).children('h4').stop().animate({
+                    top: 0
+                    }, 50, function() {
+                        $(this).siblings('p').stop(true,true).delay(50).fadeIn(200);
+                        });
+            });
+             
+            $('#NDLCarousel.includeDescription li').mouseleave(function() {
+                h4Height = $(this).find('a').height() + 12;
+                 $(this).children('h4').stop().animate({
+                    top: carouselHeight - h4Height
+                }, 100);
+                $(this).children('p').stop(true, true).fadeOut(200);
+            });
+         });
     </script>
     {/literal}{php}
 } else {
     echo "<ul>";
     foreach ($rssItems as $item ) {
+			$dateTime = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $item['dc:date']);
+			$date = $dateTime->format('j.n.');
             $title = $item['title'];
             $url   = $item['link'];
-            echo "<li><a href=\"$url\">$title</a></li>\n";
+            echo "<li><span class=\"date\">$date</span><a href=\"$url\">$title</a></li>\n";
     }
-    echo "</ul>";
+    echo "</ul></div>";
+
 }
 
 {/php}

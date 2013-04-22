@@ -79,8 +79,9 @@ function initDateVis() {
         loadVisNow();
         prevWidth = detector.width();
         $(window).resize(function(){
+
             // Refresh on screen resize
-            if(detector.width()!=prevWidth){
+            if(detector.width()!=prevWidth && typeof loadVisNow != 'undefined'){
                 prevWidth = detector.width();
                 
                 loadVisNow();
