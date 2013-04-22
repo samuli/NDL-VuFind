@@ -68,13 +68,13 @@ class RecordManagerNormalizationService implements NormalizationService
      * See {@link https://github.com/KDK-Alli/RecordManager/pull/7 this git pull request}
      * for a description of the contract of such a service.
      *
-     * @param string $xml The XML metadata to parse
+     * @param string $data The record metadata to parse
      *
      * @return array The parsed index fields as an array
      */
-    public function normalize($xml)
+    public function normalize($data)
     {
-        $this->client->addPostData('data', $xml);
+        $this->client->addPostData('data', $data);
         
         $result = $this->client->sendRequest();
         if (!PEAR::isError($result)) {

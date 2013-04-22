@@ -41,9 +41,9 @@ interface NormalizationService
     /**
      * Normalize a given XML string into a set of index fields.
      * 
-     * @param string $xml The XML metadata to parse
+     * @param string $data The record metadata to parse
      * 
      * @return array The parsed index fields as an array
      */
-    public function normalize($xml);
+    public function normalize($data);
 }
