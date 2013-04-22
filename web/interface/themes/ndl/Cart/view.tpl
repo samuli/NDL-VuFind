@@ -2,7 +2,7 @@
 
 <div class="myresearchHeader">
   <div class="content">
-    <div class="grid_24"><h1>{$pageTitle|translate}</h1></div>
+    <div class="grid_24"><h1>{$shortTitle|translate}</h1></div>
   </div>
 </div>
   

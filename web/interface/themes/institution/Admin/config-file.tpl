@@ -3,7 +3,7 @@
 </div>
 
 <div class="span-18 last">
-  <h1>{$pageTitle}</h1>
+  <h1>{$shortTitle}</h1>
   
   {include file="Admin/savestatus.tpl"}
   

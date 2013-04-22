@@ -1,4 +1,4 @@
-{if $pageTitle}
-<em>{$pageTitle|escape}</em>
+{if $shortTitle}
+<em>{$shortTitle|escape}</em>
 <span>&gt;</span>
 {/if}

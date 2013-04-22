@@ -2,7 +2,7 @@
 
 <div class="record view-alt">
     
-  {if $pageTitle}<h1>{$pageTitle}</h1>{/if}
+  {if $shortTitle}<h1>{$shortTitle}</h1>{/if}
   {include file="Record/$subTemplate"}
 </div>
 

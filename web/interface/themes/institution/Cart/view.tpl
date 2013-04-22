@@ -1,5 +1,5 @@
 <div>
-  <h3>{$pageTitle|translate}</h3>
+  <h3>{$shortTitle}</h3>
 
   {include file="Cart/$subTemplate"}
   

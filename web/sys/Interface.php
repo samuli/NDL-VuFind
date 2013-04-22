@@ -321,6 +321,7 @@ class UInterface extends Smarty
             $fullTitle = translate($title);
         }
         $this->assign('pageTitle', $fullTitle);
+        $this->assign('shortTitle', translate($title));
     }
 
     /**
