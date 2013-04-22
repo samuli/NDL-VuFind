@@ -600,4 +600,16 @@ function summon($id)
         '/' . $_GET['size'];
     return processImageURL($url);
 }
+
+/**
+ * Retrieve a National Library of Finland cover.
+ *
+ * @return bool True if image displayed, false otherwise.
+ */
+function nlf()
+{
+    $url = 'http://siilo-kk.lib.helsinki.fi/getImage.php?query=' . $_GET['isn'] . '&return_error=true';
+    return processImageURL($url);
+}
+
 ?>

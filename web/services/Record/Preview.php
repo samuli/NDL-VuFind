@@ -61,6 +61,13 @@ class Preview extends Record
     {
         global $configArray;
 
+        if (isset($_REQUEST['marc'])) {
+            $_REQUEST['data'] = $_REQUEST['marc'];
+            unset($_REQUEST['marc']);
+            $_REQUEST['source'] = '_marc_preview';
+            $_REQUEST['format'] = 'marc';       
+        }
+        
         if (!isset($_REQUEST['data']) || !isset($_REQUEST['format']) || !isset($_REQUEST['source'])) {
             PEAR::raiseError('Missing parameters.');
         }

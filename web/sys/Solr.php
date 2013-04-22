@@ -1155,7 +1155,7 @@ class Solr implements IndexEngine
             }
             unset($facet['prefix']);
             $options['facet.sort']
-                = (isset($facet['sort'])) ? $facet['sort'] : null;
+                = (isset($facet['sort'])) ? $facet['sort'] : 'count';
             unset($facet['sort']);
             if (isset($facet['offset'])) {
                 $options['facet.offset'] = $facet['offset'];
