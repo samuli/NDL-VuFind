@@ -64,6 +64,10 @@ class Preview extends Record
         if (isset($_REQUEST['marc'])) {
             $_REQUEST['data'] = $_REQUEST['marc'];
             unset($_REQUEST['marc']);
+            // For some strange reason recent Voyager versions double-encode the data with encodeURIComponent
+            if (substr($_REQUEST['data'], -3) == '%1D') {
+                $_REQUEST['data'] = urldecode($_REQUEST['data']);
+            }                            
             $_REQUEST['source'] = '_marc_preview';
             $_REQUEST['format'] = 'marc';       
         }
