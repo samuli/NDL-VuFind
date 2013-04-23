@@ -31,6 +31,8 @@ if(($type == "carousel") ||
     $classes = "";
     if($type == "carousel-notext") {
         $classes .= "noText ";
+    } elseif($type == "carousel-small") {
+        $classes .= "small ";
     } elseif($type == "carousel") {
         $classes .= "includeDescription ";
         $includeDescription = true;
@@ -169,6 +171,10 @@ if(($type == "carousel") ||
                         'top'         : - verticalPosition,
                         'display'     : 'none',
                         'visibility'  : 'visible'
+                    });
+                      
+                    $('#NDLCarouselNavi li').css({
+                        'top'         : -(containerHeight / 2)-10
                     });
 
                     $(this).fadeIn(300);

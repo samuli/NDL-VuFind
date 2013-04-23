@@ -120,26 +120,37 @@ ul.documentTypes li {
     cursor: pointer;
     height: 260px;
     position: relative;
-    background:#fff;
     text-align:center;
+}
+#NDLCarousel a,
+#NDLCarousel a:link {
+    color:#eee;
+    font-weight:bold;
 }
 #NDLCarousel li h4,
 #NDLCarousel li p {
     text-align:left;
 }
-#NDLCarousel img {
-    vertical-align:middle;
+#NDLCarousel.small img {
+    max-height: 84%;
+    max-width: 90%;
+    position: absolute;
+    left: 0;
+    bottom: 15%;
 }
 #NDLCarousel.includeDescription img {
-    
+    vertical-align:middle;
 }
 .carousel-direction-up #NDLCarousel img {
 	bottom:0;
 	max-height:120px;
 }
 #NDLCarousel.noText img {
-    max-height: 260px;
     bottom: 0;
+    left: 0;
+    max-height: 100%;
+    max-width: 90%;
+    position: absolute;
 }
 
 #NDLCarousel h4 {
@@ -151,6 +162,13 @@ ul.documentTypes li {
     bottom: 0px;
     overflow: hidden;
     font-weight: normal;
+}
+#NDLCarousel.small h4 {
+    height: 10%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 130%;
 }
 .carousel-direction-up #NDLCarousel h4 { 
 	left: 105px;
@@ -176,8 +194,6 @@ ul.documentTypes li {
 }
 
 #NDLCarousel.includeDescription h4 a {
-    color:#eee;
-    font-weight:bold;
     display:block;
     float:left;
 }
@@ -207,6 +223,7 @@ ul.documentTypes li {
     background-position: center;
     overflow: hidden;
     margin:0 5px 0 5px;
+    background:#fff;
 }
 #NDLCarousel.includeDescription img {
     max-height: 5000px;
