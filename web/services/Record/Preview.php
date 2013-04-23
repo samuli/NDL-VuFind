@@ -61,13 +61,21 @@ class Preview extends Record
     {
         global $configArray;
 
+        // If marc is set, we're receiving a record from Voyager's Send Record to WebVoyage function
         if (isset($_REQUEST['marc'])) {
-            $_REQUEST['data'] = $_REQUEST['marc'];
+            $marc = $_REQUEST['marc'];
             unset($_REQUEST['marc']);
             // For some strange reason recent Voyager versions double-encode the data with encodeURIComponent
-            if (substr($_REQUEST['data'], -3) == '%1D') {
-                $_REQUEST['data'] = urldecode($_REQUEST['data']);
-            }                            
+            if (substr($marc, -3) == '%1D') {
+                $marc = urldecode($marc);
+            }
+            // Voyager doesn't tell the proper encoding, so it's up to the browser to decide. 
+            // Try to handle both UTF-8 and ISO-8859-1.
+            $len = substr($marc, 0, 5);
+            if (strlen($marc) != $len) {
+                $marc = utf8_decode($marc);
+            }
+            $_REQUEST['data'] = $marc;
             $_REQUEST['source'] = '_marc_preview';
             $_REQUEST['format'] = 'marc';       
         }
