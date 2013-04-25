@@ -131,7 +131,7 @@ if(($type == "carousel") ||
             refreshCarousel = function() {
                 if(carouselContainer.width()!=prevWidth){
                     prevWidth = carouselContainer.width();
-                    refreshCarousel();
+                    calculateCarouselDimensions();
                 }
             }
             $(window).resize(refreshCarousel());
@@ -143,7 +143,11 @@ if(($type == "carousel") ||
                 var containerHeight = $('#NDLCarousel.includeDescription li').height();
                 var containerRatio = containerWidth / containerHeight;
 
-                $('#NDLCarousel.includeDescription img').load(function(){
+                $('#NDLCarouselNavi li').css({
+                    'top'         : -(containerHeight / 2) - $('#NDLCarouselNavi #prev').height() / 2
+                });
+
+                $('#NDLCarousel.includeDescription img').each(function(){
 
                     var imgWidth = $(this).width();
                     var imgHeight = $(this).height();
@@ -173,10 +177,6 @@ if(($type == "carousel") ||
                         'visibility'  : 'visible'
                     });
                       
-                    $('#NDLCarouselNavi li').css({
-                        'top'         : -(containerHeight / 2)-10
-                    });
-
                     $(this).fadeIn(300);
                 });
             };
