@@ -6,8 +6,9 @@
 $confArray = $this->get_template_vars('rssFeeds');
 $feed = $confArray[$this->get_template_vars('rssId')];
 $type = $feed['type'];
-$items = $feed['items'];
-$itemsPerPage = $feed['itemsPerPage'];
+$items = isset($feed['items']) ? $feed['items'] : 0;
+$itemsPerPage = isset($feed['itemsPerPage']) ? $feed['itemsPerPage'] : 4;
+$scrolledItems = isset($feed['scrolledItems']) ? $feed['scrolledItems'] : $itemsPerPage;
 $useChannelTitle = $feed['useChannelTitle'];
 $direction = isset($feed['direction']) ? $feed['direction'] : 'left';
 $height = (!isset($feed['height']) || $feed['height'] == 0) ? false : $feed['height'];
@@ -76,6 +77,7 @@ if(($type == "carousel") ||
     echo "</ul>";
 
     $this->assign("itemsPerPage", $itemsPerPage);
+    $this->assign("scrolledItems", $scrolledItems);
     $this->assign("direction", $direction);
     $this->assign("height", $height);
 
@@ -110,7 +112,7 @@ if(($type == "carousel") ||
             $('#NDLCarousel').carouFredSel({
                 responsive: true,
                 direction:{/literal}'{$direction}'{literal},
-                auto: 80000,
+                auto: 8000,
                 width: "100%",
                 items: {/literal}{$itemsPerPage}{literal},
                 height: carouselHeight,
@@ -121,7 +123,7 @@ if(($type == "carousel") ||
                     onMouse: true
                 },
                 scroll: {
-                  items: 1,
+                  items: {/literal}{$scrolledItems}{literal},
                   duration: 300,
                   fx: "directscroll"
                 }
