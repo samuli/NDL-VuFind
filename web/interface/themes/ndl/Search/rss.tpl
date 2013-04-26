@@ -8,13 +8,17 @@ $feed = $confArray[$this->get_template_vars('rssId')];
 $type = $feed['type'];
 $items = $feed['items'];
 $itemsPerPage = $feed['itemsPerPage'];
+$useChannelTitle = $feed['useChannelTitle'];
 $direction = isset($feed['direction']) ? $feed['direction'] : 'left';
 $height = (!isset($feed['height']) || $feed['height'] == 0) ? false : $feed['height'];
+$dateFormat = isset($feed['dateFormat']) ? $feed['dateFormat'] : "j.n.";
 
 require_once "XML/RSS.php";
 $rss =& new XML_RSS($feed['url']);
 $rss->parse();
 
+$channelInfo = $rss->getChannelInfo();
+$this->assign("channelURL", $channelInfo['link']);
 
 if ($items>0) {
     $rssItems = array_slice($rss->getItems(), 0, $items);
@@ -224,15 +228,32 @@ if(($type == "carousel") ||
     </script>
     {/literal}{php}
 } else {
-    echo "<ul>";
+    if($useChannelTitle) {
+        echo "<h2>" . $channelInfo['title'] . "</h2>\n";
+    }
+    echo "<ul class=\"NDLNews\">";
     foreach ($rssItems as $item ) {
-			$dateTime = DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $item['dc:date']);
-			$date = $dateTime->format('j.n.');
+            if($item['dc:date']) {
+                $dateTime = DateTime::createFromFormat(DATE_ISO8601, $item['dc:date']);
+            } elseif($item['pubdate']) {
+                $dateTime = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
+            }
+            $date = FALSE;
+            if($dateTime && $dateFormat) {
+                $date = $dateTime->format($dateFormat);
+            }
             $title = $item['title'];
             $url   = $item['link'];
-            echo "<li><span class=\"date\">$date</span><a href=\"$url\">$title</a></li>\n";
+            echo "<li>";
+            if($date) {
+                echo "<span class=\"date\">$date</span> ";
     }
-    echo "</ul></div>";
+            echo "<a href=\"$url\">$title</a></li>\n";
+    }
+    {/php}
+    <li><a href="{$channelURL}">{translate text="More"}&hellip;</a></li>
+    </ul></div>
+    {php}
 
 }
 

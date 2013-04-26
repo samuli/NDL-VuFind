@@ -356,7 +356,11 @@ ul.documentTypes li {
     z-index:5;
 }
 
-
+.NDLNews .date {
+    color: #666666;
+    font-size: 12px;
+    line-height: 16px;
+}
 
 .home-section.third .loginBoxHome {
     padding:10px 40px;
