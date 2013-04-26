@@ -116,10 +116,13 @@ if(($type == "carousel") ||
                 height: carouselHeight,
                 prev: "#NDLCarouselNavi #prev",
                 next: "#NDLCarouselNavi #next",
+                swipe: {
+                    onTouch: true,
+                    onMouse: true
+                },
                 scroll: {
                   items: 1,
                   duration: 300,
-                  swipe: true,
                   fx: "directscroll"
                 }
             });
@@ -146,7 +149,7 @@ if(($type == "carousel") ||
                 var containerWidth = $('#NDLCarousel.includeDescription li').width();
                 var containerHeight = $('#NDLCarousel.includeDescription li').height();
                 var containerRatio = containerWidth / containerHeight;
-
+                  
                 $('#NDLCarouselNavi li').css({
                     'top'         : -(containerHeight / 2) - $('#NDLCarouselNavi #prev').height() / 2
                 });
@@ -247,7 +250,7 @@ if(($type == "carousel") ||
             echo "<li>";
             if($date) {
                 echo "<span class=\"date\">$date</span> ";
-    }
+            }
             echo "<a href=\"$url\">$title</a></li>\n";
     }
     {/php}
