@@ -185,7 +185,7 @@ ul.documentTypes li {
     background: url("../images/px_69.png") repeat;
     bottom: 0;
     margin: 0;
-    padding: 6px 3%;
+    padding: 6px 4%;
     width: 94%;
     -moz-transition:all .2s;
     -webkit-transition:all .2s;
@@ -204,7 +204,7 @@ ul.documentTypes li {
     position: absolute;
     top:100%;
     margin: 0;
-    padding: 4px 3%;
+    padding: 4px 4%;
     width: 94%;
     height: 100%;
 }
