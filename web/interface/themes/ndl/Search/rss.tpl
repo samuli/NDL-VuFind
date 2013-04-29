@@ -3,8 +3,18 @@
 {* requires XML_RSS (pear install XML_RSS) *}
 
 {php}
+
+
+/*
+ * let's get the list of feeds and pick the right one by the rssId defined in
+ * the template that called us
+ */
 $confArray = $this->get_template_vars('rssFeeds');
 $feed = $confArray[$this->get_template_vars('rssId')];
+
+/*
+ * various configuration settings
+ */
 $type = $feed['type'];
 $items = isset($feed['items']) ? $feed['items'] : 0;
 $itemsPerPage = isset($feed['itemsPerPage']) ? $feed['itemsPerPage'] : 4;
@@ -14,8 +24,26 @@ $direction = isset($feed['direction']) ? $feed['direction'] : 'left';
 $height = (!isset($feed['height']) || $feed['height'] == 0) ? false : $feed['height'];
 $dateFormat = isset($feed['dateFormat']) ? $feed['dateFormat'] : "j.n.";
 
+/*
+ * first we look for a feed for the language we are in; if that fails we look
+ * for url[any]; if that fails we output an error and return
+ */
+$language = $this->get_template_vars('userLang');
+if($language) {
+    $url = isset($feed['url'][$language]) ?
+           $feed['url'][$language] : false;
+}
+if(!$url) {
+    $url = isset($feed['url']['*']) ?
+           $feed['url']['*'] : false;
+}
+if(!$url) {
+    echo "<p>No URL defined in rss.ini.</p>";
+    return;
+}
+
 require_once "XML/RSS.php";
-$rss =& new XML_RSS($feed['url']);
+$rss =& new XML_RSS($url);
 $rss->parse();
 
 $channelInfo = $rss->getChannelInfo();
@@ -80,6 +108,7 @@ if(($type == "carousel") ||
     $this->assign("scrolledItems", $scrolledItems);
     $this->assign("direction", $direction);
     $this->assign("height", $height);
+    $this->assign("scrollSpeed", 1000 * ($scrolledItems / $itemsPerPage));
 
     {/php}
     
@@ -120,11 +149,11 @@ if(($type == "carousel") ||
                 next: "#NDLCarouselNavi #next",
                 swipe: {
                     onTouch: true,
-                    onMouse: true
+                    onMouse: false
                 },
                 scroll: {
                   items: {/literal}{$scrolledItems}{literal},
-                  duration: 300,
+                  duration: {/literal}{$scrollSpeed}{literal},
                   fx: "directscroll"
                 }
             });
