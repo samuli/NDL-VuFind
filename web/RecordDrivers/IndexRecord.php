@@ -2724,6 +2724,112 @@ class IndexRecord implements RecordInterface
     }
 
     /**
+     * Convert WKT polygon to array (support function for getGoogleMapMarker)
+     * 
+     * @param string $polygon WKT polygon
+     * 
+     * @return array Results
+     */
+    protected function polygonToArray($polygon)
+    {
+        $array = array();
+        $polygon = preg_replace('/.*\((.+)\).*/', '\\1', $polygon);
+        foreach (explode(',', $polygon) as $point) {
+            list($lon, $lat) = explode(' ', trim($point), 2);
+            // Workaround for jquery geo issue preventing polygon with longitude -180.0 
+            // from being displayed (https://github.com/AppGeo/geo/issues/128)
+            if ((float)$lon === -180) {
+                $lon = -179.9999999;
+            } 
+            $array[] = array((float)$lon, (float)$lat);
+        }
+        return $array;
+    }
+    
+    /** 
+     * Convert WKT to array (support function for getGoogleMapMarker)
+     * 
+     * @param string $wkt Well Known Text
+     * 
+     * @return array A marker with title and other attributes
+     */
+    protected function wktToMarker($wkt) 
+    {
+        if (strtolower(substr($wkt, 0, 5)) == 'point') {
+            if (preg_match('/\((.+)\s+(.+)\)/', $wkt, $matches)) {
+                return array(
+                    'title' => (string)$this->fields['title'],
+                    'lon' => (float)$matches[1],
+                    'lat' => (float)$matches[2]
+                );
+            }
+            return null;
+        } elseif (strtolower(substr($wkt, 0, 7)) == 'polygon') {
+            if (preg_match('/\((\(.+\))\s*,\s*(\(.+\))\)/', $wkt, $matches)) {
+                return array(
+                    'title' => (string)$this->fields['title'],
+                    'polygon' => array(
+                        $this->polygonToArray($matches[1]),
+                        $this->polygonToArray($matches[2])
+                    )
+                );
+            } else {
+                $wkt = preg_replace('/.*\((.+)\).*/', '\\1', $wkt);
+                return array(
+                    'title' => (string)$this->fields['title'],
+                    'polygon' => array(
+                        $this->polygonToArray($wkt)
+                    )
+                );
+            }
+        } elseif (strtolower(substr($wkt, 0, 12)) == 'multipolygon') {
+            preg_match_all('/(\(\(.+?\)\))/', $wkt, $matches);
+            $polygons = array();
+            foreach ($matches[1] as $polygon) {
+                if (preg_match('/\((\(.+\))\s*,\s*(\(.+\))\)/', $polygon, $parts)) {
+                    $polygons[] = array(
+                        $this->polygonToArray($parts[1]),
+                        $this->polygonToArray($parts[2])
+                    );
+                } else {
+                    $polygon = preg_replace('/.*\((.+)\).*/', '\\1', $polygon);
+                    $polygons[] = array(
+                        $this->polygonToArray($polygon)
+                    );
+                }
+            }
+            return array(
+                'title' => (string)$this->fields['title'],
+                'multipolygon' => $polygons
+            );                 
+        } else {
+            $coordinates = explode(' ', $location);
+            if (count($coordinates) > 2) {
+                $polygon = array();
+                // Assume rectangle
+                $lon = (float)$coordinates[0];
+                $lat = (float)$coordinates[1];
+                $lon2 = (float)$coordinates[2];
+                $lat2 = (float)$coordinates[3];
+                $polygon[] = array($lon, $lat);
+                $polygon[] = array($lon2, $lat);
+                $polygon[] = array($lon2, $lat2);
+                $polygon[] = array($lon, $lat2);
+                $polygon[] = array($lon, $lat);
+                return array(
+                    'title' => (string)$this->fields['title'],
+                    'polygon' => array($polygon)
+                );
+            } 
+            return array(
+                'title' => (string)$this->fields['title'],
+                'lon' => $coordinates[0],
+                'lat' => $coordinates[1]
+            );
+        }
+    }
+    
+    /**
      * getGoogleMapMarker - gets the JSON needed to display the record on a google
      * map.
      *
@@ -2732,35 +2838,12 @@ class IndexRecord implements RecordInterface
      */
     protected function getGoogleMapMarker()
     {
+        $markers = array();
         if (isset($this->fields['location_geo'])) {
-            $markers = array();
             foreach ($this->fields['location_geo'] as $location) {
-                $coordinates = explode(' ', $location);
-                if (count($coordinates) > 2) {
-                    $polygon = array();
-                    // Assume rectangle for now...
-                    $lon = (float)$coordinates[0];
-                    $lat = (float)$coordinates[1];
-                    $lon2 = (float)$coordinates[2];
-                    $lat2 = (float)$coordinates[3];
-                    $polygon[] = array($lon, $lat);
-                    $polygon[] = array($lon2, $lat);
-                    $polygon[] = array($lon2, $lat2);
-                    $polygon[] = array($lon, $lat2);
-                    $polygon[] = array($lon, $lat);
-                    $markers[] = array(
-                        'title' => (string)$this->fields['title'],
-                        'polygon' => $polygon
-                    );
-                } else {
-                    $markers[] = array(
-                        'title' => (string)$this->fields['title'],
-                        'lon' => $coordinates[0],
-                        'lat' => $coordinates[1]
-                    );
-                }
+                $markers[] = $this->wktToMarker($location);
             }
-        } else {
+        } elseif (isset($this->fields['long_lat'])) {
             $longLat = explode(',', is_array($this->fields['long_lat']) ? $this->fields['long_lat'][0] : $this->fields['long_lat']);
             $markers = array(
                 array(
