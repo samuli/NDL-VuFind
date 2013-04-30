@@ -96,7 +96,7 @@ if(($type == "carousel") ||
         $url   = $item['link'];
         echo "<li>";
         echo "<img src=\"$imageUrl\" alt=\"\" />";
-        echo "<h4><a href=\"$url\">$title</a></h4>";
+        echo "<h4><a href=\"$url\">$title&nbsp;&raquo;</a></h4>";
         if($includeDescription) {
             echo "<p>" . $content . "</p>";
         }
@@ -154,7 +154,8 @@ if(($type == "carousel") ||
                 scroll: {
                   items: {/literal}{$scrolledItems}{literal},
                   duration: {/literal}{$scrollSpeed}{literal},
-                  fx: "directscroll"
+                  fx: "directscroll",
+                  pauseOnHover: true
                 }
             });
             
@@ -186,36 +187,37 @@ if(($type == "carousel") ||
                 });
 
                 $('#NDLCarousel.includeDescription img').each(function(){
+                    $(this).imagesLoaded(function() {
+                        var imgWidth = $(this).width();
+                        var imgHeight = $(this).height();
 
-                    var imgWidth = $(this).width();
-                    var imgHeight = $(this).height();
-                        
-                    var imgRatio = imgWidth / imgHeight;
-                    var newWidth = 0;
-                    var newHeight = 0;
-                      
-                    if(containerRatio < imgRatio) {
-                        newWidth = containerHeight * imgRatio;
-                        newHeight = containerHeight;
-                    } else {
-                        newWidth = containerWidth;
-                        newHeight = containerWidth / imgRatio;
-                    }
-                        
-                    var verticalPosition = (newHeight - containerHeight) / 2;
-                    var horizontalPosition = (newWidth - containerWidth) / 2;
-                    
-                    $(this).css({
-                        'height'      : newHeight,
-                        'width'       : newWidth,
-                        'position'    : 'absolute',
-                        'left'        : - horizontalPosition,
-                        'top'         : - verticalPosition,
-                        'display'     : 'none',
-                        'visibility'  : 'visible'
+                        var imgRatio = imgWidth / imgHeight;
+                        var newWidth = 0;
+                        var newHeight = 0;
+
+                        if(containerRatio < imgRatio) {
+                            newWidth = containerHeight * imgRatio;
+                            newHeight = containerHeight;
+                        } else {
+                            newWidth = containerWidth;
+                            newHeight = containerWidth / imgRatio;
+                        }
+
+                        var verticalPosition = (newHeight - containerHeight) / 2;
+                        var horizontalPosition = (newWidth - containerWidth) / 2;
+
+                        $(this).css({
+                            'height'      : newHeight,
+                            'width'       : newWidth,
+                            'position'    : 'absolute',
+                            'left'        : - horizontalPosition,
+                            'top'         : - verticalPosition,
+                            'display'     : 'none',
+                            'visibility'  : 'visible'
+                        });
+
+                        $(this).fadeIn(300);
                     });
-                      
-                    $(this).fadeIn(300);
                 });
             };
                 
@@ -226,11 +228,11 @@ if(($type == "carousel") ||
                 "visibility",
                 "visible"
             );
-            
-            // Make individual pick-ups clickable
+
+                    // Make individual pick-ups clickable
             $('#NDLCarousel li').click(function() {
-                var href = $(this).find('a').attr('href');
-                window.location.href = href;
+                        var href = $(this).find('a').attr('href');
+                        window.location.href = href;
             });
             
             // Set title and text position
