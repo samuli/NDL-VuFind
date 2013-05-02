@@ -61,7 +61,7 @@ dd {margin-left:1.5em;}
 table {margin-bottom:1.4em;width:100%;}
 th {font-weight:bold;}
 thead th {background:#c3d9ff;}
-th, td, caption {padding:4px 10px 4px 5px;}
+th, td, caption {padding:4px 10px 4px 8px;}
 /* Try commenting out the next line if odd and even table rows give you trouble */
 /* tbody tr:nth-child(even) td, tbody tr.even td {background:#e5ecf9;} */
 
@@ -105,7 +105,7 @@ form.inline p {margin-bottom:0;}
 .error a, .alert a {color:#b30f8b;}
 .notice a {color:#514721;}
 .success a {color:#264409;}
-.info a {color:#00646a;}
+.info a, .info a:hover {color:#00646a;}
 
 /* grid.css */
 .container {width:950px;margin:0 auto;}

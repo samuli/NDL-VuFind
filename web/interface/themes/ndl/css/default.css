@@ -1599,14 +1599,14 @@ fieldset.publishDateLimit .ui-slider {
 }
 
 table.profileGroup {
-    margin: 0;
-    border-left: solid 1px #eee;
-    border-right: solid 1px #eee;
+    margin: 1.8em 0 1em 0;
+    border-left: solid 1px #e6e6e6;
+    border-right: solid 1px #e6e6e6;
 }
 
 table.profileGroup td,
 table.profileGroup th {
-    border-bottom: solid 1px #eee;
+    border-bottom: solid 1px #e6e6e6;
 }
 
 .profileInfo select#home_library {
@@ -1614,13 +1614,13 @@ table.profileGroup th {
     padding: 2px;
 }
 .profileInfo .button {
-    margin: 1em 0 2em;
+    margin: 1em 0 0 0;
     float: right;
 }
 .finesList table.fines td, .myResearch .savedHistory td, .myResearch .sessionHistory td, .accountList td {    
-    border-bottom: 1px solid #eee;
-    padding-top: 0.4em;
-    padding-bottom: 0.4em;
+    border-bottom: 1px solid #e6e6e6;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 .finesList table tr td:first-child {
     padding-left: 29px;
@@ -3490,18 +3490,18 @@ table.datagrid {
     width: 100%;/*oringinally set to auto*/
     border-collapse: collapse;
     margin-bottom: 1.5em;
-    border-left: solid 1px #eee;
-    border-right: solid 1px #eee;
+    border-left: solid 1px #e6e6e6;
+    border-right: solid 1px #e6e6e6;
 }
 
 table.profileGroup caption,
 table.datagrid caption {
-    background-color: #808080;
     color: #fff;
+    padding-left: 10px;
 }
 
 table.datagrid th {
-    background-color: #f2f2f2;
+    background-color: #e6e6e6;
     text-align: left;
     /*border-left: 1px solid #FFFFFF;
     border-right: 1px solid #FFFFFF;*/
@@ -3777,7 +3777,7 @@ p.citationText {
     border-bottom: 1px solid #dddddd;
 }
 .myResearch {
-    padding: 1em 0 1.5em;
+    padding: 1em 0 1.5em 1em;
     overflow: auto;
 }
 .myResearch .resultHead {

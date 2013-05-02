@@ -411,7 +411,7 @@ span.dynatree-expander:hover {
 }
 .delete {
     background-image: url(../images/icons16-24px-02.png);
-    background-position: -357px -1384px;
+    background-position: -357px -158px;
 }
 .deleteRecordComment {
     background-image: url(../images/icons16-24px-02.png);
@@ -419,11 +419,11 @@ span.dynatree-expander:hover {
 }
 .savedHistory .delete {
     background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -1384px;
+    background-position: -41px -158px;
 }
 .accountList .delete {
     background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -1384px;
+    background-position: -41px -158px;
 }
 .accountList .edit {
     background-image: url(../images/icons16-24px-02.png);
@@ -590,7 +590,7 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 }
 .myResearch .formatbook {
     background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -47px;
+    background-position: -46px -48px;
 }
 .myResearch .formatimage {
     background-image: url(../images/icons16-24px-01.png);
