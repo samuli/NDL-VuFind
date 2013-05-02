@@ -1931,6 +1931,11 @@ li.result blockquote {
     color: #666666;
 }
 
+.advancedOptions {
+	margin-bottom:5px;
+	color:#008596;
+}
+
 .recommendation {
     padding-bottom:20px;
     margin: 0 auto;
