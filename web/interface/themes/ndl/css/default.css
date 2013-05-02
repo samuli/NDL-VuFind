@@ -2203,6 +2203,7 @@ dl.narrowList a {
 }
 .module-Content .main ul {
     list-style-type: disc;
+    margin-left:1em;
 }
 .record .content {
     /* padding-top:40px;
