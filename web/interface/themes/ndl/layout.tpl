@@ -122,9 +122,10 @@
     {* Load SlidesJS *}
     {js filename="slides.min.jquery.js"}
     
-    {* Load carouFredSel and touchSwipe *}
+    {* Load carouFredSel, touchSwipe and imagesloaded *}
     {js filename="jquery.carouFredSel-6.2.0-packed.js"}
     {js filename="jquery.touchSwipe.min.js"}
+    {js filename="jquery.imagesloaded.min.js"}
     
     {* Load ndl theme functions *}
     {js filename="ndl.js"}
