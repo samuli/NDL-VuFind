@@ -20,7 +20,7 @@
   
     <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">
     <div class="profileInfo grid_12 static">
-      <h3>{translate text='Your Profile'}</h3>
+      <span class="hefty">{translate text='Your Profile'}</span>
       <table class="profileGroup">
       <caption>{translate text='Local Settings'}</caption>
       <tr>
