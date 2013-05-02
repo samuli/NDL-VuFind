@@ -2145,7 +2145,19 @@ dl.narrowList a {
     display:block;
 }
 
-.sidegroup dd[id*="more"] {
+.sidegroup .morelink,
+.sidegroup .lesslink {
+    padding-bottom: 0;
+    margin-bottom: 3px;
+}
+
+.sidegroup [id*="narrowGroup"] {
+    padding-top: 0;
+    margin-top: -10px;
+}
+
+.sidegroup dd[id*="more"],
+.sidegroup .morelink {
     background: url("../images/facets_more.png") no-repeat 100% 50% transparent;
     margin-right: 14px;
 }
@@ -2157,6 +2169,16 @@ dl.narrowList a {
 .sidegroup a[onclick*="less"] {
     color:#444;
     margin-top:10px;
+}
+
+.sidegroup .morelink,
+.sidegroup .lesslink,
+.sidegroup .morelink a,
+.sidegroup .lesslink a {
+    color: #444;
+    display: block;
+    margin-right: 3px;
+    margin-top: 0;
 }
 
 .sidegroup dd a:hover,
