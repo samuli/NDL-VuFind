@@ -19,7 +19,7 @@
       {/if}
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
-        {if $searchType == 'PCI'}{$lookfor|escape:"html"}
+        {if $searchType == 'PCI'}{translate text="Search"}: {$lookfor|escape:"html"}
         {elseif $searchType == 'PCIAdvanced'}{translate text="Your search terms"} : "{$lookfor|escape:"html"}
         {elseif ($searchType == 'PCIAdvanced') || ($searchType != 'PCIAdvanced' && $orFilters)}
           {foreach from=$orFilters item=values key=filter}
