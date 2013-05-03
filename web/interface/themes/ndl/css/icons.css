@@ -499,7 +499,7 @@ label.invalid {
 .editItem .delete,
 #sidebarFavoritesLists .delete {
     background-image: url(../images/icons16-24px-02.png);
-    background-position: -47px -1390px;
+    background-position: -47px -166px
 }
 #sidebarFavoritesLists #listAdd {
     background-image: url(../images/icons16-24px-02.png);
