@@ -9,7 +9,7 @@
 	      <h3 class="searchTerms grid_12">
 	      {if $lookfor == ''}{translate text="history_empty_search"}
 	      {else}
-	        {if $searchType == 'basic'}{$lookfor|escape:"html"}
+	        {if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}
 	        {elseif $searchType == 'advanced'}{translate text="Your search terms"} : "{$lookfor|escape:"html"}
 	        {elseif ($searchType == 'advanced') || ($searchType != 'advanced' && $orFilters)}
 	          {foreach from=$orFilters item=values key=filter}
