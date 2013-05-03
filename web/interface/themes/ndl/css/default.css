@@ -1260,6 +1260,7 @@ div.bulkActionButtons {
 
 div.bulkActionButtons input, div.bulkActionButtons label, div.bulkActionButtons span {
      margin-right: 10px;
+     margin-top: 7px;
 }
 
 div.bulkActionButtons a {
@@ -1278,7 +1279,7 @@ div.bulkActionButtons input.button {
 }
 */
 div.bulkActionButtons input.button {
-    padding: 3px 2px 2px 2px;
+    padding: 7px;
     margin: 2px;
 }
 div.bulkActionButtons input.button {
@@ -1300,7 +1301,7 @@ div.bulkActionButtons select {
 
 #renewals .buttonFinna {
     padding:7px;
-    font-size:1em;
+    font-size:0.9em;
 }
 
 /** Cart **/
