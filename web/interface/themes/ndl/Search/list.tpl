@@ -19,8 +19,8 @@
       {/if}
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
-        {if $searchType == 'basic'}{$lookfor|escape:"html"}
-        {elseif $searchType == 'advanced'}{translate text="Your search terms"} : "{$lookfor|escape:"html"}
+        {if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}
+        {elseif $searchType == 'advanced'}{translate text="Your search terms"}: "{$lookfor|escape:"html"}
         {elseif ($searchType == 'advanced') || ($searchType != 'advanced' && $orFilters)}
           {foreach from=$orFilters item=values key=filter}
           AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}

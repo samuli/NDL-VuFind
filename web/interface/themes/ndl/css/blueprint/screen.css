@@ -102,9 +102,9 @@ form.inline p {margin-bottom:0;}
 .notice {background:#fff6bf;color:#514721;border-color:#ffe26e;}
 .success {background:#cdf5eb;color:#005a60;border-color:#a0e4d3;}
 .info {background:#d1f2f6;color:#00646a;border-color:#90dfe4;}
-.error a, .alert a {color:#b30f8b;}
-.notice a {color:#514721;}
-.success a {color:#264409;}
+.error a, .alert a, .error a:hover, .alert a:hover {color:#b30f8b;}
+.notice a, .notice a:hover {color:#514721;}
+.success a, .success a:hover {color:#264409;}
 .info a, .info a:hover {color:#00646a;}
 
 /* grid.css */
