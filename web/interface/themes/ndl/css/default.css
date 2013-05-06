@@ -2979,7 +2979,6 @@ div[id*="record"].record.recordId {
     margin-top:0;
 }
 .module-MyResearch .record form {
-    padding:20px 0;
 }
 .module-MyResearch .record form input.button {
     margin: 10px 0;
@@ -3564,12 +3563,6 @@ input.button {
 #listForm fieldset {
     width: 400px
 }
-form[name="editAccountForm"] {
-    padding:20px 0;
-}
-form[name="editAccountForm"] input[type="submit"] {
-    margin:10px 0;
-}
 /** Citation **/
 
 p.citationText {
@@ -3850,6 +3843,19 @@ p.citationText {
 }
 .myResearch .noContentMessage {
     margin-top: 1em;
+}
+.module-MyResearch .backLink {
+    padding: 1.5em 0;
+}
+.module-MyResearch form input[type=text],
+.module-MyResearch form textarea,
+.module-MyResearch form fieldset {
+    width: 100%;
+    max-width: 500px;
+}
+.module-Cart form input[type="submit"],
+.module-MyResearch form input[type="submit"] {
+    margin: 15px 0;
 }
 
 /* Browse Lists */

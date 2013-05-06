@@ -8,6 +8,8 @@
   </div>
 
   <div class="content">
+
+  <p class="backLink"><a href="{$path}/MyResearch/Favorites">&laquo;{translate text="Back to Your Account"}</a></p>
   <form method="post" name="editForm" action="">
   {if empty($savedData)}
     <p>
