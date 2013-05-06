@@ -73,8 +73,33 @@
             Suomen Metsämuseo Luston kokoelmiin kuuluva yhdenmiehen vaihteistovetoinen moottorisaha kaksitahtisella 
             bensiinikäyttöisellä polttomoottorilla ja käännettävällä teräosalla. Metsurin työväline, jota on käytetty 
             Puumalassa vuosina 1959 &ndash; 1963. <span class="caption">Kuva Timo Kilpeläinen/Lusto</span>
-
             <a href="{$url}/Record/lusto.M011-124885">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="korvaus.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Valtiokonttorin korvausasiaintoimiston arkisto</span></div>
+          <div class="pickup-text">
+            Valtiokonttorin korvausasiaintoimiston tehtävänä oli suorittaa korvauksia
+            talvi- ja jatkosodan seurauksena luovutetuille alueille jääneestä irtaimesta ja
+            kiinteästä omaisuudesta. Alkuperäisiä korvaushakemuksia liitteineen säilytetään
+            Kansallisarkistossa.
+            <a href="{$url}{"/Search/Results?lookfor=Valtiokonttorin+korvausasiaintoimiston+arkisto&prefilter=-"|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="uudistusarkisto.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Maanmittaushallituksen uudistusarkisto</span></div>
+          <div class="pickup-text">
+            Maanmittaushallituksen uudistusarkisto on suurin Kansallisarkistossa
+            säilytettävä karttakokoelma. Se sisältää maanmittaustoimituksissa syntyneitä
+            puhtaaksipiirrettyjä karttoja 1600-luvulta 1900-luvulle. Aineistoa on koko
+            Suomesta sekä luovutetulta alueelta.
+            <a href="{$url}{"/Search/Results?lookfor=Maanmittaushallituksen+uudistusarkisto&prefilter=-"|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
