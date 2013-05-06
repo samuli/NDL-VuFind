@@ -4,6 +4,9 @@ body {
 a, .ui-widget-content a {
     color: #00a3b5;
 }
+.advancedOptions a, .correctionTerms a {
+	color:#008596;
+}
 #header .header-inner {
     background: url("../images/header_top_gradient.png") repeat-x scroll top left transparent;
 }

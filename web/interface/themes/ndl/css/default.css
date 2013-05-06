@@ -1233,6 +1233,7 @@ div.bulkActionButtons {
 
 div.bulkActionButtons input, div.bulkActionButtons label, div.bulkActionButtons span {
      margin-right: 10px;
+     margin-top: 7px;
 }
 
 div.bulkActionButtons a {
@@ -1251,7 +1252,7 @@ div.bulkActionButtons input.button {
 }
 */
 div.bulkActionButtons input.button {
-    padding: 3px 2px 2px 2px;
+    padding: 7px;
     margin: 2px;
 }
 div.bulkActionButtons input.button {
@@ -1273,7 +1274,7 @@ div.bulkActionButtons select {
 
 #renewals .buttonFinna {
     padding:7px;
-    font-size:1em;
+    font-size:0.9em;
 }
 
 /** Cart **/
@@ -1572,14 +1573,14 @@ fieldset.publishDateLimit .ui-slider {
 }
 
 table.profileGroup {
-    margin: 0;
-    border-left: solid 1px #eee;
-    border-right: solid 1px #eee;
+    margin: 1.8em 0 1em 0;
+    border-left: solid 1px #e6e6e6;
+    border-right: solid 1px #e6e6e6;
 }
 
 table.profileGroup td,
 table.profileGroup th {
-    border-bottom: solid 1px #eee;
+    border-bottom: solid 1px #e6e6e6;
 }
 
 .profileInfo select#home_library {
@@ -1587,13 +1588,13 @@ table.profileGroup th {
     padding: 2px;
 }
 .profileInfo .button {
-    margin: 1em 0 2em;
+    margin: 1em 0 0 0;
     float: right;
 }
 .finesList table.fines td, .myResearch .savedHistory td, .myResearch .sessionHistory td, .accountList td {    
-    border-bottom: 1px solid #eee;
-    padding-top: 0.4em;
-    padding-bottom: 0.4em;
+    border-bottom: 1px solid #e6e6e6;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
 }
 .finesList table tr td:first-child {
     padding-left: 29px;
@@ -1904,6 +1905,11 @@ li.result blockquote {
     color: #666666;
 }
 
+.advancedOptions {
+	margin-bottom:5px;
+	color:#008596;
+}
+
 .recommendation {
     padding-bottom:20px;
     margin: 0 auto;
@@ -2113,7 +2119,19 @@ dl.narrowList a {
     display:block;
 }
 
-.sidegroup dd[id*="more"] {
+.sidegroup .morelink,
+.sidegroup .lesslink {
+    padding-bottom: 0;
+    margin-bottom: 3px;
+}
+
+.sidegroup [id*="narrowGroup"] {
+    padding-top: 0;
+    margin-top: -10px;
+}
+
+.sidegroup dd[id*="more"],
+.sidegroup .morelink {
     background: url("../images/facets_more.png") no-repeat 100% 50% transparent;
     margin-right: 14px;
 }
@@ -2125,6 +2143,16 @@ dl.narrowList a {
 .sidegroup a[onclick*="less"] {
     color:#444;
     margin-top:10px;
+}
+
+.sidegroup .morelink,
+.sidegroup .lesslink,
+.sidegroup .morelink a,
+.sidegroup .lesslink a {
+    color: #444;
+    display: block;
+    margin-right: 3px;
+    margin-top: 0;
 }
 
 .sidegroup dd a:hover,
@@ -2176,6 +2204,7 @@ dl.narrowList a {
 }
 .module-Content .main ul {
     list-style-type: disc;
+    margin-left:1em;
 }
 .record .content {
     /* padding-top:40px;
@@ -3457,18 +3486,18 @@ table.datagrid {
     width: 100%;/*oringinally set to auto*/
     border-collapse: collapse;
     margin-bottom: 1.5em;
-    border-left: solid 1px #eee;
-    border-right: solid 1px #eee;
+    border-left: solid 1px #e6e6e6;
+    border-right: solid 1px #e6e6e6;
 }
 
 table.profileGroup caption,
 table.datagrid caption {
-    background-color: #808080;
     color: #fff;
+    padding-left: 10px;
 }
 
 table.datagrid th {
-    background-color: #f2f2f2;
+    background-color: #e6e6e6;
     text-align: left;
     /*border-left: 1px solid #FFFFFF;
     border-right: 1px solid #FFFFFF;*/
@@ -3744,7 +3773,7 @@ p.citationText {
     border-bottom: 1px solid #dddddd;
 }
 .myResearch {
-    padding: 1em 0 1.5em;
+    padding: 1em 0 1.5em 1em;
     overflow: auto;
 }
 .myResearch .resultHead {

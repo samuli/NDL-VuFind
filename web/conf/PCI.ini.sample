@@ -39,6 +39,7 @@ scdate = sort_year
 screator = sort_author
 
 [Facets]
+tlevel          = Availability
 topic           = Topic
 pfilter         = TypeOfPublication
 creator         = Author
@@ -54,7 +55,8 @@ domain          = Domain
 ; language files found in the web/lang directory.  By default, no facets are 
 ; translated -- uncomment or add lines below to turn on this feature.
 translated_facets[] = lang
-
+translated_facets[] = tlevel
+translated_facets[] = pfilter
 ; Prefix to be used in facet translation to avoid mixing facet strings with other
 ; translated content
 facet_translation_prefix = "facet_"
