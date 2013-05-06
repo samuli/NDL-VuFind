@@ -4,32 +4,25 @@
 
 {if $searchType != 'advanced'}
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="search">
-    <div class="searchFormWrapper grid_16">
-      <div class="overLabelWrapper">
-        <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
-        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" title='{translate text="Find"}&hellip;' />
-      </div>
-        {if $prefilterList}
-      <div class="styled_select">
-        <select id="searchForm_filter" class="searchForm_styled" name="prefilter">
-    {foreach from=$prefilterList item=searchDesc key=searchVal}    
-          <option value="{$searchVal|escape}"{if $searchVal == $activePrefilter || ($activePrefilter == null && $searchVal == "-") } selected="selected"{/if}>{$searchDesc|translate}</option>
-    {/foreach}
-        </select>
-      </div>
-
-  {/if}
-      <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
-      <div class="clear"></div>
-    </div>
-    <div class="advanced-link-wrapper grid_7 push_1 {if $pciEnabled}PCIEnabled{/if} {if $metalibEnabled}MetaLibEnabled{/if}">
-      <a href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
-    {if $metalibEnabled}
-        <a href="{$path}/MetaLib/Home" class="small last metalibLink">{translate text="MetaLib Search"}</a>
-    {/if}
-    {if $pciEnabled}
-        <a href="{$path}/PCI/Home" class="small last PCILink">{translate text="PCI Search"}</a>
-    {/if}
+    <div class="searchFormOuterWrapper">
+      <div class="searchFormWrapper">
+	      <div class="overLabelWrapper">
+	        <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
+	        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" title='{translate text="Find"}&hellip;' />
+	      </div>
+	        {if $prefilterList}
+	      <div class="styled_select">
+	        <select id="searchForm_filter" class="searchForm_styled" name="prefilter">
+	    {foreach from=$prefilterList item=searchDesc key=searchVal}    
+	          <option value="{$searchVal|escape}"{if $searchVal == $activePrefilter || ($activePrefilter == null && $searchVal == "-") } selected="selected"{/if}>{$searchDesc|translate}</option>
+	    {/foreach}
+	        </select>
+	      </div>
+	
+	  {/if}
+	      <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
+	      <div class="clear"></div>
+	    </div>
     </div>
     <div class="searchContextHelp">
     {if isset($userLang)}
@@ -77,6 +70,22 @@
 
     </div>
   {/if}
+
+    <div class="searchFormOuterWrapper">
+      <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+        <a href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
+      {if $pciEnabled}
+        {if $dualResultsEnabled}
+          <a href="{$path}/PCI/Advanced" class="small advancedLink PCILink">{translate text="Advanced PCI Search"}</a>
+        {else}
+          <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
+        {/if}
+      {/if}
+      {if $metalibEnabled}
+          <a href="{$path}/MetaLib/Home" class="small metalibLink">{translate text="MetaLib Search"}</a>
+      {/if}
+      </div>
+    </div>
 
   {* Load hidden limit preference from Session *}
   {if $lastLimit}<input type="hidden" name="limit" value="{$lastLimit|escape}" />{/if}

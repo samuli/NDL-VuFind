@@ -1,15 +1,21 @@
-<!-- START of: Search/breadcrumbs.tpl -->
+<!-- START of: PCI/breadcrumbs.tpl -->
 
+{if $dualResultsEnabled}
+  {assign var='searchName' value='Search'}
+{else}
+  {assign var='searchName' value='PCI Search'}
+{/if} 
 {if $searchId}
-<em>{translate text="Search"}{if $lookfor}: {$lookfor|escape:"html"}{/if}</em>
-{elseif $pageTemplate=="newitem.tpl" || $pageTemplate=="newitem-list.tpl"}
-<em>{translate text="New Items"}</em>
-{elseif $pageTemplate=="tagcloud-home.tpl"}
-<em>{translate text="Browse by Tag"}</em>
-{elseif $pageTemplate=="view-alt.tpl"}
-<em>{translate text=$subTemplate|replace:'.tpl':''|capitalize|translate}</em>
+<em>
+  {translate text=$searchName}{if $lookfor}: {$lookfor|escape:"html"}{/if}</em>
+{elseif $record}
+  {if $lastsearch}
+  <a href="{$lastsearch|escape}#record{$id|escape:"url"}">{translate text=$searchName}{if $lastsearchdisplayquery}: {$lastsearchdisplayquery|truncate:20:'...':FALSE|escape:"html"}{/if}</a>
+  <span>&gt;</span>
+  {/if}
+<em>{$record.title|truncate:30:"..."|escape}</em>
 {elseif $pageTemplate!=""}
 <em>{translate text=$pageTemplate|replace:'.tpl':''|capitalize|translate}</em>
 {/if}
 
-<!-- END of: Search/breadcrumbs.tpl -->
+<!-- END of: PCI/breadcrumbs.tpl -->

@@ -151,7 +151,6 @@ class DualResults extends Action
         // initialize the search result scroller for this search
         $scroller = new ResultScroller();
         $scroller->init($searchObject, $result);
-        
 
         // Done, display the page
         $interface->setTemplate('list-dual.tpl');

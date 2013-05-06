@@ -70,7 +70,7 @@
 <div id="searchFormHeader">
   <div class="searchbox">
   {if $pageTemplate != 'advanced.tpl'}
-    {if $module=="Summon" || $module=="EBSCO" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib"}
+    {if $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib"}
       {include file="`$module`/searchbox.tpl"}
     {else}
       {include file="Search/searchbox.tpl"}
@@ -96,7 +96,7 @@
     </div>
     <div class="searchHomeForm">
       <div class="searchbox">
-    {if $module=="Summon" || $module=="EBSCO" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib"}
+    {if $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib"}
       {include file="`$module`/searchbox.tpl"}
     {else}
       {include file="Search/searchbox.tpl"}

@@ -64,7 +64,6 @@ class Record extends Base
         $pci = new SearchObject_PCI();
         $record = $pci->getRecord($_REQUEST['id']);
           
-
         // Set Proxy URL
         $interface->assign(
             'proxy', isset($configArray['EZproxy']['host'])
@@ -77,6 +76,10 @@ class Record extends Base
         // Send record data to template
         $interface->assign('record', $record);        
 
+        $interface->setPageTitle(
+            translate('Description') . 
+            (isset($record['title']) ? ': ' . $record['title'] : '')
+        );
     }
 
     /**
@@ -94,6 +97,10 @@ class Record extends Base
             'lastsearch',
             isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false
         );     
+        $interface->assign(
+            'lastsearchdisplayquery',
+            isset($_SESSION['lastSearchDisplayQuery']) ? $_SESSION['lastSearchDisplayQuery'] : false
+        );
         
         // Display Page
         $interface->setTemplate('record.tpl');

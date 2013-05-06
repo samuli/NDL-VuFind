@@ -12,6 +12,22 @@
         <span>Tarkemmat hakuehdot ja karttahaku</span>
       </a>
     </li>
+    {if $dualResultsEnabled}
+    <li>
+      <a href="{$path}/PCI/Advanced">
+        <span>{translate text="Advanced PCI Search"}</span>
+        <span>{translate text="pci_advanced_search_description"}</span>
+      </a>
+    </li>
+    {/if}
+    {if $metalibEnabled}
+    <li>
+      <a href="{$path}/MetaLib/Home">
+        <span>{translate text="MetaLib Search"}</span>
+        <span>{translate text="metalib_search_description"}</span>
+      </a>
+    </li>
+    {/if}
     <li>
       <a href="{$path}/Browse/Home">
         <span>Selaa luetteloa</span>

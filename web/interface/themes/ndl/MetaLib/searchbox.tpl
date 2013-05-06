@@ -1,30 +1,25 @@
 <!-- START of: MetaLib/searchbox.tpl -->
 
-<div id="searchFormContainer" class="searchform last content"> 
+<div id="searchFormContainer" class="searchform searchformMetaLib last content"> 
     
 {if $searchType != 'MetaLibAdvanced'}
   <form method="get" action="{$path}/MetaLib/Search" name="searchForm" id="searchForm" class="search">
-    <div class="searchFormWrapper grid_16">
-      <div class="overLabelWrapper">
-        <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
-        <input id="searchForm_input" type="text" name="lookfor"  value="{$lookfor|escape}" autocomplete="off" class="last clearable mainFocus" title='{translate text="Find"}&hellip;' />
-      </div>
-      <div class="styled_select">
-        <select id="searchForm_set" name="set" class="searchForm_styled">
-          {foreach from=$metalibSearchSets item=searchDesc key=searchVal name=loop}
-            <option value="{$searchVal}"{if $searchSet == $searchVal || (!$searchSet && $smarty.foreach.loop.first)} selected="selected"{/if}>{translate text=$searchDesc}</option>
-          {/foreach}
-        </select>
-      </div>
-    <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
-  </div>
-  <div class="advanced-link-wrapper grid_7 push_1 {if $PCIEnabled}PCIEnabled{/if} {if $metalibEnabled}MetaLibEnabled{/if}">
-    <a href="{$path}/MetaLib/Advanced?set={$searchSet|escape}" class="small advancedLink">{translate text="Advanced Search"}</a>
-    {if $PCIEnabled}
-        <a href="{$path}/PCI/Home" class="small last PCILink">{translate text="PCI Search"}</a>
-    {/if}
-    <a href="{$path}" class="small last metalibLink">{translate text="Local search"}</a>
-  </div>
+    <div class="searchFormOuterWrapper">
+	    <div class="searchFormWrapper">
+	      <div class="overLabelWrapper">
+	        <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
+	        <input id="searchForm_input" type="text" name="lookfor"  value="{$lookfor|escape}" autocomplete="off" class="last clearable mainFocus" title='{translate text="Find"}&hellip;' />
+	      </div>
+	      <div class="styled_select">
+	        <select id="searchForm_set" name="set" class="searchForm_styled">
+	          {foreach from=$metalibSearchSets item=searchDesc key=searchVal name=loop}
+	            <option value="{$searchVal}"{if $searchSet == $searchVal || (!$searchSet && $smarty.foreach.loop.first)} selected="selected"{/if}>{translate text=$searchDesc}</option>
+	          {/foreach}
+	        </select>
+	      </div>
+	       <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
+	     </div>
+	   </div>
     
       {* Do we have any checkbox filters? *}
       {assign var="hasCheckboxFilters" value="0"}
@@ -52,6 +47,16 @@
           </div>
         </div>
       {/if}
+      
+	    <div class="searchFormOuterWrapper">
+	      <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+	      {if $pciEnabled && !$dualResultsEnabled}
+	          <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
+	      {/if}
+        <a href="{$path}" class="small metalibLink">{translate text="Local Search"}</a>
+	      </div>
+	    </div>
+      
       {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
     </form>
 {/if}

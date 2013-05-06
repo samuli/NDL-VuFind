@@ -212,14 +212,12 @@ function initAutocomplete() {
 }
 
 function initClearable(){
-    $('.clearable').clearSearch({ callback: function() { console.log("cleared"); } } );
+    $('.clearable').clearSearch();
     // update value
     valueContent = $(".clearable").attr("value");
     if (valueContent == null) {
       $(".clearable").val("").change();
     };
-    // change width
-    //$(".clearable").width("200px").change();
 }
 
 function setMainFocus(){

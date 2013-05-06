@@ -5,6 +5,7 @@
  * PHP version 5
  * 
  * Copyright (C) Villanova University 2010.
+ * Copyright (C) The National Library of Finland 2013.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -64,7 +65,7 @@ class SearchObject_PCI extends SearchObject_Base
         $this->translatedFacets = isset($config['Facet_Settings']['translated_facets']) ? $config['Facet_Settings']['translated_facets'] : null;
         $this->facetTranslationPrefix = isset($config['Facet_Settings']['facet_translation_prefix']) ? $config['Facet_Settings']['facet_translation_prefix'] : null;
         
-        // Set up basic and advanced EBSCO search types; default to basic.
+        // Set up basic and advanced PCI search types; default to basic.
         $this->searchType = $this->basicSearchType = 'PCI';
         $this->advancedSearchType = 'PCIAdvanced';
         

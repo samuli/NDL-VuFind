@@ -9,7 +9,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$userLang}" lang="{$userLang}">
 
 {* We should hide the top search bar and breadcrumbs in some contexts - TODO, remove xmlrecord.tpl when the actual record.tpl has been taken into use: *}
-{if ($module=="Search" || $module=="Summon" || $module=="EBSCO" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
+{if ($module=="Search" || $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
     {assign var="showTopSearchBox" value=0}
     {assign var="showBreadcrumbs" value=0}
 {else}
@@ -204,20 +204,17 @@ $(document).ready(function() {
       {/if *}
       
       <div class="main{if !$showTopSearchBox}-home{/if} clear">
-        {if $useSolr || $useWorldcat || $useSummon || $useEBSCO || $usePCI || $useMetaLib}
+        {if $useSolr || $useWorldcat || $useSummon || $usePCI || $useMetaLib}
         <div id="toptab">
           <ul>
             {if $useSolr}
-            <li{if $module != "WorldCat" && $module != "Summon" && $module != "EBSCO" && $module != "PCI" && $module != "MetaLib"} class="active"{/if}><a href="{$url}/Search/Results?lookfor={$lookfor|escape:"url"}">{translate text="University Library"}</a></li>
+            <li{if $module != "WorldCat" && $module != "Summon" && $module != "PCI" && $module != "MetaLib"} class="active"{/if}><a href="{$url}/Search/Results?lookfor={$lookfor|escape:"url"}">{translate text="University Library"}</a></li>
             {/if}
             {if $useWorldcat}
             <li{if $module == "WorldCat"} class="active"{/if}><a href="{$url}/WorldCat/Search?lookfor={$lookfor|escape:"url"}">{translate text="Other Libraries"}</a></li>
             {/if}
             {if $useSummon}
             <li{if $module == "Summon"} class="active"{/if}><a href="{$url}/Summon/Search?lookfor={$lookfor|escape:"url"}">{translate text="Journal Articles"}</a></li>
-            {/if}
-            {if $useEBSCO}
-            <li{if $module == "EBSCO"} class="active"{/if}><a href="{$url}/EBSCO/Search?lookfor={$lookfor|escape:"url"}">{translate text="Journal Articles"}</a></li>
             {/if}
             {if $usePCI}
             <li{if $module == "PCI"} class="active"{/if}><a href="{$url}/PCI/Search?lookfor={$lookfor|escape:"url"}">{translate text="Journal Articles"}</a></li>

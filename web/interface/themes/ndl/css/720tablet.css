@@ -74,31 +74,23 @@
         margin-top:13px;
     }
     
-    .advanced-link-wrapper.PCIEnabled.MetaLibEnabled {
-        clear: both;
-        margin-top: 0 !important;
-        width: 450px;
-    }
-    .keepFilters {
-        position:relative;
-        top:11px;
-        left:5px;
-        clear:none;
-    }
-    
     
     /* Header: Search Box */
     
-    #searchForm_input {
-        width:195px;
-    }
-    a.clear_input { 
-        left:205px !important;
-    }
-    .headerPCI a.clear_input {
-        left:353px !important;
+    .searchFormOuterWrapper {
+        width: 470px;
     }
     
+    #searchForm_input {
+        width: 195px;
+    }
+		.searchformPCI #searchForm_input {
+		    width: 350px;
+		}
+    .searchformMetaLib #searchForm_input {
+        width: 95px;
+    }
+
     /* Front page */
     #introduction.section #siteDescription, #topSearches {
         border-right: medium none;

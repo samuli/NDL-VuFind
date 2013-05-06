@@ -159,7 +159,7 @@ if ($module == 'Content') {
 }
 
 // Process prefilter redirection
-if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'EBSCO', 'PCI')) 
+if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI')) 
     && isset($_REQUEST['prefilter'])
 ) {
     $prefilters = getExtraConfigArray('prefilters');

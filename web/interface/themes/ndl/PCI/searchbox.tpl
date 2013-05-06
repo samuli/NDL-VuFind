@@ -1,31 +1,43 @@
 <!-- START of: PCI/searchbox.tpl -->
 
-<div id="searchFormContainer" class="searchform last content">
+{if $dualResultsEnabled}
+  {include file='Search/searchbox.tpl'}
+{else}
 
-{if $searchType == 'PCIAdvanced BUTNOTINUSE'}
-  <a href="{$path}/PCI/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced PCI"}</a> |
-  <a href="{$path}/PCI/Advanced" class="small">{translate text="Start a new Advanced PCI"}</a> |
-  <a href="{$path}/" class="small">{translate text="Start a new Basic PCI"}</a>
+<div id="searchFormContainer" class="searchform searchformPCI last content">
+
+{if $searchType == 'PCIAdvanced'}
+  <a href="{$path}/PCI/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced PCI Search"}</a> |
+  <a href="{$path}/PCI/Advanced" class="small">{translate text="Start a new Advanced PCI Search"}</a> |
+  {if $dualResultsEnabled}
+  <a href="{$path}/" class="small">{translate text="Start a new Basic Search"}</a>
+  {else}
+  <a href="{$path}/PCI/Home" class="small">{translate text="Start a new Basic PCI Search"}</a>
+  {/if}
   <br/>{translate text="Your search terms"} : "<span class="strong">{$lookfor|escape:"html"}
   {foreach from=$orFilters item=values key=filter}
     AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}"</span>
 
 {else}
   <form method="get" action="{$path}/PCI/Search" name="searchForm" id="searchForm" class="search">
-    <div class="searchFormWrapper grid_16">
-      <div class="overLabelWrapper">
-        <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
-        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" autocomplete="off" class="last clearable mainFocus" title='{translate text="Find"}&hellip;' />
-      </div>
-      <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
-      <div class="clear"></div>
-    </div>
-    <div class="advanced-link-wrapper grid_7 push_1 {if $pciEnabled}PCIEnabled{/if} {if $metalibEnabled}MetaLibEnabled{/if}">
-      <a href="{$path}/PCI/Advanced" class="small advancedLink">{translate text="Advanced PCI Search"}</a>
-  {if $metalibEnabled}
-      <a href="{$path}/MetaLib/Home" class="small last metalibLink">{translate text="MetaLib Search"}</a>
-  {/if}
-      <a href="{$path}" class="small last metalibLink">{translate text="Local search"}</a>
+    <div class="searchFormOuterWrapper">
+	    <div class="searchFormWrapper">
+	      <div class="overLabelWrapper">
+	        <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
+	        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" autocomplete="off" class="last clearable mainFocus" title='{translate text="Find"}&hellip;' />
+	      </div>
+	      <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
+	      <div class="clear"></div>
+	    </div>
+	  </div>
+    <div class="searchFormOuterWrapper">
+	    <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+	      <a href="{$path}/PCI/Advanced" class="small advancedLink">{translate text="Advanced PCI Search"}</a>
+	  {if $metalibEnabled}
+	      <a href="{$path}/MetaLib/Home" class="small metalibLink">{translate text="MetaLib Search"}</a>
+	  {/if}
+	      <a href="{$path}" class="small metalibLink">{translate text="Local Search"}</a>
+	    </div>
     </div>
     <div class="searchContextHelp">
     {if isset($userLang)}
@@ -82,5 +94,7 @@
 {/if}
 
 </div>
+
+{/if} {* $dualResultsEnabled *}
 
 <!-- END of: PCI/searchbox.tpl -->

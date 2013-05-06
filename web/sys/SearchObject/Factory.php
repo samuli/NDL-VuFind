@@ -94,10 +94,6 @@ class SearchObjectFactory
         case 'AuthorityAdvanced':
             $type = 'SolrAuth';
             break;
-        case 'EBSCO':
-        case 'EBSCOAdvanced':
-        	$type = 'EBSCO';
-        	break;
         case 'PCI':
         case 'PCIAdvanced':
         	$type = 'PCI';

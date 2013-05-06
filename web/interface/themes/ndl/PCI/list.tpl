@@ -4,14 +4,18 @@
 <div class="resultHeader">
   <div class="resultTerms">
     <div class="content">
-      {if $searchType == 'advanced'}
+      {if $searchType == 'PCIAdvanced'}
       <div class="advancedOptions grid_24">
-        <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a> |
-        <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a> |
+        <a href="{$path}/PCI/Advanced?edit={$searchId}">{translate text="Edit this Advanced PCI Search"}</a> |
+        <a href="{$path}/PCI/Advanced">{translate text="Start a new Advanced PCI Search"}</a> |
+        {if $dualResultsEnabled}
         <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
+        {else}
+        <a href="{$path}/PCI/Home">{translate text="Start a new Basic PCI Search"}</a>
+        {/if}
       </div>
       {/if}
-      {if $dualResultsEnabled && $searchType != 'advanced'}
+      {if $dualResultsEnabled && $searchType != 'PCIAdvanced'}
       <div class="headerLeft">
         <h3 class="searchTerms grid_12">
       {else}
@@ -37,7 +41,7 @@
         {/foreach}
       </div>
       {/if}
-      {if $dualResultsEnabled && $searchType != 'advanced'}
+      {if $dualResultsEnabled && $searchType != 'PCIAdvanced'}
       </div>
       <div class="headerRight">
         <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/PCI/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>

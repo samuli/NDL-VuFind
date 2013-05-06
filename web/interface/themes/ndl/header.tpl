@@ -35,7 +35,7 @@
   <div id="searchFormHeader">
     <div class="searchbox">
       {if $pageTemplate != 'advanced.tpl'}
-        {if $module=="Summon" || $module=="EBSCO" || $module=="PCI" 
+        {if $module=="Summon" || $module=="PCI" 
           || $module=="WorldCat"  || $module=="Authority" || $module=="MetaLib"}
           {include file="`$module`/searchbox.tpl"}
         {else} 

@@ -131,54 +131,33 @@
         margin-top:6px;
     }
     
-    .advanced-link-wrapper a {
-        float:right;
-        margin-top:10px;
-        margin-left:20px;
-        clear:none;
+    /* Header: Search Box */
+    .content .searchFormOuterWrapper, .content .searchFormWrapper {
+        width: 470px;
     }
-
-    .advanced-link-wrapper.PCIEnabled.MetaLibEnabled {
-        clear: both;
-        margin-top: 0 !important;
-        width: 450px;
+    #searchForm_input {
+        width: 195px;
     }
-    
+    .searchformPCI #searchForm_input {
+        width: 350px;
+    }
     .keepFilters {
         clear: left;
         top: 13px;
         padding-bottom: 13px;
+        float: right;
+        left: auto;
+        margin-right: 10px;
     }
-    .keepFilters > input {
+    .keepdFilters > input {
         display: block;
-        float: left;
         margin-bottom: 25px;
         margin-right: 7px;
         margin-top: 3px;
     }
     
     
-    /* Header: Search Box */
-    .content .searchFormWrapper.grid_16 {
-        width: 470px;
-    }
-    .content .advanced-link-wrapper.grid_7 {
-        width: auto;
-        margin:0;
-        left: 0;
-        float:right;
-    }
-    #searchForm_input {
-        width:195px;
-    }
-    a.clear_input { 
-        left:205px !important;
-    }
-    
-    .headerPCI a.clear_input {
-        left:353px !important;
-    }
-    
+
     /* Front page */
     
     #introduction {
