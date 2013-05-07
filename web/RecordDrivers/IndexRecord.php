@@ -637,22 +637,20 @@ class IndexRecord implements RecordInterface
      */
     public function getExport($format)
     {
-        // Not currently supported for index-based records:
-        return null;
-    }
-
-    /**
-     * Get an array of strings representing formats in which this record's
-     * data may be exported (empty if none).  Legal values: "RefWorks",
-     * "EndNote", "MARC", "RDF".
-     *
-     * @return array Strings representing export formats.
-     * @access public
-     */
-    public function getExportFormats()
-    {
-        // No export formats currently supported for index-based records:
-        return array();
+        global $interface;
+        
+        $format = strtolower($format);
+        if ($format == 'refworks') {
+            $this->redirectToRefWorks();
+        } else if ($format == 'refworks_data') {
+            // This makes use of core metadata fields in addition to the
+            // assignment below:
+            header('Content-type: text/plain; charset=utf-8');
+            $interface->assign('indexData', $this->fields);
+            return 'RecordDrivers/Index/export-refworks.tpl';
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -691,6 +689,38 @@ class IndexRecord implements RecordInterface
         $interface->assign('extendedVideoClips', $this->getVideoClips());
 
         return 'RecordDrivers/Index/extended.tpl';
+    }
+
+    /**
+     * Get an array of strings representing formats in which this record's
+     * data may be exported (empty if none).  Legal values: "RefWorks",
+     * "EndNote", "MARC", "RDF".
+     *
+     * @return array Strings representing export formats.
+     * @access public
+     */
+    public function getExportFormats()
+    {
+        // Get an array of legal export formats (from config array, or use default
+        // if nothing in config array).
+        global $configArray;
+        $active = isset($configArray['Export']) ?
+            $configArray['Export'] : array('RefWorks' => true);
+
+        // These are the formats we support for indexrecord if they are turned on in
+        // config.ini:
+        $possible = array('RefWorks');
+
+        // Check which formats are currently active:
+        $formats = array();
+        foreach ($possible as $current) {
+            if ($active[$current]) {
+                $formats[] = $current;
+            }
+        }
+
+        // Send back the results:
+        return $formats;
     }
 
     /**
@@ -3055,7 +3085,7 @@ class IndexRecord implements RecordInterface
     {
         return '';
     }
-
+    
     /**
      * Get record source ID
      * 
@@ -3067,6 +3097,29 @@ class IndexRecord implements RecordInterface
             return reset($this->fields['source_str_mv']);
         }
         return '';
+    }
+    
+    /**
+     * Redirect to the RefWorks site and then die -- support method for getExport().
+     *
+     * @return void
+     * @access protected
+     */
+    protected function redirectToRefWorks()
+    {
+        global $configArray;
+
+        // Build the URL to pass data to RefWorks:
+        $exportUrl = $configArray['Site']['url'] . '/Record/' .
+            urlencode($this->getUniqueID()) . '/Export?style=refworks_data';
+
+        // Build up the RefWorks URL:
+        $url = $configArray['RefWorks']['url'] . '/express/expressimport.asp';
+        $url .= '?vendor=' . urlencode($configArray['RefWorks']['vendor']);
+        $url .= '&filter=RefWorks%20Tagged%20Format&url=' . urlencode($exportUrl);
+
+        header("Location: {$url}");
+        die();
     }
 }
 
