@@ -185,7 +185,10 @@ class Demo implements DriverInterface
                 'callnumber'   => $this->_getFakeCallNum(),
                 'duedate'      => '',
                 'is_holdable'  => true,
-                'addLink'      => rand()%10 == 0 ? 'block' : true
+                'addLink'      => rand()%10 == 0 ? 'block' : true,
+                'addCallSlipLink' => rand()%10 == 0 ? 'block' : true,
+                'ubrequest'    => 'auto',
+                'addUBRequestLink' => rand()%10 == 0 ? 'block' : 'check'
             );
         }
         return $holding;
@@ -416,6 +419,58 @@ class Demo implements DriverInterface
         return $_SESSION['demoData']['holds'];
     }
 
+    /**
+     * Get Patron Call Slips
+     *
+     * This is responsible for retrieving all call slips by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's holds on success, PEAR_Error
+     * otherwise.
+     * @access public
+     */
+    public function getMyCallSlips($patron)
+    {
+        if (!isset($_SESSION['demoData']['callslips'])) {
+            // How many items are there?  %10 - 1 = 10% chance of none,
+            // 90% of 1-9 (give or take some odd maths)
+            $callslips = rand()%10 - 1;
+
+            // Do some initial work in solr so we aren't repeating it inside this
+            // loop.
+            $this->_prepSolr();
+
+            $list = array();
+            $dateFormat = new VuFindDate();
+            for ($i = 0; $i < $callslips; $i++) {
+                $list[] = array(
+                    "id"       => $this->_getRandomBibId(),
+                    "type"     => 'C',
+                    "location" => $this->_getFakeLoc(false),
+                    "expired"   => date("j-M-y", strtotime("now + 30 days")),
+                    "created"   =>
+                        date("j-M-y", strtotime("now - ".(rand()%10)." days")),
+                    "reqnum"   => sprintf("%06d", $i),
+                    "item_id" => $i,
+                    "reqnum" => $i,
+                    "volume" => '',
+                    "processed" => (rand(1, 3) == 3)
+                      ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
+                      : ''
+                );
+                $pos = rand()%5;
+                if ($pos > 1) {
+                    $list[$i]['position'] = $pos;
+                } else {
+                    $list[$i]['available'] = true;
+                }
+            }
+            $_SESSION['demoData']['callslips'] = $holdList;
+        }
+        return $_SESSION['demoData']['callslips'];
+    }
+    
     /**
      * Get Patron Transactions
      *
@@ -730,6 +785,70 @@ class Demo implements DriverInterface
     }
 
     /**
+     * Cancel Call Slips
+     *
+     * Attempts to Cancel a call slip on a particular item. The
+     * data in $cancelDetails['details'] is determined by getCancelCallSlipDetails().
+     *
+     * @param array $cancelDetails An array of item and patron data
+     *
+     * @return array               An array of data on each request including
+     * whether or not it was successful and a system message (if available)
+     * @access public
+     */
+    public function cancelCallSlips($cancelDetails)
+    {
+        // Rewrite the holds in the session, removing those the user wants to
+        // cancel.
+        $new = array();
+        $retVal = array('count' => 0, 'items' => array());
+        foreach ($_SESSION['demoData']['callslips'] as $current) {
+            if (!in_array($current['reqnum'], $cancelDetails['details'])) {
+                $new[] = $current;
+            } else {
+                // 50% chance of cancel failure for testing purposes
+                if (rand() % 2) {
+                    $retVal['count']++;
+                    $retVal['items'][$current['item_id']] = array(
+                        'success' => true,
+                        'status' => 'call_slip_cancel_success'
+                    );
+                } else {
+                    $new[] = $current;
+                    $retVal['items'][$current['item_id']] = array(
+                        'success' => false,
+                        'status' => 'call_slip_cancel_fail',
+                        'sysMessage' =>
+                            'Demonstrating failure; keep trying and ' .
+                            'it will work eventually.'
+                    );
+                }
+            }
+        }
+
+        $_SESSION['demoData']['callslips'] = $new;
+        return $retVal;
+    }
+
+    /**
+     * Get Cancel Call Slip Details
+     *
+     * In order to cancel a call slip, Voyager requires the patron details an item ID
+     * and a recall ID. This function returns the item id and recall id as a string
+     * separated by a pipe, which is then submitted as form data in Hold.php. This
+     * value is then extracted by the CancelHolds function.
+     *
+     * @param array $details An array of item data
+     *
+     * @return string Data for use in a form field
+     * @access public
+     */
+    public function getCancelCallSlipDetails($details)
+    {
+        return $details['reqnum'];
+    }
+    
+    /**
      * Renew My Items
      *
      * Function for attempting to renew a patron's items.  The data in
@@ -796,6 +915,27 @@ class Demo implements DriverInterface
     }
 
     /**
+     * checkRequestIsValid
+     *
+     * This is responsible for determining if an item is requestable
+     *
+     * @param string $id     The Bib ID
+     * @param array  $data   An Array of item data
+     * @param patron $patron An array of patron data
+     *
+     * @return string True if request is valid, false if not
+     * @access public
+     */
+    public function checkRequestIsValid($id, $data, $patron)
+    {
+        if (rand() % 10 == 0) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    /**
      * Place Hold
      *
      * Attempts to place a hold or recall on a particular item and returns
@@ -842,6 +982,185 @@ class Demo implements DriverInterface
     }
 
     /**
+     * checkCallSlipRequestIsValid
+     *
+     * This is responsible for determining if an item is requestable
+     *
+     * @param string $id     The Bib ID
+     * @param array  $data   An Array of item data
+     * @param patron $patron An array of patron data
+     *
+     * @return string True if request is valid, false if not
+     * @access public
+     */
+    public function checkCallSlipRequestIsValid($id, $data, $patron)
+    {
+        if (rand() % 10 == 0) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Place Call Slip Request
+     *
+     * Attempts to place a call slip request on a particular item and returns
+     * an array with result details or a PEAR error on failure of support classes
+     *
+     * @param array $details An array of item and patron data
+     *
+     * @return mixed An array of data on the request including
+     * whether or not it was successful and a system message (if available) or a
+     * PEAR error on failure of support classes
+     * @access public
+     */
+    public function placeCallSlipRequest($details)
+    {
+        // Simulate failure:
+        if (rand() % 2) {
+            return array(
+                "success" => false,
+                "sysMessage" => 
+                    'Demonstrating failure; keep trying and ' .
+                    'it will work eventually.'
+            );
+        }
+
+        if (!isset($_SESSION['demoData']['callslips'])) {
+            $_SESSION['demoData']['callslips'] = array();
+        }
+        $last = count($_SESSION['demoData']['callslips']) - 1;
+        $nextId = $last >= 0
+            ? $_SESSION['demoData']['callslips'][$last]['item_id'] + 1
+            : 0;
+
+        $dateFormat = new VuFindDate();
+        $_SESSION['demoData']['callslips'][] = array(
+            "id"       => $details['id'],
+            "location" => $details['pickUpLocation'],
+            "expire"   => date("j-M-y", strtotime("now + 30 days")),
+            "create"   =>
+                date("j-M-y"),
+            "reqnum"   => sprintf("%06d", $nextId),
+            "item_id" => $nextId,
+            "volume" => '',
+            "processed" => (rand(1, 3) == 3)
+              ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
+              : ''
+        );
+
+        return array('success' => true);
+    }
+
+    /**
+     * Place UB Request
+     *
+     * Attempts to place an UB request on a particular item and returns
+     * an array with result details or a PEAR error on failure of support classes
+     *
+     * @param array $details An array of item and patron data
+     *
+     * @return mixed An array of data on the request including
+     * whether or not it was successful and a system message (if available) or a
+     * PEAR error on failure of support classes
+     * @access public
+     */
+    public function placeUBRequest($details)
+    {
+        return $this->placeCallSlipRequest($details);    
+    }
+    
+    /**
+     * Get UB Request Details
+     *
+     * This is responsible for getting information on whether a UB request
+     * can be made and the possible pickup locations
+     *
+     * @param array $details BIB, item and patron information
+     *
+     * @return bool|array False if request not allowed, or an array of associative 
+     * arrays with items, libraries, default library locations and default required by date.
+     * @access public
+     */
+    public function getUBRequestDetails($details)
+    {
+        if (rand() % 10 == 1) {
+            return false;
+        }
+        
+        $dateFormat = new VuFindDate();
+        $requiredByDate = $dateFormat->convertToDisplayDate("Y-m-d H:i", "now + 30 days");
+        return array(
+            'items' => array(
+                array (
+                    'id' => 1,
+                    'name' => 'Item 1'
+                ),
+                array (
+                    'id' => 2,
+                    'name' => 'Item 2'
+                ),
+                array (
+                    'id' => 3,
+                    'name' => 'Item 3'
+                ),
+            ),
+            'libraries' => array(
+                array(
+                    'id' => 1,
+                    'name' => 'Main Library',
+                    'isDefault' => true
+                ),                
+                array(
+                    'id' => 2,
+                    'name' => 'Branch Library',
+                    'isDefault' => false
+                ),                
+            ),
+            'locations' => array(
+                array(
+                    'id' => 1,
+                    'name' => 'Circulation Desk',
+                    'isDefault' => true
+                ),                
+                array(
+                    'id' => 2,
+                    'name' => 'Reference Desk',
+                    'isDefault' => false
+                ),                
+            ),
+            'requiredBy' => $requiredByDate
+        );
+    }
+    
+    /**
+     * Get UB Pickup Locations
+     * 
+     * This is responsible for getting a list of possible pickup locations for a library
+     *
+     * @param array $details BIB, item, pickupLib and patron information
+     *
+     * @return boo|array False if request not allowed, or an array of  
+     * locations.
+     * @access public
+     */
+    public function getUBPickupLocations($details)
+    {
+        return array(
+            array(
+                'id' => 1,
+                'name' => 'Circulation Desk',
+                'isDefault' => true
+            ),                
+            array(
+                'id' => 2,
+                'name' => 'Reference Desk',
+                'isDefault' => false
+            )
+        );
+    }
+        
+    /**
      * Public Function which specifies renew, hold and cancel settings.
      *
      * @param string $function The name of the feature to be checked
@@ -855,6 +1174,18 @@ class Demo implements DriverInterface
             return array(
                 'HMACKeys' => 'id',
                 'extraHoldFields' => 'comments:pickUpLocation'
+            );
+        } 
+        if ($function == 'CallSlips') {
+            return array(
+                'HMACKeys' => 'item_id:mfhd_id',
+                'extraFields' => 'item-issue:comments'
+            );
+        }
+        if ($function == 'UBRequests') {
+            return array(
+                'enabled' => true,
+                'HMACKeys' => ''
             );
         }
         return array();
