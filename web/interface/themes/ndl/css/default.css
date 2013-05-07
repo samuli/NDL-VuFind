@@ -3491,7 +3491,6 @@ table.datagrid {
 
 table.profileGroup caption,
 table.datagrid caption {
-    color: #fff;
     padding-left: 10px;
 }
 
@@ -3795,6 +3794,12 @@ p.citationText {
 .myResearch .resultHead .toolbar ul li {
     padding: 4px;
 }
+.module-MyResearch h2 {
+    font-size: 1.333em;
+    line-height: 1.2em;
+    font-weight: normal;
+    margin-top: 0;
+}
 .myResearch ul.recordSet .resultCheckbox {
     position: inherit;
     display: inherit;
@@ -3850,7 +3855,7 @@ p.citationText {
 .module-MyResearch form input[type=text],
 .module-MyResearch form textarea,
 .module-MyResearch form fieldset {
-    width: 100%;
+    width: 98%;
     max-width: 500px;
 }
 .module-Cart form input[type="submit"],

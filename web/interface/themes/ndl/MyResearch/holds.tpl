@@ -27,7 +27,7 @@
     {if $cancelCallSlipResults.count > 0}
       <div class="holdsMessage"><p class="info">{$cancelCallSlipResults.count|escape} {translate text="call_slip_cancel_success_items"}</p></div>
     {/if}
-    <span class="hefty">{translate text='Holds and Requests'}</span>
+    <h2>{translate text='Holds and Requests'}</h2>
   </div>
     {if $cancelForm && $recordList}
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
@@ -185,7 +185,7 @@
     <div style="clear:both;padding-top: 2em;"></div>
 
   {* Call Slips *}
-  <span class="hefty myResearchTitle">{translate text='Call Slips'}</span>
+  <h2 class="myResearchTitle">{translate text='Call Slips'}</h2>
     {if is_array($callSlipList)}
   <form name="cancelCallSlipForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelCallSlip">
 

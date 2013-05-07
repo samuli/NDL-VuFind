@@ -79,10 +79,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
   <div class="favoritesList last">
   {if $list && $list->id}
-    <span class="hefty myResearchTitle">{$list->title|escape:"html"}</span><br/>
+    <h2 class="myResearchTitle">{$list->title|escape:"html"}</h2>
     {if $list->description}<p class="favoritesDescription">{$list->description|escape}</p>{/if}
   {else}
-    <span class="hefty">{translate text='Your Favorites'}</span><br/>
+    <h2>{translate text='Your Favorites'}</h2>
   {/if}
   {if $resourceList}
     {include file="Search/paging.tpl" position="Top"}
