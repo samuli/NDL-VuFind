@@ -9,7 +9,7 @@
     {if empty($rawFinesData)}
       {translate text='You do not have any fines'}
     {else}
-    <span class="hefty">{translate text='Your Fines'}</span>
+    <h2>{translate text='Your Fines'}</h2>
     <table class="datagrid fines" summary="{translate text='Your Fines'}">
       <tr>
         <th style="width:50%;">{translate text='Title'}</th>

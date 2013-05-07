@@ -20,7 +20,7 @@
   
     <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">
     <div class="profileInfo grid_12 static">
-      <span class="hefty">{translate text='Your Profile'}</span>
+      <h2>{translate text='Your Profile'}</h2>
       <table class="profileGroup">
       <caption>{translate text='Local Settings'}</caption>
       <tr>
@@ -52,11 +52,13 @@
     
     {if $user->cat_username}
     <table class="profileGroup">
-      <caption>
-      {translate text='Source of information'}:
-        {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-        {translate text=$source prefix='source_'}
-      </caption>
+      <caption>{translate text='library_personal_details'}</caption>
+
+      <tr>
+        <th>{translate text='Source of information'}</th>
+        <td>{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
+        {translate text=$source prefix='source_'}</td>
+      </tr>
       
       <tr>
         <th>{translate text='First Name'}</th><td>{if $profile.firstname}{$profile.firstname|escape}{else}-{/if}</td>

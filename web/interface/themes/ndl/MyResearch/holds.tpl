@@ -27,7 +27,7 @@
     {if $cancelCallSlipResults.count > 0}
       <div class="holdsMessage"><p class="info">{$cancelCallSlipResults.count|escape} {translate text="call_slip_cancel_success_items"}</p></div>
     {/if}
-    <span class="hefty">{translate text='Holds'}</span>
+    <h2>{translate text='Holds'}</h2>
   </div>
     {if $cancelForm && $recordList}
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
@@ -179,13 +179,13 @@
     </form>
     {/if}
     {else}
-      <div class="noContentMessage">{translate text='You do not have any holds or recalls placed'}.</div>
+      <div class="noContentMessage">{translate text='You do not have any holds or requests placed'}.</div>
     {/if}
 
     <div style="clear:both;padding-top: 2em;"></div>
 
   {* Call Slips *}
-  <span class="hefty myResearchTitle">{translate text='Call Slips'}</span>
+  <h2 class="myResearchTitle">{translate text='Call Slips'}</h2>
     {if is_array($callSlipList)}
   <form name="cancelCallSlipForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelCallSlip">
 
@@ -322,7 +322,7 @@
 
             {foreach from=$cancelCallSlipResults.items item=cancelResult key=itemId}
               {if $itemId == $resource.ils_details.item_id && $cancelResult.success == false}
-                <div class="error">{translate text=$cancelResult.status}{if $cancelResult.sysMessage} : {translate text=$cancelResult.sysMessage|escape}{/if}</div>
+                <div class="error">{translate text=$cancelCallSlipResult.status}{if $cancelResult.sysMessage} : {translate text=$cancelResult.sysMessage|escape}{/if}</div>
               {/if}
             {/foreach}
 

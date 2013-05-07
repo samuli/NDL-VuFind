@@ -30,7 +30,7 @@
     <input type="hidden" name="followupAction" value="{$followupAction|escape}" />
   {/if}
   <br />
-  <input class="submit" type="submit" name="submit" value="{translate text='Export'}">
+  <input class="button buttonFinna submit" type="submit" name="submit" value="{translate text='export_selected'}">
 
 </form>
 {/if}

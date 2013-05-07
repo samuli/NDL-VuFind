@@ -87,5 +87,6 @@ span.dynatree-node a {
 table.profileGroup caption,
 table.datagrid caption {
     background-color: #00A3B5;
+    color: #fff;
 }
 

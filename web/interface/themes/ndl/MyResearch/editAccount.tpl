@@ -9,6 +9,8 @@
 </div>
 <div class="content">
 <div class="grid_24">
+  
+  <p class="backLink"><a href="{$path}/MyResearch/Accounts">&laquo;{translate text="Back to Your Account"}</a></p>
 {if $errorMsg}
   <div class="messages">
     {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}

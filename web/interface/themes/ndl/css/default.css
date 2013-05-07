@@ -2979,7 +2979,6 @@ div[id*="record"].record.recordId {
     margin-top:0;
 }
 .module-MyResearch .record form {
-    padding:20px 0;
 }
 .module-MyResearch .record form input.button {
     margin: 10px 0;
@@ -3492,7 +3491,6 @@ table.datagrid {
 
 table.profileGroup caption,
 table.datagrid caption {
-    color: #fff;
     padding-left: 10px;
 }
 
@@ -3563,12 +3561,6 @@ input.button {
 }
 #listForm fieldset {
     width: 400px
-}
-form[name="editAccountForm"] {
-    padding:20px 0;
-}
-form[name="editAccountForm"] input[type="submit"] {
-    margin:10px 0;
 }
 /** Citation **/
 
@@ -3802,6 +3794,12 @@ p.citationText {
 .myResearch .resultHead .toolbar ul li {
     padding: 4px;
 }
+.module-MyResearch h2 {
+    font-size: 1.333em;
+    line-height: 1.2em;
+    font-weight: normal;
+    margin-top: 0;
+}
 .myResearch ul.recordSet .resultCheckbox {
     position: inherit;
     display: inherit;
@@ -3850,6 +3848,19 @@ p.citationText {
 }
 .myResearch .noContentMessage {
     margin-top: 1em;
+}
+.module-MyResearch .backLink {
+    padding: 1.5em 0;
+}
+.module-MyResearch form input[type=text],
+.module-MyResearch form textarea,
+.module-MyResearch form fieldset {
+    width: 98%;
+    max-width: 500px;
+}
+.module-Cart form input[type="submit"],
+.module-MyResearch form input[type="submit"] {
+    margin: 15px 0;
 }
 
 /* Browse Lists */

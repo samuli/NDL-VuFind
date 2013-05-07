@@ -79,10 +79,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
   <div class="favoritesList last">
   {if $list && $list->id}
-    <span class="hefty myResearchTitle">{$list->title|escape:"html"}</span><br/>
+    <h2 class="myResearchTitle">{$list->title|escape:"html"}</h2>
     {if $list->description}<p class="favoritesDescription">{$list->description|escape}</p>{/if}
   {else}
-    <span class="hefty">{translate text='Your Favorites'}</span><br/>
+    <h2>{translate text='Your Favorites'}</h2>
   {/if}
   {if $resourceList}
     {include file="Search/paging.tpl" position="Top"}
@@ -140,7 +140,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       {/if}  
         <input type="submit" class="button buttonFinna" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
         {if is_array($exportOptions) && count($exportOptions) > 0}
-        <input type="submit" class="button buttonFinna" name="export" value="{translate text='export_expanding'}" title="{translate text='export_expanding'}"/>
+        <input type="submit" class="button buttonFinna" name="export" value="{translate text='export_expanding'}" title="{translate text='export_selected'}"/>
         {/if}
         {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="button buttonFinna" name="delete" value="{translate text='Delete'}" title="{translate text='delete_selected'}"/>{/if}
       </div>
