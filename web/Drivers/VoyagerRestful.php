@@ -386,39 +386,6 @@ class VoyagerRestful extends Voyager
     }
     
     /**
-     * checkUBRequestIsValid
-     *
-     * This is responsible for determining if an item is requestable
-     *
-     * @param string $id     The Bib ID
-     * @param array  $data   An Array of item data
-     * @param patron $patron An array of patron data
-     *
-     * @return string True if request is valid, false if not
-     * @access public
-     */
-    public function checkUBRequestIsValid($id, $data, $patron)
-    {
-        list($source, $patronId) = explode('.', $patron['id'], 2);
-        if (!isset($this->config['UBRequestSources'][$source])) {
-            return 'block';
-        }
-        if ($this->checkAccountBlocks($patron['id'])) {
-            return 'block';
-        }
-        return true; 
-        
-        //TODO
-        $level = isset($data['level']) ? $data['level'] : "copy";
-        $itemID = ($level != 'title' && isset($data['item_id'])) ? $data['item_id'] : false;
-        $result = $this->checkItemRequests($patron['id'], 'callslip', $id, $itemID);
-        if (!$result || $result == 'block') {
-            return $result;
-        }
-        return true;
-    }
-    
-    /**
      * Determine Renewability
      *
      * This is responsible for determining if an item is renewable
@@ -430,7 +397,6 @@ class VoyagerRestful extends Voyager
      * message
      * @access protected
      */
-
     protected function isRenewable($patronId, $itemId)
     {
         // Build Hierarchy
