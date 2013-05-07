@@ -200,14 +200,10 @@ class HoldLogic
                 if ($show) {
                     if ($checkHolds != false) {
                         // Is this copy holdable / linkable
-                        if (isset($copy['addLink']) && $copy['addLink']) {
-                            // If the hold is blocked, link to an error page
-                            // instead of the hold form:
-                            $copy['link'] = (strcmp($copy['addLink'], 'block') == 0)
-                                ? "?errorMsg=hold_error_blocked"
-                                : $this->_getHoldDetails(
-                                    $copy, $checkHolds['HMACKeys']
-                                );
+                        if (isset($copy['addLink']) && $copy['addLink'] && strcmp($copy['addLink'], 'block') !== 0) {
+                            $copy['link'] = $this->_getHoldDetails(
+                                $copy, $checkHolds['HMACKeys']
+                            );
                             // If we are unsure whether hold options are available,
                             // set a flag so we can check later via AJAX:
                             $copy['check'] = (strcmp($copy['addLink'], 'check') == 0)
@@ -215,12 +211,10 @@ class HoldLogic
                         }
                     }
                     if ($checkCallSlips !== false) {
-                        if (isset($copy['addCallSlipLink']) && $copy['addCallSlipLink']) {
-                            $copy['callSlipLink'] = (strcmp($copy['addCallSlipLink'], 'block') == 0)
-                                ? "?errorMsg=call_slip_error_blocked"
-                                : $this->_getCallSlipDetails(
-                                    $copy, $checkCallSlips['HMACKeys']
-                                );
+                        if (isset($copy['addCallSlipLink']) && $copy['addCallSlipLink'] && strcmp($copy['addCallSlipLink'], 'block') !== 0) {
+                            $copy['callSlipLink'] = $this->_getCallSlipDetails(
+                                $copy, $checkCallSlips['HMACKeys']
+                            );
                             // If we are unsure whether call slip options are available,
                             // set a flag so we can check later via AJAX:
                             $copy['checkCallSlip'] = (strcmp($copy['addCallSlipLink'], 'check') == 0)
@@ -228,12 +222,10 @@ class HoldLogic
                         }
                     }
                     if ($checkUBRequests !== false) {
-                        if (isset($copy['addUBRequestLink']) && $copy['addUBRequestLink']) {
-                            $copy['UBRequestLink'] = (strcmp($copy['addUBRequestLink'], 'block') == 0)
-                                ? "?errorMsg=ub_request_error_blocked"
-                                : $this->_getUBRequestDetails(
-                                    $copy, $checkUBRequests['HMACKeys']
-                                );
+                        if (isset($copy['addUBRequestLink']) && $copy['addUBRequestLink'] && strcmp($copy['addUBRequestLink'], 'block') !== 0) {
+                            $copy['UBRequestLink'] = $this->_getUBRequestDetails(
+                                $copy, $checkUBRequests['HMACKeys']
+                            );
                             // If we are unsure whether UB request options are available,
                             // set a flag so we can check later via AJAX:
                             $copy['checkUBRequest'] = (strcmp($copy['addUBRequestLink'], 'check') == 0)

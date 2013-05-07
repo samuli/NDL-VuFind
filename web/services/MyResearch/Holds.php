@@ -145,6 +145,7 @@ class Holds extends MyResearch
                             $driver = RecordDriverFactory::initRecordDriver($record);
                             if ($driver) {
                                 $record['summImages'] = $driver->getAllImages();
+                                $record['title'] = $driver->getTitle();
                             }
                         } else {
                             $record = array();

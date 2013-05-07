@@ -1132,8 +1132,8 @@ div#modalDialog {
 }
 
 div.dialogLoading {
-    background: url(../images/dialog_loading.gif) no-repeat center center;
-    height:100%;
+    background: url(../images/ajax_loading.gif) no-repeat center center;
+    height: 20px;
 }
 
 .ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading {

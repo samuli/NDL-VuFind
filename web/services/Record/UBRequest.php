@@ -69,10 +69,16 @@ class UBRequest extends Record
             // Sets $this->logonURL and $this->gatheredDetails
             $validate = $this->_validateUBRequestData($this->checkUBRequests['HMACKeys']);
             if (!$validate) {
-                header(
-                    'Location: ../../Record/' .
-                    urlencode($this->recordDriver->getUniqueID())
-                );
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('lightbox', true);
+                    $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                    $interface->display('Record/ub-request-submit.tpl');
+                } else {
+                    header(
+                        'Location: ../../Record/' .
+                        urlencode($this->recordDriver->getUniqueID())
+                    );
+                }
                 return false;
             }
 
@@ -91,11 +97,17 @@ class UBRequest extends Record
                         $this->gatheredDetails, $patron
                     );
                     if (!$result) {
-                        header(
-                            'Location: ../../Record/' .
-                            urlencode($this->recordDriver->getUniqueID()) .
-                            "?errorMsg=ub_request_error_blocked#top"
-                        );
+                        if (isset($_REQUEST['lightbox'])) {
+                            $interface->assign('lightbox', true);
+                            $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                            $interface->display('Record/ub-request-submit.tpl');
+                        } else {
+                            header(
+                                'Location: ../../Record/' .
+                                urlencode($this->recordDriver->getUniqueID()) .
+                                "?errorMsg=ub_request_error_blocked#top"
+                            );
+                        }
                         return false;
                     }
 
@@ -126,27 +138,47 @@ class UBRequest extends Record
                     $this->recordDriver->getBreadcrumb()
                 );
                 // Display Form
-                $interface->assign('subTemplate', 'ub-request-submit.tpl');
-                
-                // Main Details
-                $interface->setTemplate('view.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('lightbox', true);
+                    $interface->display('Record/ub-request-submit.tpl');
+                } else {
+                    $interface->assign('subTemplate', 'ub-request-submit.tpl');
+                    
+                    // Main Details
+                    $interface->setTemplate('view.tpl');
+                    // Display Page
+                    $interface->display('layout.tpl');
+                }
             } else {
                 // User is not logged in
                 // Display Login Form
                 Login::setupLoginFormVars();
-                $interface->setTemplate('../MyResearch/login.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('title', $_GET['message']);
+                    $interface->assign('message', 'You must be logged in first');
+                    $interface->assign('followup', true);
+                    $interface->assign('followupModule', 'Record');
+                    $interface->assign('followupAction', 'UBRequest');
+                    $interface->display('AJAX/login.tpl');
+                } else {                
+                    $interface->setTemplate('../MyResearch/login.tpl');
+                    // Display Page
+                    $interface->display('layout.tpl');
+                }
             }
 
         } else {
             // Shouldn't Be Here
-            header(
-                'Location: ../../Record/' .
-                urlencode($this->recordDriver->getUniqueID())
-            );
+            if (isset($_REQUEST['lightbox'])) {
+                $interface->assign('lightbox', true);
+                $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                $interface->display('Record/ub-request-submit.tpl');
+            } else {
+                header(
+                    'Location: ../../Record/' .
+                    urlencode($this->recordDriver->getUniqueID())
+                );
+            }
             return false;
         }
     }
@@ -239,7 +271,11 @@ class UBRequest extends Record
         }
         // Success: Go to Display Holds
         if ($results['success'] == true) {
-            header('Location: ../../MyResearch/Holds?ub_request_success=true');
+            if ($_REQUEST['lightbox']) {
+                echo 'OK - ' . translate('ub_request_success');
+            } else {
+                header('Location: ../../MyResearch/Holds?ub_request_success=true');
+            }
             return true;
         } else {
             $this->assignError($results);

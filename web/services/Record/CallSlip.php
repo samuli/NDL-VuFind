@@ -61,6 +61,10 @@ class CallSlip extends Record
         global $interface;
         global $user;
 
+        if (isset($_REQUEST['lightbox'])) {
+            $interface->assign('lightbox', true);
+        }
+        
         // Are Call Slips Allowed?
         $this->checkCallSlips = $this->catalog->checkFunction("CallSlips", $this->recordDriver->getUniqueID());
         if ($this->checkCallSlips != false) {
@@ -69,10 +73,16 @@ class CallSlip extends Record
             // Sets $this->logonURL and $this->gatheredDetails
             $validate = $this->_validateCallSlipData($this->checkCallSlips['HMACKeys']);
             if (!$validate) {
-                header(
-                    'Location: ../../Record/' .
-                    urlencode($this->recordDriver->getUniqueID())
-                );
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('lightbox', true);
+                    $interface->assign('results', array('status' => 'call_slip_error_blocked'));
+                    $interface->display('Record/call-slip-submit.tpl');
+                } else {
+                    header(
+                        'Location: ../../Record/' .
+                        urlencode($this->recordDriver->getUniqueID())
+                    );
+                }
                 return false;
             }
 
@@ -90,11 +100,17 @@ class CallSlip extends Record
                         $this->recordDriver->getUniqueID(),
                         $this->gatheredDetails, $patron
                     )) {
-                        header(
-                            'Location: ../../Record/' .
-                            urlencode($this->recordDriver->getUniqueID()) .
-                            "?errorMsg=call_slip_error_blocked#top"
-                        );
+                        if (isset($_REQUEST['lightbox'])) {
+                            $interface->assign('lightbox', true);
+                            $interface->assign('results', array('status' => 'call_slip_error_blocked'));
+                            $interface->display('Record/call-slip-submit.tpl');
+                        } else {
+                            header(
+                                'Location: ../../Record/' .
+                                urlencode($this->recordDriver->getUniqueID()) .
+                                "?errorMsg=call_slip_error_blocked#top"
+                            );
+                        }
                         return false;
                     }
 
@@ -121,27 +137,47 @@ class CallSlip extends Record
                     $this->recordDriver->getBreadcrumb()
                 );
                 // Display Form
-                $interface->assign('subTemplate', 'call-slip-submit.tpl');
-                
-                // Main Details
-                $interface->setTemplate('view.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('lightbox', true);
+                    $interface->display('Record/call-slip-submit.tpl');
+                } else {
+                    $interface->assign('subTemplate', 'call-slip-submit.tpl');
+                    
+                    // Main Details
+                    $interface->setTemplate('view.tpl');
+                    // Display Page
+                    $interface->display('layout.tpl');
+                }
             } else {
                 // User is not logged in
                 // Display Login Form
                 Login::setupLoginFormVars();
-                $interface->setTemplate('../MyResearch/login.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('title', $_GET['message']);
+                    $interface->assign('message', 'You must be logged in first');
+                    $interface->assign('followup', true);
+                    $interface->assign('followupModule', 'Record');
+                    $interface->assign('followupAction', 'CallSlip');
+                    $interface->display('AJAX/login.tpl');
+                } else {                
+                    $interface->setTemplate('../MyResearch/login.tpl');
+                    // Display Page
+                    $interface->display('layout.tpl');
+                }
             }
 
         } else {
             // Shouldn't Be Here
-            header(
-                'Location: ../../Record/' .
-                urlencode($this->recordDriver->getUniqueID())
-            );
+            if (isset($_REQUEST['lightbox'])) {
+                $interface->assign('lightbox', true);
+                $interface->assign('results', array('status' => 'call_slip_error_blocked'));
+                $interface->display('Record/call-slip-submit.tpl');
+            } else {
+                header(
+                    'Location: ../../Record/' .
+                    urlencode($this->recordDriver->getUniqueID())
+                );
+            }
             return false;
         }
     }
@@ -236,7 +272,11 @@ class CallSlip extends Record
         }
         // Success: Go to Display Holds
         if ($results['success'] == true) {
-            header('Location: ../../MyResearch/Holds?callslip_success=true');
+            if ($_REQUEST['lightbox']) {
+                echo 'OK - ' . translate('call_slip_success');
+            } else {
+                header('Location: ../../MyResearch/Holds?callslip_success=true');
+            }
             return true;
         } else {
             $this->assignError($results);

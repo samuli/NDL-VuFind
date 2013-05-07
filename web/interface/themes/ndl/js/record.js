@@ -82,7 +82,6 @@ $(document).ready(function(){
     setUpCheckRequest();
     setUpCheckCallSlipRequest();
     setUpCheckUBRequest();
-    setUpUBRequestForm();
 });
 
 function setUpCheckRequest() {
@@ -226,11 +225,10 @@ function checkUBRequestIsValid(element, requestURL) {
     });   
 }
 
-function setUpUBRequestForm() {
+function setUpUBRequestForm(recordId) {
     $("#pickupLibrary").change(function() {
         $("#pickupLocation option").remove();
         $("#pickupLocationLabel").addClass("ajax_ub_request_loading");
-        var recordId = location.href.match(/\/Record\/([^\/]+)\//)[1];
         var url = path + '/AJAX/JSON_UBRequest?' + $.param({method:'getPickupLocations', id: recordId, pickupLib: $("#pickupLibrary").val() });
         $.ajax({
             dataType: 'json',

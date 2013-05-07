@@ -58,6 +58,10 @@ class Hold extends Record
         global $interface;
         global $user;
 
+        if (isset($_REQUEST['lightbox'])) {
+            $interface->assign('lightbox', true);
+        }
+        
         // Are Holds Allowed?
         $this->checkHolds = $this->catalog->checkFunction("Holds", $this->recordDriver->getUniqueID());
         if ($this->checkHolds != false) {
@@ -66,10 +70,16 @@ class Hold extends Record
             // Sets $this->logonURL and $this->gatheredDetails
             $validate = $this->_validateHoldData($this->checkHolds['HMACKeys']);
             if (!$validate) {
-                header(
-                    'Location: ../../Record/' .
-                    urlencode($this->recordDriver->getUniqueID())
-                );
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('lightbox', true);
+                    $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                    $interface->display('Record/hold-submit.tpl');
+                } else {
+                    header(
+                        'Location: ../../Record/' .
+                        urlencode($this->recordDriver->getUniqueID())
+                    );
+                }
                 return false;
             }
 
@@ -87,11 +97,17 @@ class Hold extends Record
                         $this->recordDriver->getUniqueID(),
                         $this->gatheredDetails, $patron
                     )) {
-                        header(
-                            'Location: ../../Record/' .
-                            urlencode($this->recordDriver->getUniqueID()) .
-                            "?errorMsg=hold_error_blocked#top"
-                        );
+                        if (isset($_REQUEST['lightbox'])) {
+                            $interface->assign('lightbox', true);
+                            $interface->assign('results', array('status' => 'hold_error_blocked'));
+                            $interface->display('Record/hold-submit.tpl');
+                        } else {
+                            header(
+                                'Location: ../../Record/' .
+                                urlencode($this->recordDriver->getUniqueID()) .
+                                "?errorMsg=hold_error_blocked#top"
+                            );
+                        }
                         return false;
                     }
 
@@ -137,27 +153,47 @@ class Hold extends Record
                     $this->recordDriver->getBreadcrumb()
                 );
                 // Display Hold Form
-                $interface->assign('subTemplate', 'hold-submit.tpl');
-
-                // Main Details
-                $interface->setTemplate('view.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('lightbox', true);
+                    $interface->display('Record/hold-submit.tpl');
+                } else {
+                    $interface->assign('subTemplate', 'hold-submit.tpl');
+    
+                    // Main Details
+                    $interface->setTemplate('view.tpl');
+                    // Display Page
+                    $interface->display('layout.tpl');
+                }
             } else {
                 // User is not logged in
                 // Display Login Form
                 Login::setupLoginFormVars();
-                $interface->setTemplate('../MyResearch/login.tpl');
-                // Display Page
-                $interface->display('layout.tpl');
+                if (isset($_REQUEST['lightbox'])) {
+                    $interface->assign('title', $_GET['message']);
+                    $interface->assign('message', 'You must be logged in first');
+                    $interface->assign('followup', true);
+                    $interface->assign('followupModule', 'Record');
+                    $interface->assign('followupAction', 'Hold');
+                    $interface->display('AJAX/login.tpl');
+                } else {                
+                    $interface->setTemplate('../MyResearch/login.tpl');
+                    // Display Page
+                    $interface->display('layout.tpl');
+                }
             }
 
         } else {
             // Shouldn't Be Here
-            header(
-                'Location: ../../Record/' .
-                urlencode($this->recordDriver->getUniqueID())
-            );
+            if (isset($_REQUEST['lightbox'])) {
+                $interface->assign('lightbox', true);
+                $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                $interface->display('Record/hold-submit.tpl');
+            } else {
+                header(
+                    'Location: ../../Record/' .
+                    urlencode($this->recordDriver->getUniqueID())
+                );
+            }
             return false;
         }
     }
@@ -241,7 +277,7 @@ class Hold extends Record
         global $interface;
 
         $interface->assign('results', $results);
-
+        
         // Fail: Display Form for Try Again
         // Get as much data back as possible
         $interface->assign('subTemplate', 'hold-submit.tpl');
@@ -317,7 +353,11 @@ class Hold extends Record
         }
         // Success: Go to Display Holds
         if ($results['success'] == true) {
-            header('Location: ../../MyResearch/Holds?success=true');
+            if ($_REQUEST['lightbox']) {
+                echo 'OK - ' . translate('hold_success');
+            } else {
+                header('Location: ../../MyResearch/Holds?success=true');
+            }
             return true;
         } else {
             $this->assignError($results);

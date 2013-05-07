@@ -2571,9 +2571,9 @@ class IndexRecord implements RecordInterface
      * Get the full title of the record.
      *
      * @return string
-     * @access protected
+     * @access public
      */
-    protected function getTitle()
+    public function getTitle()
     {
         return isset($this->fields['title']) ?
             $this->fields['title'] : '';
