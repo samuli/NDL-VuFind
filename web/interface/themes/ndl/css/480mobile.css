@@ -143,10 +143,8 @@
     }
     .keepFilters {
         clear: left;
-        top: 13px;
         padding-bottom: 13px;
         float: right;
-        left: auto;
         margin-right: 10px;
     }
     .keepdFilters > input {
