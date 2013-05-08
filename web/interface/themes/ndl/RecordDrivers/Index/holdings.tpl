@@ -1,5 +1,7 @@
 <!-- START of: RecordDrivers/Index/holdings.tpl -->
 
+<h3>{translate text=$source prefix='source_'}</h3>
+
 {if $id|substr:0:7 == 'helmet.'}
   <br/>
   <span class="native_link">
@@ -7,12 +9,8 @@
   </span>
 {/if}
 
-{if !empty($holdings)}
-<h3>{translate text=$source prefix='source_'}</h3>
-{/if}
-
 {if !$hideLogin && $offlineMode != "ils-offline"}
-  {if ($driverMode || $titleDriverMode) && !empty($holdings)}
+  {if ($driverMode  && !empty($holdings)) || $titleDriverMode}
     {if $showLoginMsg || $showTitleLoginMsg}
       <div class="userMsg">
         <a href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id}">{translate text="Login"}</a> {translate text="hold_login"}
@@ -56,6 +54,12 @@
     {include file="Search/openurl.tpl" openUrl=$holdingsOpenURL}
   {/if}
 {/if}
+
+
+{if !$holdings}
+<h5>{translate text="No holdings information available"}</h5>
+{/if}
+
 {foreach from=$holdings item=holding key=location}
 <h5>{$location|translate|escape}</h5>
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
