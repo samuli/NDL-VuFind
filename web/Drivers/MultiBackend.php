@@ -428,6 +428,9 @@ class MultiBackend implements DriverInterface
      */
     public function checkRequestIsValid($id, $data, $patron)
     {
+        if (!isset($patron['cat_username'])) {
+            return false;
+        }
         $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
         if ($driver) {
@@ -870,7 +873,24 @@ class MultiBackend implements DriverInterface
         if ($pos > 0) {
             return substr($id, 0, $pos);
         }
-        error_log("MultiBackend: Can't find source id in '$id'");
+        error_log("MultiBackend: Can't find source id in '$id', call stack:");
+        $stack = debug_backtrace();
+        foreach ($stack as $item) {
+            $args = '';
+            foreach ($item['args'] as $arg) {
+                if ($args) {
+                    $args .= ', ';
+                }
+                if ($arg == null) {
+                    $args .= 'null';
+                } elseif (gettype($arg) == 'string') {
+                    $args .= "'$arg'";  
+                } else {
+                    $args .= print_r($arg, true);
+                }
+            }
+            error_log('  ' . $item['file'] . ':' . $item['line'] . ' ' . $item['function'] . "($args)");
+        }
         return '';
     }
 
