@@ -4,69 +4,20 @@
 
 {php}
 
+$feed = $this->get_template_vars('rssFeed');
 
-/*
- * let's get the list of feeds and pick the right one by the rssId defined in
- * the template that called us
- */
-$confArray = $this->get_template_vars('rssFeeds');
-$feed = $confArray[$this->get_template_vars('rssId')];
-
-/*
- * various configuration settings
- */
-$type = $feed['type'];
-$items = isset($feed['items']) ? $feed['items'] : 0;
-$itemsPerPage = isset($feed['itemsPerPage']) ? $feed['itemsPerPage'] : 4;
-$scrolledItems = isset($feed['scrolledItems']) ? $feed['scrolledItems'] : $itemsPerPage;
-$useChannelTitle = $feed['useChannelTitle'];
-$direction = isset($feed['direction']) ? $feed['direction'] : 'left';
-$height = (!isset($feed['height']) || $feed['height'] == 0) ? false : $feed['height'];
-$dateFormat = isset($feed['dateFormat']) ? $feed['dateFormat'] : "j.n.";
-
-/*
- * first we look for a feed for the language we are in; if that fails we look
- * for url[any]; if that fails we output an error and return
- */
-$language = $this->get_template_vars('userLang');
-if($language) {
-    $url = isset($feed['url'][$language]) ?
-           $feed['url'][$language] : false;
-}
-if(!$url) {
-    $url = isset($feed['url']['*']) ?
-           $feed['url']['*'] : false;
-}
-if(!$url) {
-    echo "<p>No URL defined in rss.ini.</p>";
-    return;
-}
-
-require_once "XML/RSS.php";
-$rss =& new XML_RSS($url);
-$rss->parse();
-
-$channelInfo = $rss->getChannelInfo();
-$this->assign("channelURL", $channelInfo['link']);
-
-if ($items>0) {
-    $rssItems = array_slice($rss->getItems(), 0, $items);
-} else {
-    $rssItems = $rss->getItems();
-}
-
-if(($type == "carousel") ||
-   ($type == "carousel-small") ||
-   ($type == "carousel-notext")) {
-    echo "<div class=\"carousel-direction-$direction\">";
+if(($feed['type'] == "carousel") ||
+   ($feed['type'] == "carousel-small") ||
+   ($feed['type'] == "carousel-notext")) {
+    echo "<div class=\"carousel-direction-" . $feed['direction'] . "\">";
     echo "<ul id=\"NDLCarousel\"";
 
     $classes = "";
-    if($type == "carousel-notext") {
+    if($feed['type'] == "carousel-notext") {
         $classes .= "noText ";
-    } elseif($type == "carousel-small") {
+    } elseif($feed['type'] == "carousel-small") {
         $classes .= "small ";
-    } elseif($type == "carousel") {
+    } elseif($feed['type'] == "carousel") {
         $classes .= "includeDescription ";
         $includeDescription = true;
     }
@@ -77,9 +28,12 @@ if(($type == "carousel") ||
 
     echo ">\n";
 
-    foreach ($rssItems as $item) {
+    foreach ($feed['items'] as $item) {
         $title = $item['title'];
         $content = strip_tags($item['description']);
+
+        /* to find the item image, first we look for enclosure elements in the
+         * feed item... */
         $imageUrl = false;
         if(count($item['enclosures'])>0) {
             foreach($item['enclosures'] as $enclosure) {
@@ -89,6 +43,8 @@ if(($type == "carousel") ||
                 }
             }
         }
+        /* ...and if that fails, we try to extract the image url from the
+         * description element */
         if(!$imageUrl) {
             preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
             $imageUrl = $matches[1];
@@ -104,11 +60,7 @@ if(($type == "carousel") ||
     }
     echo "</ul>";
 
-    $this->assign("itemsPerPage", $itemsPerPage);
-    $this->assign("scrolledItems", $scrolledItems);
-    $this->assign("direction", $direction);
-    $this->assign("height", $height);
-    $this->assign("scrollSpeed", 1000 * ($scrolledItems / $itemsPerPage));
+    $this->assign("scrollSpeed", 1000 * ($feed['scrolledItems'] / $feed['itemsPerPage']));
 
     {/php}
     
@@ -121,29 +73,29 @@ if(($type == "carousel") ||
             
             // Determine height if it is not set
             {/literal}{php}
-                if (!$height) :
+                if (!$rssFeed['height']) :
             {/php}{literal}
             var carouselContainer = $('#carouselContainer .content');
             var carouselWidth = carouselContainer.width();
             var carouselHeight = 
-                (carouselWidth - ({/literal}{$itemsPerPage}{literal} * 10))  / 
-                {/literal}{$itemsPerPage}{literal} * 1.36;
+                Math.floor((carouselWidth - ({/literal}{$rssFeed.itemsPerPage}{literal} * 10))  / 
+                {/literal}{$rssFeed.itemsPerPage}{literal} * 1.36);
                     
             // If height is set
             {/literal}{php}
                 else : 
             {/php}{literal}
-                var carouselHeight = {/literal}{$height}{literal};
+                var carouselHeight = {/literal}{$rssFeed.height}{literal};
             {/literal}{php}
                 endif;
             {/php}{literal} 
             
             $('#NDLCarousel').carouFredSel({
                 responsive: true,
-                direction:{/literal}'{$direction}'{literal},
+                direction:{/literal}'{$rssFeed.direction}'{literal},
                 auto: 8000,
                 width: "100%",
-                items: {/literal}{$itemsPerPage}{literal},
+                items: {/literal}{$rssFeed.itemsPerPage}{literal},
                 height: carouselHeight,
                 prev: "#NDLCarouselNavi #prev",
                 next: "#NDLCarouselNavi #next",
@@ -152,7 +104,7 @@ if(($type == "carousel") ||
                     onMouse: false
                 },
                 scroll: {
-                  items: {/literal}{$scrolledItems}{literal},
+                  items: {/literal}{$rssFeed.scrolledItems}{literal},
                   duration: {/literal}{$scrollSpeed}{literal},
                   fx: "directscroll",
                   pauseOnHover: true
@@ -216,7 +168,7 @@ if(($type == "carousel") ||
                             'visibility'  : 'visible'
                         });
 
-                        $(this).fadeIn(300);
+                       $(this).fadeIn(300);
                     });
                 });
             };
@@ -264,19 +216,19 @@ if(($type == "carousel") ||
     </script>
     {/literal}{php}
 } else {
-    if($useChannelTitle) {
-        echo "<h2>" . $channelInfo['title'] . "</h2>\n";
+    if($feed['useChannelTitle']) {
+        echo "<h2>" . $feed['channelInfo']['title'] . "</h2>\n";
     }
     echo "<ul class=\"NDLNews\">";
-    foreach ($rssItems as $item ) {
+    foreach ($feed['items'] as $item ) {
             if($item['dc:date']) {
                 $dateTime = DateTime::createFromFormat(DATE_ISO8601, $item['dc:date']);
             } elseif($item['pubdate']) {
                 $dateTime = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
             }
             $date = FALSE;
-            if($dateTime && $dateFormat) {
-                $date = $dateTime->format($dateFormat);
+            if($dateTime && $feed['dateFormat']) {
+                $date = $dateTime->format($feed['dateFormat']);
             }
             $title = $item['title'];
             $url   = $item['link'];
@@ -287,7 +239,7 @@ if(($type == "carousel") ||
             echo "<a href=\"$url\">$title</a></li>\n";
     }
     {/php}
-    <li><a href="{$channelURL}">{translate text="More"}&hellip;</a></li>
+    <li><a href="{$rssFeed.channelURL}">{translate text="More"}&hellip;</a></li>
     </ul></div>
     {php}
 

@@ -15,10 +15,10 @@
   </div>
 </div>
 
-{if $rssFeeds.carousel.active}      
+{if $rssFeeds.carousel.active}
 <div id="carouselContainer" class="section">
 <div class="content">
-{include file="Search/rss.tpl" rssId="carousel"}
+{include file="AJAX/loadRSS.tpl" rssId="carousel"}
 </div>
 </div>
 {/if}
@@ -35,7 +35,7 @@
     <div class="grid_10 push_right">
       {if $rssFeeds.news.active}
       <h2>Uutisia</h2>
-      {include file="Search/rss.tpl" rssId="news"}
+        {include file="AJAX/loadRSS.tpl" rssId="news"}
       {/if}
     </div>
   </div>
