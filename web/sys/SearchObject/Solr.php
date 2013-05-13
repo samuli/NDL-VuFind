@@ -1500,12 +1500,19 @@ class SearchObject_Solr extends SearchObject_Base
                 // Initialize the array of data about the current facet:
                 $currentSettings = array();
                 if ($translate) {
-                    $facetValue = $facet[0];
                     if (is_array($hierarchical) && in_array($field, $hierarchical)) {
+                        $facetValue = $facet[0];
                         // Remove trailing slash
                         $facetValue = rtrim($facetValue, '/');
+                        $translatedValue = translate(array('prefix' => $translationPrefix, 'text' => $facetValue));
+                        if ($translatedValue == $facetValue) {
+                            // Didn't find a translation, so let's just clean up the display string a bit
+                            $translatedValue = end(explode('/', $facetValue));
+                        }
+                        $currentSettings['value'] = $translatedValue;
+                    } else {
+                        $currentSettings['value'] = translate(array('prefix' => $translationPrefix, 'text' => $facet[0]));
                     }
-                    $currentSettings['value'] = translate(array('prefix' => $translationPrefix, 'text' => $facetValue));
                 } else {
                     $currentSettings['value'] = $facet[0];
                 }
