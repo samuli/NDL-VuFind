@@ -62,10 +62,7 @@ class Accounts extends MyResearch
             return;
         }
         if (isset($_REQUEST['add'])) {
-            if (!$this->editAccount(null)) {
-                header('Location: Accounts');
-                die();
-            }
+            $this->editAccount(null);
             return;
         }
         if (isset($_REQUEST['submit'])) {
