@@ -2091,6 +2091,7 @@ class IndexRecord implements RecordInterface
     {
         $formats = array();
         foreach (isset($this->fields['format']) ? $this->fields['format'] : array() as $format) {
+            $format = rtrim($format, '/');
             $formats[] = preg_replace('/^\d\//', '', $format);
         }
         return $formats;
