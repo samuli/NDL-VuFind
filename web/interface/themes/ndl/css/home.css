@@ -223,7 +223,7 @@ ul.documentTypes li {
     background-position: center;
     overflow: hidden;
     margin:0 5px 0 5px;
-    background:#fff;
+    background: #808080;
 }
 #NDLCarousel.includeDescription img {
     max-height: 5000px;
