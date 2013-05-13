@@ -221,7 +221,11 @@ if ($user && $shibbolethEnabled
         $user = UserAccount::login('Shibboleth');
         // If we authenticated, store the user in the session:
         if (PEAR::isError($user)) {
-            error_log("Shibboleth login failed: " . $user->getMessage());
+            if ($user->getMessage() == 'authentication_error_admin') {
+                error_log('User id not set, Shibboleth login not possible');
+            } else {
+                error_log("Shibboleth login failed: " . $user->getMessage());
+            }
             $user = false;
         }
     }
