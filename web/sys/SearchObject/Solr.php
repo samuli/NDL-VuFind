@@ -1700,6 +1700,10 @@ class SearchObject_Solr extends SearchObject_Base
         } else {
             $lookfor = $this->displayQuery();
         }
+        // Workaround for apostrophes and quotes in the same parameter breaking XSLT:
+        if (strstr($lookfor, '"') !== false && strstr($lookfor, "'") !== false) {
+            $lookfor = str_replace("'", '', $lookfor);
+        }
         if (count($this->filterList) > 0) {
             // TODO : better display of filters
             $xsl->setParameter(
