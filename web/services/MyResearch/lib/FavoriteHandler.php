@@ -181,6 +181,7 @@ class FavoriteHandler
                     }
                 }
             }
+            $sortKey = mb_strtolower($sortKey, 'UTF-8');
             $sortKey .= '_' . $favorite->record_id;
             $resourceList[$sortKey] = $html;
         }
