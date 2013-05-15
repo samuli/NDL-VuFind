@@ -115,20 +115,58 @@ class Bulk extends Action
      */
     protected function getRecordDetails($ids)
     {
+        global $interface;
+        
         $recordList = array();
 
+        $metalib = null;
+        $pci = null;
         foreach ($ids as $id) {
-            $record = $this->db->getRecord($id);
-            $driver = RecordDriverFactory::initRecordDriver($record);
-            $recordList[] = array(
-                'id'      => $id,
-                'isbn'    => $record['isbn'],
-                'author'  => $record['author'],
-                'title'   => $driver->getBreadcrumb(),
-                'format'  => $record['format']
-            );
+            if (strncmp($id, 'metalib.', 8) == 0) {
+                if (!isset($metalib)) {
+                    $metalib = new MetaLib();
+                }
+                $record = $metalib->getRecord($id);
+                $record['id'] = $id;
+                $interface->assign('record', $record);
+                $email = $interface->fetch('MetaLib/result-email.tpl');
+                $recordList[] = array(
+                    'id'     => $id,
+                    'isbn'   => isset($record['ISBN'][0]) ? $record['ISBN'][0] : '',
+                    'author' => isset($record['Author'][0]) ? $record['Author'][0] : '',
+                    'title'  => isset($record['Title'][0]) ? $record['Title'][0] : '',
+                    'format' => isset($record['format'][0]) ? $record['format'][0] : '',
+                    'email'  => $email
+                );
+            } elseif (strncmp($id, 'pci.', 4) == 0) {
+                if (!isset($pci)) {
+                    $pci = new PCI();
+                }
+                $record = $pci->getRecord($id);
+                $interface->assign('record', $record);
+                $email = $interface->fetch('PCI/result-email.tpl');
+                $recordList[] = array(
+                    'id'     => $id,
+                    'isbn'   => '',
+                    'author' => isset($record['author'][0]) ? $record['author'][0] : '',
+                    'title'  => isset($record['title']) ? $record['title'] : '',
+                    'format' => isset($record['format']) ? $record['format'] : '',
+                    'email'  => $email
+                );
+            } else {
+                $record = $this->db->getRecord($id);
+                $driver = RecordDriverFactory::initRecordDriver($record);
+                $email = $interface->fetch($driver->getSearchResult('email'));
+                $recordList[] = array(
+                    'id'      => $id,
+                    'isbn'    => isset($record['isbn']) ? $record['isbn'] : '',
+                    'author'  => isset($record['author']) ? $record['author'] : '',
+                    'title'   => $driver->getTitle(),
+                    'format'  => $record['format'],
+                    'email'   => $email
+                );
+            }
         }
-
         return $recordList;
     }
 }

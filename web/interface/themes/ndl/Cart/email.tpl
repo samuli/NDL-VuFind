@@ -3,10 +3,7 @@
   
 <form action="{$url}/Cart/Home?email" method="post" name="bulkEmail">
 
-  {foreach from=$emailList item=emailItem}
-  <strong>{translate text='Title'}:</strong>
-  {$emailItem.title|escape}<br />
-  {/foreach}
+  <label class="displayBlock">{$emailList|@count} {translate text="records"}</label>
   <br />
   <label class="displayBlock" for="email_to">{translate text='To'}:</label>
   <input id="email_to" type="text" name="to" size="40" class="mainFocus {jquery_validation required='This field is required' email='Email address is invalid'}"/>
