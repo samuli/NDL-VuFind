@@ -64,11 +64,6 @@ class MySQLSession extends SessionInterface
                 return '';
             }
         } else {
-            // in seconds - easier for calcuating duration
-            $s->last_used = time();
-            // in date format - easier to read
-            $s->created = date('Y-m-d h:i:s');
-            $s->insert();
             return '';
         }
     }
@@ -93,7 +88,12 @@ class MySQLSession extends SessionInterface
             $s->data = $data;
             return $s->update();
         } else {
-            return false;
+            // in seconds - easier for calculating duration
+            $s->last_used = time();
+            // in date format - easier to read
+            $s->created = date('Y-m-d h:i:s');
+            $s->data = $data; 
+            return $s->insert();
         }
     }
 
