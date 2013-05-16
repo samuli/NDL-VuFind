@@ -230,6 +230,9 @@ class IndexRecord implements RecordInterface
         $interface->assign('corePrevTitles', $this->getPreviousTitles());
         $interface->assign('coreAlternativeTitles', $this->getAlternativeTitles());
         $interface->assign('corePublications', $this->getPublicationDetails());
+        $interface->assign('corePublicationPlaces', $this->getPlacesOfPublication());
+        $interface->assign('corePublishers', $this->getPublishers());
+        $interface->assign('corePublicationDates', $this->getPublicationDates());
         $interface->assign('coreProjectedPublicationDate', $this->getProjectedPublicationDate());
         $interface->assign('coreEdition', $this->getEdition());
         $interface->assign('coreSeries', $this->getSeries());
@@ -239,6 +242,9 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreThumbLarge', $this->getThumbnail('large'));
         $interface->assign('coreContainerTitle', $this->getContainerTitle());
         $interface->assign('coreContainerReference', $this->getContainerReference());
+        $interface->assign('coreContainerStartPage', $this->getContainerStartPage());
+        $interface->assign('coreContainerVolume', $this->getContainerVolume());
+        $interface->assign('coreContainerIssue', $this->getContainerIssue());    
         $interface->assign('coreInstitutions', $this->getInstitutions());
         $interface->assign('coreClassifications', $this->getClassifications());
         $interface->assign('coreDissertationNote', $this->getDissertationNote());
@@ -643,11 +649,18 @@ class IndexRecord implements RecordInterface
         if ($format == 'refworks') {
             $this->redirectToRefWorks();
         } else if ($format == 'refworks_data') {
-            // This makes use of core metadata fields in addition to the
-            // assignment below:
             header('Content-type: text/plain; charset=utf-8');
             $interface->assign('indexData', $this->fields);
             return 'RecordDrivers/Index/export-refworks.tpl';
+        } else if ($format == 'endnote') {
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: private", false);
+            header('Content-type: application/x-endnote-refer');
+            header("Content-Disposition: attachment; filename=\"vufind.enw\";");
+            $interface->assign('indexData', $this->fields);
+            return 'RecordDrivers/Index/export-endnote.tpl';   
         } else {
             return null;
         }
@@ -705,11 +718,11 @@ class IndexRecord implements RecordInterface
         // if nothing in config array).
         global $configArray;
         $active = isset($configArray['Export']) ?
-            $configArray['Export'] : array('RefWorks' => true);
+            $configArray['Export'] : array('RefWorks' => true, 'EndNote' => true);
 
         // These are the formats we support for indexrecord if they are turned on in
         // config.ini:
-        $possible = array('RefWorks');
+        $possible = array('RefWorks', 'EndNote');
 
         // Check which formats are currently active:
         $formats = array();

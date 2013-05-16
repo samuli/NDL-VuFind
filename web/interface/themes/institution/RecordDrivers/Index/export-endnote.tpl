@@ -85,10 +85,10 @@ YR {$corePublicationDates}
 {if $corePublicationPlaces}
 {if is_array($corePublicationPlaces)}
 {foreach from=$corePublicationPlaces item=pubPlace name=loop}
-PP {$pubPlace}
+PB {$pubPlace}
 {/foreach}
 {else}
-PP {$corePublicationPlaces}
+PB {$corePublicationPlaces}
 {/if}
 {/if}
 UL {$url}/Record/{$id|escape:"url"}

@@ -1,13 +1,47 @@
+{if $recordFormat}
 {if is_array($recordFormat)}
-{foreach from=$recordFormat item=displayFormat name=loop}
-RT {$displayFormat}
-{/foreach}
+{assign var=format value=$recordFormat.0}
+{assign var=subFormat value=$recordFormat.1}
 {else}
-RT {$recordFormat}
+{assign var=format value=$recordFormat}
+{assign var=subFormat value=null}
+{/if}
+{if $format == 'Book'}
+{if $subFormat == 'Book/BookSection'}
+RT Book, Section
+{else}
+RT Book, Whole
+{/if}
+{elseif $format == 'WorkOfArt'}
+RT Artwork
+{elseif $format == 'Sound'}
+RT Sound Recording
+{elseif $format == 'Video'}
+RT Video/ DVD
+{elseif $subFormat == 'Other/Software'}
+RT Computer Program
+{elseif $format == 'Journal'}
+{if $subFormat == 'Journal/eArticle'}
+RT Journal, Electronic
+{elseif $subFormat == 'Journal/NewsPaper'}
+RT Newspaper Article
+{else}
+RT Journal Article
+{/if}
+{elseif $format == 'Map'}
+RT Map
+{elseif $subFormat == 'Database/ResearchReport'}
+RT Report
+{elseif $format == 'Thesis'}
+RT Dissertation/Thesis
+{else}
+RT Generic
+{/if}
+{else}
+RT Generic
 {/if}
 {assign var=marcField value=$marc->getField('245')}
 T1 {$marcField|getvalue:'a'}{if $marcField|getvalue:'b'} {$marcField|getvalue:'b'|replace:'/':''}{/if}
-
 {* Load the three possible series fields -- 440 is deprecated but
    still exists in many catalogs. *}
 {assign var=marcField440 value=$marc->getFields('440')}
@@ -61,13 +95,32 @@ A1 {$field|getvalue:'a'}
 {foreach from=$recordLanguage item=lang}
 LA {$lang}
 {/foreach}
-{assign var=marcField value=$marc->getFields('260')}
-{if $marcField}
-{foreach from=$marcField item=field name=loop}
-PP {$field|getvalue:'a'|replace:':':''} 
-PB {$field|getvalue:'b'|replace:',':''} 
-YR {$field|getvalue:'c'|replace:'.':''}
+{if $corePublishers}
+{if is_array($corePublishers)}
+{foreach from=$corePublishers item=publisher name=loop}
+PB {$publisher}
 {/foreach}
+{else}
+PB {$corePublishers}
+{/if}
+{/if}
+{if $corePublicationDates}
+{if is_array($corePublicationDates)}
+{foreach from=$corePublicationDates item=pubDate name=loop}
+YR {$pubDate}
+{/foreach}
+{else}
+YR {$corePublicationDates}
+{/if}
+{/if}
+{if $corePublicationPlaces}
+{if is_array($corePublicationPlaces)}
+{foreach from=$corePublicationPlaces item=pubPlace name=loop}
+PP {$pubPlace}
+{/foreach}
+{else}
+PP {$corePublicationPlaces}
+{/if}
 {/if}
 {assign var=marcField value=$marc->getFields('250')}
 {if $marcField}
@@ -95,7 +148,6 @@ CN {$marcField|getvalue:'a'}
 {assign var=marcField value=$marc->getField('050')}
 {if $marcField}
 CN {foreach from=$marcField->getSubfields() item=subfield name=subloop}{$subfield->getData()}{/foreach}
-
 {/if}
 {/if}
 {assign var=marcField value=$marc->getField('020')}
@@ -106,5 +158,17 @@ SN {$marcField|getvalue:'a'}
 {if $marcField}
 {foreach from=$marcField item=field name=loop}
 K1 {foreach from=$field->getSubfields() item=subfield name=subloop}{if !$smarty.foreach.subloop.first} : {/if}{assign var=subfield value=$subfield->getData()}{$subfield}{/foreach}
-
 {/foreach}{/if}
+{if $coreContainerTitle}
+JF {$coreContainerTitle}
+JO {$coreContainerTitle}
+{/if}
+{if $coreContainerStartPage}
+SP {$coreContainerStartPage}
+{/if}
+{if $coreContainerIssue}
+IS {$coreContainerIssue}
+{/if}
+{if $coreContainerVolume}
+VO {$coreContainerVolume}
+{/if}
