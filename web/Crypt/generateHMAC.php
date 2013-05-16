@@ -41,7 +41,7 @@ function generateHMAC($keysToHash, $keyValueArray)
     global $configArray;
     $str = '';
     foreach ($keysToHash as $key) {
-        $str .= $key . '=' . $keyValueArray[$key] . '|';
+        $str .= $key . '=' . (isset($keyValueArray[$key]) ? $keyValueArray[$key] : '') . '|';
     }
     return hash_hmac('md5', $str, $configArray['Security']['HMACkey']);
 }

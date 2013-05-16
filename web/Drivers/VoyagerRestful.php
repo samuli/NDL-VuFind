@@ -883,10 +883,11 @@ class VoyagerRestful extends Voyager
                 if ($reply == "ok") {
                     if ($check->$request ) {
                         $requestAttributes = $check->$request->attributes();
-                        if ($requestAttributes['allowed'] == "Y") {
-                            return true;
+                        if ($requestAttributes['allowed'] == 'N') {
+                            return false;
                         }
                     }
+                    return true;
                 }
             }
         }

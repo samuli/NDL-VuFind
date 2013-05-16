@@ -1110,9 +1110,8 @@ body > .ui-widget .button {
 
 .keepFilters {
     clear: none;
-    left: 5px;
-    position: relative;
-    top: 11px;
+    float: left;
+    margin: 11px 0 0 5px;
 }
 .keepFilters input {
     margin-top: .15em;

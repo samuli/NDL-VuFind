@@ -143,10 +143,8 @@
     }
     .keepFilters {
         clear: left;
-        top: 13px;
         padding-bottom: 13px;
         float: right;
-        left: auto;
         margin-right: 10px;
     }
     .keepdFilters > input {
@@ -391,8 +389,8 @@
         margin-top: 2em;
     }
     .content .resultscroller.grid_5.push_7 {
-        width:130px;
-        left:100px;
+        width:145px;
+        left:90px;
     }
     .recordcover {
         max-width:110px;

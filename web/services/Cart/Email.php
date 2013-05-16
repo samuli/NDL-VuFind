@@ -183,19 +183,24 @@ class Email extends Bulk
      * @param string $to      Message recipient
      * @param string $from    Message sender
      * @param string $message Extra note to add to message
+     * @param array  $records Details of records to send
      *
      * @return mixed          Boolean true on success, PEAR_Error on failure.
      * @access public
      */
-    public function sendEmail($url, $to, $from, $message)
+    public function sendEmail($url, $to, $from, $message, $records = null)
     {
         global $interface;
 
+        if (!isset($records)) {
+            $records = $this->getRecordDetails($_POST['ids']);
+        }
         $subject = translate('bulk_email_title');
         $interface->assign('from', $from);
         $interface->assign('message', $message);
         $interface->assign('msgUrl', $url);
-        $body = $interface->fetch('Emails/share-link.tpl');
+        $interface->assign('records', $records);
+        $body = $interface->fetch('Emails/records.tpl');
 
         $mail = new VuFindMailer();
         return $mail->send($to, $from, $subject, $body);

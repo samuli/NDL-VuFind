@@ -1493,12 +1493,29 @@ class SearchObject_Solr extends SearchObject_Base
             $list[$field]['list']  = array();
             // Should we translate values for the current facet?
             $translate = in_array($field, $this->translatedFacets);
+            // Hierarchical facets
+            $hierarchical = $this->getFacetSetting('SpecialFacets', 'hierarchical');
             // Loop through values:
             foreach ($data as $facet) {
                 // Initialize the array of data about the current facet:
                 $currentSettings = array();
-                $currentSettings['value']
-                    = $translate ? translate(array('prefix' => $translationPrefix, 'text' => $facet[0])) : $facet[0];
+                if ($translate) {
+                    if (is_array($hierarchical) && in_array($field, $hierarchical)) {
+                        $facetValue = $facet[0];
+                        // Remove trailing slash
+                        $facetValue = rtrim($facetValue, '/');
+                        $translatedValue = translate(array('prefix' => $translationPrefix, 'text' => $facetValue));
+                        if ($translatedValue == $facetValue) {
+                            // Didn't find a translation, so let's just clean up the display string a bit
+                            $translatedValue = end(explode('/', $facetValue));
+                        }
+                        $currentSettings['value'] = $translatedValue;
+                    } else {
+                        $currentSettings['value'] = translate(array('prefix' => $translationPrefix, 'text' => $facet[0]));
+                    }
+                } else {
+                    $currentSettings['value'] = $facet[0];
+                }
                 $currentSettings['untranslated'] = $facet[0];
                 $currentSettings['count'] = $facet[1];
                 $currentSettings['isApplied'] = false;
@@ -1682,6 +1699,10 @@ class SearchObject_Solr extends SearchObject_Base
             $lookfor = translate('Course Reserves');
         } else {
             $lookfor = $this->displayQuery();
+        }
+        // Workaround for apostrophes and quotes in the same parameter breaking XSLT:
+        if (strstr($lookfor, '"') !== false && strstr($lookfor, "'") !== false) {
+            $lookfor = str_replace("'", '', $lookfor);
         }
         if (count($this->filterList) > 0) {
             // TODO : better display of filters

@@ -149,21 +149,39 @@ class FavoriteHandler
                     $this->_listId,
                     $this->_allowEdit
                 );
-                switch ($currentSort) {
-                case 'title': 
-                    $sortKey = isset($data['Title'][0]) ? $data['Title'][0] : ' '; 
-                    break;
-                case 'author': 
-                    $sortKey = isset($data['Author'][0]) ? $data['Author'][0] : ' '; 
-                    break;
-                case 'date': 
-                    $sortKey = isset($data['main_date_str']) ? $data['main_date_str'] : isset($data['publicationDate'][0]) ? $data['publicationDate'][0] : ' '; 
-                    break;
-                case 'format': 
-                    $sortKey = isset($data['format'][0]) ? translate($data['format'][0]) : ' '; 
-                    break;
+                if ($source == 'MetaLib') {
+                    switch ($currentSort) {
+                    case 'title': 
+                        $sortKey = isset($data['Title'][0]) ? $data['Title'][0] : ' '; 
+                        break;
+                    case 'author': 
+                        $sortKey = isset($data['Author'][0]) ? $data['Author'][0] : ' '; 
+                        break;
+                    case 'date': 
+                        $sortKey = isset($data['main_date_str']) ? $data['main_date_str'] : isset($data['publicationDate'][0]) ? $data['publicationDate'][0] : ' '; 
+                        break;
+                    case 'format': 
+                        $sortKey = isset($data['format'][0]) ? translate($data['format'][0]) : ' '; 
+                        break;
+                    }
+                } else {
+                    switch ($currentSort) {
+                    case 'title': 
+                        $sortKey = isset($data['title']) ? $data['title'] : ' '; 
+                        break;
+                    case 'author': 
+                        $sortKey = isset($data['author'][0]) ? $data['author'][0] : ' '; 
+                        break;
+                    case 'date': 
+                        $sortKey = isset($data['main_date_str']) ? $data['main_date_str'] : isset($data['publicationDate']) ? $data['publicationDate'] : ' '; 
+                        break;
+                    case 'format': 
+                        $sortKey = isset($data['format']) ? translate($data['format']) : ' '; 
+                        break;
+                    }
                 }
             }
+            $sortKey = mb_strtolower($sortKey, 'UTF-8');
             $sortKey .= '_' . $favorite->record_id;
             $resourceList[$sortKey] = $html;
         }
