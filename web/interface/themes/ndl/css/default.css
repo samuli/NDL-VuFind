@@ -349,6 +349,10 @@ div.sidegroup {
     height: 20px;
 }
 
+#headerMenu > li {
+    position:relative;
+}
+
 #headerMenu ul.subNav {
     background: #ffffff none repeat scroll 0 0;
     -moz-border-radius: 10px;
@@ -360,7 +364,8 @@ div.sidegroup {
     padding: 0px;
     position: absolute; 
 
-    top: 40px;
+    top: 27px;
+    left:-10px;
 /*
     left: 54px;
 */
@@ -387,36 +392,6 @@ div.sidegroup {
     height: 9px;
     padding-left: 8px;
     width: 11px;
-}
-#headerMenu .menuSearch_fi ul.subNav {
-    left: 74px;
-}
-#headerMenu .menuHelp_fi ul.subNav {
-    left: 144px;
-}
-#headerMenu .menuLogin_fi ul.subNav {
-    left: 301px;
-}
-#headerMenu .menuLibCard_fi ul.subNav {
-    left: 420px;
-}
-#headerMenu .menuSearch_sv ul.subNav {
-    left: 94px;
-}
-#headerMenu .menuHelp_sv ul.subNav {
-    left: 184px;
-}
-#headerMenu .menuLogin_sv ul.subNav {
-    left: 348px;
-}
-#headerMenu .menuSearch_en-gb ul.subNav {
-    left: 72px;
-}
-#headerMenu .menuHelp_en-gb ul.subNav {
-    left: 154px;
-}
-#headerMenu .menuLogin_en-gb ul.subNav {
-    left: 330px;
 }
 
 #headerMenu ul.subNav li {
