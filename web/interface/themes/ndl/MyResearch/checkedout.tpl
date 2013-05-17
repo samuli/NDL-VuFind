@@ -13,7 +13,7 @@
     </div>
   {/if}
   {if $user->cat_username}
-    <span class="hefty">{translate text='Your Checked Out Items'}</span>
+    <h2>{translate text='Your Checked Out Items'}</h2>
     {if $blocks}
       {foreach from=$blocks item=block}
         <p class="info">{translate text=$block}</p>
@@ -181,7 +181,7 @@
         </form>
       {/if}
     {else}
-      <div style="clear:both;padding-top: 2em;">{translate text='You do not have any items checked out'}.</div>
+      <div class="noContentMessage">{translate text='You do not have any items checked out'}.</div>
     {/if}
   {else}
     {include file="MyResearch/catalog-login.tpl"}
