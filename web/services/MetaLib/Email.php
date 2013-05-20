@@ -1,6 +1,6 @@
 <?php
 /**
- * Email action for PCI module
+ * Email action for MetaLib module
  *
  * PHP version 5
  *
@@ -25,6 +25,7 @@
  * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @author   Kalle Pyykkönen <kalle.pyykkonen@helsinki.fi>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
@@ -32,17 +33,18 @@ require_once 'sys/PCI.php';
 require_once 'sys/Mailer.php';
 
 /**
- * Email action for PCI module
+ * Email action for MetaLib module
  *
  * @category VuFind
  * @package  Controller_Record
  * @author   Andrew S. Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @author   Kalle Pyykkönen <kalle.pyykkonen@helsinki.fi>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-class Email extends PCI
+class Email extends MetaLib
 {
     /**
      * Process incoming parameters and display the page.
@@ -70,12 +72,12 @@ class Email extends PCI
 
         // Display Page
         $interface->assign(
-            'formTargetPath', '/PCI/' . urlencode($_GET['id']) . '/Email'
+            'formTargetPath', '/MetaLib/' . urlencode($_GET['id']) . '/Email'
         );
         $interface->assign('recordId', urlencode($_GET['id']));
         if (isset($_GET['lightbox'])) {
             $interface->assign('title', $_GET['message']);
-            return $interface->fetch('PCI/email.tpl');
+            return $interface->fetch('MetaLib/email.tpl');
         } else {
             $interface->setPageTitle('Email Record');
             $interface->assign('subTemplate', 'email.tpl');
@@ -99,10 +101,11 @@ class Email extends PCI
         global $interface;
         $id = $_POST['recordId'];
         $record = $this->getRecord($id);
+        $record['id'] = $id;
         $interface->assign('record', $record);
-        $subject = translate("Library Catalog Record") . ": " . $record['title'];
+        $subject = translate("Library Catalog Record") . ": " . (isset($record['Title'][0]) ? $record['Title'][0] : translate('Title not available'));
         $interface->assign('from', $from);
-        $interface->assign('emailDetails', $interface->fetch('PCI/result-email.tpl'));
+        $interface->assign('emailDetails', $interface->fetch('MetaLib/result-email.tpl'));
         $interface->assign('recordID', $id);
         $interface->assign('message', $message);
         $body = $interface->fetch('Emails/catalog-record.tpl');

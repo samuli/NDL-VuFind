@@ -247,9 +247,9 @@ class Export extends Bulk
             $driver = RecordDriverFactory::initRecordDriver($record);
             $exportList[] = array(
                 'id'      => $id,
-                'isbn'    => $record['isbn'],
-                'author'  => $record['author'],
-                'title'   => $driver->getBreadcrumb(),
+                'isbn'    => isset($record['isbn']) ? $record['isbn'] : '',
+                'author'  => isset($record['author']) ? $record['author'] : '',
+                'title'   => $driver->getTitle(),
                 'format'  => $record['format']
             );
 

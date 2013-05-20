@@ -155,6 +155,7 @@ class PCI
         if ($resource->find(true)) {
             return unserialize($resource->data);
         } else {
+            $id = preg_replace('/^pci\./', '', $id);
             $params = array('group' => array('lookfor' => $id, 'field' => 'rid'));
             $result = $this->query($params);
             return $result['response']['docs'][0];
@@ -404,7 +405,7 @@ EOD;
             'openUrl' => !empty($openurl) ? $openurl : null,
             'url' => $links,
             'fullrecord' => $item->asXML(),
-            'id' => (string)$primoRecord->PrimoNMBib->record->search->recordid,
+            'id' => 'pci.' . (string)$primoRecord->PrimoNMBib->record->search->recordid,
             'format' => (string)$primoRecord->PrimoNMBib->record->display->type,
             'ISSN' => (string)$primoRecord->PrimoNMBib->record->search->issn,
             'language' => (string)$primoRecord->PrimoNMBib->record->facets->language,

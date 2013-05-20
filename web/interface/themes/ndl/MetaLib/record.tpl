@@ -58,6 +58,7 @@
     <div id="resultToolbar" class="toolbar">
       <ul>
         <li id="saveLink"><a href="{$url}/MetaLib/Save?id={$id|escape:"url"}" class="saveMetaLibRecord metalibRecord fav" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{translate text="Add to favorites"}</a></li>        
+        <li><a href="{$url}/MetaLib/{$id|escape:"url"}/Email" class="mailRecord mailMetaLib mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li>
         {* SMS commented out for now
         <li><a href="{$url}/MetaLib/SMS?id={$id|escape:"url"}" class="smsRecord smsMetaLib sms" id="smsRecord{$id|escape}" title="{translate text="Text this"}">{translate text="Text this"}</a></li>
         *}

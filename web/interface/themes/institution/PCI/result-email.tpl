@@ -7,4 +7,4 @@
 
 {translate text='Published'}: {$record.publicationDate|escape}{/if}
 
-{translate text="Full Record"}: {$url}/PCI/{$record.id|escape:"url"}
+{translate text="Full Record"}: {$url}/PCI/Record?id={$record.id|escape:"url"}
