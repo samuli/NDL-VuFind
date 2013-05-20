@@ -19,6 +19,7 @@
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" >
     {if $addHeader}{$addHeader}{/if}
 
     <title>{$pageTitle|truncate:64:"..."}</title>
@@ -88,7 +89,7 @@
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}
-    {js filename="jquery-1.8.0.min.js"}
+    {js filename="jquery-1.8.3.min.js"}
     {js filename="jquery-ui-1.8.23.custom/js/jquery-ui-1.8.23.custom.min.js"}
     {js filename="jquery.cookie.js"}
     {js filename="jquery.form.js"}
@@ -127,15 +128,15 @@
     {js filename="jquery.touchSwipe.min.js"}
     {js filename="jquery.imagesloaded.min.js"}
     
-    {* Load ndl theme functions *}
-    {js filename="ndl.js"}
-    
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
 
     {* Load dropdown menu modification *}
     {js filename="dropdown.js"}
-
+    
+    {* Load ndl theme functions *}
+    {js filename="ndl.js"}
+    
     {* Load Mozilla Persona support *}
     {if $mozillaPersona}
     <script type="text/javascript" src="https://login.persona.org/include.js"></script>
