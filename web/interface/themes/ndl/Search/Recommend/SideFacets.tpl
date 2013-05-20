@@ -82,20 +82,20 @@
       <dl class="narrowList navmenu">
         <dt>{translate text=$cluster.label}</dt>
       </dl>
-{literal}
-<script type="text/javascript">
-//<![CDATA[
-$(document).ready(function() {
-{/literal}
-  enableDynatree('#facet_{$title}', '{$title}', '{$fullPath}');
-{literal}  
-});
-//]]>
-</script>
-{/literal}
       <div id="facet_{$title}" class="dynatree-facet">
         <span class="facet_loading hide"></span>
       </div>
+        {literal}
+        <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function() {
+        {/literal}
+          enableDynatree('#facet_{$title|escape}', '{$title|escape}', '{$fullPath|escape}');
+        {literal}  
+        });
+        //]]>
+        </script>
+        {/literal}
     {else}
       <dl class="narrowList navmenu">
         <dt>{translate text=$cluster.label}</dt>

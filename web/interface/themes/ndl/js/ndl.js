@@ -72,41 +72,42 @@ jQuery.fn.vToggle = function() {
 
 // Date range selector 
 function initDateVis() {
-    
-    // Load date visualizer
-    detector = $('.resultDates .content');
-    if (detector.length > 0)
-        loadVisNow();
-        prevWidth = detector.width();
-        $(window).resize(function(){
+    if (typeof(loadVisNow) == "function") { 
+        // Load date visualizer
+        detector = $('.resultDates .content');
+        if (detector.length > 0)
+            loadVisNow();
+            prevWidth = detector.width();
+            $(window).resize(function(){
 
-            // Refresh on screen resize
-            if(detector.width()!=prevWidth && typeof loadVisNow != 'undefined'){
-                prevWidth = detector.width();
-                
-                loadVisNow();
-        }
+                // Refresh on screen resize
+                if(detector.width()!=prevWidth && typeof loadVisNow != 'undefined'){
+                    prevWidth = detector.width();
 
-    });
-    
-    $('.dateVisHandle').click(function() {
-        showDateVis();
-    });
-    
-    function showDateVis() {
-        var dateVis = $('.resultDates');
-        
-        var dateVisHeight = !dateVis.hasClass('expanded') ? 110 : 0;
-       dateVis.stop(true, true).animate({ height: dateVisHeight}, 200, function() {
-           dateVis.toggleClass('expanded');
-           
-       });
-       $('.resultDatesHeader').toggleClass('expanded');
-           $('div.dateVisHandle').not('.visible').fadeIn(300, function() {
-               $('div.dateVisHandle.visible').fadeOut(300);
-               $('div.dateVisHandle').toggleClass('visible');
-               $('.dateVisHelp').fadeToggle(200);
+                    loadVisNow();
+            }
+
+        });
+
+        $('.dateVisHandle').click(function() {
+            showDateVis();
+        });
+
+        function showDateVis() {
+            var dateVis = $('.resultDates');
+
+            var dateVisHeight = !dateVis.hasClass('expanded') ? 110 : 0;
+           dateVis.stop(true, true).animate({ height: dateVisHeight}, 200, function() {
+               dateVis.toggleClass('expanded');
+
            });
+           $('.resultDatesHeader').toggleClass('expanded');
+               $('div.dateVisHandle').not('.visible').fadeIn(300, function() {
+                   $('div.dateVisHandle.visible').fadeOut(300);
+                   $('div.dateVisHandle').toggleClass('visible');
+                   $('.dateVisHelp').fadeToggle(200);
+               });
+        }
     }
 }
 
