@@ -52,9 +52,44 @@ class JSON_Autocomplete extends JSON
      */
     public function getSuggestions()
     {
-        $this->output(
-            array_values(AutocompleteFactory::getSuggestions()), JSON::STATUS_OK
-        );
+        $autocomplete = true;
+        $prefilters = getExtraConfigArray('prefilters');
+        if (isset($_REQUEST['prefilter']) 
+            && $_REQUEST['prefilter'] 
+            && isset($prefilters[$_REQUEST['prefilter']])
+        ) {
+            $prefilter = $prefilters[$_REQUEST['prefilter']];
+            if (($prefilter && $_REQUEST['prefilter'] != '-')) {
+                $params = $_REQUEST;
+                $params['prefiltered'] = $params['prefilter'];
+                unset($params['prefilter']);
+                foreach ($prefilter as $key => $value) {
+                    if ($key == 'module' || $key == 'action') {
+                        if ($key == 'module' && $value != 'Search') {
+                            // only autocomplete on local index
+                            $autocomplete = false;
+                            break;
+                        }
+                        continue;
+                    }
+                    if (is_array($value)) {
+                        foreach ($value as $v) {
+                            $params[$key][] = $v;
+                        }
+                    } else {
+                        $params[$key] = $value;
+                    }
+                }
+                $_REQUEST = $params;
+            }
+        }
+        if ($autocomplete) {
+            $this->output(
+                array_values(AutocompleteFactory::getSuggestions()), JSON::STATUS_OK
+            );
+        } else {
+            $this->output('', JSON::STATUS_ERROR);
+        }
     }
 }
 ?>
