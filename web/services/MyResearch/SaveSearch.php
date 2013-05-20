@@ -110,6 +110,7 @@ class SaveSearch extends MyResearch
                 $search->schedule = intval($_REQUEST['schedule']);
                 $search->schedule_base_url = $configArray['Site']['url'];
             }
+            $search->session_id = '';
             $search->update();
         }
     }

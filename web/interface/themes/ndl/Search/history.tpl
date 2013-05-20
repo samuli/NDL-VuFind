@@ -19,8 +19,8 @@
         <div class="info">{translate text="alert_email_address"}: {$user->email} (<a href="{$path}/MyResearch/Profile">{translate text="edit"}</a>)</div>
           {/if}
         {/if}
+        <h2>{translate text="history_saved_searches"}</h2>
         <table class="datagrid savedHistory" width="100%">
-          <caption>{translate text="history_saved_searches"}</caption>
           <tr>
             <th width="15%">{translate text="history_time"}</th>
             <th width="30%">{translate text="history_search"}</th>
@@ -55,8 +55,8 @@
       {/if}
 
       {if $links}
-        <table class="datagrid sessionHistory" width="100%">
-          <caption>{translate text="history_recent_searches"}</caption>
+          <h2>{translate text="history_recent_searches"}</h2>
+          <table class="datagrid sessionHistory" width="100%">
           <tr>
             <th width="15%">{translate text="history_time"}</th>
             <th width="30%">{translate text="history_search"}</th>
@@ -86,10 +86,8 @@
       {/if}
 
     {else}
-      <table class="datagrid sessionHistory" width="100%">
-        <caption>{translate text="history_recent_searches"}</caption>
-        <tr><td>{translate text="history_no_searches"}</tr></td>
-      </table>
+       <h2>{translate text="history_recent_searches"}</h2>
+        <div class="noContentMessage">{translate text="history_no_searches"}</div>
     {/if}
   </div>
 <div class="clear"></div>

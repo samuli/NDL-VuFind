@@ -179,7 +179,7 @@
     </form>
     {/if}
     {else}
-      <div class="noContentMessage">{translate text='You do not have any holds or requests placed'}.</div>
+      <div class="noContentMessage">{translate text='You do not have any holds placed'}.</div>
     {/if}
 
     <div style="clear:both;padding-top: 2em;"></div>
