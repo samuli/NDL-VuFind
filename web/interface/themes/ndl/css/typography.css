@@ -376,9 +376,17 @@ ul.dynatree-container {
 /* Pagination */
 .pagination {
     font-size: 90%;
+    font-weight: bold;
 }
 .pagination span {
-    font-weight: bold;
+}
+.paginationPages span {
+}
+.paginationPages a {
+}
+.paginationPages a:hover {
+    color:#333;
+    text-decoration:none;
 }
 
 /* Record Page */
