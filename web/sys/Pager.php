@@ -60,7 +60,7 @@ class VuFindPager
         $finalOptions = array(
             'mode'       => 'sliding',
             'path'       => "",
-            'delta'      => 5,
+            'delta'      => 2,
             'perPage'    => 20,
             'nextImg'    => sprintf(translate('page_link_next'), $perPage),
             'prevImg'    => sprintf(translate('page_link_prev'), $perPage),

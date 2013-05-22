@@ -1197,10 +1197,7 @@ div.moreLink {
 /** Buttons to do "bulk" actions **/
 
 div.bulkActionButtons {
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    padding: 1em 0;
-    border-left: 1px solid transparent;
+    background-color: #e6e6e6;
     padding: 0.5em 0;
     height: auto;
  }
@@ -1489,16 +1486,26 @@ fieldset.publishDateLimit .ui-slider {
 .favoritesList {
     float: left;
     width: 670px;
+    position: relative
 }
-.favoritesList .resultPagination {
-	  margin-top: 8px;
+.favoritesList h2 {
+    margin: auto 0;
+    text-align: center;
+    margin-bottom: 1em;
+}
+.favoritesList .recordNumbers {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.favoritesList .resultPaginationTop {
+    border-top: solid 5px #e6e6e6;
+}
+.favoritesList .pagination {
+    padding: 15px 0;
 }
 .favoritesList .resultPagination .content {
     width: auto;
-}
-.favoritesList .pagination {
-    width: 660px;
-    padding: 15px 0;
 }
 .favoritesList .paginationMove {
     top: 10px;
@@ -2542,7 +2549,7 @@ ul.recordSet .addToFavLink a {
 .resultSearchTools .content {
     overflow: auto;
 }
-.resultPagination {
+.module-Search .resultPagination {
     clear:both;
     background:#e6e6e6;
 }
@@ -2808,20 +2815,12 @@ div.dateVisHandle.visible {
     font-size:1.230em;
     line-height:1em;
     padding: 30px 0;
-    margin-left:5px;
 }
 .paginationPages a {
-    color:#777;
     padding:0 6px;
-}
-.paginationPages a:hover {
-    color:#333;
-    text-decoration:none;
-    
 }
 .paginationPages span {
     padding:0 6px;
-    font-weight:bold;
 }
 .paginationMove {
     display: inline-block;
@@ -2862,9 +2861,21 @@ div.dateVisHandle.visible {
 }
 
 .paginationBack {
-    left:0;
+    left:32px;
+}
+.resultViewOptions .paginationBack {
+    left:0px;
 }
 .paginationNext {
+    right:32px;
+}
+.resultViewOptions .paginationNext {
+    right:0px;
+}
+.paginationFirst {
+    left:0;
+}
+.paginationLast {
     right:0;
 }
 

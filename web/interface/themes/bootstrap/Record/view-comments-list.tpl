@@ -1,0 +1,18 @@
+<!-- START of: Record/view-comments-list.tpl -->
+
+{foreach from=$commentList item=comment}
+  <li>
+    {$comment->comment|escape:"html"}
+    <div class="posted">
+      {translate text='Posted by'} <span class="label">{$comment->fullname|escape:"html"}</span>
+      {translate text='posted_on'} {$comment->created|escape:"html"}
+      {if $comment->user_id == $user->id}
+        <a href="{$url}/Record/{$id|escape:"url"}/UserComments?delete={$comment->id}" id="recordComment{$comment->id|escape}" class="btn btn-mini btn-danger delete tool deleteRecordComment">{translate text='Delete'}</a>
+      {/if}
+    </div>
+  </li>
+{foreachelse}
+  <li>{translate text='Be the first to leave a comment'}!</li>
+{/foreach}
+
+<!-- END of: Record/view-comments-list.tpl -->

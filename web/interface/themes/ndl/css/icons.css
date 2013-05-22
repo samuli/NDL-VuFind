@@ -232,6 +232,24 @@ a.clear_input {
     background-position: -1294px -919px;
 }
 
+.paginationMove.paginationLast.visible {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -362px -518px;
+}
+.paginationMove.paginationLast {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -1294px -518px;
+}
+
+.paginationMove.paginationFirst.visible {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -362px -453px;
+}
+.paginationMove.paginationFirst {
+    background-image: url(../images/icons16-24px-03.png);
+    background-position: -1294px -453px;
+}
+
 /* Main: Search results image icons */
 
 .resultNoImage.formatdocument {

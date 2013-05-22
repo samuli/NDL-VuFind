@@ -84,6 +84,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   {else}
     <h2>{translate text='Your Favorites'}</h2>
   {/if}
+  <div class="recordNumbers">
+    <span class="currentPage">{$recordStart}&#8201;-&#8201;{$recordEnd} /</span>
+    <span class="resultTotals">{$recordCount}</span>
+  </div>
   {if $resourceList}
     {include file="Search/paging.tpl" position="Top"}
     
