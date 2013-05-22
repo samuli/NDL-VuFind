@@ -2553,6 +2553,9 @@ ul.recordSet .addToFavLink a {
     clear:both;
     background:#e6e6e6;
 }
+.module-Search .resultPagination.sidebarOnLeft .pagination {
+    float: right;
+}
 /* page titles */
 .resultLinks,
 /* module-Search h2.account is actually under user account */
