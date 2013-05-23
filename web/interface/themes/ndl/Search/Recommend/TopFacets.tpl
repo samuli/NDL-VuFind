@@ -41,4 +41,4 @@
   {/foreach}
 {/if}
 
-<!-- END of: Search/Recomment/TopFacets.tpl -->
+<!-- END of: Search/Recommend/TopFacets.tpl -->

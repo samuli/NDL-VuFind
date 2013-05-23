@@ -1908,6 +1908,32 @@ li.result blockquote {
     margin-right:20px;
 }
 
+.authorbioText.illustrated {
+    margin-left: 166px;
+}
+#WikipediaDeferred.recommendation {
+    padding-bottom:25px;
+}
+
+#WikipediaDeferred .readMoreLink a:after {
+    content:' »';
+}
+#WikipediaDeferred .readMoreLink {
+    padding:10px 0 12px;
+}
+#WikipediaDeferred .providerInfo {
+    border:1px solid #ccc;
+    padding:9px 12px;
+}
+/*
+.resultRecommendations .authorbio img.nationalBiographyCover {
+    border:1px solid #c3c2c2;
+    padding:1px;
+    margin-right:30px;
+}
+
+
+*/
 /** DualResults - Two Column Results */
 #dualResults h3 {
 	  margin-top: 0;
@@ -2115,6 +2141,7 @@ dl.narrowList a {
 .sidegroup .morelink {
     background: url("../images/facets_more.png") no-repeat 100% 50% transparent;
     margin-right: 14px;
+    padding-right:0;
 }
 .sidegroup a[onclick*="less"] { 
     background: url("../images/facets_less.png") no-repeat 100% 50% transparent;
