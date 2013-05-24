@@ -3,12 +3,18 @@
  * calculate the total page count in order to output it after the list of pages,
  * e.g. "1 2 3 4 5 / 24648"
  */
-$recordCount = $this->get_template_vars('recordCount');
-$perPage = $this->get_template_vars('pageLinks')['pagerOptions']['perPage'];
-$pageCount = floor($recordCount / $perPage);
-if($recordCount % $perPage > 0) {
-    $pageCount++;
+
+$pageCount = 0;
+$vars = $this->get_template_vars('pageLinks');
+if (array_key_exists('pagerOptions', $vars) && array_key_exists('perPage', $vars['pagerOptions'])) {
+   $recordCount = $this->get_template_vars('recordCount');
+   $perPage = $vars['pagerOptions']['perPage'];
+   $pageCount = floor($recordCount / $perPage);
+   if ($recordCount%$perPage > 0) {
+      $pageCount++; 
+   }
 }
+
 $this->assign('pageCount', $pageCount);
 {/php}
 
