@@ -76,7 +76,8 @@ class CheckedOut extends MyResearch
                     }
                     foreach ($formats as &$format) {
                         $format = preg_replace('/^\d\//', '', $format);
-                    } 
+                        $format = rtrim($format, "/");
+                    }
                     $driver = RecordDriverFactory::initRecordDriver($record);
                     
                     $current += array(
