@@ -39,7 +39,7 @@
   {* Cover image *}
     <div class="resultNoImage"><p>{translate text='No image'}</p></div>
   {if $img_count > 0}
-      <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
+      <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
   {else}
       <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$path}/images/NoCover2.gif" alt="No image" /></a></div>
   {/if}

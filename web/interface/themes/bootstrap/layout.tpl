@@ -36,6 +36,9 @@
 
     {* css media="screen, projection" filename="../js/jquery-ui-1.8.23.custom/css/smoothness/jquery-ui-1.8.23.custom.css" *}
 
+    {* Load Fancybox css *}
+    {css media="screen" filename="fancybox/jquery.fancybox.css"}
+
     {* Load Bootstrap CSS framework *}
     {css media="screen, projection" filename="bootstrap-2.3.1/css/bootstrap.css"}
     {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap-responsive.css" *}
@@ -109,6 +112,9 @@
     {js filename="bootstrap-2.3.1/js/bootstrap.js"}
     {js filename="bootstrap-select/bootstrap-select.js"}
     {js filename="bootstrap-select/selectpicker.js"} {* dropdown menu modification *}
+
+    {* load Fancybox *}
+    {js filename="fancybox/jquery.fancybox.pack.js"}
 
     {* Load dynamic facets *}
     {js filename="facets.js"}

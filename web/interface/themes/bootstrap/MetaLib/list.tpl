@@ -1,6 +1,8 @@
 <!-- START of: MetaLib/list.tpl -->
 
 {js filename="openurl.js"}
+{* Fancybox for images *}
+{js filename="init_fancybox.js"}
 {* Main Listing *}
 <div class="span-18{if $sidebarOnLeft} push-5 last{/if}">
   {* Recommendations *}

@@ -148,4 +148,7 @@
 
 </div>
 
+{* Fancybox for images *}
+{js filename="init_fancybox.js"}
+
 <!-- END of: Search/list.tpl -->

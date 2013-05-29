@@ -33,8 +33,9 @@
 
     {* Display Cover Image *}
     <div class="alignleft">
-      <img alt="{translate text='Cover Image'}" src="{$path}/bookcover.php?size=small{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}"/>
+      <a href="{$path}/bookcover.php?size=large{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" onclick="launchFancybox(this); return false;" rel="{$record.ID.0|escape:"url"}"><img alt="{translate text='Cover Image'}" src="{$path}/bookcover.php?size=small{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}"/></a>
     </div>
+    {js filename="init_fancybox.js"}
     {* End Cover Image *}
     
     {* Display Abstract/Snippet *}

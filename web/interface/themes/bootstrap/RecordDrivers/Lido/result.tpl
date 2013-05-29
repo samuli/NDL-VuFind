@@ -25,7 +25,7 @@
     {if $img_count > 1}
       <div class="imagelinks">
     {foreach from=$summImages item=desc name=imgLoop}
-        <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" />
+        <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="{$summId|escape:"url"}"/>
           {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
         </a>
     {/foreach}
@@ -35,7 +35,7 @@
     {* Cover image *}
         <div class="resultNoImage"><p>{translate text='No image'}</p></div>
     {if $img_count > 0}
-        <div class="resultImage"><a href="{$url}/Record/{$summId|escape:"url"}" id="thumbnail_link_{$summId|escape:"url"}">
+        <div class="resultImage"><a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}">
           <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
         </a></div>
     {else}

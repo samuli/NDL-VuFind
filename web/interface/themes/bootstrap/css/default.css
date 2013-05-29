@@ -861,9 +861,6 @@ ul.recordSet .addToFavLink a {
     position: relative;
     z-index: 3;
 }
-.favoritesList .result .imagelinks {
-    display: none;
-}
 .result .imagelinks a {
     border: 1px solid #CFCFCF;
     display: block;
@@ -873,6 +870,7 @@ ul.recordSet .addToFavLink a {
     text-align: center;
     width: 1em;
     background-color: #ffffff;
+    font-size: 0.8em;
 }
 .result .imagelinks a:hover {
     background-color: #EEEEEE;
@@ -957,11 +955,52 @@ div.truncateField {
     margin: 0 1em 1em 0;
     position: relative;
 }
+.coverImageLinks span {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: url('../images/enlarge-icon-overlay.png');
+    background-position: 0 32px;
+}
 #thumbnail_link span {
     background: url("../images/enlarge-icon-overlay.png") no-repeat scroll left top transparent;
     height: 100%;
     position: absolute;
     width: 100%;
+}
+.coverImageLinks span {
+    /* display: none; */
+}
+.coverImageLinks a:hover span {
+    background-position: 400px 32px;
+}
+.coverImageLinks a:hover .coverImageLinks a {
+    border: 1px solid #ddd;
+}
+.coverImages {
+    /* text-align:center; */
+    overflow: auto;
+}
+.coverImages img#thumbnail {
+    padding-bottom:20px !important;
+    border-bottom:1px solid #bbb;
+}
+.coverImageLinks a {
+    background-position: 50% 50%;
+    background-size: cover;
+    display: block;
+    float: left;
+    height: 32px;
+    margin: 0 5px 5px 0;
+    overflow: hidden;
+    width: 32px;
+}
+.coverImageLinks a:hover {
+    text-decoration: none;
+    background-color: #eee;
+}
+.coverImageLinks a:focus {
+    text-decoration: none;
 }
 
 .openurlIframe {
