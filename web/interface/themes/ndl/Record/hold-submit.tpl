@@ -29,7 +29,7 @@
 
       {if in_array("comments", $extraHoldFields)}
         <div>
-        <strong>{translate text="Comments"}:</strong><br/>
+        <strong>{translate text="Additional information"}:</strong><br/>
         <textarea rows="3" cols="20" name="gatheredDetails[comment]">{$gatheredDetails.comment|escape}</textarea>
         </div>
       {/if}

@@ -65,6 +65,16 @@ class FinnaSolrAutocomplete extends SolrAutocomplete implements AutocompleteInte
             $this->searchObject->addFilter($current);
         }
 
+        // restrict query to display fields by building a hidden OR filter
+        $hiddenFilter = '';
+        foreach ($this->displayField as $field) {
+            if ($hiddenFilter !== '') {
+                $hiddenFilter .= ' OR ';
+            }
+            $hiddenFilter .= "$field:'$query'";
+        }
+        $this->searchObject->addHiddenFilter($hiddenFilter);
+
         // Perform the search:
         $result = $this->searchObject->processSearch(true);
         $resultDocs = isset($result['response']['docs']) ?
@@ -78,11 +88,8 @@ class FinnaSolrAutocomplete extends SolrAutocomplete implements AutocompleteInte
                 if (isset($current[$field])) {
                     $fieldContent = is_array($current[$field]) ?
                         $current[$field][0] : $current[$field];
-                    // use the field that contains query string
-                    if (stristr($fieldContent, $query)) {
-                        $results[] = $fieldContent;
-                        break;
-                    }
+                    $results[] = $fieldContent;
+                    break;
                 }
             }
         }

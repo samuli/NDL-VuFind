@@ -631,6 +631,12 @@ div.sidegroup {
     padding: 8px 8px 7px 10px;
 }
 
+
+/* hide home text */
+.menuHome a span {
+    text-indent: -1000000px;
+}
+
 /*** Search Box ***/    /* also note home.css for Home Page */
 
 .searchbox {
@@ -1908,6 +1914,32 @@ li.result blockquote {
     margin-right:20px;
 }
 
+.authorbioText.illustrated {
+    margin-left: 166px;
+}
+#WikipediaDeferred.recommendation {
+    padding-bottom:25px;
+}
+
+#WikipediaDeferred .readMoreLink a:after {
+    content:' »';
+}
+#WikipediaDeferred .readMoreLink {
+    padding:10px 0 12px;
+}
+#WikipediaDeferred .providerInfo {
+    border:1px solid #ccc;
+    padding:9px 12px;
+}
+/*
+.resultRecommendations .authorbio img.nationalBiographyCover {
+    border:1px solid #c3c2c2;
+    padding:1px;
+    margin-right:30px;
+}
+
+
+*/
 /** DualResults - Two Column Results */
 #dualResults h3 {
 	  margin-top: 0;
@@ -2115,6 +2147,7 @@ dl.narrowList a {
 .sidegroup .morelink {
     background: url("../images/facets_more.png") no-repeat 100% 50% transparent;
     margin-right: 14px;
+    padding-right:0;
 }
 .sidegroup a[onclick*="less"] { 
     background: url("../images/facets_less.png") no-repeat 100% 50% transparent;
@@ -2421,7 +2454,7 @@ ul.recordSet .addToFavLink a {
 .checkedoutLoc {
     padding-left: 16px;
 }
-.holdPlace:before {
+.holdPlace:before, .UBRequestPlace:before {
     content: "";
     display: inline-block;
     height: 11px;
@@ -2552,6 +2585,9 @@ ul.recordSet .addToFavLink a {
 .module-Search .resultPagination {
     clear:both;
     background:#e6e6e6;
+}
+.module-Search .resultPagination.sidebarOnLeft .pagination {
+    float: right;
 }
 /* page titles */
 .resultLinks,

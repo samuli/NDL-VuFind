@@ -82,9 +82,6 @@
       <dl class="narrowList navmenu">
         <dt>{translate text=$cluster.label}</dt>
       </dl>
-      <div id="facet_{$title}" class="dynatree-facet">
-        <span class="facet_loading hide"></span>
-      </div>
         {literal}
         <script type="text/javascript">
         //<![CDATA[
@@ -96,6 +93,9 @@
         //]]>
         </script>
         {/literal}
+      <div id="facet_{$title}" class="dynatree-facet">
+        <span class="facet_loading hide"></span>
+      </div>
     {else}
       <dl class="narrowList navmenu">
         <dt>{translate text=$cluster.label}</dt>
