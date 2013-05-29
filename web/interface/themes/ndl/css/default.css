@@ -631,6 +631,12 @@ div.sidegroup {
     padding: 8px 8px 7px 10px;
 }
 
+
+/* hide home text */
+.menuHome a span {
+    text-indent: -1000000px;
+}
+
 /*** Search Box ***/    /* also note home.css for Home Page */
 
 .searchbox {
@@ -2448,7 +2454,7 @@ ul.recordSet .addToFavLink a {
 .checkedoutLoc {
     padding-left: 16px;
 }
-.holdPlace:before {
+.holdPlace:before, .UBRequestPlace:before {
     content: "";
     display: inline-block;
     height: 11px;

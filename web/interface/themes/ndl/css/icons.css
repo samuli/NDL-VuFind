@@ -177,7 +177,7 @@ a.clear_input {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -363px -1398px;
 }
-.holdPlace {
+.holdPlace, .UBRequestPlace {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -353px -2371px; 
 }
