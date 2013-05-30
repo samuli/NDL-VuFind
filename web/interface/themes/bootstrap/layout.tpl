@@ -69,13 +69,13 @@
     {css media="screen, projection" filename="default.css"}
     {css media="screen, projection" filename="default_custom.css"}
     {* css media="screen, projection" filename="home.css" *}
-    {css media="screen, projection" filename="home_custom.css"}
+    {* css media="screen, projection" filename="home_custom.css" *}
     {* css media="screen, projection" filename="breadcrumbs.css" *}
     {* css media="screen, projection" filename="footer.css" *}
     {* css media="screen, projection" filename="768tablet.css" *}
     {* css media="screen, projection" filename="480mobilewide.css" *}
     {* css media="screen, projection" filename="320mobile.css" *}
-    {* css media="screen, projection" filename="settings.css" *}
+    {css media="screen, projection" filename="settings.css"}
     {* Load retina style sheet last *}
     {* css media="screen, projection" filename="retina.css" *}
     
@@ -242,7 +242,7 @@ $(document).ready(function() {
       </div> <!-- /1 -->
 
       <div class="row-fluid module-MetaLib"> <!-- 2 -->
-        <div class="span12 backroundContainer header{if !$showTopSearchBox}-home{/if} well well-small {if $module!='Search'} header{$module}{/if}">
+        <div class="span12 backgroundContainer header{if !$showTopSearchBox}-home{/if} well well-small {if $module!='Search'} header{$module}{/if}">
           {include file="header.tpl"}
         </div>
         
