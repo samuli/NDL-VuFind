@@ -9,8 +9,8 @@
         <div class="pickup-content">
           <div class="pickup-header"><span>Constantine of Africa: Theorica Pantegni</span></div>
           <div class="pickup-text">
-            The mediaeval Latin medical textbook Theorica Pantegni is the oldest bound manuscript in Finland, and one of the crown jewels of the collections of the National Library. It is the first comprehensive general work on medicine in Latin, and has been digitised and transcribed into the modern alphabet.
-            <a href="{$url}{"/Search/Results?lookfor=theorica+pantegni&type=AllFields&filter[]=building%3A%220%2FNLF%22&filter[]=authorStr%3A%22Constantinus+Africanus%22&view=list&lng=en-gb"|escape:'html'}">To the search result »</a>
+            The medieval Latin medical textbook Theorica Pantegni is the oldest bound manuscript in Finland, and one of the crown jewels of the collections of the National Library. It is the first comprehensive general work on medicine in Latin, and has been digitised and transcribed into the modern alphabet.
+            <a href="{$url}/Record/arto.1433856">To the search result »</a>
           </div>
         </div>
       </li>
@@ -54,7 +54,7 @@
           <div class="pickup-header-small"><span>Z. Topelius: Välskärin kertomuksia (Tales of a Barber-Surgeon)</span></div>
           <div class="pickup-text">
             This popular series of novels describes the history of Finland and Sweden from the 1630s to the 1770s, from King Gustavus Adolphus’s reign to that of Gustaf III. The action-packed tales bring major historical events and eras to life through the stories of individual people. The position of Finland in the history of the Kingdom of Sweden is highlighted. 
-            <a href="{$url}{"/Search/Results?lookfor=v%C3%A4lsk%C3%A4rin+kertomuksia+digitoitu+julkaisu&type=AllFields&filter[]=building%3A%220%2FNLF%22&view=list"|escape:'html'}">To the search result »</a>
+             <a href="{$url}{"/Search/Results?lookfor=Välskärin+kertomuksia&type=AllFields&filter[]=authorStr%3ATopelius%2C+Zacharias&view=list"|escape:'html'}">To the search result »</a>
           </div>
         </div>
       </li>

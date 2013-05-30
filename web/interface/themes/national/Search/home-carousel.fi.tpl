@@ -11,7 +11,7 @@
           <div class="pickup-text">
             Keskiaikainen latinankielinen lääketieteen oppi- ja käsikirja Theorica Pantegni on Suomen vanhin sidottu käsikirjoitus ja yksi Kansalliskirjaston 
             kokoelman helmistä. Tämä ensimmäinen kattava latinankielinen lääketieteen yleisesitys on digitoitu ja transkriboitu eli kirjoitettu modernein kirjaimin latinaksi. 
-            <a href="{$url}{"/Search/Results?lookfor=theorica+pantegni&type=AllFields&filter[]=building%3A%220%2FNLF%22&filter[]=authorStr%3A%22Constantinus+Africanus%22&view=list"|escape:'html'}">Hakutulokseen »</a>
+            <a href="{$url}/Record/arto.1433856">Hakutulokseen »</a>
           </div>
         </div>
       </li>
@@ -61,7 +61,7 @@
             Topeliuksen suosittu romaanisarja kertoo Suomen ja Ruotsin historiasta Kustaa II Aadolfin ajoista Kustaa 
             III:n aikoihin asti. Vaiherikkaissa tarinoissa suuret historialliset tapahtumat ja aikakaudet elävöityvät 
             yksilöiden elämänkohtaloiden kautta. Suomen osuus Ruotsin valtakunnan historiassa nousee tärkeään asemaan. 
-            <a href="{$url}{"/Search/Results?lookfor=v%C3%A4lsk%C3%A4rin+kertomuksia+digitoitu+julkaisu&type=AllFields&filter[]=building%3A%220%2FNLF%22&view=list"|escape:'html'}">Hakutulokseen »</a>
+            <a href="{$url}{"/Search/Results?lookfor=Välskärin+kertomuksia&type=AllFields&filter[]=authorStr%3ATopelius%2C+Zacharias&view=list"|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
