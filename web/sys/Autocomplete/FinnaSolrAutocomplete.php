@@ -83,17 +83,30 @@ class FinnaSolrAutocomplete extends SolrAutocomplete implements AutocompleteInte
 
         // Build the recommendation list:
         $results = array();
+        $normalizedQuery = self::normalize($query);
         foreach ($resultDocs as $current) {
             foreach ($this->displayField as $field) {
                 if (isset($current[$field])) {
-                    $fieldContent = is_array($current[$field]) ?
-                        $current[$field][0] : $current[$field];
-                    $results[] = $fieldContent;
-                    break;
+                    $fields = is_array($current[$field]) ? $current[$field] : array($current[$field]);
+                    foreach ($fields as $fieldContent) {
+                        $normalizedFieldContent = self::normalize($fieldContent);
+                        if (stristr($normalizedFieldContent, $normalizedQuery)) {
+                            $results[] = $fieldContent;
+                            break 2;
+                        }                            
+                    }
                 }
             }
         }
+        foreach ($results as &$str) {
+            $str = rtrim($str, ' .');
+            $str = str_replace(', ', ' ', $str);
+        }
 
         return array_unique($results);
+    }
+    function normalize ($str) {
+        return preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);~i', '$1', 
+                            htmlentities($str, ENT_COMPAT, 'UTF-8'));
     }
 }
