@@ -19,7 +19,12 @@
     {/foreach}
     <script type="text/javascript">
       //<![CDATA[
-      loadVis('{$facetFields|escape:'javascript'}', '{$searchParams|escape:'javascript'}', '{$url}', {$zooming}{if $collectionName}, '{$collectionID|urlencode}', '{$collectionAction}'{/if});
+      {literal} function refreshVis() { {/literal}
+        loadVis('{$facetFields|escape:'javascript'}', '{$searchParams|escape:'javascript'}', '{$url}', {$zooming}{if $collectionName}, '{$collectionID|urlencode}', '{$collectionAction}'{/if});
+      {literal} 
+      } 
+      refreshVis(); 
+      {/literal}
       //]]>
     </script>
 

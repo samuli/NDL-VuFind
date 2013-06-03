@@ -51,7 +51,14 @@ $(document).ready(function(){
         return false;
     });
     */
-    
+   
+   // Redraw date visualizer on window resize
+   $(window).resize(function(){
+        if (typeof refreshVis == 'function') {
+            refreshVis();
+        }
+    });
+
     // assign click event to searchbox context help
     $('.showSearchHelp').click(function() {
       $('div.searchContextHelp').toggle();
