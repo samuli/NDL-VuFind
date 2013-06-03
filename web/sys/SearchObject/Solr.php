@@ -484,6 +484,8 @@ class SearchObject_Solr extends SearchObject_Base
 
         // Call the standard initialization routine in the parent:
         parent::init();
+        
+        $this->initFilters();
 
         $this->facetConfig = array();
         // Use the facet limit specified in config.ini (or default to 100):

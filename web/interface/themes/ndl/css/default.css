@@ -67,7 +67,6 @@ body {
 }
 #main.main-home {
     padding:0;
-    background:#000;
 }
 #main > .menu div[class*="grid"] {
     position:absolute;

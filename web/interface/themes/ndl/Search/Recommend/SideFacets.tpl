@@ -87,7 +87,7 @@
         //<![CDATA[
         $(document).ready(function() {
         {/literal}
-          enableDynatree('#facet_{$title|escape}', '{$title|escape}', '{$fullPath|escape}');
+          enableDynatree('#facet_{$title}', '{$title}', '{$fullPath}');
         {literal}  
         });
         //]]>
