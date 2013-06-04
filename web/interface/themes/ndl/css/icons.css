@@ -64,6 +64,10 @@
     background-image: url(../images/icons16-24px-01.png);
     background-position: -187px -384px
 }
+.iconlabel.formatreferenceentry {
+    background-image: url(../images/icons16-24px-01.png);
+    background-position: -47px -777px;
+}
 .iconlabel.formatbookchapter {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -187px -47px;
