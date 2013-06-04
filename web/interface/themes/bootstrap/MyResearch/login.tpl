@@ -12,107 +12,117 @@
 {/if}
 
 {if !$hideLogin}
-{if $lightbox}
-  {assign var=lbSmall value='Small'}
-{/if}
-{assign var=loginNumber value=0}
-<div class="span12">
-  <h3>{translate text='Login'}</h3>
-  {if $message}<div class="alert alert-error error" id="errormessage">{$message|translate}</div>{/if}
-  <div class="loginTitle">
-    {translate text='login_choices'}
-  </div>
+  {if $lightbox}
+    {assign var=lbSmall value='Small'}
+  {/if}
+  {assign var=loginNumber value=0}
+  <div class="span12 well-small">
+    <h3>{translate text='Login'}</h3>
+  {if $message}
+    <div class="alert alert-error error" id="errormessage">{$message|translate}</div>
+  {/if}
+    <div class="loginTitle">
+      {translate text='login_choices'}
+    </div>
 
-<div class="row-fluid loginForm">  
+    <div class="row-fluid loginForm">  
   {if $mozillaPersona}
     {assign var=loginNumber value=$loginNumber+1}
-  <div class="span5 well-small loginAction">
-    <h4>{$loginNumber}. {translate text="login_title_email"}</h4>
-    <a id="personaLogin" class="persona-login" href=""><span>{translate text="Mozilla Persona"}</span></a>
-    {literal}
-    <script type="text/javascript">
-      $(document).ready(function() {
-    {/literal}
-        mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if});
-      {literal}
-      });
-      {/literal}
-    </script>    
-  </div>
-  <div class="span7 alert alert-info loginDescription{$lbSmall}">
-    <div class="description">
-      <div class="descriptionTitle"><strong>{translate text='login_services_desc'}</strong></div> 
-      {translate text='login_desc_email_html'}
-    </div>
-  </div>
-  {/if}
-  
-  {if $sessionInitiator}
-  <div class="row-fluid">
-    {assign var=loginNumber value=$loginNumber+1}
-    {if $mozillaPersona}
-    <div class="separator{$lbSmall}"><span class="text">{translate text="login_separator"}</span></div>
-    {/if}
-    <div class="span5 well-small loginAction">
-      <h4>{$loginNumber}. {translate text="login_title_shibboleth"}</h4>
-      <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
-    </div>
-    <div class="span7 alert alert-info loginDescription{$lbSmall}">
-      <div class="description">
-        <div class="descriptionTitle"><strong>{translate text='login_services_desc'}</strong></div> 
-        {translate text='login_desc_shibboleth_html'}
+    <div class="row-fluid">
+      <div class="span5 well-small loginAction">
+        <h4>{$loginNumber}. {translate text="login_title_email"}</h4>
+        <a id="personaLogin" class="persona-login" href=""><span>{translate text="Mozilla Persona"}</span></a>
+        {literal}
+        <script type="text/javascript">
+          $(document).ready(function() {
+        {/literal}
+            mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if});
+        {literal}
+          });
+        {/literal}
+        </script>    
+      </div>
+      <div class="span7 alert alert-info loginDescription{$lbSmall}">
+        <div class="description">
+          <div class="descriptionTitle"><strong>{translate text='login_services_desc'}</strong></div> 
+          {translate text='login_desc_email_html'}
+        </div>
       </div>
     </div>
-  </div>
+  {/if}
+
+  {if $sessionInitiator}
+    {assign var=loginNumber value=$loginNumber+1}
+    {if $mozillaPersona}
+      <div class="row-fluid">
+        <div{* class="separator{$lbSmall}"*}><span class="label text">{translate text="login_separator"}</span>
+        </div>
+      </div>
+    {/if}
+    <div class="row-fluid">
+      <div class="span5 well-small loginAction">
+        <h4>{$loginNumber}. {translate text="login_title_shibboleth"}</h4>
+        <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
+      </div>
+      <div class="span7 alert alert-info loginDescription{$lbSmall}">
+        <div class="description">
+          <div class="descriptionTitle"><strong>{translate text='login_services_desc'}</strong></div> 
+          {translate text='login_desc_shibboleth_html'}
+        </div>
+      </div>
+    </div>
   {/if}
 
   {if $libraryCard && $authMethod != 'Shibboleth'}
-  <div class="row-fluid">
     {assign var=loginNumber value=$loginNumber+1}
     {if $mozillaPersona || $sessionInitiator}
-    <div class="separator{$lbSmall}"><span class="text">{translate text="login_separator"}</span>
-    </div>
+      <div class="row-fluid">
+        <div{* class="separator{$lbSmall}"*}><span class="label text">{translate text="login_separator"}</span>
+
+        </div>
+      </div>
     {/if}
-    <div class="span5 well-small loginAction">
-      <h4>{$loginNumber}. {translate text='login_title_local'}</h4>
-      <form method="post" action="{$url}/MyResearch/Home" name="loginForm" id="loginForm">
-      {if $loginTargets}
-        <select id="login_target" name="login_target">
-        {foreach from=$loginTargets item=target}
-          <option value="{$target}"{if $target == $defaultLoginTarget} selected="selected"{/if}>{translate text=$target prefix='source_'}</option>
-        {/foreach}
-        </select>
-        <br />
-      {/if}
-        <label for="login_username">{translate text='Username'}</label>
-        <input id="login_username" type="text" name="username" value="{$username|escape}" class="{jquery_validation required='This field is required'}"/>
-        <br />
-        <label for="login_password">{translate text='Password'}</label>
-        <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
-        <br />
-        <input class="btn btn-info button" type="submit" name="submit" value="{translate text='Login'}"/>
-        {if $followup}<input type="hidden" name="followup" value="{$followup}"/>{/if}
-        {if $followupModule}<input type="hidden" name="followupModule" value="{$followupModule}"/>{/if}
-        {if $followupAction}<input type="hidden" name="followupAction" value="{$followupAction}"/>{/if}
-        {if $recordId}<input type="hidden" name="recordId" value="{$recordId|escape:"html"}"/>{/if}
-        {if $extraParams}
-          {foreach from=$extraParams item=item}
-            <input type="hidden" name="extraParams[]" value="{$item.name|escape}|{$item.value|escape}" />
-          {/foreach}
-        {/if}
-      </form>
-      <script>
+    <div class="row-fluid">
+      <div class="span5 well-small loginAction">
+        <h4>{$loginNumber}. {translate text='login_title_local'}</h4>
+        <form method="post" action="{$url}/MyResearch/Home" name="loginForm" id="loginForm">
+    {if $loginTargets}
+          <select id="login_target" name="login_target">
+      {foreach from=$loginTargets item=target}
+            <option value="{$target}"{if $target == $defaultLoginTarget} selected="selected"{/if}>{translate text=$target prefix='source_'}
+            </option>
+      {/foreach}
+          </select>
+          <br />
+    {/if}
+          <label for="login_username">{translate text='Username'}</label>
+          <input id="login_username" type="text" name="username" value="{$username|escape}" class="{jquery_validation required='This field is required'}"/>
+          <br />
+          <label for="login_password">{translate text='Password'}</label>
+          <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
+          <br />
+          <input class="btn btn-info button" type="submit" name="submit" value="{translate text='Login'}"/>
+    {if $followup}<input type="hidden" name="followup" value="{$followup}"/>{/if}
+    {if $followupModule}<input type="hidden" name="followupModule" value="{$followupModule}"/>{/if}
+    {if $followupAction}<input type="hidden" name="followupAction" value="{$followupAction}"/>{/if}
+    {if $recordId}<input type="hidden" name="recordId" value="{$recordId|escape:"html"}"/>{/if}
+    {if $extraParams}
+      {foreach from=$extraParams item=item}
+          <input type="hidden" name="extraParams[]" value="{$item.name|escape}|{$item.value|escape}" />
+      {/foreach}
+    {/if}
+        </form>
+        <script>
         {literal}
-        $(document).ready(function() {
-          $("#loginForm").validate();      
-          $("input").one("keydown", function () { 
-            $("#errormessage").css({"visibility":"hidden"});
+          $(document).ready(function() {
+            $("#loginForm").validate();      
+            $("input").one("keydown", function () { 
+              $("#errormessage").css({"visibility":"hidden"});
+            });
           });
-        });
         {/literal}
       </script>
-      {if $authMethod == 'DB'}<a class="new_account" href="{$url}/MyResearch/Account">{translate text='Create New Account'}</a>{/if}
-    {/if}
+    {if $authMethod == 'DB'}<a class="new_account" href="{$url}/MyResearch/Account">{translate text='Create New Account'}</a>{/if}
     </div>
   
     <div class="span7 alert alert-info loginDescription{$lbSmall}">
@@ -121,6 +131,7 @@
         {translate text='login_desc_local_html'}
       </div>
     </div>
+  {/if}
   </div>
 </div>
 

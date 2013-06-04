@@ -19,7 +19,30 @@
     {/foreach}
     <script type="text/javascript">
       //<![CDATA[
-      loadVis('{$facetFields|escape:'javascript'}', '{$searchParams|escape:'javascript'}', '{$url}', {$zooming}{if $collectionName}, '{$collectionID|urlencode}', '{$collectionAction}'{/if});
+      {literal} 
+        function printVis() { {/literal}
+        loadVis('{$facetFields|escape:'javascript'}', '{$searchParams|escape:'javascript'}', '{$url}', {$zooming}{if $collectionName}, '{$collectionID|urlencode}', '{$collectionAction}'{/if});
+      {literal} 
+        }  
+
+        printVis();
+        
+        // Redraw visualizer on screen resize
+        $(window).resize(function(){
+          delay(function(){
+            printVis();
+          }, 250);
+        });
+        
+        // Delay function to execute printVis only with the last call during resize
+        var delay = (function(){
+          var timer = 0;
+          return function(callback, ms){
+            clearTimeout (timer);
+            timer = setTimeout(callback, ms);
+          };
+        })();
+      {/literal}
       //]]>
     </script>
 

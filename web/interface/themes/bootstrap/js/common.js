@@ -51,7 +51,7 @@ $(document).ready(function(){
         return false;
     });
     */
-    
+
     // assign click event to searchbox context help
     $('.showSearchHelp').click(function() {
       $('div.searchContextHelp').toggle();
