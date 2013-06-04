@@ -517,6 +517,9 @@ class Demo implements DriverInterface
                     $req = 0;
                 }
 
+                $renewalLimit = rand(3, 10);
+                $renewalCount = rand(0, $renewalLimit);
+                
                 $transList[] = array(
                     'duedate' => $due_date,
                     'barcode' => sprintf("%08d", rand()%50000),
@@ -524,7 +527,9 @@ class Demo implements DriverInterface
                     'request' => $req,
                     "id"      => $this->_getRandomBibId(),
                     'item_id' => $i,
-                    'renewable' => true
+                    'renewable' => $renewalCount < $renewalLimit,
+                    'renewalCount' => $renewalCount,
+                    'renewalLimit' => $renewalLimit
                 );
             }
             $_SESSION['demoData']['transactions'] = $transList;
@@ -869,17 +874,29 @@ class Demo implements DriverInterface
             // Only renew requested items:
             if (in_array($current['item_id'], $renewDetails['details'])) {
                 if (rand() % 2) {
-                    $old = $_SESSION['demoData']['transactions'][$i]['duedate'];
-                    $_SESSION['demoData']['transactions'][$i]['duedate']
-                        = date("j-M-y", strtotime($old . " + 7 days"));
-
-                    $finalResult['details'][$current['item_id']] = array(
-                        "success" => true,
-                        "new_date" =>
-                            $_SESSION['demoData']['transactions'][$i]['duedate'],
-                        "new_time" => '',
-                        "item_id" => $current['item_id'],
-                    );
+                    if (!$_SESSION['demoData']['transactions'][$i]['renewable']) {
+                        $finalResult['details'][$current['item_id']] = array(
+                            "success" => false,
+                            "new_date" => false,
+                            "item_id" => $current['item_id'],
+                            "sysMessage" => 
+                                'Item not renewable'
+                        );
+                    } else {
+                        $old = $_SESSION['demoData']['transactions'][$i]['duedate'];
+                        $_SESSION['demoData']['transactions'][$i]['duedate']
+                            = date("j-M-y", strtotime($old . " + 7 days"));
+                        $_SESSION['demoData']['transactions'][$i]['renewalCount']++;
+                        $_SESSION['demoData']['transactions'][$i]['renewable'] = $_SESSION['demoData']['transactions'][$i]['renewalCount'] < $_SESSION['demoData']['transactions'][$i]['renewalLimit'];
+    
+                        $finalResult['details'][$current['item_id']] = array(
+                            "success" => true,
+                            "new_date" =>
+                                $_SESSION['demoData']['transactions'][$i]['duedate'],
+                            "new_time" => '',
+                            "item_id" => $current['item_id'],
+                        );
+                    }
                 } else {
                     $finalResult['details'][$current['item_id']] = array(
                         "success" => false,
