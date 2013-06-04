@@ -1,3 +1,5 @@
+var visDrawn;
+
 function loadVis(facetFields, searchParams, baseURL, zooming, collection, collectionAction) {
 
     // get current year so we can set that as a limit when drawing the graph
@@ -85,7 +87,7 @@ function loadVis(facetFields, searchParams, baseURL, zooming, collection, collec
                 var plot = $.plot(placeholder, [val], options);
                 if (hasFilter) {
                     // mark pre-selected area
-                    plot.setSelection({ x1: val['min'] , x2: val['max']});
+                    plot.setSelection({ x1: val['min'] , x2: val['max']}, visDrawn);
                 }
                 // selection handler
                 placeholder.bind("plotselected", function (event, ranges) {
@@ -105,6 +107,8 @@ function loadVis(facetFields, searchParams, baseURL, zooming, collection, collec
             });
         }
     });
+    
+    visDrawn = true;
 }
 
 function PadDigits(n, totalDigits) 
