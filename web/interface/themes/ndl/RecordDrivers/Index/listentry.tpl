@@ -11,7 +11,7 @@
   <div class="coverDiv">
     <div class="resultNoImage"><p>{translate text='No image'}</p></div>
     {if $img_count > 0}
-        <div class="resultImage"><a href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index=0&size=large" rel="{$listId|escape:"url"}" onclick="launchFancybox(this); return false;"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
+        <div class="resultImage"><a href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index=0&size=large" rel="{$listId|escape:"url"}" onclick="launchFancybox(this); return false;" id="thumbnail_link_{$listId|escape:"url"}"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
     {else}
         <div class="resultImage"><img src="{$path}/images/NoCover2.gif" width="62" height="62" alt="{translate text='No Cover Image'}"/></div>
     {/if}

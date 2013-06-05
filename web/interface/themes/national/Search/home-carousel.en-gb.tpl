@@ -10,7 +10,7 @@
           <div class="pickup-header"><span>Constantine of Africa: Theorica Pantegni</span></div>
           <div class="pickup-text">
             The medieval Latin medical textbook Theorica Pantegni is the oldest bound manuscript in Finland, and one of the crown jewels of the collections of the National Library. It is the first comprehensive general work on medicine in Latin, and has been digitised and transcribed into the modern alphabet.
-            <a href="{$url}/Record/arto.1433856">To the search result »</a>
+            <a href="{$url}/Record/fennica.971448">To the search result »</a>
           </div>
         </div>
       </li>

@@ -1011,7 +1011,9 @@ class Voyager implements DriverInterface
             "MFHD_ITEM.ITEM_ENUM",
             "MFHD_ITEM.YEAR",
             "BIB_TEXT.TITLE_BRIEF",
-            "BIB_TEXT.TITLE"
+            "BIB_TEXT.TITLE",
+            "CIRC_TRANSACTIONS.RENEWAL_COUNT",
+            "CIRC_POLICY_MATRIX.RENEWAL_COUNT as RENEWAL_LIMIT"
         );
 
         // From
@@ -1019,7 +1021,8 @@ class Voyager implements DriverInterface
             $this->dbName.".CIRC_TRANSACTIONS",
             $this->dbName.".BIB_ITEM",
             $this->dbName.".MFHD_ITEM",
-            $this->dbName.".BIB_TEXT"
+            $this->dbName.".BIB_TEXT",
+            $this->dbName.".CIRC_POLICY_MATRIX",
         );
 
         // Where
@@ -1027,7 +1030,8 @@ class Voyager implements DriverInterface
             "CIRC_TRANSACTIONS.PATRON_ID = :id",
             "BIB_ITEM.ITEM_ID = CIRC_TRANSACTIONS.ITEM_ID",
             "CIRC_TRANSACTIONS.ITEM_ID = MFHD_ITEM.ITEM_ID(+)",
-            "BIB_TEXT.BIB_ID = BIB_ITEM.BIB_ID"
+            "BIB_TEXT.BIB_ID = BIB_ITEM.BIB_ID",
+            "CIRC_TRANSACTIONS.CIRC_POLICY_MATRIX_ID=CIRC_POLICY_MATRIX.CIRC_POLICY_MATRIX_ID"
         );
 
         // Order
@@ -1096,7 +1100,9 @@ class Voyager implements DriverInterface
             'volume' => str_replace("v.", "", utf8_encode($sqlRow['ITEM_ENUM'])),
             'publication_year' => $sqlRow['YEAR'],
             'title' => empty($sqlRow['TITLE_BRIEF'])
-                ? $sqlRow['TITLE'] : $sqlRow['TITLE_BRIEF']
+                ? $sqlRow['TITLE'] : $sqlRow['TITLE_BRIEF'],
+            'renewalCount' => $sqlRow['RENEWAL_COUNT'],
+            'renewalLimit' => $sqlRow['RENEWAL_LIMIT']
         );
     }
 

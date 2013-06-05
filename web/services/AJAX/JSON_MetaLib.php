@@ -60,18 +60,14 @@ class JSON_MetaLib extends JSON
         $results = array();
         $authorized = UserAccount::isAuthorized();
         foreach ($_REQUEST['id'] as $id) {
-            if ($authorized) {
-                $results[] = array('id' => $id, 'status' => 'allowed');
-                continue;
-            }
             $ird = explode('.', $id, 2);
             if (!isset($ird[1])) {
                 continue;
             }
             $ird = $ird[1];
             $irdInfo = $metalib->getIRDInfo($ird);
-            if ($irdInfo && strcasecmp($irdInfo['access'], 'guest') == 0) {
-                $results[] = array('id' => $id, 'status' => 'allowed');
+            if ($irdInfo && ($authorized || strcasecmp($irdInfo['access'], 'guest') == 0)) {
+                $results[] = array('id' => $id, 'status' => $irdInfo['searchable'] ? 'allowed' : 'nonsearchable');
             } else {
                 $results[] = array('id' => $id, 'status' => 'denied');
             }

@@ -571,6 +571,7 @@ class MetaLib
         $record->registerXPathNamespace('m', 'http://www.loc.gov/MARC21/slim');
         $info['access'] = $this->getSingleValue($record, 'AF3a');
         $info['proxy'] = $this->getSingleValue($record, 'PXYa');
+        $info['searchable'] = $this->getSingleValue($record, 'TARa') && $this->getSingleValue($record, 'TARf') == 'Y';
         $this->putCachedResults($queryId, $info);
         return $info;
     }

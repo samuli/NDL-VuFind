@@ -51,13 +51,6 @@ $(document).ready(function(){
         return false;
     });
     */
-   
-   // Redraw date visualizer on window resize
-   $(window).resize(function(){
-        if (typeof refreshVis == 'function') {
-            refreshVis();
-        }
-    });
 
     // assign click event to searchbox context help
     $('.showSearchHelp').click(function() {
@@ -105,6 +98,14 @@ $(document).ready(function(){
         $("link[media='print']").attr("media", "all");
         window.print();
     }
+    
+    // toggle facet visibility on click
+    $('#sidebarFacets dt').on('click', function() {
+        cont = $(this).parent('dl');
+        cont.toggleClass('collapsed');
+        cont.next('script').next('div.dynatree-facet').toggleClass('collapsed');
+    });
+    $('#sidebarFacets dt').css('cursor', 'pointer');
     
     //ContextHelp
     contextHelp.init();

@@ -143,6 +143,11 @@
               <span>{translate text=$source prefix='source_'}</span>
             {/if}
           </div>
+            {if !empty($resource.ils_details.renewalCount)}
+              <strong>{translate text='Renewed'}:</strong> {$resource.ils_details.renewalCount|escape}
+              {if !empty($resource.ils_details.renewalLimit)} / {$resource.ils_details.renewalLimit|escape}{/if}
+              <br />
+            {/if}
             {assign var="showStatus" value="show"}
             {if $renewResult[$resource.ils_details.item_id]}
               {if $renewResult[$resource.ils_details.item_id].success}

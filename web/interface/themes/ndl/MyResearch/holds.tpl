@@ -60,7 +60,7 @@
 			{assign var=img_count value=$summImages|@count}
 			<div class="coverDiv">
 			  <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-				{if $img_count > 0}
+				{if $summThumb}
 					<div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img id="thumbnail_{$summId|escape:"url"}" src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
 				{else}
 					<div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img src="{$path}/images/NoCover2.gif" width="62" height="62" alt="{translate text='No Cover Image'}"/></a></div>
@@ -211,12 +211,12 @@
         {/if}
         <div id="record{$resource.id|escape}">
           {assign var=summImages value=$resource.summImages}
-          {assign var=summThumb value=$resource.summThumb}          
+          {assign var=summThumb value=$resource.summThumb}  
           {assign var=summId value=$resource.id}          
       {assign var=img_count value=$summImages|@count}
       <div class="coverDiv">
         <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-        {if $img_count > 0}
+        {if $summThumb}
           <div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img id="thumbnail_{$summId|escape:"url"}" src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
         {else}
           <div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img src="{$path}/images/NoCover2.gif" width="62" height="62" /></a></div>

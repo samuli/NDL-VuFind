@@ -1252,6 +1252,12 @@ div.bulkActionButtons select {
     padding:7px;
     font-size:0.9em;
 }
+.holdsList div.bulkActionButtons {
+    padding:0;
+}
+.holdsList div.bulkActionButtons .floatright {
+    margin-right:15px;
+}
 
 /** Cart **/
 .cartSummary {
