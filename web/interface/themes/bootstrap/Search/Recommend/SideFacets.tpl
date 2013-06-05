@@ -96,7 +96,6 @@ $(document).ready(function() {
         {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
           {if $smarty.foreach.narrowLoop.iteration == 6}
           <dd id="more{$title}"><a href="#" onclick="moreFacets('{$title}'); return false;">{translate text='more'} ...</a></dd>
-        </dl>
         <dl class="narrowList navmenu offscreen" id="narrowGroupHidden_{$title}">
           {/if}
           {if $thisFacet.isApplied}
@@ -107,6 +106,7 @@ $(document).ready(function() {
         {/foreach}
         {if $smarty.foreach.narrowLoop.total > 5}<dd><a href="#" onclick="lessFacets('{$title}'); return false;">{translate text='less'} ...</a></dd>{/if}
       </dl>
+    </dl>
     {/if}
     {/foreach}
   {/if}

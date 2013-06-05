@@ -447,6 +447,13 @@ a.clear_input:hover {
     font-size: 0.8em;
 }
 
+/* Collapsed facets hidden */
+.narrowList.collapsed > dd,
+.narrowList.collapsed > dl,
+.dynatree-facet.collapsed {
+    display:none !important;
+}
+
 
 /* Ajax throbber */
 
