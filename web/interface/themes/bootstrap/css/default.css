@@ -447,6 +447,13 @@ a.clear_input:hover {
     font-size: 0.8em;
 }
 
+/* Collapsed facets hidden */
+.narrowList.collapsed > dd,
+.narrowList.collapsed > dl,
+.dynatree-facet.collapsed {
+    display:none !important;
+}
+
 
 /* Ajax throbber */
 
@@ -666,6 +673,16 @@ ul.resultOptions.inline > li {
 .paging .pager {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+.recordCount {
+    float: left;
+    margin: -.8em .5em .5em 1em;
+}
+.pagination .icon-fast-backward {
+    background-position: -216px -73px;
+}
+.pagination .icon-fast-forward {
+    background-position: -360px -73px;
 }
 ul.inline.listResultSelect > li {
     padding-right: 0;
@@ -2284,7 +2301,9 @@ a.panel_open {
     #logo img {
         width: 200px;
     }
-
+    .recordCount {
+        float: none;
+    }
     .recordcover {
         max-width: 167px;
     }
@@ -2320,6 +2339,10 @@ a.panel_open {
         line-height: 15px;
     }
 
+    .recordCount {
+        float: left;
+    }
+
 }
 @media only screen and (max-width: 639px) {
 
@@ -2350,6 +2373,10 @@ a.panel_open {
     #searchForm_searchButton {
         border-radius: 4px 4px 4px 4px;
         width: 75px;
+    }
+
+    .recordCount {
+        float: left;
     }
 
 }
@@ -2417,6 +2444,10 @@ a.panel_open {
         line-height: 20px;
         margin: .3em .4em;
         padding: .5em;
+    }
+
+    .recordCount {
+        float: none;
     }
 
     #feedbackForm #message, #feedbackForm #url, #feedbackForm #name,

@@ -10,7 +10,7 @@
           <div class="pickup-header"><span>Constantinus Africanus: Theorica Pantegni</span></div>
           <div class="pickup-text">
             Den medeltida medicinska läro- och handboken Theorica Pantegni är den äldsta inbundna handskriften i Finland och en av Nationalbibliotekets pärlor. Finlands första omfattande och allmänna medicinska verk på latin har digitaliserats och transkriberats till moderna bokstäver.
-            <a href="{$url}/Record/arto.1433856">Till sökresultatet »</a>
+            <a href="{$url}/Record/fennica.971448">Till sökresultatet »</a>
           </div>
         </div>
       </li>

@@ -120,8 +120,8 @@
       {$pageContent}
     {/if}
 
-    <div class="well-small">
-      {include file="Search/paging.tpl" position="Bottom"}
+    <div>
+      {include file="Search/paging.tpl"}
     </div>  
 
   </div> {* End Main Listing *}

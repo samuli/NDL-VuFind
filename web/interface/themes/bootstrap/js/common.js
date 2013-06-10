@@ -99,6 +99,14 @@ $(document).ready(function(){
         window.print();
     }
     
+    // toggle facet visibility on click
+    $('#sidebarFacets dt').on('click', function() {
+        cont = $(this).parent('dl');
+        cont.toggleClass('collapsed');
+        cont.next('script').next('div.dynatree-facet').toggleClass('collapsed');
+    });
+    $('#sidebarFacets dt').css('cursor', 'pointer');
+    
     //ContextHelp
     contextHelp.init();
     contextHelp.contextHelpSys.load();

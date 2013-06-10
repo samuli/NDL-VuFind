@@ -108,12 +108,15 @@ class Holds extends MyResearch
                         $record['ils_details'] = $row;
                         $formats = array();
                         foreach (isset($record['format']) ? $record['format'] : array() as $format) {
-                            $formats[] = preg_replace('/^\d\//', '', $format);
+                            $formatRaw = preg_replace('/^\d\//', '', $format);
+                            $format = rtrim($formatRaw, "/");
+                            $formats[] = $format;
                         }
                         $record['format'] = $formats;
                         $driver = RecordDriverFactory::initRecordDriver($record);
                         if ($driver) {
                             $record['summImages'] = $driver->getAllImages();
+                            $record['summThumb'] =  $driver->getThumbnail();
                         }
                         $recordList[] = $record;
                     }
@@ -139,13 +142,16 @@ class Holds extends MyResearch
                             $record['ils_details'] = $row;
                             $formats = array();
                             foreach (isset($record['format']) ? $record['format'] : array() as $format) {
-                                $formats[] = preg_replace('/^\d\//', '', $format);
+                                $formatRaw = preg_replace('/^\d\//', '', $format);
+                                $format = rtrim($formatRaw, "/");
+                                $formats[] = $format;
                             }
                             $record['format'] = $formats;
                             $driver = RecordDriverFactory::initRecordDriver($record);
                             if ($driver) {
                                 $record['summImages'] = $driver->getAllImages();
                                 $record['title'] = $driver->getTitle();
+                                $record['summThumb'] =  $driver->getThumbnail();
                             }
                         } else {
                             $record = array();
