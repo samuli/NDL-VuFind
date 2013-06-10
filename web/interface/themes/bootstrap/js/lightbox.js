@@ -117,7 +117,7 @@ function lightboxDocumentReady() {
     registerAjaxBulkEmail();
     registerAjaxBulkExport();
     registerAjaxBulkDelete();
-    $('.mainFocus').focus();
+    $('#modalDialog .mainFocus').focus();
 }
 
 function registerAjaxLogin() {
