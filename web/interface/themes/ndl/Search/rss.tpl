@@ -30,25 +30,8 @@ if(($feed['type'] == "carousel") ||
 
     foreach ($feed['items'] as $item) {
         $title = $item['title'];
-        $content = strip_tags($item['description']);
-
-        /* to find the item image, first we look for enclosure elements in the
-         * feed item... */
-        $imageUrl = false;
-        if(count($item['enclosures'])>0) {
-            foreach($item['enclosures'] as $enclosure) {
-                if(is_int(stripos($enclosure['type'], "image"))) {
-                    $imageUrl = $enclosure['url'];
-                    break;
-                }
-            }
-        }
-        /* ...and if that fails, we try to extract the image url from the
-         * description element */
-        if(!$imageUrl) {
-            preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
-            $imageUrl = $matches[1];
-        }
+        $content = $item['description'];
+        $imageUrl = $item['imageUrl'];
         $url   = $item['link'];
         echo "<li>";
         echo "<img src=\"$imageUrl\" alt=\"\" />";
@@ -59,8 +42,6 @@ if(($feed['type'] == "carousel") ||
         echo "</li>\n";
     }
     echo "</ul>";
-
-    $this->assign("scrollSpeed", 1000 * ($feed['scrolledItems'] / $feed['itemsPerPage']));
 
     {/php}
     
@@ -105,7 +86,7 @@ if(($feed['type'] == "carousel") ||
                 },
                 scroll: {
                   items: {/literal}{$rssFeed.scrolledItems}{literal},
-                  duration: {/literal}{$scrollSpeed}{literal},
+                  duration: {/literal}{$rssFeed.scrollSpeed}{literal},
                   fx: "directscroll",
                   pauseOnHover: true
                 }
@@ -221,17 +202,9 @@ if(($feed['type'] == "carousel") ||
     }
     echo "<ul class=\"NDLNews\">";
     foreach ($feed['items'] as $item ) {
-            if($item['dc:date']) {
-                $dateTime = DateTime::createFromFormat(DATE_ISO8601, $item['dc:date']);
-            } elseif($item['pubdate']) {
-                $dateTime = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
-            }
-            $date = FALSE;
-            if($dateTime && $feed['dateFormat']) {
-                $date = $dateTime->format($feed['dateFormat']);
-            }
             $title = $item['title'];
             $url   = $item['link'];
+            $date  = $item['date'];
             echo "<li>";
             if($date) {
                 echo "<span class=\"date\">$date</span> ";
