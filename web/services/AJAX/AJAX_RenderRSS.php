@@ -58,7 +58,7 @@ class AJAX_RenderRSS extends Action
     public function launch()
     {
         global $interface;
-
+        
         if (!isset($_REQUEST['id'])) {
             return;
         } else {
@@ -112,6 +112,50 @@ class AJAX_RenderRSS extends Action
                 $rssFeed['items'] = array_slice($rss->getItems(), 0, $rssFeed['numberOfItems']);
             } else {
                 $rssFeed['items'] = $rss->getItems();
+            }
+
+            /* process the raw data in the array before passing it on to the
+             * template */
+            foreach($rssFeed['items'] as &$item) {
+                /* to find the item image, first we look for enclosure elements in the
+                 * feed item... */
+                if(array_key_exists("enclosures", $item)) {
+                    if(count($item['enclosures']) > 0) {
+                        foreach($item['enclosures'] as $enclosure) {
+                            if(is_int(stripos($enclosure['type'], "image"))) {
+                                $item['imageUrl'] = $enclosure['url'];
+                                break;
+                            }
+                        }
+                    }
+                }
+                /* ...and if that fails, we try to extract the image url from the
+                 * description element */
+                if(!array_key_exists("imageUrl", $item)) {
+                    preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
+                    $item['imageUrl'] = $matches[1];
+                }
+
+                /* remove all HTML tags */
+                $item['description'] = strip_tags($item['description']);
+                
+                /* process and format the date */
+                if(array_key_exists("dc:date", $item)) {
+                    $dateTime = DateTime::createFromFormat(DATE_ISO8601, $item['dc:date']);
+                } elseif(array_key_exists("pubdate", $item)) {
+                    $dateTime = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
+                }
+                $item['date'] = FALSE;
+                if($dateTime) {
+                    $item['date'] = $dateTime->format($rssFeed['dateFormat']);
+                }
+            }
+            
+            /* calculate the scroll speed for the carousel */
+            if($rssFeed['type'] == 'carousel') {
+                $rssFeed['scrollSpeed'] = 1000 *
+                                          ($rssFeed['scrolledItems'] /
+                                          $rssFeed['itemsPerPage']);
             }
         
             $interface->assign('rssFeed', $rssFeed);
