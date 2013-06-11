@@ -418,6 +418,11 @@ a.clear_input:hover {
     left: 7px;
     top: -7px;
 }
+.resultTerm {
+    margin-bottom: 10px;
+    padding: 8px 9px 8px 11px;
+}
+
 #suggestedTopics {
     padding-left: 8px;
     margin-bottom: 1em;
@@ -907,8 +912,36 @@ ul.recordSet .addToFavLink a {
 }
 */
 
-/*** RECORD ***/
 
+/*** PCI ***/
+.buttonSelected, .buttonSelected:hover {
+  cursor: default;
+  color: #444444;
+  background-color: #e6e6e6;
+  *background-color: #d9d9d9;
+  text-decoration: none;
+  background-position: 0 -15px;
+  -webkit-transition: background-position 0.1s linear;
+  -moz-transition: background-position 0.1s linear;
+  -o-transition: background-position 0.1s linear;
+  transition: background-position 0.1s linear;
+}
+
+#dualResults {
+    margin-bottom: 10px;
+}
+
+#dualResults .leftColumn {
+    border-right: 4px solid #e3e3e3;
+    margin-right: -1.22766%;
+    padding: 0 9px;
+    -webkit-border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    border-radius: 3px 0 0 3px;
+}
+
+
+/*** RECORD ***/
 div.truncateField {
     background-color: inherit;
 }

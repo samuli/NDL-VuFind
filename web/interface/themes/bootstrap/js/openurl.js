@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // assign action to the openUrlWindow link class
-    $('a.openUrlWindow').click(function(){
+    $('a.openUrlWindow').unbind('click').click(function(){
         var params = extractParams($(this).attr('class'));
         var settings = params.window_settings;
         window.open($(this).attr('href'), 'openurl', settings);
@@ -8,7 +8,8 @@ $(document).ready(function() {
     });
 
     // assign action to the openUrlEmbed link class
-    $('a.openUrlEmbed').click(function(){
+    $('a.openUrlEmbed').unbind('click').click(function(){
+        $(this).unbind('inview');
         var params = extractParams($(this).attr('class'));
         var openUrl = $(this).children('span.openUrl:first').attr('title');
         $(this).hide();
