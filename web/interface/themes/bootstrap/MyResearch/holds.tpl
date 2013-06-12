@@ -179,7 +179,7 @@
   </form>
     {/if}
   {else}
-    <div class="alert alert-info noContentMessage">{translate text='You do not have any holds or recalls placed'}.</div>
+    <div class="alert alert-info noContentMessage">{translate text='You do not have any holds placed'}.</div>
   {/if}
 
   <div style="clearfix">&nbsp;</div>
