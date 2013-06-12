@@ -132,7 +132,7 @@ ul#logoutOptions {
     padding: 15px 0;
     float:left;
 */
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     width: 100%;
     position: relative;
     z-index: 50;
@@ -155,11 +155,11 @@ h3 i {
 /* Searchbox */
 
 #searchForm {
-    margin-bottom: 18px;
+    margin-bottom: 13px;
 }
 
 div.searchbox {
-    margin-top: 10px;
+    margin-top: 15px;
     width: 422px;
 }
 #searchForm_input {
