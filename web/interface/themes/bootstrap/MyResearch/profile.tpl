@@ -89,7 +89,7 @@
           </tr>
           <tr>
             <td>{translate text='Email'}:</td>
-            <td>{if $info.email}{$info.email|escape}{else}-{/if}</td>
+            <td>{if $profile.email}{$profile.email|escape}{else}-{/if}</td>
           </tr>
           <tr>
             <td>{translate text='Group'}:</td>
