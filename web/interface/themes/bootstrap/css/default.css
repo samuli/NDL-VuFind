@@ -978,7 +978,6 @@ ul.recordSet .addToFavLink a {
 #dualResults {
     margin-bottom: 10px;
 }
-
 #dualResults .leftColumn {
     border-right: 4px solid #e3e3e3;
     margin-right: -1.22766%;
@@ -986,6 +985,9 @@ ul.recordSet .addToFavLink a {
     -webkit-border-radius: 3px 0 0 3px;
     -moz-border-radius: 3px 0 0 3px;
     border-radius: 3px 0 0 3px;
+}
+h4.dual {
+    padding-top: 3px;
 }
 
 
@@ -2459,6 +2461,11 @@ a.panel_open {
     .recordCount {
         float: left;
     }
+
+    .dualButtons a {
+        margin: 2px;
+    }
+
 
 }
 @media only screen and (max-width: 479px) {
