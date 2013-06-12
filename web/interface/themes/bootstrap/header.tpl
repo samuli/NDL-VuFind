@@ -24,7 +24,8 @@
       </select>
       <noscript><input type="submit" value="{translate text="Set"}" /></noscript></li>
     {/if}
-      <li><i class="icon-user"></i>&nbsp;<a class="account" href="{$path}/MyResearch/Home">{translate text="Your Account"}</a></li>
+      <li><i class="icon-user"></i>&nbsp;<a class="account" href="{$path}/MyResearch/Home">{if $mozillaPersonaCurrentUser}{$mozillaPersonaCurrentUser|truncate:20:'...':true:false|escape}
+      {elseif $user->lastname || $user->firstname}{if $user->firstname}{assign var=fullname value=$user->firstname|cat:' '|cat:$user->lastname}{else}{assign var=fullname value=$user->lastname}{/if}{$fullname|truncate:20:'...':true:false|escape}{else}{translate text="Your Account"}{/if}</a></li>
 
     {if $mozillaPersonaCurrentUser}
       <li><i class="icon-arrow-left"></i>&nbsp;<a id="personaLogout" class="logout" href="">{translate text="Log Out"}</a></li>
