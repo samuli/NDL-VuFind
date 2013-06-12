@@ -206,7 +206,7 @@ $(document).ready(function() {
       </div>
       <![endif]-->
 
-      <div class="row-fluid"> <!-- 1 -->
+      <div id="topBar" class="breadcrumb row-fluid"> <!-- 1 -->
         {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}
         {if !$showTopSearchBox}
         <div id="beta-banner">
@@ -230,7 +230,7 @@ $(document).ready(function() {
                 <ul class="nav nav-pills pull-right">
                 {foreach from=$allLangs key=langCode item=langName}
                   {if $userLang == $langCode}
-                  <li class="disabled"><a href="#">{translate text=$langName}</a></li>
+                  <li class="offscreen"><a href="#">{translate text=$langName}</a></li>
                   {else}
                   <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">{translate text=$langName}</a></li>
                   {/if}

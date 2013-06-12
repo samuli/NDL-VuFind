@@ -65,6 +65,14 @@ h1, h2, h3 {
 
 /* Breadscrumbs */
 
+#topBar {
+    padding: 0;
+}
+
+#topBar .breadcrumb {
+    padding: 7px 12px;
+}
+
 .breadcrumb > li {
     text-shadow: none;
 }
@@ -82,12 +90,15 @@ h1, h2, h3 {
 
 /* Nav */
 .nav-language ul, ul.breadcrumb {
-    margin-bottom: 15px;
+    margin-bottom: 0;
 }
 
 
 /* Login / Logout */
 
+#topBar .nav > li > a:hover, #topBar .nav > li > a:focus {
+  background-color: #fdfdfd;
+}
 
 ul#logoutOptions {
     margin-bottom: 0; 
@@ -1424,8 +1435,8 @@ span.mapMarker  {
 .footer {
 /*
     border-top: 1px solid #DDDDDD;
-*/
     margin-bottom: 1.8em;
+*/
 }
 
 
