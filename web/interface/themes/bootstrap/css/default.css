@@ -38,7 +38,6 @@ h1, h2, h3 {
     font-weight: bold;
     text-shadow: 2px 2px 3px rgba(0,0,0,0.3);
 }
-
 .offscreen {
     display: inline;
     height: 1px;
@@ -47,6 +46,12 @@ h1, h2, h3 {
     position: absolute;
     top: auto;
     width: 1px;
+}
+.alignleft {
+    float: left;
+}
+.alignright {
+    float: right;
 }
 
 .bootstrap-select.btn-group .dropdown-menu {
@@ -59,7 +64,6 @@ h1, h2, h3 {
 
     #feedbackForm #message, #feedbackForm #url, #feedbackForm #name,
     #feedbackForm #email, #feedbackForm #question {
-
     width: 395px;
 }
 
@@ -449,6 +453,9 @@ a.clear_input:hover {
 }
 .authorbio {
     margin-bottom: 25px;
+}
+#WikipediaDeferred .recordcover {
+    margin-right: 10px;
 }
 #topPubDateVis {
     margin-bottom: 15px;
@@ -1450,7 +1457,7 @@ span.mapMarker  {
     border-top: none;
 }
 
-.footer div {
+.footer div.pull-left {
     margin: 1% 5% 2% 2%;
 }
 
