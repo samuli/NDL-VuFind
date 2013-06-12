@@ -1,3 +1,5 @@
+<!-- START of: Search/list.tpl -->
+
 {js filename="openurl.js"}
 {* Main Listing *}
 <div class="span-10{if $sidebarOnLeft} push-5 last{/if}">
@@ -70,3 +72,4 @@
 
 <div class="clear"></div>
 
+<!-- END of: Search/list.tpl -->

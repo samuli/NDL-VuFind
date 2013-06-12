@@ -42,7 +42,7 @@
 <div class="row-fluid hidden-phone">
   <div id="carouselContainer" class="span12 section">
     <div class="content">
-      {include file="Search/rss.tpl" rssId="carousel"}
+      {include file="AJAX/loadRSS.tpl" rssId="carousel"}
     </div>
   </div>
 </div>

@@ -1,16 +1,22 @@
 $(document).ready(function() {
     checkSaveStatuses();
     // attach click event to the save record link
-    $('a.saveRecord').click(function() {
+    $('a.saveRecord').unbind('click').click(function() {
+        console.log("SaveRecord click");
         var id = this.id.substr('saveRecord'.length);
         var $dialog = getLightbox('Record', 'Save', id, null, this.title, 'Record', 'Save', id);
         return false;
     });    
-    $('a.saveMetaLibRecord').click(function() {
+    $('a.saveMetaLibRecord').unbind('click').click(function() {
         var id = this.id.substr('saveRecord'.length);
         var $dialog = getLightbox('MetaLib', 'Save', id, null, this.title, 'MetaLib', 'Save', id);
         return false;
-    });    
+    });
+    $('a.savePCIRecord').unbind('click').click(function() {
+        var id = this.id.substr('saveRecord'.length);
+        var $dialog = getLightbox('PCI', 'Save', id, null, this.title, 'PCI', 'Save', id);
+        return false;
+    });
 });
 
 function checkSaveStatuses() {
