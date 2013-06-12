@@ -210,7 +210,7 @@ $(document).ready(function() {
         {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}
         {if !$showTopSearchBox}
         <div id="beta-banner">
-            <a href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}"></a>
+            <a href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src="beta-overlay.png"}</a>
         </div>
         {/if}
         {* <=== Remove/comment out when not in beta anymore - End BETA BANNER *}

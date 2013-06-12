@@ -1,12 +1,22 @@
 /*** BETA BANNER ***/
 
 #beta-banner {
+/*
     background: url("../images/beta-overlay.png") repeat scroll 0 0 transparent;
+*/
     height: 73px;
-    left: 14px;
     position: absolute;
-    top: 44px;
     width: 80px;
+/*
+    left: 14px;
+    top: 44px;
+*/
+}
+
+#beta-banner img {
+    position: relative;
+    left: -5px;
+    top: 45px;
 }
 
 /*** GENERAL ***/
