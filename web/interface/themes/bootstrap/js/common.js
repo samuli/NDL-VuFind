@@ -180,7 +180,7 @@ function initAutocomplete() {
 	ac = searchInput.autocomplete({
 		minLength: minLength,
 		select: function(event, ui) { 
-			searchInput.val(ui.item.label);
+			searchInput.val('"' + ui.item.label + '"');
 			searchForm.submit(); 
 		},
 	    source: function(request, response) {

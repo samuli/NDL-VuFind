@@ -18,13 +18,14 @@
       <li><span class="badge badge-info libraryCardBadge">{translate text="Select Library Card"}:</span> 
       <select id="catalogAccount" name="catalogAccount" title="{translate text="Selected Library Card"}" class="selectpicker jumpMenu" data-style="btn btn-mini">
       {foreach from=$catalogAccounts item=account}
-        <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|escape}</option>
+        <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|truncate:15:'...':true:false|escape}</option>
       {/foreach}
         <option value="new">{translate text="Add"}...</option>
       </select>
       <noscript><input type="submit" value="{translate text="Set"}" /></noscript></li>
     {/if}
-      <li><i class="icon-user"></i>&nbsp;<a class="account" href="{$path}/MyResearch/Home">{translate text="Your Account"}</a></li>
+      <li><i class="icon-user"></i>&nbsp;<a class="account" href="{$path}/MyResearch/Home">{if $mozillaPersonaCurrentUser}{$mozillaPersonaCurrentUser|truncate:20:'...':true:false|escape}
+      {elseif $user->lastname || $user->firstname}{if $user->firstname}{assign var=fullname value=$user->firstname|cat:' '|cat:$user->lastname}{else}{assign var=fullname value=$user->lastname}{/if}{$fullname|truncate:20:'...':true:false|escape}{else}{translate text="Your Account"}{/if}</a></li>
 
     {if $mozillaPersonaCurrentUser}
       <li><i class="icon-arrow-left"></i>&nbsp;<a id="personaLogout" class="logout" href="">{translate text="Log Out"}</a></li>
