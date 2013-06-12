@@ -16,7 +16,7 @@
 #beta-banner img {
     position: relative;
     left: -5px;
-    top: 45px;
+    top: 35px;
 }
 
 /*** GENERAL ***/
@@ -66,9 +66,13 @@ h1, h2, h3 {
 /* Breadscrumbs */
 
 #topBar {
+    margin-bottom: 15px;
     padding: 0;
 }
-
+#topBarHome {
+    margin-bottom: 5px;
+    padding: 0;
+}
 #topBar .breadcrumb {
     padding: 7px 12px;
 }
@@ -97,9 +101,11 @@ h1, h2, h3 {
 /* Login / Logout */
 
 #topBar .nav > li > a:hover, #topBar .nav > li > a:focus {
-  background-color: #fdfdfd;
+  background-color: #e3e3e3;
 }
-
+.nav-language {
+    margin-bottom: 0;
+}
 ul#logoutOptions {
     margin-bottom: 0; 
 }

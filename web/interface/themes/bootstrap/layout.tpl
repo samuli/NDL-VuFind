@@ -206,7 +206,7 @@ $(document).ready(function() {
       </div>
       <![endif]-->
 
-      <div id="topBar" class="breadcrumb row-fluid"> <!-- 1 -->
+      <div id="topBar{if !$showBreadcrumbs}Home{/if}" class="{if $showBreadcrumbs}breadcrumb {/if}row-fluid"> <!-- 1 -->
         {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}
         {if !$showTopSearchBox}
         <div id="beta-banner">
