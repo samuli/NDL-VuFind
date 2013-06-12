@@ -15,7 +15,7 @@
   {/if} 
     <ul id="logoutOptions" class="inline{if $showTopSearchBox} pull-right{/if}{if !$user} hide{/if}">
     {if $catalogAccounts}
-      <li>
+      <li><span class="badge badge-info libraryCardBadge">{translate text="Select Library Card"}:</span> 
       <select id="catalogAccount" name="catalogAccount" title="{translate text="Selected Library Card"}" class="selectpicker jumpMenu" data-style="btn btn-mini">
       {foreach from=$catalogAccounts item=account}
         <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|escape}</option>

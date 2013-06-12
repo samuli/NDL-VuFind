@@ -88,12 +88,14 @@ h1, h2, h3 {
 
 /* Login / Logout */
 
+
 ul#logoutOptions {
     margin-bottom: 0; 
 }
 
 #logoutOptions .jumpMenu {
-    margin-bottom: 6px;
+    margin-top: 2px;
+    margin-bottom: 4px;
 }
 
 #logoutOptions .jumpMenu, #logoutOptions .jumpMenu button {
@@ -131,8 +133,12 @@ h3 i {
 
 /* Searchbox */
 
+#searchForm {
+    margin-bottom: 18px;
+}
+
 div.searchbox {
-    margin-top: 8px;
+    margin-top: 10px;
     width: 422px;
 }
 #searchForm_input {
@@ -420,12 +426,15 @@ a.clear_input:hover {
 */
 
 /*** RESULTS ***/
-.authorbox, .authorbio {
+.authorbox {
     background: url("../images/bg_authorbox.jpg") repeat-x scroll center bottom transparent;
     border-bottom: 1px solid #EEEEEE;
 }
-
+.authorbio {
+    margin-bottom: 25px;
+}
 #topPubDateVis {
+    margin-bottom: 15px;
     margin-left: 3px;
 }
 .dateVisClear a {

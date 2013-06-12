@@ -2,12 +2,15 @@
 
 <div class="span12 well well-small authorbox">
   <div id="topFacets" class="row-fluid">
+
+    <div class="well-small">
     {* Recommendations *}
     {if $topRecommendations}
       {foreach from=$topRecommendations item="recommendations"}
         {include file=$recommendations}
       {/foreach}
     {/if}
+    </div>
    <div class="clear"></div>
   </div>
 </div>
