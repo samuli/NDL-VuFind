@@ -1764,6 +1764,10 @@ div.record {
 .recordTitle {
     margin-top:0;
 }
+.titleStatement {
+    font-size: 1.23em;
+}
+
 .recordAltTitlesHeading {
     margin-top: -0.8em;
     margin-bottom: 1em;

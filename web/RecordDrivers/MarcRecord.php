@@ -1125,7 +1125,7 @@ class MarcRecord extends IndexRecord
      */
     protected function getTitleStatement()
     {
-        return $this->getFirstFieldValue('245', array('c'));
+        return  $this->stripTrailingPunctuation($this->getFirstFieldValue('245', array('c')));
     }
 
     /**
@@ -1746,6 +1746,7 @@ class MarcRecord extends IndexRecord
         }
         return $notes;
     }
+    
 }
 
 ?>

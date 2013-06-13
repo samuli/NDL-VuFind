@@ -17,13 +17,15 @@
   </div>
   {/if}
 
-    
   {* Display Title *}
-  <h1 class="recordTitle">{$coreShortTitle|escape}{if $coreSubtitle}&nbsp;: {$coreSubtitle|escape}{/if}
-  {* {if $coreTitleSection} / {$coreTitleSection|escape}{/if}
-  {if $coreTitleStatement}{$coreTitleStatement|escape}{/if} *}
-  </h1>
+  <h1 class="recordTitle">{$coreShortTitle|escape}{if $coreSubtitle}&nbsp;: {$coreSubtitle|escape}{/if}</h1>
   {* End Title *}
+
+  {*  Statement of responsibility *}
+  {if $coreTitleStatement}
+  <h2 class="titleStatement">{$coreTitleStatement|escape}</h2>
+  {/if}
+  {* End statement of responsibility *}
 
   {* Display Cover Image, commented out since already in view.tpl
   {if $coreThumbMedium}
