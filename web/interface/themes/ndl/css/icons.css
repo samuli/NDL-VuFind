@@ -56,11 +56,12 @@
 }
 /* Front page: search suggestion icons */
 
-.iconlabel.formatdocument {
+.iconlabel.formatdocument, 
+.iconlabel.formatlegaldocument {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -385px;
 }
-.iconlabel.formatarticle {
+.iconlabel.formatarticle, .iconlabel.formatnewspaperarticle {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -187px -384px
 }
@@ -92,11 +93,13 @@
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -104px;
 }
- .iconlabel.formatmusicalscore {
+.iconlabel.formatmusicalscore,
+.iconlabel.formatscore  {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -330px;
 }
-.iconlabel.formatthesis {
+.iconlabel.formatthesis,
+.iconlabel.formatdissertation {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -720px;
 }
@@ -108,16 +111,21 @@
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -275px;
 }
+.iconlabel.formatvideo, 
+.iconlabel.formataudiovideo,
 .iconlabel.formatvideo {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -606px;
 }
 .iconlabel.formatsound,
-.iconlabel.formatsoundrecording {
+.iconlabel.formatsoundrecording,
+.iconlabel.formataudio {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -551px;
 }
-.iconlabel.formatother {
+.iconlabel.formatother,
+.iconlabel.formatwebsite
+{
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -777px;
 }
@@ -256,11 +264,13 @@ a.clear_input {
 
 /* Main: Search results image icons */
 
-.resultNoImage.formatdocument {
+.resultNoImage.formatdocument,
+.resultNoImage.formatlegaldocument {
     background-image: url(../images/icons48px-03.png);
     background-position: -8px -735px;
 }
-.resultNoImage.formatarticle {
+.resultNoImage.formatarticle,
+.resultNoImage.formatnewspaperarticle {
     background-image: url("../images/icons48px-03.png");
     background-position: -7px -1887px;
 }
@@ -292,7 +302,8 @@ a.clear_input {
     background-image: url(../images/icons48px-03.png);
     background-position: -14px -612px;
 }
-.resultNoImage.formatthesis {
+.resultNoImage.formatthesis,
+.resultNoImage.formatdissertation, {
     background-image: url(../images/icons48px-03.png);
     background-position: -7px -1499px;
 }
@@ -304,15 +315,19 @@ a.clear_input {
     background-image: url(../images/icons48px-03.png);
     background-position: -13px -482px;
 }
-.resultNoImage.formatvideo {
+.resultNoImage.formatvideo,
+.resultNoImage.formataudiovideo, {
     background-image: url(../images/icons48px-03.png);
     background-position: -14px -1242px;
 }
-.resultNoImage.formatsound {
+.resultNoImage.formatsound,
+.resultNoImage.formataudio, {
     background-image: url(../images/icons48px-03.png);
     background-position: -12px -1113px;
 }
-.resultNoImage.formatother {
+.resultNoImage.formatother,
+.resultNoImage.formatreferenceentry,
+.resultNoImage.formatwebsite, {
     background-image: url(../images/icons48px-03.png);
     background-position: -17px -1632px;
 }
