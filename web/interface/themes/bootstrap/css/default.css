@@ -986,7 +986,7 @@ ul.recordSet .addToFavLink a {
     -moz-border-radius: 3px 0 0 3px;
     border-radius: 3px 0 0 3px;
 }
-h4.dual {
+h4.dual, h4.searchTerms {
     padding-top: 3px;
 }
 
