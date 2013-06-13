@@ -556,7 +556,8 @@ class Voyager implements DriverInterface
                           "LOCATION.LOCATION_ID = MFHD_MASTER.LOCATION_ID",
                           "MFHD_MASTER.MFHD_ID = BIB_MFHD.MFHD_ID",
                           "MFHD_DATA.MFHD_ID = BIB_MFHD.MFHD_ID",
-                          "MFHD_MASTER.SUPPRESS_IN_OPAC='N'"
+                          "MFHD_MASTER.SUPPRESS_IN_OPAC='N'",
+                          "NOT EXISTS (SELECT MFHD_ID FROM MFHD_ITEM WHERE MFHD_ITEM.MFHD_ID=MFHD_MASTER.MFHD_ID)",
                          );
 
         // Order
@@ -597,28 +598,29 @@ class Voyager implements DriverInterface
 
             // Concat wrapped rows (MARC data more than 300 bytes gets split
             // into multiple rows)
-            if (isset($data[$row['ITEM_ID']][$number])) {
+            $rowId = isset($row['ITEM_ID']) ? $row['ITEM_ID'] : $row['MFHD_ID'];
+            if (isset($data[$rowId][$number])) {
                 // We don't want to concatenate the same MARC information to
                 // itself over and over due to a record with multiple status
                 // codes -- we should only concat wrapped rows for the FIRST
                 // status code we encounter!
-                if ($data[$row['ITEM_ID']][$number]['STATUS_ARRAY'][0] == $row['STATUS']) {
-                    $data[$row['ITEM_ID']][$number]['RECORD_SEGMENT']
+                if ($data[$rowId][$number]['STATUS_ARRAY'][0] == $row['STATUS']) {
+                    $data[$rowId][$number]['RECORD_SEGMENT']
                         .= $row['RECORD_SEGMENT'];
                 }
 
                 // If we've encountered a new status code, we should track it:
                 if (!in_array(
-                    $row['STATUS'], $data[$row['ITEM_ID']][$number]['STATUS_ARRAY']
+                    $row['STATUS'], $data[$rowId][$number]['STATUS_ARRAY']
                 )) {
-                    $data[$row['ITEM_ID']][$number]['STATUS_ARRAY'][]
+                    $data[$rowId][$number]['STATUS_ARRAY'][]
                         = $row['STATUS'];
                 }
             } else {
                 // This is the first time we've encountered this row number --
                 // initialize the row and start an array of statuses.
-                $data[$row['ITEM_ID']][$number] = $row;
-                $data[$row['ITEM_ID']][$number]['STATUS_ARRAY']
+                $data[$rowId][$number] = $row;
+                $data[$rowId][$number]['STATUS_ARRAY']
                     = array($row['STATUS']);
             }
         }
@@ -636,33 +638,35 @@ class Voyager implements DriverInterface
     protected function processRecordSegment($recordSegment)
     {
         $marcDetails = array();
-
         try {
             $marc = new File_MARC(
                 str_replace(array("\n", "\r"), '', $recordSegment),
                 File_MARC::SOURCE_STRING
             );
             if ($record = $marc->next()) {
+                
                 // Get Notes
-                if ($fields = $record->getFields('852')) {
-                    foreach ($fields as $field) {
-                        if ($subfields = $field->getSubfields('z')) {
-                            foreach ($subfields as $subfield) {
-                                // If this is the first time through,
-                                // assume a single-line summary
-                                if (!isset($marcDetails['notes'])) {
-                                    $marcDetails['notes']
-                                        = $subfield->getData();
-                                } else {
-                                    // If we already have a summary
-                                    // line, convert it to an array and
-                                    // append more data
-                                    if (!is_array($marcDetails['notes'])) {
-                                        $marcDetails['notes']
-                                            = array($marcDetails['notes']);
+                $noteFields = array(
+                    '506' => 'au',
+                    '845' => 'a',
+                    '852' => 'z'
+                );
+                foreach ($noteFields as $fieldCode => $subfieldCodes) {
+                    if ($fields = $record->getFields($fieldCode)) {
+                        foreach ($fields as $field) {
+                            if ($subfields = $field->getSubfields()) {
+                                $line = '';
+                                foreach ($subfields as $code => $subfield) {
+                                    if (!strstr($subfieldCodes, $code)) {
+                                        continue;
                                     }
-                                    $marcDetails['notes'][]
-                                        = $subfield->getData();
+                                    if ($line) {
+                                        $line .= ' ';
+                                    }
+                                    $line .= $subfield->getData();
+                                }
+                                if ($line) {
+                                    $marcDetails['notes'][] = $line;
                                 }
                             }
                         }
@@ -670,23 +674,94 @@ class Voyager implements DriverInterface
                 }
 
                 // Get Summary (may be multiple lines)
+                if ($fields = $record->getFields('863')) {
+                    foreach ($fields as $field) {
+                        if ($subfields = $field->getSubfields()) {
+                            $line = '';
+                            foreach ($subfields as $code => $subfield) {
+                                if (!strstr('abiz', $code)) {
+                                    continue;
+                                }
+                                if ($line) {
+                                    $line .= ' ';
+                                }
+                                if ($code == 'i' || $code == 'z') {
+                                    $line .= '(' . $subfield->getData() . ')';
+                                } else {
+                                    $line .= $subfield->getData();
+                                }
+                            }
+                            if ($line) {
+                                $marcDetails['summary'][] = $line;
+                            }
+                        }
+                    }
+                }
                 if ($fields = $record->getFields('866')) {
                     foreach ($fields as $field) {
-                        if ($subfield = $field->getSubfield('a')) {
-                            // If this is the first time through, assume
-                            // a single-line summary
-                            if (!isset($marcDetails['summary'])) {
-                                $marcDetails['summary']
-                                    = $subfield->getData();
-                                // If we already have a summary line,
-                                // convert it to an array and append
-                                // more data
-                            } else {
-                                if (!is_array($marcDetails['summary'])) {
-                                    $marcDetails['summary']
-                                        = array($marcDetails['summary']);
+                        if ($subfields = $field->getSubfields()) {
+                            $line = '';
+                            foreach ($subfields as $code => $subfield) {
+                                if (!strstr('az', $code)) {
+                                    continue;
                                 }
-                                $marcDetails['summary'][] = $subfield->getData();
+                                if ($line) {
+                                    $line .= ' ';
+                                }
+                                $line .= $subfield->getData();
+                            }
+                            if ($line) {
+                                $marcDetails['summary'][] = $line;
+                            }
+                        }
+                    }
+                }
+                
+                // Get Supplementary material (may be multiple lines)
+                if ($fields = $record->getFields('867')) {
+                    foreach ($fields as $field) {
+                        if ($subfields = $field->getSubfields()) {
+                            $line = '';
+                            foreach ($subfields as $code => $subfield) {
+                                if (!strstr('az', $code)) {
+                                    continue;
+                                }
+                                if ($line) {
+                                    $line .= ' ';
+                                }
+                                if ($code == 'z') {
+                                    $line .= '(' . $subfield->getData() . ')';
+                                } else {
+                                    $line .= $subfield->getData();
+                                }
+                            }
+                            if ($line) {
+                                $marcDetails['supplements'][] = $line;
+                            }
+                        }
+                    }
+                }
+                
+                // Get indexes (may be multiple lines)
+                if ($fields = $record->getFields('868')) {
+                    foreach ($fields as $field) {
+                        if ($subfields = $field->getSubfields()) {
+                            $line = '';
+                            foreach ($subfields as $code => $subfield) {
+                                if (!strstr('az', $code)) {
+                                    continue;
+                                }
+                                if ($line) {
+                                    $line .= ' ';
+                                }
+                                if ($code == 'z') {
+                                    $line .= '(' . $subfield->getData() . ')';
+                                } else {
+                                    $line .= $subfield->getData();
+                                }
+                            }
+                            if ($line) {
+                                $marcDetails['indexes'][] = $line;
                             }
                         }
                     }
@@ -864,6 +939,7 @@ class Voyager implements DriverInterface
 
         // Loop through the possible queries and try each in turn -- the first one
         // that yields results will cause us to break out of the loop.
+        $data = array();
         foreach ($possibleQueries as $sql) {
             // Execute SQL
             try {
@@ -878,13 +954,7 @@ class Voyager implements DriverInterface
                 $sqlRows[] = $row;
             }
 
-            $data = $this->getHoldingData($sqlRows);
-
-            // If we found data, we can leave the foreach loop -- we don't need to
-            // try any more queries.
-            if (count($data) > 0) {
-                break;
-            }
+            $data = array_merge($data, $this->getHoldingData($sqlRows));
         }
         return $this->processHoldingData($data, $patron);
     }

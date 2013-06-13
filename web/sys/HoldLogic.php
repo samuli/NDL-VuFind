@@ -148,7 +148,10 @@ class HoldLogic
                 $holdings = $this->generateHoldings($result, $mode);
             }
         }
-        return $this->formatHoldings($holdings);
+        // Don't format holdings as we want to keep call numbers separate 
+        // and it would ruin notes and summaries
+        //return $this->formatHoldings($holdings);
+        return $holdings;
     }
 
     /**
