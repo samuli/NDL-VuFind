@@ -3,13 +3,13 @@
 {include file="MyResearch/menu.tpl"}
 
 <div class="well-small myResearch accounts{if $sidebarOnLeft} last{/if}">
-  <span class="lead">{translate text='Library Cards'}</span>
   {if empty($accounts)}
     <br />
-    {translate text='You do not have any library cards'}
+    <span class="lead">{translate text='You do not have any library cards'}</span>
   {else}
     <table class="table table-condensed table-hover datagrid accountList" summary="{translate text='Library Cards'}">
-    <tr class="well">
+      <span class="lead">{translate text='Library Cards'}</span>
+      <tr class="well">
       <th>{translate text='Name'}</th>
       <th class="hidden-phone">{translate text='Description'}</th>
       <th>{translate text='Added'}</th>
