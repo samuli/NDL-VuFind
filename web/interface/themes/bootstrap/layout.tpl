@@ -317,3 +317,4 @@ $(document).ready(function() {
 {/if}
 
 <!-- END of: layout.tpl -->
+

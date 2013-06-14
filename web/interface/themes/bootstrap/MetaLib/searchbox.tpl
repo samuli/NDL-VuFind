@@ -12,7 +12,6 @@
     {literal}
         $(function(){
             $('.mainFocus').focus();
-            $('.ui-autocomplete').addClass('dropdown-menu'); // TODO: remove and add this class where autocomplete is defined.
         });
     {/literal}
     </script>
@@ -22,7 +21,7 @@
 {*
         <label for="searchForm_input" class="offscreen">{translate text="Search Terms"}</label>
 *}
-        <input id="searchForm_input" class="search-query MetaLib clearable mainFocus" type="text" name="lookfor"{* size="40" style="width:200px;"*} value="{$lookfor|escape:"html"}" placeholder='{translate text="Find"}&hellip;'/>
+        <input id="searchForm_input" class="search-query MetaLib clearable mainFocus" type="text" name="lookfor"{* size="40" style="width:200px;"*} value="{$lookfor|escape:"html"}" autocomplete="off" placeholder='{translate text="Find"}&hellip;'/>
 {*
         <div class="styled_select">
           <label for="searchForm_set" class="offscreen">{translate text="Search In"}</label>

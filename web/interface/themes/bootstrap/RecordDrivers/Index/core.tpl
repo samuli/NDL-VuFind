@@ -150,13 +150,6 @@
       </td>
     </tr>
 
-    {if $recordLanguage}
-    <tr valign="top" class="recordLanguage">
-      <th>{translate text='Language'}: </th>
-      <td>{foreach from=$recordLanguage item=lang}{translate text=$lang prefix='facet_'}<br/>{/foreach}</td>
-    </tr>
-    {/if}
-
     {if !empty($corePublications)}
     <tr valign="top" class="recordPublications">
       <th>{translate text='Published'}: </th>
@@ -167,7 +160,14 @@
       </td>
     </tr>
     {/if}
-    
+
+    {if $recordLanguage}
+    <tr valign="top" class="recordLanguage">
+      <th>{translate text='Language'}: </th>
+      <td>{foreach from=$recordLanguage item=lang}{translate text=$lang prefix='facet_'}<br/>{/foreach}</td>
+    </tr>
+    {/if}
+
     {if !empty($coreProjectedPublicationDate)}
     <tr valign="top" class="coreProjectedPublicationDate">
       <th>{translate text='Projected Publication Date'}: </th>
