@@ -11,6 +11,9 @@
   {if $callSlipResults.success}
     <div class="holdsMessage"><p class="alert alert-success">{translate text=$callSlipResults.status}</p></div>
   {/if}
+  {if $UBRequestResults.success}
+    <div class="holdsMessage"><p class="alert alert-success">{translate text=$UBRequestResults.status}</p></div>
+  {/if}
 
   {if $errorMsg}
     <div class="holdsMessage"><p class="alert alert-error">{translate text=$errorMsg}</p></div>
@@ -149,9 +152,12 @@
               <br />
             {/if}
 
-              <strong>{translate text='Created'}:</strong> {$resource.ils_details.create|escape},
-              <strong>{translate text='Expires'}:</strong> {$resource.ils_details.expire|escape}
+              {if $resource.ils_details.create}<strong>{translate text='Created'}:</strong> {$resource.ils_details.create|escape},{/if}
+              {if $resource.ils_details.expire}<strong>{translate text='Expires'}:</strong> {$resource.ils_details.expire|escape}{/if}
               <br />
+             {if $resource.ils_details.in_transit}<strong>{translate text='In Transit To'}:</strong> {$resource.ils_details.in_transit|translate_prefix:'library_'|escape}
+              <br />
+             {/if}
 
             {foreach from=$cancelResults.items item=cancelResult key=itemId}
               {if $itemId == $resource.ils_details.item_id && $cancelResult.success == false}
@@ -292,8 +298,12 @@
           </div>
           <div class="span4 offset1 dueDate">
           {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-          {translate text=$source prefix='source_'},
-        {* Depending on the ILS driver, the "location" value may be a string or an ID; figure out the best value to display... *}
+          {if $resource.ils_details.institution_name}
+             {translate text=$resource.ils_details.institution_name prefix='library_'}
+          {else}
+             {translate text=$source prefix='source_'}
+          {/if}
+          {* Depending on the ILS driver, the "location" value may be a string or an ID; figure out the best value to display... *}
           {assign var="pickupDisplay" value=""}
           {assign var="pickupTranslate" value="0"}
           {if isset($resource.ils_details.location)}
@@ -315,9 +325,9 @@
             <br />
           {/if}
 
-            <strong>{translate text='Created'}:</strong> {$resource.ils_details.create|escape}
+          {if $resource.ils_details.created}<strong>{translate text='Created'}:</strong> {$resource.ils_details.created|escape}{/if}
           {if $resource.ils_details.processed}<br/><strong>{translate text='Processed'}:</strong> {$resource.ils_details.processed|escape}{/if}
-            <br />
+          <br />
 
           {foreach from=$cancelCallSlipResults.items item=cancelResult key=itemId}
             {if $itemId == $resource.ils_details.item_id && $cancelResult.success == false}

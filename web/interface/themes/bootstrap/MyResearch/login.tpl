@@ -42,7 +42,7 @@
         {/literal}
         </script>    
       </div>
-      <div class="span7 alert alert-info loginDescription{$lbSmall}">
+      <div class="span5 alert alert-info loginDescription{$lbSmall}">
         <div class="description">
           <div class="descriptionTitle"><strong>{translate text='login_services_desc'}</strong></div> 
           {translate text='login_desc_email_html'}
@@ -55,7 +55,7 @@
     {assign var=loginNumber value=$loginNumber+1}
     {if $mozillaPersona}
       <div class="row-fluid">
-        <div{* class="separator{$lbSmall}"*}><span class="label text">{translate text="login_separator"}</span>
+        <div{* class="separator{$lbSmall}"*}><p class="label text">{translate text="login_separator"}</p>
         </div>
       </div>
     {/if}
@@ -64,7 +64,7 @@
         <h4>{$loginNumber}. {translate text="login_title_shibboleth"}</h4>
         <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
       </div>
-      <div class="span7 alert alert-info loginDescription{$lbSmall}">
+      <div class="span5 alert alert-info loginDescription{$lbSmall}">
         <div class="description">
           <div class="descriptionTitle"><strong>{translate text='login_services_desc'}</strong></div> 
           {translate text='login_desc_shibboleth_html'}
@@ -77,7 +77,7 @@
     {assign var=loginNumber value=$loginNumber+1}
     {if $mozillaPersona || $sessionInitiator}
       <div class="row-fluid">
-        <div{* class="separator{$lbSmall}"*}><span class="label text">{translate text="login_separator"}</span>
+        <div{* class="separator{$lbSmall}"*}><p class="label text">{translate text="login_separator"}</p>
 
         </div>
       </div>
@@ -125,7 +125,7 @@
     {if $authMethod == 'DB'}<a class="new_account" href="{$url}/MyResearch/Account">{translate text='Create New Account'}</a>{/if}
     </div>
   
-    <div class="span7 alert alert-info loginDescription{$lbSmall}">
+    <div class="span5 alert alert-info loginDescription{$lbSmall}">
       <div class="description">
         <div class="descriptionTitle"><strong>{translate text='login_services_desc'}</strong></div> 
         {translate text='login_desc_local_html'}
