@@ -32,7 +32,7 @@
       {if $lookfor == ''}
         <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{translate text="history_empty_search"}</h4>
       {else}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{if $searchType == 'basic'}{$lookfor|escape:"html"}{/if}</h4>
+        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}{/if}</h4>
       {/if}
 
       {if $dualResultsEnabled && $searchType != 'advanced'}

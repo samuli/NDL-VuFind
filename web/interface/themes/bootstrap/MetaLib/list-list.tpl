@@ -5,7 +5,7 @@
 {include file="Search/openurl_autocheck.tpl"}
 
 <form method="post" name="addForm" action="{$url}/Cart/Home">
-  <ul class="recordSet">
+  <ul class="row-fluid unstyled recordSet">
   {foreach from=$recordSet item=record name="recordLoop"}
     <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
       <span class="recordNumber">{$recordStart+$smarty.foreach.recordLoop.iteration-1}</span>
@@ -14,12 +14,20 @@
         <label for="checkbox_{$record.ID.0|regex_replace:'/[^a-z0-9]/':''|escape}" class="offscreen">{translate text="Select this record"}</label>
         <input id="checkbox_{$record.ID.0|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="id[]" value="{$record.ID.0|escape}" class="checkbox addToCartCheckbox"/>
          *}
+
+  <table class="table">
+  <tr>
+  <td class="resultColumn1">
+
         <div class="resultColumn1">
           <div class="coverDiv">
             <div class="resultNoImage"><p>{translate text='No image'}</p></div>
             <div class="resultImage"><a href="{$path}/bookcover.php?size=large{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" rel="{$record.ID.0|escape:"url"}" onclick="launchFancybox(this); return false;"><img src="{$path}/bookcover.php?size=small{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" class="alignleft" alt="{translate text="Cover Image"}"/></a></div>
           </div>
         </div>
+
+  </td>
+  <td style="width: 100%;">
         
         <div class="resultColumn2">
           <div class="resultItemLine1">
@@ -65,15 +73,23 @@
 
           <span class="iconlabel {$record.ContentType.0|getSummonFormatClass|escape}">{translate text=$record.ContentType.0}</span>
         </div>
-      
-        <div class="span-3 last addToFavLink">
-          <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}">{translate text='Add to favorites'}</a>
+
+  </td>
+  <td>
+
+        <div class="last addToFavLink">
+          <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}">{*translate text='Add to favorites'*}</a>
       
           {* Display the lists that this record is saved to *}
           <div class="savedLists info hide" id="savedLists{$record.ID.0|escape}">
             <strong>{translate text="Saved in"}:</strong>
           </div>
-        </div>      
+        </div>
+
+  </td>
+  </tr>
+  </table>
+  
         <div class="clear"></div>
       </div>
       <span class="Z3988" title="{$record.openUrl|escape}"></span>

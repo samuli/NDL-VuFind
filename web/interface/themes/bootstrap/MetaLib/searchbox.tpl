@@ -40,12 +40,19 @@
       </div>
 
       <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-        <li class="btn-mini"><a href="{$path}/"><i class="icon-search"></i>&nbsp;{translate text="Local search"}</a></li>
-        <li class="btn-mini"><a href="{$path}/Search/History"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+        <li class=""><a href="{$path}/" class="localLink"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
 {*
-        <li class="btn-mini"><a href="{$path}/Browse/Home"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+      {if $pciEnabled}
+        <li><a href="{$path}/PCI/Advanced" class="small pciLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
+      {/if}
 *}
-        <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+        <li class=""><a href="{$path}/Search/History" class="browseLink"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+{*
+        <li class=""><a href="{$path}/Browse/Home" class="browseLink"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+*}
+{*
+        <li class=""><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+*}
       </ul>
 
 {*
@@ -87,5 +94,15 @@
     <script type="text/javascript">$("#searchForm_lookfor").focus()</script>
   {/if}
 </div>
+
+{* quick script to compensate for the Nelli-logo *}
+<script type="text/javascript">
+{literal}
+$(document).ready(function() {
+      $("#searchForm_input").css({width:'151px'});
+      $("a.clear_input").css({left:'209px'});
+});
+{/literal}
+</script>
 
 <!-- END of: MetaLib/searchbox.tpl -->

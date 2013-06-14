@@ -208,11 +208,11 @@ $(document).ready(function() {
 
       <div id="topBar{if !$showBreadcrumbs}Home{/if}" class="{if $showBreadcrumbs}breadcrumb {/if}row-fluid"> <!-- 1 -->
         {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}
-        {if !$showTopSearchBox}
+        {*if !$showTopSearchBox}
         <div id="beta-banner">
             <a href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src="beta-overlay.png"}</a>
         </div>
-        {/if}
+        {/if*}
         {* <=== Remove/comment out when not in beta anymore - End BETA BANNER *}
 
         {if $showBreadcrumbs}

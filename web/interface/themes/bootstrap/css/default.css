@@ -132,7 +132,7 @@ ul#logoutOptions {
     padding: 15px 0;
     float:left;
 */
-    margin-bottom: 20px;
+    margin: 10px 0;
     width: 100%;
     position: relative;
     z-index: 50;
@@ -170,6 +170,11 @@ div.searchbox {
 #searchForm_filter, .searchbox .bootstrap-select, .searchbox .bootstrap-select .btn {
     width: 152px;
 }
+/* MetaLib */
+button#searchForm_set {
+    font-size: 12px;
+}
+
 .ui-autocomplete .ui-corner-all {
     -moz-border-radius: 0 0 0 0;
     -webkit-border-radius: 0 0 0 0;
@@ -207,6 +212,14 @@ a.clear_input:hover {
 #searchFormKeepFilters {
     vertical-align: inherit;
 }
+.keepFilters {
+    left: 50%;
+    margin-left: -103px;
+    padding: 5px 0 2px;
+    position: absolute;
+    top: 51px;
+    width: 206px;
+}
 
 /* MetaLib */
 
@@ -226,12 +239,39 @@ a.clear_input:hover {
     margin: 0 25%;
 }
 */
+.blurbLineWrapper {
+    margin-bottom: 10px;
+}
+
+.advancedLink, .localLink, .metalibLink, .pciLink, .browseLink {
+    font-size: 11.5px;
+}
 
 .homeContent ul li {
     font-size: 0.9em;
     margin: 1em 0 1em .1em;
 }
-
+.main-home > div {
+/*
+    padding: 0 9px;
+*/
+}
+#siteDescription, #popularSearches {
+    padding: 0 18px 13px 0;
+}
+#siteDescription p {
+    font-size: 14px;
+}
+#homeRuler {
+    min-height: 20px;
+}
+#homeRuler hr {
+    margin: 2px 0;
+}
+#popular-map > div {
+    padding-top: 0;
+    margin-bottom: 20px;
+}
 
 /* Carousel */
 
@@ -760,7 +800,7 @@ button#sort_options_1 {
     max-width: 15em;
 }
 
-.result.recordId .table th, .result.recordId .table td {
+.recordId .table th, .recordId .table td {
     border-top: none;
 } 
 
@@ -2380,10 +2420,13 @@ a.panel_open {
 
 }
 @media only screen and (max-width: 799px) {
-
+/*
     #logo img {
-        width: 200px;
-    }
+        max-width: 710px;
+    }*/
+    #topBar+div .lead, #topBarHome+div .lead {
+        font-size: 17.5px;
+    }    
     .recordCount {
         float: none;
     }
@@ -2397,15 +2440,15 @@ a.panel_open {
     h3 {
         font-size: 20.75px;
     }
-
+    #loginHeader {
+        height: 10px;
+    }
     #logo {
-        margin: 15px 0;
+        margin-top: 20px;
     }
-
-    #logo img {
-        width: 190px;
-    }
-
+/*    #logo img {
+        max-width: 680px;
+    }*/
 /*
     .footer div {
       margin-left: 3%;
@@ -2414,58 +2457,52 @@ a.panel_open {
     .addthis_toolbox {
         margin-top: 0;
     }
-
     #panel .btn {
         font-size: 80%;
         height: 34px;
         padding: .1em .7em;
         line-height: 15px;
     }
-
     .recordCount {
         float: left;
     }
-
+    #searchForm {
+        margin-bottom: 20px;
+    }
 }
 @media only screen and (max-width: 639px) {
 
     h3 {
         font-size: 18.75px;
     }
-
     .main .well-small {
         padding: 4px 9px;
     }
-
-
     #searchboxHome, div.searchbox {
         width: 231px;
         white-space: normal;
     }
-
     #searchForm_input {
         border-radius: 15px;
         margin-bottom: .5em;
     }
-
-   a.clear_input {
+    a.clear_input {
         background: url("../images/searchbox.png") no-repeat scroll -215px -47px transparent;
         margin-left: -3px;
     }
-
     #searchForm_searchButton {
         border-radius: 4px 4px 4px 4px;
         width: 75px;
     }
-
     .recordCount {
         float: left;
     }
-
     .dualButtons a {
         margin: 2px;
     }
-
+    .footer ul li {
+        font-size: 11px;
+    }
 
 }
 @media only screen and (max-width: 479px) {
@@ -2474,58 +2511,45 @@ a.panel_open {
     table.sessionHistory tr th:first-child, table.sessionHistory tr td:first-child {
         display: none;
     }
-
     .table th, .table td {
         padding: 8px 8px 8px 0;
     }
-
     .bootstrap-select .btn-small {
         padding-left: 4px;
         padding-right: 4px;
     }
-
     .homeContent ul li {
         margin: 1em 0 1em 0;
     }
-
-
     .recordSet {
         font-size: 90%;
     }
-
     ul.recordSet .resultColumn1 {
         float: left;
         margin: 0 12px;
         width: 62px;
     }
-
     ul.recordSet div.resultColumn1 {
         margin: 0;
     }
-
     ul.recordSet .iconlabel {
         margin: 0;
         padding-left: 1.5em;
     }
-
     ul.recordSet .resultColumn2 {
         width: 150px;
     }
-
     .resultNoImage {
         height: 60px;
         width: 60px;
     }
-
     .resultImage {
         margin-top: -62px;
         width: 62px;
-     }
-
+    }
     .resultImage img {
         width: 62px;
     }
-
     #panel .btn {
         font-size: 100%;
         height: 45px;
@@ -2533,15 +2557,42 @@ a.panel_open {
         margin: .3em .4em;
         padding: .5em;
     }
-
     .recordCount {
         float: none;
     }
+/*
+    #loginHeader {
+        padding-top: 20px;
 
+    }
+*/
+    #loginHeader .showSearchHelpText {
+        display: none;
+    }
+/*
+    #loginHeader .showSearchHelp i {
+        position: relative;
+        top: -20px;  
+    }
+*/
+    .showSearchHelp:hover {
+        text-decoration: none;
+    }
     #feedbackForm #message, #feedbackForm #url, #feedbackForm #name,
     #feedbackForm #email, #feedbackForm #question {
         width: 240px;
     }
+    #siteDescription, #popularSearches {
+        padding-right: 9px;
+    }
+    .footer ul li {
+        line-height: 25px;
+    }
 
+}
+@media only screen and (max-width: 359px) {
+    .homeContent ul li .iconlabel a {
+        font-size: 10.5px;
+    }
 
 }
