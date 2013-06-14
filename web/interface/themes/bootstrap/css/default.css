@@ -461,6 +461,16 @@ a.clear_input:hover {
 #WikipediaDeferred .recordcover {
     margin-right: 10px;
 }
+#WikipediaDeferred .readMoreLink a:after {
+    content:' »';
+}
+#WikipediaDeferred .readMoreLink {
+    padding:10px 0 12px;
+}
+#WikipediaDeferred .providerInfo {
+    border:1px solid #ccc;
+    padding:9px 12px;
+}
 #topPubDateVis {
     display:none;
 }
