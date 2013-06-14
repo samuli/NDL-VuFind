@@ -223,10 +223,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 </div>  
   <a name="tabnav"></a>
     <div id="{if $dynamicTabs}dyn{/if}tabnav" class="row-fluid tabbable">
-    {if !$dynamicTabs || ($tab != 'Hold' && $tab != 'CallSlip')}
+    {if !$dynamicTabs || ($tab != 'Hold' && $tab != 'CallSlip' && $tab != 'UBRequest')}
       <ul class="span12 nav nav-tabs">
         {if $hasHoldings}
-        <li{*if $tab == 'Holdings' || $tab == 'Hold' || $tab == 'CallSlip'} class="active"{/if*}>
+        <li{if $tab == 'Holdings' || $tab == 'Hold' || $tab == 'CallSlip' || $tab == 'UBRequest'} class="active"{/if}>
           <a id="holdingstab" href="{$url}/Record/{$id|escape:"url"}/Holdings{if $dynamicTabs}?subPage=1{/if}#tabnav"><!--i class="icon-ok"></i>&nbsp;-->{translate text='Holdings'}</a>
         </li>
         {/if}
@@ -278,7 +278,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       <div class="clear"></div>
     </div>
   
-    {if $dynamicTabs && $tab != 'Hold' && $tab != 'CallSlip'}
+    {if $dynamicTabs && $tab != 'Hold' && $tab != 'CallSlip' && $tab != 'UBRequest'}
     <div class="recordsubcontent">
           {include file="Record/view-dynamic-tabs.tpl"}
     </div>
