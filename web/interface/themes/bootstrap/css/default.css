@@ -136,7 +136,7 @@ ul#logoutOptions {
     padding: 15px 0;
     float:left;
 */
-    margin: 10px 0;
+    margin: 0 0 10px;
     width: 100%;
     position: relative;
     z-index: 50;
@@ -2510,11 +2510,14 @@ a.panel_open {
         font-size: 20.75px;
     }
     #loginHeader {
-        height: 10px;
+        height: 20px;
+        margin-bottom: 10px;
     }
+/*
     #logo {
         margin-top: 20px;
     }
+*/
 /*    #logo img {
         max-width: 680px;
     }*/
@@ -2576,6 +2579,9 @@ a.panel_open {
 }
 @media only screen and (max-width: 479px) {
 
+    #logo img {
+        max-width: 90%;
+    }
     table.savedHistory tr th:first-child, table.savedHistory tr td:first-child, 
     table.sessionHistory tr th:first-child, table.sessionHistory tr td:first-child {
         display: none;

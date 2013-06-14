@@ -43,7 +43,7 @@
   </script>
 *}
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="form-search text-center">
-
+{if $pageTemplate != 'advanced.tpl'}
     <div {if !$showTopSearchBox}id="searchboxHome" {/if}class="row-fluid input-append searchbox">
       <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="search-query {if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" placeholder='{translate text="Find"}&hellip;' onKeyPress="return submitenter(this,event)" />
     {if $prefilterList}
@@ -60,7 +60,7 @@
     {/if}
       <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
     </div>
-
+{/if}
     <div class="searchContextHelp">
     {if isset($userLang)}
       {include file="Content/searchboxhelp.$userLang.tpl"}
@@ -74,7 +74,9 @@
     </ul>
 --> *}
     <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
+{if $pageTemplate != 'advanced.tpl'}
       <li><a href="{$path}/Search/Advanced" class="advancedLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
+{/if}
     {if $pciEnabled}
       <li><a href="{$path}/PCI/Advanced" class="small pciLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
     {/if}
