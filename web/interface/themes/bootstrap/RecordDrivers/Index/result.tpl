@@ -36,16 +36,6 @@
     </div>
   {/if}
   
-  {* Cover image *}
-    <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-  {if $img_count > 0}
-      <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
-  {else}
-      <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$path}/images/NoCover2.gif" alt="No image" /></a></div>
-  {/if}
-
-</div>
-  
   {if is_array($summFormats)}
     {assign var=mainFormat value=$summFormats.0} 
     {assign var=displayFormat value=$summFormats|@end} 
@@ -53,17 +43,27 @@
     {assign var=mainFormat value=$summFormats} 
     {assign var=displayFormat value=$summFormats} 
   {/if}
-  <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
+  
+  {* Cover image *}
+    <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
+  {if $img_count > 0}
+      <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
+  {else}
+      <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$path}/images/NoCover2.gif" alt="No image" /></a></div>
+  {/if}
+
+</div>
 </div>
 
 </td>
 <td style="width: 100%;">
 
   <div class="resultColumn2">
-
     <div class="resultItemLine1">
       <a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}" class="title">{if !empty($summHighlightedTitle)}{$summHighlightedTitle|addEllipsis:$summTitle|highlight}{elseif !$summTitle}{translate text='Title not available'}{else}{$summTitle|truncate:180:"..."|escape}{/if}</a>
     </div>
+    <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
+
    
     {if !empty($coreOtherLinks)}
         {assign var=prevOtherLinkHeading value=''}

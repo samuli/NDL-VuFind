@@ -950,8 +950,7 @@ ul.recordSet .addToFavLink a {
     text-decoration: none;
 }
 .resultItemFormat {
-    margin: 10px auto 0;
-    text-align: center;
+    margin: 5px 0;
 }
 
 /*
@@ -1960,6 +1959,58 @@ a.ui-dialog-titlebar-close:hover {
     background-image: url("../images/silk/disk_multiple.png");
 }
 */
+
+/* No result large icons */
+
+.resultNoImage {
+    background-image: url(../images/icons48px-03.png);
+}
+
+.resultNoImage.formatdocument {
+    background-position: -8px -735px;
+}
+.resultNoImage.formatarticle {
+    background-position: -7px -1887px;
+}
+.resultNoImage.formatphysicalobject {
+    background-position: -11px -355px;
+}
+.resultNoImage.formatmap {
+    background-position: -14px -226px;
+}
+.resultNoImage.formatbook {
+    background-position: -12px 34px;
+}
+.resultNoImage.formatbookchapter {
+    background-position: -9px -1759px;
+}
+.resultNoImage.formatimage {
+    background-position: -14px -988px;
+}
+.resultNoImage.formatjournal {
+    background-position: -13px -98px;
+}
+.resultNoImage.formatmusicalscore {
+    background-position: -14px -612px;
+}
+.resultNoImage.formatthesis {
+    background-position: -7px -1499px;
+}
+.resultNoImage.formatworkofart {
+    background-position: -11px -1370px;
+}
+.resultNoImage.formatdatabase {
+    background-position: -13px -482px;
+}
+.resultNoImage.formatvideo {
+    background-position: -14px -1242px;
+}
+.resultNoImage.formatsound {
+    background-position: -12px -1113px;
+}
+.resultNoImage.formatother {
+    background-position: -17px -1632px;
+}
 
 /* Other icon images */
 
