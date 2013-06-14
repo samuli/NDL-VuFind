@@ -458,8 +458,12 @@ a.clear_input:hover {
     margin-right: 10px;
 }
 #topPubDateVis {
-    margin-bottom: 15px;
-    margin-left: 3px;
+    display:none;
+}
+#topPubDateVis.active {
+    display:block;
+    margin-bottom:15px;
+    margin-left:3px;
 }
 .dateVisClear a {
     position: relative;
