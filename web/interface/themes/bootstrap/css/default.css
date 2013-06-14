@@ -23,7 +23,7 @@
 
 body {
     margin: 0 auto;
-    max-width: 1500px;
+    max-width: 1024px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -65,6 +65,10 @@ h1, h2, h3 {
     #feedbackForm #message, #feedbackForm #url, #feedbackForm #name,
     #feedbackForm #email, #feedbackForm #question {
     width: 395px;
+}
+
+.separatorBlock {
+    margin:15px 0;
 }
 
 /* Breadscrumbs */
@@ -228,8 +232,8 @@ a.clear_input:hover {
 */
 
 .homeContent ul li {
-    font-size: 0.9em;
-    margin: 1em 0 1em .1em;
+    font-size: 1em;
+    margin: .5em 0 0.5em 0.1em;
 }
 
 
@@ -458,8 +462,12 @@ a.clear_input:hover {
     margin-right: 10px;
 }
 #topPubDateVis {
-    margin-bottom: 15px;
-    margin-left: 3px;
+    display:none;
+}
+#topPubDateVis.active {
+    display:block;
+    margin-bottom:15px;
+    margin-left:3px;
 }
 .dateVisClear a {
     position: relative;
