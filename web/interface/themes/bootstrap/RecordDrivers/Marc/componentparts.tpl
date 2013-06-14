@@ -6,6 +6,7 @@
 			<th>{translate text="No."}</th>
 			<th>{translate text="Title"}</th>
 			<th>{translate text="Author(s)"}</th>
+            <th>{translate text="Playing Time"}</th>
 		</tr>
 	</thead>    
 	<tbody>
@@ -15,6 +16,7 @@
             <td>{$componentpart.number|escape}</td>
             <td><a href="{$componentpart.link|escape}">{$componentpart.title|escape}</a></td>
             <td>{foreach from=$componentpart.authors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration < 4}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/if}{if $smarty.foreach.authorloop.iteration == 4} ...{/if}{/foreach}</td>
+            <td>{$componentpart.duration|escape}</td>
         </tr>
         {/foreach}
         {/if}	
@@ -24,6 +26,7 @@
 {literal}
 <script type="text/javascript" charset="utf-8">
     $('table#componentparts').dataTable({
+        "iDisplayLength": 50, 
         "bStateSave": true,
         "fnStateSave": function (oSettings, oData) {
 						localStorage.setItem( 'DataTables_'+window.location.pathname, JSON.stringify(oData) );

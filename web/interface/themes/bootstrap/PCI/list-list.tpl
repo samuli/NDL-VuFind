@@ -1,65 +1,84 @@
-{* check save statuses via AJAX *}
+<!-- START of: PCI/list-list.tpl -->
+
+{js filename="openurl.js"}
+{if $showPreviews}
+{js filename="preview.js"}
+{/if}
+{if $metalibEnabled}
+{js filename="metalib_links.js"}
+{/if}
+{include file="Search/rsi.tpl"}
+{include file="Search/openurl_autocheck.tpl"}
 {js filename="check_save_statuses.js"}
-{js filename="jquery.cookie.js"}
+<ul class="row-fluid unstyled recordSet">
+{foreach from=$recordSet item=record name="recordLoop"}
+{assign var="id" value=$record.id}
+<li class="result">
+<span class="recordNumber">{$recordStart+$smarty.foreach.recordLoop.iteration-1}</span>
+<div class="result recordId" id="record{$id|escape:"html"}">
+  <table class="table">
+  <tr>
+  <td class="resultColumn1">
 
-<form method="post" name="addForm" action="{$url}/Cart/Home">
-  <ul class="recordSet">
-  {foreach from=$recordSet item=record name="recordLoop"}
-    <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
-      <span class="recordNumber">{$recordStart+$smarty.foreach.recordLoop.iteration-1}</span>
-      <div class="recordId" id="record{$record.ID.0|escape}">
-        {* hide until complete
-        <label for="checkbox_{$record.ID.0|regex_replace:'/[^a-z0-9]/':''|escape}" class="offscreen">{translate text="Select this record"}</label>
-        <input id="checkbox_{$record.ID.0|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="id[]" value="{$record.ID.0|escape}" class="checkbox addToCartCheckbox"/>
-         *}
-        <div class="span-2">
-          <img src="{$path}/bookcover.php?size=small{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" class="alignleft" alt="{translate text="Cover Image"}"/>
+    <div class="resultColumn1">
+        <div class="coverDiv">
+            {* Cover image *}
+            <div class="resultNoImage"><p>{translate text='No image'}</p></div>
+            <div class="resultImage"><img src="{$path}/images/NoCover2.gif" alt="No image" /></div>
         </div>
-        
-        <div class="span-6">
-          <div class="resultItemLine1">
-            <a href="{$url}/PCI/Record?id={$record.ID.0|escape:"url"}"
-            class="title">{if !$record.Title.0}{translate text='Title not available'}{else}{$record.Title.0|highlight}{/if}</a>
-          </div>
-
-          <div class="resultItemLine2">
-            {if $record.Author}
-            {translate text='by'}
-            {foreach from=$record.Author item=author name="loop"}
-              <a href="{$url}/PCI/Search?type=Author&amp;lookfor={$author|unhighlight|escape:"url"}">{$author|highlight}</a>{if !$smarty.foreach.loop.last},{/if} 
-            {/foreach}
-            <br/>
-            {/if}
-
-            {if $record.PublicationTitle}{translate text='Published in'} {$record.PublicationTitle.0|highlight}{/if}
-            {assign var=pdxml value="PublicationDate_xml"}
-            {if $record.$pdxml}({if $record.$pdxml.0.month}{$record.$pdxml.0.month|escape}/{/if}{if $record.$pdxml.0.day}{$record.$pdxml.0.day|escape}/{/if}{if $record.$pdxml.0.year}{$record.$pdxml.0.year|escape}){/if}{elseif $record.PublicationDate}{$record.PublicationDate.0|escape}{/if}
-          </div>
-
-          <div class="resultItemLine3">
-            {if $record.Snippet.0 != ""}
-            <blockquote>
-              <span class="quotestart">&#8220;</span>{$record.Snippet.0|highlight}<span class="quoteend">&#8221;</span>
-            </blockquote>
-            {/if}
-            {$record.identifiers.0}
-          </div>
-
-          <div class="resultItemLine4">
-            {if $record.url && (!$openUrlBase || !$record.hasFullText)}
-            <a href="{$record.url.0|escape}" class="fulltext">{translate text='Get full text'}</a>
-            {elseif $openUrlBase}
-            {include file="Search/openurl.tpl" openUrl=$record.openUrl}
-            {/if}
-          </div>
-
-          {* TODO: implement getPCIFormatClass *}
-          <span class="iconlabel {$record.ContentType.0|getSummonFormatClass|escape}">{translate text=$record.ContentType.0}</span>
+        <div class="resultItemFormat"><span class="iconlabel format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""} format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$record.format prefix='format_PCI_'}</span>
         </div>
-        <div class="clear"></div>
-      </div>
-      <span class="Z3988" title="{$record.openUrl|escape}"></span>
-    </li>
-  {/foreach}
-  </ul>
-</form>
+    </div>
+
+  </td>
+  <td style="width: 100%;">
+    
+    <div class="resultColumn2">
+        <div class="resultItemLine1">
+            <a href="{$url}/PCI/Record?id={$id|escape:"url"}"
+            class="title">{if !$record.title}{translate text='Title not available'}{else}{$record.title|highlight}{/if}</a>
+        </div>
+        <div class="resultItemLine2">
+        {if !empty($record.author)}
+            {translate text='by'}:
+        {foreach from=$record.author item=author name="loop"}
+            <a href="{$url}/PCI/Search?type=Author&amp;lookfor={$author|unhighlight|trim|escape:"url"}">{$author|trim|highlight}</a>{if !$smarty.foreach.loop.last}, {/if} 
+        {/foreach}
+        {/if}
+        </div>
+        <div class="resultItemLine2">
+        {foreach from=$record.url item=recordLink}
+            <a href="{$recordLink|proxify|escape}">{$recordLink|escape:"html"|truncate:60:"...":true:true}</a><br />
+        {/foreach}
+        </div>
+        <div class="resultItemLine4">
+        {if $record.openUrl}
+          <br>
+          {include file="Search/openurl.tpl" openUrl=$record.openUrl}
+        {/if}
+        </div>
+    
+        {* Display the lists that this record is saved to *}
+        <div class="savedLists info hide" id="savedLists{$id|escape}">
+          <strong>{translate text="Saved in"}:</strong>
+        </div>
+    </div>
+
+  </td>
+  <td>
+
+    <div class="last addToFavLink">
+        <a id="saveRecord{$id|escape}" href="{$url}/PCI/Save?id={$id|escape:"url"}" class="tool savePCIRecord PCIRecord fav" title="{translate text='Add to favorites'}"></a>
+    </div>
+
+  </td>
+  </tr>
+  </table>
+
+    <div class="clear"></div>
+</div>
+</li>
+{/foreach}
+</ul>
+
+<!-- END of: PCI/list-list.tpl -->

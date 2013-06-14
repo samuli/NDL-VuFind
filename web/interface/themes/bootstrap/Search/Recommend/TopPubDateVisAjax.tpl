@@ -7,9 +7,9 @@
     {js filename="flot/jquery.flot.js"}
     {js filename="flot/jquery.flot.selection.js"}
     {js filename="pubdate_vis.js"}
-
+    <a class="toggleDateVis {if !empty($visFacets.main_date_str[0])}hidden{/if}">{translate text='Results timeline'}</a>
     {foreach from=$visFacets item=facetRange key=facetField}
-      <div id="topPubDateVis" class="span12 last">
+      <div id="topPubDateVis" class="span12 last {if !empty($visFacets.main_date_str[0])}active{/if}">
         {* $facetRange.label *}
         <strong>{translate text=$facetRange.label}</strong>
         {* space the flot visualisation *}     
@@ -20,13 +20,16 @@
     <script type="text/javascript">
       //<![CDATA[
       {literal} 
-        function printVis() { {/literal}
-        loadVis('{$facetFields|escape:'javascript'}', '{$searchParams|escape:'javascript'}', '{$url}', {$zooming}{if $collectionName}, '{$collectionID|urlencode}', '{$collectionAction}'{/if});
-      {literal} 
-        }  
-
-        printVis();
+        function printVis() { 
+            if ($('#topPubDateVis').is('.active')) {
+                {/literal}
+                loadVis('{$facetFields|escape:'javascript'}', '{$searchParams|escape:'javascript'}', '{$url}', {$zooming}{if $collectionName}, '{$collectionID|urlencode}', '{$collectionAction}'{/if});
+                {literal} 
+            }  
+        }
         
+        printVis();
+          
         // Redraw visualizer on screen resize
         $(window).resize(function(){
           delay(function(){
@@ -42,6 +45,13 @@
             timer = setTimeout(callback, ms);
           };
         })();
+        
+        // Toggle date visualizer visibility
+        $('.toggleDateVis').click(function() {
+            $('#topPubDateVis').addClass('active');
+            printVis();
+            $(this).hide();
+        });
       {/literal}
       //]]>
     </script>

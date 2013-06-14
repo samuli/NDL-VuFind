@@ -15,13 +15,13 @@
 {if !$hideLogin && $offlineMode != "ils-offline"}
   {if ($driverMode || $titleDriverMode) && !empty($holdings)}
     {if $showLoginMsg || $showTitleLoginMsg}
-      <div class="userMsg">
-        <a href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id}">{translate text="Login"}</a> {translate text="hold_login"}
+      <div class="userMsg alert alert-info">
+        <a class="btn btn-mini" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id}">{translate text="Login"}</a> {translate text="hold_login"}
       </div>
     {/if}
     {if $user && !$user->cat_username}
-      <div class="userMsg">
-        <a href="{$path}/MyResearch/Profile">{translate text="Add an account to place holds"}</a>
+      <div class="userMsg alert alert-info">
+        <a class="btn btn-mini" href="{$path}/MyResearch/Profile">{translate text="Add an account to place holds"}</a>
       </div>
     {/if}
   {/if}
