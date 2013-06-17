@@ -11,6 +11,7 @@
   {if empty($list)}
     <div class="alert alert-error">{translate text='edit_list_fail'}</div>
   {else}
+  <p class="backLink"><a href="{$path}/MyResearch/Accounts">&laquo; {translate text="Back to Your Account"}</a></p>
     <form method="post" name="editListForm" action="">
       <label class="displayBlock" for="list_title">{translate text="List"}:</label>
       <input id="list_title" type="text" name="title" value="{$list->title|escape:"html"}" size="50" 

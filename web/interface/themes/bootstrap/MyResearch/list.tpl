@@ -153,7 +153,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
                 {/if}  
                   <input type="submit" class="btn btn-small btn-info button" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
                   {if is_array($exportOptions) && count($exportOptions) > 0}
-                  <input type="submit" class="btn btn-small btn-info input-small button" name="export" value="{translate text='export_expanding'}" title="{translate text='export_expanding'}"/>
+                  <input type="submit" class="btn btn-small btn-info input-small button" name="export" value="{translate text='export_expanding'}" title="{translate text='export_selected'}"/>
                   {/if}
                   {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="btn btn-small btn-danger button" name="delete" value="{translate text='Delete'}" title="{translate text='delete_selected'}"/>{/if}
                 </div>
