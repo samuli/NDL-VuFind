@@ -1,4 +1,5 @@
 {js filename="record.js"}
+{js filename="check_save_statuses.js"}
 {js filename="openurl.js"}
 <div class="span-10{if $sidebarOnLeft} push-3 last{/if}">
   <div class="toolbar">
@@ -164,7 +165,11 @@
 
     </table>
     {* End Main Details *}
-    
+
+    {* Display the lists that this record is saved to *}
+	<div class="savedLists alert alert-info" id="savedLists{$id|escape}">
+	  <strong>{translate text="Saved in"}:</strong>
+	</div>    
   </div>
   {* End Record *} 
   
