@@ -220,8 +220,7 @@ a.clear_input:hover {
     left: 50%;
     margin-left: -103px;
     padding: 5px 0 2px;
-    position: absolute;
-    top: 51px;
+    position: relative;
     width: 206px;
 }
 
