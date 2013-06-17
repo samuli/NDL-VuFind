@@ -2587,7 +2587,7 @@ a.panel_open {
         margin: 2px;
     }
     .footer ul li {
-        font-size: 11px;
+        font-size: 12px;
     }
 
 }
@@ -2675,7 +2675,53 @@ a.panel_open {
         padding-right: 9px;
     }
     .footer ul li {
+        font-size: 12px;
         line-height: 25px;
+    }
+    .resultNoImage.formatdocument {
+        background-position: -38px -762px;
+    }
+    .resultNoImage.formatarticle {
+        background-position: -37px -1916px;
+    }
+    .resultNoImage.formatphysicalobject {
+        background-position: -41px -382px;
+    }
+    .resultNoImage.formatmap {
+        background-position: -44px -253px;
+    }
+    .resultNoImage.formatbook {
+        background-position: -41px 7px;
+    }
+    .resultNoImage.formatimage {
+        background-position: -44px -1013px;
+    }
+    .resultNoImage.formatjournal {
+        background-position: -44px -123px;
+    }
+    .resultNoImage.formatmusicalscore {
+        background-position: -44px -637px;
+    }
+    .resultNoImage.formatmusicalscore {
+        background-position: -44px -637px;
+    }
+    .resultNoImage.formatthesis {
+        background-position: -37px -1527px;
+    }
+    .resultNoImage.formatworkofart {
+        background-position: -41px -1397px;
+    }
+    .resultNoImage.formatdatabase {
+        background-position: -44px -512px;
+    }
+    .resultNoImage.formatvideo {
+        background-position: -44px -1269px;
+    }
+    .resultNoImage.formatsound {
+        background-position: -43px -1141px;
+    }
+    .resultNoImage.formatother {
+        background-position: -47px -1657px;
     }
 
 }
