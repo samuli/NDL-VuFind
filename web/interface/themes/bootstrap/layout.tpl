@@ -241,9 +241,11 @@ $(document).ready(function() {
           </div>
       </div> <!-- /1 -->
 
-      <div class="row-fluid module-MetaLib"> <!-- 2 -->
-        <div class="span12 backgroundContainer header{if !$showTopSearchBox}-home{/if} well well-small {if $module!='Search'} header{$module}{/if}">
-          {include file="header.tpl"}
+      <div class="row-fluid"> <!-- 2 -->
+        <div class="row-fluid">
+          <div class="span12 backgroundContainer header{if !$showTopSearchBox}-home{/if} well well-small {if $module!='Search'} header{$module}{/if}">
+            {include file="header.tpl"}
+          </div>
         </div>
         
         {* if !$showTopSearchBox}

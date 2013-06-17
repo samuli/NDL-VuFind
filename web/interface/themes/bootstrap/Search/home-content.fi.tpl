@@ -40,7 +40,7 @@
       </div>
       <div class="span5">
         {if $rssFeeds.news.active}
-        <h3>Uutisia</h3>
+        <h4>Uutisia</h4>
           {include file="AJAX/loadRSS.tpl" rssId="news"}
         {/if}
       </div>

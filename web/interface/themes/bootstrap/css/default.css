@@ -115,7 +115,7 @@ h1, h2, h3 {
     margin-bottom: 0;
 }
 ul#logoutOptions {
-    margin-bottom: 0; 
+    margin-bottom: 5px; 
 }
 
 #logoutOptions .jumpMenu {
@@ -247,7 +247,7 @@ a.clear_input:hover {
 }
 
 .advancedLink, .localLink, .metalibLink, .pciLink, .browseLink {
-    font-size: 11.5px;
+    font-size: 12px;
 }
 
 .homeContent ul li {
@@ -274,6 +274,11 @@ a.clear_input:hover {
 #popular-map > div {
     padding-top: 0;
     margin-bottom: 20px;
+}
+
+.NDLNews {
+    list-style: none;
+    margin-left: 0;
 }
 
 /* Carousel */
