@@ -973,6 +973,10 @@ class Voyager implements DriverInterface
      */
     public function getPurchaseHistory($id)
     {
+        if (isset($this->config['Catalog']['purchase_history']) && !$this->config['Catalog']['purchase_history']) {
+            return array();
+        }
+        
         $sql = "select SERIAL_ISSUES.ENUMCHRON " .
                "from $this->dbName.SERIAL_ISSUES, $this->dbName.COMPONENT, ".
                "$this->dbName.ISSUES_RECEIVED, $this->dbName.SUBSCRIPTION, ".
