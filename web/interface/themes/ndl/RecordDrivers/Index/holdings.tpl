@@ -118,7 +118,7 @@
   {/if}
 {/if}
 
-    {if $row.barcode != ""}
+    {if $row.item_id}
   <tr>
     <th>{translate text="Copy"} {$row.number|escape}</th>
     <td>
