@@ -20,6 +20,7 @@
       {/if}
       *}
       <li id="saveLink"><a href="{$url}/MetaLib/Save?id={$id|escape:"url"}" class="saveMetaLibRecord metalibRecord fav" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{translate text="Add to favorites"}</a></li>
+      <li><a href="{$url}/MetaLib/{$id|escape:"url"}/Email" class="mailRecord mailMetaLib mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li>
     </ul>
     <div class="clear"></div>
   </div>
