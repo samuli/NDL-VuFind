@@ -216,12 +216,22 @@ a.clear_input:hover {
 #searchFormKeepFilters {
     vertical-align: inherit;
 }
+
+
 .keepFilters {
+    background-color: #ffffff;
+    opacity: .65;
     left: 50%;
     margin-left: -103px;
-    padding: 5px 0 2px;
+    padding: 0;
     position: relative;
     width: 206px;
+}
+.keepFilters label {
+    color: #000000;
+    font-weight: bold;
+    margin: 0 0 0 2px;
+    padding: 0;
 }
 
 /* MetaLib */
