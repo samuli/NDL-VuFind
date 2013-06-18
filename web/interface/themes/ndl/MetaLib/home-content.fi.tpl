@@ -1,4 +1,4 @@
-<!-- START of: Metalib/home-content.fi.tpl -->
+<!-- START of: MetaLib/home-content.fi.tpl -->
 <div class="contentHeader">
   <div class="content">
     <div class="grid_24"><h1>Nelli-monihaku</h1></div>
@@ -10,4 +10,4 @@
   </div>
 </div>
     
-<!-- END of: Metalib/home-content.fi.tpl -->
+<!-- END of: MetaLib/home-content.fi.tpl -->
