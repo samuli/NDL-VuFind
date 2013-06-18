@@ -278,7 +278,7 @@ a.clear_input:hover {
 a.badge.advancedLink, a.badge.localLink, a.badge.metalibLink,
 a.badge.pciLink, a.badge.browseLink, a.badge.showSearchHelp,
 a.badge.account, a.badge.login, a.badge.logout{
-    background-color: rgba(193,193,193,.95);
+    background-color: rgba(193,193,193,.75);
     text-shadow: 1px 1px 1px rgba(0,0,0,.25);    
 }
 a.badge.advancedLink:hover, a.badge.localLink:hover, a.badge.metalibLink:hover,
