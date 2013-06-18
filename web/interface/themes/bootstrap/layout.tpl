@@ -219,7 +219,7 @@ $(document).ready(function() {
           <div class="pull-left">
             <ul class="breadcrumb pull-left">
             <li><a href="{$url}"><i class="icon-home" title="{translate text='Home'}"></i></a>&nbsp;<span class="divider">/</span></li>
-            <li>{include file="$module/breadcrumbs.tpl"}</li>
+            <li>{if $module}{include file="$module/breadcrumbs.tpl"}{/if}</li>
             </ul>
           </div>
         {/if}
