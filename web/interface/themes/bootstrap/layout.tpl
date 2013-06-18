@@ -112,7 +112,10 @@
     {js filename="bootstrap-2.3.1/js/bootstrap.js"}
     {js filename="bootstrap-select/bootstrap-select.js"}
     {js filename="bootstrap-select/selectpicker.js"} {* dropdown menu modification *}
-
+    
+    {* Load custom javascript functions *}
+    {js filename="custom.js"}
+    
     {* load Fancybox *}
     {js filename="fancybox/jquery.fancybox.pack.js"}
 
@@ -152,6 +155,9 @@
 // Long field truncation
 $(document).ready(function() {
   $('.truncateField').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}&nbsp;»", less: "«&nbsp;{/literal}{translate text="less"}{literal}"});
+      
+  // Load child theme custom functions
+  //customInit();
 {/literal}
 {if $mozillaPersona}
     mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
