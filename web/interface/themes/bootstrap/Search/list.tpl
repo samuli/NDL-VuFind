@@ -29,10 +29,18 @@
 
     {if $recordCount}
       <div class="span12 alert alert-success well-small resultTerm">
+        {if $searchType == 'advanced'}
+        <div class="advancedOptions grid_24">
+          <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a> |
+          <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a> |
+          <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
+        </div>
+        {/if}
+        
       {if $lookfor == ''}
         <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{translate text="history_empty_search"}</h4>
       {else}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}{/if}</h4>
+        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}{else}{translate text="Your search terms"}: "{$lookfor|escape:"html"}"{/if}</h4>
       {/if}
 
       {if $dualResultsEnabled && $searchType != 'advanced'}
@@ -45,11 +53,6 @@
         </div>
       {/if}
       </div>
-
-      {if $searchType != 'advanced' && $orFilters}
-        {foreach from=$orFilters item=values key=filter}
-      AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
-      {/if}
     {/if}
 
       <div class="row-fluid">
