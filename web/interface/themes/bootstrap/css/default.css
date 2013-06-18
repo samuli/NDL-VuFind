@@ -267,7 +267,20 @@ a.clear_input:hover {
 
 .advancedLink, .localLink, .metalibLink, .pciLink, .browseLink {
     font-size: 12px;
+    border-radius: 9px 9px 9px 9px;
+    padding: 1px 5px 2px 3px;
+
 }
+a.badge.advancedLink, a.badge.localLink, a.badge.metalibLink,
+a.badge.pciLink, a.badge.browseLink {
+    background-color: rgba(193,193,193,.95);
+    text-shadow: 1px 1px 1px rgba(0,0,0,.25);    
+}
+a.badge.advancedLink:hover, a.badge.localLink:hover, a.badge.metalibLink:hover,
+a.badge.pciLink:hover, a.badge.browseLink:hover {
+    text-decoration: underline;
+}
+
 
 .homeContent ul li {
     font-size: 1em;
