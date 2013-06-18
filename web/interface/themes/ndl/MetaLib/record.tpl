@@ -1,4 +1,4 @@
-<!-- START of: Metalib/record.tpl.tpl -->
+<!-- START of: MetaLib/record.tpl -->
 
 {if isset($syndetics_plus_js)}
 <script src="{$syndetics_plus_js}" type="text/javascript"></script>
@@ -224,4 +224,4 @@
 
 <div class="clear"></div>
 
-<!-- END of: Metalib/record.tpl.tpl -->
+<!-- END of: MetaLib/record.tpl -->

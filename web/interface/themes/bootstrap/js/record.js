@@ -36,7 +36,7 @@ $(document).ready(function(){
         } else if ($(this).hasClass('mailWorldCat')) {
             module = 'WorldCat';
         } else if ($(this).hasClass('mailMetaLib')) {
-            module = 'Metalib';
+            module = 'MetaLib';
         } else if ($(this).hasClass('mailPCI')) {
             module = 'PCI';
         }
