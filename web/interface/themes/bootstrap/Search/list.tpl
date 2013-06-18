@@ -3,7 +3,7 @@
 <div class="span12 well well-small authorbox">
   <div id="topFacets" class="row-fluid">
 
-    <div class="well-small">
+    <div class="">
     {* Recommendations *}
     {if $topRecommendations}
       {foreach from=$topRecommendations item="recommendations"}
