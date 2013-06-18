@@ -7,7 +7,7 @@
   <script type="text/javascript">
   {literal}
       $(function(){
-          $('.mainFocus').focus();
+          setMainFocus();
           $('.ui-autocomplete').addClass('dropdown-menu'); // TODO: remove and add this class where autocomplete is defined.
       });
   {/literal}
