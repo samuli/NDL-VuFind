@@ -895,15 +895,6 @@ ul.recordSet input.checkbox_ui {
 ul.recordSet .recordNumber, .favoritesList .recordNumber {
     display: none;
 }
-/*
-ul.recordSet .addToFavLink {
-    float: right;
-    width: auto;
-}
-.addToFavLink a {
-    height: 20px;
-}
-*/
 ul.recordSet .resultColumn1 {
     float: left;
     margin: 0 18px 0 12px;
@@ -937,6 +928,7 @@ ul.recordSet .resultItemLine2 {
 }
 ul.recordSet .addToFavLink {
     float: right;
+    padding-top: 3px;
     width: auto;
 }
 /*
