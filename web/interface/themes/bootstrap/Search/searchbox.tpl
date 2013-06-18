@@ -68,21 +68,21 @@
 --> *}
     <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
 {if $pageTemplate != 'advanced.tpl'}
-      <li><a href="{$path}/Search/Advanced" class="advancedLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
+      <li><a href="{$path}/Search/Advanced" class="badge advancedLink"><i class="icon-zoom-in icon-white"></i>&nbsp;{translate text="Advanced Search"}</a></li>
 {/if}
     {if $pciEnabled}
-      <li><a href="{$path}/PCI/Advanced" class="small pciLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
+      <li><a href="{$path}/PCI/Advanced" class="badge pciLink"><i class="icon-zoom-in icon-white"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
     {/if}
     {if $metalibEnabled}
-      <li><a href="{$path}/MetaLib/Home" class="metalibLink"><i class="icon-search"></i>&nbsp;{translate text="MetaLib Search"}</a></li>
+      <li><a href="{$path}/MetaLib/Home" class="badge metalibLink"><i class="icon-search icon-white"></i>&nbsp;{translate text="MetaLib Search"}</a></li>
     {/if}
-      <li><a href="{$path}/Search/History" class="browseLink"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+      <li><a href="{$path}/Search/History" class="badge browseLink"><i class="icon-list-alt icon-white"></i>&nbsp;{translate text="Search History"}</a></li>
 {* <!--
     </ul>
 
     <ul class="inline text-center hidden-phone">
 --> *}
-      <li class=""><a href="{$path}/Browse/Home" class="browseLink"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+      <li class=""><a href="{$path}/Browse/Home" class="badge browseLink"><i class="icon-eye-open icon-white"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
 {* <!--
       <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
 --> *}
