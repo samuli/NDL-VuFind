@@ -38,6 +38,9 @@
 
     {* Load Fancybox css *}
     {css media="screen" filename="fancybox/jquery.fancybox.css"}
+    
+    {* Load JSTree css *}
+    {css media="screen" filename="../js/jsTree/themes/apple/style.css"}
 
     {* Load Bootstrap CSS framework *}
     {css media="screen, projection" filename="bootstrap-2.3.1/css/bootstrap.css"}
