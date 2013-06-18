@@ -38,6 +38,9 @@
 
     {* Load Fancybox css *}
     {css media="screen" filename="fancybox/jquery.fancybox.css"}
+    
+    {* Load JSTree css *}
+    {css media="screen" filename="../js/jsTree/themes/apple/style.css"}
 
     {* Load Bootstrap CSS framework *}
     {css media="screen, projection" filename="bootstrap-2.3.1/css/bootstrap.css"}
@@ -112,7 +115,10 @@
     {js filename="bootstrap-2.3.1/js/bootstrap.js"}
     {js filename="bootstrap-select/bootstrap-select.js"}
     {js filename="bootstrap-select/selectpicker.js"} {* dropdown menu modification *}
-
+    
+    {* Load custom javascript functions *}
+    {js filename="custom.js"}
+    
     {* load Fancybox *}
     {js filename="fancybox/jquery.fancybox.pack.js"}
 
@@ -152,6 +158,9 @@
 // Long field truncation
 $(document).ready(function() {
   $('.truncateField').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}&nbsp;»", less: "«&nbsp;{/literal}{translate text="less"}{literal}"});
+      
+  // Load child theme custom functions
+  //customInit();
 {/literal}
 {if $mozillaPersona}
     mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
@@ -219,7 +228,7 @@ $(document).ready(function() {
           <div class="pull-left">
             <ul class="breadcrumb pull-left">
             <li><a href="{$url}"><i class="icon-home" title="{translate text='Home'}"></i></a>&nbsp;<span class="divider">/</span></li>
-            <li>{include file="$module/breadcrumbs.tpl"}</li>
+            <li>{if $module}{include file="$module/breadcrumbs.tpl"}{/if}</li>
             </ul>
           </div>
         {/if}
@@ -241,7 +250,7 @@ $(document).ready(function() {
           </div>
       </div> <!-- /1 -->
 
-      <div class="row-fluid module-MetaLib"> <!-- 2 -->
+      <div class="row-fluid"> <!-- 2 -->
         <div class="span12 backgroundContainer header{if !$showTopSearchBox}-home{/if} well well-small {if $module!='Search'} header{$module}{/if}">
           {include file="header.tpl"}
         </div>

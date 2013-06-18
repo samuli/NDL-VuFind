@@ -35,47 +35,70 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
 {* <div class="span-10{if $sidebarOnLeft} push-5 last{/if}"> *}
 
-<div class="resultLinks">
 {if $errorMsg || $infoMsg || $lastsearch || $previousRecord || $nextRecord}
-  <div class="content">
+<div class="row-fluid">
+
   {if $errorMsg || $infoMsg}
-  <div class="messages">
+  <div class="span12 messages">
     {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
     {if $infoMsg}<div class="info">{$infoMsg|translate}</div>{/if}
   </div>
   {/if}
+
   {if $lastsearch}
-    <div class="backToResults">
+    <div class="span3 backToResults well-small">
         <a href="{$lastsearch|escape}#record{$id|escape:"url"}">&laquo; {translate text="Back to Search Results"}</a>
     </div>
   {/if}
+
+{*
   {if $previousRecord || $nextRecord}
     <div class="resultscroller">
     {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></a>
     {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></span>{/if}
     {$currentRecordPosition} / {$resultTotal}
-    {* #{$currentRecordPosition} {translate text='of'} {$resultTotal} *}
     {if $nextRecord}<a href="{$url}/Record/{$nextRecord}" class="nextRecord icon"><span class="resultNav">{translate text="Next"}&nbsp;&raquo;</span></a>
     {else}<span class="nextRecord inactive"><span class="resultNav">{translate text="Next"}&nbsp;&raquo;</span></span>{/if}
 	</div>
 	{/if}
+*}
+
+  {if $previousRecord || $nextRecord}
+  <div class="span6 resultscroller well-small">
+
+    <ul class="pager">
+      <li class="{if !$previousRecord} disabled{/if}">
+      {if $previousRecord}
+        <a href="{$url}/Record/{$previousRecord}" class="prevRecord">&larr;<span class="resultNav">&nbsp;{translate text="Prev"}</span></a>
+      {else}
+        <span class="pagingDisabled">&larr;&nbsp;{translate text="Prev"}</span>
+      {/if}
+      </li>
+      <li>&nbsp;&nbsp;{$currentRecordPosition}&nbsp;<strong>/</strong>&nbsp;{$resultTotal}&nbsp;&nbsp;</li>
+      <li class="{if !$nextRecord} disabled{/if}">
+      {if $nextRecord}
+        <a href="{$url}/Record/{$nextRecord}" class="nextRecord"><span class="resultNav">{translate text="Next"}&nbsp;</span>&rarr;</a>
+      {else}
+        <span class="pagingDisabled">{translate text="Next"}&nbsp;&rarr;</span>
+      {/if}
+      </li>
+    </ul>
+
   </div>
-{else}
-  &nbsp;
-{/if}
-<div class="clear"></div>
-</div>
+  {/if}
 
-<div class="record recordId" id="record{$id|escape}">
+  </div>
+{/if} {* $errorMsg || ... *}
 
-  <div class="content">
-    
-  <div id="resultMain">
-  
-  <div id="resultSide">
+<div class="row-fluid record recordId" id="record{$id|escape}">
+
+  <div id="resultMain" class="span9">
+
+  <div class="row-fluid">
+    <div id="resultSide" class="span4">
   
     {* Display Cover Image *}
-    <div class="coverImages">
+    <div class="coverImages clearfix">
     {if $coreThumbMedium}
 
         <div class="clear"></div>
@@ -103,15 +126,14 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     {/if}
     </div>
     {* End Cover Image *}
-  
-    <div id="resultToolbar" class="toolbar">
-      <ul>
-      <li id="saveLink"><a href="{$url}/PCI/Save?id={$id|escape:"url"}" class="savePCIRecord PCIRecord fav" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{translate text="Add to favorites"}</a></li>
+    <div class="clearfix"></div>
+      <div id="resultToolbar" class="toolbar alert alert-info">
+      <ul class="unstyled">
+      <li id="saveLink"><a href="{$url}/PCI/Save?id={$id|escape:"url"}" class="savePCIRecord PCIRecord add" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{translate text="Add to favorites"}</a></li>
         
         {* SMS commented out for now
         <li><a href="{$url}/Record/{$id|escape:"url"}/SMS" class="smsRecord sms" id="smsRecord{$id|escape}" title="{translate text="Text this"}">{translate text="Text this"}</a></li>
         *}
-        
         <li><a href="{$url}/PCI/{$id|escape:"url"}/Email" class="mailRecord mailPCI mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li>
         {*<li><a href="{$url}/Record/{$id|escape:"url"}/Feedback" class="feedbackRecord mail" id="feedbackRecord{$id|escape}" title="{translate text="Send Feedback"}">{translate text="Send Feedback"}</a></li>*}
         {* Citation commented out for now
@@ -124,7 +146,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 	{if !empty($addThis)}
 	  <li id="addThis">
             <div class="addthis_toolbox addthis_default_style ">
-              <a href="{$url}/Record/{$id|escape:"url"}/Email" class="mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}"></a>
+              <a href="{$url}/PCI/{$id|escape:"url"}/Email" class="mailRecord mailPCI mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}"></a>
               <a class="icon addthis_button_facebook"></a>
               <a class="icon addthis_button_twitter"></a>
               <a class="icon addthis_button_google_plusone_share"></a>
@@ -182,11 +204,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
      {* Add COINS *}
      <span class="Z3988" title="{$openURL|escape}"></span>
    </div>  
-  <div id="resultSidebar" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+  <div id="resultSidebar" class="span3 {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
     {if $bXEnabled}
       {include file="Record/bx.tpl"}
     {/if}
-  </div>
+    <div class="clearfix"></div>
   </div>
 </div>
 

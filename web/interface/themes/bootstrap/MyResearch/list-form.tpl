@@ -1,6 +1,8 @@
 <!-- START of: MyResearch/list-form.tpl -->
 
 {if $listError}<p class="error">{$listError|translate}</p>{/if}
+<p class="backLink"><a href="{$path}/MyResearch/Favorites">&laquo; {translate text="Back to Your Account"}</a></p>
+
 <form method="post" action="{$url}/MyResearch/ListEdit" name="listEdit" id="listEdit">
 
 <label class="displayBlock" for="list_title">{translate text="List"}:</label>

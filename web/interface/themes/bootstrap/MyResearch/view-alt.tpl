@@ -5,7 +5,7 @@
     <a href="{$url}/Record/{$recordId|escape:"url"}/Home" class="backtosearch">&laquo; {translate text="Back to Record"}</a>
   {/if}
 
-  {if $pageTitle}<h3>{$pageTitle}</h3>{/if}
+  {if $shortTitle}<h3>{$shortTitle}</h3>{/if}
   {include file="MyResearch/$subTemplate"}
 </div>
 

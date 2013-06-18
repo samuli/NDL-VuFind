@@ -106,6 +106,15 @@ h1, h2, h3 {
 }
 
 
+/* Header */
+
+.backgroundContainer {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 /* Login / Logout */
 
 #topBar .nav > li > a:hover, #topBar .nav > li > a:focus {
@@ -115,7 +124,7 @@ h1, h2, h3 {
     margin-bottom: 0;
 }
 ul#logoutOptions {
-    margin-bottom: 0; 
+    margin-bottom: 5px; 
 }
 
 #logoutOptions .jumpMenu {
@@ -216,12 +225,22 @@ a.clear_input:hover {
 #searchFormKeepFilters {
     vertical-align: inherit;
 }
+
+
 .keepFilters {
+    background-color: #ffffff;
+    opacity: .65;
     left: 50%;
     margin-left: -103px;
-    padding: 5px 0 2px;
+    padding: 0;
     position: relative;
     width: 206px;
+}
+.keepFilters label {
+    color: #000000;
+    font-weight: bold;
+    margin: 0 0 0 2px;
+    padding: 0;
 }
 
 /* MetaLib */
@@ -247,8 +266,21 @@ a.clear_input:hover {
 }
 
 .advancedLink, .localLink, .metalibLink, .pciLink, .browseLink {
-    font-size: 11.5px;
+    font-size: 12px;
+    border-radius: 9px 9px 9px 9px;
+    padding: 1px 5px 2px 3px;
+
 }
+a.badge.advancedLink, a.badge.localLink, a.badge.metalibLink,
+a.badge.pciLink, a.badge.browseLink {
+    background-color: rgba(193,193,193,.95);
+    text-shadow: 1px 1px 1px rgba(0,0,0,.25);    
+}
+a.badge.advancedLink:hover, a.badge.localLink:hover, a.badge.metalibLink:hover,
+a.badge.pciLink:hover, a.badge.browseLink:hover {
+    text-decoration: underline;
+}
+
 
 .homeContent ul li {
     font-size: 1em;
@@ -274,6 +306,11 @@ a.clear_input:hover {
 #popular-map > div {
     padding-top: 0;
     margin-bottom: 20px;
+}
+
+.NDLNews {
+    list-style: none;
+    margin-left: 0;
 }
 
 /* Carousel */
@@ -929,13 +966,19 @@ ul.recordSet .addToFavLink a {
 }
 .resultNoImage {
     background-color: #FFFFFF;
-    border: 1px solid #F0F0F0;
+    border: 2px solid #e3e3e3;
+/*
     display: table;
-    height: 124px;
+*/
+    height: 122px;
     position: relative;
-    width: 124px;
+    width: 122px;
     z-index: 1;
 }
+.module-MetaLib .resultNoImage {
+    display: table;
+}
+
 .favoritesList .resultNoImage {
     height: 60px;
     width: 60px;
@@ -984,7 +1027,8 @@ ul.recordSet .addToFavLink a {
 .result .imagelinks {
     background-color: transparent/*#FFFFFF*/;
     min-height: 20px;
-    padding: 4px 0 0 4px;
+    overflow: hidden;
+    padding: 4px 0 8px 4px;
     position: relative;
     z-index: 3;
 }
@@ -2020,7 +2064,7 @@ a.ui-dialog-titlebar-close:hover {
 /* No result large icons */
 
 .resultNoImage {
-    background-image: url(../images/icons48px-03.png);
+    background: url(../images/icons48px-03.png) no-repeat #ffffff 175px 0;
 }
 
 .resultNoImage.formatdocument {
@@ -2572,7 +2616,7 @@ a.panel_open {
         margin: 2px;
     }
     .footer ul li {
-        font-size: 11px;
+        font-size: 12px;
     }
 
 }
@@ -2622,6 +2666,7 @@ a.panel_open {
         width: 62px;
     }
     .resultImage img {
+        min-height: 23px;
         width: 62px;
     }
     #panel .btn {
@@ -2660,7 +2705,56 @@ a.panel_open {
         padding-right: 9px;
     }
     .footer ul li {
+        font-size: 12px;
         line-height: 25px;
+    }
+    .resultNoImage {
+        border: 1px solid #E3E3E3;
+    }
+    .resultNoImage.formatdocument {
+        background-position: -38px -762px;
+    }
+    .resultNoImage.formatarticle {
+        background-position: -37px -1916px;
+    }
+    .resultNoImage.formatphysicalobject {
+        background-position: -41px -382px;
+    }
+    .resultNoImage.formatmap {
+        background-position: -44px -253px;
+    }
+    .resultNoImage.formatbook {
+        background-position: -41px 7px;
+    }
+    .resultNoImage.formatimage {
+        background-position: -44px -1013px;
+    }
+    .resultNoImage.formatjournal {
+        background-position: -44px -123px;
+    }
+    .resultNoImage.formatmusicalscore {
+        background-position: -44px -637px;
+    }
+    .resultNoImage.formatmusicalscore {
+        background-position: -44px -637px;
+    }
+    .resultNoImage.formatthesis {
+        background-position: -37px -1527px;
+    }
+    .resultNoImage.formatworkofart {
+        background-position: -41px -1397px;
+    }
+    .resultNoImage.formatdatabase {
+        background-position: -44px -512px;
+    }
+    .resultNoImage.formatvideo {
+        background-position: -44px -1269px;
+    }
+    .resultNoImage.formatsound {
+        background-position: -43px -1141px;
+    }
+    .resultNoImage.formatother {
+        background-position: -47px -1657px;
     }
 
 }

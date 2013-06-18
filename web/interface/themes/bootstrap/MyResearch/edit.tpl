@@ -2,7 +2,7 @@
 
 <div class="record">
   <h1>{$record.title|escape:"html"}</h1>
-
+    <p class="backLink"><a href="{$path}/MyResearch/Favorites">&laquo; {translate text="Back to Your Account"}</a></p>
   <form method="post" name="editForm" action="">
   {if empty($savedData)}
     <p>

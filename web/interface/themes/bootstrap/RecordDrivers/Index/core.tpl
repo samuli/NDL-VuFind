@@ -1,7 +1,22 @@
 <!-- START of: RecordDrivers/Index/core.tpl -->
 
 <div id="recordMetadata" class="span8">
-    
+
+  {* Host Record Title *}
+  {if !empty($coreContainerTitle)}
+  <tr valign="top" class="recordContainerReference">
+    <th>{translate text='component_part_is_part_of'}:</th>
+    <td>
+      {if $coreHierarchyParentId}
+      <a href="{$url}/Record/{$coreHierarchyParentId[0]|escape:"url"}/ComponentParts">{$coreContainerTitle|escape}</a>
+      {else}
+      {$coreContainerTitle|escape}
+      {/if}
+      {if !empty($coreContainerReference)}{$coreContainerReference|escape}{/if}
+    </td>
+  </tr>
+  {/if}
+
   {* Display Title *}
   <h4 class="alert alert-success recordTitle">{$coreShortTitle|escape}{if $coreSubtitle}&nbsp;: {$coreSubtitle|escape}{/if}
   {* {if $coreTitleSection} / {$coreTitleSection|escape}{/if}
@@ -34,20 +49,6 @@
 
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="table table-condensed table-hover text-left citation" summary="{translate text='Bibliographic Details'}">
-    {if !empty($coreContainerTitle)}
-    <tr valign="top" class="recordContainerReference">
-      <th>{translate text='component_part_is_part_of'}:</th>
-      <td>
-      {if $coreHierarchyParentId}
-        <a href="{$url}/Record/{$coreHierarchyParentId[0]|escape:"url"}/ComponentParts">{$coreContainerTitle|escape}</a>
-      {else}
-        {$coreContainerTitle|escape}
-      {/if}
-      {if !empty($coreContainerReference)}{$coreContainerReference|escape}{/if}
-      </td>
-    </tr>
-    {/if}
-
     {if !empty($coreNextTitles)}
     <tr valign="top" class="recordNextTitles">
       <th>{translate text='New Title'}: </th>

@@ -41,11 +41,11 @@
       <li><a href="{$path}/MyResearch/Home">{translate text="Login"}</a></li>
     {/if}
     </ul>
-</div> <!-- /2.1 -->
   {if $catalogAccounts}
     </form>
   {/if} 
 {/if} {* /!$hideLogin *}
+</div> <!-- /2.1 -->
 
 {include file="homelogo.tpl" assign=logoUrl}
 {* if $showTopSearchBox*}

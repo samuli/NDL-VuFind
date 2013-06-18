@@ -23,16 +23,25 @@
   <div id="resultList" class="span9{if $sidebarOnLeft} sidebarOnLeft last{/if}">
     {* Listing Options *}
     <div class="resulthead row-fluid">
-
     {if $recordCount}
       <div class="span12 alert alert-success well-small resultTerm">
-      {if $lookfor == ''}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{translate text="history_empty_search"}</h4>
+        {if $searchType == 'PCIAdvanced'}
+        <a href="{$path}/PCI/Advanced?edit={$searchId}">{translate text="Edit this Advanced PCI Search"}</a> |
+        <a href="{$path}/PCI/Advanced">{translate text="Start a new Advanced PCI Search"}</a> |
+        {if $dualResultsEnabled}
+        <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
+        {else}
+        <a href="{$path}/PCI/Home">{translate text="Start a new Basic PCI Search"}</a>
+        {/if}
+        {/if}
+
+        {if $lookfor == ''}
+        <h4{if $dualResultsEnabled && $searchType != 'PCIAdvanced'} class="pull-left dual"{/if}>{translate text="history_empty_search"}</h4>
       {else}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}{/if}</h4>
+        <h4{if $dualResultsEnabled && $searchType != 'PCIAdvanced'} class="pull-left dual"{/if}>{if $searchType == 'PCI'}{translate text="Search"}: {$lookfor|escape:"html"}{elseif $searchType == 'PCIAdvanced'}{translate text="Your search terms"}: "{$lookfor|escape:"html"}"{/if}</h4>
       {/if}
 
-      {if $dualResultsEnabled && $searchType != 'advanced'}
+      {if $dualResultsEnabled && $searchType != 'PCIAdvanced'}
         <div class="row-fluid">
           <div class="pull-right dualButtons">
             <a class="btn btn-small" href="{$smarty.server.REQUEST_URI|escape|replace:"/PCI/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
@@ -43,7 +52,7 @@
       {/if}
       </div>
 
-      {if $searchType != 'advanced' && $orFilters}
+      {if $searchType != 'PCIAdvanced' && $orFilters}
         {foreach from=$orFilters item=values key=filter}
       AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
       {/if}
