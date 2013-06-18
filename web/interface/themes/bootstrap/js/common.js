@@ -192,9 +192,11 @@ function initAutocomplete() {
             if (lastXhr !== null && lastXhr.hasOwnProperty("abort")) {
                 lastXhr.abort();
             }
+            var prefilterValue = $('select#searchForm_filter option:selected').val();
             lastXhr = $.ajax({
+                cache: false,
 	            url: path + '/AJAX/JSON_Autocomplete',
-	            data: {method:'getSuggestions',type:type,q:request.term},
+	            data: {method:'getSuggestions',type:type,q:request.term,prefilter:prefilterValue},
 	            dataType:'json',
 	            success: function(json) {
 	                if (json.status == 'OK' && json.data.length > 0) {

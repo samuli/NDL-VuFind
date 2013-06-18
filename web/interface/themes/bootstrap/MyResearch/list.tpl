@@ -49,7 +49,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
             {if $listEditAllowed}
           
           <div class="editList">
-            <a class="btn btn-small edit" href="{$url}//MyResearch/EditList/{$list->id|escape:"url"}"><i class="icon-pencil"></i>&nbsp;{translate text="edit_list"}</a>
+            <a class="btn btn-small edit" href="{$url}/MyResearch/EditList/{$list->id|escape:"url"}"><i class="icon-pencil"></i>&nbsp;{translate text="edit_list"}</a>
             <a class="btn btn-small btn-danger pull-right delete" href="{$url}/Cart/Home?listID={$list->id|escape}&amp;listName={$list->title|escape}&amp;origin=Favorites&amp;listFunc=editList&amp;deleteList=true"><i class="icon-remove icon-white"></i>&nbsp;{translate text="delete_list"}</a>
           </div>
             {/if}
