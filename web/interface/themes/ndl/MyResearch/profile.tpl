@@ -25,6 +25,17 @@
       <caption>{translate text='Local Settings'}</caption>
       <tr>
         <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td>
+      </tr>
+      <tr>
+        <th>{translate text='due_date_reminder'}</th>
+        <td>
+          <select name="due_date_reminder">
+            <option value="0" {if $dueDateReminder == 0}selected="selected"{/if}>{translate text='due_date_reminder_none'}</option>
+            <option value="1" {if $dueDateReminder == 1}selected="selected"{/if}>{translate text='due_date_reminder_one_day'}</option> 
+            <option value="2" {if $dueDateReminder == 2}selected="selected"{/if}>{translate text='due_date_reminder_two_days'}</option> 
+            <option value="3" {if $dueDateReminder == 3}selected="selected"{/if}>{translate text='due_date_reminder_three_days'}</option> 
+          </select>
+        </td>
       {if $showHomeLibForm}
       </tr>
       <tr>

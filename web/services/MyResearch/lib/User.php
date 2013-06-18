@@ -63,6 +63,7 @@ class User extends DB_DataObject
     public $major;                           // string(100)  not_null
     public $created;                         // datetime(19)  not_null binary
     public $language;                        // string(30)  not_null
+    public $due_date_reminder;               // int(11)  not_null
     
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User',$k,$v); }
@@ -83,7 +84,7 @@ class User extends DB_DataObject
         return array(
             'id', 'username', 'password', 'cat_username', 'cat_password',
             'firstname', 'lastname', 'email', 'college', 'home_library', 'major',
-            'language'
+            'language', 'due_date_reminder'
         );
     }
 
@@ -490,7 +491,7 @@ class User extends DB_DataObject
     }
 
     /**
-     * Changes the language a user
+     * Changes the language of a user
      *
      * @param string $language The new language
      *
@@ -508,6 +509,21 @@ class User extends DB_DataObject
             $session_info->language = $language;
             UserAccount::updateSession($session_info);
         }
+        return true;
+    }
+    
+    /**
+     * Changes the due date reminder of a user
+     *
+     * @param int $interval The new interval
+     *
+     * @return boolean True on success
+     * @access public
+     */
+    public function changeDueDateReminder($interval)
+    {
+        $this->due_date_reminder = $interval;
+        $this->update();
         return true;
     }
     
