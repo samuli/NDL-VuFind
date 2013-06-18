@@ -106,6 +106,15 @@ h1, h2, h3 {
 }
 
 
+/* Header */
+
+.backgroundContainer {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 /* Login / Logout */
 
 #topBar .nav > li > a:hover, #topBar .nav > li > a:focus {
