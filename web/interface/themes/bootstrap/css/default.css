@@ -53,6 +53,9 @@ h1, h2, h3 {
 .alignright {
     float: right;
 }
+.well, .authorbox, .correction, .paginationTop {
+    margin-bottom: 15px;
+}
 
 .bootstrap-select.btn-group .dropdown-menu {
 
@@ -819,9 +822,8 @@ ul.resultOptions.inline > li {
     height: auto;
     padding: 0;
 }
-
-.paginationTop {
-    margin-bottom: 1.5em;
+.paginationTop > div{
+    margin-bottom: 0;
 }
 .paging .pager {
     margin-top: 5px;
