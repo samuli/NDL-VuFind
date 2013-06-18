@@ -76,63 +76,7 @@
         {/if}
       </div>
 
-      <div class="well well-small clearfix">
-        <div class="row-fluid">
-          <ul class="resultOptions inline">
-            <li class="pull-left"><label class="badge">{translate text="Search Results"}:</label>&nbsp;&nbsp;<strong>{$recordStart}-{$recordEnd}&nbsp;/&nbsp;{$recordCount}</strong></li>
-            <li class="pull-right">
-              <ul class="listResultSelect inline">
-                <li>
-                  <div class="limitSelect pull-left"> 
-                    {if $limitList|@count gt 1}
-                      <form class="form-inline" action="{$path}/Search/LimitResults" method="post">
-                        <label for="limit">{translate text='Results per page'}</label>
-                        <select id="limit" name="limit" class="selectpicker" data-style="btn-mini" onChange="document.location.href = this.options[this.selectedIndex].value;">
-                          {foreach from=$limitList item=limitData key=limitLabel}
-                            <option value="{$limitData.limitUrl|escape}"{if $limitData.selected} selected="selected"{/if}>{$limitData.desc|escape}</option>
-                          {/foreach}
-                        </select>
-                        <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
-                      </form>
-                    {/if}
-                  </div>
-                </li>
-                <li>
-                  <div class="viewButtons">
-                  {if $viewList|@count gt 1}
-                    {foreach from=$viewList item=viewData key=viewLabel}
-                      {if !$viewData.selected}<a href="{$viewData.viewUrl|escape}" title="{translate text='Switch view to'} {translate text=$viewData.desc}" >{/if}<img src="{$path}/images/view_{$viewData.viewType}.png" {if $viewData.selected}title="{translate text=$viewData.desc} {translate text="view already selected"}"{/if}/>{if !$viewData.selected}</a>{/if}
-                    {/foreach}
-                  {/if}
-                  </div>
-                </li>
-                <li>
-                  <div class="sortSelect pull-left">
-                    <form class="form-inline" action="{$path}/Search/SortResults" method="post">
-                      <label for="sort_options_1">{translate text='Sort'}</label>
-                      <select id="sort_options_1" name="sort" class="jumpMenu selectpicker" data-style="btn-mini">
-                      {foreach from=$sortList item=sortData key=sortLabel}
-                        <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected="selected"{/if}>{translate text=$sortData.desc}</option>
-                      {/foreach}
-                      </select>
-                      <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
-                    </form>
-                  </div>
-                </li>
-              </ul>
-
-            </li>
-          </ul>
-        </div>
-  {*
-        <div class="row-fluid paging text-centered">
-          <ul class="pager span12">
-            <li class="{if !$pageLinks.back} disabled{/if}">{if $pageLinks.back}{$pageLinks.back}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.prevImg}</span>{/if}</li>
-                          <li class="{if !$pageLinks.next} disabled{/if}">{if $pageLinks.next}{$pageLinks.next}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.nextImg}</span>{/if}</li>
-          </ul>
-        </div>
-  *}
-      </div>
+      {include file="Search/paging.tpl" position="Top"}
 
     </div> {* End Listing Options *}
 

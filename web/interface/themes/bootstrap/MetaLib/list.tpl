@@ -61,7 +61,9 @@
   {* End Listing Options *}
 
   {if $subpage}
+    <!-- START of: {$subpage} -->
     {include file=$subpage}
+    <!-- END of: {$subpage} -->
   {else}
     {$pageContent}
   {/if}

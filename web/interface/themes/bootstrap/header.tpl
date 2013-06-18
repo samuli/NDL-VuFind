@@ -8,7 +8,7 @@
 {/if}
 
 <div id="loginHeader" class="row-fluid{if !$showTopSearchBox} text-right{/if}"> <!-- 2.1 -->
-  <a href="{$path}/Content/searchhelp" class="pull-left hidden-phone showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a>
+  <a href="{$path}/Content/searchhelp" class="badge pull-left hidden-phone showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a>
 
 {if !$hideLogin}
   {if $catalogAccounts}
@@ -16,7 +16,7 @@
   {/if} 
     <ul id="logoutOptions" class="hidden-phone inline{if $showTopSearchBox} pull-right{/if}{if !$user} hide{/if}">
     {if $catalogAccounts}
-      <li><span class="badge badge-info libraryCardBadge">{translate text="Select Library Card"}:</span> 
+      <li><span class="label label-info libraryCardBadge">{translate text="Select Library Card"}:</span> 
       <select id="catalogAccount" name="catalogAccount" title="{translate text="Selected Library Card"}" class="selectpicker jumpMenu" data-style="btn btn-mini">
       {foreach from=$catalogAccounts item=account}
         <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|truncate:15:'...':true:false|escape}</option>
@@ -25,20 +25,20 @@
       </select>
       <noscript><input type="submit" value="{translate text="Set"}" /></noscript></li>
     {/if}
-      <li><i class="icon-user"></i>&nbsp;<a class="account" href="{$path}/MyResearch/Home">{if $mozillaPersonaCurrentUser}{$mozillaPersonaCurrentUser|truncate:20:'...':true:false|escape}
+      <li><a class="badge account" href="{$path}/MyResearch/Home"><i class="icon-user"></i>&nbsp;{if $mozillaPersonaCurrentUser}{$mozillaPersonaCurrentUser|truncate:20:'...':true:false|escape}
       {elseif $user->lastname || $user->firstname}{if $user->firstname}{assign var=fullname value=$user->firstname|cat:' '|cat:$user->lastname}{else}{assign var=fullname value=$user->lastname}{/if}{$fullname|truncate:20:'...':true:false|escape}{else}{translate text="Your Account"}{/if}</a></li>
 
     {if $mozillaPersonaCurrentUser}
-      <li><i class="icon-arrow-left"></i>&nbsp;<a id="personaLogout" class="logout" href="">{translate text="Log Out"}</a></li>
+      <li><a id="personaLogout" class="badge logout" href=""><i class="icon-arrow-left"></i>&nbsp;{translate text="Log Out"}</a></li>
     {else}
-      <li><i class="icon-arrow-left"></i>&nbsp;<a class="logout" href="{$path}/MyResearch/Logout">{translate text="Log Out"}</a></li>
+      <li><a class="badge logout" href="{$path}/MyResearch/Logout"><i class="icon-arrow-left"></i>&nbsp;{translate text="Log Out"}</a></li>
     {/if}
     </ul>
     <ul id="loginOptions" class="hidden-phone inline{if $showTopSearchBox} pull-right{/if}{if $user} hide{/if}">
     {if $authMethod == 'Shibboleth'}
-      <li><a class="login" href="{$sessionInitiator}">{translate text="Institutional Login"}</a></li>
+      <li><a class="badge login" href="{$sessionInitiator}">{translate text="Institutional Login"}</a></li>
     {else}
-      <li><a href="{$path}/MyResearch/Home">{translate text="Login"}</a></li>
+      <li><a href="{$path}/MyResearch/Home" class="badge login">&nbsp;{translate text="Login"}</a></li>
     {/if}
     </ul>
   {if $catalogAccounts}

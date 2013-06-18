@@ -39,13 +39,13 @@
       </div>
 
       <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-        <li class=""><a href="{$path}/" class="localLink"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
+        <li class=""><a href="{$path}/" class="badge localLink"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
 {*
       {if $pciEnabled}
         <li><a href="{$path}/PCI/Advanced" class="small pciLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
       {/if}
 *}
-        <li class=""><a href="{$path}/Search/History" class="browseLink"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+        <li class=""><a href="{$path}/Search/History" class="badge browseLink"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
 {*
         <li class=""><a href="{$path}/Browse/Home" class="browseLink"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
 *}
