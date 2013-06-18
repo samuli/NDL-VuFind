@@ -1,7 +1,7 @@
 <!-- START of: MetaLib/list.tpl -->
 
 {* Main Listing *}
-<div class="span12 well-small{if $sidebarOnLeft} push-5 last{/if}">
+<div class="span12 {if $sidebarOnLeft} push-5 last{/if}">
   {* Recommendations *}
   {if $topRecommendations}
     {foreach from=$topRecommendations item="recommendations"}
@@ -11,8 +11,8 @@
 
   {* Listing Options *}
   <div class="row-fluid resulthead">
-    <div class="span12 floatleft">
       {if $failedDatabases}
+      <div class="span12">
         <p class="alert alert-error">
           {translate text='Search failed in:'}<br/>
           {foreach from=$failedDatabases item=failed name=failedLoop}
@@ -21,30 +21,42 @@
         </p>
       {/if}
       {if $disallowedDatabases}
-        <p class="span12 alert notice">
+        <p class="alert notice">
           {translate text='metalib_not_authorized_results'}
           <br/>
           {foreach from=$disallowedDatabases item=failed name=failedLoop}
             {$failed|escape}{if !$smarty.foreach.failedLoop.last}<br/>{/if}
           {/foreach}
         </p>
+      </div> 
       {/if}
-      {if $recordCount}
-        {if $searchType == 'basic'}{translate text='for search'}: <strong>'{$lookfor|escape:"html"}'</strong>,{/if}
+
+      <div class="span12 alert alert-success well-small resultTerm">
+      <h4>
+      {if $lookfor == ''}{translate text="history_empty_search"}
+      {else}
+        {if $searchType == 'MetaLib'}{$lookfor|escape:"html"}
+        {elseif $searchType == 'MetaLibAdvanced'}{translate text="Your search terms"} : "{$lookfor|escape:"html"}
+        {elseif ($searchType == 'MetaLibAdvanced') || ($searchType != 'MetaLibAdvanced' && $orFilters)}
+          {foreach from=$orFilters item=values key=filter}
+          AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
+        {/if}
+        {if $searchType == 'MetaLibAdvanced'}"{/if}
       {/if}
-      {if $spellingSuggestions}
-      <div class="span12 alert alert-info correction">
-        <strong>{translate text='spell_suggest'}</strong>:
-        {foreach from=$spellingSuggestions item=details key=term name=termLoop}
-          <br/>{$term|escape} &raquo; {foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a href="{$data.expand_url|escape}"><img src="{$path}/images/silk/expand.png" alt="{translate text='spell_expand_alt'}"/></a> {/if}{if !$smarty.foreach.termLoop.last}, {/if}{/foreach}
-        {/foreach}
+      </h4>
       </div>
+      {if $spellingSuggestions}
+        <div class="alert alert-info correction">
+          <strong>{translate text='spell_suggest'}</strong>:
+          {foreach from=$spellingSuggestions item=details key=term name=termLoop}
+            <br/>{$term|escape} &raquo; {foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a href="{$data.expand_url|escape}"><img src="{$path}/images/silk/expand.png" alt="{translate text='spell_expand_alt'}"/></a> {/if}{if !$smarty.foreach.termLoop.last}, {/if}{/foreach}
+          {/foreach}
+        </div>
       {/if}
 <!--
     </div>
 -->
     {include file="Search/paging.tpl" position="Top"}
-    </div>
   </div>
   {* End Listing Options *}
 

@@ -64,27 +64,56 @@ $(document).ready(function() {
     }
     if (markersData[i].polygon) {
       var polygon = markersData[i].polygon;
-      map.geomap("append", { type: "Polygon", coordinates: [polygon] }, '<span class="mapMarker">' + iconTitle + '</span>');
-      var lon = 0, lat = 0;
-      for (var c = 0; c < polygon.length - 1; c++) {
-        var coord = polygon[c];
-        lon += coord[0];
-        lat += coord[1];
+      map.geomap("append", { type: "Polygon", coordinates: polygon });
+      if (i == 0) {
+	      var lon = 0, lat = 0;
+	      for (var c = 0; c < polygon[0].length - 1; c++) {
+	        var coord = polygon[0][c];
+	        lon += coord[0];
+	        lat += coord[1];
+	      }
+	      lon /= (polygon[0].length - 1);
+	      lat /= (polygon[0].length - 1);
+	      map.geomap("option", "center", [lon, lat]);
       }
-      lon /= (polygon.length - 1);
-      lat /= (polygon.length - 1);
-      map.geomap("option", "center", [lon, lat]);
+    } else if (markersData[i].multipolygon) {
+      // Handle multipolygon as multiple separate polygons for now due to https://github.com/AppGeo/geo/issues/130
+      var multipolygon = markersData[i].multipolygon;
+      for (m = 0; m < multipolygon.length; m++) {
+        map.geomap("append", { type: "Polygon", coordinates: multipolygon[m] });
+      }
+      if (i == 0) {
+        var lon = 0, lat = 0;
+        for (var m = 0; m < multipolygon[0].length; m++) {
+          for (var c = 0; c < multipolygon[m][0].length - 1; c++) {
+            var coord = multipolygon[m][0][c];
+            lon += coord[0];
+            lat += coord[1];
+          }
+          lon /= (multipolygon[m][0].length - 1);
+          lat /= (multipolygon[m][0].length - 1);
+        }
+        map.geomap("option", "center", [lon, lat]);
+      }
     } else {
       map.geomap("append", { type: "Point", coordinates: [markersData[i].lon, markersData[i].lat] }, '<span class="mapMarker">' + iconTitle + '</span>');
-      map.geomap("option", "center", [markersData[i].lon, markersData[i].lat]);
+      if (i == 0) {
+        map.geomap("option", "center", [markersData[i].lon, markersData[i].lat]);
+      }
     }
     map.geomap("refresh"); 
   }
 });
 </script>
 {/literal}
-<div id="wrap" style="width: 674px; height: 479px">
-  <div id="map_canvas" style="width: 100%; height: 100%">
+<div id="wrap" class="selectionMapContainer">
+  <div id="map_canvas" style="    width: 100%;
+    height: 400px;
+    border: 1px solid gray;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  ">
     <div id="zoomSlider">
       <div id="zoomControlPlus" class="ui-widget-content ui-corner-all ui-icon ui-icon-plus"></div>
       <div id="zoomRange">

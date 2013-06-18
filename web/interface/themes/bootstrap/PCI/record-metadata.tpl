@@ -1,12 +1,12 @@
 <!-- START of: PCI/record-metadata.tpl -->
 
-<div id="recordMetadata">
+<div id="recordMetadata" class="span8">
   {* Display Title *}
-  <h1 class="recordTitle">{$record.title|escape:"html"}</h1>
+  <h4 class="alert alert-success recordTitle">{$record.title|escape:"html"}</h4>
   {* End Title *}
 
   {* Display Main Details *}
-  <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
+  <table cellpadding="2" cellspacing="0" border="0" class="table table-condensed table-hover text-left citation" summary="{translate text='Bibliographic Details'}">
     <tr valign="top" class="recordAuthors">
       <th>{translate text='Authors'}: </th>
       <td>
@@ -105,7 +105,7 @@
       <th>{translate text='Tags'}: </th>
       <td>
         <span style="float:right;">
-          <a href="{$url}/Record/{$id|escape:"url"}/AddTag" class="tool add tagRecord" title="{translate text='Add Tag'}" id="tagRecord{$id|escape}">{translate text='Add Tag'}</a>
+          <a href="{$url}/Record/{$id|escape:"url"}/AddTag" class="btn btn-mini btn-success tool tagRecord" title="{translate text='Add Tag'}" id="tagRecord{$id|escape}" data-toggle="lightbox" data-target="#lightbox"><i class="icon-plus-sign icon-white"></i>&nbsp;{translate text='Add Tag'}</a>
         </span>
         <div id="tagList">
           {if $tagList}
@@ -122,39 +122,38 @@
   {* End Main Details *}
 </div>
 
-<div class="span-4 last">
 
-  {* Display the lists that this record is saved to *}
-  <div class="savedLists info hide" id="savedLists{$id|escape}">
-    <strong>{translate text="Saved in"}:</strong>
-  </div>
-
-  {if $showPreviews && (!empty($holdingLCCN) || !empty($isbn) || !empty($holdingArrOCLC))}
-    {if $googleOptions}
-      <div class="googlePreviewDiv__{$googleOptions}">
-        <a title="{translate text='Preview from'} Google Books" class="hide previewGBS{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
-          <img src="https://www.google.com/intl/en/googlebooks/images/gbs_preview_button1.png" alt="{translate text='Preview'}"/>
-        </a>
-      </div>
-    {/if}
-    {if $olOptions}
-      <div class="olPreviewDiv__{$olOptions}">
-        <a title="{translate text='Preview from'} Open Library" href="" class="hide previewOL{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
-          <img src="{$path}/images/preview_ol.gif" alt="{translate text='Preview'}"/>
-        </a>
-      </div>
-    {/if}
-    {if $hathiOptions}
-      <div class="hathiPreviewDiv__{$hathiOptions}">
-        <a title="{translate text='Preview from'} HathiTrust" class="hide previewHT{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
-          <img src="{$path}/images/preview_ht.gif" alt="{translate text='Preview'}"/>
-        </a>
-      </div>
-    {/if}
-    <span class="previewBibkeys{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}"></span>
-  {/if}
+{* Display the lists that this record is saved to *}
+<div class="span8 alert alert-info pull-right savedLists info hide" id="savedLists{$id|escape}">
+  <strong>{translate text="Saved in"}:</strong>
 </div>
 
-<div class="clear"></div>
+{if $showPreviews && (!empty($holdingLCCN) || !empty($isbn) || !empty($holdingArrOCLC))}
+  {if $googleOptions}
+    <div class="googlePreviewDiv__{$googleOptions}">
+      <a title="{translate text='Preview from'} Google Books" class="hide previewGBS{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+        <img src="https://www.google.com/intl/en/googlebooks/images/gbs_preview_button1.png" alt="{translate text='Preview'}"/>
+      </a>
+    </div>
+  {/if}
+  {if $olOptions}
+    <div class="olPreviewDiv__{$olOptions}">
+      <a title="{translate text='Preview from'} Open Library" href="" class="hide previewOL{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+        <img src="{$path}/images/preview_ol.gif" alt="{translate text='Preview'}"/>
+      </a>
+    </div>
+  {/if}
+  {if $hathiOptions}
+    <div class="hathiPreviewDiv__{$hathiOptions}">
+      <a title="{translate text='Preview from'} HathiTrust" class="hide previewHT{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+        <img src="{$path}/images/preview_ht.gif" alt="{translate text='Preview'}"/>
+      </a>
+    </div>
+  {/if}
+  <span class="previewBibkeys{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}"></span>
+{/if}
+</div>
+
+<div class="clearfix">&nbsp;</div>
 
 <!-- END of: PCI/core-metadata.tpl -->

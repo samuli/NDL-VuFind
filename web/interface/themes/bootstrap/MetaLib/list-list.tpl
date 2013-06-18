@@ -72,6 +72,10 @@
           </div>
 
           <span class="iconlabel {$record.ContentType.0|getSummonFormatClass|escape}">{translate text=$record.ContentType.0}</span>
+          {* Display the lists that this record is saved to *}
+          <div class="savedLists alert alert-info hide" id="savedLists{$record.ID.0|escape}">
+            <strong>{translate text="Saved in"}:</strong>
+          </div>
         </div>
 
   </td>
@@ -79,11 +83,6 @@
 
         <div class="last addToFavLink">
           <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}">{*translate text='Add to favorites'*}</a>
-      
-          {* Display the lists that this record is saved to *}
-          <div class="savedLists info hide" id="savedLists{$record.ID.0|escape}">
-            <strong>{translate text="Saved in"}:</strong>
-          </div>
         </div>
 
   </td>

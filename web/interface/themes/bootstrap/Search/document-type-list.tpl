@@ -9,7 +9,7 @@
   <div class="span12">
     <ul class="unstyled pull-left">
       <li><span class="iconlabel formatdocument"><a href='{$url}/Search/Results?filter[]=format%3A"0%2FDocument%2F"'>{translate text="format_Document_plural"}</a></span></li>
-      <li><span class="iconlabel formatphysicalobject"><a href='{$url}/Search/Results?filter[]=format%3A"0%2FPhysicalObject%2F"'>{translate text="format_Document_plural"}</a></span></li>
+      <li><span class="iconlabel formatphysicalobject"><a href='{$url}/Search/Results?filter[]=format%3A"0%2FPhysicalObject%2F"'>{translate text="format_PhysicalObject_plural"}</a></span></li>
       <li><span class="iconlabel formatmap"><a href='{$url}/Search/Results?filter[]=format%3A"0%2FMap%2F"'>{translate text="format_Map_plural"}</a></span></li>
       <li><span class="iconlabel formatbook"><a href='{$url}/Search/Results?filter[]=format%3A"0%2FBook%2F"'>{translate text="format_Book/Book_plural"}</a></span></li>
       <li><span class="iconlabel formatimage"><a href='{$url}/Search/Results?filter[]=format%3A"0%2FImage%2F"'>{translate text="format_Image_plural"}</a></span></li>

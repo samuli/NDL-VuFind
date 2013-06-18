@@ -143,7 +143,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     {/if}
     </div>
     {* End Cover Image *}
-    <div class="clearfix"></div>  
+    <div class="clearfix"></div>
     <div id="resultToolbar" class="toolbar alert alert-info">
       <ul class="unstyled">
         <li id="saveLink"><a href="{$url}/Record/{$id|escape:"url"}/Save" class="saveRecord add" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{*<i class="icon fav"></i>*}{translate text="Add to favorites"}</a></li>
