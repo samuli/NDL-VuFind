@@ -323,7 +323,7 @@
         </div>
 
         <div id="group<%=nextGroupNumber%>SearchHolder" class="text-left groupSearchHolder"></div>
-        <div class="text-right addSearch"><a href="#" class="btn btn-mini btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
+        <div class="span2 offset1 text-left addSearch"><a href="#" class="btn btn-mini btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
     </div>
 </script>
 {/literal}
@@ -371,5 +371,13 @@
 //]]>
 </script>
 </div>
+{* Apply selectpicker style to added fields *}
+<script type="text/javascript">
+{literal}
+  $("[id^=add_search_link_]").click(function() {
+    $('select').selectpicker();
+  });
+{/literal}
+</script>
 
 <!-- END of: Search/advanced.tpl -->

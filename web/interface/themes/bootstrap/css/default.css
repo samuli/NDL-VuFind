@@ -1250,11 +1250,10 @@ div.truncateField {
 .selectAllCheckboxes, td.checkboxCell, td.coverImageCell {
     vertical-align: inherit;
 }
-.resultNoImage p {
-    color: #DDDDDD;
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
+
+.myResearch .resultNoImage p {
+    display: inline;
+    padding-top: 35px;
 }
 .myResearch .coverDiv {
     float: left;
@@ -1286,10 +1285,26 @@ table .result table td:first-child {
 
 
 /*** ADVANCED SEARCH ***/
-ul.advRow {
-/*
-    height: 38px;
-*/
+#advancedSearchWrapper .label {
+    margin-top: 3px;
+    margin-bottom: 0;
+    padding: 2px 4px 2px 5px
+}
+#advancedSearchWrapper input[type="text"] {
+    font-size: 12px;
+    padding: 0 3px;
+}
+#advancedSearchWrapper .bootstrap-select.btn-group,
+#advancedSearchWrapper .bootstrap-select.btn-group[class*="span"] {
+    margin-bottom: 5px;
+}
+#advancedSearchWrapper .btn-group > .btn,
+#advancedSearchWrapper .btn-group > .dropdown-menu,
+#advancedSearchWrapper .btn-group > .popover {
+    font-size: 12.5px;
+    line-height: 19px;
+    padding: 0px 6px;
+    vertical-align: middle;
 }
 
 .groupSearchHolder .bootstrap-select .btn, .groupSearchDetails .bootstrap-select .btn {
@@ -2011,7 +2026,7 @@ a.ui-dialog-titlebar-close:hover {
 }
 .formatmusicalscore,
 .formatscore {
-    background-position: -49px -332px;
+    background-position: -49px -331px;
 }
 .formatother,
 .formatreferenceentry
@@ -2219,7 +2234,7 @@ h3.account {
     max-width: 240px;
     padding-left: 1.4em;
     background: url("../images/icons16-24px-02.png") no-repeat;
-    background-position: -40px -1928px;
+    background-position: -40px -1932px;
 }
 .new_account {
     background-image: url("../images/silk/user_add.png");
