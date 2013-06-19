@@ -26,8 +26,10 @@ function checkMetaLibLinks() {
                 
                 if (result.status == 'allowed') {
                 	$('#metalib_link_' + safeId).show();
+                } else if (result.status == 'nonsearchable') {
+                	$('#metalib_link_ns_' + safeId).show();
                 } else {
-                	$('#metalib_link_na_' + safeId).show();
+                    $('#metalib_link_na_' + safeId).show();
                 }
             });
         }).error(function() {

@@ -12,7 +12,6 @@
     {literal}
         $(function(){
             $('.mainFocus').focus();
-            $('.ui-autocomplete').addClass('dropdown-menu'); // TODO: remove and add this class where autocomplete is defined.
         });
     {/literal}
     </script>
@@ -22,7 +21,7 @@
 {*
         <label for="searchForm_input" class="offscreen">{translate text="Search Terms"}</label>
 *}
-        <input id="searchForm_input" class="search-query MetaLib clearable mainFocus" type="text" name="lookfor"{* size="40" style="width:200px;"*} value="{$lookfor|escape:"html"}" placeholder='{translate text="Find"}&hellip;'/>
+        <input id="searchForm_input" class="search-query MetaLib clearable mainFocus" type="text" name="lookfor"{* size="40" style="width:200px;"*} value="{$lookfor|escape:"html"}" autocomplete="off" placeholder='{translate text="Find"}&hellip;'/>
 {*
         <div class="styled_select">
           <label for="searchForm_set" class="offscreen">{translate text="Search In"}</label>
@@ -40,12 +39,19 @@
       </div>
 
       <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-        <li class="btn-mini"><a href="{$path}/"><i class="icon-search"></i>&nbsp;{translate text="Local search"}</a></li>
-        <li class="btn-mini"><a href="{$path}/Search/History"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+        <li class=""><a href="{$path}/" class="badge localLink" title="{translate text="Local Search"}"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
 {*
-        <li class="btn-mini"><a href="{$path}/Browse/Home"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+      {if $pciEnabled}
+        <li><a href="{$path}/PCI/Advanced" class="small pciLink" title="{translate text="Advanced PCI Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
+      {/if}
 *}
-        <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+        <li class=""><a href="{$path}/Search/History" class="badge browseLink" title="{translate text="Search History"}"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+{*
+        <li class=""><a href="{$path}/Browse/Home" class="browseLink" title="{translate text="Browse the Catalog"}"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+*}
+{*
+        <li class=""><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+*}
       </ul>
 
 {*
@@ -87,5 +93,15 @@
     <script type="text/javascript">$("#searchForm_lookfor").focus()</script>
   {/if}
 </div>
+
+{* quick script to compensate for the Nelli-logo *}
+<script type="text/javascript">
+{literal}
+$(document).ready(function() {
+      $("#searchForm_input").css({width:'151px'});
+      $("a.clear_input").css({left:'209px'});
+});
+{/literal}
+</script>
 
 <!-- END of: MetaLib/searchbox.tpl -->

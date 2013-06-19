@@ -1125,7 +1125,7 @@ class MarcRecord extends IndexRecord
      */
     protected function getTitleStatement()
     {
-        return $this->getFirstFieldValue('245', array('c'));
+        return  $this->stripTrailingPunctuation($this->getFirstFieldValue('245', array('c')));
     }
 
     /**
@@ -1219,16 +1219,10 @@ class MarcRecord extends IndexRecord
                     $indicator = $field->getIndicator('2');
                     switch ($value) {
                     case '780':
-                        if ($indicator == '0' || $indicator == '1'
-                            || $indicator == '5'
-                        ) {
-                            $value .= '_' . $indicator;
-                        }
+                        $value .= '_' . $indicator;
                         break;
                     case '785':
-                        if ($indicator == '0' || $indicator == '7') {
-                            $value .= '_' . $indicator;
-                        }
+                        $value .= '_' . $indicator;
                         break;
                     }
                     $tmp = $this->getFieldData($field, $value);
@@ -1260,10 +1254,16 @@ class MarcRecord extends IndexRecord
 
         $labelPrfx   = 'note_';
         $baseURI     = $configArray['Site']['url'];
-
-        // There are two possible ways we may want to link to a record -- either
-        // we will have a raw bibliographic record in subfield w, or else we will
-        // have an OCLC number prefixed by (OCoLC).  If we have both, we want to
+        $title       = $field->getSubfield('t') ? $field->getSubfield('t')->getData() : '';
+        $diff        = $field->getSubfield('c') ? $field->getSubfield('c')->getData() : '';
+        $issn        = $field->getSubfield('x') ? $field->getSubfield('x')->getData() : '';
+        if ($diff) {
+            $title .= " $diff";
+        }
+        
+        // There are two possible ways we may want to link to a record with subfield w 
+        // -- either we will have a raw bibliographic record in subfield w, or else we 
+        // will have an OCLC number prefixed by (OCoLC).  If we have both, we want to
         // favor the bib number over the OCLC number.  If we have an unrecognized
         // parenthetical prefix to the number, we should simply ignore it.
         $bib = $oclc = '';
@@ -1283,19 +1283,23 @@ class MarcRecord extends IndexRecord
             }
         }
 
-        // Check which link type we found in the code above... and fail if we
+        // Check which link type we found in the code above... and use title search if we
         // found nothing!
         if (!empty($bib)) {
             $link = $bib;
         } else if (!empty($oclc)) {
             $link = $oclc;
+        } else if (!empty($issn)) {
+            $link = $baseURI . '/Search/Results?lookfor=' .
+                urlencode($issn) . '&type=ISN';
         } else {
-            return false;
+            $link = $baseURI . '/Search/Results?lookfor=' .
+                urlencode('"' . $title . '"') . '&type=Title';
         }
 
         return array(
             'title' => $labelPrfx.$value,
-            'value' => $field->getSubfield('t')->getData(),
+            'value' => $title,
             'link'  => $link
         );
     }
@@ -1742,6 +1746,7 @@ class MarcRecord extends IndexRecord
         }
         return $notes;
     }
+    
 }
 
 ?>

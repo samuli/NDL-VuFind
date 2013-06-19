@@ -67,7 +67,6 @@ body {
 }
 #main.main-home {
     padding:0;
-    background:#000;
 }
 #main > .menu div[class*="grid"] {
     position:absolute;
@@ -1253,6 +1252,12 @@ div.bulkActionButtons select {
     padding:7px;
     font-size:0.9em;
 }
+.holdsList div.bulkActionButtons {
+    padding:0;
+}
+.holdsList div.bulkActionButtons .floatright {
+    margin-right:15px;
+}
 
 /** Cart **/
 .cartSummary {
@@ -1898,7 +1903,6 @@ li.result blockquote {
 }
 
 .recommendation {
-    padding-bottom:20px;
     margin: 0 auto;
 }
 .resultRecommendations {
@@ -1908,7 +1912,7 @@ li.result blockquote {
     display:none;
 }
 .resultRecommendations .authorbio {
-    padding: 30px 0 0;
+    padding: 30px 0 30px;
 }
 .resultRecommendations .authorbio img.alignleft {
     margin-right:20px;
@@ -1918,7 +1922,6 @@ li.result blockquote {
     margin-left: 166px;
 }
 #WikipediaDeferred.recommendation {
-    padding-bottom:25px;
 }
 
 #WikipediaDeferred .readMoreLink a:after {

@@ -6,11 +6,8 @@
 {else}
 <form action="{$url}/Cart/Home?export" method="POST" name="exportForm" title="{translate text='Export Items'}">
 
-  {foreach from=$exportList item=exportItem}
-  <strong>{translate text='Title'}:</strong>
-  {$exportItem.title|escape}<br />
-  {/foreach}        
-  
+  <label class="displayBlock">{$exportList|@count} {translate text="records"}</label>
+
   <label for="format">{translate text='Format'}:</label>      
   <select name="format" id="format">
   {foreach from=$exportOptions item=exportOption}
@@ -30,7 +27,7 @@
     <input type="hidden" name="followupAction" value="{$followupAction|escape}" />
   {/if}
   <br />
-  <input class="submit" type="submit" name="submit" value="{translate text='Export'}">
+  <input class="btn btn-small btn-info input-small button" type="submit" name="submit" value="{translate text='export_selected'}">
 
 </form>
 {/if}

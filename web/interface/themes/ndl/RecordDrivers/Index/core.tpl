@@ -17,22 +17,15 @@
   </div>
   {/if}
 
-    
   {* Display Title *}
-  <h1 class="recordTitle">{$coreShortTitle|escape}{if $coreSubtitle}&nbsp;: {$coreSubtitle|escape}{/if}
-  {* {if $coreTitleSection} / {$coreTitleSection|escape}{/if}
-  {if $coreTitleStatement}{$coreTitleStatement|escape}{/if} *}
-  </h1>
+  <h1 class="recordTitle">{$coreShortTitle|escape}{if $coreSubtitle}&nbsp;: {$coreSubtitle|escape}{/if}</h1>
   {* End Title *}
 
-  {if !empty($coreRecordLinks)}
-  <div class="recordLinks">
-    {foreach from=$coreRecordLinks item=coreRecordLink}
-      {translate text=$coreRecordLink.title}:
-      <a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a>
-    {/foreach}
-  </div>
+  {*  Statement of responsibility *}
+  {if $coreTitleStatement}
+  <h2 class="titleStatement">{$coreTitleStatement|escape}</h2>
   {/if}
+  {* End statement of responsibility *}
 
   {* Display Cover Image, commented out since already in view.tpl
   {if $coreThumbMedium}
@@ -328,17 +321,25 @@
       </td>
     </tr>
     {/if}
-    
-    {*
+
     {if !empty($coreRecordLinks)}
+    {assign var=prevRecordLinkTitle value=''}
     {foreach from=$coreRecordLinks item=coreRecordLink}
-    <tr valign="top" class="recordLinks">
-      <th>{translate text=$coreRecordLink.title}: </th>
-      <td><a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a></td>
+      {if $prevRecordLinkTitle != $coreRecordLink.title}
+        {if $prevRecordLinkTitle}
+      </td>
     </tr>
+        {/if}
+    <tr valign="top" class="recordLinks">
+      <th>{translate text=$coreRecordLink.title}:</th>
+      <td>
+      {/if}
+      {assign var=prevRecordLinkTitle value=$coreRecordLink.title}
+      <a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a><br/>
     {/foreach}
+      </td>
+    </tr>
     {/if}
-    *}
     
     {if $toc}
     <tr valign="top" class="recordTOC">

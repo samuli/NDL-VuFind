@@ -3,18 +3,11 @@
 <div id="searchFormContainer" class="span12 searchform">
 
 {if $searchType == 'advanced'}
-  <a href="{$path}/Search/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced Search"}</a> |
-  <a href="{$path}/Search/Advanced" class="small">{translate text="Start a new Advanced Search"}</a> |
-  <a href="{$path}/" class="small">{translate text="Start a new Basic Search"}</a>
-  <br/>{translate text="Your search terms"} : "<span class="strong">{$lookfor|escape:"html"}
-  {foreach from=$orFilters item=values key=filter}
-    AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}"</span>
-
 {else}
   <script type="text/javascript">
   {literal}
       $(function(){
-          $('.mainFocus').focus();
+          setMainFocus();
           $('.ui-autocomplete').addClass('dropdown-menu'); // TODO: remove and add this class where autocomplete is defined.
       });
   {/literal}
@@ -22,8 +15,8 @@
   {* Without this script + onKeyPress in searchForm_input the pressing of ENTER 
      always just selects the dropdown list which is not the wanted behaviour.
      TODO: A more simple solution/fix most welcome. Feel free to implement ;)
-     UPDATE: Seems to be fixed with bootstrap-select update *}
-{*
+     UPDATE: Seems to be fixed with bootstrap-select update 
+
   <script type="text/javascript">
   {literal}
       function submitenter(myfield,e) {
@@ -43,14 +36,10 @@
   </script>
 *}
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="form-search text-center">
-
-
+{if $pageTemplate != 'advanced.tpl'}
     <div {if !$showTopSearchBox}id="searchboxHome" {/if}class="row-fluid input-append searchbox">
-
       <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="search-query {if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" placeholder='{translate text="Find"}&hellip;' onKeyPress="return submitenter(this,event)" />
-
-      {if $prefilterList}
-        
+    {if $prefilterList}
       <select id="searchForm_filter" class="selectpicker input-prepend text-left" name="prefilter">
       {foreach from=$prefilterList item=searchDesc key=searchVal}
         {if ($searchVal != "--")}
@@ -61,30 +50,43 @@
       {/foreach}
         </optgroup>
       </select>
-      {/if}
-
-
+    {/if}
       <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
-
     </div>
-
+{/if}
     <div class="searchContextHelp">
     {if isset($userLang)}
       {include file="Content/searchboxhelp.$userLang.tpl"}
     {/if}
     </div>
-
-    <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-      <li class="btn-mini"><a href="{$path}/Search/Advanced" class="advancedLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
-  {if $metalibEnabled}
-      <li class="btn-mini"><a href="{$path}/MetaLib/Home" class="metalibLink">{translate text="MetaLib Search"}</a></li>
-  {/if}
+{* <!--    
+    <ul class="unstyled text-left pull-right hidden-phone">
       <li class="btn-mini"><a href="{$path}/Search/History"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
       <li class="btn-mini"><a href="{$path}/Browse/Home"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
       <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
     </ul>
+--> *}
+    <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
+{if $pageTemplate != 'advanced.tpl'}
+      <li><a href="{$path}/Search/Advanced" class="badge advancedLink" title="{translate text="Advanced Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
+{/if}
+    {if $pciEnabled}
+      <li><a href="{$path}/PCI/Home" class="badge pciLink" title="{translate text="PCI Search"}"><i class="icon-search"></i>&nbsp;{translate text="PCI Search"}</a></li>
+    {/if}
+    {if $metalibEnabled}
+      <li><a href="{$path}/MetaLib/Home" class="badge metalibLink" title="{translate text="MetaLib Search"}"><i class="icon-search"></i>&nbsp;{translate text="MetaLib Search"}</a></li>
+    {/if}
+      <li><a href="{$path}/Search/History" class="badge browseLink" title="{translate text="Search History"}"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+{* <!--
+    </ul>
 
-
+    <ul class="inline text-center hidden-phone">
+--> *}
+      <li class=""><a href="{$path}/Browse/Home" class="badge browseLink" title="{translate text="Browse the Catalog"}"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+{* <!--
+      <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+--> *}
+    </ul>
     
   {* Do we have any checkbox filters? *}
   {assign var="hasCheckboxFilters" value="0"}
@@ -123,7 +125,6 @@
       {/if}
     {/foreach}
       </div>
-
     </div>
   {/if}
 

@@ -24,7 +24,7 @@ function getLightbox(module, action, id, lookfor, message, followupModule, follo
     // create a new modal dialog
     $dialog = $('<div id="modalDialog"><div class="dialogLoading">&nbsp;</div></div>')
         .load(path + '/AJAX/JSON?' + $.param(params), postParams, function(responseText) {
-            if ((module == 'Record' || module == 'MetaLib') && action == 'Save' && responseText == '') {
+            if ((module == 'Record' || module == 'MetaLib' || module == 'PCI') && action == 'Save' && responseText == '') {
                 // Update user save statuses if the current context calls for it:
                 if (typeof(checkSaveStatuses) == 'function') {
                     checkSaveStatuses();
@@ -61,6 +61,45 @@ function getLightbox(module, action, id, lookfor, message, followupModule, follo
     __dialogHandle.followupAction = followupAction;
     __dialogHandle.recordId = id;
     __dialogHandle.postParams = postParams;
+
+    // done
+    return $dialog.dialog('open');
+}
+
+function getPageInLightbox(href, message, followupModule, followupAction, followupId) {
+    // Optional parameters
+    if (followupModule === undefined) {followupModule = '';}
+    if (followupAction === undefined) {followupAction = '';}
+    if (followupId     === undefined) {followupId     = '';}
+
+    // create a new modal dialog
+    $dialog = $('<div id="modalDialog"><div class="dialogLoading">&nbsp;</div></div>')
+        .load(href + '&message=' + encodeURIComponent(message)).dialog({
+                modal: true,
+                autoOpen: false,
+                closeOnEscape: true,
+                title: message,
+                width: 600,
+                height: 350,
+                close: function () {
+                    // check if the dialog was successful, if so, load the followup action
+                    if (__dialogHandle.processFollowup && __dialogHandle.followupModule
+                            && __dialogHandle.followupAction) {
+                        $(this).remove();
+                        getLightbox(__dialogHandle.followupModule, __dialogHandle.followupAction,
+                                __dialogHandle.recordId, null, message, null, null, null, postParams);
+                    }
+                    $(this).remove();
+                }
+            });
+
+    // save information about this dialog so we can get it later for followup processing
+    __dialogHandle.dialog = $dialog;
+    __dialogHandle.processFollowup = false;
+    __dialogHandle.followupModule = followupModule;
+    __dialogHandle.followupAction = followupAction;
+    __dialogHandle.recordId = id;
+    __dialogHandle.postParams = null;
 
     // done
     return $dialog.dialog('open');
@@ -117,7 +156,8 @@ function lightboxDocumentReady() {
     registerAjaxBulkEmail();
     registerAjaxBulkExport();
     registerAjaxBulkDelete();
-    $('.mainFocus').focus();
+    registerAjaxRequestForm();
+    $('#modalDialog .mainFocus').focus();
 }
 
 function registerAjaxLogin() {
@@ -612,6 +652,25 @@ function registerAjaxBulkDelete() {
                     setTimeout("hideLightbox(); window.location.reload();", 3000);
                 } else {
                     displayFormError($form, response.data);
+                }
+            }
+        });
+        return false;
+    });
+}
+
+function registerAjaxRequestForm() {
+    $('#modalDialog form[name="requestForm"]').unbind('submit').submit(function(){
+        if (!$(this).valid()) { return false; }
+        showLoadingGraphic($(this));
+        $(this).ajaxSubmit({ 
+            success: function(response, statusText, xhr, $form) {
+                hideLoadingGraphic($form);
+                if (response.substring(0, 5) == 'OK - ') {
+                    $('#modalDialog').html(response.substring(5));
+                    setTimeout(function() { hideLightbox(); }, 2000);
+                } else {
+                    $('#modalDialog').empty().html(response);
                 }
             }
         });

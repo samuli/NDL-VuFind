@@ -2,7 +2,7 @@
 
 <a href="{$url}/MyResearch/Home">{translate text='Your Account'}</a>&nbsp;<span class="divider">/</span>
 {if $pageTemplate == 'view-alt.tpl'}
-<em>{$pageTitle}</em>
+<em>{$shortTitle}</em>
 {else}
 <em>{$pageTemplate|replace:'.tpl':''|capitalize|translate}</em>
 {/if}

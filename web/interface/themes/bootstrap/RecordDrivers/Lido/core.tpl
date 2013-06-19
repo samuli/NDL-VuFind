@@ -183,7 +183,14 @@ End Cover Image *}
     <td>{foreach from=$coreMeasurements item=measurement}{$measurement|escape}<br/>{/foreach}</td>
   </tr>
   {/if}
-  
+
+  {if $coreInscriptions}
+  <tr valign="top" class="recordInscriptions">
+    <th>{translate text='Inscriptions'}: </th>
+    <td>{foreach from=$coreInscriptions item=inscription}{$inscription|escape}<br/>{/foreach}</td>
+  </tr>
+  {/if}
+
   <tr valign="top" class="recordFormat">
     <th>{translate text='Format'}: </th>
     <td>
@@ -206,14 +213,19 @@ End Cover Image *}
         <div class="truncateField">
       {foreach from=$events item=event name=eventLoop}
         {if $event.name}{$event.name}<br/>{/if}
-        {$event.date|escape} 
-        {if !empty($event.method)} -- {$event.method|escape}{/if}
-        {if !empty($event.materials)} -- {$event.materials|escape}{/if}
-        {if !empty($event.place)} -- {$event.place|escape}{/if}
-        {foreach from=$event.actors item=actor name=actorsLoop}
-          {if $smarty.foreach.actorsLoop.index > 1}, {/if}
-          {$actor.name|escape}{if !empty($actor.role)} ({$actor.role|escape}){/if}
-        {/foreach}
+        {if $event.date}{$event.date|escape}{else}{translate text="(undated)"}{/if} 
+        {if !empty($event.method)} &ndash; {$event.method|escape}{/if}
+        {if !empty($event.materials)} &ndash; {$event.materials|escape}{/if}
+        {if !empty($event.place)} &ndash; {$event.place|escape}{/if}
+        {if !empty($event.culture)} &ndash; {$event.culture|escape}{/if}
+        {if !empty($event.actors)}
+        &ndash;
+	        {foreach from=$event.actors item=actor name=actorsLoop}
+	          {if $smarty.foreach.actorsLoop.index > 1}, {/if}
+	          {$actor.name|escape}{if !empty($actor.role)} ({$actor.role|escape}){/if}
+	        {/foreach}
+        {/if}
+        {if !empty($event.description)}<br/>{$event.description|escape}{/if}
         {if !$smarty.foreach.eventLoop.last}<br/><br/>{/if}        
       {/foreach}
         </div>

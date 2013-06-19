@@ -33,7 +33,14 @@
     {/if}
     
     {* Cover image *}
-        <div class="resultNoImage"><p>{translate text='No image'}</p></div>
+    {if is_array($summFormats)}
+      {assign var=mainFormat value=$summFormats.0} 
+      {assign var=displayFormat value=$summFormats|@end} 
+    {else}
+      {assign var=mainFormat value=$summFormats} 
+      {assign var=displayFormat value=$summFormats} 
+    {/if}
+        <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
     {if $img_count > 0}
         <div class="resultImage"><a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}">
           <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
@@ -43,16 +50,7 @@
     {/if}
     	
     </div>
-    
-  {if is_array($summFormats)}
-    {assign var=mainFormat value=$summFormats.0} 
-    {assign var=displayFormat value=$summFormats|@end} 
-  {else}
-    {assign var=mainFormat value=$summFormats} 
-    {assign var=displayFormat value=$summFormats} 
-  {/if}
-  <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
-</div>
+  </div>
 
 </td>
 <td style="width: 100%;">
@@ -61,7 +59,7 @@
       <div class="resultItemLine1">
       	<a href="{$url}/Record/{$summId|escape:"url"}" class="title">{if !empty($summHighlightedTitle)}{$summHighlightedTitle|addEllipsis:$summTitle|highlight}{elseif !$summTitle}{translate text='Title not available'}{else}{$summTitle|truncate:180:"..."|escape}{/if} {$summSubtitle}</a>
       </div>
-
+      <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
       <div class="resultItemLine2">
       	{if !empty($summAuthor)}
       	{translate text='by'}:
@@ -130,7 +128,7 @@
 <td>
 
   <div class="last addToFavLink">
-      <a href="{$url}/Record/{$summId|escape:"url"}/Save" onClick="getLightbox('Record', 'Save', '{$summId|escape}', '', '{translate text='Add to favorites'}', 'Record', 'Save', '{$summId|escape}'); return false;" class="fav tool"></a>
+      <a href="{$url}/Record/{$summId|escape:"url"}/Save" onClick="getLightbox('Record', 'Save', '{$summId|escape}', '', '{translate text='Add to favorites'}', 'Record', 'Save', '{$summId|escape}'); return false;" title="{translate text='Add to favorites'}" class="fav tool"></a>
   </div>
   <div class="clear"></div>
 

@@ -11,7 +11,7 @@
           <div class="pickup-text">
             Keskiaikainen latinankielinen lääketieteen oppi- ja käsikirja Theorica Pantegni on Suomen vanhin sidottu käsikirjoitus ja yksi Kansalliskirjaston 
             kokoelman helmistä. Tämä ensimmäinen kattava latinankielinen lääketieteen yleisesitys on digitoitu ja transkriboitu eli kirjoitettu modernein kirjaimin latinaksi. 
-            <a href="{$url}/Record/arto.1433856">Hakutulokseen »</a>
+            <a href="{$url}/Record/fennica.971448">Hakutulokseen »</a>
           </div>
         </div>
       </li>

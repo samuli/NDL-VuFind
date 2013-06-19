@@ -7,51 +7,54 @@
   {assign var=bookBagItems value=$bookBag->getItems()}
 {/if}
 
-<div id="loginHeader" class="hidden-phone row-fluid{if !$showTopSearchBox} text-right{/if}"> <!-- 2.1 -->
+<div id="loginHeader" class="row-fluid{if !$showTopSearchBox} text-right{/if}"> <!-- 2.1 -->
+  <a href="{$path}/Content/searchhelp" class="badge pull-left hidden-phone showSearchHelp" title="{translate text="Search Tips"}"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a>
 
 {if !$hideLogin}
   {if $catalogAccounts}
-    <form method="post" action="">
+    <form method="post" action="" class="hidden-phone">
   {/if} 
-    <ul id="logoutOptions" class="inline{if $showTopSearchBox} pull-right{/if}{if !$user} hide{/if}">
+    <ul id="logoutOptions" class="hidden-phone inline{if $showTopSearchBox} pull-right{/if}{if !$user} hide{/if}">
     {if $catalogAccounts}
-      <li>
+      <li><span class="label label-info libraryCardBadge">{translate text="Select Library Card"}:</span> 
       <select id="catalogAccount" name="catalogAccount" title="{translate text="Selected Library Card"}" class="selectpicker jumpMenu" data-style="btn btn-mini">
       {foreach from=$catalogAccounts item=account}
-        <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|escape}</option>
+        <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|truncate:15:'...':true:false|escape}</option>
       {/foreach}
         <option value="new">{translate text="Add"}...</option>
       </select>
       <noscript><input type="submit" value="{translate text="Set"}" /></noscript></li>
     {/if}
-      <li><i class="icon-user"></i>&nbsp;<a class="account" href="{$path}/MyResearch/Home">{translate text="Your Account"}</a></li>
+      <li><a class="badge account" href="{$path}/MyResearch/Home" title="{translate text="Your Account"}"><i class="icon-user"></i>&nbsp;{if $mozillaPersonaCurrentUser}{$mozillaPersonaCurrentUser|truncate:20:'...':true:false|escape}
+      {elseif $user->lastname || $user->firstname}{if $user->firstname}{assign var=fullname value=$user->firstname|cat:' '|cat:$user->lastname}{else}{assign var=fullname value=$user->lastname}{/if}{$fullname|truncate:20:'...':true:false|escape}{else}{translate text="Your Account"}{/if}</a></li>
 
     {if $mozillaPersonaCurrentUser}
-      <li><i class="icon-arrow-left"></i>&nbsp;<a id="personaLogout" class="logout" href="">{translate text="Log Out"}</a></li>
+      <li><a id="personaLogout" class="badge logout" title="{translate text="Log Out"}" href=""><i class="icon-arrow-left"></i>&nbsp;{translate text="Log Out"}</a></li>
     {else}
-      <li><i class="icon-arrow-left"></i>&nbsp;<a class="logout" href="{$path}/MyResearch/Logout">{translate text="Log Out"}</a></li>
+      <li><a class="badge logout" href="{$path}/MyResearch/Logout" title="{translate text="Log Out"}"><i class="icon-arrow-left"></i>&nbsp;{translate text="Log Out"}</a></li>
     {/if}
     </ul>
-    <ul id="loginOptions" class="inline{if $showTopSearchBox} pull-right{/if}{if $user} hide{/if}">
+    <ul id="loginOptions" class="hidden-phone inline{if $showTopSearchBox} pull-right{/if}{if $user} hide{/if}">
     {if $authMethod == 'Shibboleth'}
-      <li><a class="login" href="{$sessionInitiator}">{translate text="Institutional Login"}</a></li>
+      <li><a class="badge login" href="{$sessionInitiator}" title="{translate text="Institutional Login"}">{translate text="Institutional Login"}</a></li>
     {else}
-      <li><a href="{$path}/MyResearch/Home">{translate text="Login"}</a></li>
+      <li><a href="{$path}/MyResearch/Home" class="badge login" title="{translate text="Login"}">&nbsp;{translate text="Login"}</a></li>
     {/if}
     </ul>
-</div> <!-- /2.1 -->
   {if $catalogAccounts}
     </form>
   {/if} 
 {/if} {* /!$hideLogin *}
+</div> <!-- /2.1 -->
 
 {include file="homelogo.tpl" assign=logoUrl}
-{if $showTopSearchBox}
+{* if $showTopSearchBox*}
 
 {* This is a temporary solution: assign specific id for MetaLib, all others can use the default logo *}
+{*
 <div class="row-fluid">
 <div id="logoHeader{if $module=='MetaLib'}MetaLib{/if}" class="span4 text-center"> <!-- 2.2 -->
-  <a id="logo{if $module=='MetaLib'}MetaLib{/if}" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src=$logoUrl}</a>
+  <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src=$logoUrl}</a>
 </div> <!-- /2.2 -->
 
 <div id="searchFormHeader" class="span6"> <!-- 2.3 -->
@@ -68,20 +71,31 @@
 </div> <!-- /2.3 -->
 </div>
 {else}
-
-<div class="row-fluid searchHome"> <!-- 2.4 -->
+*}
+<div class="row-fluid text-center{* searchHome*}"> <!-- 2.4 -->
 
   {if $offlineMode == "ils-offline"}
-  <div class="span12 sysInfo">
-    <h2>{translate text="ils_offline_title"}</h2>
+  <div class="span12 alert alert-error text-left sysInfo">
+    <h3>{translate text="ils_offline_title"}</h3>
     <p><strong>{translate text="ils_offline_status"}</strong></p>
     <p>{translate text="ils_offline_home_message"}</p>
     <p><a href="mailto:{$supportEmail}">{$supportEmail}</a></p>
   </div>
   {/if}
-  <div class="span12 text-center searchHomeLogo{if $module=='MetaLib'} searchHomeLogoMetaLib{/if}">
-    <span id="logo{if $module=='MetaLib'}MetaLib{/if}">{image src=$logoUrl}</span>
+  <div class="span12 text-center{* searchHomeLogo{if $module=='MetaLib'} searchHomeLogoMetaLib{/if*}">
+  {*if $showTopSearchBox*}
+    <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src=$logoUrl}</a>
+  {*else}
+    <span id="logo">{image src=$logoUrl}</span>
+  {/if*}
   </div>
+  {if !$showTopSearchBox}
+  <div class="row-fluid">
+    <div class="span12 blurbLineWrapper lead">
+      {include file="Search/home-header.tpl"}
+    </div>
+  </div>
+  {/if}
 </div> <!-- /2.4 -->
 
 <div class="row-fluid searchHomeForm"> <!-- 2.5 -->
@@ -92,6 +106,6 @@
   {/if}
 </div> <!-- /2.5 -->
 
-{/if} {* /$showTopSearchBox *}
+{*/if*} {* /$showTopSearchBox *}
 
 <!-- END of: header.tpl -->

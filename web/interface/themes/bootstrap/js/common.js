@@ -27,8 +27,8 @@ $(document).ready(function(){
     // Do this before setting focus
     initClearable();
     
-    // put focus on the "mainFocus" element
-    $('.mainFocus').each(function(){ $(this).focus(); } );
+    // put focus on the "mainFocus" element if it's visible
+    setMainFocus();
 
     // support "jump menu" dropdown boxes
     $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
@@ -51,7 +51,7 @@ $(document).ready(function(){
         return false;
     });
     */
-    
+
     // assign click event to searchbox context help
     $('.showSearchHelp').click(function() {
       $('div.searchContextHelp').toggle();
@@ -98,6 +98,14 @@ $(document).ready(function(){
         $("link[media='print']").attr("media", "all");
         window.print();
     }
+    
+    // toggle facet visibility on click
+    $('#sidebarFacets dt').on('click', function() {
+        cont = $(this).parent('dl');
+        cont.toggleClass('collapsed');
+        cont.next('script').next('div.dynatree-facet').toggleClass('collapsed');
+    });
+    $('#sidebarFacets dt').css('cursor', 'pointer');
     
     //ContextHelp
     contextHelp.init();
@@ -172,7 +180,7 @@ function initAutocomplete() {
 	ac = searchInput.autocomplete({
 		minLength: minLength,
 		select: function(event, ui) { 
-			searchInput.val(ui.item.label);
+			searchInput.val('"' + ui.item.label + '"');
 			searchForm.submit(); 
 		},
 	    source: function(request, response) {
@@ -184,9 +192,11 @@ function initAutocomplete() {
             if (lastXhr !== null && lastXhr.hasOwnProperty("abort")) {
                 lastXhr.abort();
             }
+            var prefilterValue = $('select#searchForm_filter option:selected').val();
             lastXhr = $.ajax({
+                cache: false,
 	            url: path + '/AJAX/JSON_Autocomplete',
-	            data: {method:'getSuggestions',type:type,q:request.term},
+	            data: {method:'getSuggestions',type:type,q:request.term,prefilter:prefilterValue},
 	            dataType:'json',
 	            success: function(json) {
 	                if (json.status == 'OK' && json.data.length > 0) {
@@ -220,6 +230,21 @@ function initClearable(){
     };
     // change width
     $(".clearable").width("200px").change();
+}
+
+function setMainFocus(){
+    $('.mainFocus').each(function() { 
+        var elem = $(this);
+        
+        var docViewTop = $(window).scrollTop();
+        var docViewBottom = docViewTop + $(window).height();
+
+        var elemTop = elem.offset().top;
+        var elemBottom = elemTop + elem.height();        
+        if (docViewTop < elemTop && docViewBottom > elemBottom) {
+            elem.focus(); 
+        }
+    });
 }
 
 function htmlEncode(value){

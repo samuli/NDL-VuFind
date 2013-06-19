@@ -221,7 +221,7 @@ class VoyagerRestful extends Voyager
      */
     protected function getHoldingNoItemsSQL($id)
     {
-        $sqlArray = parent::getHoldingItemsSQL($id);
+        $sqlArray = parent::getHoldingNoItemsSQL($id);
         $sqlArray['expressions'][] = "null as ITEM_TYPE_ID";
         $sqlArray['expressions'][] = "null as TEMP_ITEM_TYPE_ID";
         
@@ -246,16 +246,17 @@ class VoyagerRestful extends Voyager
     /**
      * Protected support method for getHolding.
      *
-     * @param array $data   Item Data
-     * @param mixed $patron Patron Data or boolean false
+     * @param array  $data   Item Data
+     * @param string $id     The record id
+     * @param mixed  $patron Patron Data or boolean false
      *
      * @return array Keyed data
      * @access protected
      */
 
-    protected function processHoldingData($data, $patron = false)
+    protected function processHoldingData($data, $id, $patron = false)
     {
-        $holding = parent::processHoldingData($data, $patron);
+        $holding = parent::processHoldingData($data, $id, $patron);
         $mode = CatalogConnection::getHoldsMode();
 
         foreach ($holding as $i => $row) {

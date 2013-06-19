@@ -21,6 +21,11 @@
   {if $coreTitleStatement}{$coreTitleStatement|escape}{/if} *}
   </h1>
   {* End Title *}
+  {*  Statement of responsibility *}
+  {if $coreTitleStatement}
+  <h2 class="titleStatement">{$coreTitleStatement|escape}</h2>
+  {/if}
+  {* End statement of responsibility *}
 
   {if !empty($coreRecordLinks)}
   <div class="recordLinks">

@@ -123,7 +123,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {if $img_count > 1}
           <div class="coverImageLinks">
         {foreach from=$coreImages item=desc name=imgLoop}
-            <a href="{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
+            <a href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
               {*if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if
               <img src="{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small" />
               *}
@@ -143,7 +143,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     {/if}
     </div>
     {* End Cover Image *}
-    <div class="clearfix"></div>  
+    <div class="clearfix"></div>
     <div id="resultToolbar" class="toolbar alert alert-info">
       <ul class="unstyled">
         <li id="saveLink"><a href="{$url}/Record/{$id|escape:"url"}/Save" class="saveRecord add" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{*<i class="icon fav"></i>*}{translate text="Add to favorites"}</a></li>
@@ -223,10 +223,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 </div>  
   <a name="tabnav"></a>
     <div id="{if $dynamicTabs}dyn{/if}tabnav" class="row-fluid tabbable">
-    {if !$dynamicTabs || ($tab != 'Hold' && $tab != 'CallSlip')}
+    {if !$dynamicTabs || ($tab != 'Hold' && $tab != 'CallSlip' && $tab != 'UBRequest')}
       <ul class="span12 nav nav-tabs">
         {if $hasHoldings}
-        <li{*if $tab == 'Holdings' || $tab == 'Hold' || $tab == 'CallSlip'} class="active"{/if*}>
+        <li{if $tab == 'Holdings' || $tab == 'Hold' || $tab == 'CallSlip' || $tab == 'UBRequest'} class="active"{/if}>
           <a id="holdingstab" href="{$url}/Record/{$id|escape:"url"}/Holdings{if $dynamicTabs}?subPage=1{/if}#tabnav"><!--i class="icon-ok"></i>&nbsp;-->{translate text='Holdings'}</a>
         </li>
         {/if}
@@ -278,7 +278,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       <div class="clear"></div>
     </div>
   
-    {if $dynamicTabs && $tab != 'Hold' && $tab != 'CallSlip'}
+    {if $dynamicTabs && $tab != 'Hold' && $tab != 'CallSlip' && $tab != 'UBRequest'}
     <div class="recordsubcontent">
           {include file="Record/view-dynamic-tabs.tpl"}
     </div>

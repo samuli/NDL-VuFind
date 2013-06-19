@@ -54,7 +54,7 @@ class Base extends Action
     {
         global $interface;
         if (!$interface->get_template_vars('metalibEnabled')) {
-             PEAR::raiseError(new PEAR_Error("Metalib is not enabled."));
+             PEAR::raiseError(new PEAR_Error("MetaLib is not enabled."));
         }
         $interface->assign('currentTab', 'MetaLib');
 

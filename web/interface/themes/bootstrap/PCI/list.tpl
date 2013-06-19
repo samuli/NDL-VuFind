@@ -1,72 +1,126 @@
-{js filename="openurl.js"}
+<!-- START of: PCI/list.tpl -->
+
+<!--
+<div class="span12 well well-small authorbox">
+  <div id="topFacets" class="row-fluid">
+
+    <div class="well-small">
+    {* Recommendations *}
+    {if $topRecommendations}
+      {foreach from=$topRecommendations item="recommendations"}
+        {include file=$recommendations}
+      {/foreach}
+    {/if}
+    </div>
+   <div class="clear"></div>
+  </div>
+</div>
+-->
+
+<div class="row-fluid">
+
 {* Main Listing *}
-<div class="span-10{if $sidebarOnLeft} push-5 last{/if}">
-  {* Recommendations *}
-  {if $topRecommendations}
-    {foreach from=$topRecommendations item="recommendations"}
-      {include file=$recommendations}
-    {/foreach}
-  {/if}
+  <div id="resultList" class="span9{if $sidebarOnLeft} sidebarOnLeft last{/if}">
+    {* Listing Options *}
+    <div class="resulthead row-fluid">
+    {if $recordCount}
+      <div class="span12 alert alert-success well-small resultTerm">
+        {if $searchType == 'PCIAdvanced'}
+        <a href="{$path}/PCI/Advanced?edit={$searchId}">{translate text="Edit this Advanced PCI Search"}</a> |
+        <a href="{$path}/PCI/Advanced">{translate text="Start a new Advanced PCI Search"}</a> |
+        {if $dualResultsEnabled}
+        <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
+        {else}
+        <a href="{$path}/PCI/Home">{translate text="Start a new Basic PCI Search"}</a>
+        {/if}
+        {/if}
 
-  {* Listing Options *}
-  <div class="resulthead">
-    <div class="floatleft">
-      {if $recordCount}
-        {if $searchType == 'basic'}{translate text='for search'}: <strong>'{$lookfor|escape:"html"}'</strong>,{/if}
+        {if $lookfor == ''}
+        <h4{if $dualResultsEnabled && $searchType != 'PCIAdvanced'} class="pull-left dual"{/if}>{translate text="history_empty_search"}</h4>
+      {else}
+        <h4{if $dualResultsEnabled && $searchType != 'PCIAdvanced'} class="pull-left dual"{/if}>{if $searchType == 'PCI'}{translate text="Search"}: {$lookfor|escape:"html"}{elseif $searchType == 'PCIAdvanced'}{translate text="Your search terms"}: "{$lookfor|escape:"html"}"{/if}</h4>
       {/if}
-      {translate text='query time'}: {$qtime}s
-      {if $spellingSuggestions}
-      <div class="correction">
-        <strong>{translate text='spell_suggest'}</strong>:
-        {foreach from=$spellingSuggestions item=details key=term name=termLoop}
-          <br/>{$term|escape} &raquo; {foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a href="{$data.expand_url|escape}"><img src="{$path}/images/silk/expand.png" alt="{translate text='spell_expand_alt'}"/></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}
-        {/foreach}
+
+      {if $dualResultsEnabled && $searchType != 'PCIAdvanced'}
+        <div class="row-fluid">
+          <div class="pull-right dualButtons">
+            <a class="btn btn-small" href="{$smarty.server.REQUEST_URI|escape|replace:"/PCI/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
+            <a class="btn btn-small" href="{$smarty.server.REQUEST_URI|escape|replace:"/PCI/Search":"/Search/Results"|replace:"prefilter=":"prefiltered="}">{translate text="Books etc."}</a>
+            <a class="btn btn-small buttonSelected" href=".">{translate text="Articles, e-Books etc."}</a>
+          </div>
+        </div>
+      {/if}
       </div>
+
+      {if $searchType != 'PCIAdvanced' && $orFilters}
+        {foreach from=$orFilters item=values key=filter}
+      AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
       {/if}
-    </div>
-    {include file="Search/paging.tpl" position="Top"}
+    {/if}
 
-    <div class="floatright">
-      <form action="{$path}/Search/SortResults" method="post">
-        <label for="sort_options_1">{translate text='Sort'}</label>
-        <select id="sort_options_1" name="sort" class="jumpMenu">
-          {foreach from=$sortList item=sortData key=sortLabel}
-            <option value="{$sortData.sortUrl|escape}"{if $sortData.selected} selected="selected"{/if}>{translate text=$sortData.desc}</option>
+      <div class="row-fluid">
+        {if $spellingSuggestions}
+        <div class="alert alert-info correction well-small">
+          <span class="label label-info">{translate text="spell_suggest"}</span>&nbsp;
+          {foreach from=$spellingSuggestions item=details key=term name=termLoop}
+            <span class="correctionTerms">
+            {$term|escape} &raquo;
+            {foreach from=$details.suggestions item=data key=word name=suggestLoop}
+              <a href="{$data.replace_url|escape}">{$word|escape}</a>
+              {if $data.expand_url}
+              <a href="{$data.expand_url|escape}">{*<img src="{$path}/images/silk/expand.png" alt="{translate text="spell_expand_alt"}" title="{translate text="spell_expand_alt"}"/>*}<i class="icon-zoom-in"></i></a>
+              {/if}
+              {if !$smarty.foreach.suggestLoop.last},
+              {/if}
+            {/foreach}
+            </span>
           {/foreach}
-        </select>
-        <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
-      </form>
-    </div>
-    <div class="clear"></div>
+        </div>
+        {/if}
+      </div>
+
+      {include file="Search/paging.tpl" position="Top"}
+
+    </div> {* End Listing Options *}
+
+    {if $subpage}
+      {include file=$subpage}
+    {else}
+      {$pageContent}
+    {/if}
+
+    <div>
+      {include file="Search/paging.tpl"}
+    </div>  
+
+  </div> {* End Main Listing *}
+
+  {* Narrow Search Options *}
+  {*if !$dualResultsEnabled && $searchType != 'advanced'*}
+  <div id="sidebarFacets" class="span3 well well-small {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+    {if $sideRecommendations}
+      {foreach from=$sideRecommendations item="recommendations"}
+        {include file=$recommendations}
+      {/foreach}
+    {/if}
   </div>
-  {* End Listing Options *}
+  {*/if*}
+  {* End Narrow Search Options *}
 
-  {if $subpage}
-    {include file=$subpage}
-  {else}
-    {$pageContent}
-  {/if}
 
-  {include file="Search/paging.tpl" position="Top"}
-
-  <div class="searchtools">
-    <strong>{translate text='Search Tools'}:</strong>
-    {* TODO: Implement RSS <a href="{$rssLink|escape}" class="feed">{translate text='Get RSS Feed'}</a> *}
-    <a href="{$url}/Search/Email" class="mailSearch mail" id="mailSearch{$searchId|escape}" title="{translate text='Email this Search'}">{translate text='Email this Search'}</a>
-    {if $savedSearch}<a href="{$url}/MyResearch/SaveSearch?delete={$searchId}" class="delete">{translate text='save_search_remove'}</a>{else}<a href="{$url}/MyResearch/SaveSearch?save={$searchId}" class="add">{translate text='save_search'}</a>{/if}
+  <div class="row-fluid searchtools">
+    <ul class="span12 unstyled inline well well-small">
+      <li><strong>{translate text='Search Tools'}:</strong></li>
+  {if $savedSearch}<li><a href="{$url}/MyResearch/SaveSearch?delete={$searchId}" class="delete">{translate text='save_search_remove'}</a></li>{else}<li><a href="{$url}/MyResearch/SaveSearch?save={$searchId}" class="add">{translate text="save_search"}</a></li>{/if}
+    {* <li><a href="{$rssLink|escape}" class="feed">{translate text="Get RSS Feed"}</a></li> *} {* No RSS for PCI *}
+      <li><a href="{$url}/Search/Email" class="mailSearch mail" id="mailSearch{$searchId|escape}" title="{translate text='Email this Search'}">{translate text="Email this Search"}</a></li>
+      
+    </ul>
   </div>
+
 </div>
-{* End Main Listing *}
 
-{* Narrow Search Options *}
-<div class="span-3 {if $sidebarOnLeft}pull-18 sidebarOnLeft{else}last{/if}">
-  {if $sideRecommendations}
-    {foreach from=$sideRecommendations item="recommendations"}
-      {include file=$recommendations}
-    {/foreach}
-  {/if}
-</div>
-{* End Narrow Search Options *}
+{* Fancybox for images *}
+{js filename="init_fancybox.js"}
 
-<div class="clear"></div>
-
+<!-- END of: Search/list.tpl -->

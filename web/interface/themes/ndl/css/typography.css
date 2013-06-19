@@ -396,6 +396,10 @@ ul.dynatree-container {
 h1.recordTitle {
     margin-top: 0;
 }
+
+h2.titleStatement {
+    font-size: 1.128em;    
+}
 .record pre.xml {
     font-family: inherit;
 }

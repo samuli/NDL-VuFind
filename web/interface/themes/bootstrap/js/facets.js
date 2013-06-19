@@ -35,7 +35,11 @@ function getFacetList(node, query, action, facet, level, prefix)
         res = [];
         for (var i = 0, l = list.length; i < l; i++) {
           var e = list[i];
-          res.push({title: '<span class="facetTitle" title="' + e.value + '">' + e.value + '</span><span class="facetCount"> (' + e.count + ')</span>', href: e.url, url: e.url, icon: false, 
+          var title = e.value;
+          if (e.value == e.untranslated) {
+              e.value = e.value.replace(/^\d+\//, '');
+          }
+          res.push({title: '<span class="facetTitle" title="' + title + '">' + e.value + '</span><span class="facetCount"> (' + e.count + ')</span>', href: e.url, url: e.url, icon: false, 
         	facet: facet, level: level, filter: e.untranslated, unselectable: true, isLazy: e.children ? true : false});
         }
         node.setLazyNodeStatus(DTNodeStatus_Ok);

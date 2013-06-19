@@ -17,8 +17,13 @@
     <ul class="unstyled well-small filters">
     {foreach from=$filterList item=filters key=field}
       {foreach from=$filters item=filter}
+        {assign var=facetPrefix value=$filter.display|substr:0:2}
+        {if $facetPrefix == '0/' || $facetPrefix == '1/' || $facetPrefix == '2/' || $facetPrefix == '3/'}
+        <li><a class="btn btn-small btn-warning sidegroupButton" href="{$filter.removalUrl|escape}">{*image src="silk/delete.png" alt="Delete" width="16" height="16"*}<i class="icon-minus-sign icon-white"></i>&nbsp;{translate text=$field}: {$filter.display|substr:2|escape}</a></li>
+        {else} 
         <li><a class="btn btn-small btn-warning sidegroupButton" href="{$filter.removalUrl|escape}">{*image src="silk/delete.png" alt="Delete" width="16" height="16"*}<i class="icon-minus-sign icon-white"></i>&nbsp;{translate text=$field}: {$filter.display|escape}</a></li>
-      {/foreach}
+        {/if}
+        {/foreach}
     {/foreach}
     </ul>
   {/if}
@@ -96,7 +101,6 @@ $(document).ready(function() {
         {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
           {if $smarty.foreach.narrowLoop.iteration == 6}
           <dd id="more{$title}"><a href="#" onclick="moreFacets('{$title}'); return false;">{translate text='more'} ...</a></dd>
-        </dl>
         <dl class="narrowList navmenu offscreen" id="narrowGroupHidden_{$title}">
           {/if}
           {if $thisFacet.isApplied}
@@ -107,6 +111,7 @@ $(document).ready(function() {
         {/foreach}
         {if $smarty.foreach.narrowLoop.total > 5}<dd><a href="#" onclick="lessFacets('{$title}'); return false;">{translate text='less'} ...</a></dd>{/if}
       </dl>
+    </dl>
     {/if}
     {/foreach}
   {/if}

@@ -95,7 +95,6 @@ $(document).ready(function() {
             },
             "xsl" : "nest"
         },
-        "themes" : {"url": $.jstree._themes + "apple/style.css"},
         "plugins" : [ "themes", "xml_data", "ui" ]
     }).bind("open_node.jstree close_node.jstree", function (e, data) {
         $(data.args[0]).find("li").show();
