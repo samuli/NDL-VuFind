@@ -1,11 +1,11 @@
 {if $recordCount > 0}
   <div class="row-fluid hidden-phone pagination{if $position}{$position}{else} pagination-centered pagination{/if}">
   {if $position}
-    <div class="span12 well well-small">
+    <div class="span12{if ($module != 'MyResearch')} well well-small{/if}">
   {else}
     <div class="recordCount">
-      {translate text="Search Results"}:<br />
-      <strong>{$recordStart}-{$recordEnd}&nbsp;<strong>/</strong>&nbsp;{$recordCount}</strong>
+      <strong>{translate text="Search Results"}:<br />
+      {$recordStart}-{$recordEnd}&nbsp;/&nbsp;{$recordCount}</strong>
     </div>
   {/if}
     <ul class="{if $position}pager pull-left{/if}" style="margin:0;">
@@ -14,13 +14,13 @@
       {if !$position}
         <li>{$pageLinks.pages}</li>
       {else}
-        <li>&nbsp;<strong>{translate text="Search Results"}:&nbsp;&nbsp;{$recordStart}-{$recordEnd}</strong>&nbsp;/&nbsp;{$recordCount}&nbsp;</li>
+        <li>&nbsp;<strong>{if ($module != 'MyResearch')}{translate text="Search Results"}:&nbsp;&nbsp;{/if}{$recordStart}-{$recordEnd}</strong>&nbsp;/&nbsp;{$recordCount}&nbsp;</li>
       {/if}
       <li class="{if !$position}next{/if}{if !$pageLinks.next} disabled{/if}">{if $pageLinks.next}{$pageLinks.next}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.nextImg}</span>{/if}</li>
       <li class="paginationMove paginationLast{if $position} offscreen{/if}{if empty($pageLinks.last)} disabled"><a href="" title="last page"></a>{else}">{$pageLinks.last}{/if}</li>
     </ul>
 
-  {if ($module != 'MetaLib') && ($position == 'Top')} 
+  {if ($module != 'MetaLib') && ($module != 'MyResearch') && ($position == 'Top')} 
     <ul class="pull-right listResultSelect inline">
       <li>
         <div class="limitSelect pull-left"> 

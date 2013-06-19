@@ -174,9 +174,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
     </form>
       <hr class="clearfix" />
+{*
       <div class="pull-left">
       {include file="Search/paging.tpl" position="Bottom"}
       </div>
+*}
     {else}
       <div class="alert alert-info noContentMessage">{translate text='You do not have any saved resources'}</div>
     {/if}

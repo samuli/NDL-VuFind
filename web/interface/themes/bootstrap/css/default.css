@@ -57,6 +57,12 @@ h1, h2, h3 {
     margin-bottom: 15px;
 }
 
+.btn [class^="icon-"], .btn [class*=" icon-"] {
+    vertical-align: text-bottom;
+}
+#searchForm_searchButton i, #advancedSearchButton i {
+    vertical-align: text-top;
+}
 .bootstrap-select.btn-group .dropdown-menu {
 
 /*
@@ -829,11 +835,9 @@ ul.resultOptions.inline > li {
     margin-top: 5px;
     margin-bottom: 5px;
 }
-.pagination .disabled, .paginationTop .disabled, .paginationBottom .disabled {
+.pagination .disabled i, .paginationTop .disabled i,
+.paginationBottom .disabled i {
     opacity: .35;
-}
-.pagination .disabled a, .pagination .disabled span {
-    border-color: #999999;
 }
 .recordCount {
     float: left;
@@ -1255,7 +1259,7 @@ div.truncateField {
 .myResearch .coverDiv {
     float: left;
     margin-right: 12px;
-    width: 62px;
+    width: 64px;
 }
 .listentry .resultNoImage, .checkedoutList .resultNoImage, .holdsList .resultNoImage {
     height: 60px;
@@ -2192,6 +2196,7 @@ h3.account {
     background-position: left center;
     background-repeat: no-repeat;
 */
+    font-size: 22.75px;
     max-width: 240px;
     padding-left: 1.4em;
     background: url("../images/icons16-24px-02.png") no-repeat;
