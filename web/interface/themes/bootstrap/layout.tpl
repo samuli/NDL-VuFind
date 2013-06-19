@@ -18,6 +18,7 @@
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" >
     {if $addHeader}{$addHeader}{/if}
 
     {* For mobile devices *}
@@ -100,7 +101,7 @@
     </script>
 
     {* Load jQuery framework and plugins *}
-    {js filename="jquery-1.8.0.min.js"}
+    {js filename="jquery-1.8.3.min.js"}
     {js filename="jquery-ui-1.8.23.custom/js/jquery-ui-1.8.23.custom.min.js"}
     {js filename="jquery.form.js"}
     {js filename="jquery.metadata.js"}
