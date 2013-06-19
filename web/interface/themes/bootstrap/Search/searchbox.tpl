@@ -12,7 +12,8 @@
       });
   {/literal}
   </script>
-  {* Without this script + onKeyPress in searchForm_input the pressing of ENTER 
+{*
+     Without this script + onKeyPress in searchForm_input the pressing of ENTER 
      always just selects the dropdown list which is not the wanted behaviour.
      TODO: A more simple solution/fix most welcome. Feel free to implement ;)
      UPDATE: Seems to be fixed with bootstrap-select update 
@@ -59,35 +60,24 @@
       {include file="Content/searchboxhelp.$userLang.tpl"}
     {/if}
     </div>
-{* <!--    
-    <ul class="unstyled text-left pull-right hidden-phone">
-      <li class="btn-mini"><a href="{$path}/Search/History"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
-      <li class="btn-mini"><a href="{$path}/Browse/Home"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
-      <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
-    </ul>
---> *}
-    <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
 {if $pageTemplate != 'advanced.tpl'}
+    <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
       <li><a href="{$path}/Search/Advanced" class="badge advancedLink" title="{translate text="Advanced Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
-{/if}
     {if $pciEnabled}
-      <li><a href="{$path}/PCI/Home" class="badge pciLink" title="{translate text="PCI Search"}"><i class="icon-search"></i>&nbsp;{translate text="PCI Search"}</a></li>
+      {if $dualResultsEnabled}
+        <li><a href="{$path}/PCI/Advanced" class="badge pciLink" title="{translate text="Advanced PCI Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
+      {else}
+        <li><a href="{$path}/PCI/Home" class="badge pciLink" title="{translate text="PCI Search"}"><i class="icon-search"></i>&nbsp;{translate text="PCI Search"}</a></li>
+      {/if}
     {/if}
     {if $metalibEnabled}
       <li><a href="{$path}/MetaLib/Home" class="badge metalibLink" title="{translate text="MetaLib Search"}"><i class="icon-search"></i>&nbsp;{translate text="MetaLib Search"}</a></li>
     {/if}
       <li><a href="{$path}/Search/History" class="badge browseLink" title="{translate text="Search History"}"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
-{* <!--
-    </ul>
-
-    <ul class="inline text-center hidden-phone">
---> *}
       <li class=""><a href="{$path}/Browse/Home" class="badge browseLink" title="{translate text="Browse the Catalog"}"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
-{* <!--
-      <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
---> *}
     </ul>
-    
+{/if}
+
   {* Do we have any checkbox filters? *}
   {assign var="hasCheckboxFilters" value="0"}
   {if isset($checkboxFilters) && count($checkboxFilters) > 0}

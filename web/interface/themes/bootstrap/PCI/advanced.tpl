@@ -3,7 +3,7 @@
 <div id="advancedSearchWrapper">
 <form method="get" action="{$url}/PCI/Search" id="advSearchForm" name="searchForm" class="search">
   <div class="{*span-10*}">
-    <h3>{translate text='Advanced Search'}</h3>
+    <h3>{translate text='pci_advanced_search_description'}</h3><a class="advancedSearchHelpButton" href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a>
     <div class="advSearchContent">
       {if $editErr}
       {assign var=error value="advSearchError_$editErr"}

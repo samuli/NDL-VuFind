@@ -1,8 +1,13 @@
 <!-- START of: PCI/searchbox.tpl -->
 
+{if $dualResultsEnabled && !(($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl'))}
+  {include file='Search/searchbox.tpl'}
+{else}
 <div id="searchFormContainer" class="span12 searchform">
 
-{if $searchType == 'PCIAdvanced'}
+{if ($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl')}
+
+{*
   <a href="{$path}/PCI/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced PCI Search"}</a> |
   <a href="{$path}/PCI/Advanced" class="small">{translate text="Start a new Advanced PCI Search"}</a> |
   {if $dualResultsEnabled}
@@ -13,7 +18,7 @@
   <br/>{translate text="Your search terms"} : "<span class="strong">{$lookfor|escape:"html"}
   {foreach from=$orFilters item=values key=filter}
     AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}"</span>
-
+*}
 {else}
   <script type="text/javascript">
   {literal}
@@ -48,7 +53,8 @@
     </div>
 
     <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-      <li><a href="{$path}/Search/Advanced" class="badge advancedLink" title="{translate text="Advanced Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
+    <li><a href="{$path}" class="badge localLink" title="{translate text="Local Search"}"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
+
     {if $pciEnabled}
       <li><a href="{$path}/PCI/Advanced" class="badge advancedLink" title="{translate text="Advanced PCI Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
     {/if}
@@ -111,5 +117,7 @@
 {/if}
 
 </div>
+
+{/if} {* $dualResultsEnabled *}
 
 <!-- END of: PCI/searchbox.tpl -->

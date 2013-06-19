@@ -1994,8 +1994,13 @@ a.ui-dialog-titlebar-close:hover {
     background-image: url("../images/silk/cd.png");
 }
 */
-.formatdocument, .formatarticle {
+.formatdocument,
+.formatlegaldocument {
     background-position: -47px -385px;
+}
+.formatarticle,
+.formatnewspaperarticle {
+    background-position: -190px -385px;
 }
 .formatimage {
     background-position: -49px -496px;
@@ -2004,11 +2009,14 @@ a.ui-dialog-titlebar-close:hover {
 .formatjournal {
     background-position: -49px -105px;
 }
-.formatmusicalscore {
+.formatmusicalscore,
+.formatscore {
     background-position: -49px -332px;
 }
-.formatother {
-    background-position: -50px -778px;
+.formatother,
+.formatreferenceentry
+.formatwebsite {
+    background-position: -51px -776px;
 }
 /*
 .formatotherkit {
@@ -2018,16 +2026,20 @@ a.ui-dialog-titlebar-close:hover {
     background-image: url("../images/silk/report.png");
 }
 */
-.formatsound, .formatsoundrecording {
+.formatsound,
+.formatsoundrecording,
+.formataudio {
     background-position: -49px -551px
 }
-.formatvideo {
+.formatvideo,
+.formataudiovideo {
     background-position: -49px -607px;
 }
 .formatworkofart {
     background-position: -48px -663px;
 }
-.formatthesis {
+.formatthesis,
+.formatdissertation {
     background-position: -47px -720px;
 }
 .formatdatabase {
@@ -2075,10 +2087,12 @@ a.ui-dialog-titlebar-close:hover {
     background: url(../images/icons48px-03.png) no-repeat #ffffff 175px 0;
 }
 
-.resultNoImage.formatdocument {
+.resultNoImage.formatdocument,
+.resultNoImage.formatlegaldocument {
     background-position: -8px -735px;
 }
-.resultNoImage.formatarticle {
+.resultNoImage.formatarticle,
+.resultNoImage.formatnewspaperarticle {
     background-position: -7px -1887px;
 }
 .resultNoImage.formatphysicalobject {
@@ -2102,7 +2116,8 @@ a.ui-dialog-titlebar-close:hover {
 .resultNoImage.formatmusicalscore {
     background-position: -14px -612px;
 }
-.resultNoImage.formatthesis {
+.resultNoImage.formatthesis,
+.resultNoImage.dissertation {
     background-position: -7px -1499px;
 }
 .resultNoImage.formatworkofart {
@@ -2111,13 +2126,17 @@ a.ui-dialog-titlebar-close:hover {
 .resultNoImage.formatdatabase {
     background-position: -13px -482px;
 }
-.resultNoImage.formatvideo {
+.resultNoImage.formatvideo,
+.resultNoImage.formataudiovideo  {
     background-position: -14px -1242px;
 }
-.resultNoImage.formatsound {
+.resultNoImage.formatsound,
+.resultNoImage.formataudio {
     background-position: -12px -1113px;
 }
-.resultNoImage.formatother {
+.resultNoImage.formatother,
+.resultNoImage.formatreferenceentry,
+.resultNoImage.formatwebsite {
     background-position: -17px -1632px;
 }
 
