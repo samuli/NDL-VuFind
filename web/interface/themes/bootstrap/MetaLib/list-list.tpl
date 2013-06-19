@@ -1,6 +1,7 @@
 {* check save statuses via AJAX *}
 {js filename="check_save_statuses.js"}
 {js filename="jquery.cookie.js"}
+{js filename="openurl.js"}
 {include file="Search/rsi.tpl"}
 {include file="Search/openurl_autocheck.tpl"}
 
@@ -71,8 +72,7 @@
             {/if}
           </div>
 
-          <span class="iconlabel {$record.ContentType.0|getSummonFormatClass|escape}">{translate text=$record.ContentType.0}</span>
-          {* Display the lists that this record is saved to *}
+            {* Display the lists that this record is saved to *}
           <div class="savedLists alert alert-info hide" id="savedLists{$record.ID.0|escape}">
             <strong>{translate text="Saved in"}:</strong>
           </div>
