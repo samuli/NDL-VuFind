@@ -60,7 +60,9 @@ h1, h2, h3 {
 .btn [class^="icon-"], .btn [class*=" icon-"] {
     vertical-align: text-bottom;
 }
-
+#searchForm_searchButton i, #advancedSearchButton i {
+    vertical-align: text-top;
+}
 .bootstrap-select.btn-group .dropdown-menu {
 
 /*

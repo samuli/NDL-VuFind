@@ -39,15 +39,15 @@
       </div>
 
       <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-        <li class=""><a href="{$path}/" class="badge localLink"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
+        <li class=""><a href="{$path}/" class="badge localLink" title="{translate text="Local Search"}"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
 {*
       {if $pciEnabled}
-        <li><a href="{$path}/PCI/Advanced" class="small pciLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
+        <li><a href="{$path}/PCI/Advanced" class="small pciLink" title="{translate text="Advanced PCI Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
       {/if}
 *}
-        <li class=""><a href="{$path}/Search/History" class="badge browseLink"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+        <li class=""><a href="{$path}/Search/History" class="badge browseLink" title="{translate text="Search History"}"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
 {*
-        <li class=""><a href="{$path}/Browse/Home" class="browseLink"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+        <li class=""><a href="{$path}/Browse/Home" class="browseLink" title="{translate text="Browse the Catalog"}"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
 *}
 {*
         <li class=""><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
