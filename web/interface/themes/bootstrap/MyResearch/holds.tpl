@@ -25,7 +25,7 @@
   {if $cancelCallSlipResults.count > 0}
     <div class="holdsMessage"><p class="alert alert-info">{$cancelCallSlipResults.count|escape} {translate text="call_slip_cancel_success_items"}</p></div>
   {/if}
-    <span class="lead">{translate text='Holds and Recalls'}</span>
+    <span class="lead">{translate text='Holds'}</span>
   </div>
   {if $cancelForm && $recordList}
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
@@ -350,7 +350,7 @@
 
   </form>
   {else}
-    <div class="alert alert-info noContentMessage">{translate text='You do not have any holds or recalls placed'}.</div>
+    <div class="alert alert-info noContentMessage">{translate text='You do not have any requests placed'}.</div>
   {/if}
 {else}
   {include file="MyResearch/catalog-login.tpl"}
