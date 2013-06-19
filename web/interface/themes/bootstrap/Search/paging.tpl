@@ -1,7 +1,7 @@
 {if $recordCount > 0}
   <div class="row-fluid hidden-phone pagination{if $position}{$position}{else} pagination-centered pagination{/if}">
   {if $position}
-    <div class="span12{if ($module != 'MyResearch')}well well-small{/if}">
+    <div class="span12{if ($module != 'MyResearch')} well well-small{/if}">
   {else}
     <div class="recordCount">
       <strong>{translate text="Search Results"}:<br />
