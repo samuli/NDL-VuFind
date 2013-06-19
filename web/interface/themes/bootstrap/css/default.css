@@ -1285,6 +1285,9 @@ table .result table td:first-child {
 
 
 /*** ADVANCED SEARCH ***/
+#advancedSearchWrapper .join {
+    margin-bottom: 10px;
+}
 #advancedSearchWrapper .label {
     margin-top: 3px;
     margin-bottom: 0;
