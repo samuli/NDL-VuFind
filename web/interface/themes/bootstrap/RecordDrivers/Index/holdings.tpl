@@ -106,7 +106,7 @@
             <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Place a Hold"}{else}{translate text="Check Hold"}{/if}</span></a>
           {/if}
           {if $row.callSlipLink}
-            <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="Call Slip Request"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
+            <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="call_slip_place_text"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
           {/if}
           </div>
         {else}
@@ -142,5 +142,23 @@
 </ul>
 {/if}
 </div>
+
+{literal}
+<script type="text/javascript">
+$(document).ready(function() {
+	$('a.holdPlace,a.callSlipPlace,a.UBRequestPlace').click(function() {
+	  var id = {/literal}'{$id}'{literal};
+	  var href = $(this).attr('href');
+	  var hashPos = href.indexOf('#');
+	  if (hashPos >= 0) {
+	    href = href.substring(0, hashPos);      
+	  }
+	  var $dialog = getPageInLightbox(href + '&lightbox=1', $(this).text(), 'Record', '', id);
+	  return false;
+	});
+});
+</script>
+{/literal}
+
 
 <!-- END of: RecordDrivers/Index/holdings.tpl -->

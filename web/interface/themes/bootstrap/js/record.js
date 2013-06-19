@@ -86,7 +86,6 @@ $(document).ready(function(){
     setUpCheckRequest();
     setUpCheckCallSlipRequest();
     setUpCheckUBRequest();
-    setUpUBRequestForm();
 });
 
 function setUpCheckRequest() {

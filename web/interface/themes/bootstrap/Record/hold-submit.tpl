@@ -2,7 +2,9 @@
 
 {if $user->cat_username}
 
+  {if !$lightbox}
   <h2>{translate text='request_place_text'}</h2>
+  {/if}
 
   {* This will always be an error as successes get redirected to MyResearch/Holds.tpl *}
   {if $results.status}
@@ -12,9 +14,14 @@
     <p class="error">{translate text=$results.sysMessage}</p>
   {/if}
 
+  {if $gatheredDetails}
   <div class="hold-form">
 
-    <form action="{$url|escape}/Record/{$id|escape}/Hold{$formURL|escape}" method="post">
+    <form name="requestForm" action="{$url|escape}/Record/{$id|escape}/Hold{$formURL|escape}" method="post">
+      {if $lightbox}
+      <input type="hidden" name="lightbox" value="1" />
+      <input type="hidden" name="placeHold" value="1" />
+      {/if}
 
       {if in_array("comments", $extraHoldFields)}
         <div>
@@ -26,7 +33,7 @@
       {if in_array("requiredByDate", $extraHoldFields)}
         <div>
         <strong>{translate text="hold_required_by"}: </strong>
-        <div id="requiredByHolder"><input id="requiredByDate" type="text" name="gatheredDetails[requiredBy]" value="{if $gatheredDetails.requiredBy !=""}{$gatheredDetails.requiredBy|escape}{else}{$defaultDuedate}{/if}" size="8" /> <strong>({displaydateformat})</strong></div>
+        <div id="requiredByHolder"><input id="requiredByDate" type="text" name="gatheredDetails[requiredBy]" value="{if $gatheredDetails.requiredBy !=""}{$gatheredDetails.requiredBy|escape}{else}{$defaultDuedate}{/if}" size="10" /> <strong>({displaydateformat})</strong></div>
         </div>
       {/if}
 
@@ -57,9 +64,21 @@
     </form>
 
   </div>
+  {/if}
+</div>
 
 {else}
   {include file="MyResearch/catalog-login.tpl"}
+{/if}
+
+{if $lightbox}
+{literal}
+<script type="text/javascript">
+$(document).ready(function(){
+    lightboxDocumentReady();
+});
+</script>
+{/literal}
 {/if}
 
 <!-- END of: Record/hold-submit.tpl -->
