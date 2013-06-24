@@ -230,7 +230,7 @@
 
       <div id="nav" class="nav">
         <div class="content">
-          <ul id="headerMenu" class="grid_19">
+          <ul id="headerMenu">
             {include file="header-menu.$userLang.tpl"}
           </ul>
           <div class="lang">
