@@ -54,11 +54,6 @@
         <div id="requiredByHolder"><input id="requiredByDate" type="text" name="gatheredDetails[requiredBy]" value="{if $gatheredDetails.requiredBy}{$gatheredDetails.requiredBy|escape}{else}{$requiredBy}{/if}" size="10" /> <strong>({displaydateformat})</strong></div>
       </div>
       
-      <div>
-        <strong>{translate text="ub_request_comments"}:</strong><br/>
-        <input type="text" name="gatheredDetails[comment]" size="80" maxlength="100" value="{$gatheredDetails.comment|escape}"></input>
-      </div>
-
       <input type="submit" name="placeRequest" value="{translate text="ub_request_submit_text'}"/>
 
     </form>

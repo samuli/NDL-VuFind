@@ -24,15 +24,6 @@
   </h4>
   {* End Title *}
 
-  {if !empty($coreRecordLinks)}
-  <div class="recordLinks">
-    {foreach from=$coreRecordLinks item=coreRecordLink}
-      {translate text=$coreRecordLink.title}:
-      <a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a>
-    {/foreach}
-  </div>
-  {/if}
-
   {* Display Cover Image, commented out since already in view.tpl
   {if $coreThumbMedium}
     {if $coreThumbLarge}<a href="{$coreThumbLarge|escape}">{/if}
@@ -217,6 +208,9 @@
           {if is_array($field)}
             {if !empty($field.name)}
               <a href="{$url}/Search/Results?lookfor=%22{$field.name|escape:"url"}%22&amp;type=Series">{$field.name|escape}</a>
+              {if !empty($field.additional)}
+                {$field.additional|escape}
+              {/if}
               {if !empty($field.number)}
                 {$field.number|escape}
               {/if}
@@ -324,16 +318,24 @@
     </tr>
     {/if}
     
-    {*
     {if !empty($coreRecordLinks)}
+    {assign var=prevRecordLinkTitle value=''}
     {foreach from=$coreRecordLinks item=coreRecordLink}
-    <tr valign="top" class="recordLinks">
-      <th>{translate text=$coreRecordLink.title}: </th>
-      <td><a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a></td>
+      {if $prevRecordLinkTitle != $coreRecordLink.title}
+        {if $prevRecordLinkTitle}
+      </td>
     </tr>
+        {/if}
+    <tr valign="top" class="recordLinks">
+      <th>{translate text=$coreRecordLink.title}:</th>
+      <td>
+      {/if}
+      {assign var=prevRecordLinkTitle value=$coreRecordLink.title}
+      <a href="{$coreRecordLink.link|escape}">{if $coreRecordLink.value}{$coreRecordLink.value|escape}{else}{$coreRecordLink.issn}{/if}</a><br/>
     {/foreach}
+      </td>
+    </tr>
     {/if}
-    *}
     
     {if $toc}
     <tr valign="top" class="recordTOC">
