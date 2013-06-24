@@ -219,6 +219,9 @@
           {if is_array($field)}
             {if !empty($field.name)}
               <a href="{$url}/Search/Results?lookfor=%22{$field.name|escape:"url"}%22&amp;type=Series">{$field.name|escape}</a>
+              {if !empty($field.additional)}
+                {$field.additional|escape}
+              {/if}
               {if !empty($field.number)}
                 {$field.number|escape}
               {/if}
@@ -339,7 +342,7 @@
       <td>
       {/if}
       {assign var=prevRecordLinkTitle value=$coreRecordLink.title}
-      <a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a><br/>
+      <a href="{$coreRecordLink.link|escape}">{if $coreRecordLink.value}{$coreRecordLink.value|escape}{else}{$coreRecordLink.issn}{/if}</a><br/>
     {/foreach}
       </td>
     </tr>
