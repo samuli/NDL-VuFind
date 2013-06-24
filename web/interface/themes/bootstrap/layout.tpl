@@ -49,13 +49,6 @@
     {css media="screen, projection" filename="bootstrap-select/bootstrap-select.min.css"}
     {* css media="screen, projection" filename="jquery.mobile-1.0a4.1.css" *}
 
-    {* Alternative Bootstrap style sheet for demonstration, remove later *}
-    <link rel="alternate stylesheet" type="text/css" title="amelia" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_amelia.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="cerulean" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_cerulean.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="journal" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_journal.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="superhero" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_superhero.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="united" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_united.min.css">
-
     {* Load SlidePanel CSS for mobile *}
     {* if $mobileViewLink *}
         {css media="screen, projection" filename="../js/SlidePanel/jquery.codebomber.slidepanel.css"}
