@@ -1192,7 +1192,9 @@ div.truncateField {
 }
 .coverImages img#thumbnail {
     padding-bottom:20px !important;
+/*
     border-bottom:1px solid #bbb;
+*/
 }
 .coverImageLinks a {
     background-position: 50% 50%;
