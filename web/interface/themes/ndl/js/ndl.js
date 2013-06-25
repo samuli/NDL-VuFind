@@ -114,16 +114,17 @@ function initDateVis() {
 
 //Check if user is viewing single record or search results and autoscroll to wanted location
 function initScrollRecord() {
-     var identifier = window.location.hash;
-     if (($('div').hasClass('resultHeader') === true) && (identifier === "")) {
-			 $('html, body').animate({
+	var identifier = window.location.hash;
+	if (($('div').hasClass('resultHeader') === true) && (identifier === "") && ($(window).scrollTop() === 0)) {
+		$('html, body').animate({
       	 		  scrollTop: $("#searchFormHeader").offset().top - 10
-    		 }, 400);
-     }
-     if (($('div').hasClass('resultLinks') === true) && ($(window).width() < 721)) {
+    	}, 200);
+	}
+	if (($('div').hasClass('resultLinks') === true) && ($(window).width() < 721)) {
     	    window.location.hash = "results";
-     }
-}
+	}
+} 
+
 
 // Content pages menu 
 function initContentMenu() {

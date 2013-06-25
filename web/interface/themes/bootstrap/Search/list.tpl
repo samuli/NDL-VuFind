@@ -47,7 +47,7 @@
         <div class="row-fluid">
           <div class="pull-right dualButtons">
             <a class="btn btn-small" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
-            <a class="btn btn-small buttonSelected" href=".">{translate text="Books etc."}</a>
+            <a class="btn btn-small buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="Books etc."}</a>
             <a class="btn btn-small" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
           </div>
         </div>

@@ -109,6 +109,9 @@ class JSON_Browse extends JSON
         for ($i=0; $i<26; $i++) {
             $letters[] = chr(65 + $i);
         }
+        $letters[] = 'Å';
+        $letters[] = 'Ä';
+        $letters[] = 'Ö';
         $interface->assign('letters', $letters);
         $interface->assign(
             'query_field', isset($_GET['query_field']) ? $_GET['query_field'] : null
