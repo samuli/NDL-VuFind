@@ -45,7 +45,7 @@
 {/foreach}
 
 {if !empty($holdingURLs) || $holdingsOpenURL}
-  <h5 class="badge badge-inverse">{translate text="Internet"}</h5>
+  <h5 class="label label-inverse">{translate text="Internet"}</h5>
   {if !empty($holdingURLs)}
     {foreach from=$holdingURLs item=desc key=currentUrl name=loop}
       <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
@@ -57,10 +57,10 @@
 {/if}
 
 {if !$holdings}
-<h5>{translate text="No holdings information available"}</h5>
+<h5 class="alert alert-info">{translate text="No holdings information available"}</h5>
 {/if}
 {foreach from=$holdings item=holding key=location}
-<h5 class="badge badge-info">{$location|translate|escape}</h5>
+<h5 class="label label-info">{$location|translate|escape}</h5>
 <table cellpadding="2" cellspacing="0" border="0" class="table table-condensed table-hover citation" summary="{translate text='Holdings details from'} {translate text=$location}">
   {if $holding.0.callnumber}
   <tr>
@@ -134,7 +134,7 @@
 {/foreach}
 
 {if $history}
-<h5 class="badge">{translate text="Most Recent Received Issues"}</h5>
+<h5 class="label">{translate text="Most Recent Received Issues"}</h5>
 <ul>
   {foreach from=$history item=row}
   <li>{$row.issue|escape}</li>

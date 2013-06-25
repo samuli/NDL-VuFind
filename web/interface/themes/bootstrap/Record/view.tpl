@@ -133,7 +133,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {/if}
         
         {if $coreThumbLarge}<a id="thumbnail_link" href="{$coreThumbLarge|escape}" onclick="launchFancybox(this); return false;" rel="{$id|escape:"url"}">{/if}
-        <span></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
+        <span style="visibility: hidden;"></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
         {if $coreThumbLarge}</a>
         {js filename="init_fancybox.js"}
         {/if}
@@ -302,5 +302,13 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   </div>
   <div class="clearfix"></div>
 </div>
+
+{* hide and show the magnifying class icon over large thumbnail *}
+<script type="text/javascript">
+{literal}
+  $('.coverImages').mouseenter(function() {$('#thumbnail_link span').css('visibility','visible'); });
+  $('.coverImages').mouseleave(function() {$('#thumbnail_link span').css('visibility','hidden'); });
+{/literal}
+</script>
 
 <!-- END of: Record/view.tpl -->
