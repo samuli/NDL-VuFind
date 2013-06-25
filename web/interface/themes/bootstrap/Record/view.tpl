@@ -226,7 +226,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     {if !$dynamicTabs || ($tab != 'Hold' && $tab != 'CallSlip' && $tab != 'UBRequest')}
       <ul class="span12 nav nav-tabs">
         {if $hasHoldings}
-        <li{if $tab == 'Holdings' || $tab == 'Hold' || $tab == 'CallSlip' || $tab == 'UBRequest'} class="active"{/if}>
+        <li{*if $tab == 'Holdings' || $tab == 'Hold' || $tab == 'CallSlip' || $tab == 'UBRequest'} class="active"{/if*}>
           <a id="holdingstab" href="{$url}/Record/{$id|escape:"url"}/Holdings{if $dynamicTabs}?subPage=1{/if}#tabnav"><!--i class="icon-ok"></i>&nbsp;-->{translate text='Holdings'}</a>
         </li>
         {/if}

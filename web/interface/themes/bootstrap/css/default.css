@@ -634,16 +634,16 @@ a.badge.account:hover, a.badge.login:hover, a.badge.logout:hover{
 }
 
 /* Dyntabs */
-.nav-tabs > .ui-state-active > a,
-.nav-tabs > .ui-state-active > a:hover,
-.nav-tabs > .ui-state-active > a:focus {
+#dyntabnav .nav-tabs > .ui-state-active > a,
+#dyntabnav .nav-tabs > .ui-state-active > a:hover,
+#dyntabnav .nav-tabs > .ui-state-active > a:focus,
+#dyntabnav .nav-tabs > .active.ui-state-active > a:focus {
     color: #555555;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-bottom-color: transparent;
-    cursor: default;
+    cursor: pointer;
 }
-
 #dyntabnav .ui-tabs-panel {
     padding: 1em 0;
 }
@@ -1418,6 +1418,21 @@ span.mapMarker  {
 
 
 /*** COLLECTION ***/
+#tabnav .nav-tabs > li {
+    margin-right: 2px;
+}
+#tabnav .nav-tabs > li > a {
+    margin-right: 0;
+}
+#tabnav .active,
+#tabnav .nav-tabs > li.active > a:hover,
+#tabnav .nav-tabs > li > a:focus {
+    background-color: #ffffff;
+}
+#tabnav .nav-tabs > li > a:hover,
+#tabnav .nav-tabs > li > a:focus {
+    background-color: #eeeeee;
+}
 #tabnav .holdingsView {
     background: url("../images/icons16-24px-02.png") no-repeat;
     background-position: /*-41px*/ -1293px -1603px;
