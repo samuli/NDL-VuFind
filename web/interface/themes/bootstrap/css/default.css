@@ -1474,7 +1474,14 @@ span.mapMarker  {
 .collectionSortSelector .bootstrap-select, .resultOptions .bootstrap-select {
     width: auto;
 }
-
+.hierarchyTreeLinkText {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -1645px -1503px;
+    padding-left: 26px;
+}
+.hierarchyTreeLinkText:hover, .hierarchyTreeLinkText:focus {
+    background-position: -44px -1503px;
+}
 /* Hierarchy Tree */
 #collectionInfo table {
     margin: 5px 0 0;
