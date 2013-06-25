@@ -18,7 +18,7 @@
       {/if}
       </h4>
       <div class="pull-right">
-        <a class="btn btn-small buttonSelected" href=".">{translate text="All Results"}</a>
+        <a class="btn btn-small buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="All Results"}</a>
         <a class="btn btn-small" href="{$more}">{translate text="Books etc."}</a>
         <a class="btn btn-small" href="{$pci_more}">{translate text="Articles, e-Books etc."}</a>
       </div>

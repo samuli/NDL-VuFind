@@ -30,7 +30,7 @@
 	      {/if}
       </div>
       <div class="headerRight">
-        <a class="button buttonFinna buttonSelected" href=".">{translate text="All Results"}</a>
+        <a class="button buttonFinna buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="All Results"}</a>
         <a class="button buttonFinna" href="{$more}">{translate text="Books etc."}</a>
         <a class="button buttonFinna" href="{$pci_more}">{translate text="Articles, e-Books etc."}</a>
       </div>
