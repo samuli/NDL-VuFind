@@ -1071,17 +1071,22 @@ ul.recordSet .addToFavLink a {
 
 
 /*** PCI ***/
+
+.searchformPCI #searchForm .searchbox {
+    width: 270px;
+}
+
 .buttonSelected, .buttonSelected:hover {
-  cursor: default;
-  color: #444444;
-  background-color: #e6e6e6;
-  *background-color: #d9d9d9;
-  text-decoration: none;
-  background-position: 0 -15px;
-  -webkit-transition: background-position 0.1s linear;
-  -moz-transition: background-position 0.1s linear;
-  -o-transition: background-position 0.1s linear;
-  transition: background-position 0.1s linear;
+    cursor: default;
+    color: #444444;
+    background-color: #e6e6e6;
+    *background-color: #d9d9d9;
+    text-decoration: none;
+    background-position: 0 -15px;
+    -webkit-transition: background-position 0.1s linear;
+    -moz-transition: background-position 0.1s linear;
+    -o-transition: background-position 0.1s linear;
+    transition: background-position 0.1s linear;
 }
 
 #dualResults {
@@ -2678,7 +2683,7 @@ a.panel_open {
     .main .well-small {
         padding: 4px 9px;
     }
-    #searchboxHome, div.searchbox {
+    #searchboxHome, div.searchbox, .searchformPCI #searchForm .searchbox {
         width: 231px;
         white-space: normal;
     }

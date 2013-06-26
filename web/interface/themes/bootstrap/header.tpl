@@ -92,9 +92,11 @@
   </div>
   {if !$showTopSearchBox}
   <div class="row-fluid">
+    {if !$error}    
     <div class="span12 blurbLineWrapper lead">
       {include file="Search/home-header.tpl"}
     </div>
+    {/if}
   </div>
   {/if}
 </div> <!-- /2.4 -->

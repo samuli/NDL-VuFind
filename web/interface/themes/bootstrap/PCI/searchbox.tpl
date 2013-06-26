@@ -3,7 +3,7 @@
 {if $dualResultsEnabled && !(($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl'))}
   {include file='Search/searchbox.tpl'}
 {else}
-<div id="searchFormContainer" class="span12 searchform">
+<div id="searchFormContainer" class="span12 searchform searchformPCI">
 
 {if ($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl')}
 
@@ -32,6 +32,7 @@
     <div {if !$showTopSearchBox}id="searchboxHome" {/if}class="row-fluid input-append searchbox">
       <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" autocomplete="off" class="search-query clearable mainFocus" placeholder='{translate text="Find"}&hellip;' onKeyPress="return submitenter(this,event)" />
       {if $prefilterList}
+<!--
       <select id="searchForm_filter" class="selectpicker input-prepend text-left" name="prefilter">
       {foreach from=$prefilterList item=searchDesc key=searchVal}
         {if ($searchVal != "--")}
@@ -42,6 +43,7 @@
       {/foreach}
         </optgroup>
       </select>
+-->
       {/if}
       <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
     </div>
