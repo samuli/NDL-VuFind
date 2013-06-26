@@ -1,8 +1,8 @@
 <!-- START of: RecordDrivers/Index/holdings.tpl -->
 
-<h3>{translate text=$source prefix='source_'}</h3>
-
 <div class="well-small">
+  <h3>{translate text=$source prefix='source_'}</h3>
+
 {if $id|substr:0:7 == 'helmet.'}
   <br/>
   <span class="native_link">
