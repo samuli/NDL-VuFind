@@ -34,7 +34,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 {js filename="metalib_links.js"}
 {/if}
 
-{* <div class="span-10{if $sidebarOnLeft} push-5 last{/if}"> *}
+{* <!-- <div class="span-10{if $sidebarOnLeft} push-5 last{/if}"> --> *}
 
 {if $errorMsg || $infoMsg || $lastsearch || $previousRecord || $nextRecord}
 <div class="row-fluid">
@@ -52,7 +52,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 	</div>
   {/if}
 
-{*
+{* <!--
   {if $previousRecord || $nextRecord}
   <ul class="span9 pager">
     <li class="{if !$pageLinks.back} disabled{/if}">{if $pageLinks.back}{$pageLinks.back}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.prevImg}</span>{/if}</li>
@@ -60,7 +60,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     <li class="{if !$pageLinks.next} disabled{/if}">{if $pageLinks.next}{$pageLinks.next}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.nextImg}</span>{/if}</li>
   </ul>
   {/if}
-*}
+--> *}
 
   {if $previousRecord || $nextRecord}
   <div class="span6 resultscroller well-small">
@@ -82,7 +82,6 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       {/if}
       </li>
     </ul>
-
 <!--
     {if $previousRecord}
     <a href="{$url}/Record/{$previousRecord}" class="prevRecord">&laquo;<span class="resultNav">&nbsp;{translate text="Prev"}</span></a>
@@ -101,127 +100,131 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     {/if}
 -->
 	</div>
-	{/if}
-
-
+	{/if} {* $previousRecord || ... *}
 </div>
 {/if} {* $errorMsg || ... *}
 
 <div class="row-fluid record recordId" style="padding: 0" id="record{$id|escape}">
 
   <div id="resultMain" class="span9">
+    <div class="row-fluid">
+      <div id="resultSide" class="span4">
+    
+        {* Display Cover Image *}
+        <div class="coverImages clearfix">
+        {if $coreThumbMedium}
 
-  <div class="row-fluid">
-    <div id="resultSide" class="span4">
-  
-    {* Display Cover Image *}
-    <div class="coverImages clearfix">
-    {if $coreThumbMedium}
-
-
-        {assign var=img_count value=$coreImages|@count}
-        {if $img_count > 1}
-          <div class="coverImageLinks clearfix">
-        {foreach from=$coreImages item=desc name=imgLoop}
-            <a href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
-              {*if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if
-              <img src="{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small" />
-              *}
-            </a>
-          {/foreach}
-          </div>
-        {/if}
-        
-        {if $coreThumbLarge}<a id="thumbnail_link" href="{$coreThumbLarge|escape}" onclick="launchFancybox(this); return false;" rel="{$id|escape:"url"}">{/if}
-        <span style="visibility: hidden;"></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
-        {if $coreThumbLarge}</a>
-        {js filename="init_fancybox.js"}
-        {/if}
-        
-        {else}
-        {* <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}"> *}
-    {/if}
-    </div>
-    {* End Cover Image *}
-    <div class="clearfix"></div>
-    <div id="resultToolbar" class="toolbar alert alert-info">
-      <ul class="unstyled">
-        <li id="saveLink"><a href="{$url}/Record/{$id|escape:"url"}/Save" class="saveRecord add" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{*<i class="icon fav"></i>*}{translate text="Add to favorites"}</a></li>
-        
-        {* SMS commented out for now
-        <li><a href="{$url}/Record/{$id|escape:"url"}/SMS" class="smsRecord" id="smsRecord{$id|escape}" title="{translate text="Text this"}"><i class="icon sms"></i>{translate text="Text this"}</a></li>
-        *}
-        {* Mail moved before addThis social media icons 
-        <li><a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li>
-        *}
-        <li><a href="{$url}/Record/{$id|escape:"url"}/Feedback" class="feedbackRecord" id="feedbackRecord{$id|escape}" title="{translate text="Send Feedback"}">{*<i class="icon mail"></i>*}{translate text="Send Feedback"}</a></li>
-        {if is_array($exportFormats) && count($exportFormats) > 0}
-        <li>
-          <a href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormats.0|escape:"url"}" class="exportMenu export">{*<i class="icon export"></i>*}{translate text="Export Record"} {image src="down.png" width="11" height="6" alt=""}</a>
-          <ul class="menu offscreen" id="exportMenu">
-          {foreach from=$exportFormats item=exportFormat}
-            <li><a {if $exportFormat=="RefWorks"}target="{$exportFormat}Main" {/if}href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormat|escape:"url"}">{translate text="Export to"} {$exportFormat|escape}</a></li>
-          {/foreach}
-            <li>
-              <div class="qr_wrapper">
-              <div id="qrcode"><span class="overlay"></span></div>
-              {js filename="qrcodeNDL.js"}
-              </div>
-            </li>
-          </ul>
-        </li>
-        {/if}
-        {* Citation commented out for now
-        <li><a href="{$url}/Record/{$id|escape:"url"}/Cite" class="citeRecord cite" id="citeRecord{$id|escape}" title="{translate text="Cite this"}">{translate text="Cite this"}</a></li> *}
-        {* AddThis-Bookmark commented out
-        {if !empty($addThis)}
-        <li id="addThis"><a class="addThis addthis_button"" href="https://www.addthis.com/bookmark.php?v=250&amp;pub={$addThis|escape:"url"}">{translate text="Bookmark"}</a></li>
-        {/if} *}
-        {* AddThis for social sharing START *}
-		{if !empty($addThis)}
-		<li id="addThis">
-        <div class="truncateField">
-		 	<div class="addthis_toolbox addthis_default_style ">
-        <a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}"></a>
-				<a class="addthis_button_facebook"></a>
-				<a class="addthis_button_twitter"></a>
-				<a class="addthis_button_google_plusone_share"></a>
-			</div>
-		</div>
-		</li>
-        {/if}
-        {* Addthis for social sharing END *}
-        {if $bookBag}
-        <li><a id="recordCart" class="{if in_array($id|escape, $bookBagItems)}bookbagDelete{else}bookbagAdd{/if} offscreen" href="">{translate text="Add to Book Bag"}</a></li>
-        {/if}
-      </ul>
-      {if $bookBag}
-      <div class="cartSummary">
-      <form method="post" name="addForm" action="{$url}/Cart/Home">
-        <input id="cartId" type="hidden" name="ids[]" value="{$id|escape}" />
-        <noscript>
-          {if in_array($id|escape, $bookBagItems)}
-          <input id="cartId" type="hidden" name="ids[]" value="{$id|escape}" />
-          <input type="submit" class="button cart bookbagDelete" name="delete" value="{translate text="Remove from Book Bag"}"/>
+          {assign var=img_count value=$coreImages|@count}
+          {if $img_count > 0}
+            <div class="coverImageLinks clearfix">
+            {if $img_count > 1}
+              {foreach from=$coreImages item=desc name=imgLoop}
+                <a href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
+                  {* <!-- 
+                  {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if
+                  <img src="{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small" />
+                  --> *}
+                </a>
+              {/foreach}
+            {/if}
+            </div>
+            
+            {if $coreThumbLarge}<a id="thumbnail_link" href="{$coreThumbLarge|escape}" onclick="launchFancybox(this); return false;" rel="{$id|escape:"url"}">{/if}
+            <span style="visibility: hidden;"></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
+            {if $coreThumbLarge}</a>
+            {js filename="init_fancybox.js"}
+            {/if}
+            
+          {* <!-- 
           {else}
-          <input type="submit" class="button bookbagAdd" name="add" value="{translate text="Add to Book Bag"}"/>
+            <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}"> 
+          --> *}
           {/if}
-        </noscript>
-      </form>
+        {/if}
+        </div>
+        {* End Cover Image *}
+        <div class="clearfix"></div>
+
+        <div id="resultToolbar" class="toolbar alert alert-info">
+          <ul class="unstyled">
+            <li id="saveLink"><a href="{$url}/Record/{$id|escape:"url"}/Save" class="saveRecord add" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{*<i class="icon fav"></i>*}{translate text="Add to favorites"}</a></li>
+            
+            {* SMS commented out for now
+            <li><a href="{$url}/Record/{$id|escape:"url"}/SMS" class="smsRecord" id="smsRecord{$id|escape}" title="{translate text="Text this"}"><i class="icon sms"></i>{translate text="Text this"}</a></li>
+            *}
+            {* Mail moved before addThis social media icons 
+            <li><a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li>
+            *}
+            <li><a href="{$url}/Record/{$id|escape:"url"}/Feedback" class="feedbackRecord" id="feedbackRecord{$id|escape}" title="{translate text="Send Feedback"}">{*<i class="icon mail"></i>*}{translate text="Send Feedback"}</a></li>
+            {if is_array($exportFormats) && count($exportFormats) > 0}
+            <li>
+              <a href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormats.0|escape:"url"}" class="exportMenu export">{*<i class="icon export"></i>*}{translate text="Export Record"} {image src="down.png" width="11" height="6" alt=""}</a>
+              <ul class="menu offscreen" id="exportMenu">
+              {foreach from=$exportFormats item=exportFormat}
+                <li><a {if $exportFormat=="RefWorks"}target="{$exportFormat}Main" {/if}href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormat|escape:"url"}">{translate text="Export to"} {$exportFormat|escape}</a></li>
+              {/foreach}
+                <li>
+                  <div class="qr_wrapper">
+                  <div id="qrcode"><span class="overlay"></span></div>
+                  {js filename="qrcodeNDL.js"}
+                  </div>
+                </li>
+              </ul>
+            </li>
+            {/if}
+            {* Citation commented out for now
+            <li><a href="{$url}/Record/{$id|escape:"url"}/Cite" class="citeRecord cite" id="citeRecord{$id|escape}" title="{translate text="Cite this"}">{translate text="Cite this"}</a></li> *}
+            {* AddThis-Bookmark commented out
+            {if !empty($addThis)}
+            <li id="addThis"><a class="addThis addthis_button"" href="https://www.addthis.com/bookmark.php?v=250&amp;pub={$addThis|escape:"url"}">{translate text="Bookmark"}</a></li>
+            {/if} *}
+
+            {* AddThis for social sharing START *}
+        		  {if !empty($addThis)}
+		        <li id="addThis">
+              <div class="truncateField">
+                <div class="addthis_toolbox addthis_default_style ">
+                  <a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}"></a>
+				          <a class="addthis_button_facebook"></a>
+				          <a class="addthis_button_twitter"></a>
+				          <a class="addthis_button_google_plusone_share"></a>
+			          </div>
+      		      </div>
+		        </li>
+            {/if}
+            {* Addthis for social sharing END *}
+            {if $bookBag}
+            <li><a id="recordCart" class="{if in_array($id|escape, $bookBagItems)}bookbagDelete{else}bookbagAdd{/if} offscreen" href="">{translate text="Add to Book Bag"}</a></li>
+            {/if}
+          </ul>
+          {if $bookBag}
+          <div class="cartSummary">
+            <form method="post" name="addForm" action="{$url}/Cart/Home">
+              <input id="cartId" type="hidden" name="ids[]" value="{$id|escape}" />
+              <noscript>
+                {if in_array($id|escape, $bookBagItems)}
+                <input id="cartId" type="hidden" name="ids[]" value="{$id|escape}" />
+                <input type="submit" class="button cart bookbagDelete" name="delete" value="{translate text="Remove from Book Bag"}"/>
+                {else}
+                <input type="submit" class="button bookbagAdd" name="add" value="{translate text="Add to Book Bag"}"/>
+                {/if}
+              </noscript>
+            </form>
+          </div>
+          {/if}
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        {*
+        <div class="qr_wrapper">
+        <div id="qrcode"><!-- span class="overlay"></span --></div>
+        {js filename="qrcodeNDL.js"}
+        </div>
+        *}
       </div>
-      {/if}
-      <div class="clear"></div>
-    </div>
-      <div class="clear"></div>
-      {* <div class="qr_wrapper">
-      <div id="qrcode"><!-- span class="overlay"></span --></div>
-      {js filename="qrcodeNDL.js"}
-      </div> *}
-  </div>
-  
-   {include file=$coreMetadata}
-</div>  
-  <a name="tabnav"></a>
+      {include file=$coreMetadata}
+    </div>  
+    <a name="tabnav"></a>
     <div id="{if $dynamicTabs}dyn{/if}tabnav" class="row-fluid tabbable">
     {if !$dynamicTabs || ($tab != 'Hold' && $tab != 'CallSlip' && $tab != 'UBRequest')}
       <ul class="span12 nav nav-tabs">
@@ -277,7 +280,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     {/if}
       <div class="clear"></div>
     </div>
-  
+      
     {if $dynamicTabs && $tab != 'Hold' && $tab != 'CallSlip' && $tab != 'UBRequest'}
     <div class="recordsubcontent">
           {include file="Record/view-dynamic-tabs.tpl"}
@@ -287,12 +290,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           {include file="Record/$subTemplate"}
     </div>
     {/if}
-  
+
     {* Add COINS *}
     <span class="Z3988" title="{$openURL|escape}"></span>
   </div>
   
-
   <div id="resultSidebar" class="span3 {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
     <div class="similarItems well well-small" id="similarItems{$id}"><div class="sidegroup">{image src="ajax_loading.gif" width="16" height="16" alt="Loading..."}</div></div>
     

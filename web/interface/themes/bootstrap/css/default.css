@@ -1191,9 +1191,9 @@ div.truncateField {
     overflow: auto;
 }
 .coverImages img#thumbnail {
-    padding-bottom:20px !important;
+    padding-bottom: 5px !important;
 /*
-    border-bottom:1px solid #bbb;
+    border-bottom: 1px solid #bbb;
 */
 }
 .coverImageLinks a {
