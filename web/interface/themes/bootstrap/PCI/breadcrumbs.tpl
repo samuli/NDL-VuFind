@@ -21,7 +21,7 @@
   {/if}
 <em>{$record.title|truncate:30:"..."|escape}</em>
 {elseif $pageTemplate!=""}
- <em>{translate text=$pageTemplate|replace:'.tpl':''|capitalize|translate}</em>
+ <em>{translate text="PCI Search"}: {translate text=$pageTemplate|replace:'.tpl':''|capitalize|translate}</em>
 {/if}
 
 <!-- END of: PCI/breadcrumbs.tpl -->

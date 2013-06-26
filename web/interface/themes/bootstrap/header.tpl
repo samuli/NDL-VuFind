@@ -52,13 +52,13 @@
 {* if $showTopSearchBox*}
 
 {* This is a temporary solution: assign specific id for MetaLib, all others can use the default logo *}
-{*
+{* <!--
 <div class="row-fluid">
-<div id="logoHeader{if $module=='MetaLib'}MetaLib{/if}" class="span4 text-center"> <!-- 2.2 -->
+<div id="logoHeader{if $module=='MetaLib'}MetaLib{/if}" class="span4 text-center">
   <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src=$logoUrl}</a>
-</div> <!-- /2.2 -->
+</div>
 
-<div id="searchFormHeader" class="span6"> <!-- 2.3 -->
+<div id="searchFormHeader" class="span6">
 
   <div class="row-fluid">
   {if $pageTemplate != 'advanced.tpl'}
@@ -69,10 +69,10 @@
     {/if}
   {/if}
   </div>
-</div> <!-- /2.3 -->
+</div>
 </div>
 {else}
-*}
+--> *}
 <div class="row-fluid text-center{* searchHome*}"> <!-- 2.4 -->
 
   {if $offlineMode == "ils-offline"}
@@ -85,7 +85,7 @@
   {/if}
   <div class="span12 text-center{* searchHomeLogo{if $module=='MetaLib'} searchHomeLogoMetaLib{/if*}">
   {*if $showTopSearchBox*}
-    <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src=$logoUrl}</a>
+    <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{elseif $module=='PCI'}/PCI/Home{/if}" title="{if $module=='MetaLib'}{translate text="MetaLib Search"}: {elseif $module=='PCI'}{translate text="PCI Search"}: {/if}{translate text="Home"}">{image src=$logoUrl}</a>
   {*else}
     <span id="logo">{image src=$logoUrl}</span>
   {/if*}
