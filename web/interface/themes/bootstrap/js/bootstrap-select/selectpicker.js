@@ -1,3 +1,3 @@
 $(document).ready(function() {
-  $('select').selectpicker();
+  $('select').not('.selectpicker-exclude').selectpicker();
 });
