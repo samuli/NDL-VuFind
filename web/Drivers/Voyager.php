@@ -813,6 +813,7 @@ class Voyager implements DriverInterface
         return array(
             'id' => $sqlRow['BIB_ID'],
             'mfhd_id' => $sqlRow['MFHD_ID'],
+            'item_id' => $sqlRow['ITEM_ID'],
             'status' => $sqlRow['STATUS'],
             'location' => $sqlRow['TEMP_LOCATION'] > 0
                 ? $this->getLocationName($sqlRow['TEMP_LOCATION'])
