@@ -4,6 +4,7 @@
   <div class="contentHeader noResultHeader"><div class="content"><h1>{translate text='nohit_heading'}</h1></div></div>
   <div class="content">
   <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
+  {if isset($activePrefilter)} <p><a id="searchWithoutPrefilter" href="#"><strong>{translate text='Search without the prefilter'} "{$prefilterList.$activePrefilter|translate}"</strong></a>{/if}
 
   {if $parseError}
     <p class="error">{translate text='nohit_parse_error'}</p>
@@ -18,16 +19,16 @@
   {/if}
 
   {* Recommendations *}
-  {if $topRecommendations}
-    {foreach from=$topRecommendations item="recommendations"}
-      {include file=$recommendations}
-    {/foreach}
-  {/if}
-
   {if $noResultsRecommendations}
     {foreach from=$noResultsRecommendations item="recommendations" key='key' name="noResults"}
       {include file=$recommendations}
     {/foreach}
+  {/if}
+  {if $searchType == 'advanced'}
+      <p><a href="{$path}/Search/Advanced?edit={$searchId}"><strong>{translate text="Edit this Advanced Search"}</strong></a></p>
+      <p><a href="{$path}/Search/Advanced"><strong>{translate text="Start a new Advanced Search"}</strong></a></p>
+      <p><a href="{$path}/"><strong>{translate text="Start a new Basic Search"}</strong></a></p>
+    </div>
   {/if}
 </div>
 </div>
@@ -42,5 +43,15 @@
 End Narrow Search Options *}
 
 <div class="clear"></div>
+{literal}
+<script type="text/javascript">
+    $('#searchWithoutPrefilter').click(function(e) {
+        e.preventDefault();
+        $('#searchFormKeepFilters').attr('checked', true);
+        $('#searchForm_filter').val('-');
+        $('#searchForm').submit();
+    });
+</script>
+{/literal}
 
 <!-- END of: Search/list-none.tpl -->
