@@ -1903,7 +1903,6 @@ li.result blockquote {
 }
 
 .recommendation {
-    padding-bottom:20px;
     margin: 0 auto;
 }
 .resultRecommendations {
@@ -1913,7 +1912,7 @@ li.result blockquote {
     display:none;
 }
 .resultRecommendations .authorbio {
-    padding: 30px 0 0;
+    padding: 30px 0 30px;
 }
 .resultRecommendations .authorbio img.alignleft {
     margin-right:20px;
@@ -1923,7 +1922,6 @@ li.result blockquote {
     margin-left: 166px;
 }
 #WikipediaDeferred.recommendation {
-    padding-bottom:25px;
 }
 
 #WikipediaDeferred .readMoreLink a:after {

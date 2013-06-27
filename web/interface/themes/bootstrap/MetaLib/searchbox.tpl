@@ -31,7 +31,7 @@
             <option value="{$searchVal}"{if $searchSet == $searchVal || (!$searchSet && $smarty.foreach.loop.first)} selected="selected"{/if}>{translate text=$searchDesc}</option>
           {/foreach}
           </select>
-      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
+      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" title="{translate text="Find"}" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
 {*
         </div>
         <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
@@ -39,12 +39,18 @@
       </div>
 
       <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-        <li class="btn-mini"><a href="{$path}/"><i class="icon-search"></i>&nbsp;{translate text="Local search"}</a></li>
-        <li class="btn-mini"><a href="{$path}/Search/History"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+        <li class=""><a href="{$path}/" class="badge localLink" title="{translate text="Local Search"}"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
+
+        {if $pciEnabled && !$dualResultsEnabled}
+          <li><a href="{$path}/PCI/Home" class="badge pciLink" title="{translate text="PCI Search"}"><i class="icon-search"></i>&nbsp;{translate text="PCI Search"}</a></li>
+        {/if}
+        <li class=""><a href="{$path}/Search/History" class="badge browseLink" title="{translate text="Search History"}"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
 {*
-        <li class="btn-mini"><a href="{$path}/Browse/Home"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+        <li class=""><a href="{$path}/Browse/Home" class="browseLink" title="{translate text="Browse the Catalog"}"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
 *}
-        <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+{*
+        <li class=""><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+*}
       </ul>
 
 {*
@@ -86,5 +92,15 @@
     <script type="text/javascript">$("#searchForm_lookfor").focus()</script>
   {/if}
 </div>
+
+{* quick script to compensate for the Nelli-logo *}
+<script type="text/javascript">
+{literal}
+$(document).ready(function() {
+      $("#searchForm_input").css({width:'151px'});
+      $("a.clear_input").css({left:'209px'});
+});
+{/literal}
+</script>
 
 <!-- END of: MetaLib/searchbox.tpl -->

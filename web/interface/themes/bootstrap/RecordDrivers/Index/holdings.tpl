@@ -1,6 +1,8 @@
 <!-- START of: RecordDrivers/Index/holdings.tpl -->
 
 <div class="well-small">
+  <h3>{translate text=$source prefix='source_'}</h3>
+
 {if $id|substr:0:7 == 'helmet.'}
   <br/>
   <span class="native_link">
@@ -8,12 +10,8 @@
   </span>
 {/if}
 
-{if !empty($holdings)}
-<h4>{translate text=$source prefix='source_'}</h4>
-{/if}
-
 {if !$hideLogin && $offlineMode != "ils-offline"}
-  {if ($driverMode || $titleDriverMode) && !empty($holdings)}
+  {if ($driverMode && !empty($holdings)) || $titleDriverMode}
     {if $showLoginMsg || $showTitleLoginMsg}
       <div class="userMsg alert alert-info">
         <a class="btn btn-mini" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id}">{translate text="Login"}</a> {translate text="hold_login"}
@@ -47,7 +45,7 @@
 {/foreach}
 
 {if !empty($holdingURLs) || $holdingsOpenURL}
-  <h5 class="badge badge-inverse">{translate text="Internet"}</h5>
+  <h5 class="label label-inverse">{translate text="Internet"}</h5>
   {if !empty($holdingURLs)}
     {foreach from=$holdingURLs item=desc key=currentUrl name=loop}
       <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
@@ -57,8 +55,12 @@
     {include file="Search/openurl.tpl" openUrl=$holdingsOpenURL}
   {/if}
 {/if}
+
+{if !$holdings}
+<h5 class="alert alert-info">{translate text="No holdings information available"}</h5>
+{/if}
 {foreach from=$holdings item=holding key=location}
-<h5 class="badge badge-info">{$location|translate|escape}</h5>
+<h5 class="label label-info">{$location|translate|escape}</h5>
 <table cellpadding="2" cellspacing="0" border="0" class="table table-condensed table-hover citation" summary="{translate text='Holdings details from'} {translate text=$location}">
   {if $holding.0.callnumber}
   <tr>
@@ -104,7 +106,7 @@
             <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Place a Hold"}{else}{translate text="Check Hold"}{/if}</span></a>
           {/if}
           {if $row.callSlipLink}
-            <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="Call Slip Request"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
+            <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="call_slip_place_text"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
           {/if}
           </div>
         {else}
@@ -132,7 +134,7 @@
 {/foreach}
 
 {if $history}
-<h5 class="badge">{translate text="Most Recent Received Issues"}</h5>
+<h5 class="label">{translate text="Most Recent Received Issues"}</h5>
 <ul>
   {foreach from=$history item=row}
   <li>{$row.issue|escape}</li>
@@ -140,5 +142,23 @@
 </ul>
 {/if}
 </div>
+
+{literal}
+<script type="text/javascript">
+$(document).ready(function() {
+	$('a.holdPlace,a.callSlipPlace,a.UBRequestPlace').click(function() {
+	  var id = {/literal}'{$id}'{literal};
+	  var href = $(this).attr('href');
+	  var hashPos = href.indexOf('#');
+	  if (hashPos >= 0) {
+	    href = href.substring(0, hashPos);      
+	  }
+	  var $dialog = getPageInLightbox(href + '&lightbox=1', $(this).text(), 'Record', '', id);
+	  return false;
+	});
+});
+</script>
+{/literal}
+
 
 <!-- END of: RecordDrivers/Index/holdings.tpl -->

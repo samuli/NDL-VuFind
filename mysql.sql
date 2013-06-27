@@ -109,8 +109,10 @@ CREATE TABLE `user` (
   `home_library` varchar(100) NOT NULL DEFAULT '',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `language` varchar(30) NOT NULL DEFAULT '',
+  `due_date_reminder` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
+  UNIQUE KEY `username` (`username`),
+  KEY `due_date_reminder` (`due_date_reminder`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 -- --------------------------------------------------------
@@ -217,6 +219,24 @@ CREATE TABLE `user_account` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `due_date_reminder`
+--
+
+CREATE TABLE `due_date_reminder` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `loan_id` varchar(255) NOT NULL,
+  `due_date` datetime NOT NULL,
+  `notification_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `due_date_reminder_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 

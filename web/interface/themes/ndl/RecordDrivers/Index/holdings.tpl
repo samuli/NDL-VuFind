@@ -86,6 +86,16 @@
     </td>
   </tr>
   {/if}
+  {if $row.purchase_history}
+  <tr>
+    <th>{translate text="Most Recent Received Issues"}: </th>
+    <td>
+      {foreach from=$row.purchase_history item=row}
+      {$row.issue|escape}<br>
+      {/foreach}
+    </td>
+  </tr>
+  {/if}
   {if $row.notes}
   <tr>
     <th>{translate text="Notes"}: </th>
@@ -118,7 +128,7 @@
   {/if}
 {/if}
 
-    {if $row.barcode != ""}
+    {if $row.item_id}
   <tr>
     <th>{translate text="Copy"} {$row.number|escape}</th>
     <td>
@@ -161,15 +171,6 @@
   {/foreach}
 </table>
 {/foreach}
-
-{if $history}
-<h5>{translate text="Most Recent Received Issues"}</h5>
-<ul>
-  {foreach from=$history item=row}
-  <li>{$row.issue|escape}</li>
-  {/foreach}
-</ul>
-{/if}
 
 {literal}
 <script type="text/javascript">

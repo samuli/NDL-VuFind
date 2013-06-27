@@ -49,7 +49,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
             {if $listEditAllowed}
           
           <div class="editList">
-            <a class="btn btn-small edit" href="{$url}//MyResearch/EditList/{$list->id|escape:"url"}"><i class="icon-pencil"></i>&nbsp;{translate text="edit_list"}</a>
+            <a class="btn btn-small edit" href="{$url}/MyResearch/EditList/{$list->id|escape:"url"}"><i class="icon-pencil"></i>&nbsp;{translate text="edit_list"}</a>
             <a class="btn btn-small btn-danger pull-right delete" href="{$url}/Cart/Home?listID={$list->id|escape}&amp;listName={$list->title|escape}&amp;origin=Favorites&amp;listFunc=editList&amp;deleteList=true"><i class="icon-remove icon-white"></i>&nbsp;{translate text="delete_list"}</a>
           </div>
             {/if}
@@ -153,7 +153,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
                 {/if}  
                   <input type="submit" class="btn btn-small btn-info button" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
                   {if is_array($exportOptions) && count($exportOptions) > 0}
-                  <input type="submit" class="btn btn-small btn-info input-small button" name="export" value="{translate text='export_expanding'}" title="{translate text='export_expanding'}"/>
+                  <input type="submit" class="btn btn-small btn-info input-small button" name="export" value="{translate text='export_expanding'}" title="{translate text='export_selected'}"/>
                   {/if}
                   {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="btn btn-small btn-danger button" name="delete" value="{translate text='Delete'}" title="{translate text='delete_selected'}"/>{/if}
                 </div>
@@ -174,9 +174,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
     </form>
       <hr class="clearfix" />
+{*
       <div class="pull-left">
       {include file="Search/paging.tpl" position="Bottom"}
       </div>
+*}
     {else}
       <div class="alert alert-info noContentMessage">{translate text='You do not have any saved resources'}</div>
     {/if}

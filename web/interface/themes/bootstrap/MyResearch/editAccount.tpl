@@ -11,6 +11,7 @@
     {if $errorMsg}<div class="alert alert-error">{$errorMsg|translate}</div>{/if}
   </div>
 {/if}
+  <p class="backLink"><a href="{$path}/MyResearch/Accounts">&laquo; {translate text="Back to Your Account"}</a></p>
   <form method="post" name="editAccountForm" action="{$url}/MyResearch/Accounts">
   {if $id}
     <input type="hidden" name="id" value="{$id|escape}" />

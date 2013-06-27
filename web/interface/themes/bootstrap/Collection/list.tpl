@@ -3,15 +3,15 @@
 {js filename="search_hierarchyTree.js}
 {if $recordCount}
   {* Recommendations *}
-  {if $topRecommendations}
+  {*if $topRecommendations}
     {foreach from=$topRecommendations item="recommendations"}
       {include file=$recommendations}
     {/foreach}
-  {/if}
+  {/if*}
   {*include file="Search/paging.tpl" position="Top"*}
 
   <div class="well well-small clearfix">
-    <span id="collectionItemsHeader" class="badge">{translate text='Items'}</span>
+    <span id="collectionItemsHeader" class="label">{translate text='Items'}</span>
     <form class="form-inline pull-right collectionSortSelector" action="{$path}/Search/SortResults" method="post">
         <label for="sort_options_1">{translate text='Sort'}</label>
         <select id="sort_options_1" name="sort" class="selectpicker jumpMenu" data-style="btn-mini">
@@ -39,7 +39,7 @@
   {translate text='collection_empty'}
 {/if}
 <div class="well-small">
-  {include file="Search/paging.tpl" position="Bottom"}
+  {include file="Search/paging.tpl"}
 </div>
 
 <!-- END of: Collection/list.tpl -->

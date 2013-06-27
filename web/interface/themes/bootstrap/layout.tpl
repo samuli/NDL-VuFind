@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$userLang}" lang="{$userLang}">
 
 {* We should hide the top search bar and breadcrumbs in some contexts - TODO, remove xmlrecord.tpl when the actual record.tpl has been taken into use: *}
-{if ($module=="Search" || $module=="Summon" || $module=="EBSCO" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
+{if ($module=="Search" || $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
     {assign var="showTopSearchBox" value=0}
     {assign var="showBreadcrumbs" value=0}
 {else}
@@ -18,6 +18,7 @@
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" >
     {if $addHeader}{$addHeader}{/if}
 
     {* For mobile devices *}
@@ -38,19 +39,15 @@
 
     {* Load Fancybox css *}
     {css media="screen" filename="fancybox/jquery.fancybox.css"}
+    
+    {* Load JSTree css *}
+    {css media="screen" filename="../js/jsTree/themes/apple/style.css"}
 
     {* Load Bootstrap CSS framework *}
     {css media="screen, projection" filename="bootstrap-2.3.1/css/bootstrap.css"}
     {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap-responsive.css" *}
     {css media="screen, projection" filename="bootstrap-select/bootstrap-select.min.css"}
     {* css media="screen, projection" filename="jquery.mobile-1.0a4.1.css" *}
-
-    {* Alternative Bootstrap style sheet for demonstration, remove later *}
-    <link rel="alternate stylesheet" type="text/css" title="amelia" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_amelia.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="cerulean" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_cerulean.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="journal" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_journal.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="superhero" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_superhero.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="united" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_united.min.css">
 
     {* Load SlidePanel CSS for mobile *}
     {* if $mobileViewLink *}
@@ -97,7 +94,7 @@
     </script>
 
     {* Load jQuery framework and plugins *}
-    {js filename="jquery-1.8.0.min.js"}
+    {js filename="jquery-1.8.3.min.js"}
     {js filename="jquery-ui-1.8.23.custom/js/jquery-ui-1.8.23.custom.min.js"}
     {js filename="jquery.form.js"}
     {js filename="jquery.metadata.js"}
@@ -112,7 +109,10 @@
     {js filename="bootstrap-2.3.1/js/bootstrap.js"}
     {js filename="bootstrap-select/bootstrap-select.js"}
     {js filename="bootstrap-select/selectpicker.js"} {* dropdown menu modification *}
-
+    
+    {* Load custom javascript functions *}
+    {js filename="custom.js"}
+    
     {* load Fancybox *}
     {js filename="fancybox/jquery.fancybox.pack.js"}
 
@@ -152,6 +152,9 @@
 // Long field truncation
 $(document).ready(function() {
   $('.truncateField').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}&nbsp;»", less: "«&nbsp;{/literal}{translate text="less"}{literal}"});
+      
+  // Load child theme custom functions
+  //customInit();
 {/literal}
 {if $mozillaPersona}
     mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
@@ -206,20 +209,21 @@ $(document).ready(function() {
       </div>
       <![endif]-->
 
-      <div id="topBar{if !$showBreadcrumbs}Home{/if}" class="{if $showBreadcrumbs}breadcrumb {/if}row-fluid"> <!-- 1 -->
+      <div id="topBar{if !$showTopSearchBox && ($module == 'Search')}Home{/if}" class="{if $showTopSearchBox || ($module != 'Search')}breadcrumb {/if}row-fluid"> <!-- 1 -->
         {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}
-        {if !$showTopSearchBox}
+        {*if !$showTopSearchBox}
         <div id="beta-banner">
             <a href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src="beta-overlay.png"}</a>
         </div>
-        {/if}
+        {/if*}
         {* <=== Remove/comment out when not in beta anymore - End BETA BANNER *}
 
+        {if $module=='PCI' || $module=='MetaLib'}{assign var="showBreadcrumbs" value ="true"}{/if}
         {if $showBreadcrumbs}
           <div class="pull-left">
             <ul class="breadcrumb pull-left">
             <li><a href="{$url}"><i class="icon-home" title="{translate text='Home'}"></i></a>&nbsp;<span class="divider">/</span></li>
-            <li>{include file="$module/breadcrumbs.tpl"}</li>
+            <li>{if $module}{include file="$module/breadcrumbs.tpl"}{/if}</li>
             </ul>
           </div>
         {/if}
@@ -241,7 +245,7 @@ $(document).ready(function() {
           </div>
       </div> <!-- /1 -->
 
-      <div class="row-fluid module-MetaLib"> <!-- 2 -->
+      <div class="row-fluid"> <!-- 2 -->
         <div class="span12 backgroundContainer header{if !$showTopSearchBox}-home{/if} well well-small {if $module!='Search'} header{$module}{/if}">
           {include file="header.tpl"}
         </div>

@@ -2847,7 +2847,7 @@ class IndexRecord implements RecordInterface
                 'multipolygon' => $polygons
             );                 
         } else {
-            $coordinates = explode(' ', $location);
+            $coordinates = explode(' ', $wkt);
             if (count($coordinates) > 2) {
                 $polygon = array();
                 // Assume rectangle

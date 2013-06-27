@@ -22,11 +22,29 @@
 
     <div class="resultColumn1">
         <div class="coverDiv">
-            {* Cover image *}
-            <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-            <div class="resultImage"><img src="{$path}/images/NoCover2.gif" alt="No image" /></div>
-        </div>
-        <div class="resultItemFormat"><span class="iconlabel format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""} format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$record.format prefix='format_PCI_'}</span>
+        {* Cover image *}
+        {* Multiple images *}
+        {if $img_count > 1}
+          <div class="imagelinks">
+        {foreach from=$summImages item=desc name=imgLoop}
+            <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" />
+            {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+            </a>
+        {/foreach}
+          </div>
+        {/if}
+        {if is_array($summFormats)}
+          {assign var=mainFormat value=$summFormats.0} 
+          {assign var=displayFormat value=$summFormats|@end} 
+        {else}
+          {assign var=mainFormat value=$summFormats} 
+          {assign var=displayFormat value=$summFormats} 
+        {/if}
+        {* Cover image *}
+          <div class="resultNoImage format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""} format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
+        {if $summThumb}
+            <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
+        {/if}
         </div>
     </div>
 
@@ -37,6 +55,8 @@
         <div class="resultItemLine1">
             <a href="{$url}/PCI/Record?id={$id|escape:"url"}"
             class="title">{if !$record.title}{translate text='Title not available'}{else}{$record.title|highlight}{/if}</a>
+        </div>
+        <div class="resultItemFormat"><span class="iconlabel format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""} format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$record.format prefix='format_PCI_'}</span>
         </div>
         <div class="resultItemLine2">
         {if !empty($record.author)}

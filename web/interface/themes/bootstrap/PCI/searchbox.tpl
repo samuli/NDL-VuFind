@@ -1,8 +1,13 @@
 <!-- START of: PCI/searchbox.tpl -->
 
-<div id="searchFormContainer" class="span12 searchform">
+{if $dualResultsEnabled && !(($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl'))}
+  {include file='Search/searchbox.tpl'}
+{else}
+<div id="searchFormContainer" class="span12 searchform searchformPCI">
 
-{if $searchType == 'PCIAdvanced'}
+{if ($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl')}
+
+{*
   <a href="{$path}/PCI/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced PCI Search"}</a> |
   <a href="{$path}/PCI/Advanced" class="small">{translate text="Start a new Advanced PCI Search"}</a> |
   {if $dualResultsEnabled}
@@ -13,7 +18,7 @@
   <br/>{translate text="Your search terms"} : "<span class="strong">{$lookfor|escape:"html"}
   {foreach from=$orFilters item=values key=filter}
     AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}"</span>
-
+*}
 {else}
   <script type="text/javascript">
   {literal}
@@ -27,6 +32,7 @@
     <div {if !$showTopSearchBox}id="searchboxHome" {/if}class="row-fluid input-append searchbox">
       <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" autocomplete="off" class="search-query clearable mainFocus" placeholder='{translate text="Find"}&hellip;' onKeyPress="return submitenter(this,event)" />
       {if $prefilterList}
+<!--
       <select id="searchForm_filter" class="selectpicker input-prepend text-left" name="prefilter">
       {foreach from=$prefilterList item=searchDesc key=searchVal}
         {if ($searchVal != "--")}
@@ -37,8 +43,9 @@
       {/foreach}
         </optgroup>
       </select>
+-->
       {/if}
-      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
+      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" title="{translate text="Find"}" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
     </div>
 
     <div class="searchContextHelp">
@@ -48,14 +55,19 @@
     </div>
 
     <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-      <li class="btn-mini"><a href="{$path}/Search/Advanced" class="advancedLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
-      <li class="btn-mini"><a href="{$path}/PCI/Advanced" class="small advancedLink"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
-    {if $metalibEnabled}
-      <li class="btn-mini"><a href="{$path}/MetaLib/Home" class="metalibLink"><i class="icon-search"></i>&nbsp;{translate text="MetaLib Search"}</a></li>
+    <li><a href="{$path}" class="badge localLink" title="{translate text="Local Search"}"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
+
+    {if $pciEnabled}
+      <li><a href="{$path}/PCI/Advanced" class="badge advancedLink" title="{translate text="Advanced PCI Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
     {/if}
-      <li class="btn-mini"><a href="{$path}/Search/History"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
-      <li class="btn-mini"><a href="{$path}/Browse/Home"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
-      <li class="btn-mini"><a href="{$path}/Content/searchhelp" class="showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+    {if $metalibEnabled}
+      <li><a href="{$path}/MetaLib/Home" class="badge metalibLink" title="{translate text="MetaLib Search"}"><i class="icon-search"></i>&nbsp;{translate text="MetaLib Search"}</a></li>
+    {/if}
+      <li><a href="{$path}/Search/History" class="badge browseLink" title="{translate text="Search History"}"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
+      <li><a href="{$path}/Browse/Home" class="badge browseLink" title="{translate text="Browse the Catalog"}"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>
+{*
+      <li><a href="{$path}/Content/searchhelp" class="badge showSearchHelp"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a></li>
+*}
     </ul>
 
   {* Do we have any checkbox filters? *}
@@ -107,5 +119,7 @@
 {/if}
 
 </div>
+
+{/if} {* $dualResultsEnabled *}
 
 <!-- END of: PCI/searchbox.tpl -->

@@ -35,6 +35,10 @@ $(document).ready(function(){
             module = 'Summon';
         } else if ($(this).hasClass('mailWorldCat')) {
             module = 'WorldCat';
+        } else if ($(this).hasClass('mailMetaLib')) {
+            module = 'MetaLib';
+        } else if ($(this).hasClass('mailPCI')) {
+            module = 'PCI';
         }
         var $dialog = getLightbox(module, 'Email', id, null, this.title);
         return false;
@@ -82,7 +86,6 @@ $(document).ready(function(){
     setUpCheckRequest();
     setUpCheckCallSlipRequest();
     setUpCheckUBRequest();
-    setUpUBRequestForm();
 });
 
 function setUpCheckRequest() {

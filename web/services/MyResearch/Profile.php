@@ -62,6 +62,17 @@ class Profile extends MyResearch
             }
             $interface->assign('email', $user->email);
             
+            // Update due date reminder
+            if (isset($_POST['due_date_reminder'])) {
+                $interval = $_POST['due_date_reminder'];
+                if (is_numeric($interval) && $interval >= 0) {
+                    if ($user->changeDueDateReminder($_POST['due_date_reminder'])) {
+                        $interface->assign('userMsg', 'profile_update');
+                    }
+                }
+            }
+            $interface->assign('dueDateReminder', $user->due_date_reminder);
+            
             // Change Password
             if (isset($_POST['oldPassword']) && isset($_POST['newPassword']) && isset($_POST['newPassword2'])) {
                 if ($_POST['newPassword'] !== $_POST['newPassword2']) {

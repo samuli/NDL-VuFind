@@ -19,7 +19,7 @@
         {$favorite.title|escape}<br />
       {/foreach}
       <br />
-      <input class="submit" type="submit" name="submit" value="{translate text='Delete'}"/>
+      <input class="btn btn-small btn-danger input-small button" type="submit" name="submit" value="{translate text='Delete'}"/>
       {foreach from=$deleteIDS item=deleteID}
         <input type="hidden" name="ids[]" value="{$deleteID|escape}" />
       {/foreach}

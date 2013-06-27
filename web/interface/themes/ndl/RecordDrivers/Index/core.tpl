@@ -43,6 +43,7 @@
 
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
+    {* Commented out since these are normally displayed in the links section 
     {if !empty($coreNextTitles)}
     <tr valign="top" class="recordNextTitles">
       <th>{translate text='New Title'}: </th>
@@ -53,7 +54,9 @@
       </td>
     </tr>
     {/if}
+    *}
 
+    {* Commented out since these are normally displayed in the links section 
     {if !empty($corePrevTitles)}
     <tr valign="top" class="recordPrevTitles">
       <th>{translate text='Previous Title'}: </th>
@@ -64,6 +67,7 @@
       </td>
     </tr>
     {/if}
+    *}
 
     {if !empty($coreOtherLinks)}
     {assign var=prevOtherLinkHeading value=''}
@@ -215,6 +219,9 @@
           {if is_array($field)}
             {if !empty($field.name)}
               <a href="{$url}/Search/Results?lookfor=%22{$field.name|escape:"url"}%22&amp;type=Series">{$field.name|escape}</a>
+              {if !empty($field.additional)}
+                {$field.additional|escape}
+              {/if}
               {if !empty($field.number)}
                 {$field.number|escape}
               {/if}
@@ -335,7 +342,7 @@
       <td>
       {/if}
       {assign var=prevRecordLinkTitle value=$coreRecordLink.title}
-      <a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a><br/>
+      <a href="{$coreRecordLink.link|escape}">{if $coreRecordLink.value}{$coreRecordLink.value|escape}{else}{$coreRecordLink.issn}{/if}</a><br/>
     {/foreach}
       </td>
     </tr>

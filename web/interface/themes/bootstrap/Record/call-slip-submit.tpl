@@ -2,7 +2,9 @@
 
 {if $user->cat_username}
 
+  {if !$lightbox}
   <h2>{translate text='call_slip_place_text'}</h2>
+  {/if}
 
   {* This will always be an error as successes get redirected to MyResearch/Holds.tpl *}
   {if $results.status}
@@ -12,9 +14,14 @@
     <p class="error">{translate text=$results.sysMessage}</p>
   {/if}
 
+  {if $gatheredDetails}
   <div class="call-slip-form">
 
-    <form action="{$url|escape}/Record/{$id|escape}/CallSlip{$formURL|escape}#tabnav" method="post">
+    <form name="requestForm" action="{$url|escape}/Record/{$id|escape}/CallSlip{$formURL|escape}#tabnav" method="post">
+      {if $lightbox}
+      <input type="hidden" name="lightbox" value="1" />
+      <input type="hidden" name="placeRequest" value="1" />
+      {/if}
 
       <p>{translate text="call_slip_instructions"}</p>
 
@@ -32,15 +39,16 @@
       {if in_array("comments", $extraFields)}
       <div>
         <strong>{translate text="call_slip_comments"}:</strong><br/>
-        <input type="text" name="gatheredDetails[comment]" size="100" maxlength="100" value="{$gatheredDetails.comment|escape}"></input>
+        <input type="text" name="gatheredDetails[comment]" size="80" maxlength="100" value="{$gatheredDetails.comment|escape}"></input>
       </div>
       {/if}
 
       <input type="submit" name="placeRequest" value="{translate text="call_slip_submit_text'}"/>
-
+      
     </form>
 
   </div>
+  {/if}
 
 {literal}
 <script type="text/javascript">
@@ -59,6 +67,16 @@ $(document).ready(function() {
 
 {else}
   {include file="MyResearch/catalog-login.tpl"}
+{/if}
+
+{if $lightbox}
+{literal}
+<script type="text/javascript">
+$(document).ready(function(){
+    lightboxDocumentReady();
+});
+</script>
+{/literal}
 {/if}
 
 <!-- END of: Record/call-slip-submit.tpl -->

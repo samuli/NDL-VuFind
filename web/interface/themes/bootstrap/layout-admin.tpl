@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
-    <title>{translate text="VuFind Administration"} - {$pageTitle}</title>
+    <title>{translate text="VuFind Administration"} - {$shortTitle}</title>
 
     {css media="screen, projection" filename="../js/jquery-ui-1.8.23.custom/css/smoothness/jquery-ui-1.8.23.custom.css"}
 

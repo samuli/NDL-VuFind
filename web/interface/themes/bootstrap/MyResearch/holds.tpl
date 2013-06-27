@@ -25,7 +25,7 @@
   {if $cancelCallSlipResults.count > 0}
     <div class="holdsMessage"><p class="alert alert-info">{$cancelCallSlipResults.count|escape} {translate text="call_slip_cancel_success_items"}</p></div>
   {/if}
-    <span class="lead">{translate text='Holds and Recalls'}</span>
+    <span class="lead">{translate text='Holds'}</span>
   </div>
   {if $cancelForm && $recordList}
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
@@ -331,7 +331,7 @@
 
           {foreach from=$cancelCallSlipResults.items item=cancelResult key=itemId}
             {if $itemId == $resource.ils_details.item_id && $cancelResult.success == false}
-              <div class="error">{translate text=$cancelCallSlipResult.status}{if $cancelResult.sysMessage} : {translate text=$cancelResult.sysMessage|escape}{/if}</div>
+              <div class="error">{translate text=$cancelResult.status}{if $cancelResult.sysMessage} : {translate text=$cancelResult.sysMessage|escape}{/if}</div>
             {/if}
           {/foreach}
 
@@ -350,7 +350,7 @@
 
   </form>
   {else}
-    <div class="alert alert-info noContentMessage">{translate text='You do not have any holds or recalls placed'}.</div>
+    <div class="alert alert-info noContentMessage">{translate text='You do not have any requests placed'}.</div>
   {/if}
 {else}
   {include file="MyResearch/catalog-login.tpl"}

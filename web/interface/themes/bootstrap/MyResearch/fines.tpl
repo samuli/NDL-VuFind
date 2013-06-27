@@ -39,10 +39,10 @@
           <td>{$record.duedate|escape}{if $record.checkedOut} <span class="highlight">{translate text="fined_work_still_on_loan"}</span>{/if}</td>
           <td class="hidden-phone">{$record.fine|escape}</td>
           {* <td>{$record.amount/100.00|safe_money_format|escape}</td> *}
-          <td style="text-align:right;">{$record.balance/100.00|safe_money_format|escape}</td>
+          <td style="text-align:right;">{$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}</td>
         </tr>
       {/foreach}
-      <tr{if $sum > 0} class="error"{/if}><td colspan="5" class="fineBalance" style="text-align: right;">{translate text='Balance total'}: &nbsp;<span class="lead">{$sum/100.00|safe_money_format|escape}</span></td></tr>
+      <tr{if $sum > 0} class="error"{/if}><td colspan="5" class="fineBalance" style="text-align: right;">{translate text='Balance total'}: &nbsp;<span class="lead">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
       </table>
     {/if}
   {else}

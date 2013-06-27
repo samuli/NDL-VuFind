@@ -24,35 +24,36 @@
 
 
 {assign var=img_count value=$summImages|@count}
-<div class="coverDiv">
-  <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-    {if $img_count > 0}
-        <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
-    {else}
-        <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$path}/images/NoCover2.gif" /></a></div>
-    {/if}
+  <div class="coverDiv">
 
-{* Multiple images *}
-{if $img_count > 1}
-  <div class="imagelinks">
-{foreach from=$summImages item=desc name=imgLoop}
-  <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;">
-    {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
-  </a>
-{/foreach}
+    {* Multiple images *}
+    {if $img_count > 1}
+      <div class="imagelinks">
+    {foreach from=$summImages item=desc name=imgLoop}
+      <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;">
+        {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+      </a>
+    {/foreach}
+      </div>
+    {/if}
+    
+    {if is_array($summFormats)}
+      {assign var=mainFormat value=$summFormats.0} 
+      {assign var=displayFormat value=$summFormats|@end} 
+    {else}
+      {assign var=mainFormat value=$summFormats} 
+      {assign var=displayFormat value=$summFormats} 
+    {/if}
+    {* Cover image *}
+      <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
+    {if $summThumb}
+        <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
+    {else}
+        <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$path}/images/NoCover2.gif" alt="No image" /></a></div>
+    {/if}
   </div>
-{/if}
 </div>
-  
-  {if is_array($summFormats)}
-    {assign var=mainFormat value=$summFormats.0} 
-    {assign var=displayFormat value=$summFormats|@end} 
-  {else}
-    {assign var=mainFormat value=$summFormats} 
-    {assign var=displayFormat value=$summFormats} 
-  {/if}
-  <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
-</div>
+
 
 </td>
 <td style="width: 100%;">
@@ -62,7 +63,7 @@
     <div class="resultItemLine1">
       <a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}" class="title">{$summSubtitle|escape} {if !empty($summHighlightedTitle)}{$summHighlightedTitle|addEllipsis:$summTitle|highlight}{elseif !$summTitle}{translate text='Title not available'}{else}{$summTitle|truncate:180:"..."|escape} {if $summYearRange}({$summYearRange|escape}){/if}{/if}</a>
     </div>
-   
+    <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>   
     <div class="resultHierarchyLinks">
         <span class="hierarchyDesc">{translate text='Archive Repository:'} </span>{foreach from=$summInstitutions name=loop item=institution}{translate text=$institution prefix='source_'}{if !$smarty.foreach.loop.last}, {/if}{/foreach}
         {if !empty($summOrigination)}

@@ -826,18 +826,20 @@ class Voyager implements DriverInterface
     /**
      * Protected support method for getHolding.
      *
-     * @param array $data   Item Data
-     * @param array $patron Patron Data
+     * @param array  $data   Item Data
+     * @param string $id     The record id
+     * @param array  $patron Patron Data
      *
      * @return array Keyed data
      * @access protected
      */
-    protected function processHoldingData($data, $patron = false)
+    protected function processHoldingData($data, $id, $patron = false)
     {
         $holding = array();
 
         // Build Holdings Array
         $i = 0;
+        $purchaseHistory = $this->getPurchaseHistory($id);
         foreach ($data as $item) {
             foreach ($item as $number => $row) {
                 // Get availability/status info based on the array of status codes:
@@ -884,13 +886,20 @@ class Voyager implements DriverInterface
                     + (isset($row['RECALLS_PLACED']) ? $row['RECALLS_PLACED'] : 0);
 
                 $holding[$i] = $this->processHoldingRow($row);
+                $purchases = array();
+                foreach ($purchaseHistory as $historyItem) {
+                    if ($holding[$i]['mfhd_id'] == $historyItem['mfhd_id']) {
+                        $purchases[] = $historyItem;
+                    }
+                }
                 $holding[$i] += array(
                     'availability' => $availability['available'],
                     'duedate' => $dueDate,
                     'number' => $number,
                     'requests_placed' => $requests_placed,
                     'returnDate' => $returnDate,
-                    'use_unknown_message' => in_array('No information available', $row['STATUS_ARRAY'])
+                    'use_unknown_message' => in_array('No information available', $row['STATUS_ARRAY']),
+                    'purchase_history' => $purchases
                 );
 
                 // Parse Holding Record
@@ -956,7 +965,7 @@ class Voyager implements DriverInterface
 
             $data = array_merge($data, $this->getHoldingData($sqlRows));
         }
-        return $this->processHoldingData($data, $patron);
+        return $this->processHoldingData($data, $id, $patron);
     }
 
     /**
@@ -973,25 +982,33 @@ class Voyager implements DriverInterface
      */
     public function getPurchaseHistory($id)
     {
-        $sql = "select SERIAL_ISSUES.ENUMCHRON " .
+        if (isset($this->config['Catalog']['purchase_history']) && !$this->config['Catalog']['purchase_history']) {
+            return array();
+        }
+        
+        $sql = "select LINE_ITEM_COPY_STATUS.MFHD_ID, SERIAL_ISSUES.ENUMCHRON " .
                "from $this->dbName.SERIAL_ISSUES, $this->dbName.COMPONENT, ".
                "$this->dbName.ISSUES_RECEIVED, $this->dbName.SUBSCRIPTION, ".
-               "$this->dbName.LINE_ITEM " .
+               "$this->dbName.LINE_ITEM, $this->dbName.LINE_ITEM_COPY_STATUS " .
                "where SERIAL_ISSUES.COMPONENT_ID = COMPONENT.COMPONENT_ID " .
                "and ISSUES_RECEIVED.ISSUE_ID = SERIAL_ISSUES.ISSUE_ID " .
                "and ISSUES_RECEIVED.COMPONENT_ID = COMPONENT.COMPONENT_ID " .
                "and COMPONENT.SUBSCRIPTION_ID = SUBSCRIPTION.SUBSCRIPTION_ID " .
                "and SUBSCRIPTION.LINE_ITEM_ID = LINE_ITEM.LINE_ITEM_ID " .
+               "and LINE_ITEM_COPY_STATUS.LINE_ITEM_ID = LINE_ITEM.LINE_ITEM_ID " .
                "and SERIAL_ISSUES.RECEIVED > 0 " .
                "and ISSUES_RECEIVED.OPAC_SUPPRESSED = 1 " .
                "and LINE_ITEM.BIB_ID = :id " .
-               "order by SERIAL_ISSUES.ISSUE_ID DESC";
+               "order by LINE_ITEM_COPY_STATUS.MFHD_ID, SERIAL_ISSUES.ISSUE_ID DESC";
         try {
             $data = array();
             $sqlStmt = $this->db->prepare($sql);
             $sqlStmt->execute(array(':id' => $id));
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
-                $data[] = array('issue' => utf8_encode($row['ENUMCHRON']));
+                $data[] = array(
+                    'issue' => utf8_encode($row['ENUMCHRON']),
+                    'mfhd_id' => $row['MFHD_ID']
+                );
             }
             return $data;
         } catch (PDOException $e) {
