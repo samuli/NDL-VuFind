@@ -592,8 +592,7 @@ abstract class SearchObject_Base
 
         // Finally, if every advanced row was empty
         if (count($this->searchTerms) == 0) {
-            // Treat it as an empty basic search
-            $this->searchType = $this->basicSearchType;
+            // Treat it as an empty basic search but keep the type advanced
             $this->searchTerms[] = array(
                 'index'   => $this->defaultIndex,
                 'lookfor' => ''
