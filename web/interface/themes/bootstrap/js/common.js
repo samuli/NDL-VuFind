@@ -179,7 +179,11 @@ function initAutocomplete() {
 	var minLength = params.minLength > 0 ? params.minLength : 3;
 	ac = searchInput.autocomplete({
 		minLength: minLength,
-		select: function(event, ui) { 
+		select: function(e, ui) { 
+		    if (e.keyCode === 13 && searchInput.val() != ui.item.label) {
+               searchForm.submit();
+               return false;
+            }
 			searchInput.val('"' + ui.item.label + '"');
 			searchForm.submit(); 
 		},

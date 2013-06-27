@@ -161,25 +161,29 @@ function uniqueValues(array) {
 }
 
 function initAutocomplete() {
-	var searchInput = $('#searchForm_input.autocomplete');
-	if (searchInput.length === 0)
-		return;
-	var searchForm = $('#searchForm');
+    var searchInput = $('#searchForm_input.autocomplete');
+    if (searchInput.length === 0)
+        return;
+    var searchForm = $('#searchForm');
     var lastXhr = null;
-	var params = extractParams(searchInput.attr('class'));
-	var maxItems = params.maxItems > 0 ? params.maxItems : 10;
-	var minLength = params.minLength > 0 ? params.minLength : 3;
-	ac = searchInput.autocomplete({
-		minLength: minLength,
-		select: function(event, ui) { 
-			searchInput.val('"' + ui.item.label + '"');
-			searchForm.submit(); 
-		},
-	    source: function(request, response) {
-	        var type = params.type;
-	        if (!type && params.typeSelector) {
-	            type = $('#' + params.typeSelector).val();
-	        } 
+    var params = extractParams(searchInput.attr('class'));
+    var maxItems = params.maxItems > 0 ? params.maxItems : 10;
+    var minLength = params.minLength > 0 ? params.minLength : 3;
+    ac = searchInput.autocomplete({
+        minLength: minLength,
+        select: function(e, ui) {
+            if (e.keyCode === 13 && searchInput.val() != ui.item.label) {
+                searchForm.submit();
+                return false;
+            }
+            searchInput.val('"' + ui.item.label + '"');
+            searchForm.submit(); 
+        },
+        source: function(request, response) {
+            var type = params.type;
+            if (!type && params.typeSelector) {
+                type = $('#' + params.typeSelector).val();
+            } 
             // Abort previous access if one is defined
             if (lastXhr !== null && lastXhr.hasOwnProperty("abort")) {
                 lastXhr.abort();
@@ -187,30 +191,29 @@ function initAutocomplete() {
             var prefilterValue = $('select#searchForm_filter option:selected').val();
             lastXhr = $.ajax({
                 cache: false,
-	            url: path + '/AJAX/JSON_Autocomplete',
-	            data: {method:'getSuggestions',type:type,q:request.term,prefilter:prefilterValue},
-	            dataType:'json',
-	            success: function(json) {
-	                if (json.status == 'OK' && json.data.length > 0) {
-	                    response(json.data.slice(0, maxItems));
-	                } else {
-	                    ac.autocomplete('close');
-	                }
-	            }
-	            });
-	        }
-	    });
+                url: path + '/AJAX/JSON_Autocomplete',
+                data: {method:'getSuggestions',type:type,q:request.term,prefilter:prefilterValue},
+                dataType:'json',
+                success: function(json) {
+                    if (json.status == 'OK' && json.data.length > 0) {
+                        response(json.data.slice(0, maxItems));
+                    } else {
+                        ac.autocomplete('close');
+                    }
+                }
+                });
+            }
+        });
 
-	ac.data( "autocomplete" )._renderItem = function(ul, item) {
+    ac.data( "autocomplete" )._renderItem = function(ul, item) {
         var label = item.label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" 
-        				+ $.ui.autocomplete.escapeRegex(this.term) 
-        				+ ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
+                        + $.ui.autocomplete.escapeRegex(this.term) 
+                        + ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
         return $("<li></li>")
                 .data("item.autocomplete", item)
                 .append("<a>" + label + "</a>")
                 .appendTo(ul);
     };
-
 }
 
 function initClearable(){
