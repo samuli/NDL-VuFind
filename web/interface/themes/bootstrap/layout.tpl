@@ -108,11 +108,8 @@
 
     {* Load Bootstrap *}
     {js filename="bootstrap-2.3.1/js/bootstrap.js"}
-    {if $pageTemplate != 'advanced.tpl'}
-      {js filename="bootstrap-select-backup/bootstrap-select.js"}
-    {else}
-      {js filename="bootstrap-select/bootstrap-select.js"}
-    {/if}
+    {js filename="bootstrap-select/bootstrap-select.js"}
+    {js filename="bootstrap-select/bootstrap-select.js"}
     {js filename="bootstrap-select/selectpicker.js"} {* dropdown menu modification *}
     
     {* Load custom javascript functions *}
