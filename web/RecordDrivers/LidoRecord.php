@@ -77,9 +77,6 @@ class LidoRecord extends IndexRecord
         
         parent::getCoreMetadata();
         $interface->assign('coreImages', $this->getAllImages());
-        if (in_array('Image', $this->getFormats()) && $this->getSubtitle() == '') {
-            $interface->assign('coreSubtitle', $this->getDescription());
-        }
         $interface->assign('coreSubjectDates', $this->getSubjectDates());
         $interface->assign('coreSubjectPlaces', $this->getSubjectPlaces());
         $interface->assign('coreSubjectDetails', $this->getSubjectDetails());

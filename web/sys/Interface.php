@@ -534,7 +534,40 @@ class UInterface extends Smarty
         $resource_name = $this->getLocalOverride($resource_name, false);
         return parent::fetch($resource_name, $cache_id, $compile_id, $display);
     }
+    
+    /**
+     * fetch the template info. Gets timestamp, and source
+     * if get_source is true
+     *
+     * sets $source_content to the source of the template, and
+     * $resource_timestamp to its time stamp
+     * @param string $resource_name
+     * @param string $source_content
+     * @param integer $resource_timestamp
+     * @param boolean $get_source
+     * @param boolean $quiet
+     * @return boolean
+     */
+
+    function _fetch_resource_info(&$params)
+    {
+        // We need to take into account any change in symlink timestamp too, hence the following...
+        $retval = parent::_fetch_resource_info($params);
+        if ($retval && isset($params['resource_name'])) {
+            $_params = array('resource_name' => $params['resource_name']) ;
+            if (isset($params['resource_base_path']))
+                $_params['resource_base_path'] = $params['resource_base_path'];
+            else
+                $_params['resource_base_path'] = $this->template_dir;
+            if ($this->_parse_resource_name($_params) && is_link($_params['resource_name'])) {
+                $info = lstat($_params['resource_name']);
+                $params['resource_timestamp'] = max($info['mtime'], $params['resource_timestamp']);
+            }
+        }
+        return $retval;
+    }
     // @codingStandardsIgnoreEnd
+    
 }
 
 /**
