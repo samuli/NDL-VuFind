@@ -1,3 +1,3 @@
 $(document).ready(function() {
-  $('select').not('.selectpicker-exclude').selectpicker();
+  $('select').not('.chzn-select').selectpicker();
 });

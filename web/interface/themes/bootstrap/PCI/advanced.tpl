@@ -209,7 +209,7 @@
 <script type="text/javascript">
 {literal}
   $("[id^=add_search_link_]").click(function() {
-    $('select').selectpicker();
+    $('select').not('.chzn-select').selectpicker();
   });
 {/literal}
 </script>

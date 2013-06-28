@@ -192,7 +192,7 @@
     {foreach from=$facetList item="list" key="label"}
       <div class="span4 offset1 well-small facetsContainer">
         <label class="label displayBlock" for="limit_{$label|replace:' ':''|escape}">{translate text=$label}:</label><br />
-        <select class="chzn-select span12 selectpicker-exclude" data-placeholder="{translate text="No Preference"}" id="limit_{$label|replace:' ':''|escape}" name="orfilter[]" multiple="multiple" size="10">
+        <select class="chzn-select span12" data-placeholder="{translate text="No Preference"}" id="limit_{$label|replace:' ':''|escape}" name="orfilter[]" multiple="multiple" size="10">
         {foreach from=$list item="value" key="display"}
           <option value="{$value.filter|escape}"{if $value.selected} selected="selected"{/if}>{if $value.level > 0}&nbsp;&nbsp;&nbsp;{/if}{if $value.level > 1}&nbsp;&nbsp;&nbsp;{/if}{$value.translated|escape}</option>
         {/foreach}
@@ -381,7 +381,7 @@
 <script type="text/javascript">
 {literal}
   $(document).on('click', 'a[id^="add"]', function() {
-    $('select').selectpicker();
+    $('select').not('.chzn-select').selectpicker();
   });
 {/literal}
 </script>
