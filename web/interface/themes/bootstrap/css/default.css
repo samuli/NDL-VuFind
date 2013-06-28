@@ -945,7 +945,8 @@ ul.recordSet .addToFavLink a {
 }
 */
 ul.recordSet .addToFavLink a, .searchtools a.mailSearch, .accountFavorites h3,
-.add, .export, .feed, .feedbackRecord, .holdPlace, .infohelp, .mail {
+.add, .export, .feed, .feedbackRecord, .holdPlace, .callSlipPlace, .UBRequestPlace, 
+.infohelp, .mail {
 /*
     background-position: 5px center;
 */
@@ -2458,7 +2459,7 @@ h3.account {
     background-repeat: no-repeat;
     padding-left: 18px;
 }
-.holdPlace, .callSlipPlace {
+.holdPlace, .callSlipPlace, .UBRequestPlace {
     display: inline;
     background: url("../images/icons16-24px-02.png") no-repeat;
     background-position: -1292px -2214px;
