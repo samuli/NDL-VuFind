@@ -20,8 +20,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
-
     <title>{$pageTitle|truncate:64:"..."}</title>
     <link rel="shortcut icon" href="{path filename="images/favicon.ico"}" type="image/x-icon" />
     <link rel="apple-touch-icon-precomposed" href="{path filename="images/apple-touch-icon.png"}" />
