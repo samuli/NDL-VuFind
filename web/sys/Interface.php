@@ -317,7 +317,7 @@ class UInterface extends Smarty
         global $configArray;
         $siteTitle = '';
         if (isset($configArray['Site']['title']) && $configArray['Site']['title']) {
-            $fullTitle = $configArray['Site']['title'] . ' - ' . translate($title);
+            $fullTitle = translate($title) . ' - ' . $configArray['Site']['title'];
             $siteTitle = $configArray['Site']['title'];
         } else {
             $fullTitle = translate($title);
