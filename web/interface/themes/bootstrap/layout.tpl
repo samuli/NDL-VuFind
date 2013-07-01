@@ -45,6 +45,7 @@
 
     {* Load Bootstrap CSS framework *}
     {css media="screen, projection" filename="bootstrap-2.3.1/css/bootstrap.css"}
+    {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap.css" *}
     {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap-responsive.css" *}
     {css media="screen, projection" filename="bootstrap-select/bootstrap-select.min.css"}
     {* css media="screen, projection" filename="jquery.mobile-1.0a4.1.css" *}

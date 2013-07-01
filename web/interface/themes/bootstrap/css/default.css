@@ -945,7 +945,8 @@ ul.recordSet .addToFavLink a {
 }
 */
 ul.recordSet .addToFavLink a, .searchtools a.mailSearch, .accountFavorites h3,
-.add, .export, .feed, .feedbackRecord, .holdPlace, .infohelp, .mail {
+.add, .export, .feed, .feedbackRecord, .holdPlace, .callSlipPlace, .UBRequestPlace, 
+.infohelp, .mail {
 /*
     background-position: 5px center;
 */
@@ -1293,13 +1294,19 @@ table .result table td:first-child {
 
 
 /*** ADVANCED SEARCH ***/
+#advancedSearchWrapper > div {
+    margin-bottom: -5px;
+}
+#advancedSearchWrapper div > div > h4 {
+    margin-bottom: 0;
+}
 #advancedSearchWrapper .join {
     margin-bottom: 10px;
 }
 #advancedSearchWrapper .label {
     margin-top: 3px;
     margin-bottom: 0;
-    padding: 2px 4px 2px 5px
+    padding: 3px 4px 3px 5px
 }
 #advancedSearchWrapper input[type="text"] {
     font-size: 12px;
@@ -1317,21 +1324,36 @@ table .result table td:first-child {
     padding: 0px 6px;
     vertical-align: middle;
 }
-
+.advancedSearchHelp p, .module-PCI .advancedSearchHelp p {
+    margin-bottom: 15px;
+}
+[id^="group"].group {
+    padding-bottom: 16px;
+}
+.groupSearchHolder .bootstrap-select {
+    width: 170px;
+}
 .groupSearchHolder .bootstrap-select .btn, .groupSearchDetails .bootstrap-select .btn {
     vertical-align: text-top;
 }
 .groupSearchHolder ul .bootstrap-select .btn, .groupSearchHolder ul .selectpicker {
     width: 130px;
 }
-
+.searchGroupDetails .bootstrap-select {
+    width: 213px;
+}
+[id^="add_search_link_"] {
+    margin-left: 97px;
+}
 #publishDatefrom, #publishDateto {
     width: 30px;
 }
 .jslider-pointer {
     background: url("../images/jslider/jslider.alt.png") no-repeat scroll 0 0 transparent;
 }
-
+.facetsContainer + .facetsContainer {
+    float: right;
+}
 
 /* SelectionMap */
 
@@ -1354,6 +1376,7 @@ input#coordinates {
 }
 #selectionMapTools {
     background: rgba(255, 255, 255, 0.7);
+    margin-bottom: 27px;
 }
 
 /* Styles that apply to all jquery.geo maps */
@@ -2436,7 +2459,7 @@ h3.account {
     background-repeat: no-repeat;
     padding-left: 18px;
 }
-.holdPlace, .callSlipPlace {
+.holdPlace, .callSlipPlace, .UBRequestPlace {
     display: inline;
     background: url("../images/icons16-24px-02.png") no-repeat;
     background-position: -1292px -2214px;
@@ -2673,7 +2696,15 @@ a.panel_open {
     .pagination .icon-step-forward {
         background-position: -384px -73px;
     }
-
+    #selectionMapTools {
+        margin-bottom: 10px;
+    }
+    .advancedSearchHelp p {
+        margin-bottom: 20px;
+    }
+    [id^="add_search_link_"] {
+        margin: 0 0 5px 0;
+    }
 }
 @media only screen and (max-width: 639px) {
 
@@ -2704,6 +2735,17 @@ a.panel_open {
     }
     .footer ul li {
         font-size: 12px;
+    }
+    #advancedSearchWrapper #pubDateLegend.label {
+        left: 112px;
+        margin-top: 2px;
+        position: absolute;
+    }
+    .sliderWrapper {
+        margin-bottom: 20px;
+    }
+    .advRow .field {
+        margin: 4px 0 0 92px;
     }
 
 }
@@ -2843,11 +2885,23 @@ a.panel_open {
     .resultNoImage.formatother {
         background-position: -47px -1657px;
     }
+    #groupJoin div + div {
+        display: none;
+    }
+    .groupSearchDetails .join label {
+        margin    
+    }
+    .advRow .field {
+        margin-left: 0
+    }
+
 
 }
 @media only screen and (max-width: 359px) {
     .homeContent ul li .iconlabel a {
         font-size: 10.5px;
     }
-
+    #advancedSearchWrapper #pubDateLegend.label {
+        margin-top: 1px;
+    }
 }

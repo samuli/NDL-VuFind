@@ -1136,6 +1136,7 @@ div.dialogLoading {
     background:none;
     border:none;
     color:#555;
+    padding:0;
 }
 .highlight {
     background: none;

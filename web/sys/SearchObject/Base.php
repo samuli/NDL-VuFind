@@ -325,6 +325,16 @@ abstract class SearchObject_Base
                         $display = rtrim($display, '/');
                         $display = translate(array('prefix' => $translationPrefix, 'text' => $display));
                     }
+
+                    // Convert date display format from [YYYY TO YYYY] to YYYY - YYYY
+                    if ($field == 'main_date_str') {
+                        $display = preg_replace("/\[([0-9]+)( TO )([0-9]+)\]/", "$1 - $3", $display);
+                        
+                    // Prevent displaying of coordinates in the geographical filter
+                    } else if (strstr($field, 'location_geo')) {
+                        $display = translate('Geographical filter');
+                    }
+                    
                     $list[$facetLabel][] = array(
                         'value'      => $value,     // raw value for use with Solr
                         'display'    => $display,   // version to display to user

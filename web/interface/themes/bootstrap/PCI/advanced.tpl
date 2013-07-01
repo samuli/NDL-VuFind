@@ -6,8 +6,8 @@
     <div class="span8 well-small">
       <h4>{translate text='pci_advanced_search_description'}</h4>
     </div>
-    <div class="span4 alert alert-info sidegroup">
-      <p><span class="infohelp pull-left" style="height: 13px; padding-top: 0; padding-right: 0; background-position: -48px 2px;"></span><a href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a></p>
+    <div class="span4 sidegroup advancedSearchHelp">
+      <p class="alert alert-info"><span class="infohelp pull-left" style="height: 13px; padding-top: 0; padding-right: 0; background-position: -48px 2px;"></span><a href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a></p>
     </div>
   </div>
 {*
@@ -157,7 +157,7 @@
         </div>
 
         <div id="group<%=nextGroupNumber%>SearchHolder" class="text-left groupSearchHolder"></div>
-        <div class="span2 offset1 text-left addSearch"><a href="#" class="btn btn-mini btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
+        <div class="text-left addSearch"><a href="#" class="btn btn-mini btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
     </div>
 </script>
 {/literal}
@@ -209,7 +209,7 @@
 <script type="text/javascript">
 {literal}
   $("[id^=add_search_link_]").click(function() {
-    $('select').selectpicker();
+    $('select').not('.chzn-select').selectpicker();
   });
 {/literal}
 </script>
