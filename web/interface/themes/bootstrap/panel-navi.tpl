@@ -1,11 +1,16 @@
-{*
-<br /><a class="btn btn-info" href="{$url}"><i class="icon-search icon-white"></i><br />Haku</a>
-*}
-<a class="btn btn-info" href="{$path}/Search/Advanced" style="line-height: 15px;"><i class="icon-zoom-in icon-white"></i><br />{if $userLang=='fi'}Tark.{elseif $userLang=='sv'}Utö.{else}Adv.{/if} {translate text="Search"}</a>
-{if $pciEnabled}
-  <br /><a class="btn btn-info" href="{$path}/PCI/Advanced" style="line-height: 15px;"><i class="icon-zoom-in icon-white"></i><br />{if $userLang=='fi'}Tark.{elseif $userLang=='sv'}Utö.{else}Adv.{/if} {translate text="PCI Search"}</a>
+{if ($pageTemplate == 'advanced.tpl') || ($module == 'PCI') || ($module == 'MetaLib')}
+  <br /><a class="btn btn-info" href="{$url}" style="line-height: 15px;"><i class="icon-search icon-white"></i><br />{translate text="Local Search"}</a>
+{else}
+  <a class="btn btn-info" href="{$path}/Search/Advanced"><i class="icon-zoom-in icon-white"></i><br />{if $userLang=='fi'}Tark.{elseif $userLang=='sv'}Utö.{else}Adv.{/if} {translate text="Search"}</a>
 {/if}
-{if $metalibEnabled}
+{if $pciEnabled}
+  {if !$dualResultsEnabled && ($pageTemplate == "advanced.tpl")}
+    <br /><a class="btn btn-info" href="{$path}/PCI/Home"><i class="icon-search icon-white"></i><br />{translate text="PCI Search"}</a>
+  {elseif $pageTemplate != "advanced.tpl"}
+    <br /><a class="btn btn-info" href="{$path}/PCI/Advanced" style="line-height: 15px;"><i class="icon-zoom-in icon-white"></i><br />{if $userLang=='fi'}Tark.{elseif $userLang=='sv'}Utö.{else}Adv.{/if} {translate text="PCI Search"}</a>
+  {/if}
+{/if}
+{if $metalibEnabled && ($module != "MetaLib")}
   <br /><a class="btn btn-info" href="{$path}/MetaLib/Home">{image src=icon-nelli-white.png}{if $userLang=='fi'}monihaku{elseif $userLang=='sv'}metasökning{else}Metasearch{/if}</a>
 {/if}
 <br /><a class="btn btn-info" href="{$path}/Search/History"{if $userLang == 'en-gb'} style="line-height: 15px;"{/if}><i class="icon-list-alt icon-white"></i><br />{translate text="Search History"}</a>
