@@ -66,7 +66,7 @@ class Holdings extends Record
         $patron = UserAccount::isLoggedIn() ? UserAccount::catalogLogin() : false;
 
         $interface->setPageTitle(
-            translate('Holdings') . ': ' . $this->recordDriver->getBreadcrumb()
+            $this->recordDriver->getBreadcrumb()
         );
         // Only fetch holdings if we actually need them (not needed for the basic page part of holdings when using ajax record tabs)
         if (!isset($configArray['Site']['ajaxRecordTabs']) || !$configArray['Site']['ajaxRecordTabs'] || isset($_REQUEST['subPage'])) {

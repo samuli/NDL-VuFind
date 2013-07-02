@@ -58,7 +58,7 @@ h1, h2, h3 {
     float: right;
 }
 .well, .authorbox, .correction, .paginationTop {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .btn [class^="icon-"], .btn [class*=" icon-"] {
@@ -87,7 +87,7 @@ h1, h2, h3 {
 /* Breadscrumbs */
 
 #topBar {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding: 0;
 }
 #topBarHome {
@@ -279,6 +279,13 @@ a.clear_input:hover {
 .blurbLineWrapper {
     margin-bottom: 10px;
 }
+.blurbLine {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.45);
+}
+
 
 .advancedLink, .localLink, .metalibLink, .pciLink, .browseLink,
 .showSearchHelp, .account, .login, .logout {
@@ -292,7 +299,7 @@ a.clear_input:hover {
 a.badge.advancedLink, a.badge.localLink, a.badge.metalibLink,
 a.badge.pciLink, a.badge.browseLink, a.badge.showSearchHelp,
 a.badge.account, a.badge.login, a.badge.logout{
-    background-color: rgba(193,193,193,.75);
+    //background-color: rgba(0,0,0,.3);
     text-shadow: 1px 1px 1px rgba(0,0,0,.25);    
 }
 a.badge.advancedLink:hover, a.badge.localLink:hover, a.badge.metalibLink:hover,
@@ -301,6 +308,13 @@ a.badge.account:hover, a.badge.login:hover, a.badge.logout:hover{
     text-decoration: underline;
 }
 
+a.badge {
+    background-color: inherit;
+}
+
+.wellsmall, .authorbox {
+    padding: 5px 5px 5px 10px;
+}
 
 .homeContent ul li {
     font-size: 1em;
@@ -553,6 +567,7 @@ a.badge.account:hover, a.badge.login:hover, a.badge.logout:hover{
 }
 .authorbio {
     margin-bottom: 25px;
+    padding: 15px 0px 5px 10px;
 }
 #WikipediaDeferred .recordcover {
     margin-right: 10px;
@@ -840,6 +855,10 @@ ul.resultOptions.inline > li {
     margin-top: 5px;
     margin-bottom: 5px;
 }
+.pager li > a, .pager li > span {
+    padding: 2px 8px;
+}
+
 .pagination .disabled i, .paginationTop .disabled i,
 .paginationBottom .disabled i {
     opacity: .35;
@@ -860,7 +879,6 @@ ul.inline.listResultSelect > li {
     width: auto;
 }
 .listResultSelect label, .collectionSortSelector label {
-    font-size: 85%;
     vertical-align: baseline;
 }
 .listResultSelect form, .listResultSelect label,
@@ -868,6 +886,10 @@ ul.inline.listResultSelect > li {
 .listResultSelect .bootstrap-select.btn-group[class*="span"] {
     margin-bottom: 0;
 }
+.btn-group > .btn-mini {
+    font-size: 12px;
+}
+
 button#limit {
     max-width: 6em;
 }
@@ -1330,6 +1352,7 @@ table .result table td:first-child {
 }
 .advancedSearchHelp p, .module-PCI .advancedSearchHelp p {
     margin-bottom: 15px;
+    float: right;
 }
 [id^="group"].group {
     padding-bottom: 16px;
@@ -1753,7 +1776,7 @@ span.mapMarker  {
     border-width: 0 21px 21px;
     content: " ";
     height: 0;
-    left: 99px;
+    left: 299px;
     position: absolute;
     top: -21px;
     width: 0;
@@ -1769,7 +1792,7 @@ span.mapMarker  {
     border-width: 0 20px 20px;
     content: " ";
     height: 0;
-    left: 100px;
+    left: 300px;
     position: absolute;
     top: -20px;
     width: 0;
@@ -2908,4 +2931,10 @@ a.panel_open {
     #advancedSearchWrapper #pubDateLegend.label {
         margin-top: 1px;
     }
+}
+
+
+
+.editList {
+    padding-top: 5px;
 }

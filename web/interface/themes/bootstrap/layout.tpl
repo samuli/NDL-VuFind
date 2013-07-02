@@ -23,7 +23,7 @@
 
     {* For mobile devices *}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+    {include file="og-metatags.tpl"}
 
     <title>{$pageTitle|truncate:64:"..."}</title>
     <link rel="shortcut icon" href="{path filename="images/favicon.ico"}" type="image/x-icon" />

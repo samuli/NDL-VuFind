@@ -39,8 +39,8 @@
         <th class="text-left">{translate text="adv_search_select_all"}</th>
         <th colspan="1" class="span11 text-right">
           <div class="text-right pull-right floatright">
-            <input type="submit" class="btn btn-small btn-danger button holdCancel" name="cancelSelected" value="{translate text="hold_cancel_selected"}" onclick="return confirm('{translate text="confirm_hold_cancel_selected_text}')" />
-            <input type="submit" class="btn btn-small btn-danger button holdCancelAll" name="cancelAll" value="{translate text='hold_cancel_all'}" onclick="return confirm('{translate text="confirm_hold_cancel_all_text}')" />
+            <input type="submit" class="btn btn-small btn-info button holdCancel" name="cancelSelected" value="{translate text="hold_cancel_selected"}" onclick="return confirm('{translate text="confirm_hold_cancel_selected_text}')" />
+            <input type="submit" class="btn btn-small btn-info button holdCancelAll" name="cancelAll" value="{translate text='hold_cancel_all'}" onclick="return confirm('{translate text="confirm_hold_cancel_all_text}')" />
           </div>
         </th>
       </tr>

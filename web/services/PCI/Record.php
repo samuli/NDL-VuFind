@@ -77,7 +77,6 @@ class Record extends Base
         $interface->assign('record', $record);        
 
         $interface->setPageTitle(
-            translate('Description') . 
             (isset($record['title']) ? ': ' . $record['title'] : '')
         );
     }
