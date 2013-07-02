@@ -29,7 +29,7 @@
           </label>
         </div>
       </fieldset>
-      <input class="btn btn-info button" type="submit" name="submit" value="{translate text="Save"}"/>
+      <input class="btn btn-success button" type="submit" name="submit" value="{translate text="Save"}"/>
     </form>
   {/if}
 </div>
