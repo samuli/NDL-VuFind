@@ -22,8 +22,12 @@
 /*** GENERAL ***/
 
 body {
-    margin: 0 auto;
+    margin: 0 auto !important;
     max-width: 1024px;
+}
+
+body.fancybox-lock {
+    overflow-y: auto;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1162,7 +1166,7 @@ div.truncateField {
 
 .recordcover {
     margin: 0 auto;
-    max-width: 288px;
+    max-width: 232px;
     padding: 3px;
 }
 #thumbnail_link {
