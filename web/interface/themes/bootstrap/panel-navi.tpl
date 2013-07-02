@@ -6,7 +6,7 @@
   <br /><a class="btn btn-info" href="{$url}" style="line-height: 15px;"><i class="icon-search icon-white"></i><br />{translate text="Local Search"}</a>
 {/if}
 {if $pciEnabled}
-  {if $dualResultsEnabled} && ($pageTemplate == 'advanced.tpl')}
+  {if $dualResultsEnabled && ($pageTemplate == 'advanced.tpl')}
     <br /><a class="btn btn-info" href="{$path}/PCI/Advanced" style="line-height: 15px;"><i class="icon-zoom-in icon-white"></i><br />{if $userLang=='fi'}Tark.{elseif $userLang=='sv'}Utö.{else}Adv.{/if} {translate text="PCI Search"}</a>
   {elseif $pageTemplate == 'advanced.tpl' || $module != 'PCI'}
     <br /><a class="btn btn-info" href="{$path}/PCI/Home"><i class="icon-search icon-white"></i><br />{translate text="PCI Search"}</a>
