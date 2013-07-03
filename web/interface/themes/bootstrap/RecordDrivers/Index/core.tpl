@@ -90,6 +90,12 @@
           <a href="{$url}/Search/Results?lookfor={$field.name|escape:"url"}&amp;type=Author">{$field.name|escape}{if $field.role}, {$field.role|escape}{/if}</a>{if !$smarty.foreach.loop.last} ; {/if}
       {/foreach}
         </div>
+        {*  Statement of responsibility *}
+        {if $coreTitleStatement}
+        <a href="" class="info_more" id="titleStatement">{translate text='Additional information'}</a>
+        <div class="additionalInformation hide">{$coreTitleStatement|escape}</div>
+        {/if}
+        {* End statement of responsibility *}
       </td>
     </tr>
     {/if}
@@ -404,5 +410,17 @@
 </div>
 
 <div class="clearfix">&nbsp;</div>
-
+{literal}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#titleStatement').click(function(event) {
+                event.preventDefault();
+                var div = $(this).siblings('.additionalInformation');
+                $(this).toggleClass('expanded');
+                div.slideToggle(150);
+                return false;
+            });
+        });
+    </script>
+{/literal}
 <!-- END of: RecordDrivers/Index/core.tpl -->

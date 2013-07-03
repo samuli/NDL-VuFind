@@ -196,12 +196,12 @@ a.clear_input {
 
 /* Main: Search results */
 
-.openurl_more {
+.openurl_more, .info_more {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -365px -2371px; 
 }
 
-.openurl_more.expanded {
+.openurl_more.expanded, .info_more.expanded {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -365px -2321px;
 }

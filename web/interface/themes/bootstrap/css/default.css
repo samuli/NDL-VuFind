@@ -2448,6 +2448,23 @@ h3.account {
 .openurl_more img {
     margin: 0 0 1px 5px;
 }
+
+.info_more {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -365px -2371px; 
+}
+
+.info_more.expanded {
+    background-image: url(../images/icons16-24px-02.png);
+    background-position: -365px -2321px;
+}
+
+.info_more {
+    padding-left:14px;
+    padding-right:10px;
+    color:#00a2b5;
+}
+
 .checkedout {
     background-image: url("../images/silk/bullet_red.png");
     background-repeat: no-repeat;
