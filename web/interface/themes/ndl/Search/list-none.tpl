@@ -13,7 +13,7 @@
   {if $spellingSuggestions}
   <div class="correction">{translate text='nohit_spelling'}:<br/>
     {foreach from=$spellingSuggestions item=details key=term name=termLoop}
-      {$term|escape} &raquo; {foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a href="{$data.expand_url|escape}"><img src="{$path}/images/silk/expand.png" alt="{translate text='spell_expand_alt'}"/></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}{if !$smarty.foreach.termLoop.last}<br/>{/if}
+      {$term|escape} &raquo; {foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a class="expandSearch" href="{$data.expand_url|escape}"></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}{if !$smarty.foreach.termLoop.last}<br/>{/if}
     {/foreach}
   </div>
   {/if}
@@ -25,9 +25,11 @@
     {/foreach}
   {/if}
   {if $searchType == 'advanced'}
-      <p><a href="{$path}/Search/Advanced?edit={$searchId}"><strong>{translate text="Edit this Advanced Search"}</strong></a></p>
-      <p><a href="{$path}/Search/Advanced"><strong>{translate text="Start a new Advanced Search"}</strong></a></p>
-      <p><a href="{$path}/"><strong>{translate text="Start a new Basic Search"}</strong></a></p>
+      <div class="editSearch">
+        <p><a href="{$path}/Search/Advanced?edit={$searchId}"><strong>{translate text="Edit this Advanced Search"}</strong></a></p>
+        <p><a href="{$path}/Search/Advanced"><strong>{translate text="Start a new Advanced Search"}</strong></a></p>
+        <p><a href="{$path}/"><strong>{translate text="Start a new Basic Search"}</strong></a></p>
+      </div>
     </div>
   {/if}
 </div>

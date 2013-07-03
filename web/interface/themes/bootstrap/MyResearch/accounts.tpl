@@ -39,7 +39,7 @@
   {/if}
   <form method="get" action="" id="add_form">
     <input type="hidden" name="add" value="1" />
-    <input class="btn btn-info button" type="submit" value="{translate text='Add'}..." />
+    <input class="btn btn-success button" type="submit" value="{translate text='Add'}..." />
   </form>  
 </div>
 <div class="clear"></div>

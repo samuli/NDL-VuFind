@@ -2649,6 +2649,13 @@ ul.recordSet .addToFavLink a {
     width: 20px;
 }
 
+.no-hits .correction {
+    margin: 0 0 15px 0;
+}
+
+.editSearch {
+    clear:both;
+}
 /* Suggested Topics (hidden) */
 
 #suggestedTopics {

@@ -45,7 +45,7 @@ if(($feed['type'] == "carousel") ||
 
     {/php}
     
-    <ul id="NDLCarouselNavi"><li id="prev" /><li id="next" /></ul>
+    <ul id="NDLCarouselNavi"><li id="prev" class="carousel-control"/><li id="next" class="carousel-control right"/></ul>
 
     {literal}
 

@@ -16,7 +16,9 @@
 <div class="row-fluid hidden-phone">
   <div id="carouselContainer" class="span12 section">
     <div class="content">
+      <!-- START of: AJAX/loadRSS.tpl -->
       {include file="AJAX/loadRSS.tpl" rssId="carousel"}
+      <!-- END of: AJAX/loadRSS.tpl -->
     </div>
   </div>
 </div>
@@ -40,8 +42,10 @@
       </div>
       <div class="span5">
         {if $rssFeeds.news.active}
-        <h4>Uutisia</h4>
+          <h4>Uutisia</h4>
+          <!-- START of: AJAX/loadRSS.tpl -->
           {include file="AJAX/loadRSS.tpl" rssId="news"}
+          <!-- END of: AJAX/loadRSS.tpl -->
         {/if}
       </div>
     </div>
