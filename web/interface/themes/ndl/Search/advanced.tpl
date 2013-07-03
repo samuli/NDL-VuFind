@@ -100,7 +100,7 @@
           <input type="text" size="4" maxlength="4" class="yearbox" name="main_date_strto" id="publishDateto" value="{if $dateRangeLimit.1}{$dateRangeLimit.1|escape}{/if}" />
         <br/>
         <div class="{*span-10*}" id="sliderContainer">
-            <input id="publishDateSlider" class="dateSlider span-10" type="slider" name="sliderContainer" value="0000;2012" />
+            <input id="publishDateSlider" class="dateSlider span-10" type="slider" name="sliderContainer" value="{if $dateRangeLimit.0}{$dateRangeLimit.0|escape}{else}0000{/if};{if $dateRangeLimit.1}{$dateRangeLimit.1|escape}{else}2012{/if}" />
         </div>
     </div>
     {/if}
@@ -140,7 +140,18 @@
           {* help text, currently not included 
           <span class="small">Valitse kartalta tai syötä käsin muodossa: vasen yläkulma lat, vasen yläkulma lon, oikea alakulma lat, oikea alakulma lon</span>
           *}
-          <input id="coordinates" name="coordinates"></input>
+          {php}
+            $filters = $this->get_template_vars('searchFilters');
+            if (isset($filters['Other']) && is_array($filters['Other'])) {
+                foreach ($filters['Other'] as $key => $value) {
+                    if (is_array($value) && strstr($value['field'], 'location_geo')) {
+                        $value = substr(preg_replace('/^Intersects\(/', '', $value['value']), 0, -1);
+                        $this->assign('coordinates', $value);
+                    }
+                }
+            }
+          {/php}
+          <input id="coordinates" name="coordinates" value="{if $coordinates}{$coordinates}{/if}"></input>
           <div id="selectionMapHelpWrapper" class="grid_12">
             <div class="selectionMapHelpIcon"></div>
             <span id="selectionMapHelp">
@@ -175,6 +186,7 @@
           <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
     </div>
   </div>
+    <!--
   <div class="span-3 last">
     {if $searchFilters}
       <div class="filterList">
@@ -192,7 +204,7 @@
       </div>
     {/if}
     
-  </div>
+  </div>-->
 
   <div class="clear"></div>
 </form>

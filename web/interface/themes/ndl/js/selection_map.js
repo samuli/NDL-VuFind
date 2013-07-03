@@ -83,4 +83,47 @@ $(document).ready(function() {
       $("#selectionMap").geomap("option", "zoom", parseInt(sliderElement.slider("option", "value")));
     }
   });
+
+  // Get the shape from the input field
+  var mapCoords = $.trim($('#coordinates').val());
+  
+  if (mapCoords != '') {
+    var drawCoords = [];
+    var coordsArray = [];
+    var shapeType = 'Polygon'; // Default
+      
+    // Convert the value back into an array
+    if (mapCoords.indexOf('POLYGON') > -1) {
+      mapCoords = mapCoords.replace(/[A-Z\(\)]*/g, "");
+      coordsArray = mapCoords.split(',');
+      for (c in coordsArray) {
+        drawCoords.push([coordsArray[c].split(' ')[0], coordsArray[c].split(' ')[1]]);
+      } 
+      drawCoords = [drawCoords]; // Needs to be wrapped
+
+    } else {
+      coordsArray = mapCoords.split(' ');
+      console.log(coordsArray);
+          
+      // Rectangle
+      if (coordsArray.length > 2) {
+        drawCoords = [[
+          [coordsArray[0], coordsArray[1]],
+          [coordsArray[2], coordsArray[1]],
+          [coordsArray[2], coordsArray[3]],
+          [coordsArray[0], coordsArray[3]],
+        ]];
+      } else { 
+        drawCoords = [coordsArray[0], coordsArray[1]];
+        shapeType = 'Point';
+      }
+    }
+      
+    // Draw the shape
+    $("#selectionMap").geomap( "append", {
+      type: shapeType,
+      coordinates: drawCoords
+    })
+  }
 });
+ 
