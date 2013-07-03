@@ -2431,7 +2431,7 @@ ul.recordSet .addToFavLink a {
 .available {
     color: #00B270;
 }
-.openurl_more {
+.openurl_more, .info_more {
     padding-left:14px;
     padding-right:10px;
     color:#00a2b5;
