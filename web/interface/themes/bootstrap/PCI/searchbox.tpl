@@ -1,6 +1,6 @@
 <!-- START of: PCI/searchbox.tpl -->
 
-{if $dualResultsEnabled && !(($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl'))}
+{if $dualResultsEnabled && !($searchType == 'PCIAdvanced')}
   {include file='Search/searchbox.tpl'}
 {else}
 <div id="searchFormContainer" class="span12 searchform searchformPCI">

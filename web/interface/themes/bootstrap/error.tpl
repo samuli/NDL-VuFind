@@ -101,7 +101,7 @@
       </div>
 
       <div class="row-fluid">
-        <div class="well well-small header">
+        <div class="span12 backgroundContainer well well-small header">
           {include file="header.tpl"}
         </div>
       </div>
