@@ -9,15 +9,15 @@
     </div>
   {/if}
     <ul class="{if $position}pager pull-left{/if}" style="margin:0;">
-      <li class="paginationMove paginationFirst{if $position} offscreen{/if}{if empty($pageLinks.first)} disabled"><a href="" title="first page"></a>{else}">{$pageLinks.first}{/if}</li>
-      <li class="{if !$position}previous{/if}{if !$pageLinks.back} disabled{/if}">{if $pageLinks.back}{$pageLinks.back}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.prevImg}</span>{/if}</li>
+      <li class="paginationMove paginationFirst{if $position} offscreen{/if}{if empty($pageLinks.first)} disabled"><span><i class="icon-fast-backward"></i>{else}"><span class="paginationFirst">{$pageLinks.first}<span><i class="icon-fast-backward"></i></span></span>{/if}</li>
+      <li class="{if !$position}previous{/if}{if !$pageLinks.back} disabled{/if}"><span class="paginationBack">{if $pageLinks.back}{$pageLinks.back}<span><i class="icon-step-backward"></i></span></span>{else}<span class="pagingDisabled"><i class="icon-step-backward"></i><span class="offscreen">{$pageLinks.pagerOptions.prevImg}</span></span>{/if}</li>
       {if !$position}
         <li>{$pageLinks.pages}</li>
       {else}
         <li>&nbsp;<strong>{if ($module != 'MyResearch')}{translate text="Search Results"}:&nbsp;&nbsp;{/if}{$recordStart}-{$recordEnd}</strong>&nbsp;/&nbsp;{$recordCount}&nbsp;</li>
       {/if}
-      <li class="{if !$position}next{/if}{if !$pageLinks.next} disabled{/if}">{if $pageLinks.next}{$pageLinks.next}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.nextImg}</span>{/if}</li>
-      <li class="paginationMove paginationLast{if $position} offscreen{/if}{if empty($pageLinks.last)} disabled"><a href="" title="last page"></a>{else}">{$pageLinks.last}{/if}</li>
+      <li class="{if !$position}next{/if}{if !$pageLinks.next} disabled{/if}"><span class="paginationNext">{if $pageLinks.next}{$pageLinks.next}<span><i class="icon-step-forward"></i></span></span>{else}<span class="pagingDisabled"><i class="icon-step-forward"></i><span class="offscreen">{$pageLinks.pagerOptions.nextImg}</span></span>{/if}</li>
+      <li class="paginationMovepaginationLast{if $position} offscreen{/if}{if empty($pageLinks.last)} disabled"><span><i class="icon-fast-forward"></i>{else}"><span class="paginationLast">{$pageLinks.last}<span><i class="icon-fast-forward"></i></span></span>{/if}</li>
     </ul>
 
   {if ($module != 'MetaLib') && ($module != 'MyResearch') && ($position == 'Top')} 
@@ -78,16 +78,16 @@
       <strong>{$recordStart}-{$recordEnd}&nbsp;<strong>/</strong>&nbsp;{$recordCount}</strong>
     </div>
   {/if}
-    <ul class="{if $position}pager{if $module != 'MetaLib'} pull-left{/if}{/if}" style="margin:0;">
-      <li class="paginationMove paginationFirst{if $position} offscreen{/if}{if empty($pageLinks.first)} disabled"><a href="" title="first page"></a>{else}">{$pageLinks.first}{/if}</li>
-      <li class="{if !$position}previous{/if}{if !$pageLinks.back} disabled{/if}">{if $pageLinks.back}{$pageLinks.back}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.prevImg}</span>{/if}</li>
+    <ul class="{if $position}pager pull-left{/if}" style="margin:0;">
+      <li class="paginationMove paginationFirst{if $position} offscreen{/if}{if empty($pageLinks.first)} disabled"><span><i class="icon-fast-backward"></i>{else}"><span class="paginationFirst">{$pageLinks.first}<span><i class="icon-fast-backward"></i></span></span>{/if}</li>
+      <li class="{if !$position}previous{/if}{if !$pageLinks.back} disabled{/if}"><span class="paginationBack">{if $pageLinks.back}{$pageLinks.back}<span><i class="icon-step-backward"></i></span></span>{else}<span class="pagingDisabled"><i class="icon-step-backward"></i><span class="offscreen">{$pageLinks.pagerOptions.prevImg}</span></span>{/if}</li>
       {if !$position}
         <li>{$pageLinks.pages}</li>
       {else}
-        <li>&nbsp;<strong>{$recordStart}-{$recordEnd}</strong>&nbsp;/&nbsp;{$recordCount}&nbsp;</li>
+        <li>&nbsp;<strong>{if ($module != 'MyResearch')}{translate text="Search Results"}:&nbsp;&nbsp;{/if}{$recordStart}-{$recordEnd}</strong>&nbsp;/&nbsp;{$recordCount}&nbsp;</li>
       {/if}
-      <li class="{if !$position}next{/if}{if !$pageLinks.next} disabled{/if}">{if $pageLinks.next}{$pageLinks.next}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.nextImg}</span>{/if}</li>
-      <li class="paginationMove paginationLast{if $position} offscreen{/if}{if empty($pageLinks.last)} disabled"><a href="" title="last page"></a>{else}">{$pageLinks.last}{/if}</li>
+      <li class="{if !$position}next{/if}{if !$pageLinks.next} disabled{/if}"><span class="paginationNext">{if $pageLinks.next}{$pageLinks.next}<span><i class="icon-step-forward"></i></span></span>{else}<span class="pagingDisabled"><i class="icon-step-forward"></i><span class="offscreen">{$pageLinks.pagerOptions.nextImg}</span></span>{/if}</li>
+      <li class="paginationMovepaginationLast{if $position} offscreen{/if}{if empty($pageLinks.last)} disabled"><span><i class="icon-fast-forward"></i>{else}"><span class="paginationLast">{$pageLinks.last}<span><i class="icon-fast-forward"></i></span></span>{/if}</li>
     </ul>
 
   {if ($module != 'MetaLib') && ($position == 'Top')} 
@@ -139,14 +139,10 @@
   {* End smaller paging *}
 
 
-{* Let's change the proper icons for first and last page links *}
+{* Mobile layout does not fit all the pages *}
   <script>
   {literal}
     $(document).ready(function() {
-      $("a[title='first page']").empty().append('<i class="icon-fast-backward"></i>');
-      $(".paginationFirst + li :first-child").empty().append('<i class="icon-step-backward"></i>');
-      $(':first-child',$(".paginationLast").prev()).empty().append('<i class="icon-step-forward"></i>');
-      $("a[title='last page']").empty().append('<i class="icon-fast-forward"></i>');
       $("a[title='page 5']").addClass("hidden-phone");
     });
   {/literal}

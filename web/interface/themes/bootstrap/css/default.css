@@ -281,9 +281,9 @@ a.clear_input:hover {
 }
 .blurbLine {
     font-size: 22px;
-    font-weight: bold;
+    font-weight: 400;
     color: #ffffff;
-    text-shadow: 1px 1px 1px rgba(0,0,0,.45);
+    text-shadow: 1px 1px 2px rgba(0,0,0,.75);
 }
 
 
@@ -860,15 +860,30 @@ ul.resultOptions.inline > li {
 }
 
 .pagination .disabled i, .paginationTop .disabled i,
-.paginationBottom .disabled i {
+.paginationBottom .disabled i, .pagingDisabled i {
     opacity: .35;
+}
+.paginationFirst a, .paginationBack a, .paginationNext a, .paginationLast a {
+    display: block;
+    height: 20px;
+    padding: 2px 4px;
+    position: absolute;
+    text-indent: -9999px;
+    width: 15px;
+    z-index: 2;
+}
+.paginationFirst:hover, .paginationFirst:focus,
+.paginationBack:hover, .paginationBack:focus,
+.paginationNext:hover, .paginationNext:focus,
+.paginationLast:hover, .paginationLast:focus {
+    background-color: #f5f5f5;
 }
 .recordCount {
     float: left;
     margin: -.8em .5em .5em 1em;
 }
 .listResultSelect {
-    margin-top: 4px;
+    margin-top: 1px;
     margin-bottom: 0;
 }
 ul.inline.listResultSelect > li {
@@ -879,7 +894,7 @@ ul.inline.listResultSelect > li {
     width: auto;
 }
 .listResultSelect label, .collectionSortSelector label {
-    vertical-align: baseline;
+    vertical-align: text-top;
 }
 .listResultSelect form, .listResultSelect label,
 .listResultSelect .bootstrap-select.btn-group,
