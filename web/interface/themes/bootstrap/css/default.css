@@ -300,7 +300,7 @@ a.badge.advancedLink, a.badge.localLink, a.badge.metalibLink,
 a.badge.pciLink, a.badge.browseLink, a.badge.showSearchHelp,
 a.badge.account, a.badge.login, a.badge.logout{
     //background-color: rgba(0,0,0,.3);
-    text-shadow: 1px 1px 1px rgba(0,0,0,.25);    
+    text-shadow: 1px 1px 2px rgba(0,0,0,.5);    
 }
 a.badge.advancedLink:hover, a.badge.localLink:hover, a.badge.metalibLink:hover,
 a.badge.pciLink:hover, a.badge.browseLink:hover, a.badge.showSearchHelp:hover,
@@ -897,7 +897,8 @@ button#sort_options_1 {
     max-width: 15em;
 }
 
-.recordId .table th, .recordId .table td {
+#recordMetadata .table th, #recordMetadata .table td,
+.recordSet .table th, .recordSet .table td {
     border-top: none;
 } 
 
