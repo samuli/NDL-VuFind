@@ -84,7 +84,7 @@
       {if !$position}
         <li>{$pageLinks.pages}</li>
       {else}
-        <li>&nbsp;<strong>{if ($module != 'MyResearch')}{translate text="Search Results"}:&nbsp;&nbsp;{/if}{$recordStart}-{$recordEnd}</strong>&nbsp;/&nbsp;{$recordCount}&nbsp;</li>
+        <li>&nbsp;<strong>{if ($module != 'MyResearch')}<span class="pagingResultsTitle">{translate text="Search Results"}:&nbsp;&nbsp;</span>{/if}{$recordStart}-{$recordEnd}</strong>&nbsp;/&nbsp;{$recordCount}&nbsp;</li>
       {/if}
       <li class="{if !$position}next{/if}{if !$pageLinks.next} disabled{/if}"><span class="paginationNext">{if $pageLinks.next}{$pageLinks.next}<span><i class="icon-step-forward"></i></span></span>{else}<span class="pagingDisabled"><i class="icon-step-forward"></i><span class="offscreen">{$pageLinks.pagerOptions.nextImg}</span></span>{/if}</li>
       <li class="paginationMovepaginationLast{if $position} offscreen{/if}{if empty($pageLinks.last)} disabled"><span><i class="icon-fast-forward"></i>{else}"><span class="paginationLast">{$pageLinks.last}<span><i class="icon-fast-forward"></i></span></span>{/if}</li>
@@ -143,7 +143,11 @@
   <script>
   {literal}
     $(document).ready(function() {
-      $("a[title='page 5']").addClass("hidden-phone");
+        if ($("li.previous + li a:nth-child(4) + span").length) {
+            $("li.previous + li a:first-child").addClass("hidden-phone");
+        } else {
+            $("li.previous + li a:last").addClass("hidden-phone");
+        }
     });
   {/literal}
 </script>

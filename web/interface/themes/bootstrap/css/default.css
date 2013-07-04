@@ -902,7 +902,7 @@ ul.inline.listResultSelect > li {
     margin-bottom: 0;
 }
 .btn-group > .btn-mini {
-    font-size: 12px;
+    font-size: 11px;
 }
 
 button#limit {
@@ -2765,6 +2765,7 @@ a.panel_open {
     [id^="add_search_link_"] {
         margin: 0 0 5px 0;
     }
+
 }
 @media only screen and (max-width: 639px) {
 
@@ -2806,6 +2807,9 @@ a.panel_open {
     }
     .advRow .field {
         margin: 4px 0 0 92px;
+    }
+    .pagingResultsTitle {
+        display: none;
     }
 
 }
@@ -2955,7 +2959,6 @@ a.panel_open {
         margin-left: 0
     }
 
-
 }
 @media only screen and (max-width: 359px) {
     .homeContent ul li .iconlabel a {
@@ -2964,6 +2967,7 @@ a.panel_open {
     #advancedSearchWrapper #pubDateLegend.label {
         margin-top: 1px;
     }
+
 }
 
 
