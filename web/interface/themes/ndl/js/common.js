@@ -176,7 +176,7 @@ function initAutocomplete() {
                 searchForm.submit();
                 return false;
             }
-            searchInput.val('"' + ui.item.label + '"');
+            searchInput.val(ui.item.label);
             searchForm.submit(); 
         },
         source: function(request, response) {
