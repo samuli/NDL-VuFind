@@ -3635,6 +3635,9 @@ p.citationText {
     margin-right: 5px;
     margin-top: 3px;
 }
+#facetWrapper .chzn-results li.langSeparator {
+    border-top:1px solid #ddd;
+}
 .advSearchFooter.advSearchSection {
     padding:10px 0 40px;
 }
