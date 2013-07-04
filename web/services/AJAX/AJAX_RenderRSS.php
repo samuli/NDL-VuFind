@@ -83,6 +83,14 @@ class AJAX_RenderRSS extends Action
         $rssFeed['direction'] = isset($feed['direction']) ? $feed['direction'] : 'left';
         $rssFeed['height'] = (!isset($feed['height']) || $feed['height'] == 0) ? false : $feed['height'];
         $rssFeed['dateFormat'] = isset($feed['dateFormat']) ? $feed['dateFormat'] : "j.n.";
+        $rssFeed['images'] = isset($feed['images']) ? $feed['images'] : false;
+        $rssFeed['moreLink'] = isset($feed['moreLink']) ? $feed['moreLink'] : true;
+
+        if(strlen(trim($rssFeed['dateFormat'])) == 0) {
+            $rssFeed['date'] = false;
+        } else {
+            $rssFeed['date'] = true;
+        }
 
         /*
          * first we look for a feed for the language we are in; if that fails we look

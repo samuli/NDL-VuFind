@@ -206,16 +206,36 @@ if(($feed['type'] == "carousel") ||
     echo "<ul class=\"NDLNews\">";
     foreach ($feed['items'] as $item ) {
             $title = $item['title'];
+            if(array_key_exists('imageUrl', $item)) {
+	       	$imageUrl = $item['imageUrl'];
+            }
             $url   = $item['link'];
             $date  = $item['date'];
             echo "<li>";
-            if($date) {
+
+            /*
+             * render date if it is set in the feed item and is not disabled
+             * for the whole feed
+             */
+            if($feed['date'] && $date) {
                 echo "<span class=\"date\">$date</span> ";
             }
-            echo "<a href=\"$url\">$title</a></li>\n";
+
+            /*
+             * render image if an image exists for the item and if images
+             * are not disabled for the whole feed
+             */
+            echo "<a href=\"$url\">";
+            if($feed['images'] && $imageUrl) {
+                echo "<img src=\"$imageUrl\" alt=\"\" />";
+            }
+
+            echo "<span class=\"title\">$title</span></a></li>\n";
     }
     {/php}
-    <li><a href="{$rssFeed.channelURL}">{translate text="More"}&hellip;</a></li>
+    {if $rssFeed.moreLink}
+      <li class="moreLink"><a href="{$rssFeed.channelURL}">{translate text="More"}&hellip;</a></li>
+    {/if}
     </ul></div>
     {php}
 
