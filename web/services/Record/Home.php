@@ -48,11 +48,21 @@ class Home extends Action
      */
     public function launch()
     {
-        global $configArray;
+        global $configArray, $interface;
 
         // Execute Default Tab
         $defaultTab = isset($configArray['Site']['defaultRecordTab']) ?
             $configArray['Site']['defaultRecordTab'] : 'Holdings';
+            
+        // Get number of comments for this record
+        $resource = new Resource();
+        $resource->record_id = $_REQUEST['id'];
+        if ($resource->find(true)) {
+            $commentCount = $resource->getCommentCount();
+        } else {
+            $commentCount = 0;
+        }       
+        $interface->assign(compact('commentCount'));
 
         // We need to do a whole bunch of extra work to determine the default
         // tab if we have the hideHoldingsTabWhenEmpty setting turned on; only

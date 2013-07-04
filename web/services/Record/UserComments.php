@@ -85,6 +85,16 @@ class UserComments extends Record
             $result = $this->saveComment($user);
         }
 
+        // Get number of comments for this record
+        $resource = new Resource();
+        $resource->record_id = $_REQUEST['id'];
+        if ($resource->find(true)) {
+            $commentCount = $resource->getCommentCount();
+        } else {
+            $commentCount = 0;
+        }       
+        $interface->assign(compact('commentCount'));
+
         $interface->setPageTitle(
             translate('Comments') . ': ' . $this->recordDriver->getBreadcrumb()
         );
