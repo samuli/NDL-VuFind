@@ -308,6 +308,7 @@ function refreshCommentList(recordId) {
                     deleteRecordComment(recordId, commentId);
                     return false;
                 });
+                $('#commentCount').text($(commentUl + ' li:not(#emptyListItem)').length);
             }
         }
     });

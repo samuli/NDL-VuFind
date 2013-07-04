@@ -99,8 +99,9 @@ class FinnaSolrAutocomplete extends SolrAutocomplete implements AutocompleteInte
             }
         }
         foreach ($results as &$str) {
+            $str = str_replace(array(', ', ':', ';', '%', '*', '"', '=', '~'), ' ', $str);
+            $str = preg_replace('/\s+/', ' ', $str);
             $str = rtrim($str, ' .');
-            $str = str_replace(', ', ' ', $str);
         }
 
         return array_unique($results);

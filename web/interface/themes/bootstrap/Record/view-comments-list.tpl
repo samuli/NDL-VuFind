@@ -12,7 +12,7 @@
     </div>
   </li>
 {foreachelse}
-  <li>{translate text='Be the first to leave a comment'}!</li>
+  <li id="emptyListItem">{translate text='Be the first to leave a comment'}!</li>
 {/foreach}
 
 <!-- END of: Record/view-comments-list.tpl -->
