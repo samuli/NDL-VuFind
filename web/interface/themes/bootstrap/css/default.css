@@ -1615,7 +1615,7 @@ span.mapMarker  {
     border: 1px solid #e3e3e3;
     height: 300px;
     margin-bottom: 20px;
-    overflow: scroll;
+    overflow: auto;
 /*
     width: 215px;
 */
@@ -2810,6 +2810,12 @@ a.panel_open {
     }
     .pagingResultsTitle {
         display: none;
+    }
+    .listResultSelect {
+        margin-top: 2px;
+    }
+    .btn-group .btn-mini {
+        font-size: 10.5px;
     }
 
 }

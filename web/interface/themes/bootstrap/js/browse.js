@@ -38,6 +38,8 @@ function loadBrowseOptions(method, params) {
 }
 
 function highlightBrowseLink(link) {
-    $(link).parentsUntil('div.browseNav').children('li').removeClass('active');
-    $(link).parent('li').addClass('active');    
+//    $(link).parentsUntil('div.browseNav').children('li').removeClass('active');
+    $(link).parentsUntil('div.browseNav').find('a').removeClass('btn-info');
+//    $(link).parent('li').addClass('active');
+    $(link).addClass('btn-info');
 }

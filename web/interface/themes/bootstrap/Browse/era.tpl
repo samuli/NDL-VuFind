@@ -6,10 +6,10 @@
 
 <div class="span3 browseNav">
   <ul class="browse" id="list2">
-    <li><a href="{$url}/Browse/Era" class="btn btn-info loadAlphabet query_field:era_facet facet_field:era_facet include_numbers:true target:list3container">{translate text="By Alphabetical"}</a></li>
-    {if $topicEnabled}<li><a href="{$url}/Browse/Era" class="btn btn-info loadSubjects query_field:era_facet facet_field:topic_facet target:list3container">{translate text="By Topic"}</a></li>{/if}
-    {if $genreEnabled}<li><a href="{$url}/Browse/Era" class="btn btn-info loadSubjects query_field:era_facet facet_field:genre_facet target:list3container">{translate text="By Genre"}</a></li>{/if}
-    {if $regionEnabled}<li><a href="{$url}/Browse/Era" class="btn btn-info loadSubjects query_field:era_facet facet_field:geographic_facet target:list3container">{translate text="By Region"}</a></li>{/if}
+    <li><a href="{$url}/Browse/Era" class="btn loadAlphabet query_field:era_facet facet_field:era_facet include_numbers:true target:list3container">{translate text="By Alphabetical"}</a></li>
+    {if $topicEnabled}<li><a href="{$url}/Browse/Era" class="btn loadSubjects query_field:era_facet facet_field:topic_facet target:list3container">{translate text="By Topic"}</a></li>{/if}
+    {if $genreEnabled}<li><a href="{$url}/Browse/Era" class="btn loadSubjects query_field:era_facet facet_field:genre_facet target:list3container">{translate text="By Genre"}</a></li>{/if}
+    {if $regionEnabled}<li><a href="{$url}/Browse/Era" class="btn loadSubjects query_field:era_facet facet_field:geographic_facet target:list3container">{translate text="By Region"}</a></li>{/if}
   </ul>
 </div>
 

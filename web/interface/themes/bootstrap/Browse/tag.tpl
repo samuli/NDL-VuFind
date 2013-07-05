@@ -6,9 +6,9 @@
 
 <div class="span3 browseNav">
   <ul class="browse" id="list2">
-    <li {if $findby == "alphabetical"} class="active"{/if}><a class="btn btn-info" href="{$url}/Browse/Tag?findby=alphabetical">{translate text="By Alphabetical"}</a></li>
-    <li {if $findby == "popularity"} class="active"{/if}><a class="btn btn-info" href="{$url}/Browse/Tag?findby=popularity">{translate text="By Popularity"}</a></li>
-    <li {if $findby == "recent"} class="active"{/if}><a class="btn btn-info" href="{$url}/Browse/Tag?findby=recent">{translate text="By Recent"}</a></li>
+    <li {if $findby == "alphabetical"} class="active"{/if}><a class="btn" href="{$url}/Browse/Tag?findby=alphabetical">{translate text="By Alphabetical"}</a></li>
+    <li {if $findby == "popularity"} class="active"{/if}><a class="btn" href="{$url}/Browse/Tag?findby=popularity">{translate text="By Popularity"}</a></li>
+    <li {if $findby == "recent"} class="active"{/if}><a class="btn" href="{$url}/Browse/Tag?findby=recent">{translate text="By Recent"}</a></li>
   </ul>
 </div>
 
@@ -28,7 +28,7 @@
 <div class="span3 browseNav">
   <ul class="browse" id="list4">
   {foreach from=$tagList item=tag}
-    <li><a class="btn btn-info" href="{$url}/Search/Results?tag={$tag->tag|escape:"url"}">{$tag->tag|escape:"html"} ({$tag->cnt})</a></li>
+    <li><a class="btn" href="{$url}/Search/Results?tag={$tag->tag|escape:"url"}">{$tag->tag|escape:"html"} ({$tag->cnt})</a></li>
   {/foreach}
   </ul>
 </div>
