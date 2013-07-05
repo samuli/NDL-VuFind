@@ -1119,6 +1119,9 @@ div.dialogLoading {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
+.facet_loading {
+    background-position:10px top;
+}
 #dyntabnav_spinner {
     position:relative;
     left:50%;
@@ -4660,6 +4663,9 @@ ul.dynatree-container {
 }
 ul.dynatree-container a {
     margin: 0;
+}
+.dynatree-facet {
+    background-color: #F2F2F2;
 }
 span.dynatree-node {
     margin: 0 0 0 -6px;
