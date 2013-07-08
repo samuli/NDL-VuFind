@@ -60,9 +60,19 @@ h1, h2, h3 {
 .well, .authorbox, .correction, .paginationTop {
     margin-bottom: 10px;
 }
-
+.label, .badge {
+    padding:4px 8px;
+    font-size:12px;
+}
 .btn [class^="icon-"], .btn [class*=" icon-"] {
     vertical-align: text-bottom;
+}
+.btn-small {
+    font-size: 12px;
+    padding: 4px 10px 4px 6px;
+}
+.btn-mini {
+    font-size: 12px;
 }
 #searchForm_searchButton i, #advancedSearchButton i {
     vertical-align: text-top;
