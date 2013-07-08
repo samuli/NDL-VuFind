@@ -1785,8 +1785,10 @@ span.mapMarker  {
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
-    box-shadow: 0 3px 10px #CCCCCC;
+    box-shadow: 0 3px 15px #999999;
     display: none;
+    left: 50%;
+    margin-left: -250px;
     margin-top: 20px;
     padding: 20px;
     position: absolute;
@@ -1810,7 +1812,7 @@ span.mapMarker  {
     border-width: 0 21px 21px;
     content: " ";
     height: 0;
-    left: 299px;
+    left: 81px;
     position: absolute;
     top: -21px;
     width: 0;
@@ -1826,7 +1828,7 @@ span.mapMarker  {
     border-width: 0 20px 20px;
     content: " ";
     height: 0;
-    left: 300px;
+    left: 82px;
     position: absolute;
     top: -20px;
     width: 0;
