@@ -5,20 +5,6 @@
 {else}
 
 <div id="searchFormContainer" class="searchform searchformPCI last content">
-
-{if $searchType == 'PCIAdvanced'}
-  <a href="{$path}/PCI/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced PCI Search"}</a> |
-  <a href="{$path}/PCI/Advanced" class="small">{translate text="Start a new Advanced PCI Search"}</a> |
-  {if $dualResultsEnabled}
-  <a href="{$path}/" class="small">{translate text="Start a new Basic Search"}</a>
-  {else}
-  <a href="{$path}/PCI/Home" class="small">{translate text="Start a new Basic PCI Search"}</a>
-  {/if}
-  <br/>{translate text="Your search terms"} : "<span class="strong">{$lookfor|escape:"html"}
-  {foreach from=$orFilters item=values key=filter}
-    AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}"</span>
-
-{else}
   <form method="get" action="{$path}/PCI/Search" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
 	    <div class="searchFormWrapper">
@@ -91,8 +77,6 @@
   {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 
   </form>
-{/if}
-
 </div>
 
 {/if} {* $dualResultsEnabled *}
