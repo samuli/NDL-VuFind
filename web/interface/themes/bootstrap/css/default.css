@@ -933,6 +933,8 @@ ul.recordSet li.result:hover {
     background: url("../images/highlight_bg.png") repeat-x scroll 0 0 #F3F3F3;
 */
     border: 1px solid #e9e9e9;
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
     border-radius: 6px 6px 6px 6px;
     padding: 12px 0;
 }
@@ -1464,13 +1466,17 @@ span.mapMarker  {
     width: 0.8em;
     position: relative;
     text-align: left;
-    border-radius: 7px;
+    -moz-border-radius: 7px 7px 7px 7px;
+    -webkit-border-radius: 7px 7px 7px 7px;
+    border-radius: 7px 7px 7px 7px;
     background-color: #FFFFFF;
     color: #222222;
 }
 #zoomRange .ui-slider-handle {
     background: url("../images/zoom_handle.png") no-repeat scroll center center #4D4D4D;
     border: 0 none !important;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10xpx 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
     cursor: pointer;
     margin-bottom: -0.6em;
@@ -1766,6 +1772,8 @@ span.mapMarker  {
 .searchContextHelp {
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #999999;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
     border-radius: 10px 10px 10px 10px;
     box-shadow: 0 3px 10px #CCCCCC;
     display: none;
@@ -1940,12 +1948,16 @@ div#closeContextHelp:active {
     background-clip: padding-box;
     background-color: #FFFFFF;
     border: 1px solid rgba(0, 0, 0, 0.3);
+    -moz-border-radius: 6px 6px 6px 6px;
+    -webkit-border-radius: 6px 6px 6px 6px;
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 
 }
 .ui-dialog-titlebar {
     background-color: #f5f5f5;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
     border-radius: 6px 6px 0 0;
     border-bottom: 1px solid #e3e3e3;
     padding: 13px;
@@ -2626,6 +2638,8 @@ h3.account {
 }
 
 a.panel_open {
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0;
     left: 0;
     padding: 5px 0;
@@ -2643,6 +2657,8 @@ a.panel_open {
 .cb_slide_panel.panel_left a.close {
     background: url('../images/panelClose_orange.png') no-repeat rgba(180,180,180,0.7);
     border: none;
+    -moz-border-radius: 0 6px 6px 0;
+    -webkit-border-radius: 0 6px 6px 0;
     border-radius: 0 6px 6px 0;
     height: 32px;
     width: 16px;
@@ -2780,7 +2796,9 @@ a.panel_open {
         white-space: normal;
     }
     #searchForm_input {
-        border-radius: 15px;
+        -moz-border-radius: 15px 15px 15px 15px;
+        -webkit-border-radius: 15px 15px 15px 15px;
+        border-radius: 15px 15px 15px 15px;
         margin-bottom: .5em;
     }
     a.clear_input {
@@ -2788,6 +2806,8 @@ a.panel_open {
         margin-left: -3px;
     }
     #searchForm_searchButton {
+        -moz-border-radius: 4px 4px 4px 4px;
+        -webkit-border-radius: 4px 4px 4px 4px;
         border-radius: 4px 4px 4px 4px;
         width: 75px;
     }
