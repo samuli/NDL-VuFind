@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     if (!vufindString.fullHierarchy) {
         // Set Up Partial Hierarchy View Toggle
-        $('#hierarchyTree').parent().prepend('<a href="#" id="toggleTree" class="closed">' + vufindString.showTree + '</a>');
+        $('#hierarchyTree').parent().prepend('<a href="#" id="toggleTree" class="btn btn-mini closed">' + vufindString.showTree + '</a>');
         $('#toggleTree').click(function(e) {
             e.preventDefault();
             $(this).toggleClass("open");

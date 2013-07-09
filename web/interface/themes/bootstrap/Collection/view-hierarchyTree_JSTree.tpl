@@ -30,7 +30,7 @@
           <option value="AllFields">{translate text="All Fields"}</option>
           <option value="Title">{translate text="Title"}</option>
         </select>
-        <input id="search" class="btn btn-info btn-small" type="button" value="{translate text='Search'}" />
+        <input id="search" class="btn btn-info btn-mini" type="button" value="{translate text='Search'}" />
        </div>
     </div>
     <div id="treeSearchLimitReached" class="row-fluid">
@@ -58,7 +58,9 @@
     <h4>{translate text="Unknown Record"}</h4>
     <p class="alert alert-error">{translate text="We have been unable to locate record"} <strong>{$recordID}</strong></p>
   {else}
-      {include file=$collectionRecord}
+    <!-- START of: {$collectionRecord} -->
+    {include file=$collectionRecord}
+    <!-- END of: {$collectionRecord} -->
   {/if}
 {/if}
   </div>
