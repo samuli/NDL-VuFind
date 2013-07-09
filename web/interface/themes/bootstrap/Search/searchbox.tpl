@@ -2,8 +2,7 @@
 
 <div id="searchFormContainer" class="span12 searchform">
 
-{if $searchType == 'advanced'}
-{else}
+{if $searchType != 'advanced'}
   <script type="text/javascript">
   {literal}
       $(function(){
