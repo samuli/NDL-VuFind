@@ -49,6 +49,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   {if $lastsearch}
     <div class="backToResults grid_12">
         <a href="{$lastsearch|escape}#record{$id|escape:"url"}"><div class="button buttonFinna icon"><span class="icon">&laquo;</span></div>{translate text="Back to Search Results"}</a>
+     <!--{if isset($searchId) && isset($searchType) && $searchType == 'advanced'}
+        <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a>
+        <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a>
+     {/if}-->
     </div>
   {/if}
   {if $previousRecord || $nextRecord}

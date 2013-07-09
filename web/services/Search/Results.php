@@ -108,11 +108,7 @@ class Results extends Action
             translate('Search Results') .
             (empty($displayQuery) ? '' : ' - ' . htmlspecialchars($displayQuery))
         );
-        $interface->assign('sortList',   $searchObject->getSortList());
-        $interface->assign('viewList',   $searchObject->getViewList());
-        $interface->assign('rssLink',    $searchObject->getRSSUrl());
-        $interface->assign('limitList',  $searchObject->getLimitList());
-        
+
         // Process Search
         $result = $searchObject->processSearch(true, true);
         if (PEAR::isError($result)) {
@@ -130,6 +126,11 @@ class Results extends Action
         $interface->assign('searchType', $searchObject->getSearchType());
         // Will assign null for an advanced search
         $interface->assign('searchIndex', $searchObject->getSearchIndex());
+        
+        $interface->assign('sortList',   $searchObject->getSortList());
+        $interface->assign('viewList',   $searchObject->getViewList());
+        $interface->assign('rssLink',    $searchObject->getRSSUrl());
+        $interface->assign('limitList',  $searchObject->getLimitList());
 
         // We'll need recommendations no matter how many results we found:
         $interface->assign(
@@ -240,6 +241,9 @@ class Results extends Action
         $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
         // Save the display query too, so we can use it e.g. in the breadcrumbs
         $_SESSION['lastSearchDisplayQuery'] = $displayQuery;
+        // Also save the search ID and type so user can edit the advanced search
+        $_SESSION['lastSearchID'] =  $searchObject->getSearchID();
+        $_SESSION['searchType'] = $searchObject->getSearchType();
         
         // initialize the search result scroller for this search
         $scroller = new ResultScroller();
