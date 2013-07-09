@@ -37,7 +37,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         <div style="float:left;"><h4 class="lead">{translate text='Your Lists'}</h4></div>
         <div style="float:right;"><a href="{$url}/MyResearch/ListEdit" class="btn btn-small btn-success listAdd" id="listAdd" title="{translate text='Create a List'}"><i class="icon-plus-sign icon-white"></i>&nbsp;{translate text='Create a List'}</a></div>
       </div>
-      <div class="clearfix">&nbsp;</div>
+      <div class="clearfix"></div>
 
       {*
       <a href="{$url}/MyResearch/ListEdit" class="btn btn-small btn-success pull-right listAdd" id="listAdd" title="{translate text='Create a List'}"><i class="icon-plus-sign icon-white"></i>&nbsp;{translate text='Create a List'}</a-->
@@ -87,7 +87,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         </ul>
       </div>
     {/if}
-      <div class="clearfix">&nbsp;</div>
+      <div class="clearfix"></div>
     </div>
 
     <div class="span8 favoritesList last">
@@ -113,7 +113,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
         </form>
       </div>
-      <div class="clearfix">&nbsp;</div>
+      <div class="clearfix"></div>
 
     <form method="post" name="bulkActionForm" action="{$url}/Cart/Home">
       <input type="hidden" name="origin" value="Favorites" />

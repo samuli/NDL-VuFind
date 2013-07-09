@@ -188,7 +188,7 @@
     <div class="alert alert-info noContentMessage">{translate text='You do not have any holds placed'}.</div>
   {/if}
 
-  <div style="clearfix">&nbsp;</div>
+  <div style="clearfix"></div>
 
 {* Call Slips *}
   <span class="lead myResearchTitle">{translate text='Call Slips'}</span>

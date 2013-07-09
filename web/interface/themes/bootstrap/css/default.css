@@ -64,12 +64,23 @@ h1, h2, h3 {
     padding:4px 8px;
     font-size:12px;
 }
+.lead {
+    margin-bottom: 15px;
+}
 .btn [class^="icon-"], .btn [class*=" icon-"] {
     vertical-align: text-bottom;
 }
 .btn-small {
     font-size: 12px;
-    padding: 4px 10px 4px 6px;
+    padding: 2px 8px 2px 6px;
+}
+a.btn-small.btn-primary,
+a.btn-small.btn-info,
+a.btn-small.btn-success,
+a.btn-small.btn-warning,
+a.btn-small.btn-danger,
+a.btn-small.btn-inverse {
+    padding-top: 1px;
 }
 .btn-mini {
     font-size: 12px;
@@ -124,6 +135,9 @@ h1, h2, h3 {
 }
 
 /* Nav */
+.nav {
+    margin-bottom: 5px;
+}
 .nav-language ul, ul.breadcrumb {
     margin-bottom: 0;
 }
@@ -687,7 +701,6 @@ a.badge {
 #dyntabnav #ui-tabs-3 .citation {
     font-size: 85%;
 }
-
 #dyntabnav .nav-tabs > li > a, #tabnav .nav-tabs > li > a {
     padding-left: 29px;
 }
@@ -1309,14 +1322,19 @@ div.truncateField {
 
 
 /*** MYRESEARCH (Holds etc.) ***/
+#listAdd {
+    position: relative;
+    top: 6px;
+}
 .resultOptions form {
     margin: 0;
 }
-
 .selectAllCheckboxes, td.checkboxCell, td.coverImageCell {
     vertical-align: inherit;
 }
-
+.myResearch table {
+    margin-top: 5px;
+}
 .myResearch .resultNoImage p {
     display: inline;
     padding-top: 35px;
@@ -1583,7 +1601,7 @@ span.mapMarker  {
 #collectionInfo table tr:first-child td {
     border-top: none;
 }
-#hierarchyCollection .nav-tabs, #resultMain .nav {
+#hierarchyCollection .nav-tabs {
     margin-bottom: 0;
 }
 #hierarchyTreeHolder {
@@ -1610,6 +1628,9 @@ span.mapMarker  {
     float: right;
     padding: .4em .5em;
     width: 100%;
+}
+#dyntabnav #treeSearch {
+    margin-top: -5px;
 }
 #modalDialog #treeSearch {
     padding: 0;

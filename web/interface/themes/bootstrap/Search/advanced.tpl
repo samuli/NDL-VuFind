@@ -315,7 +315,7 @@
 <script type="text/html" id="new_group_tmpl">
     <div id="group<%=nextGroupNumber%>" class="text-right well well-small group group<%=nextGroupNumber % 2%>">
       <div class="pull-left">
-        <a href="#" class="btn btn-mini btn-danger delete" id="delete_link_<%=nextGroupNumber%>" onclick="deleteGroupJS(this); return false;"><i class="icon-remove icon-white delete"></i>&nbsp;<%=deleteSearchGroupString%></a>
+        <a href="#" class="btn btn-small btn-danger delete" id="delete_link_<%=nextGroupNumber%>" onclick="deleteGroupJS(this); return false;"><i class="icon-remove icon-white delete"></i>&nbsp;<%=deleteSearchGroupString%></a>
       </div>
         <div class="groupSearchDetails">
             <div class="join">
@@ -329,7 +329,7 @@
         </div>
 
         <div id="group<%=nextGroupNumber%>SearchHolder" class="text-left groupSearchHolder"></div>
-        <div class="text-left addSearch"><a href="#" class="btn btn-mini btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
+        <div class="text-left addSearch"><a href="#" class="btn btn-small btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
     </div>
 </script>
 {/literal}
