@@ -227,6 +227,19 @@ class Record extends Action
             'lastsearchdisplayquery',
             isset($_SESSION['lastSearchDisplayQuery']) ? $_SESSION['lastSearchDisplayQuery'] : false
         );
+        
+        $interface->assign(
+            'searchId',
+            isset($_SESSION['lastSearchID']) ? $_SESSION['lastSearchID'] : false
+        );
+        
+        $interface->assign(
+            'searchType',
+            isset($_SESSION['searchType']) ? $_SESSION['searchType'] : false
+        );
+        
+        unset($_SESSION['lastSearchID']);
+        unset($_SESSION['searchType']);
 
         // Send down text for inclusion in breadcrumbs
         $interface->assign('breadcrumbText', $this->recordDriver->getBreadcrumb());
@@ -257,7 +270,7 @@ class Record extends Action
         if (isset($configArray['EZproxy']['host'])) {
             $interface->assign('proxy', $configArray['EZproxy']['host']);
         }
-
+        
         // Get Messages
         $this->infoMsg = isset($_GET['infoMsg']) ? $_GET['infoMsg'] : false;
         $this->errorMsg = isset($_GET['errorMsg']) ? $_GET['errorMsg'] : false;

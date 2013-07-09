@@ -474,6 +474,11 @@ abstract class SearchObject_Base
             }
             break;
         }
+        
+        if (isset($_REQUEST['prefiltered'])) {
+            $params[] = "prefiltered=" . $_REQUEST['prefiltered'];
+        }
+        
         return $params;
     }
 
@@ -854,7 +859,7 @@ abstract class SearchObject_Base
         // Get the base URL and initialize the parameters attached to it:
         $url = $this->getBaseUrl();
         $params = $this->getSearchParams();
-
+        
         // Add any filters
         if (count($this->filterList) > 0) {
             foreach ($this->filterList as $field => $filter) {
