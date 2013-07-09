@@ -1828,6 +1828,7 @@ span.mapMarker  {
     margin-top: 20px;
     padding: 20px;
     position: absolute;
+    text-align: left;
     width: 460px;
     z-index: 9;
 }
@@ -2884,6 +2885,11 @@ a.panel_open {
     }
     .btn-group .btn-mini {
         font-size: 10.5px;
+    }
+    .searchContextHelp {
+        margin-left: -151px;
+        margin-top: -20px;
+        width: 260px;
     }
 
 }

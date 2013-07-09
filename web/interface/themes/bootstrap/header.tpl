@@ -9,7 +9,7 @@
 
 <div id="loginHeader" class="row-fluid{if !$showTopSearchBox} text-right{/if}"> <!-- 2.1 -->
 {if $pageTemplate != 'advanced.tpl'}
-  <a href="{$path}/Content/searchhelp" class="badge pull-left hidden-phone showSearchHelp" title="{translate text="Search Tips"}"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a>
+  <a href="{$path}/Content/searchhelp" class="badge pull-left showSearchHelp" title="{translate text="Search Tips"}"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a>
 {/if}
 {if !$hideLogin}
   {if $catalogAccounts}
