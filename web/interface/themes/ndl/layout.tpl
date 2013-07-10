@@ -181,18 +181,7 @@
    
     {* Viewport *}
 
-    <meta name="viewport" content=""/>
-    <script type="text/javascript">
-    {literal}
-    var w = window.screen.width;
-    if (w <= 1020 && w > 480) {
-        $('meta[name=viewport]').attr('content','width=731');
-    }
-    else if (w <= 480) {
-        $('meta[name=viewport]').attr('content','width=481');
-    }
-    {/literal}
-    </script>
+<meta name="viewport" content="width=device-width">
 
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
