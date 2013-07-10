@@ -273,7 +273,7 @@
 {* Step 3: Build the page *}
 <script type="text/javascript">
 //<![CDATA[
-  {if $searchDetails}
+  {if $searchDetails && isset($searchDetails.0.group)}
     {foreach from=$searchDetails item=searchGroup}
       {foreach from=$searchGroup.group item=search name=groupLoop}
         {if $smarty.foreach.groupLoop.iteration == 1}
