@@ -11,6 +11,7 @@ format_Book = format_Book
 format_Image = format_Image
 format_Journal = format_Journal
 format_Other = format_Other
+format_MusicalScore = format_MusicalScore
 format_Thesis = format_Thesis
 format_WorkOfArt = format_WorkOfArt
 format_Database = format_Database
@@ -125,6 +126,11 @@ filter[]='format:"0/Map/"'
 module=Search
 action=Results
 filter[]='format:"0/Other/"'
+
+[format_MusicalScore]
+module=Search
+action=Results
+filter[]='format:"0/MusicalScore/"'
 
 [format_PhysicalObject]
 module=Search

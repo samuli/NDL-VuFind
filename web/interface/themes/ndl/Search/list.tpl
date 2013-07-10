@@ -17,15 +17,21 @@
       {else}
       <h3 class="searchTerms grid_24">
       {/if}
-      {if $lookfor == ''}{translate text="history_empty_search"}
+      {if $isEmptySearch}
+        {if $searchType == 'advanced'}
+          {translate text="Advanced Search"}: {translate text="history_empty_search_adv"}
+        {else}
+          {translate text="history_empty_search"}
+        {/if}
       {else}
-        {if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}
-        {elseif $searchType == 'advanced'}{translate text="Your search terms"}: "{$lookfor|escape:"html"}
+        {if $searchType == 'basic'}
+           {translate text="Search"}: {$lookfor|escape:"html"}
+        {elseif $searchType == 'advanced'}
+           {translate text="Advanced Search"}: "{$lookfor|escape:"html"}"
         {elseif ($searchType == 'advanced') || ($searchType != 'advanced' && $orFilters)}
           {foreach from=$orFilters item=values key=filter}
           AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
         {/if}
-        {if $searchType == 'advanced'}"{/if}
       {/if}
       </h3>
       {if $spellingSuggestions}

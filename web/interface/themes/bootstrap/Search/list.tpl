@@ -37,10 +37,20 @@
         </div>
         {/if}
         
-      {if $lookfor == ''}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{translate text="history_empty_search"}</h4>
+      {if $isEmptySearch}
+        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>
+          {if $searchType == 'advanced'}
+            {translate text="Advanced Search"}: {translate text="history_empty_search_adv"}
+          {else}
+            {translate text="history_empty_search"}
+          {/if}</h4>
       {else}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}{else}{translate text="Your search terms"}: "{$lookfor|escape:"html"}"{/if}</h4>
+        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>
+          {if $searchType == 'basic'}
+            {translate text="Search"}: {$lookfor|escape:"html"}
+          {elseif $searchType == 'advanced'}
+            {translate text="Advanced Search"}: "{$lookfor|escape:"html"}"
+          {/if}</h4>
       {/if}
 
       {if $dualResultsEnabled && $searchType != 'advanced'}

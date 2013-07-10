@@ -122,6 +122,8 @@ class Results extends Action
         $interface->assign(
             'spellingSuggestions', $searchObject->getSpellingSuggestions()
         );
+
+        $interface->assign('isEmptySearch', $searchObject->isEmptySearch());
         $interface->assign('lookfor', $displayQuery);
         $interface->assign('searchType', $searchObject->getSearchType());
         // Will assign null for an advanced search

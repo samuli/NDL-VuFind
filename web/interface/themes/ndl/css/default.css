@@ -10,7 +10,20 @@ px      62   136   210   284   358   432   506   580   654   728    802    876  
 NOTE! Layout information is outdated.
 
 */
- 
+
+@-ms-viewport { 
+    width: device-width; 
+    initial-scale: 1;
+} 
+@-o-viewport { 
+    width: device-width; 
+    initial-scale: 1;
+} 
+@viewport {
+    width: device-width; 
+    initial-scale: 1;
+}
+
 body {
     margin:0;
     background: #4d4d4d;

@@ -20,6 +20,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    <meta name="viewport" content="width=device-width" /> 
     {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
     <title>{$pageTitle|truncate:64:"..."}</title>
@@ -177,23 +178,6 @@
     <!--[if lt IE 9]>
       {js filename="html5.js"}
     <![endif]-->
-
-   
-    {* Viewport *}
-
-    <meta name="viewport" content=""/>
-    <script type="text/javascript">
-    {literal}
-    var w = window.screen.width;
-    if (w <= 1020 && w > 480) {
-        $('meta[name=viewport]').attr('content','width=731');
-    }
-    else if (w <= 480) {
-        $('meta[name=viewport]').attr('content','width=481');
-    }
-    {/literal}
-    </script>
-
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
     {if !$showTopSearchBox}
