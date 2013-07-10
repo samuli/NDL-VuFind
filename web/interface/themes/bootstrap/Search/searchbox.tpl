@@ -42,13 +42,13 @@
     {if $prefilterList}
       <select id="searchForm_filter" class="selectpicker input-prepend text-left" name="prefilter">
       {foreach from=$prefilterList item=searchDesc key=searchVal}
-        {if ($searchVal != "--")}
-          <option value="{$searchVal|escape}"{if $searchVal == $activePrefilter || ($activePrefilter == null && $searchVal == "-") } selected="selected"{/if}{*if ($searchVal == "--")} data-divider="true"{/if *}>{$searchDesc|translate}</option>
-        {else}
+        {*if ($searchVal != "--")*}
+          <option value="{$searchVal|escape}"{if $searchVal == $activePrefilter || ($activePrefilter == null && $searchVal == "-") } selected="selected"{/if}{if ($searchVal == "--")} data-divider="true"{/if}>{$searchDesc|translate}</option>
+        {*else}
         <optgroup label="{translate text='Format'}">
-        {/if}
+        {/if*}
       {/foreach}
-        </optgroup>
+        {*</optgroup>*}
       </select>
     {/if}
       <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" title="{translate text="Find"}" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
