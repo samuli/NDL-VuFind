@@ -71,6 +71,17 @@
               <xsl:if test="./publishDate">
                 <dc:date><xsl:value-of select="./publishDate"/></dc:date>
               </xsl:if>
+              <description>
+                <xsl:if test="./description">
+                  <xsl:value-of select="./description"/>
+                  <xsl:text> </xsl:text>
+                </xsl:if>
+                <xsl:if test="./imageUrl">
+                  <xsl:text>&lt;img src="</xsl:text>
+                  <xsl:value-of select="./imageUrl"/>
+                  <xsl:text>" /&gt;</xsl:text>
+                </xsl:if>
+              </description>
             </item>
           </xsl:if>
         </xsl:for-each>
