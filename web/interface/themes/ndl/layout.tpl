@@ -180,8 +180,7 @@
 
    
     {* Viewport *}
-
-<meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
