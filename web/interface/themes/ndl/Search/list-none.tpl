@@ -1,7 +1,7 @@
 <!-- START of: Search/list-none.tpl -->
 
 <div class="{if $sidebarOnLeft}last {/if}no-hits">
-  <div class="contentHeader noResultHeader"><div class="content"><h1>{translate text='nohit_heading'}</h1></div></div>
+  <div class="contentHeader noResultHeader"><div class="content"><h1>{if $searchType == 'advanced'}{translate text='Advanced Search'}{else}{translate text='Search'}{/if}: {translate text='nohit_heading'}</h1></div></div>
   <div class="content">
   <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
   {if isset($activePrefilter)} <p><a id="searchWithoutPrefilter" href="#"><strong>{translate text='Search without the prefilter'} "{$prefilterList.$activePrefilter|translate}"</strong></a>{/if}

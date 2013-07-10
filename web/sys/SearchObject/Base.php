@@ -2360,6 +2360,29 @@ abstract class SearchObject_Base
     }
 
     /**
+     * Checks if the query used in the search (not the filters) is empty.
+     *
+     * @return boolean
+     * @access public
+     */
+    public function isEmptySearch()
+    {
+        // Advanced search?
+        if ($this->searchType == $this->advancedSearchType) {
+            foreach ($this->searchTerms as $group) {
+                foreach ($group['group'] as $item){
+                    if ($item['lookfor'] !== '') {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        // Default -- Basic search:
+        return $this->searchTerms[0]['lookfor'] === '';
+    }
+
+    /**
      * Turn the list of spelling suggestions into an array of urls
      *   for on-screen use to implement the suggestions.
      *
