@@ -173,12 +173,7 @@
     <script type="text/javascript">
     $(function(){
         var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
-        var viewport;
-        if (ww < 480) { 
-            viewport = 'width=' + ww + ';initial-scale=1.0';
-        } else {
-            viewport = 'width=device-width; initial-scale=1.0';
-        }
+        var viewport = 'width=' + ww + ';initial-scale=1.0';
         $('#viewport').attr('content', viewport);
     });
     </script>
