@@ -20,7 +20,6 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
-    <meta name="viewport" content="width=device-width" /> 
     {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
     <title>{$pageTitle|truncate:64:"..."}</title>
@@ -169,7 +168,21 @@
         });
     {/literal}
     </script>
-    
+    <meta id="viewport" name="viewport" content="" /> 
+    {literal}
+    <script type="text/javascript">
+    $(function(){
+        var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
+        var viewport;
+        if (ww < 480) { 
+            viewport = 'width=' + ww + ';initial-scale=1.0';
+        } else {
+            viewport = 'width=device-width; initial-scale=1.0';
+        }
+        $('#viewport').attr('content', viewport);
+    });
+    </script>
+    {/literal}
     {* **** IE fixes **** *}
     {* Load IE CSS1 background-repeat and background-position fix *}
     <!--[if lt IE 7]>{js filename="../css/iepngfix/iepngfix_tilebg.js"}<![endif]-->
