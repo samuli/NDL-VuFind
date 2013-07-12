@@ -22,7 +22,17 @@
     {if $addHeader}{$addHeader}{/if}
 
     {* For mobile devices *}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta id="viewport" name="viewport" content="" /> 
+    {literal}
+      <script type="text/javascript">
+      $(function(){
+          var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
+          var viewport = 'width=' + ww + ';initial-scale=1.0';
+          $('#viewport').attr('content', viewport);
+      });
+      </script>
+    {/literal}
+
     {include file="og-metatags.tpl"}
 
     <title>{$pageTitle|truncate:64:"..."}</title>
