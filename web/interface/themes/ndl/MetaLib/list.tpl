@@ -104,4 +104,12 @@
   
 <div class="clear"></div>
 
+{literal}
+  <script type="text/javascript">
+    $(function() {
+        initSearchInputListener();
+    });
+  </script>
+{/literal}
+
 <!-- END of: MetaLib/list.tpl -->
