@@ -26,9 +26,6 @@ $(document).ready(function(){
     // initialize clearable fields (embedded clear button)
     // Do this before setting focus
     initClearable();
-    
-    // put focus on the "mainFocus" element if it's visible
-    setMainFocus();
 
     // support "jump menu" dropdown boxes
     $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
@@ -225,19 +222,42 @@ function initClearable(){
     };
 }
 
-function setMainFocus(){
-    $('.mainFocus').each(function() { 
-        var elem = $(this);
+function initSearchInputListener() {
+    var searchInput = $('#searchForm_input');
+    var disableListener;
+    $(window).keypress(function(e) {
+        var letter = String.fromCharCode(e.which);
         
-        var docViewTop = $(window).scrollTop();
-        var docViewBottom = docViewTop + $(window).height();
+        if (e && (!$(e.target).is('input[type="text"], textarea') && searchInput.length > 0) 
+            && !$(".ui-dialog").is(":visible") && !disableListener) {
+            
+            // Move cursor to the end of the input
+            var tmpVal = searchInput.val();
+            searchInput.val(' ').focus().val(tmpVal + letter);
+            
+            // Scroll to the search form
+            $('html, body').animate({
+                scrollTop: searchInput.offset().top - 20
+            }, 150);
+           
+            e.preventDefault();
+       } 
+       disableListener = false;
 
-        var elemTop = elem.offset().top;
-        var elemBottom = elemTop + elem.height();        
-        if (docViewTop < elemTop && docViewBottom > elemBottom) {
-            elem.focus(); 
+    });
+    
+    // Disable on pressing a modifier key
+    $(window).keydown(function(e) {
+        if (e.metaKey || e.ctrlKey || e.altKey || e.which == 224 || e.which == 91) {
+            disableListener = true;
         }
     });
+    
+    // Re-enable on keyup
+    $(window).keyup(function(e) {
+        disableListener = false;
+    });
+    
 }
 
 function htmlEncode(value){

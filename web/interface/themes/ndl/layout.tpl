@@ -164,7 +164,6 @@
     {literal}
         $(function(){
             $('#searchFormLabel').labelOver('labelOver')
-            setMainFocus();
         });
     {/literal}
     </script>
@@ -173,7 +172,7 @@
     <script type="text/javascript">
     $(function(){
         var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
-        var viewport = 'width=' + ww + ';initial-scale=1.0';
+        var viewport = 'width=' + ww + ';initial-scale=1.0';  
         $('#viewport').attr('content', viewport);
     });
     </script>
@@ -266,6 +265,15 @@
     {include file="piwik.tpl"}
     {include file="AJAX/keepAlive.tpl"}
   </body>
+  {if !$showTopSearchBox}
+    {literal}
+      <script type="text/javascript">
+        $(function() {
+            initSearchInputListener();
+        });
+      </script>
+    {/literal}
+  {/if}
     
 </html>
 {/if}
