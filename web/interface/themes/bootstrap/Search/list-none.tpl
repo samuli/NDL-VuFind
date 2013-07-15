@@ -18,6 +18,7 @@
   {/if}
 
   {* Recommendations *}
+{* Top Recommendations, commented out for now
   {if $topRecommendations}
     {foreach from=$topRecommendations item="recommendations"}
       {if !$visFacets} {* Do not want to show TopPubDateVis *}
@@ -25,7 +26,7 @@
       {/if}
     {/foreach}
   {/if}
-
+*}
   {if $noResultsRecommendations}
     {foreach from=$noResultsRecommendations item="recommendations" key='key' name="noResults"}
       {include file=$recommendations}
