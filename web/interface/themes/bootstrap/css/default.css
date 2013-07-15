@@ -1681,6 +1681,42 @@ span.mapMarker  {
 #modalDialog #toggleTree {
     margin-left: 0;
 }
+.browseAlphabetSelectorItem {
+    float: left;
+    margin: 5px;
+}
+.browseJumpTo {
+    float: right;
+    margin: 0 5px 10px;
+}
+.browseForm, .browseForm input {
+    margin: 0;
+}
+.collectionBrowseResult {
+    border-top: 1px solid #dddddd;
+}
+.alphaBrowsePageLinks {
+    font-weight: bold;
+    margin: 1em;
+}
+.alphaBrowsePrevLink {
+    float: left;
+}
+.alphaBrowseNextLink {
+    float: right;
+}
+.collectionBrowseHeading {
+    float: left;
+    padding: 0.5em;
+    width: 80%;
+}
+.collectionBrowseCount {
+    float: right;
+    padding: 0.5em;
+}
+.collectionBrowseEntry.listBrowse.alt {
+    background-color: #f5f5f5;
+}
 
 /*** BROWSE NAVIGATION ***/
 .browseNav {
