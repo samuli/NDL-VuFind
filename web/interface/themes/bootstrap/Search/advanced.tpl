@@ -216,6 +216,18 @@
 
         <div class="span7">
           <label class="label displayBlock" for="coordinates">{translate text='Coordinates:'}</label>
+          {php}
+            // NB: The following seems to be working ok, but probably needs rethinking
+            $filters = $this->get_template_vars('searchFilters');
+            if (isset($filters['Other']) && is_array($filters['Other'])) {
+                foreach ($filters['Other'] as $key => $value) {
+                    if (is_array($value) && strstr($value['field'], 'location_geo')) {
+                        $value = substr(preg_replace('/^Intersects\(/', '', $value['value']), 0, -1);
+                        $this->assign('coordinates', $value);
+                    }
+                }
+            }
+          {/php}
           <input id="coordinates" name="coordinates" />
         <div id="selectionMapTools">
           <label for="mapPan" class="radio inline">
@@ -374,6 +386,26 @@
   {/if}
   // show the add group link
   $("#addGroupLink").removeClass("offscreen");
+  {if $languagesSorted}
+    {literal}
+    $(function() {
+      // Add a separator to the language facet list
+      printSeparator();
+
+      // Update separator position on select
+      $('#limit_Language').change(function() {
+          printSeparator();
+      });
+
+      function printSeparator() {
+          var lastOrdered = {/literal}{$languagesSorted}{literal} - 1;
+          $('.chzn-results li').removeClass('langSeparator');
+          $('#limit_Language_chzn_o_'+lastOrdered).nextAll('.active-result')
+            .first().addClass('langSeparator');
+      }
+    });
+    {/literal}
+  {/if}
 //]]>
 </script>
 </div>

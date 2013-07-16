@@ -1430,6 +1430,16 @@ table .result table td:first-child {
 .facetsContainer + .facetsContainer {
     float: right;
 }
+.chzn-container-multi .chzn-choices {
+    padding: 3px !important;
+}
+.chzn-container .chzn-drop {
+    top: 29px !important;
+}
+.chzn-container .chzn-results li.langSeparator {
+    border-top: 1px solid #dddddd;
+    margin-top: 5px;
+}
 
 /* SelectionMap */
 
