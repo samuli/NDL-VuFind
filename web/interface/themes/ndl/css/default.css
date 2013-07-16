@@ -2766,6 +2766,9 @@ ul.recordSet .addToFavLink a {
     color:#888888;
     text-decoration:none;
 }
+.placeholder { 
+    color: #aaa; 
+}
 .resultOptionLimit {
     float:right;
 }
