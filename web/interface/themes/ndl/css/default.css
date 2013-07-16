@@ -2070,28 +2070,34 @@ ul.filters li {
     clear: both;
     display: block;
     margin: 0;
-    padding: 0 0 12px;
+    padding: 0 0 4px;
 }
 
-ul.filters img {
-    vertical-align: -4px;
-    margin-left: -20px;
-    margin-right: 3px;
-}
 ul.filters a {
+    text-decoration:none;
+    display:block;
+    border-radius:10px;
+    padding: 3px 3px 3px 7px;
+    color:#333;
+}
+
+ul.filters a:hover {
+    background:#e1e1e1;
+}
+
+ul.filters span.filterText {
     display: block;
-    position: absolute;
-    color: white;
-    text-indent:-9999px;
-    text-decoration: none;
+    margin-left: 0;
 }
-ul.filters span {
-    margin-left:30px;
-    margin-top:3px;
-    display:inline-block;
-    word-wrap: break-word;
-    max-width: 170px;
+
+ul.filters span.roundButton {
+    margin-top: -3px;
 }
+
+ul.filters span.roundButton {
+    float:right;
+}
+
 #sidebarRecommend div.sidegroup {
     margin-top: 1.2em;
 }
