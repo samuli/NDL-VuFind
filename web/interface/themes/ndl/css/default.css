@@ -2077,7 +2077,7 @@ ul.filters a {
     text-decoration:none;
     display:block;
     border-radius:10px;
-    padding: 3px 3px 3px 0px;
+    padding: 3px 3px 3px 7px;
     color:#333;
 }
 
@@ -2087,24 +2087,15 @@ ul.filters a:hover {
 
 ul.filters span.filterText {
     display: block;
-    margin-left: 30px;
+    margin-left: 0;
 }
 
 ul.filters span.roundButton {
     margin-top: -3px;
 }
 
-
-.sidebarOnLeft ul.filters span.filterText {
-    margin-left:0;
-}
-
-.sidebarOnLeft ul.filters span.roundButton {
+ul.filters span.roundButton {
     float:right;
-}
-
-.sidebarOnLeft ul.filters a {
-    padding-left:7px;
 }
 
 #sidebarRecommend div.sidegroup {
