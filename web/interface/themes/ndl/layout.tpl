@@ -178,7 +178,7 @@
                 zoom = zoom.toFixed(2);
 
             }
-            var viewport = 'width=device-width;initial-scale='+zoom+', maximum-scale=1.0';  
+            var viewport = 'width=device-width, initial-scale='+zoom+', maximum-scale=1.0';  
             $('#viewport').attr('content', viewport);
         });
         </script>
