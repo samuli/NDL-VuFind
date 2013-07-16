@@ -13,6 +13,18 @@ div.breadcrumbinner a, div.breadcrumbinner em, div.breadcrumbinner span, div.bre
     font-weight: bold;
     font-style: normal;
 }
+/* comment out home icon
+
+div.breadcrumbinner > a:nth-of-type(1) {
+	text-indent: -100000px;
+	width:20px;
+	background-image: url("../images/icons16-24px-02.png");
+    background-position: -681px -331px;
+}
+div.breadcrumbinner > a:nth-of-type(1):hover {
+    background-position: -820px -331px;
+} */
+	
 
 div.breadcrumbs {
     overflow: hidden;

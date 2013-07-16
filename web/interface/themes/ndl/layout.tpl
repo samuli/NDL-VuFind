@@ -225,9 +225,9 @@
       </div>
       -->
 
-      <div id="nav" class="nav">
+      <div id="nav" class="nav" role="navigation">
         <div class="content">
-          <ul id="headerMenu">
+          <ul id="headerMenu" role="menubar">
             {include file="header-menu.$userLang.tpl"}
           </ul>
           <div class="lang">

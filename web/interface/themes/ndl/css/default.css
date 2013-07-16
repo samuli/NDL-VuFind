@@ -630,8 +630,11 @@ div.sidegroup {
     padding: 8px 8px 7px 10px;
 }
 
+.menuHome {
+	height:20px;
+}
 
-/* hide home text */
+/* hide home page text */
 .menuHome a span {
     text-indent: -1000000px;
 }

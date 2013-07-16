@@ -21,7 +21,7 @@
     <div class="grid_24">
       <div class="breadcrumbs">
         <div class="breadcrumbinner">
-          <a href="{$url}">{translate text="Home"}</a><span></span>
+          <a href="{$url}">{translate text="Home page"}</a><span></span>
           {if $module}{include file="$module/breadcrumbs.tpl"}{/if}
         </div>
       </div>
