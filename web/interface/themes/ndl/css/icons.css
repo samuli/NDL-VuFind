@@ -45,6 +45,10 @@
     background-image: url(../images/icons16-24px-03.png);
     background-position: -995px -127px;
 }
+.deleteButtonSmall {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -992px -163px;
+}
 .dropdown dt a:after {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -673px -2324px;

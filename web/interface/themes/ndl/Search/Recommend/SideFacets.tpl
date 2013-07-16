@@ -18,9 +18,9 @@
       {foreach from=$filters item=filter}
         {assign var=facetPrefix value=$filter.display|substr:0:2}
         {if $facetPrefix == '0/' || $facetPrefix == '1/' || $facetPrefix == '2/' || $facetPrefix == '3/'}
-        <li><a class="roundButton deleteButton" href="{$filter.removalUrl|escape}">X</a><span title="{$filter.display|escape}">{translate text=$field}: {$filter.display|substr:2|escape}</span></li>
+        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText" title="{$filter.display|escape}">{translate text=$field}: {$filter.display|substr:2|escape}</span></a></li>
         {else} 
-        <li><a class="roundButton deleteButton" href="{$filter.removalUrl|escape}">X</a><span>{translate text=$field}: {$filter.display|escape}</span></li>
+        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$filter.display|escape}</span></a></li>
         {/if}
       {/foreach}
     {/foreach}
