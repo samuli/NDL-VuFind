@@ -167,7 +167,7 @@
         });
     {/literal}
     </script>
-    <meta id="viewport" name="viewport" content="initial-scale=1.0;width:device-width" /> 
+    <meta id="viewport" name="viewport" content="initial-scale=1.0, width=device-width, maximum-scale=1.0" /> 
 
     {* **** IE fixes **** *}
     {* Load IE CSS1 background-repeat and background-position fix *}
