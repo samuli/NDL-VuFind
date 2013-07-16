@@ -33,19 +33,19 @@
 
 <div class="browseJumpTo">
 <form method="GET" action="{$path}/Collection/Home" class="browseForm">
-  <input type="submit" value="{translate text='Jump to'}" />
+  <input class="btn btn-info" type="submit" value="{translate text='Jump to'}" />
   <input type="text" name="from" value="{$from|escape:"html"}" />
 </form>
 </div>
 
-<div class="clear">&nbsp;</div>
+<div class="clearfix"></div>
 
-<h2>{translate text="Collection Browse"}</h2>
+<h3>{translate text="Collection Browse"}</h3>
 
 <div class="collectionBrowseResult">
   {$smarty.capture.pagelinks}
   	{include file=$browseView}
-  <div class="clearer"></div>
+  <div class="clearfix"></div>
   {$smarty.capture.pagelinks}
 </div>
 
