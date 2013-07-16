@@ -38,7 +38,7 @@
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="form-search text-center">
 {if $pageTemplate != 'advanced.tpl'}
     <div {if !$showTopSearchBox}id="searchboxHome" {/if}class="row-fluid input-append searchbox">
-      <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="search-query {if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" placeholder='{translate text="Find"}&hellip;' onKeyPress="return submitenter(this,event)" />
+      <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="search-query {if $autocomplete} autocomplete typeSelector:searchForm_type{/if} clearable mainFocus" placeholder='{translate text="Find"}&hellip;' />
     {if $prefilterList}
       <select id="searchForm_filter" class="selectpicker input-prepend text-left" name="prefilter">
       {foreach from=$prefilterList item=searchDesc key=searchVal}
