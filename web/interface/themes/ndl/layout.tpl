@@ -167,16 +167,8 @@
         });
     {/literal}
     </script>
-    <meta id="viewport" name="viewport" content="" /> 
-    {literal}
-    <script type="text/javascript">
-    $(function(){
-        var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
-        var viewport = 'width=' + ww + ';initial-scale=1.0';  
-        $('#viewport').attr('content', viewport);
-    });
-    </script>
-    {/literal}
+    <meta id="viewport" name="viewport" content="initial-scale=1.0;width:device-width" /> 
+
     {* **** IE fixes **** *}
     {* Load IE CSS1 background-repeat and background-position fix *}
     <!--[if lt IE 7]>{js filename="../css/iepngfix/iepngfix_tilebg.js"}<![endif]-->
