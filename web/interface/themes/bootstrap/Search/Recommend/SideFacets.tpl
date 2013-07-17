@@ -92,7 +92,7 @@ $(document).ready(function() {
 //]]>
 </script>
 {/literal}
-      <div id="facet_{$title}" class="dynatree-facet{if $mobileViewLink} collapsed{/if}">
+      <div id="facet_{$title}" class="dynatree-facet collapsed">
         <span class="facet_loading hide"></span>
       </div>
     {else}
