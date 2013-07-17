@@ -78,7 +78,7 @@
         </fieldset>
       </form>
     {elseif is_array($hierarchicalFacets) && in_array($title, $hierarchicalFacets)}
-      <dl class="narrowList navmenu collapsible">
+      <dl class="narrowList navmenu collapsible collapsed">
         <dt>{translate text=$cluster.label}<span></span></dt>
       </dl>
 {literal}
