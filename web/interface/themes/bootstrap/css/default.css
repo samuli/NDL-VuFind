@@ -2836,12 +2836,18 @@ a.panel_open {
     .addthis_toolbox {
         margin-top: .8em;
     }
+    span.dynatree-node .facetTitle {
+        max-width: 143px;
+    }
 
 }
 @media only screen and (max-width: 914px) {
 
     .limitSelect label, .sortSelect label {
         display: none;
+    }
+    span.dynatree-node .facetTitle {
+        max-width: 110px;
     }
 
 }
@@ -2855,6 +2861,9 @@ a.panel_open {
     }    
     .recordcover {
         max-width: 167px;
+    }
+    span.dynatree-node .facetTitle {
+        max-width: 100px;
     }
 
 }
@@ -2912,6 +2921,9 @@ a.panel_open {
     }
     [id^="add_search_link_"] {
         margin: 0 0 5px 0;
+    }
+    span.dynatree-node .facetTitle {
+        max-width: 100%;
     }
 
 }
