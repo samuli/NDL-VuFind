@@ -44,17 +44,29 @@
     {css media="screen" filename="../js/jsTree/themes/apple/style.css"}
 
     {* Load Bootstrap CSS framework *}
+    {* To use alternative Bootstrap theme either replace bootstrap.css with it
+       or load the theme css after bootstrap.css.
+       For FREE themes see e.g.
+       http://bootswatch.com/
+       http://www.bootstrapfree.com/
+       For COMMERCIAL themses see e.g.
+       http://bootstrapthemes.com/
+       https://wrapbootstrap.com/
+       http://bootstrapstyler.com/
+       http://themeforest.net/collections/2712342-bootstrap-templates
+       For ROLLING YOUR OWN theme, try
+       http://pikock.github.io/bootstrap-magic/
+       http://www.boottheme.com/
+    *}
     {css media="screen, projection" filename="bootstrap-2.3.1/css/bootstrap.css"}
     {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap.css" *}
     {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap-responsive.css" *}
     {css media="screen, projection" filename="bootstrap-select/bootstrap-select.min.css"}
     {* css media="screen, projection" filename="jquery.mobile-1.0a4.1.css" *}
 
-    {* Load SlidePanel CSS for mobile *}
-    {* if $mobileViewLink *}
-        {css media="screen, projection" filename="../js/SlidePanel/jquery.codebomber.slidepanel.css"}
-    {* /if *}
 
+    {* Load SlidePanel CSS for mobile/narrow screens *}
+    {css media="screen, projection" filename="../js/SlidePanel/jquery.codebomber.slidepanel.css"}
 
     {* Load VuFind specific stylesheets *}
     {css media="screen" filename="ui.dynatree.css"}
