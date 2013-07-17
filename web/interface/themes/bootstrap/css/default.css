@@ -852,9 +852,7 @@ span.dynatree-node a {
 }
 span.dynatree-node .facetTitle {
     display: inline-block;
-
-    max-width: 135px;
-
+    max-width: 143px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
