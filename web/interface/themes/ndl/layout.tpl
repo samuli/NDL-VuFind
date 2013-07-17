@@ -167,22 +167,8 @@
         });
     {/literal}
     </script>
-    <meta id="viewport" name="viewport" content="initial-scale=1.0, width=device-width, maximum-scale=1.0" /> 
-    {literal}
-        <script type="text/javascript">
-        $(function(){
-            var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
-
-            if (ww <= 480) {
-                var zoom = ww / 480;
-                zoom = zoom.toFixed(2);
-
-            }
-            var viewport = 'width=device-width, initial-scale='+zoom+', maximum-scale=1.0';  
-            $('#viewport').attr('content', viewport);
-        });
-        </script>
-    {/literal}
+    <meta id="viewport" name="viewport" content="width=device-width, maximum-scale=1.0" /> 
+    
     {* **** IE fixes **** *}
     {* Load IE CSS1 background-repeat and background-position fix *}
     <!--[if lt IE 7]>{js filename="../css/iepngfix/iepngfix_tilebg.js"}<![endif]-->
@@ -225,9 +211,9 @@
       </div>
       -->
 
-      <div id="nav" class="nav">
+      <div id="nav" class="nav" role="navigation">
         <div class="content">
-          <ul id="headerMenu">
+          <ul id="headerMenu" role="menubar">
             {include file="header-menu.$userLang.tpl"}
           </ul>
           <div class="lang">
