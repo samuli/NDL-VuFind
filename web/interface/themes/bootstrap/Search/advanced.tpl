@@ -10,7 +10,7 @@
       <p class="alert alert-info"><span class="infohelp pull-left" style="height: 13px; padding-top: 0; padding-right: 0; background-position: -48px 2px;"></span><a href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a></p>
     </div>
   </div>
-
+{*
   {if $searchFilters}
   <div class="row-fluid">
     <div class="span4 offset8 alert alert-warning">
@@ -30,7 +30,7 @@
     </div>
   </div>
   {/if}
-
+*}
 <form method="get" action="{$url}/Search/Results" id="advSearchForm" name="searchForm" class="form-inline search">
   <div class="span12">
     <div class="row-fluid">
@@ -180,7 +180,7 @@
       <input type="text" size="4" maxlength="4" class="yearbox" name="main_date_strto" id="publishDateto" value="{if $dateRangeLimit.1}{$dateRangeLimit.1|escape}{/if}" />
       <br/>
       <div class="well-small" id="sliderContainer">
-        <input id="publishDateSlider" class="dateSlider span-10" type="slider" name="sliderContainer" value="0000;2012" />
+        <input id="publishDateSlider" class="dateSlider span-10" type="slider" name="sliderContainer" value="{if $dateRangeLimit.0}{$dateRangeLimit.0|escape}{else}0000{/if};{if $dateRangeLimit.1}{$dateRangeLimit.1|escape}{else}2012{/if}" />
       </div>
       <div class="clearfix">&nbsp;</div>
     </div>
@@ -217,7 +217,6 @@
         <div class="span7">
           <label class="label displayBlock" for="coordinates">{translate text='Coordinates:'}</label>
           {php}
-            // NB: The following seems to be working ok, but probably needs rethinking
             $filters = $this->get_template_vars('searchFilters');
             if (isset($filters['Other']) && is_array($filters['Other'])) {
                 foreach ($filters['Other'] as $key => $value) {
@@ -228,7 +227,7 @@
                 }
             }
           {/php}
-          <input id="coordinates" name="coordinates" />
+          <input id="coordinates" name="coordinates" value="{if $coordinates}{$coordinates}{/if}" />
         <div id="selectionMapTools">
           <label for="mapPan" class="radio inline">
             <input id="mapPan" type="radio" name="tool" value="pan" checked="checked" />
