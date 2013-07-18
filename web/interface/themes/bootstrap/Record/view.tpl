@@ -49,18 +49,14 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   {if $lastsearch}
   <div class="span3 backToResults well-small">
     <a href="{$lastsearch|escape}#record{$id|escape:"url"}">&laquo;&nbsp;{translate text="Back to Search Results"}</a>
+<!--
+    {if isset($searchId) && isset($searchType) && $searchType == 'advanced'}
+    <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a>
+    <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a>
+    {/if}
+-->
 	</div>
   {/if}
-
-{* <!--
-  {if $previousRecord || $nextRecord}
-  <ul class="span9 pager">
-    <li class="{if !$pageLinks.back} disabled{/if}">{if $pageLinks.back}{$pageLinks.back}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.prevImg}</span>{/if}</li>
-    <li>&nbsp;  {$recordStart} - {$recordEnd} / {$recordCount} &nbsp;</li>
-    <li class="{if !$pageLinks.next} disabled{/if}">{if $pageLinks.next}{$pageLinks.next}{else}<span class="pagingDisabled">{$pageLinks.pagerOptions.nextImg}</span>{/if}</li>
-  </ul>
-  {/if}
---> *}
 
   {if $previousRecord || $nextRecord}
   <div class="span6 resultscroller well-small">
