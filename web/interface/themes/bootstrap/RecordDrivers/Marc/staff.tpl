@@ -2,7 +2,7 @@
 
 {* No escaping is necessary here -- $details is preformatted HTML. *}
 {$marc}
-{*<hr />*}
+<hr />
 {include file="RecordDrivers/Index/staff.tpl}
 
 <!-- END of: RecordDrivers/Marc/staff.tpl -->
