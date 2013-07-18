@@ -167,7 +167,24 @@
         });
     {/literal}
     </script>
-    <meta id="viewport" name="viewport" content="width=device-width, maximum-scale=1.0" /> 
+    {php}
+        $ua = $_SERVER['HTTP_USER_AGENT'];
+        if(stripos($ua, 'ipad') !== false) {
+            print '<meta id="viewport" name="viewport" content="width=720px, initial-scale=1.0" />';
+        } else if ((stripos($ua, 'mobile') !== false && stripos($ua, 'safari') !== false) || stripos($ua, 'android') !== false ) {
+            print '<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0" />';
+            print '<script type="text/javascript">
+                    $(function(){
+                        var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
+                        if (ww <= 480) {
+                            $("#viewport").attr("content", "width=480px, initial-scale=0.667");
+                        }
+                    });
+                 </script>';
+        } else {
+            print '<meta id="viewport" name="viewport" content="width=480px, initial-scale=1.0" />';
+        }
+    {/php}
     
     {* **** IE fixes **** *}
     {* Load IE CSS1 background-repeat and background-position fix *}
