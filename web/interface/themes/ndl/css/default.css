@@ -125,6 +125,13 @@ ul {
     padding: 0;
 }
 
+.element-invisible {
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    overflow: hidden;
+    position: absolute !important;
+}
+
 /*** Links ***/
 a, .ui-widget-content a {
     text-decoration: none;

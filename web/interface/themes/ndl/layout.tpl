@@ -197,7 +197,13 @@
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
     {if !$showTopSearchBox}
-    <a class="feedbackButton" href="{$path}/Feedback/Home">{translate text='Give feedback'}</a>
+        <a class="feedbackButton" href="{$path}/Feedback/Home">{translate text='Give feedback'}</a>
+    {/if}
+    {* Screen readers: skip to main content *}
+    {if $module == 'Record'}
+    <div id="skip-link">
+      <a href="#resultMain" class="element-invisible">{translate text='Skip to record details'}</a>
+    </div> 
     {/if}
     {* mobile device button*}
     {if $mobileViewLink}
