@@ -16,7 +16,7 @@
   {* BTJ description start *}
   <tr valign="top" class="extendedBTJDescription" id="btjdescription" style="display: none;">
     <th>{translate text='Description'}: </th>
-    <td id="btjdescription_text"><img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading'}..."/>
+    <td id="btjdescription_text"><img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
       <script type="text/javascript">
       //<![CDATA[
      var path = {$path|@json_encode};

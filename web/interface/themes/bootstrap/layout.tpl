@@ -195,6 +195,17 @@ $(document).ready(function() {
   </head>
   <body>
     <div class="container-fluid">
+      {* Screen readers: skip to main content *}
+      {if $pageTemplate == 'list.tpl'}
+        <div id="skip-link-results">
+          <a href="#resultList" class="element-invisible">{translate text='Skip to search results'}</a>
+        </div>
+      {/if}
+      {if $pageTemplate == 'view.tpl' || $pageTemplate == 'record.tpl'}
+        <div id="skip-link-details">
+          <a href="#resultMain" class="element-invisible">{translate text='Skip to record details'}</a>
+        </div>
+      {/if}
 
       {* mobile device button *}
       {if $mobileViewLink}

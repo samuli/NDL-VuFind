@@ -43,7 +43,7 @@
     <ul class="pager">
       <li class="{if !$previousRecord} disabled{/if}">
       {if $previousRecord}
-        <a href="{$url}/Record/{$previousRecord}" class="prevRecord">&larr;<span class="resultNav">&nbsp;{translate text="Prev"}</span></a>
+        <a href="{$url}/Record/{$previousRecord}" class="prevRecord">&larr;<span class="resultNav">&nbsp;{translate text="Previous Record"}</span></a>
       {else}
         <span class="pagingDisabled">&larr;&nbsp;{translate text="Prev"}</span>
       {/if}
@@ -51,7 +51,7 @@
       <li>&nbsp;&nbsp;{$currentRecordPosition}&nbsp;<strong>/</strong>&nbsp;{$resultTotal}&nbsp;&nbsp;</li>
       <li class="{if !$nextRecord} disabled{/if}">
       {if $nextRecord}
-        <a href="{$url}/Record/{$nextRecord}" class="nextRecord"><span class="resultNav">{translate text="Next"}&nbsp;</span>&rarr;</a>
+        <a href="{$url}/Record/{$nextRecord}" class="nextRecord"><span class="resultNav">{translate text="Next Record"}&nbsp;</span>&rarr;</a>
       {else}
         <span class="pagingDisabled">{translate text="Next"}&nbsp;&rarr;</span>
       {/if}

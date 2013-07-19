@@ -64,7 +64,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     <ul class="pager">
       <li class="{if !$previousRecord}disabled{/if}">
       {if $previousRecord}
-        <a href="{$url}/Record/{$previousRecord}" class="prevRecord" title="{translate text='Previous'}"><span class="resultNav"><i class="icon-step-backward"></i></span></a>
+        <a href="{$url}/Record/{$previousRecord}" class="prevRecord" title="{translate text='Previous Record'}"><span class="resultNav"><i class="icon-step-backward"></i></span></a>
       {else}
         <span class="pagingDisabled"><i class="icon-step-backward"></i></span>
       {/if}
@@ -72,7 +72,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       <li>&nbsp;&nbsp;{$currentRecordPosition}&nbsp;<strong>/</strong>&nbsp;{$resultTotal}&nbsp;&nbsp;</li>
       <li class="{if !$nextRecord}disabled{/if}">
       {if $nextRecord}
-        <a href="{$url}/Record/{$nextRecord}" class="nextRecord" title="{translate text='Next'}"><span class="resultNav"><i class="icon-step-forward"></i></span></a>
+        <a href="{$url}/Record/{$nextRecord}" class="nextRecord" title="{translate text='Next Record'}"><span class="resultNav"><i class="icon-step-forward"></i></span></a>
       {else}
         <span class="pagingDisabled"><i class="icon-step-forward"></i></span>
       {/if}
