@@ -411,6 +411,7 @@ a.badge {
 }
 #NDLCarousel {
     visibility: hidden;
+    list-style: none;
 }
 
 #NDLCarousel li {
