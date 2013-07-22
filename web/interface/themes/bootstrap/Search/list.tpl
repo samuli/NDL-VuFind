@@ -105,7 +105,7 @@
 
   {* Narrow Search Options *}
   {*if !$dualResultsEnabled && $searchType != 'advanced'*}
-  <div id="sidebarFacets" class="span3 well well-small {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+  <div id="sidebarFacets" class="span3 well well-small{if $sidebarOnLeft} sidebarOnLeft{/if}">
     {if $sideRecommendations}
       {foreach from=$sideRecommendations item="recommendations"}
         {include file=$recommendations}

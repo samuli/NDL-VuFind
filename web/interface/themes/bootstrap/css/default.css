@@ -111,6 +111,15 @@ a.btn-small.btn-inverse {
     margin:15px 0;
 }
 
+.row-fluid [class*="span"].sidebarOnLeft {
+    float: right;
+    margin-left: 0;
+    margin-right: 2.12766%;
+}
+.row-fluid [class*="span"].sidebarOnLeft.last {
+    margin-right: 0;
+}
+
 /* Breadscrumbs */
 
 #topBar {
