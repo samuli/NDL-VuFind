@@ -2938,6 +2938,19 @@ a.panel_open {
     span.dynatree-node .facetTitle {
         max-width: 100%;
     }
+    .row-fluid [class*="span"].sidebarOnLeft {
+        float: none;
+    }
+    #resultToolbar li {
+        float: left;
+        line-height: 16px;
+        width: 50%;
+    }
+    #exportMenu li {
+        float: none;
+        line-height: 25px;
+        width: 200%;
+    }
 
 }
 @media only screen and (max-width: 639px) {
