@@ -1,6 +1,6 @@
 <!-- START of: PCI/record-metadata.tpl -->
 
-<div id="recordMetadata" class="span8">
+<div id="recordMetadata" class="span8{if $sidebarOnLeft} sidebarOnLeft{/if}">
   {* Display Title *}
   <h4 class="alert alert-success recordTitle">{$record.title|escape:"html"}</h4>
   {* End Title *}

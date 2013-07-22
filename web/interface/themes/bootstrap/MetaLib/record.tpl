@@ -66,10 +66,10 @@
 
 <div class="row-fluid record recordId" id="record{$id|escape}">
 
-  <div id="resultMain" class="span9">
+  <div id="resultMain" class="span9{if $sidebarOnLeft} sidebarOnLeft last{/if}">
 
   <div class="row-fluid">
-    <div id="resultSide" class="span4">
+    <div id="resultSide" class="span4 {if $sidebarOnLeft} sidebarOnLeft last{/if}">
 
       {* Display Cover Image *}
       {*
@@ -115,7 +115,7 @@
       </div>
     </div>
 
-  <div class="span8 record recordId" id="record{$id|escape}">
+  <div class="span8 record recordId{if $sidebarOnLeft} sidebarOnLeft{/if}" id="record{$id|escape}">
 
     <div class="alignright"><span class="{$record.ContentType.0|replace:" ":""|escape}">{$record.ContentType.0|escape}</span></div>
 
@@ -256,6 +256,7 @@
     {* Display the lists that this record is saved to *}
 	<div class="savedLists alert alert-info" id="savedLists{$id|escape}">
 	  <strong>{translate text="Saved in"}:</strong>
+
 	</div>    
   </div>
   {* End Record *} 

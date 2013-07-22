@@ -188,7 +188,7 @@
     {/if}
 
     {* Display the lists that this record is saved to *}
-    <div class="savedLists info hide" id="savedLists{$summId|escape}">
+    <div class="alert alert-info savedLists hide" id="savedLists{$summId|escape}">
       <strong>{translate text="Saved in"}:</strong>
     </div>
     {if $summHierarchy}

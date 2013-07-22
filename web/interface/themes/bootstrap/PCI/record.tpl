@@ -92,10 +92,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
 <div class="row-fluid record recordId" id="record{$id|escape}">
 
-  <div id="resultMain" class="span9">
+  <div id="resultMain" class="span9{if $sidebarOnLeft} sidebarOnLeft last{/if}">
 
   <div class="row-fluid">
-    <div id="resultSide" class="span4">
+    <div id="resultSide" class="span4{if $sidebarOnLeft} sidebarOnLeft last{/if}">
   
     {* Display Cover Image *}
     <div class="coverImages clearfix">
@@ -204,7 +204,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
      {* Add COINS *}
      <span class="Z3988" title="{$openURL|escape}"></span>
    </div>  
-  <div id="resultSidebar" class="span3 {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+  <div id="resultSidebar" class="span3{if $sidebarOnLeft} sidebarOnLeft{/if}">
     {if $bXEnabled}
       {include file="Record/bx.tpl"}
     {/if}

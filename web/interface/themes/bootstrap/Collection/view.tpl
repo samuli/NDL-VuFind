@@ -1,6 +1,6 @@
 <!-- START of: Collection/view.tpl -->
 
-<div id="resultsCollection" class="span9">
+<div id="resultsCollection" class="span9{if $sidebarOnLeft} sidebarOnLeft last{/if}">
 {* Cannot put scripts before the first 'span' element in a row without ruining layout *}
 {js filename="ajax_common.js"}
 {js filename="collection_record.js"}
@@ -96,7 +96,7 @@
 
 </div>
 
-<div id="sidebarCollection" class="span3 well well-small">
+<div id="sidebarCollection" class="span3 well well-small{if $sidebarOnLeft} sidebarOnLeft{/if}">
   {* Recommendations *}
   {if $sideRecommendations}
     {foreach from=$sideRecommendations item="recommendations"}

@@ -102,9 +102,9 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
 <div class="row-fluid record recordId" style="padding: 0" id="record{$id|escape}">
 
-  <div id="resultMain" class="span9">
+  <div id="resultMain" class="span9{if $sidebarOnLeft} sidebarOnLeft last{/if}">
     <div class="row-fluid">
-      <div id="resultSide" class="span4">
+      <div id="resultSide" class="span4{if $sidebarOnLeft} sidebarOnLeft last{/if}">
     
         {* Display Cover Image *}
         <div class="coverImages clearfix">
@@ -141,7 +141,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {* End Cover Image *}
         <div class="clearfix"></div>
 
-        <div id="resultToolbar" class="toolbar alert alert-info">
+        <div id="resultToolbar" class="toolbar alert alert-info{if $sidebarOnLeft} sidebarOnLeft{/if}">
           <ul class="unstyled">
             <li id="saveLink"><a href="{$url}/Record/{$id|escape:"url"}/Save" class="saveRecord add" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{*<i class="icon fav"></i>*}{translate text="Add to favorites"}</a></li>
             
@@ -291,7 +291,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     <span class="Z3988" title="{$openURL|escape}"></span>
   </div>
   
-  <div id="resultSidebar" class="span3 {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+  <div id="resultSidebar" class="span3{if $sidebarOnLeft} sidebarOnLeft{/if}">
     <div class="similarItems well well-small" id="similarItems{$id}"><div class="sidegroup">{image src="ajax_loading.gif" width="16" height="16" alt="Loading..."}</div></div>
     
     {if $bXEnabled}

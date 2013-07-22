@@ -2897,7 +2897,8 @@ a.panel_open {
 */
 /*    #logo img {
         max-width: 680px;
-    }*/
+    }
+*/
 /*
     .footer div {
       margin-left: 3%;
@@ -2951,6 +2952,9 @@ a.panel_open {
         float: none;
         line-height: 25px;
         width: 200%;
+    }
+    #recordMetadata + div .alert {
+        margin-bottom: 0;
     }
 
 }
