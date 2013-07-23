@@ -14,7 +14,7 @@
     <label class="displayBlock" for="email_message">{translate text='Message'}:</label>
     <textarea id="email_message" name="message" rows="3" cols="40"></textarea>
     <br/>
-    <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Send'}"/>
+    <input class="btn btn-info button" type="submit" name="submit" value="{translate text='Send'}"/>
 </form>
 
 <!-- END of: MetaLib/email.tpl -->

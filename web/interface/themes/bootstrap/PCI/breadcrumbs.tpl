@@ -12,8 +12,7 @@
   {assign var='searchName' value='PCI Search'}
 {/if}
 {if $searchId}
-<em>
-  {translate text=$searchName}{if $lookfor}: {$lookfor|escape:"html"}{/if}</em>
+  <a href="{if $lastsearch}{$lastsearch|escape}{else}{$url}/PCI/Search{/if}">{translate text=$searchName}{if $lookfor}: {$lookfor|escape:"html"}{/if}
 {elseif $record}
   {if $lastsearch}
   <a href="{$lastsearch|escape}#record{$id|escape:"url"}">{translate text=$searchName}{if $lastsearchdisplayquery}: {$lastsearchdisplayquery|truncate:20:'...':FALSE|escape:"html"}{/if}</a>
