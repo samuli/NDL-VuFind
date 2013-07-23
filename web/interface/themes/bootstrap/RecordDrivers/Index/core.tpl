@@ -40,6 +40,7 @@
 
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="table table-condensed table-hover text-left citation" summary="{translate text='Bibliographic Details'}">
+    {* Commented out since these are normally displayed in the links section
     {if !empty($coreNextTitles)}
     <tr valign="top" class="recordNextTitles">
       <th>{translate text='New Title'}: </th>
@@ -50,7 +51,9 @@
       </td>
     </tr>
     {/if}
+    *}
 
+    {* Commented out since these are normally displayed in the links section
     {if !empty($corePrevTitles)}
     <tr valign="top" class="recordPrevTitles">
       <th>{translate text='Previous Title'}: </th>
@@ -61,6 +64,7 @@
       </td>
     </tr>
     {/if}
+    *}
 
     {if !empty($coreOtherLinks)}
     {foreach from=$coreOtherLinks item=coreOtherLink}
