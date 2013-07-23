@@ -13,7 +13,7 @@
 {/if}
 {if !$hideLogin}
   {if $catalogAccounts}
-    <form method="post" action="" class="hidden-phone">
+    <form method="post" action="#" class="hidden-phone">
   {/if} 
     <ul id="logoutOptions" class="hidden-phone inline{if $showTopSearchBox} pull-right{/if}{if !$user} hide{/if}">
     {if $catalogAccounts}

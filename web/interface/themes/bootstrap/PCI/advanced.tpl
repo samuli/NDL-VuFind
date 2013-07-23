@@ -119,6 +119,7 @@
   </form>
   <br />
   <br />
+</div>
 
 {literal}
 <script type="text/html" id="new_search_tmpl">
@@ -204,7 +205,7 @@
   $("#addGroupLink").removeClass("offscreen");
 //]]>
 </script>
-</div>
+
 {* Apply selectpicker style to added fields *}
 <script type="text/javascript">
 {literal}
