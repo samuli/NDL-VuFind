@@ -181,34 +181,18 @@
             </div>
           </div>
         </div>
-      {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
+        {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 
-      <div class="advSearchFooter advSearchSection">
-          <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
+        <div class="advSearchFooter advSearchSection">
+            <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
+        </div>
+      </div>
     </div>
   </div>
-    <!--
-  <div class="span-3 last">
-    {if $searchFilters}
-      <div class="filterList">
-        <h3>{translate text="adv_search_filters"}<br/><span>({translate text="adv_search_select_all"} <input type="checkbox" checked="checked" onclick="filterAll(this, 'advSearchForm');" />)</span></h3>
-        {foreach from=$searchFilters item=data key=field}
-        <div>
-          <h4>{translate text=$field}</h4>
-          <ul>
-            {foreach from=$data item=value}
-            <li><input type="checkbox" checked="checked" name="filter[]" value='{$value.field|escape}:"{$value.value|escape}"' /> {$value.display|escape}</li>
-            {/foreach}
-          </ul>
-        </div>
-        {/foreach}
-      </div>
-    {/if}
-    
-  </div>-->
 
   <div class="clear"></div>
 </form>
+</div>
 {literal}
 <script type="text/html" id="new_search_tmpl">
 <div class="advRow last">
@@ -312,6 +296,5 @@
   {/if}
 //]]>
 </script>
-</div>
 
 <!-- END of: Search/advanced.tpl -->
