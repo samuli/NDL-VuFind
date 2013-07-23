@@ -21,11 +21,11 @@
 *}
 {else}
   <script type="text/javascript">
-  {literal}
-      $(function(){
-          $('.mainFocus').focus();
+    {literal}
+      $(function() {
+          initSearchInputListener();
       });
-  {/literal}
+    {/literal}
   </script>
 
   <form method="get" action="{$path}/PCI/Search" name="searchForm" id="searchForm" class="form-search text-center">

@@ -4,12 +4,18 @@
 
 {if $searchType != 'advanced'}
   <script type="text/javascript">
-  {literal}
+    {literal}
       $(function(){
-          setMainFocus();
+    {/literal}
+        {if $module != 'MyResearch'}
+    {literal}
+          initSearchInputListener();
+    {/literal}
+        {/if}
+    {literal}
           $('.ui-autocomplete').addClass('dropdown-menu'); // TODO: remove and add this class where autocomplete is defined.
       });
-  {/literal}
+    {/literal}
   </script>
 {*
      Without this script + onKeyPress in searchForm_input the pressing of ENTER 

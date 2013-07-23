@@ -9,11 +9,11 @@
   {else}
 
     <script type="text/javascript">
-    {literal}
-        $(function(){
-            $('.mainFocus').focus();
+      {literal}
+        $(function() {
+            initSearchInputListener();
         });
-    {/literal}
+      {/literal}
     </script>
 
     <form method="get" action="{$path}/MetaLib/Search" name="searchForm" id="searchForm" class="form-search text-center">

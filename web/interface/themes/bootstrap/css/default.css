@@ -630,10 +630,13 @@ a.badge {
     margin-bottom:15px;
     margin-left:3px;
 }
+a.toggleDateVis:hover {
+    cursor: pointer;
+}
 .dateVisClear a {
     position: relative;
-    left: 7px;
-    top: -7px;
+    left: 8px;
+    top: -8px;
 }
 .resultTerm {
     margin-bottom: 10px;
