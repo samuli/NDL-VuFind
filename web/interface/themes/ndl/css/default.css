@@ -1286,6 +1286,7 @@ ul.cartContent {
 /** Alphabetic browse **/
 .alphaBrowseResult {
     padding: 0 0.5em 0.5em 0.5em;
+    margin-top: -12em;
 }
 
 .alphaBrowseEntry {
@@ -1298,8 +1299,19 @@ ul.cartContent {
     background-color: #fff;
 }
 
-.alphaBrowseForm {
+#alphaBrowseForm {
     zoom: 1;
+    margin: 0 0 15em;
+}
+
+#alphaBrowseForm label {
+    float:left;
+    margin-right: 0.5em;
+    margin-top: 0.5em;
+}
+
+#alphaBrowseForm .dropdown {
+    margin-right: 0.5em;
 }
 
 .alphaBrowseHeading {
@@ -1318,8 +1330,11 @@ ul.cartContent {
 }
 
 .alphaBrowsePageLinks {
-    margin: 1em;
-    background-color: #fff;
+    margin: 1em 0;
+}
+.alphaBrowsePageLinks a:link,
+.alphaBrowsePageLinks a:visited {
+    color: #fff;
 }
 
 .alphaBrowsePrevLink {

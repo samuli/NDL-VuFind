@@ -1,11 +1,11 @@
 {capture name=pagelinks}
   <div class="alphaBrowsePageLinks">
     {if isset ($prevRowid)}
-      <div class="alphaBrowsePrevLink"><a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$prevRowid}&amp;page=-1">&laquo; {translate text="Prev"}</a></div>
+      <div class="button buttonFinna alphaBrowsePrevLink"><a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$prevRowid}&amp;page=-1">&laquo; {translate text="Prev"}</a></div>
     {/if}
 
     {if isset ($nextRowid)}
-      <div class="alphaBrowseNextLink"><a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$nextRowid}">{translate text="Next"} &raquo;</a></div>
+      <div class="button buttonFinna alphaBrowseNextLink"><a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$nextRowid}">{translate text="Next"} &raquo;</a></div>
     {/if}
     <div class="clear"></div>
   </div>
@@ -19,14 +19,14 @@
   <div class="resulthead">
     <form method="get" action="{$path}/AlphaBrowse/Results" name="alphaBrowseForm" id="alphaBrowseForm">
       <label for="alphaBrowseForm_source">{translate text='Browse Alphabetically'}</label>
-      <select id="alphaBrowseForm_source" name="source">
+      <select id="alphaBrowseForm_source" name="source" class="styledDropdowns">
         {foreach from=$alphaBrowseTypes key=key item=item}
           <option value="{$key|escape}" {if $source == $key}selected="selected"{/if}>{translate text=$item}</option>
         {/foreach}
       </select>
       <label for="alphaBrowseForm_from">{translate text='starting from'}</label>
       <input type="text" name="from" id="alphaBrowseForm_from" value="{$from|escape}"/>
-      <input type="submit" value="{translate text='Browse'}"/>
+      <input class="button buttonFinna" type="submit" value="{translate text='Browse'}"/>
     </form>
   </div>
 
