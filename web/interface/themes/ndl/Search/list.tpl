@@ -13,9 +13,9 @@
       {/if}
       {if $dualResultsEnabled && $searchType != 'advanced'}
       <div class="headerLeft">
-        <h3 class="searchTerms grid_12">
+        <h2 class="searchTerms grid_12">
       {else}
-      <h3 class="searchTerms grid_24">
+      <h2 class="searchTerms grid_24">
       {/if}
       {if $isEmptySearch}
         {if $searchType == 'advanced'}
@@ -33,7 +33,7 @@
           AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
         {/if}
       {/if}
-      </h3>
+      </h2>
       {if $spellingSuggestions}
       {if $dualResultsEnabled && $searchType != 'advanced'}
       <div class="correction grid_12">

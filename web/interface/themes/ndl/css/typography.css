@@ -46,9 +46,16 @@ h5, .normal {
     font-size: 1em;
     line-height: 1.5em;
 }
-h4, .big {
+h4, .big,
+#footer h2 {
     font-size: 1.128em;
     line-height: 1.4em;
+}
+.result h4 {
+    font-size: 1em;
+    line-height: 1.5em;
+    margin: 0 0 0.3em;
+    font-weight: normal;
 }
 #searchFormLabel, #searchForm_input, #searchForm_searchButton {
     font-size: 1.333em;

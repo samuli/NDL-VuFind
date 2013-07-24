@@ -1787,6 +1787,10 @@ ul.recordSet .coverDiv {
     text-align:center;
     overflow:hidden;
 }
+.result h4 {
+    margin: 0 0 0.3em;
+}
+
 ul.recordSet .resultItemLine2{
     margin:0.2em 0 0 0;
 }

@@ -6,7 +6,7 @@
   <div class="resultTerms">
     <div class="content">
       <div class="headerLeft">
-	      <h3 class="searchTerms grid_12">
+	      <h2 class="searchTerms grid_12">
 	      {if $lookfor == ''}{translate text="history_empty_search"}
 	      {else}
 	        {if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}
@@ -17,7 +17,7 @@
 	        {/if}
 	        {if $searchType == 'advanced'}"{/if}
 	      {/if}
-	      </h3>
+	      </h2>
 	      {if $spellingSuggestions}
 	      <div class="correction grid_24">
 	        {translate text="spell_suggest"}:

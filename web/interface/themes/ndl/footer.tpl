@@ -1,7 +1,7 @@
 <!-- START of: footer.tpl -->
 
 <div class="grid_8">
-  <h4>{translate text='navigation_about'}</h4>
+  <h2>{translate text='navigation_about'}</h2>
   <ul>
     <li><a href="{$path}/Content/about">{translate text='navigation_about_finna'}</a></li>
     <li><a href="{$path}/Content/terms_conditions">{translate text='navigation_terms_conditions'}</a></li>
@@ -10,7 +10,7 @@
 </div>
 
 <div class="grid_8">
-  <h4>{translate text='navigation_search'}</h4>
+  <h2>{translate text='navigation_search'}</h2>
   <ul>
     <li><a href="{$path}/Search/History">{translate text='Search History'}</a></li>
     <li><a href="{$path}/Search/Advanced">{translate text='Advanced Search'}</a></li>
@@ -19,7 +19,7 @@
 </div>
 
  <div class="grid_8">
-  <h4>{translate text='navigation_help'}</h4>
+  <h2>{translate text='navigation_help'}</h2>
   <ul>
     <li><a href="{$path}/Content/searchhelp">{translate text='Search Tips'}</a></li>
     <li><a href="{$path}/Feedback/Home">{translate text='navigation_feedback'}</a></li>

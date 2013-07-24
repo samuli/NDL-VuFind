@@ -1119,6 +1119,12 @@ ul.recordSet .addToFavLink a {
     margin-top: -62px;
     width: 62px;
 }
+
+#deferredResults h3,
+.resultHeader h3 {
+    font-size: 16.25px;
+}
+
 .resultImage a {
     display: block;
 }
@@ -1172,6 +1178,11 @@ ul.recordSet .addToFavLink a {
     height: 35px;
 }
 */
+
+.resulthead h2 {
+    font-size: 16.25px;
+    margin: 0;
+}
 
 
 /*** PCI ***/
@@ -1839,6 +1850,10 @@ span.mapMarker  {
 
 .footer div .row-fluid {
     margin-bottom: 0;
+}
+
+.footer h2 {
+    font-size: 16.25px;
 }
 
 .footer .KDK-logo {
