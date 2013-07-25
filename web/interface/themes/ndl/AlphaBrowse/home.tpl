@@ -1,14 +1,23 @@
 {capture name=pagelinks}
   <div class="alphaBrowsePageLinks">
-    {if isset ($prevRowid)}
-      <div class="button buttonFinna alphaBrowsePrevLink"><a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$prevRowid}&amp;page=-1">&laquo; {translate text="Prev"}</a></div>
-    {/if}
-
-    {if isset ($nextRowid)}
-      <div class="button buttonFinna alphaBrowseNextLink"><a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$nextRowid}">{translate text="Next"} &raquo;</a></div>
-    {/if}
-    <div class="clear"></div>
-  </div>
+    <div class="content">
+      <div class="pagination{if $position} pagination{$position}{/if}">
+        <span class="paginationMove paginationBack {if isset ($prevRowid)}visible{/if}">
+          {if isset ($prevRowid)}<a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$prevRowid}&amp;page=-1">&laquo; {translate text="Prev"}</a>{/if}
+          <span>&#9668;</span>
+        </span>
+        {if $result}
+          {foreach from=$result.Browse.items item=item name=firstlast}
+            {if $smarty.foreach.firstlast.first}{$item.heading|truncate:30:"&hellip;"} &ndash; {/if}{if $smarty.foreach.firstlast.last}{$item.heading|truncate:30:"&hellip;"}{/if}
+          {/foreach}
+        {/if}
+        <span class="paginationMove paginationNext {if isset ($nextRowid)}visible{/if}">
+          {if isset ($nextRowid)}<a href="{$path}/AlphaBrowse/Results?source={$source|escape:"url"}&amp;from={$from|escape:"url"}&amp;rowid={$nextRowid}">{translate text="Next"} &raquo;</a>{/if}
+          <span>&#9654;</span>
+        </span>
+      </div>
+    </div>
+  </div>    
 {/capture}
 
 <div class="browseHeader">
@@ -32,8 +41,6 @@
 
   {if $result}
     <div class="alphaBrowseResult">
-    {$smarty.capture.pagelinks}
-
     <div class="alphaBrowseHeader">{translate text="alphabrowse_matches"}</div>
       {foreach from=$result.Browse.items item=item name=recordLoop}
       <div class="alphaBrowseEntry {if ($smarty.foreach.recordLoop.iteration % 2) == 0}alt {/if}">
@@ -91,12 +98,15 @@
       </div>
       {/foreach}
 
-    {$smarty.capture.pagelinks}
     </div>
   {/if}
 </div>
 
-<div class="span-5 {if $sidebarOnLeft}pull-18 sidebarOnLeft{else}last{/if}">
+{if $result}
+  {$smarty.capture.pagelinks}
+{/if}
+
+  <div class="span-5 {if $sidebarOnLeft}pull-18 sidebarOnLeft{else}last{/if}">
 </div>
 
 <div class="clear"></div>

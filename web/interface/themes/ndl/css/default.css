@@ -1330,7 +1330,7 @@ ul.cartContent {
 }
 
 .alphaBrowsePageLinks {
-    margin: 1em 0;
+    margin-top: 1em;
 }
 .alphaBrowsePageLinks a:link,
 .alphaBrowsePageLinks a:visited {
@@ -1732,6 +1732,9 @@ table.profileGroup th {
 /*
     margin: .6em 0 0 0;
 */
+}
+.alphaBrowsePageLinks .pagination {
+    width: 100%;
 }
 #resultList.sidebarOnLeft {
     float: right;
@@ -2624,7 +2627,8 @@ ul.recordSet .addToFavLink a {
 .resultSearchTools .content {
     overflow: auto;
 }
-.module-Search .resultPagination {
+.module-Search .resultPagination,
+.alphaBrowsePageLinks {
     clear:both;
     background:#e6e6e6;
 }
@@ -2951,13 +2955,15 @@ div.dateVisHandle.visible {
 .paginationBack {
     left:32px;
 }
-.resultViewOptions .paginationBack {
+.resultViewOptions .paginationBack,
+.alphaBrowsePageLinks .paginationBack {
     left:0px;
 }
 .paginationNext {
     right:32px;
 }
-.resultViewOptions .paginationNext {
+.resultViewOptions .paginationNext,
+.alphaBrowsePageLinks .paginationNext {
     right:0px;
 }
 .paginationFirst {
