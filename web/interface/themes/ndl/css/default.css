@@ -1585,6 +1585,7 @@ fieldset.publishDateLimit .ui-slider {
 }
 .checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
     margin: 1em 0 1em 0;
+    box-shadow: 0 9px 33px -35px black;
 }
 .checkedoutList .iconlabel, .holdsList .iconlabel {
     line-height: 2.4em;
@@ -1630,6 +1631,7 @@ table.profileGroup th {
     margin-top: 1em;
     margin-bottom: 2.4em;
     border-bottom: 1px solid #cccccc;
+    box-shadow: 0 9px 33px -35px black;
 }
 .myResearch .sessionHistory {
     margin-bottom: 1em;
@@ -2242,7 +2244,7 @@ dl.narrowList a {
     display:none;
 }
 .module-Content .contentSection .content > * {
-    max-width:470px;
+    max-width:470px; 
 }
 .module-Content .main pre {
     border: 1px dashed #999999;
@@ -3947,57 +3949,66 @@ p.citationText {
 
 /* Browse Lists */
 .browseNav {
-    background-color: #FFFFFF;
+    background-color: #F2F2F2;
     border-radius: 3px 3px 3px 3px;
-    max-height: 300px;
-    width: 215px;
+    /* max-height: 300px; */
+    /* width: 215px; */
     overflow:auto;
+    box-shadow: 0 3px 10px -8px black;
+    margin-bottom:5px;
+    font-weight:300;
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
+#list1 {
+    font-weight: 400;
+}
+
 .browseNav ul {
     display:block;
     list-style:none;
     margin: 0;
-    border: 1px solid #CCCCCC;
     padding: 0;
 }
 .browseNav a {
     transition:none;
     -moz-transition:none;
     -webkit-transition:none;
+    border:1px solid white;
 }
 .browseNav li {
-    width: 100%;
+    /* width: 100%; */
     display:block;
+    float:left;
 }
-.browseNav li:first-child a {
+/* .browseNav li:first-child a {
     border-top:none;
-}
+} */
 .browseNav a {
     background: none repeat scroll 0 0 #F2F2F2;
-    border-top: 1px solid #FEFEFE;
+
     color: #333333;
     display: block;
     padding: 0.7em 1em;
     text-decoration: none;
 }
 .browseNav a:hover {
-    background: #ff8ee3;
+    background: #00a2b6;
     color: #FFFFFF;
 }
 .browseNav .active a:hover {
-    background: #ff8ee3;
+    background: #00a2b6;
     color: #fff;
 }
 .browseNav a.first {
  border-left: 1px solid #ccc;
 }
 .browseNav .active a {
-    background: #ff8ee3;
+    background: #00a2b6;
     color: #FFFFFF;
 }
 .browseNav a.viewRecords {
+	border:none;
     font-size:.9em;
     float:right;
     background:transparent;
@@ -4008,6 +4019,19 @@ p.citationText {
     text-decoration:underline;
     color:#555;
 }
+#list2container {
+	margin-bottom:20px;
+}
+
+#list3container li, #list4container li {
+	float:none;
+	clear:both;
+	
+}
+#list3container, #list4container {
+	max-height:500px;
+}
+
 /** Google search **/
 #searchcontrol .gsc-control {
     width: 100%;
