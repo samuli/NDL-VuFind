@@ -96,10 +96,12 @@ function reSortGroups()
 
     // Hide some group-related controls if there is only one group:
     if (nextGroupNumber == 1) {
-        $("#groupJoin").hide();
+        $("#groupJoinOptions").attr('disabled', 'disabled');
+        $("label[for='groupJoinOptions']").toggleClass('disabled');
         $("#delete_link_0").hide();
     } else {
-        $("#groupJoin").show();
+        $("#groupJoinOptions").removeAttr('disabled');
+        $("label[for='groupJoinOptions']").toggleClass('disabled');
         $("#delete_link_0").show();
     }
 

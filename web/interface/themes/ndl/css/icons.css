@@ -556,7 +556,7 @@ label.invalid {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -49px -112px;
 }
-.selectionMapHelpIcon { 
+.helpIcon, .selectionMapHelpIcon { 
     background-image: url(../images/icons16-24px-02.png);
     background-position: -365px 0;
 }

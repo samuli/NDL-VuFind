@@ -18,14 +18,12 @@
 <div id="headerBottom" class="grid_24">
   {if $showBreadcrumbs}
   <div class="content">
-    <div class="grid_24">
       <div class="breadcrumbs">
         <div class="breadcrumbinner">
           <a href="{$url}">{translate text="Home page"}</a><span></span>
           {if $module}{include file="$module/breadcrumbs.tpl"}{/if}
         </div>
       </div>
-    </div>
   </div>
   {/if}
   

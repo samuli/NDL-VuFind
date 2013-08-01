@@ -362,9 +362,6 @@
         content:'';
         display:block;
     }
-    #mapSearch {
-    border-top: 6px solid #DDDDDD;
-}
     
     #zoomSlider {
         left: 12px;
