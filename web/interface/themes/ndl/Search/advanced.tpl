@@ -23,7 +23,7 @@
         <div class="advSearchSection first">
           <div id="groupJoin" class="searchGroups">
             <div class="searchGroupDetails">
-              <label for="groupJoinOptions">{translate text="group_OR"}</label>
+              <label for="groupJoinOptions">{translate text="Other Search Criteria"}</label>
               <select id="groupJoinOptions" name="join">
                 <option value="AND">{translate text="group_AND"}</option>
                 <option value="OR"{if $searchDetails and $searchDetails.0.join == 'OR'} selected="selected"{/if}>{translate text="group_OR"}</option>
