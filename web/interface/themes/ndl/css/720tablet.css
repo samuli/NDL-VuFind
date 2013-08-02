@@ -188,11 +188,12 @@
     #advSearchForm .groupSearchDetails select {
         max-width: 155px;
     }
-    
+    .advSearchSection.first {
+ 		 padding: 10px;
+	}
     .groupSearchHolder .terms {
         width: 110px;
     }
-    
     #zoomSlider {
         left: 12px;
         top: 67px;

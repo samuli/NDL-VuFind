@@ -17,13 +17,13 @@
       {/if}
       {* An empty div. This is the target for the javascript that builds this screen *}
       <div class="grid_24">
-        <h3>{translate text="Search Terms"}</h3>
+        <h3 class="advTitle">{translate text="adv_search_terms"}</h3>
       </div>
       <div class="grid_24">
         <div class="advSearchSection first">
           <div id="groupJoin" class="searchGroups">
             <div class="searchGroupDetails">
-              <label for="groupJoinOptions">{translate text="Other Search Criteria"}</label>
+              <label for="groupJoinOptions">{translate text="adv_bool_search_groups"}</label>
               <select id="groupJoinOptions" name="join">
                 <option value="AND">{translate text="group_AND"}</option>
                 <option value="OR"{if $searchDetails and $searchDetails.0.join == 'OR'} selected="selected"{/if}>{translate text="group_OR"}</option>
@@ -41,7 +41,7 @@
                     <div class="searchRelated">
                       <div class="groupSearchDetails">
                         <div class="join">
-                          <label for="search_bool{$groupIndex}">{translate text="search_match"}:</label>
+                          <label for="search_bool{$groupIndex}">{translate text="Search Terms"}:</label>
                           <select id="search_bool{$groupIndex}" name="bool{$groupIndex}[]">
                             <option value="AND"{if $searchDetails and $searchDetails.$groupIndex.group.0.bool == 'AND'} selected="selected"{/if}>{translate text="search_AND"}</option>
                             <option value="OR"{if $searchDetails and $searchDetails.$groupIndex.group.0.bool == 'OR'} selected="selected"{/if}>{translate text="search_OR"}</option>
@@ -84,7 +84,7 @@
           <a id="addGroupLink" href="#" class="add offscreen" onclick="addGroup(); return false;">{translate text="add_search_group"}</a>
         </div>
       </div>
-      <div class="grid_24"><h3>{translate text="Other Search Criteria"}</h3></div>
+      <div class="grid_24"><h3 class="advTitle">{translate text="Other Search Criteria"}</h3></div>
       <div class="grid_24">
         <div class="advSearchSection">
           {if $facetList}
@@ -138,7 +138,7 @@
           {/if}
         </div>
       </div>
-      <div class="grid_24"><h3>{translate text='Map Search'}</h3></div>
+      <div class="grid_24"><h3 id="mapSearch" class="advTitle"> {translate text='Geographic search'}</h3></div>
       <div class="grid_24">
         <div class="mapContainer advSearchSection" id="mapSearch">
           <div id="mapContainerTools">

@@ -2745,7 +2745,7 @@ ul.recordSet .addToFavLink a {
     text-indent:0 !important;
         font-size:1em;
     line-height:1em;
-    padding: 2px 8px 12px 15px;
+    padding: 4px 8px 12px 15px;
 }
 .collectionSortSelector label,
 .resultOptions label,
@@ -3822,13 +3822,17 @@ p.citationText {
 }
 
 .advSearchSection {
-    background: #F1F1F1;
-    border: 1px solid #CCCCCC;
-    border-radius: 10px 10px 10px 10px;
+    background: #F5F5F5;
+    border: 1px solid #E4E4E4;
+    border-radius: 5px 5px 5px 5px;
     clear: both;
     margin-bottom: 1em;
+    padding: 15px;
     position: relative;
-    padding:15px;
+    -moz-box-shadow: 0 13px 32px -40px #000000;
+    -o-box-shadow: 0 13px 32px -40px #000000;
+    -webkit-box-shadow: 0 13px 32px -40px #000000;
+    box-shadow: 0 13px 32px -40px #000000;
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
 .group .searchRelated {
@@ -3849,7 +3853,7 @@ p.citationText {
 
 #advSearchForm select {
     margin-top: -1px;
-    padding: 2px;
+    padding: 4px;
 }
 .advancedSearchHelpButton {
     line-height: 2em;
@@ -3858,6 +3862,11 @@ p.citationText {
     right: 5px;
     font-weight:bold;
     top: 3px;
+}
+.advTitle {
+	margin-top:5px;
+	margin-bottom:3px;
+	margin-left:5px;
 }
 /* Profile / MyResearch */
 
@@ -4815,11 +4824,11 @@ div#selectionMap {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    border-radius: 0 0 10px 10px;
-    -moz-border-radius: 0 0 10px 10px;
-    -webkit-border-radius: 0 0 10px 10px;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
     overflow:hidden;
-    border-top: 1px solid #CCCCCC;
+    border-top: 1px solid #FFF;
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
 input#coordinates {
