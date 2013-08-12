@@ -14,6 +14,12 @@
     {/php}
     <p><a id="searchWithoutPrefilter" href="{$searchWithoutPrefilter}"><strong>{translate text='Search without the prefilter'} "{$prefilterList.$activePrefilter|translate}"</strong></a>
   {/if}
+  
+  {assign var='main_year' value='Main Year'}
+  {if $filterList.$main_year.0.removalUrl}
+    <p><a id="searchWithoutDateRange" href="{$filterList.$main_year.0.removalUrl}"><strong>{translate text='Search without the annual limit'} "{$filterList.$main_year.0.display}"</strong></a>
+  {/if}
+  
   {if $parseError}
     <p class="error">{translate text='nohit_parse_error'}</p>
   {/if}
