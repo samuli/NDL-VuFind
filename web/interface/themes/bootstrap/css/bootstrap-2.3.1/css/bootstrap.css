@@ -866,7 +866,7 @@ pre code {
   color: #ffffff;
   vertical-align: baseline;
   white-space: nowrap;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+/*  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); */
   background-color: #999999;
 }
 .label {
@@ -880,6 +880,7 @@ pre code {
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;
+  color:#505050;
 }
 .label:empty,
 .badge:empty {
@@ -889,10 +890,17 @@ a.label:hover,
 a.label:focus,
 a.badge:hover,
 a.badge:focus {
-  color: #ffffff;
+  color:#505050;
   text-decoration: none;
   cursor: pointer;
 }
+a.badge:hover,
+a.badge:focus {
+  color:#505050;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .label-important,
 .badge-important {
   background-color: #b94a48;

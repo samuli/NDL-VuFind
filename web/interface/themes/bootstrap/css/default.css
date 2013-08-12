@@ -32,6 +32,7 @@ body.fancybox-lock {
 
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
+    font-weight:500;
 }
 
 h1, h2, h3 {
@@ -40,7 +41,7 @@ h1, h2, h3 {
 
 .highlight {
     font-weight: bold;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+    /* text-shadow: 2px 2px 3px rgba(0,0,0,0.3); */
 }
 .offscreen {
     display: inline;
@@ -321,8 +322,8 @@ a.clear_input:hover {
 .blurbLine {
     font-size: 22px;
     font-weight: 400;
-    color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0,0,0,.75);
+    color: #505050;
+    /* text-shadow: 1px 1px 2px rgba(0,0,0,.75); */
 }
 
 
@@ -338,8 +339,10 @@ a.clear_input:hover {
 a.badge.advancedLink, a.badge.localLink, a.badge.metalibLink,
 a.badge.pciLink, a.badge.browseLink, a.badge.showSearchHelp,
 a.badge.account, a.badge.login, a.badge.logout{
-    //background-color: rgba(0,0,0,.3);
-    text-shadow: 1px 1px 2px rgba(0,0,0,.5);    
+  /*  //background-color: rgba(0,0,0,.3);
+     text-shadow: 1px 1px 2px rgba(0,0,0,.5);  */
+     letter-spacing:0.3px;
+     
 }
 a.badge.advancedLink:hover, a.badge.localLink:hover, a.badge.metalibLink:hover,
 a.badge.pciLink:hover, a.badge.browseLink:hover, a.badge.showSearchHelp:hover,
