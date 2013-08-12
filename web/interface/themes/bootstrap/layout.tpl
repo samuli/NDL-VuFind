@@ -322,6 +322,7 @@ $(document).ready(function() {
 
       <div class="visible-phone">
         <a class="btn btn-mini btn-warning panel_open" href="#" rel="panel">
+          <i class="icon-align-justify block"></i>
           <i class="icon-chevron-right"></i>
         </a>
 

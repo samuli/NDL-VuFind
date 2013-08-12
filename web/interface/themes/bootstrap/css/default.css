@@ -2809,7 +2809,7 @@ a.panel_open {
     -webkit-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0;
     left: 0;
-    padding: 5px 0;
+    padding: 7px 2px;
     position: fixed;
     top: 45%;
 }
@@ -2853,6 +2853,11 @@ a.panel_open {
     width: 80px;
     margin: .3em .4em;
     padding: .5em;
+}
+
+.block {
+	display:block;
+	margin-bottom:3px;
 }
 
 
