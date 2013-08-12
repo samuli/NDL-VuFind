@@ -4,8 +4,16 @@
   <div class="contentHeader noResultHeader"><div class="content"><h1>{if $searchType == 'advanced'}{translate text='Advanced Search'}{else}{translate text='Search'}{/if}: {translate text='nohit_heading'}</h1></div></div>
   <div class="content">
   <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
-  {if isset($activePrefilter)} <p><a id="searchWithoutPrefilter" href="#"><strong>{translate text='Search without the prefilter'} "{$prefilterList.$activePrefilter|translate}"</strong></a>{/if}
-
+  {if isset($activePrefilter)} 
+    {php}
+      // Generate link to a non-prefiltered search
+      parse_str($this->get_template_vars('searchParams'), $paramsArray);
+      unset($paramsArray['orfilter'], $paramsArray['prefiltered']);
+      $url = $this->get_template_vars('url') . '/Search/Results?';
+      $this->assign('searchWithoutPrefilter', $url . http_build_query($paramsArray));
+    {/php}
+    <p><a id="searchWithoutPrefilter" href="{$searchWithoutPrefilter}"><strong>{translate text='Search without the prefilter'} "{$prefilterList.$activePrefilter|translate}"</strong></a>
+  {/if}
   {if $parseError}
     <p class="error">{translate text='nohit_parse_error'}</p>
   {/if}
@@ -43,17 +51,6 @@
   {/if}
 </div>
 End Narrow Search Options *}
-
 <div class="clear"></div>
-{literal}
-<script type="text/javascript">
-    $('#searchWithoutPrefilter').click(function(e) {
-        e.preventDefault();
-        $('#searchFormKeepFilters').attr('checked', true);
-        $('#searchForm_filter').val('-');
-        $('#searchForm').submit();
-    });
-</script>
-{/literal}
 
 <!-- END of: Search/list-none.tpl -->
