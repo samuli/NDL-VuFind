@@ -28,7 +28,7 @@
     </ul>
   {/if}
   {if $collectionKeywordFilters}
-    <dl class="narrowList navmenu collapsible collapsed">
+    <dl class="narrowList navmenu collapsible">
       <dt>{translate text="Keyword Filter"}<span></span></dt>
       <form method="get" action="{$url}/Collection/{$id}/{$collectionAction}" name="keywordFilterForm" id="keywordFilterForm" class="keywordFilterForm">
         <input class="span12" id="keywordFilter_lookfor" type="text" name="lookfor" value="{$keywordLookfor|escape}"/>
@@ -78,7 +78,7 @@
         </fieldset>
       </form>
     {elseif is_array($hierarchicalFacets) && in_array($title, $hierarchicalFacets)}
-      <dl class="narrowList navmenu collapsible collapsed">
+      <dl class="narrowList navmenu collapsible">
         <dt>{translate text=$cluster.label}<span></span></dt>
       </dl>
 {literal}
@@ -92,7 +92,7 @@ $(document).ready(function() {
 //]]>
 </script>
 {/literal}
-      <div id="facet_{$title}" class="dynatree-facet collapsed">
+      <div id="facet_{$title}" class="dynatree-facet">
         <span class="facet_loading hide"></span>
       </div>
     {else}
