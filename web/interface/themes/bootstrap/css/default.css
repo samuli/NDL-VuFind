@@ -121,7 +121,7 @@ a.btn-small.btn-inverse {
     margin-right: 0;
 }
 
-/* Breadscrumbs */
+/* Breadcrumbs */
 
 #topBar {
     margin-bottom: 10px;
@@ -137,17 +137,26 @@ a.btn-small.btn-inverse {
 
 .breadcrumb > li {
     text-shadow: none;
+    display: block; /* IE8 */
+    float: left; 
+    margin-right: 5px; 
 }
 .breadcrumb > li > .divider, .breadcrumb span {
-    text-shadow: none;
-    background: url("../images/bg_breadcrumb-dark.png") no-repeat scroll left center transparent;
     color: transparent;
-/*
-    opacity: 0.4;
-*/
+    display: inline-block;
+    height: 15px;
     overflow: hidden;
-    padding: 0 .2em;
+    padding: 0;
+    position: relative;
+    text-indent: -999px;
+    text-shadow: none;
+    top: 2px;
     width: 10px;
+    background: url("../images/bg_breadcrumb-dark.png") no-repeat scroll left center transparent;
+}
+
+.icon-home {
+    background-position: 0 -25px;
 }
 
 /* Nav */
@@ -1274,7 +1283,7 @@ div.truncateField {
 }
 
 .recordTitle, .collectionTitle {
-    margin: 0;
+    margin: 0 0 .5em 0;
 }
 
 .recordcover {
