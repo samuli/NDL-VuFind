@@ -89,7 +89,9 @@
     {* Load retina style sheet last *}
     {* css media="screen, projection" filename="retina.css" *}
     
-    {css media="print" filename="print.css"}
+    {* Disabled print styles until a fix for IE8 is found *}
+    {* {css media="print" filename="print.css"} *}
+    
     {if $dateRangeLimit}
       {css media="screen, projection" filename="jslider/jslider.css"}
     {/if}

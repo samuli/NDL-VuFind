@@ -14,7 +14,7 @@ $(document).ready(function() {
       "noFullText": "{translate text="No full text"}", 
       "maybeFullText": "{translate text="Check full text availability"}", 
       "moreInformation": '<span class="separator"/><span class="more">{translate text="More"}</span>',
-      "peerReviewed": "{translate text="Peer-reviewed"}",
+      "peerReviewed": "{translate text="Peer-reviewed"}"
     {literal}
   });
 });
