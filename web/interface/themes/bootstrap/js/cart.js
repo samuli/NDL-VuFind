@@ -8,7 +8,7 @@ $(document).ready(function() {
     $('#viewCart, #updateCart, #updateCartBottom').removeClass('offscreen');
 
     // Record
-    $('#recordCart').removeClass('offscreen').click(function() {
+    $('#recordCart').removeClass('offscreen').click(function(e) {
         if(cartRecordId != undefined) {
             if ($(this).hasClass('bookbagAdd')) {
                 updateCartSummary(addItemToCartCookie(cartRecordId));
@@ -18,7 +18,7 @@ $(document).ready(function() {
                 $(this).html(vufindString.addBookBag).removeClass('bookbagDelete').addClass('bookbagAdd');
             }
         }
-        return false;
+        e.preventDefault();
     });
     redrawCartStatus()
     var $form = $('form[name="bulkActionForm"]');
@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 function registerUpdateCart($form) {
     if($form) {
-        $("#updateCart, #updateCartBottom").unbind('click').click(function(){
+        $("#updateCart, #updateCartBottom").unbind('click').click(function(e){
             var elId = this.id;
             var selected = $("input[name='ids[]']:checked", $form);
             var cleanSelected = [];
@@ -63,7 +63,7 @@ function registerUpdateCart($form) {
                 cartHelp(vufindString.bulk_noitems_advice, elId);
             }
             redrawCartStatus();
-            return false;
+            e.preventDefault();
         });
     }
 }

@@ -65,6 +65,30 @@
       {include file="Content/searchboxhelp.$userLang.tpl"}
     {/if}
     </div>
+
+  {if ($filterList || $hasCheckboxFilters) && !$disableKeepFilterControl}
+    <div class="alert alert-warning keepFilters">
+      <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/>
+      <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
+
+      <div class="offscreen">
+    {foreach from=$filterList item=data key=field name=filterLoop}
+      {foreach from=$data item=value}
+        <input id="applied_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$value.field|escape}:&quot;{$value.value|escape}&quot;" />
+        <label for="applied_filter_{$smarty.foreach.filterLoop.iteration}">{$value.field|escape}:&quot;{$value.value|escape}&quot;</label>
+      {/foreach}
+    {/foreach}
+
+    {foreach from=$checkboxFilters item=current name=filterLoop}
+      {if $current.selected}
+        <input id="applied_checkbox_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$current.filter|escape}" />
+        <label for="applied_checkbox_filter_{$smarty.foreach.filterLoop.iteration}">{$current.filter|escape}</label>
+      {/if}
+    {/foreach}
+      </div>
+    </div>
+  {/if}
+
 {if $pageTemplate != 'advanced.tpl'}
     <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
       <li><a href="{$path}/Search/Advanced" class="badge advancedLink" title="{translate text="Advanced Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
@@ -98,29 +122,6 @@
     {foreach from=$shards key=shard item=isSelected}
     <input type="checkbox" {if $isSelected}checked="checked" {/if}name="shard[]" value='{$shard|escape}' /> {$shard|translate}
     {/foreach}
-  {/if}
-
-  {if ($filterList || $hasCheckboxFilters) && !$disableKeepFilterControl}
-    <div class="alert alert-warning keepFilters">
-      <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/>
-      <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
-
-      <div class="offscreen">
-    {foreach from=$filterList item=data key=field name=filterLoop}
-      {foreach from=$data item=value}
-        <input id="applied_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$value.field|escape}:&quot;{$value.value|escape}&quot;" />
-        <label for="applied_filter_{$smarty.foreach.filterLoop.iteration}">{$value.field|escape}:&quot;{$value.value|escape}&quot;</label>
-      {/foreach}
-    {/foreach}
-
-    {foreach from=$checkboxFilters item=current name=filterLoop}
-      {if $current.selected}
-        <input id="applied_checkbox_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$current.filter|escape}" />
-        <label for="applied_checkbox_filter_{$smarty.foreach.filterLoop.iteration}">{$current.filter|escape}</label>
-      {/if}
-    {/foreach}
-      </div>
-    </div>
   {/if}
 
   {* Load hidden limit preference from Session *}

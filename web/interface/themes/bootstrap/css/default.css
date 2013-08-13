@@ -284,18 +284,18 @@ a.clear_input:hover {
 
 .keepFilters {
     background-color: #ffffff;
-    opacity: .65;
     left: 50%;
     margin-left: -103px;
-    padding: 0;
+    padding: 1px;
     position: relative;
     width: 206px;
 }
 .keepFilters label {
-    color: #000000;
+    color: #666666;
     font-weight: bold;
-    margin: 0 0 0 2px;
+    margin: 1px 0 0 3px;
     padding: 0;
+    vertical-align: top;
 }
 
 /* MetaLib */

@@ -149,6 +149,9 @@
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
 
+    {* Load dropdown menu modification *}
+    {js filename="dropdown.js"}
+
     {* Load Mozilla Persona support *}
     {if $mozillaPersona}
     <script type="text/javascript" src="https://login.persona.org/include.js"></script>
