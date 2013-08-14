@@ -1,8 +1,13 @@
 <!-- START of: PCI/searchbox.tpl -->
 
-<div id="searchFormContainer" class="span12 searchform">
+{if $dualResultsEnabled && !($searchType == 'PCIAdvanced')}
+  {include file='Search/searchbox.tpl'}
+{else}
+<div id="searchFormContainer" class="span12 searchform searchformPCI">
 
-{if $searchType == 'PCIAdvanced'}
+{if ($searchType == 'PCIAdvanced') || ($pageTemplate == 'advanced.tpl')}
+
+{*
   <a href="{$path}/PCI/Advanced?edit={$searchId}" class="small">{translate text="Edit this Advanced PCI Search"}</a> |
   <a href="{$path}/PCI/Advanced" class="small">{translate text="Start a new Advanced PCI Search"}</a> |
   {if $dualResultsEnabled}
@@ -13,20 +18,21 @@
   <br/>{translate text="Your search terms"} : "<span class="strong">{$lookfor|escape:"html"}
   {foreach from=$orFilters item=values key=filter}
     AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}"</span>
-
+*}
 {else}
   <script type="text/javascript">
-  {literal}
-      $(function(){
-          $('.mainFocus').focus();
+    {literal}
+      $(function() {
+          initSearchInputListener();
       });
-  {/literal}
+    {/literal}
   </script>
 
   <form method="get" action="{$path}/PCI/Search" name="searchForm" id="searchForm" class="form-search text-center">
     <div {if !$showTopSearchBox}id="searchboxHome" {/if}class="row-fluid input-append searchbox">
-      <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" autocomplete="off" class="search-query clearable mainFocus" placeholder='{translate text="Find"}&hellip;' onKeyPress="return submitenter(this,event)" />
+      <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" autocomplete="off" class="search-query clearable mainFocus" placeholder='{translate text="Find"}&hellip;' />
       {if $prefilterList}
+<!--
       <select id="searchForm_filter" class="selectpicker input-prepend text-left" name="prefilter">
       {foreach from=$prefilterList item=searchDesc key=searchVal}
         {if ($searchVal != "--")}
@@ -37,8 +43,9 @@
       {/foreach}
         </optgroup>
       </select>
+-->
       {/if}
-      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
+      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" title="{translate text="Find"}" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
     </div>
 
     <div class="searchContextHelp">
@@ -48,7 +55,8 @@
     </div>
 
     <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
-      <li><a href="{$path}/Search/Advanced" class="badge advancedLink" title="{translate text="Advanced Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced Search"}</a></li>
+    <li><a href="{$path}" class="badge localLink" title="{translate text="Local Search"}"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
+
     {if $pciEnabled}
       <li><a href="{$path}/PCI/Advanced" class="badge advancedLink" title="{translate text="Advanced PCI Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
     {/if}
@@ -111,5 +119,7 @@
 {/if}
 
 </div>
+
+{/if} {* $dualResultsEnabled *}
 
 <!-- END of: PCI/searchbox.tpl -->

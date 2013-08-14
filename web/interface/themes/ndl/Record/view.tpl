@@ -49,16 +49,20 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   {if $lastsearch}
     <div class="backToResults grid_12">
         <a href="{$lastsearch|escape}#record{$id|escape:"url"}"><div class="button buttonFinna icon"><span class="icon">&laquo;</span></div>{translate text="Back to Search Results"}</a>
+     <!--{if isset($searchId) && isset($searchType) && $searchType == 'advanced'}
+        <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a>
+        <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a>
+     {/if}-->
     </div>
   {/if}
   {if $previousRecord || $nextRecord}
     <div class="resultscroller grid_5 push_7">
-    {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></a>
-    {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Prev"}</span></span>{/if}
+    {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></a>
+    {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></span>{/if}
     {$currentRecordPosition} / {$resultTotal}
     {* #{$currentRecordPosition} {translate text='of'} {$resultTotal} *}
-    {if $nextRecord}<a href="{$url}/Record/{$nextRecord}" class="nextRecord icon"><span class="resultNav">{translate text="Next"}&nbsp;&raquo;</span></a>
-    {else}<span class="nextRecord inactive"><span class="resultNav">{translate text="Next"}&nbsp;&raquo;</span></span>{/if}
+    {if $nextRecord}<a href="{$url}/Record/{$nextRecord}" class="nextRecord icon"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></a>
+    {else}<span class="nextRecord inactive"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></span>{/if}
 	</div>
 	{/if}
   </div>
@@ -182,7 +186,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   
    
   <div id="resultSidebar" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6 prefix_1">
-    <div class="similarItems" id="similarItems{$id}"><div class="sidegroup">{image src="ajax_loading.gif" width="16" height="16" alt="Loading..."}</div></div>
+    <div class="similarItems" id="similarItems{$id}"><div class="sidegroup">{image src="ajax_loading.gif" width="16" height="16" alt="Loading data..."}</div></div>
     
     {if $bXEnabled}
       {include file="Record/bx.tpl"}
@@ -219,7 +223,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         </li>
         {/if}
         <li{if $tab == 'UserComments'} class="active"{/if}>
-          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Comments'}</a>
+          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Comments'} (<span id="commentCount">{$commentCount}</span>)</a>
         </li>
         {if $hasReviews}
         <li{if $tab == 'Reviews'} class="active"{/if}>

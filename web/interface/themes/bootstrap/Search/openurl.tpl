@@ -20,7 +20,7 @@ class="fulltext openUrlWindow window_settings:{$openUrlWindow|escape}"
   {/if}
 </a>
 {if $openUrlEmbed}
-  <div id="openUrlEmbed{$openUrlId}" class="resolver hide">{translate text='Loading...'}</div>
+  <div id="openUrlEmbed{$openUrlId}" class="resolver hide">{translate text='Loading data...'}</div>
 {/if}
 
 <!-- END of: Search/openurl.tpl -->

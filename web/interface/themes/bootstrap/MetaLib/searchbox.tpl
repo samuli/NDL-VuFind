@@ -9,11 +9,11 @@
   {else}
 
     <script type="text/javascript">
-    {literal}
-        $(function(){
-            $('.mainFocus').focus();
+      {literal}
+        $(function() {
+            initSearchInputListener();
         });
-    {/literal}
+      {/literal}
     </script>
 
     <form method="get" action="{$path}/MetaLib/Search" name="searchForm" id="searchForm" class="form-search text-center">
@@ -31,7 +31,7 @@
             <option value="{$searchVal}"{if $searchSet == $searchVal || (!$searchSet && $smarty.foreach.loop.first)} selected="selected"{/if}>{translate text=$searchDesc}</option>
           {/foreach}
           </select>
-      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
+      <button id="searchForm_searchButton" type="submit" name="SearchForm_submit" title="{translate text="Find"}" class="btn btn-info"><i class="icon-search icon-white"></i>{*translate text="Find"*}</button>
 {*
         </div>
         <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
@@ -40,11 +40,10 @@
 
       <ul {if !$showTopSearchBox}id="advancedLinkHome" {/if}class="inline advanced-link-wrapper text-center hidden-phone">
         <li class=""><a href="{$path}/" class="badge localLink" title="{translate text="Local Search"}"><i class="icon-search"></i>&nbsp;{translate text="Local Search"}</a></li>
-{*
-      {if $pciEnabled}
-        <li><a href="{$path}/PCI/Advanced" class="small pciLink" title="{translate text="Advanced PCI Search"}"><i class="icon-zoom-in"></i>&nbsp;{translate text="Advanced PCI Search"}</a></li>
-      {/if}
-*}
+
+        {if $pciEnabled && !$dualResultsEnabled}
+          <li><a href="{$path}/PCI/Home" class="badge pciLink" title="{translate text="PCI Search"}"><i class="icon-search"></i>&nbsp;{translate text="PCI Search"}</a></li>
+        {/if}
         <li class=""><a href="{$path}/Search/History" class="badge browseLink" title="{translate text="Search History"}"><i class="icon-list-alt"></i>&nbsp;{translate text="Search History"}</a></li>
 {*
         <li class=""><a href="{$path}/Browse/Home" class="browseLink" title="{translate text="Browse the Catalog"}"><i class="icon-eye-open"></i>&nbsp;{translate text="Browse the Catalog"}</a></li>

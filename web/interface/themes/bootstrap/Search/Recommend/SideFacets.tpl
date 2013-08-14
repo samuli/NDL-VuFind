@@ -28,8 +28,8 @@
     </ul>
   {/if}
   {if $collectionKeywordFilters}
-    <dl class="narrowList navmenu">
-      <dt>{translate text="Keyword Filter"}</dt>
+    <dl class="narrowList navmenu collapsible">
+      <dt>{translate text="Keyword Filter"}<span></span></dt>
       <form method="get" action="{$url}/Collection/{$id}/{$collectionAction}" name="keywordFilterForm" id="keywordFilterForm" class="keywordFilterForm">
         <input class="span12" id="keywordFilter_lookfor" type="text" name="lookfor" value="{$keywordLookfor|escape}"/>
         {foreach from=$collectionKeywordFilterList item=filters key=field}
@@ -78,8 +78,8 @@
         </fieldset>
       </form>
     {elseif is_array($hierarchicalFacets) && in_array($title, $hierarchicalFacets)}
-      <dl class="narrowList navmenu">
-        <dt>{translate text=$cluster.label}</dt>
+      <dl class="narrowList navmenu collapsible">
+        <dt>{translate text=$cluster.label}<span></span></dt>
       </dl>
 {literal}
 <script type="text/javascript">
@@ -87,7 +87,7 @@
 $(document).ready(function() {
 {/literal}
   enableDynatree('#facet_{$title}', '{$title}', '{$fullPath}', '{$action}');
-{literal}  
+{literal}
 });
 //]]>
 </script>
@@ -96,8 +96,8 @@ $(document).ready(function() {
         <span class="facet_loading hide"></span>
       </div>
     {else}
-      <dl class="narrowList navmenu">
-        <dt>{translate text=$cluster.label}</dt>
+      <dl class="narrowList navmenu collapsible collapsed">
+        <dt>{translate text=$cluster.label}<span></span></dt>
         {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
           {if $smarty.foreach.narrowLoop.iteration == 6}
           <dd id="more{$title}"><a href="#" onclick="moreFacets('{$title}'); return false;">{translate text='more'} ...</a></dd>

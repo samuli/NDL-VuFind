@@ -21,12 +21,6 @@
   <h1 class="recordTitle">{$coreShortTitle|escape}{if $coreSubtitle}&nbsp;: {$coreSubtitle|escape}{/if}</h1>
   {* End Title *}
 
-  {*  Statement of responsibility *}
-  {if $coreTitleStatement}
-  <h2 class="titleStatement">{$coreTitleStatement|escape}</h2>
-  {/if}
-  {* End statement of responsibility *}
-
   {* Display Cover Image, commented out since already in view.tpl
   {if $coreThumbMedium}
     {if $coreThumbLarge}<a href="{$coreThumbLarge|escape}">{/if}
@@ -101,10 +95,15 @@
           <a href="{$url}/Search/Results?lookfor={$field.name|escape:"url"}&amp;type=Author">{$field.name|escape}{if $field.role}, {$field.role|escape}{/if}</a>{if !$smarty.foreach.loop.last} ; {/if}
       {/foreach}
         </div>
+      {*  Statement of responsibility *}
+      {if $coreTitleStatement}
+        <a href="" class="info_more" id="titleStatement">{translate text='Additional information'}</a>
+        <div class="additionalInformation hide">{$coreTitleStatement|escape}</div>
+      {/if}
+      {* End statement of responsibility *}
       </td>
     </tr>
     {/if}
-
     {if $corePresenters.presenters or $corePresenters.details}
     <tr valign="top" class="recordPresenters">
       <th>{translate text='Presenters'}: </th>
@@ -219,6 +218,9 @@
           {if is_array($field)}
             {if !empty($field.name)}
               <a href="{$url}/Search/Results?lookfor=%22{$field.name|escape:"url"}%22&amp;type=Series">{$field.name|escape}</a>
+              {if !empty($field.additional)}
+                {$field.additional|escape}
+              {/if}
               {if !empty($field.number)}
                 {$field.number|escape}
               {/if}
@@ -339,7 +341,7 @@
       <td>
       {/if}
       {assign var=prevRecordLinkTitle value=$coreRecordLink.title}
-      <a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a><br/>
+      <a href="{$coreRecordLink.link|escape}">{if $coreRecordLink.value}{$coreRecordLink.value|escape}{else}{$coreRecordLink.issn}{/if}</a><br/>
     {/foreach}
       </td>
     </tr>
@@ -413,5 +415,18 @@
 </div>
 
 <div class="clear"></div>
+{literal}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#titleStatement').click(function(event) {
+                event.preventDefault();
+                var div = $(this).siblings('.additionalInformation');
+                $(this).toggleClass('expanded');
+                div.slideToggle(150);
+                return false;
+            });
+        });
+    </script>
+{/literal}
 
 <!-- END of: RecordDrivers/Index/core.tpl -->

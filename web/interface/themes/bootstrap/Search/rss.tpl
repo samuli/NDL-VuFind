@@ -45,13 +45,105 @@ if(($feed['type'] == "carousel") ||
 
     {/php}
     
-    <ul id="NDLCarouselNavi"><li id="prev" /><li id="next" /></ul>
+    <ul id="NDLCarouselNavi"><li id="prev" class="carousel-control"/><li id="next" class="carousel-control right"/></ul>
 
     {literal}
 
     <script>
         $(document).ready(function(){
+
+            calculateCarouselDimensions = function() {
+                
+                var containerWidth = $('#NDLCarousel.includeDescription li').width();
+                var containerHeight = $('#NDLCarousel.includeDescription li').height();
+                var containerRatio = containerWidth / containerHeight;
+                  
+                // Determine height if it is not set
+                {/literal}{php}
+                    if (!$rssFeed['height']) :
+                {/php}{literal}
+                var carouselWidth = carouselContainer.width();
+                var carouselHeight = 
+                    Math.floor((carouselWidth - ({/literal}{$rssFeed.itemsPerPage}{literal} * 10))  / 
+                    {/literal}{$rssFeed.itemsPerPage}{literal} * 1.36);
+                      
+                {/literal}{php}
+                    endif;
+                {/php}{literal} 
+
+                $('#NDLCarouselNavi li').css({
+                    'top'         : -(containerHeight / 2) - $('#NDLCarouselNavi #prev').height() / 2
+                });
+
+                $('.caroufredsel_wrapper,#NDLCarousel li').css({
+                    'height'         : carouselHeight
+                });
+
+                $('#NDLCarousel.includeDescription img').each(function(){
+                    $(this).imagesLoaded(function() {
+                        var imgWidth = $(this).width();
+                        var imgHeight = $(this).height();
+
+                        var imgRatio = imgWidth / imgHeight;
+                        var newWidth = 0;
+                        var newHeight = 0;
+
+                        if(containerRatio < imgRatio) {
+                            newWidth = containerHeight * imgRatio;
+                            newHeight = containerHeight;
+                        } else {
+                            newWidth = containerWidth;
+                            newHeight = containerWidth / imgRatio;
+                        }
+
+                        var verticalPosition = (newHeight - containerHeight) / 2;
+                        var horizontalPosition = (newWidth - containerWidth) / 2;
+
+                        $(this).css({
+                            'height'      : newHeight,
+                            'width'       : newWidth,
+                            'position'    : 'absolute',
+                            'left'        : - horizontalPosition,
+                            'top'         : - verticalPosition,
+                            //'display'     : 'none',
+                            'visibility'  : 'visible'
+                        });
+                    });
+                });
+                
+                // Set title and text position
+                $('#NDLCarousel.includeDescription h4').each(function() {
+                    var thisHeight = $(this).find('a').height() + 12; // 6px + 6px padding
+                    $(this).siblings('p').css('top', thisHeight);
+                });
             
+
+            };
+                
+            // Make individual pick-ups clickable
+            $('#NDLCarousel li').click(function() {
+                        var href = $(this).find('a').attr('href');
+                        window.location.href = href;
+            });
+            
+            $('#NDLCarousel.includeDescription li').mouseenter(function() {
+                 $(this).children('h4').stop().animate({
+                    top: 0
+                 }, 50, function() {
+                    $(this).siblings('p').stop(true,true).delay(50).fadeIn(200);
+                 });
+            });
+             
+            $('#NDLCarousel.includeDescription li').mouseleave(function() {
+                h4Height = $(this).find('a').height() + 12;
+                $(this).children('h4').stop().animate({
+                    top: carouselHeight - h4Height
+                }, 100, function() {  // callback function necessary to remove css top property
+                    $(this).css('top', '')
+                });
+                $(this).children('p').stop(true, true).fadeOut(200);
+            });
+              
             // Determine height if it is not set
             {/literal}{php}
                 if (!$rssFeed['height']) :
@@ -81,7 +173,7 @@ if(($feed['type'] == "carousel") ||
                 prev: "#NDLCarouselNavi #prev",
                 next: "#NDLCarouselNavi #next",
                 swipe: {
-                    onTouch: true,
+                    onTouch: false,
                     onMouse: false
                 },
                 scroll: {
@@ -92,9 +184,6 @@ if(($feed['type'] == "carousel") ||
                 }
             });
             
-            $('#prev').append('\u2039');
-            $('#next').append('\u203A');
-
             // Also set height to individual list items
             $('#NDLCarousel li').css({
                 'height': carouselHeight,
@@ -103,60 +192,10 @@ if(($feed['type'] == "carousel") ||
                 
             // Function to refresh carousel when layout changes
             prevWidth = carouselWidth;
-            refreshCarousel = function() {
-                if(carouselContainer.width()!=prevWidth){
-                    prevWidth = carouselContainer.width();
-                    calculateCarouselDimensions();
-                }
-            }
-            $(window).resize(refreshCarousel());
+            $(window).resize(function() {
+                calculateCarouselDimensions();
+            });
             
-            
-            calculateCarouselDimensions = function() {
-                
-                var containerWidth = $('#NDLCarousel.includeDescription li').width();
-                var containerHeight = $('#NDLCarousel.includeDescription li').height();
-                var containerRatio = containerWidth / containerHeight;
-                  
-                $('#NDLCarouselNavi li').css({
-                    'top'         : -(containerHeight / 2) - $('#NDLCarouselNavi #prev').height() / 2
-                });
-
-                $('#NDLCarousel.includeDescription img').each(function(){
-                    $(this).imagesLoaded(function() {
-                        var imgWidth = $(this).width();
-                        var imgHeight = $(this).height();
-
-                        var imgRatio = imgWidth / imgHeight;
-                        var newWidth = 0;
-                        var newHeight = 0;
-
-                        if(containerRatio < imgRatio) {
-                            newWidth = containerHeight * imgRatio;
-                            newHeight = containerHeight;
-                        } else {
-                            newWidth = containerWidth;
-                            newHeight = containerWidth / imgRatio;
-                        }
-
-                        var verticalPosition = (newHeight - containerHeight) / 2;
-                        var horizontalPosition = (newWidth - containerWidth) / 2;
-
-                        $(this).css({
-                            'height'      : newHeight,
-                            'width'       : newWidth,
-                            'position'    : 'absolute',
-                            'left'        : - horizontalPosition,
-                            'top'         : - verticalPosition,
-                            'display'     : 'none',
-                            'visibility'  : 'visible'
-                        });
-
-                       $(this).fadeIn(300);
-                    });
-                });
-            };
-                
             calculateCarouselDimensions();
               
 
@@ -165,37 +204,6 @@ if(($feed['type'] == "carousel") ||
                 "visible"
             );
 
-                    // Make individual pick-ups clickable
-            $('#NDLCarousel li').click(function() {
-                        var href = $(this).find('a').attr('href');
-                        window.location.href = href;
-            });
-            
-            // Set title and text position
-            $('#NDLCarousel.includeDescription h4').each(function() {
-                var thisHeight = $(this).find('a').height() + 12; // 6px + 6px padding
-                var topPosition = carouselHeight - thisHeight;
-
-                $(this).css('top', topPosition);
-                $(this).siblings('p').css('top', thisHeight);
-                
-            });
-            
-            $('#NDLCarousel.includeDescription li').mouseenter(function() {
-                 $(this).children('h4').stop().animate({
-                    top: 0
-                    }, 50, function() {
-                        $(this).siblings('p').stop(true,true).delay(50).fadeIn(200);
-                        });
-            });
-             
-            $('#NDLCarousel.includeDescription li').mouseleave(function() {
-                h4Height = $(this).find('a').height() + 12;
-                 $(this).children('h4').stop().animate({
-                    top: carouselHeight - h4Height
-                }, 100);
-                $(this).children('p').stop(true, true).fadeOut(200);
-            });
          });
     </script>
     {/literal}{php}
@@ -206,16 +214,36 @@ if(($feed['type'] == "carousel") ||
     echo "<ul class=\"NDLNews\">";
     foreach ($feed['items'] as $item ) {
             $title = $item['title'];
-            $url   = $item['link'];
+            if(array_key_exists('imageUrl', $item)) {
+	       	$imageUrl = $item['imageUrl'];
+            }
+	    $url   = $item['link'];
             $date  = $item['date'];
             echo "<li>";
-            if($date) {
+
+            /*
+             * render date if it is set in the feed item and is not disabled
+             * for the whole feed
+             */
+            if($feed['date'] && $date) {
                 echo "<span class=\"date\">$date</span> ";
             }
-            echo "<a href=\"$url\">$title</a></li>\n";
+
+            /*
+             * render image if an image exists for the item and if images
+             * are not disabled for the whole feed
+             */
+            echo "<a href=\"$url\">";
+            if($feed['images'] && $imageUrl) {
+                echo "<img src=\"$imageUrl\" alt=\"\" />";
+            }
+
+            echo "<span class=\"title\">$title</span></a></li>\n";
     }
     {/php}
-    <li><a href="{$rssFeed.channelURL}">{translate text="More"}&hellip;</a></li>
+    {if $rssFeed.moreLink}
+      <li class="moreLink"><a href="{$rssFeed.channelURL}">{translate text="More"}&hellip;</a></li>
+    {/if}
     </ul></div>
     {php}
 

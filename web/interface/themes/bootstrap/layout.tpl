@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$userLang}" lang="{$userLang}">
 
 {* We should hide the top search bar and breadcrumbs in some contexts - TODO, remove xmlrecord.tpl when the actual record.tpl has been taken into use: *}
-{if ($module=="Search" || $module=="Summon" || $module=="EBSCO" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
+{if ($module=="Search" || $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
     {assign var="showTopSearchBox" value=0}
     {assign var="showBreadcrumbs" value=0}
 {else}
@@ -23,7 +23,7 @@
 
     {* For mobile devices *}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+    {include file="og-metatags.tpl"}
 
     <title>{$pageTitle|truncate:64:"..."}</title>
     <link rel="shortcut icon" href="{path filename="images/favicon.ico"}" type="image/x-icon" />
@@ -44,23 +44,29 @@
     {css media="screen" filename="../js/jsTree/themes/apple/style.css"}
 
     {* Load Bootstrap CSS framework *}
+    {* To use alternative Bootstrap theme either replace bootstrap.css with it
+       or load the theme css after bootstrap.css.
+       For FREE themes see e.g.
+       http://bootswatch.com/
+       http://www.bootstrapfree.com/
+       For COMMERCIAL themses see e.g.
+       http://bootstrapthemes.com/
+       https://wrapbootstrap.com/
+       http://bootstrapstyler.com/
+       http://themeforest.net/collections/2712342-bootstrap-templates
+       For ROLLING YOUR OWN theme, try
+       http://pikock.github.io/bootstrap-magic/
+       http://www.boottheme.com/
+    *}
     {css media="screen, projection" filename="bootstrap-2.3.1/css/bootstrap.css"}
+    {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap.css" *}
     {* css media="screen, projection" filename="bootstrap-2.3.0/bootstrap-responsive.css" *}
     {css media="screen, projection" filename="bootstrap-select/bootstrap-select.min.css"}
     {* css media="screen, projection" filename="jquery.mobile-1.0a4.1.css" *}
 
-    {* Alternative Bootstrap style sheet for demonstration, remove later *}
-    <link rel="alternate stylesheet" type="text/css" title="amelia" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_amelia.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="cerulean" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_cerulean.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="journal" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_journal.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="superhero" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_superhero.min.css">
-    <link rel="alternate stylesheet" type="text/css" title="united" href="{$url}/interface/themes/bootstrap/css/bootstrap-2.3.1/css/themes/bootstrap_united.min.css">
 
-    {* Load SlidePanel CSS for mobile *}
-    {* if $mobileViewLink *}
-        {css media="screen, projection" filename="../js/SlidePanel/jquery.codebomber.slidepanel.css"}
-    {* /if *}
-
+    {* Load SlidePanel CSS for mobile/narrow screens *}
+    {css media="screen, projection" filename="../js/SlidePanel/jquery.codebomber.slidepanel.css"}
 
     {* Load VuFind specific stylesheets *}
     {css media="screen" filename="ui.dynatree.css"}
@@ -83,7 +89,9 @@
     {* Load retina style sheet last *}
     {* css media="screen, projection" filename="retina.css" *}
     
-    {css media="print" filename="print.css"}
+    {* Disabled print styles until a fix for IE8 is found *}
+    {* {css media="print" filename="print.css"} *}
+    
     {if $dateRangeLimit}
       {css media="screen, projection" filename="jslider/jslider.css"}
     {/if}
@@ -143,6 +151,9 @@
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
 
+    {* Load dropdown menu modification *}
+    {js filename="dropdown.js"}
+
     {* Load Mozilla Persona support *}
     {if $mozillaPersona}
     <script type="text/javascript" src="https://login.persona.org/include.js"></script>
@@ -189,6 +200,17 @@ $(document).ready(function() {
   </head>
   <body>
     <div class="container-fluid">
+      {* Screen readers: skip to main content *}
+      {if $pageTemplate == 'list.tpl'}
+        <div id="skip-link-results">
+          <a href="#resultList" class="element-invisible">{translate text='Skip to search results'}</a>
+        </div>
+      {/if}
+      {if $pageTemplate == 'view.tpl' || $pageTemplate == 'record.tpl'}
+        <div id="skip-link-details">
+          <a href="#resultMain" class="element-invisible">{translate text='Skip to record details'}</a>
+        </div>
+      {/if}
 
       {* mobile device button *}
       {if $mobileViewLink}
@@ -216,7 +238,7 @@ $(document).ready(function() {
       </div>
       <![endif]-->
 
-      <div id="topBar{if !$showBreadcrumbs}Home{/if}" class="{if $showBreadcrumbs}breadcrumb {/if}row-fluid"> <!-- 1 -->
+      <div id="topBar{if !$showTopSearchBox && ($module == 'Search')}Home{/if}" class="{if $showTopSearchBox || ($module != 'Search')}breadcrumb {/if}row-fluid"> <!-- 1 -->
         {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}
         {*if !$showTopSearchBox}
         <div id="beta-banner">
@@ -225,6 +247,7 @@ $(document).ready(function() {
         {/if*}
         {* <=== Remove/comment out when not in beta anymore - End BETA BANNER *}
 
+        {if $module=='PCI' || $module=='MetaLib'}{assign var="showBreadcrumbs" value ="true"}{/if}
         {if $showBreadcrumbs}
           <div class="pull-left">
             <ul class="breadcrumb pull-left">
@@ -304,6 +327,7 @@ $(document).ready(function() {
 
       <div class="visible-phone">
         <a class="btn btn-mini btn-warning panel_open" href="#" rel="panel">
+          <i class="icon-align-justify block"></i>
           <i class="icon-chevron-right"></i>
         </a>
 

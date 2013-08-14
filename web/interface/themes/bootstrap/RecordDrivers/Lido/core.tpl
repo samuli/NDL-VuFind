@@ -1,6 +1,6 @@
 <!-- START of: RecordDrivers/Lido/core.tpl -->
 
-<div id="recordMetadata" class="span8">
+<div id="recordMetadata" class="span8{if $sidebarOnLeft} sidebarOnLeft{/if}">
 
 {* Display Title *}
 {literal}
@@ -350,7 +350,41 @@ End Cover Image *}
   </tr>
 </table>
 {* End Main Details *}
-
 </div>
+
+
+{* Display the lists that this record is saved to *}
+<div class="row-fluid">
+  <div class="span8 alert alert-info savedLists hide{if !$sidebarOnLeft} pull-right{/if}" id="savedLists{$id|escape}">
+    <strong>{translate text="Saved in"}:</strong>
+
+  {if $showPreviews && (!empty($holdingLCCN) || !empty($isbn) || !empty($holdingArrOCLC))}
+    {if $googleOptions}
+      <div class="googlePreviewDiv__{$googleOptions}">
+        <a title="{translate text='Preview from'} Google Books" class="hide previewGBS{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+          <img src="https://www.google.com/intl/en/googlebooks/images/gbs_preview_button1.png" alt="{translate text='Preview'}"/>
+        </a>
+      </div>
+    {/if}
+    {if $olOptions}
+      <div class="olPreviewDiv__{$olOptions}">
+        <a title="{translate text='Preview from'} Open Library" href="" class="hide previewOL{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+          <img src="{$path}/images/preview_ol.gif" alt="{translate text='Preview'}"/>
+        </a>
+      </div>
+    {/if}
+    {if $hathiOptions}
+      <div class="hathiPreviewDiv__{$hathiOptions}">
+        <a title="{translate text='Preview from'} HathiTrust" class="hide previewHT{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+          <img src="{$path}/images/preview_ht.gif" alt="{translate text='Preview'}"/>
+        </a>
+      </div>
+    {/if}
+    <span class="previewBibkeys{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}"></span>
+  {/if}
+  </div>
+</div>
+
+<div class="clearfix">&nbsp;</div>
 
 <!-- END of: RecordDrivers/Lido/core.tpl -->

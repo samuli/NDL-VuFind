@@ -403,7 +403,7 @@
         deselectAll:function() {
             this.$element.find('option').prop('selected', false).removeAttr('selected');
             this.render();
-        },
+        }
 
     };
 

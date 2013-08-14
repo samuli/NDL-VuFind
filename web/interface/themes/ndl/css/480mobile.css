@@ -130,6 +130,10 @@
         padding: 0;
         margin-top:6px;
     }
+   
+    #headerMenu {
+        width:470px;
+    }
     
     /* Header: Search Box */
     .content .searchFormOuterWrapper, .content .searchFormWrapper {
@@ -250,9 +254,6 @@
     #carouselContainer {
         display:none;
     }
-    #nav {
-        font-size:1.18em;
-    }
     
     /* Search results */
     
@@ -361,9 +362,6 @@
         content:'';
         display:block;
     }
-    #mapSearch {
-    border-top: 6px solid #DDDDDD;
-}
     
     #zoomSlider {
         left: 12px;

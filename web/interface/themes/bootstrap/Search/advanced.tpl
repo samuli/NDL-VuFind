@@ -6,11 +6,11 @@
     <div class="span8 well-small">
       <h4>{translate text='Advanced Search'}</h4>
     </div>
-    <div class="span4 alert alert-info sidegroup">
-      <p><span class="infohelp pull-left" style="height: 13px; padding-top: 0; padding-right: 0; background-position: -48px 2px;"></span><a href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a></p>
+    <div class="span4 sidegroup advancedSearchHelp">
+      <p class="alert alert-info"><span class="infohelp pull-left" style="height: 13px; padding-top: 0; padding-right: 0; background-position: -48px 2px;"></span><a href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a></p>
     </div>
   </div>
-
+{*
   {if $searchFilters}
   <div class="row-fluid">
     <div class="span4 offset8 alert alert-warning">
@@ -30,27 +30,27 @@
     </div>
   </div>
   {/if}
-
+*}
 <form method="get" action="{$url}/Search/Results" id="advSearchForm" name="searchForm" class="form-inline search">
-  <div class="row-fluid">
-    <div class="span12">
-      <div class="advSearchContent row-fluid">
+  <div class="span12">
+    <div class="row-fluid">
+      <div class="advSearchContent">
         {if $editErr}
           {assign var=error value="advSearchError_$editErr"}
           <div class="span12 alert alert-error">{translate text=$error}</div>
         {/if}
     
-        <div id="groupJoin" class="row-fluid searchGroups">
-          <div class="well well-small pull-right searchGroupDetails">
-            <div class="pull-left well-small">
-              <label for="groupJoinOptions"><strong>{translate text="search_match"}:</strong></label>
+        <div id="groupJoin" class="well well-small searchGroups">
+          <div class="pull-right searchGroupDetails">
+            <div class="pull-left">
+              <label for="groupJoinOptions"><strong>{translate text="search_match"}:&nbsp;</strong></label>
             </div>
             <select id="groupJoinOptions" class="selectpicker" name="join">
               <option value="AND">{translate text="group_AND"}</option>
               <option value="OR"{if $searchDetails and $searchDetails.0.join == 'OR'} selected="selected"{/if}>{translate text="group_OR"}</option>
             </select>
           </div>
-          <div class="pull-left well-small">
+          <div class="pull-left">
             <strong>{translate text="search_groups"}:</strong>
           </div>
         </div>
@@ -112,16 +112,18 @@
           </noscript>
         </div>
       </div>
+
     </div>
     <div class="pull-left">
       <a id="addGroupLink" href="#" class="btn btn-success offscreen" onclick="addGroup(); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;{translate text="add_search_group"}</a><br /><br />
     </div>
 
+{* <!--
   {if $illustratedLimit}
     <div class="span8 offset1 well well-small pull-right">
       <div class="pull-left">
         <fieldset>
-          <!--legend-->{translate text="Illustrated"}:<!--/legend-->
+          {translate text="Illustrated"}:
           {foreach from=$illustratedLimit item="current"}
             <input id="illustrated_{$current.value|escape}" type="radio" name="illustration" value="{$current.value|escape}"{if $current.selected} checked="checked"{/if}/>
             <label for="illustrated_{$current.value|escape}">{translate text=$current.text}</label><br/>
@@ -135,10 +137,12 @@
 
   {if $limitList|@count gt 1}
       <fieldset class="offset4">
-        <!--legend-->{translate text='Results per page'}:<!--/legend-->
+        {translate text='Results per page'}:
         <select id="limit" name="limit" class="selectpicker">
           {foreach from=$limitList item=limitData key=limitLabel}
+*}
             {* If a previous limit was used, make that the default; otherwise, use the "default default" *}
+{*
             {if $lastLimit}
               <option value="{$limitData.desc|escape}"{if $limitData.desc == $lastLimit} selected="selected"{/if}>{$limitData.desc|escape}</option>
             {else}
@@ -150,13 +154,15 @@
   {/if}
     </div>
   {if $illustratedLimit}
+
     </div>
   {/if}
+--> *}
   </div>
 
   <!--div class="clearfix">&nbsp;</div-->
 
-  <hr />
+  <hr style="clear: both;" />
   
   <div class="row-fluid">   
   {if $dateRangeLimit}
@@ -174,7 +180,7 @@
       <input type="text" size="4" maxlength="4" class="yearbox" name="main_date_strto" id="publishDateto" value="{if $dateRangeLimit.1}{$dateRangeLimit.1|escape}{/if}" />
       <br/>
       <div class="well-small" id="sliderContainer">
-        <input id="publishDateSlider" class="dateSlider span-10" type="slider" name="sliderContainer" value="0000;2012" />
+        <input id="publishDateSlider" class="dateSlider span-10" type="slider" name="sliderContainer" value="{if $dateRangeLimit.0}{$dateRangeLimit.0|escape}{else}0000{/if};{if $dateRangeLimit.1}{$dateRangeLimit.1|escape}{else}2012{/if}" />
       </div>
       <div class="clearfix">&nbsp;</div>
     </div>
@@ -184,7 +190,7 @@
     {js filename="chosen/chosen.jquery.js"}
     {js filename="chosen_multiselects.js"}
     {foreach from=$facetList item="list" key="label"}
-      <div class="span3 offset1 well-small pull-left facetsContainer">
+      <div class="span4 offset1 well-small facetsContainer">
         <label class="label displayBlock" for="limit_{$label|replace:' ':''|escape}">{translate text=$label}:</label><br />
         <select class="chzn-select span12" data-placeholder="{translate text="No Preference"}" id="limit_{$label|replace:' ':''|escape}" name="orfilter[]" multiple="multiple" size="10">
         {foreach from=$list item="value" key="display"}
@@ -200,7 +206,7 @@
 
   <div class="row-fluid">
 
-    <div class="span12 well-small mapContainer">
+    <div class="span12 mapContainer">
       {js filename="jquery.geo.min.js"}
       {js filename="selection_map.js"}
     {* help text, currently not included 
@@ -210,7 +216,18 @@
 
         <div class="span7">
           <label class="label displayBlock" for="coordinates">{translate text='Coordinates:'}</label>
-          <input id="coordinates" name="coordinates" />
+          {php}
+            $filters = $this->get_template_vars('searchFilters');
+            if (isset($filters['Other']) && is_array($filters['Other'])) {
+                foreach ($filters['Other'] as $key => $value) {
+                    if (is_array($value) && strstr($value['field'], 'location_geo')) {
+                        $value = substr(preg_replace('/^Intersects\(/', '', $value['value']), 0, -1);
+                        $this->assign('coordinates', $value);
+                    }
+                }
+            }
+          {/php}
+          <input id="coordinates" name="coordinates" value="{if $coordinates}{$coordinates}{/if}" />
         <div id="selectionMapTools">
           <label for="mapPan" class="radio inline">
             <input id="mapPan" type="radio" name="tool" value="pan" checked="checked" />
@@ -226,9 +243,9 @@
           </label>
         </div>
         </div>
-        <div class="span4 offset1 alert alert-info">
-          <span id="selectionMapHelp">
-            <span class="infohelp pull-left" style="height: 13px; padding-top: 0; padding-right: 0; background-position: -48px 2px;"></span>
+        <div class="span5 alert alert-info">
+          <span class="infohelp pull-left" style="height: 48px; padding-top: 0; padding-right: 0; background-position: -48px 2px;"></span>
+          <span id="selectionMapHelp">            
             <span id="selectionMapHelpPan">{translate text="adv_search_map_pan_help"}</span>
             <span id="selectionMapHelpPolygon" class="hide">{translate text="adv_search_map_polygon_help"}</span>
             <span id="selectionMapHelpRectangle" class="hide">{translate text="adv_search_map_rectangle_help"}</span>
@@ -279,9 +296,9 @@
   </div>
 
   <div class="row-fluid">
-    <div class="well-small pull-right">
+    <div class="pull-right">
       {*<input type="submit" class="btn btn-info btn-large button searchButton right" name="submit" value="{translate text="Find"}"/> *}
-      <button type="submit" class="btn btn-large btn-info" name="submit">{translate text="Find"}&nbsp;<i class="icon-zoom-in icon-white"></i></button>
+      <button id="advancedSearchButton" type="submit" class="btn btn-large btn-info" name="submit">{translate text="Find"}&nbsp;<i class="icon-zoom-in icon-white"></i></button>
     </div>
   </div>
 
@@ -306,10 +323,10 @@
 
 </ul>
 </script>
-<script type="text/html" id="new_group_tmpl">    
+<script type="text/html" id="new_group_tmpl">
     <div id="group<%=nextGroupNumber%>" class="text-right well well-small group group<%=nextGroupNumber % 2%>">
       <div class="pull-left">
-        <a href="#" class="btn btn-mini btn-danger delete" id="delete_link_<%=nextGroupNumber%>" onclick="deleteGroupJS(this); return false;"><i class="icon-remove icon-white delete"></i>&nbsp;<%=deleteSearchGroupString%></a>
+        <a href="#" class="btn btn-small btn-danger delete" id="delete_link_<%=nextGroupNumber%>" onclick="deleteGroupJS(this); return false;"><i class="icon-remove icon-white delete"></i>&nbsp;<%=deleteSearchGroupString%></a>
       </div>
         <div class="groupSearchDetails">
             <div class="join">
@@ -323,7 +340,7 @@
         </div>
 
         <div id="group<%=nextGroupNumber%>SearchHolder" class="text-left groupSearchHolder"></div>
-        <div class="text-right addSearch"><a href="#" class="btn btn-mini btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
+        <div class="text-left addSearch"><a href="#" class="btn btn-small btn-success" id="add_search_link_<%=nextGroupNumber%>" onclick="addSearchJS(this); return false;"><i class="icon-plus-sign icon-white"></i>&nbsp;<%=addSearchString%></a></div>
     </div>
 </script>
 {/literal}
@@ -351,7 +368,7 @@
 {* Step 3: Build the page *}
 <script type="text/javascript">
 //<![CDATA[
-  {if $searchDetails}
+  {if $searchDetails && isset($searchDetails.0.group)}
     {foreach from=$searchDetails item=searchGroup}
       {foreach from=$searchGroup.group item=search name=groupLoop}
         {if $smarty.foreach.groupLoop.iteration == 1}
@@ -368,8 +385,36 @@
   {/if}
   // show the add group link
   $("#addGroupLink").removeClass("offscreen");
+  {if $languagesSorted}
+    {literal}
+    $(function() {
+      // Add a separator to the language facet list
+      printSeparator();
+
+      // Update separator position on select
+      $('#limit_Language').change(function() {
+          printSeparator();
+      });
+
+      function printSeparator() {
+          var lastOrdered = {/literal}{$languagesSorted}{literal} - 1;
+          $('.chzn-results li').removeClass('langSeparator');
+          $('#limit_Language_chzn_o_'+lastOrdered).nextAll('.active-result')
+            .first().addClass('langSeparator');
+      }
+    });
+    {/literal}
+  {/if}
 //]]>
 </script>
 </div>
+{* Apply selectpicker style to added fields *}
+<script type="text/javascript">
+{literal}
+  $(document).on('click', 'a[id^="add"]', function() {
+    $('select').not('.chzn-select').selectpicker();
+  });
+{/literal}
+</script>
 
 <!-- END of: Search/advanced.tpl -->

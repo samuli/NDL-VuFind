@@ -12,13 +12,13 @@ function registerLoadHandler(linkClass, method) {
     $('ul.browse a.'+linkClass).each(function() {
         var params = extractParams($(this).attr('class'));
         params.query = $(this).attr('title');
-        $(this).unbind('click').click(function() {
+        $(this).unbind('click').click(function(e) {
             highlightBrowseLink(this);
             loadBrowseOptions(method, params);
-            return false;
+            e.preventDefault();
         });
     });
-}
+an}
 
 function loadBrowseOptions(method, params) {
     $('#list4container').empty().removeClass('browseNav');

@@ -49,6 +49,6 @@
     {include file="MyResearch/catalog-login.tpl"}
   {/if}
 </div>
-<div class="clearfix">&nbsp;</div>
+<div class="clearfix"></div>
 
 <!-- END of: MyResearch/fines.tpl -->

@@ -2,7 +2,7 @@
 
 {* Listing Options *}
 <div class="resultHeader">
-  <h4>{if $recordCount}<a href="{$more|escape}">{translate text="Books etc."}</a>{else}{translate text="Books etc."}{/if}</h4>
+  <h3>{if $recordCount}<a href="{$more|escape}">{translate text="Books etc."}</a>{else}{translate text="Books etc."}{/if}</h3>
   <i>{translate text="local_results_description"}</i><br/><br/>
   {if $recordCount}
   <div class="well well-small resultViewOptions clearfix">

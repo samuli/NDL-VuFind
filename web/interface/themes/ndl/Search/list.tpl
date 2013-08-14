@@ -13,21 +13,27 @@
       {/if}
       {if $dualResultsEnabled && $searchType != 'advanced'}
       <div class="headerLeft">
-        <h3 class="searchTerms grid_12">
+        <h2 class="searchTerms grid_12">
       {else}
-      <h3 class="searchTerms grid_24">
+      <h2 class="searchTerms grid_24">
       {/if}
-      {if $lookfor == ''}{translate text="history_empty_search"}
+      {if $isEmptySearch}
+        {if $searchType == 'advanced'}
+          {translate text="Advanced Search"}: {translate text="history_empty_search_adv"}
+        {else}
+          {translate text="history_empty_search"}
+        {/if}
       {else}
-        {if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}
-        {elseif $searchType == 'advanced'}{translate text="Your search terms"}: "{$lookfor|escape:"html"}
+        {if $searchType == 'basic'}
+           {translate text="Search"}: {$lookfor|escape:"html"}
+        {elseif $searchType == 'advanced'}
+           {translate text="Advanced Search"}: "{$lookfor|escape:"html"}"
         {elseif ($searchType == 'advanced') || ($searchType != 'advanced' && $orFilters)}
           {foreach from=$orFilters item=values key=filter}
           AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
         {/if}
-        {if $searchType == 'advanced'}"{/if}
       {/if}
-      </h3>
+      </h2>
       {if $spellingSuggestions}
       {if $dualResultsEnabled && $searchType != 'advanced'}
       <div class="correction grid_12">
@@ -45,7 +51,7 @@
       </div>
       <div class="headerRight">
         <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
-        <a class="button buttonFinna buttonSelected" href=".">{translate text="Books etc."}</a>
+        <a class="button buttonFinna buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="Books etc."}</a>
         <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
       </div>
       {/if}
@@ -177,5 +183,13 @@
   {* End Narrow Search Options *}
   
 <div class="clear"></div>
+
+{literal}
+  <script type="text/javascript">
+    $(function() {
+        initSearchInputListener();
+    });
+  </script>
+{/literal}
 
 <!-- END of: Search/list.tpl -->

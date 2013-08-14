@@ -46,7 +46,7 @@
       <div class="headerRight">
         <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/PCI/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
         <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/PCI/Search":"/Search/Results"|replace:"prefilter=":"prefiltered="}">{translate text="Books etc."}</a>
-        <a class="button buttonFinna buttonSelected" href=".">{translate text="Articles, e-Books etc."}</a>
+        <a class="button buttonFinna buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="Articles, e-Books etc."}</a>
       </div>
       {/if}
     </div> {* content *}
@@ -165,5 +165,13 @@
   {* End Narrow Search Options *}
   
 <div class="clear"></div>
+
+{literal}
+  <script type="text/javascript">
+    $(function() {
+        initSearchInputListener();
+    });
+  </script>
+{/literal}
 
 <!-- END of: Search/list.tpl -->

@@ -5,7 +5,7 @@
 <div id="resultList" class="span12">      
   <div class="resulthead row-fluid">
     <div class="span12 alert alert-success well-small resultTerm">
-      <h4 class="pull-left searchTerms">
+      <h2 class="pull-left searchTerms">
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
         {if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}
@@ -16,9 +16,9 @@
         {/if}
         {if $searchType == 'advanced'}"{/if}
       {/if}
-      </h4>
+      </h2>
       <div class="pull-right">
-        <a class="btn btn-small buttonSelected" href=".">{translate text="All Results"}</a>
+        <a class="btn btn-small buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="All Results"}</a>
         <a class="btn btn-small" href="{$more}">{translate text="Books etc."}</a>
         <a class="btn btn-small" href="{$pci_more}">{translate text="Articles, e-Books etc."}</a>
       </div>
@@ -57,7 +57,7 @@
 	    </div>
 	    <div class="span6 rightColumn" id="deferredResults">
 	      <div class="resulthead">
-	        <h4><a href="{$pci_more|escape}">{translate text="Articles, e-Books etc."}</a></h4>
+	        <h3><a href="{$pci_more|escape}">{translate text="Articles, e-Books etc."}</a></h3>
 	        <i>{translate text="pci_results_description"}</i><br/><br/>
 	        <script type="text/javascript">
 	          document.write('<p class="iframe_loading"> {translate text="Loading"}...</p>');

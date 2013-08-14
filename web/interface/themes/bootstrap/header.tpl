@@ -8,11 +8,12 @@
 {/if}
 
 <div id="loginHeader" class="row-fluid{if !$showTopSearchBox} text-right{/if}"> <!-- 2.1 -->
-  <a href="{$path}/Content/searchhelp" class="badge pull-left hidden-phone showSearchHelp" title="{translate text="Search Tips"}"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a>
-
+{if $pageTemplate != 'advanced.tpl'}
+  <a href="{$path}/Content/searchhelp" class="badge pull-left showSearchHelp" title="{translate text="Search Tips"}"><i class="icon-info-sign"></i>&nbsp;{translate text="Search Tips"}</a>
+{/if}
 {if !$hideLogin}
   {if $catalogAccounts}
-    <form method="post" action="" class="hidden-phone">
+    <form method="post" action="#" class="hidden-phone">
   {/if} 
     <ul id="logoutOptions" class="hidden-phone inline{if $showTopSearchBox} pull-right{/if}{if !$user} hide{/if}">
     {if $catalogAccounts}
@@ -51,13 +52,13 @@
 {* if $showTopSearchBox*}
 
 {* This is a temporary solution: assign specific id for MetaLib, all others can use the default logo *}
-{*
+{* <!--
 <div class="row-fluid">
-<div id="logoHeader{if $module=='MetaLib'}MetaLib{/if}" class="span4 text-center"> <!-- 2.2 -->
+<div id="logoHeader{if $module=='MetaLib'}MetaLib{/if}" class="span4 text-center">
   <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src=$logoUrl}</a>
-</div> <!-- /2.2 -->
+</div>
 
-<div id="searchFormHeader" class="span6"> <!-- 2.3 -->
+<div id="searchFormHeader" class="span6">
 
   <div class="row-fluid">
   {if $pageTemplate != 'advanced.tpl'}
@@ -68,10 +69,10 @@
     {/if}
   {/if}
   </div>
-</div> <!-- /2.3 -->
+</div>
 </div>
 {else}
-*}
+--> *}
 <div class="row-fluid text-center{* searchHome*}"> <!-- 2.4 -->
 
   {if $offlineMode == "ils-offline"}
@@ -84,22 +85,24 @@
   {/if}
   <div class="span12 text-center{* searchHomeLogo{if $module=='MetaLib'} searchHomeLogoMetaLib{/if*}">
   {*if $showTopSearchBox*}
-    <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{/if}" title="{translate text="Home"}">{image src=$logoUrl}</a>
+    <a id="logo" href="{$url}{if $module=='MetaLib'}/MetaLib/Home{elseif $module=='PCI'}/PCI/Home{/if}" title="{if $module=='MetaLib'}{translate text="MetaLib Search"}: {elseif $module=='PCI'}{translate text="PCI Search"}: {/if}{translate text="Home"}">{image src=$logoUrl}</a>
   {*else}
     <span id="logo">{image src=$logoUrl}</span>
   {/if*}
   </div>
   {if !$showTopSearchBox}
   <div class="row-fluid">
+    {if !$error}    
     <div class="span12 blurbLineWrapper lead">
       {include file="Search/home-header.tpl"}
     </div>
+    {/if}
   </div>
   {/if}
 </div> <!-- /2.4 -->
 
 <div class="row-fluid searchHomeForm"> <!-- 2.5 -->
-  {if $module=="Summon" || $module=="EBSCO" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib"}
+  {if $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib"}
     {include file="`$module`/searchbox.tpl"}
   {else}
     {include file="Search/searchbox.tpl"}

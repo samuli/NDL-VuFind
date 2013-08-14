@@ -1,8 +1,8 @@
 <!-- START of: RecordDrivers/Index/holdings.tpl -->
 
-<h3>{translate text=$source prefix='source_'}</h3>
-
 <div class="well-small">
+  <h3>{translate text=$source prefix='source_'}</h3>
+
 {if $id|substr:0:7 == 'helmet.'}
   <br/>
   <span class="native_link">
@@ -45,7 +45,7 @@
 {/foreach}
 
 {if !empty($holdingURLs) || $holdingsOpenURL}
-  <h5 class="badge badge-inverse">{translate text="Internet"}</h5>
+  <h5 class="label label-inverse">{translate text="Internet"}</h5>
   {if !empty($holdingURLs)}
     {foreach from=$holdingURLs item=desc key=currentUrl name=loop}
       <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
@@ -56,40 +56,80 @@
   {/if}
 {/if}
 
+
 {if !$holdings}
-<h5>{translate text="No holdings information available"}</h5>
+<h5 class="alert alert-info">{translate text="No holdings information available"}</h5>
 {/if}
 {foreach from=$holdings item=holding key=location}
-<h5 class="badge badge-info">{$location|translate|escape}</h5>
+  {assign var=prevMfhdId value=''}
+  {foreach from=$holding item=row}
+
+{if $prevMfhdId != $row.mfhd_id}
+  {if $prevMfhdId}
+  </table>
+  {/if}
+  <h5 class="label label-info">{$location|translate|escape}</h5>
+  {assign var=prevMfhdId value=$row.mfhd_id}
 <table cellpadding="2" cellspacing="0" border="0" class="table table-condensed table-hover citation" summary="{translate text='Holdings details from'} {translate text=$location}">
-  {if $holding.0.callnumber}
+  {if $row.callnumber}
   <tr>
     <th>{translate text="Call Number"}: </th>
-    <td>{$holding.0.callnumber|escape}</td>
+    <td>{$row.callnumber|escape}</td>
   </tr>
   {/if}
-  {if $holding.0.summary}
+  {if $row.summary}
   <tr>
     <th>{translate text="Volume Holdings"}: </th>
     <td>
-      {foreach from=$holding.0.summary item=summary}
+      {foreach from=$row.summary item=summary}
       {$summary|escape}<br>
       {/foreach}
     </td>
   </tr>
   {/if}
-  {if $holding.0.notes}
+  {if $row.purchase_history}
+  <tr>
+    <th>{translate text="Most Recent Received Issues"}: </th>
+    <td>
+      {foreach from=$row.purchase_history item=row}
+      {$row.issue|escape}<br>
+      {/foreach}
+    </td>
+  </tr>
+  {/if}
+  {if $row.notes}
   <tr>
     <th>{translate text="Notes"}: </th>
     <td>
-      {foreach from=$holding.0.notes item=data}
+      {foreach from=$row.notes item=data}
       {$data|escape}<br>
       {/foreach}
     </td>
   </tr>
   {/if}
-  {foreach from=$holding item=row}
-    {if $row.barcode != ""}
+  {if $row.supplements}
+  <tr>
+    <th>{translate text="Supplements"}: </th>
+    <td>
+      {foreach from=$row.supplements item=supplement}
+      {$supplement|escape}<br>
+      {/foreach}
+    </td>
+  </tr>
+  {/if}
+  {if $row.indexes}
+  <tr>
+    <th>{translate text="Indexes"}: </th>
+    <td>
+      {foreach from=$row.indexes item=index}
+      {$index|escape}<br>
+      {/foreach}
+    </td>
+  </tr>
+  {/if}
+{/if}
+
+    {if $row.item_id}
   <tr>
     <th>{translate text="Copy"} {$row.number|escape}</th>
     <td>
@@ -133,14 +173,6 @@
 </table>
 {/foreach}
 
-{if $history}
-<h5 class="badge">{translate text="Most Recent Received Issues"}</h5>
-<ul>
-  {foreach from=$history item=row}
-  <li>{$row.issue|escape}</li>
-  {/foreach}
-</ul>
-{/if}
 </div>
 
 {literal}

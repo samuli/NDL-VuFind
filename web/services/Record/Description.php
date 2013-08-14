@@ -52,7 +52,6 @@ class Description extends Record
         
         if (!$interface->is_cached($this->cacheId)) {
             $interface->setPageTitle(
-                translate('Description') . ': ' .
                 $this->recordDriver->getBreadcrumb()
             );
             $interface->assign(

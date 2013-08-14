@@ -32,7 +32,7 @@
     {* css media="screen, projection" filename="768tablet.css" *}
     {* css media="screen, projection" filename="480mobilewide.css" *}
     {* css media="screen, projection" filename="320mobile.css" *}
-    {* css media="screen, projection" filename="settings.css" *}
+    {css media="screen, projection" filename="settings.css"}
     {* Load retina style sheet last *}
     {* css media="screen, projection" filename="retina.css" *}
     
@@ -101,7 +101,7 @@
       </div>
 
       <div class="row-fluid">
-        <div class="well well-small header">
+        <div class="span12 backgroundContainer well well-small header">
           {include file="header.tpl"}
         </div>
       </div>

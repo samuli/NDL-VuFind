@@ -10,7 +10,7 @@
       {/if}
     </div>
     {if $item[1] > 0}<div class="collectionBrowseCount">{$item[1]} {translate text="Items"}</div> {/if}
-    <div class="clearer"><!-- empty --></div>
+    <div class="clearfix"><!-- empty --></div>
   </div>
 {/foreach}
 

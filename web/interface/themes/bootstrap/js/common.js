@@ -27,14 +27,44 @@ $(document).ready(function(){
     // Do this before setting focus
     initClearable();
     
-    // put focus on the "mainFocus" element if it's visible
-    setMainFocus();
-
     // support "jump menu" dropdown boxes
     $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
 
     // attach click event to the "keep filters" checkbox
     $('#searchFormKeepFilters').change(function() { filterAll(this); });
+
+
+    // Toggle Keep filters -option
+
+    // detect when mouse is inside search area 
+    $('#searchFormContainer').hover(
+        function() {
+            $(this).addClass("hover");
+        },
+        function() {
+            $(this).removeClass("hover");
+        }
+    );
+
+    // show when search field is focused
+    $('#searchForm_input').focus(function(e) { toggleKeepFiltersOption(true); });
+
+    // show when prefilter is changed
+    $("#searchForm_filter").change(function(e) { toggleKeepFiltersOption(true); });
+
+    // hide when mouse is clicked and search field is not focused and mouse is not inside search area
+    $(document).mouseup(function() {
+        if (!$('#searchForm_input').is(":focus") && !$('#searchFormContainer').hasClass("hover")) {
+            toggleKeepFiltersOption(false);
+        }
+    });
+
+    // preserve active search term and prefilter
+    origSearchTerm = $('#searchForm_input').val();
+    origPrefilter = $("#searchForm_filter").val();
+
+
+
 
     // attach click event to the search help links
     /*
@@ -53,21 +83,21 @@ $(document).ready(function(){
     */
 
     // assign click event to searchbox context help
-    $('.showSearchHelp').click(function() {
-      $('div.searchContextHelp').toggle();
-      return false;
+    $('.showSearchHelp').click(function(e) {
+        $('div.searchContextHelp').toggle();
+        e.preventDefault();
     });
     // assign click event to searchbox context help close image
-    $('.hideSearchHelp a').click(function() {
-      $('div.searchContextHelp').hide();
-      return false;
+    $('.hideSearchHelp a').click(function(e) {
+        $('div.searchContextHelp').hide();
+        e.preventDefault();
     });
     
     // assign click event to "email search" links
-    $('a.mailSearch').click(function() {
+    $('a.mailSearch').click(function(e) {
         var id = this.id.substr('mailSearch'.length);
         var $dialog = getLightbox('Search', 'Email', id, null, this.title);
-        return false;
+        e.preventDefault();
     });
 
     // assign action to the "select all checkboxes" class
@@ -87,9 +117,9 @@ $(document).ready(function(){
     });  
     
     // assign click event to "viewCart" links
-    $('a.viewCart').click(function() {
+    $('a.viewCart').click(function(e) {
         var $dialog = getLightbox('Cart', 'Home', null, null, this.title, '', '', '', {viewCart:"1"});
-        return false;
+        e.preventDefault();
     });
     
     // Print
@@ -110,6 +140,9 @@ $(document).ready(function(){
     //ContextHelp
     contextHelp.init();
     contextHelp.contextHelpSys.load();
+
+
+
 });
 
 function toggleMenu(elemId) {
@@ -138,6 +171,10 @@ function filterAll(element, formId) {
     }
     $("#" + formId + " :input[type='checkbox'][name='filter[]']")
         .attr('checked', element.checked);
+
+    // switch to default sort mode
+    var field = $("#searchForm").find("input[name='sort']");
+    field.attr("disabled", $('#searchFormKeepFilters').is(":checked") ? false : "disabled");
 }
 
 function extractParams(str) {
@@ -179,8 +216,12 @@ function initAutocomplete() {
 	var minLength = params.minLength > 0 ? params.minLength : 3;
 	ac = searchInput.autocomplete({
 		minLength: minLength,
-		select: function(event, ui) { 
-			searchInput.val('"' + ui.item.label + '"');
+		select: function(e, ui) { 
+		    if (e.keyCode === 13 && searchInput.val() != ui.item.label) {
+               searchForm.submit();
+               return false;
+            }
+			searchInput.val(ui.item.label);
 			searchForm.submit(); 
 		},
 	    source: function(request, response) {
@@ -206,10 +247,20 @@ function initAutocomplete() {
 	                }
 	            }
 	            });
-	        }
+	    },
+        
+
+        open: function(event, ui) {
+            $(this).autocomplete("widget").css({
+                "width": 420
+            });
+        }
+
 	    });
 
 	ac.data( "autocomplete" )._renderItem = function(ul, item) {
+        ul.css({"width": 420, "overflow": "hidden"});
+
         var label = item.label.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" 
         				+ $.ui.autocomplete.escapeRegex(this.term) 
         				+ ")(?![^<>]*>)(?![^&;]+;)", "gi"), "<strong>$1</strong>");
@@ -217,35 +268,56 @@ function initAutocomplete() {
                 .data("item.autocomplete", item)
                 .append("<a>" + label + "</a>")
                 .appendTo(ul);
+
     };
 
 }
 
 function initClearable(){
-    $('.clearable').clearSearch({ callback: function() { console.log("cleared"); } } );
+    $('.clearable').clearSearch();
     // update value
     valueContent = $(".clearable").attr("value");
     if (valueContent == null) {
       $(".clearable").val("").change();
     };
-    // change width
-    $(".clearable").width("200px").change();
 }
 
-function setMainFocus(){
-    $('.mainFocus').each(function() { 
-        var elem = $(this);
-        
-        var docViewTop = $(window).scrollTop();
-        var docViewBottom = docViewTop + $(window).height();
-
-        var elemTop = elem.offset().top;
-        var elemBottom = elemTop + elem.height();        
-        if (docViewTop < elemTop && docViewBottom > elemBottom) {
-            elem.focus(); 
-        }
+function initSearchInputListener() {
+    var searchInput = $('#searchForm_input');
+    var disableListener;
+    $(window).keypress(function(e) {
+        var letter = String.fromCharCode(e.which);
+        if (e && (!$(e.target).is('input[type="text"], textarea') && searchInput.length > 0) 
+            && !$(".ui-dialog").is(":visible") && !disableListener) {
+            
+            // Move cursor to the end of the input
+            var tmpVal = searchInput.val();
+            searchInput.val(' ').focus().val(tmpVal + letter);
+            
+            // Scroll to the search form
+            $('html, body').animate({
+                scrollTop: searchInput.offset().top - 20
+            }, 150);
+           
+            e.preventDefault();
+       } 
+       disableListener = false;
     });
+    
+    // Disable on pressing a modifier key
+    $(window).keydown(function(e) {
+        if (e.metaKey || e.ctrlKey || e.altKey || e.which == 224 || e.which == 91) {
+            disableListener = true;
+         }
+     });
+    
+    // Re-enable on keyup
+    $(window).keyup(function(e) {
+        disableListener = false;
+    });
+    
 }
+
 
 function htmlEncode(value){
     if (value) {
@@ -398,3 +470,31 @@ var contextHelp = {
         }
     }
 };
+
+function toggleKeepFiltersOption(mode) {
+    // force visible if search term or prefilter has been modified
+    var currentSearchTerm = $('#searchForm_input').val();
+    var currentPrefilter = $("#searchForm_filter").val();
+    if (origSearchTerm != currentSearchTerm || origPrefilter != currentPrefilter) {
+        mode = true;
+    }
+
+    var obj = $("#searchForm").find(".keepFilters");
+    if (!mode) {
+        // already hidden?
+        if (!obj.is(":visible")) {
+            return;
+        }
+        // search field focused?
+        if ($('#searchForm_input').is(":focus")) {
+            return;
+        }
+    }
+    if (mode) {
+        obj.stop().slideDown(300);
+    } else {
+        obj.stop().slideUp(300, function() { $(this).hide(); });
+
+    }
+
+}

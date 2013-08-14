@@ -1,3 +1,7 @@
+<!-- START of: RecordDrivers/Lido/staff.tpl -->
+
 {$record}
-<hr/>
+{*<hr />*}
 {include file="RecordDrivers/Index/staff.tpl}
+
+<!-- END of: RecordDrivers/Lido/staff.tpl -->

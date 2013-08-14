@@ -777,7 +777,24 @@ class IndexRecord implements RecordInterface
         $interface->assign('history', $this->getRealTimeHistory());
 
         // Source ID
-        $interface->assign('source', $this->getSourceID());
+        $sourceId = $this->getSourceID();
+        $interface->assign('source', $sourceId);
+        
+        // NDL Location Service enabled
+        $config = getExtraConfigArray('LocationService');
+        if (isset($config['General']) && isset($config[$sourceId])) {
+            $baseUrl = $config['General']['url'];
+            $lang = $interface->getLanguage();            
+            $params = array(
+                'lang' => substr($lang, 0, 2),  
+                'owner' => $config[$sourceId]['owner']
+            );
+            $url = $baseUrl . '?' . http_build_query($params);
+            $interface->assign('locationServiceUrl', $url);  
+            if (isset($config['General']['modal']) && $config['General']['modal']) { 
+                $interface->assign('locationServiceModal', true);
+            }
+        }        
 
         return 'RecordDrivers/Index/holdings.tpl';
     }

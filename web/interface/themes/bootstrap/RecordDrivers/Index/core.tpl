@@ -1,6 +1,6 @@
 <!-- START of: RecordDrivers/Index/core.tpl -->
 
-<div id="recordMetadata" class="span8">
+<div id="recordMetadata" class="span8{if $sidebarOnLeft} sidebarOnLeft{/if}">
 
   {* Host Record Title *}
   {if !empty($coreContainerTitle)}
@@ -24,15 +24,6 @@
   </h4>
   {* End Title *}
 
-  {if !empty($coreRecordLinks)}
-  <div class="recordLinks">
-    {foreach from=$coreRecordLinks item=coreRecordLink}
-      {translate text=$coreRecordLink.title}:
-      <a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a>
-    {/foreach}
-  </div>
-  {/if}
-
   {* Display Cover Image, commented out since already in view.tpl
   {if $coreThumbMedium}
     {if $coreThumbLarge}<a href="{$coreThumbLarge|escape}">{/if}
@@ -49,6 +40,7 @@
 
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="table table-condensed table-hover text-left citation" summary="{translate text='Bibliographic Details'}">
+    {* Commented out since these are normally displayed in the links section
     {if !empty($coreNextTitles)}
     <tr valign="top" class="recordNextTitles">
       <th>{translate text='New Title'}: </th>
@@ -59,7 +51,9 @@
       </td>
     </tr>
     {/if}
+    *}
 
+    {* Commented out since these are normally displayed in the links section
     {if !empty($corePrevTitles)}
     <tr valign="top" class="recordPrevTitles">
       <th>{translate text='Previous Title'}: </th>
@@ -70,6 +64,7 @@
       </td>
     </tr>
     {/if}
+    *}
 
     {if !empty($coreOtherLinks)}
     {foreach from=$coreOtherLinks item=coreOtherLink}
@@ -99,6 +94,12 @@
           <a href="{$url}/Search/Results?lookfor={$field.name|escape:"url"}&amp;type=Author">{$field.name|escape}{if $field.role}, {$field.role|escape}{/if}</a>{if !$smarty.foreach.loop.last} ; {/if}
       {/foreach}
         </div>
+        {*  Statement of responsibility *}
+        {if $coreTitleStatement}
+        <a href="" class="info_more" id="titleStatement">{translate text='Additional information'}</a>
+        <div class="additionalInformation hide">{$coreTitleStatement|escape}</div>
+        {/if}
+        {* End statement of responsibility *}
       </td>
     </tr>
     {/if}
@@ -217,6 +218,9 @@
           {if is_array($field)}
             {if !empty($field.name)}
               <a href="{$url}/Search/Results?lookfor=%22{$field.name|escape:"url"}%22&amp;type=Series">{$field.name|escape}</a>
+              {if !empty($field.additional)}
+                {$field.additional|escape}
+              {/if}
               {if !empty($field.number)}
                 {$field.number|escape}
               {/if}
@@ -324,16 +328,24 @@
     </tr>
     {/if}
     
-    {*
     {if !empty($coreRecordLinks)}
+    {assign var=prevRecordLinkTitle value=''}
     {foreach from=$coreRecordLinks item=coreRecordLink}
-    <tr valign="top" class="recordLinks">
-      <th>{translate text=$coreRecordLink.title}: </th>
-      <td><a href="{$coreRecordLink.link|escape}">{$coreRecordLink.value|escape}</a></td>
+      {if $prevRecordLinkTitle != $coreRecordLink.title}
+        {if $prevRecordLinkTitle}
+      </td>
     </tr>
+        {/if}
+    <tr valign="top" class="recordLinks">
+      <th>{translate text=$coreRecordLink.title}:</th>
+      <td>
+      {/if}
+      {assign var=prevRecordLinkTitle value=$coreRecordLink.title}
+      <a href="{$coreRecordLink.link|escape}">{if $coreRecordLink.value}{$coreRecordLink.value|escape}{else}{$coreRecordLink.issn}{/if}</a><br/>
     {/foreach}
+      </td>
+    </tr>
     {/if}
-    *}
     
     {if $toc}
     <tr valign="top" class="recordTOC">
@@ -372,35 +384,49 @@
 
 
 {* Display the lists that this record is saved to *}
-<div class="span8 alert alert-info pull-right savedLists hide" id="savedLists{$id|escape}">
-  <strong>{translate text="Saved in"}:</strong>
+<div class="row-fluid">
+  <div class="span8 alert alert-info savedLists hide{if !$sidebarOnLeft} pull-right{/if}" id="savedLists{$id|escape}">
+    <strong>{translate text="Saved in"}:</strong>
 
-{if $showPreviews && (!empty($holdingLCCN) || !empty($isbn) || !empty($holdingArrOCLC))}
-  {if $googleOptions}
-    <div class="googlePreviewDiv__{$googleOptions}">
-      <a title="{translate text='Preview from'} Google Books" class="hide previewGBS{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
-        <img src="https://www.google.com/intl/en/googlebooks/images/gbs_preview_button1.png" alt="{translate text='Preview'}"/>
-      </a>
-    </div>
+  {if $showPreviews && (!empty($holdingLCCN) || !empty($isbn) || !empty($holdingArrOCLC))}
+    {if $googleOptions}
+      <div class="googlePreviewDiv__{$googleOptions}">
+        <a title="{translate text='Preview from'} Google Books" class="hide previewGBS{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+          <img src="https://www.google.com/intl/en/googlebooks/images/gbs_preview_button1.png" alt="{translate text='Preview'}"/>
+        </a>
+      </div>
+    {/if}
+    {if $olOptions}
+      <div class="olPreviewDiv__{$olOptions}">
+        <a title="{translate text='Preview from'} Open Library" href="" class="hide previewOL{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+          <img src="{$path}/images/preview_ol.gif" alt="{translate text='Preview'}"/>
+        </a>
+      </div>
+    {/if}
+    {if $hathiOptions}
+      <div class="hathiPreviewDiv__{$hathiOptions}">
+        <a title="{translate text='Preview from'} HathiTrust" class="hide previewHT{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
+          <img src="{$path}/images/preview_ht.gif" alt="{translate text='Preview'}"/>
+        </a>
+      </div>
+    {/if}
+    <span class="previewBibkeys{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}"></span>
   {/if}
-  {if $olOptions}
-    <div class="olPreviewDiv__{$olOptions}">
-      <a title="{translate text='Preview from'} Open Library" href="" class="hide previewOL{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
-        <img src="{$path}/images/preview_ol.gif" alt="{translate text='Preview'}"/>
-      </a>
-    </div>
-  {/if}
-  {if $hathiOptions}
-    <div class="hathiPreviewDiv__{$hathiOptions}">
-      <a title="{translate text='Preview from'} HathiTrust" class="hide previewHT{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}" target="_blank">
-        <img src="{$path}/images/preview_ht.gif" alt="{translate text='Preview'}"/>
-      </a>
-    </div>
-  {/if}
-  <span class="previewBibkeys{if $isbn} ISBN{$isbn}{/if}{if $holdingLCCN} LCCN{$holdingLCCN}{/if}{if $holdingArrOCLC} OCLC{$holdingArrOCLC|@implode:' OCLC'}{/if}"></span>
-{/if}
+  </div>
 </div>
 
 <div class="clearfix">&nbsp;</div>
-
+{literal}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#titleStatement').click(function(event) {
+                event.preventDefault();
+                var div = $(this).siblings('.additionalInformation');
+                $(this).toggleClass('expanded');
+                div.slideToggle(150);
+                return false;
+            });
+        });
+    </script>
+{/literal}
 <!-- END of: RecordDrivers/Index/core.tpl -->

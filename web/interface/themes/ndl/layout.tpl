@@ -20,8 +20,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
-
     <title>{$pageTitle|truncate:64:"..."}</title>
     <link rel="shortcut icon" href="{path filename="images/favicon.ico"}" type="image/x-icon" />
     <link rel="apple-touch-icon-precomposed" href="{path filename="images/apple-touch-icon.png"}" />
@@ -164,10 +164,27 @@
     {literal}
         $(function(){
             $('#searchFormLabel').labelOver('labelOver')
-            setMainFocus();
         });
     {/literal}
     </script>
+    {php}
+        $ua = $_SERVER['HTTP_USER_AGENT'];
+        if(stripos($ua, 'ipad') !== false) {
+            print '<meta id="viewport" name="viewport" content="width=720px, initial-scale=1.0" />';
+        } else if ((stripos($ua, 'mobile') !== false && stripos($ua, 'safari') !== false) || stripos($ua, 'android') !== false ) {
+            print '<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0" />';
+            print '<script type="text/javascript">
+                    $(function(){
+                        var ww = ( $(window).width() < window.screen.width ) ? $(window).width() : window.screen.width;
+                        if (ww <= 480) {
+                            $("#viewport").attr("content", "width=480px, initial-scale=0.667");
+                        }
+                    });
+                 </script>';
+        } else {
+            print '<meta id="viewport" name="viewport" content="width=480px, initial-scale=1.0" />';
+        }
+    {/php}
     
     {* **** IE fixes **** *}
     {* Load IE CSS1 background-repeat and background-position fix *}
@@ -177,27 +194,16 @@
     <!--[if lt IE 9]>
       {js filename="html5.js"}
     <![endif]-->
-
-   
-    {* Viewport *}
-
-    <meta name="viewport" content=""/>
-    <script type="text/javascript">
-    {literal}
-    var w = window.screen.width;
-    if (w <= 1020 && w > 480) {
-        $('meta[name=viewport]').attr('content','width=731');
-    }
-    else if (w <= 480) {
-        $('meta[name=viewport]').attr('content','width=481');
-    }
-    {/literal}
-    </script>
-
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
     {if !$showTopSearchBox}
-    <a class="feedbackButton" href="{$path}/Feedback/Home">{translate text='Give feedback'}</a>
+        <a class="feedbackButton" href="{$path}/Feedback/Home">{translate text='Give feedback'}</a>
+    {/if}
+    {* Screen readers: skip to main content *}
+    {if $module == 'Record'}
+    <div id="skip-link">
+      <a href="#resultMain" class="element-invisible">{translate text='Skip to record details'}</a>
+    </div> 
     {/if}
     {* mobile device button*}
     {if $mobileViewLink}
@@ -228,9 +234,9 @@
       </div>
       -->
 
-      <div id="nav" class="nav">
+      <div id="nav" class="nav" role="navigation">
         <div class="content">
-          <ul id="headerMenu" class="grid_19">
+          <ul id="headerMenu" role="menubar">
             {include file="header-menu.$userLang.tpl"}
           </ul>
           <div class="lang">
@@ -274,6 +280,15 @@
     {include file="piwik.tpl"}
     {include file="AJAX/keepAlive.tpl"}
   </body>
+  {if !$showTopSearchBox}
+    {literal}
+      <script type="text/javascript">
+        $(function() {
+            initSearchInputListener();
+        });
+      </script>
+    {/literal}
+  {/if}
     
 </html>
 {/if}

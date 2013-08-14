@@ -194,6 +194,7 @@
   margin: 3px 0 3px 5px;
   position: relative;
   cursor: default;
+  float:none;
 }
 .chzn-container-multi .chzn-choices .search-choice-focus {
   background: #d4d4d4;

@@ -1633,6 +1633,7 @@ class SearchObject_Solr extends SearchObject_Base
      */
     public function buildRSS($result = null)
     {
+        global $configArray;
         // XML HTTP header
         header('Content-type: text/xml', true);
 
@@ -1667,13 +1668,15 @@ class SearchObject_Solr extends SearchObject_Base
             'mode'     => 'simplexml'
         );
         $serializer = new XML_Serializer($serializer_options);
-
+        
         // The XML parsers have trouble with the control characters
         //   inside the marc data, so lets get rid of the 'fullrecord'
         //   nodes. Not sure what we'll do if these are needed for some
         //   reason
         // The marc_error nodes can also cause problems, so let's get rid
         //   of them at the same time.
+        // Finally we add the record image to the array: for MARC records we
+        // use bookcover.php, for everything else thumbnail.php.
         for ($i = 0; $i < count($result['response']['docs']); $i++) {
             if (isset($result['response']['docs'][$i]['fullrecord'])) {
                 unset($result['response']['docs'][$i]['fullrecord']);
@@ -1681,8 +1684,32 @@ class SearchObject_Solr extends SearchObject_Base
             if (isset($result['response']['docs'][$i]['marc_error'])) {
                 unset($result['response']['docs'][$i]['marc_error']);
             }
-        }
 
+            $type = isset($result['response']['docs'][$i]['recordtype']) ?
+                    $result['response']['docs'][$i]['recordtype'] :
+                    false;
+            $id = isset($result['response']['docs'][$i]['id']) ?
+                  $result['response']['docs'][$i]['id'] :
+                  false;
+            $isbn = isset($result['response']['docs'][$i]['isbn'][0]) ?
+                    $result['response']['docs'][$i]['isbn'][0] :
+                    false;
+
+            if ($type === 'marc') {
+                if ($isbn) {
+                    $result['response']['docs'][$i]['imageUrl'] =
+                                $configArray['Site']['url'] .
+                                '/bookcover.php?isn=' .
+                                urlencode($isbn) . '&size=large';
+                }
+            } else if ($id) {
+                $result['response']['docs'][$i]['imageUrl'] =
+                            $configArray['Site']['url'] .
+                            '/thumbnail.php?id=' .
+                            urlencode($id) . '&index=0&size=large';
+            }
+        }
+        
         // Serialize our results from PHP arrays to XML
         if ($serializer->serialize($result)) {
             $xmlResults = $serializer->getSerializedData();

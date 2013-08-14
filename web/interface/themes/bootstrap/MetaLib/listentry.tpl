@@ -1,14 +1,25 @@
 <!-- START of: MetaLib/listentry.tpl -->
+
+<table>
+<tr>
+<td>
       <div class="listentry recordId" id="record{$record.ID.0|escape}">
         <div class="resultCheckbox">
         <label for="checkbox_{$record.ID.0|regex_replace:'/[^a-z0-9]/':''|escape}" class="offscreen">{translate text="Select this record"}</label>
         <input id="checkbox_{$record.ID.0|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="ids[]" value="{$record.ID.0|escape}" class="checkbox_ui"/>
         <input type="hidden" name="idsAll[]" value="{$record.ID.0|escape}" />
         </div>
+
+</td>
+<td>  
+
         <div class="coverDiv">
           <div class="resultNoImage"><p>{translate text='No image'}</p></div>
           <div class="resultImage"><a href="{$path}/bookcover.php?size=large{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" rel="{$record.ID.0|escape:"url"}" onclick="launchFancybox(this); return false;"><img id="thumbnail_{$record.ID.0|escape:"url"}" src="{$path}/bookcover.php?size=small{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" class="summcover" alt="{translate text="Cover Image"}"/></a></div>
         </div>
+
+</td>
+<td>
         
         <div class="resultColumn2">
           <div class="resultItemLine1">
@@ -44,8 +55,11 @@
 
           <span class="iconlabel format{$record.ContentType.0|getSummonFormatClass|escape}">{translate text=$record.ContentType.0}</span>
         </div>
-        
+
+</td>
       {if $listEditAllowed}
+<td>
+
         <div class="last floatright editItem">
           <a href="{$url}/MyResearch/Edit?id={$record.ID.0|escape:"url"}{if !is_null($listSelected)}&amp;list_id={$listSelected|escape:"url"}{/if}" class="edit tool"></a>
           {* Use a different delete URL if we're removing from a specific list or the overall favorites: *}
@@ -58,6 +72,10 @@
           class="delete tool" onclick="return confirm('{translate text='confirm_delete'}');"></a>
         </div>
       {/if}
+
+</tr>
+</table>
+
         <div class="clear"></div>
         <span class="Z3988" title="{$record.openUrl|escape}"></span>
       </div>

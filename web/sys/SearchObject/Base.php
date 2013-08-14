@@ -325,6 +325,16 @@ abstract class SearchObject_Base
                         $display = rtrim($display, '/');
                         $display = translate(array('prefix' => $translationPrefix, 'text' => $display));
                     }
+
+                    // Convert date display format from [YYYY TO YYYY] to YYYY - YYYY
+                    if ($field == 'main_date_str') {
+                        $display = preg_replace("/\[([0-9]+)( TO )([0-9]+)\]/", "$1 - $3", $display);
+                        
+                    // Prevent displaying of coordinates in the geographical filter
+                    } else if (strstr($field, 'location_geo')) {
+                        $display = translate('Geographical filter');
+                    }
+                    
                     $list[$facetLabel][] = array(
                         'value'      => $value,     // raw value for use with Solr
                         'display'    => $display,   // version to display to user
@@ -464,6 +474,11 @@ abstract class SearchObject_Base
             }
             break;
         }
+        
+        if (isset($_REQUEST['prefiltered'])) {
+            $params[] = "prefiltered=" . $_REQUEST['prefiltered'];
+        }
+        
         return $params;
     }
 
@@ -592,8 +607,7 @@ abstract class SearchObject_Base
 
         // Finally, if every advanced row was empty
         if (count($this->searchTerms) == 0) {
-            // Treat it as an empty basic search
-            $this->searchType = $this->basicSearchType;
+            // Treat it as an empty basic search but keep the type advanced
             $this->searchTerms[] = array(
                 'index'   => $this->defaultIndex,
                 'lookfor' => ''
@@ -845,7 +859,7 @@ abstract class SearchObject_Base
         // Get the base URL and initialize the parameters attached to it:
         $url = $this->getBaseUrl();
         $params = $this->getSearchParams();
-
+        
         // Add any filters
         if (count($this->filterList) > 0) {
             foreach ($this->filterList as $field => $filter) {
@@ -2343,6 +2357,29 @@ abstract class SearchObject_Base
         }
         // Default -- Basic search:
         return $this->searchTerms[0]['lookfor'];
+    }
+
+    /**
+     * Checks if the query used in the search (not the filters) is empty.
+     *
+     * @return boolean
+     * @access public
+     */
+    public function isEmptySearch()
+    {
+        // Advanced search?
+        if ($this->searchType == $this->advancedSearchType) {
+            foreach ($this->searchTerms as $group) {
+                foreach ($group['group'] as $item){
+                    if ($item['lookfor'] !== '') {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        // Default -- Basic search:
+        return $this->searchTerms[0]['lookfor'] === '';
     }
 
     /**

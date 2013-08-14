@@ -29,6 +29,18 @@
       {include file=$recommendations}
     {/foreach}
   {/if}
+  {if $searchType == 'PCIAdvanced'}
+      <div class="editSearch">
+        <p><a href="{$path}/PCI/Advanced?edit={$searchId}"><strong>{translate text="Edit this Advanced PCI Search"}</strong></a></p>
+        <p><a href="{$path}/PCI/Advanced"><strong>{translate text="Start a new Advanced PCI Search"}</strong></a></p>
+        {if $dualResultsEnabled}
+          <p><a href="{$path}/"><strong>{translate text="Start a new Basic Search"}</strong></a></p>
+        {else}
+          <p><a href="{$path}/PCI/Home"><strong>{translate text="Start a new Basic PCI Search"}</strong></a></p>
+        {/if}
+      </div>
+    </div>
+  {/if}
 </div>
 </div>
 {* Narrow Search Options, commented out for now

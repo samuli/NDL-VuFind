@@ -3,7 +3,7 @@ $(document).ready(function(){
 });
 
 function registerBulkActions() {
-    $('form[name="bulkActionForm"] input[type="submit"]').unbind('click').click(function(){
+    $('form[name="bulkActionForm"] input[type="submit"]').unbind('click').click(function(e){
         var ids = $.map($(this.form).find('input.checkbox_ui:checked'), function(i) {
             return $(i).val();
         });
@@ -40,7 +40,7 @@ function registerBulkActions() {
             break;
         }
         getLightbox(module, action, id, '', message, '', '', '', postParams);
-        return false;
+        e.preventDefault();
     });
 
     $('form[name="bulkActionForm"] select').change(function(){
@@ -48,11 +48,11 @@ function registerBulkActions() {
     });
     
     // Support delete list button:
-    $('.deleteList').unbind('click').click(function(){
+    $('.deleteList').unbind('click').click(function(e){
         var id = $(this).attr('id').substr('deleteList'.length);
         var message = $(this).attr('title');
         var postParams = {origin: 'Favorites', listID: id, deleteList: 'deleteList'};
         getLightbox('Cart', 'Home', '', '', message, 'MyResearch', 'Favorites', '', postParams);
-        return false;
+        e.preventDefault();
     });
 }

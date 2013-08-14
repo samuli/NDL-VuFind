@@ -75,10 +75,10 @@
       </div>
     </div>
   </div>
-  </div>
+</form>
+</div>
 
   <div class="clear"></div>
-</form>
 <br />
 <br />
 {literal}

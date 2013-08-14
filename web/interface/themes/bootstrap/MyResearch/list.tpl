@@ -33,8 +33,13 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   <div class="row-fluid">
     <div id="sidebarFavoritesLists" class="span4">
     {if $listList}
-      <h4 class="lead">{translate text='Your Lists'}</h4>
-  {*
+      <div>
+        <div style="float:left;"><h4 class="lead">{translate text='Your Lists'}</h4></div>
+        <div style="float:right;"><a href="{$url}/MyResearch/ListEdit" class="btn btn-small btn-success listAdd" id="listAdd" title="{translate text='Create a List'}"><i class="icon-plus-sign icon-white"></i>&nbsp;{translate text='Create a List'}</a></div>
+      </div>
+      <div class="clearfix"></div>
+
+      {*
       <a href="{$url}/MyResearch/ListEdit" class="btn btn-small btn-success pull-right listAdd" id="listAdd" title="{translate text='Create a List'}"><i class="icon-plus-sign icon-white"></i>&nbsp;{translate text='Create a List'}</a-->
   <!--
       <p class="clearfix"></p>
@@ -44,18 +49,19 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {foreach from=$listList item=listItem}
         <li>
           {if $list && $listItem->id == $list->id}
-          <a href="{$url}/MyResearch/ListEdit" class="btn btn-small btn-success pull-right listAdd" id="listAdd" title="{translate text='Create a List'}"><i class="icon-plus-sign icon-white"></i>&nbsp;{translate text='Create a List'}</a> 
-          <div class="well well-small selected">{$listItem->title|escape:"html"}&nbsp;<span class="favoritesCount">({$listItem->cnt})</span></div>
+          <div class="well well-small selected">{$listItem->title|escape:"html"}&nbsp;<span class="favoritesCount">({$listItem->cnt})</span>
             {if $listEditAllowed}
           
           <div class="editList">
             <a class="btn btn-small edit" href="{$url}/MyResearch/EditList/{$list->id|escape:"url"}"><i class="icon-pencil"></i>&nbsp;{translate text="edit_list"}</a>
-            <a class="btn btn-small btn-danger pull-right delete" href="{$url}/Cart/Home?listID={$list->id|escape}&amp;listName={$list->title|escape}&amp;origin=Favorites&amp;listFunc=editList&amp;deleteList=true"><i class="icon-remove icon-white"></i>&nbsp;{translate text="delete_list"}</a>
+            <a class="btn btn-small pull-right delete" href="{$url}/Cart/Home?listID={$list->id|escape}&amp;listName={$list->title|escape}&amp;origin=Favorites&amp;listFunc=editList&amp;deleteList=true"><i class="icon-remove"></i>&nbsp;{translate text="delete_list"}</a>
           </div>
             {/if}
+          </div>
           {else}
           <div class="well-small listItem"><a href="{$url}/MyResearch/MyList/{$listItem->id|escape:"url"}">{$listItem->title|escape:"html"}</a>&nbsp;<span class="favoritesCount">({$listItem->cnt})</span></div>
           {/if}
+          
         </li>
        {/foreach}
       </ul>
@@ -81,7 +87,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         </ul>
       </div>
     {/if}
-      <div class="clearfix">&nbsp;</div>
+      <div class="clearfix"></div>
     </div>
 
     <div class="span8 favoritesList last">
@@ -107,7 +113,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
         </form>
       </div>
-      <div class="clearfix">&nbsp;</div>
+      <div class="clearfix"></div>
 
     <form method="post" name="bulkActionForm" action="{$url}/Cart/Home">
       <input type="hidden" name="origin" value="Favorites" />
@@ -151,11 +157,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
                     {/foreach}
                   </select>
                 {/if}  
-                  <input type="submit" class="btn btn-small btn-info button" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
+                  <input type="submit" class="btn btn-small button" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
                   {if is_array($exportOptions) && count($exportOptions) > 0}
-                  <input type="submit" class="btn btn-small btn-info input-small button" name="export" value="{translate text='export_expanding'}" title="{translate text='export_selected'}"/>
+                  <input type="submit" class="btn btn-small input-small button" name="export" value="{translate text='export_expanding'}" title="{translate text='export_selected'}"/>
                   {/if}
-                  {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="btn btn-small btn-danger button" name="delete" value="{translate text='Delete'}" title="{translate text='delete_selected'}"/>{/if}
+                  {if $listEditAllowed}<input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="btn btn-small button" name="delete" value="{translate text='Delete'}" title="{translate text='delete_selected'}"/>{/if}
                 </div>
               </th>
             </tr>

@@ -162,8 +162,8 @@ class Advanced extends Action
         // Check to see if there is an existing range in the search object:
         if ($savedSearch) {
             $filters = $savedSearch->getFilters();
-            if (isset($filters['publishDate'])) {
-                foreach ($filters['publishDate'] as $current) {
+            if (isset($filters['main_date_str'])) {
+                foreach ($filters['main_date_str'] as $current) {
                     if ($range = VuFindSolrUtils::parseRange($current)) {
                         $from = $range['from'] == '*' ? '' : $range['from'];
                         $to = $range['to'] == '*' ? '' : $range['to'];
@@ -274,8 +274,49 @@ class Advanced extends Action
             foreach ($keys as $key) {
                 $facets[$list['label']][$key] = $currentList[$key];
             }
+            
+            $searchesConf = getExtraConfigArray('Searches');
+            
+            // Move primary languages (if set) to the top of the language list
+            if (isset($facets['Language']) && 
+                isset($searchesConf['PrimaryLanguages']['lang'])) {
+
+                $primaryLanguages = $searchesConf['PrimaryLanguages']['lang'];
+                $facets['Language'] = $this->_orderLanguageFacets($facets['Language'], 
+                    $primaryLanguages);
+            }
         }
         return $facets;
+    }
+    
+    /**
+     * Move primary languages to top of the language facet array
+     *
+     * @param array  $languages         The alphabetical language facet array
+     * @param array  $primaryLanguages  The languages to be prioritized
+     * 
+     * @return array                    The re-ordered language facet array
+     * @access private
+     */
+    private function _orderLanguageFacets($languages, $primaryLanguages) 
+    {
+        $primaryLanguages = array_reverse($primaryLanguages);
+        $ordered = 0;
+        foreach ($primaryLanguages as $primary) {
+            foreach ($languages as $key => $language) {
+                if ($language['filter'] == 'language:"'.$primary.'"') {
+                    $languages = array($key => $languages[$key]) + $languages;
+                    $ordered++;
+                    break;
+                }
+            } 
+        }
+        
+        global $interface;
+        $interface->assign('languagesSorted', $ordered);
+        
+        return $languages;
+        
     }
 }
 ?>

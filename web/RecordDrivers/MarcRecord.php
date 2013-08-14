@@ -965,7 +965,7 @@ class MarcRecord extends IndexRecord
         }
 
         // Now check 490 and display it only if 440/800/830 were empty:
-        $secondaryFields = array('490' => array('a'));
+        $secondaryFields = array('490' => array('a', 'x'));
         $matches = $this->getSeriesFromMARC($secondaryFields);
         if (!empty($matches)) {
             return $matches;
@@ -996,10 +996,10 @@ class MarcRecord extends IndexRecord
             if (is_array($series)) {
                 foreach ($series as $currentField) {
                     // Can we find a name using the specified subfield list?
-                    $name = $this->getSubfieldArray($currentField, $subfields);
+                    $name = $this->getSubfieldArray($currentField, $subfields, false);
                     if (isset($name[0])) {
-                        $currentArray = array('name' => $name[0]);
-
+                        $currentArray = array('name' => $this->stripTrailingPunctuation(array_shift($name)));
+                        $currentArray['additional'] = implode(' ', $name);
                         // Can we find a number in subfield v?  (Note that number is
                         // always in subfield v regardless of whether we are dealing
                         // with 440, 490, 800 or 830 -- hence the hard-coded array
@@ -1300,6 +1300,7 @@ class MarcRecord extends IndexRecord
         return array(
             'title' => $labelPrfx.$value,
             'value' => $title,
+            'issn'  => $issn, 
             'link'  => $link
         );
     }
@@ -1575,7 +1576,9 @@ class MarcRecord extends IndexRecord
     protected function getISSNs()
     {
         $fields = array(
-            '022' => array('a'),
+            '022' => array('a')
+            /* We don't want to display all ISSNs without further 
+             * explanation on their relationship with this record.
             '440' => array('x'),
             '490' => array('x'),
             '730' => array('x'),
@@ -1583,6 +1586,7 @@ class MarcRecord extends IndexRecord
             '776' => array('x'),
             '780' => array('x'),
             '785' => array('x')
+             */ 
         ); 
         $issn = array();
         foreach ($fields as $field => $subfields) {

@@ -7,8 +7,7 @@
     <div class="searchFormOuterWrapper">
 	    <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">
-	        <label for="searchForm_input" id="searchFormLabel" class="labelOver normal">{translate text="Find"}&hellip;</label>
-	        <input id="searchForm_input" type="text" name="lookfor"  value="{$lookfor|escape}" autocomplete="off" class="last clearable mainFocus" title='{translate text="Find"}&hellip;' />
+	        <input id="searchForm_input" type="text" name="lookfor"  value="{$lookfor|escape}" autocomplete="off" class="last mainFocus clearable" placeholder='{translate text="Find"}&hellip;' />
 	      </div>
 	      <div class="styled_select">
 	        <select id="searchForm_set" name="set" class="searchForm_styled">

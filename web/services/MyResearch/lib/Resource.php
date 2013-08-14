@@ -188,5 +188,19 @@ class Resource extends DB_DataObject
 
         return $commentList;
     }
+    
+    /**
+     * Get number of comments on resource.
+     *
+     * @return int
+     * @access public
+     */
+    public function getCommentCount()
+    {
+        include_once 'services/MyResearch/lib/Comments.php';
+        $comment = new Comments();
+        $comment->resource_id = $this->id;
+        return $comment->count();
+    }    
 
 }

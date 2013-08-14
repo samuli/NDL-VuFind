@@ -37,17 +37,27 @@
         </div>
         {/if}
         
-      {if $lookfor == ''}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{translate text="history_empty_search"}</h4>
+      {if $isEmptySearch}
+        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>
+          {if $searchType == 'advanced'}
+            {translate text="Advanced Search"}: {translate text="history_empty_search_adv"}
+          {else}
+            {translate text="history_empty_search"}
+          {/if}</h4>
       {else}
-        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>{if $searchType == 'basic'}{translate text="Search"}: {$lookfor|escape:"html"}{else}{translate text="Your search terms"}: "{$lookfor|escape:"html"}"{/if}</h4>
+        <h4{if $dualResultsEnabled && $searchType != 'advanced'} class="pull-left dual"{/if}>
+          {if $searchType == 'basic'}
+            {translate text="Search"}: {$lookfor|escape:"html"}
+          {elseif $searchType == 'advanced'}
+            {translate text="Advanced Search"}: "{$lookfor|escape:"html"}"
+          {/if}</h4>
       {/if}
 
       {if $dualResultsEnabled && $searchType != 'advanced'}
         <div class="row-fluid">
           <div class="pull-right dualButtons">
             <a class="btn btn-small" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
-            <a class="btn btn-small buttonSelected" href=".">{translate text="Books etc."}</a>
+            <a class="btn btn-small buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="Books etc."}</a>
             <a class="btn btn-small" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
           </div>
         </div>
@@ -95,7 +105,7 @@
 
   {* Narrow Search Options *}
   {*if !$dualResultsEnabled && $searchType != 'advanced'*}
-  <div id="sidebarFacets" class="span3 well well-small {if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if}">
+  <div id="sidebarFacets" class="span3 well well-small{if $sidebarOnLeft} sidebarOnLeft{/if}">
     {if $sideRecommendations}
       {foreach from=$sideRecommendations item="recommendations"}
         {include file=$recommendations}

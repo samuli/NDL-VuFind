@@ -12,10 +12,10 @@ function registerLoadHandler(linkClass, method) {
     $('ul.browse a.'+linkClass).each(function() {
         var params = extractParams($(this).attr('class'));
         params.query = $(this).attr('title');
-        $(this).unbind('click').click(function() {
+        $(this).unbind('click').click(function(e) {
             highlightBrowseLink(this);
             loadBrowseOptions(method, params);
-            return false;
+            e.preventDefault();
         });
     });
 }
@@ -38,6 +38,8 @@ function loadBrowseOptions(method, params) {
 }
 
 function highlightBrowseLink(link) {
-    $(link).parentsUntil('div.browseNav').children('li').removeClass('active');
-    $(link).parent('li').addClass('active');    
+//    $(link).parentsUntil('div.browseNav').children('li').removeClass('active');
+    $(link).parentsUntil('div.browseNav').find('a').not('.btn-mini').removeClass('btn-info');
+//    $(link).parent('li').addClass('active');
+    $(link).addClass('btn-info');
 }

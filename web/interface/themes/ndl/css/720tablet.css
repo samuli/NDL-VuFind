@@ -34,6 +34,13 @@
     .feedbackButton {
         position:absolute;
     }
+    
+    .logged-in .feedbackButton {
+        right: 5px;
+        top: 36px;
+        border-radius:10px;
+    }
+    
     .feedbackButton.fixed {
         position:absolute;
         top:40px;
@@ -74,6 +81,9 @@
         margin-top:13px;
     }
     
+    #headerMenu {
+        width:580px;
+    }
     
     /* Header: Search Box */
     
@@ -178,11 +188,12 @@
     #advSearchForm .groupSearchDetails select {
         max-width: 155px;
     }
-    
+    .advSearchSection.first {
+ 		 padding: 10px;
+	}
     .groupSearchHolder .terms {
         width: 110px;
     }
-    
     #zoomSlider {
         left: 12px;
         top: 67px;

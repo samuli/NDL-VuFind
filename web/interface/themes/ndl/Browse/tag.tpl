@@ -1,10 +1,10 @@
 <div class="browseHeader"><div class="content"><h1>{translate text='Choose a Column to Begin Browsing'}:</h1></div></div>
 <div class="content">
-<div class="grid_6 browseNav">
+<div class="grid_24 browseNav">
   {include file="Browse/top_list.tpl" currentAction="Tag"}
 </div>
 
-<div class="grid_6 browseNav">
+<div class="grid_24 browseNav" id="list2container">
   <ul class="browse" id="list2">
     <li {if $findby == "alphabetical"} class="active"{/if}><a href="{$url}/Browse/Tag?findby=alphabetical">{translate text="By Alphabetical"}</a></li>
     <li {if $findby == "popularity"} class="active"{/if}><a href="{$url}/Browse/Tag?findby=popularity">{translate text="By Popularity"}</a></li>
@@ -13,7 +13,7 @@
 </div>
 
 {if !empty($alphabetList)}
-<div class="grid_6 browseNav">
+<div class="grid_12 browseNav" id="list3container">
   <ul class="browse" id="list3">
   {foreach from=$alphabetList item=letter}
     <li {if $startLetter == $letter}class="active" {/if}>
@@ -25,7 +25,7 @@
 {/if}
 
 {if !empty($tagList)}
-<div class="grid_6 browseNav">
+<div class="grid_12 browseNav" id="list4container">
   <ul class="browse" id="list4">
   {foreach from=$tagList item=tag}
     <li><a href="{$url}/Search/Results?tag={$tag->tag|escape:"url"}">{$tag->tag|escape:"html"} ({$tag->cnt})</a></li>

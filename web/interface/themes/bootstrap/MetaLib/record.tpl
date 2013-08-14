@@ -43,7 +43,7 @@
     <ul class="pager">
       <li class="{if !$previousRecord} disabled{/if}">
       {if $previousRecord}
-        <a href="{$url}/Record/{$previousRecord}" class="prevRecord">&larr;<span class="resultNav">&nbsp;{translate text="Prev"}</span></a>
+        <a href="{$url}/Record/{$previousRecord}" class="prevRecord">&larr;<span class="resultNav">&nbsp;{translate text="Previous Record"}</span></a>
       {else}
         <span class="pagingDisabled">&larr;&nbsp;{translate text="Prev"}</span>
       {/if}
@@ -51,7 +51,7 @@
       <li>&nbsp;&nbsp;{$currentRecordPosition}&nbsp;<strong>/</strong>&nbsp;{$resultTotal}&nbsp;&nbsp;</li>
       <li class="{if !$nextRecord} disabled{/if}">
       {if $nextRecord}
-        <a href="{$url}/Record/{$nextRecord}" class="nextRecord"><span class="resultNav">{translate text="Next"}&nbsp;</span>&rarr;</a>
+        <a href="{$url}/Record/{$nextRecord}" class="nextRecord"><span class="resultNav">{translate text="Next Record"}&nbsp;</span>&rarr;</a>
       {else}
         <span class="pagingDisabled">{translate text="Next"}&nbsp;&rarr;</span>
       {/if}
@@ -66,10 +66,10 @@
 
 <div class="row-fluid record recordId" id="record{$id|escape}">
 
-  <div id="resultMain" class="span9">
+  <div id="resultMain" class="span9{if $sidebarOnLeft} sidebarOnLeft last{/if}">
 
   <div class="row-fluid">
-    <div id="resultSide" class="span4">
+    <div id="resultSide" class="span4 {if $sidebarOnLeft} sidebarOnLeft last{/if}">
 
       {* Display Cover Image *}
       {*
@@ -115,7 +115,7 @@
       </div>
     </div>
 
-  <div class="span8 record recordId" id="record{$id|escape}">
+  <div class="span8 record recordId{if $sidebarOnLeft} sidebarOnLeft{/if}" id="record{$id|escape}">
 
     <div class="alignright"><span class="{$record.ContentType.0|replace:" ":""|escape}">{$record.ContentType.0|escape}</span></div>
 
@@ -256,6 +256,7 @@
     {* Display the lists that this record is saved to *}
 	<div class="savedLists alert alert-info" id="savedLists{$id|escape}">
 	  <strong>{translate text="Saved in"}:</strong>
+
 	</div>    
   </div>
   {* End Record *} 
