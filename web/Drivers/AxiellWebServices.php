@@ -52,7 +52,7 @@ class AxiellWebServices implements DriverInterface
     protected $reservations_wsdl = '';
     protected $dateFormat;
     protected $logFile = '';
-
+    
     protected $soapOptions = array(
         'soap_version' => SOAP_1_1,
         'exceptions' => true,
@@ -125,7 +125,8 @@ class AxiellWebServices implements DriverInterface
         }
         return $items;
     }
-
+    
+    
     /**
      * Get Holding
      *
@@ -139,109 +140,176 @@ class AxiellWebServices implements DriverInterface
      * id, availability (boolean), status, location, reserve, callnumber, duedate,
      * number, barcode; on failure, a PEAR_Error.
      * @access public
-     */
+     */    
+
     public function getHolding($id, $patron = false)
     {
     	$localId = $id;
     	$p = strpos($localId, '.');
-        if ($p > 0) {
-            $localId = substr($localId, $p + 1);
-        }
-        $p = strpos($localId, '_');
-        if ($p > 0) {
-            $localId = substr($localId, $p + 1);
-        }
-        $client = new SoapClient($this->catalogue_wsdl, $this->soapOptions);
-        try {
-            global $interface;
-            $language = $interface->getLanguage();
-            if (!in_array($language, array('en', 'sv', 'fi'))) {
-            	$language = 'en';
-            }
-            
-            $this->debugLog("Catalogue record detail request for '$id':");
-            
-            $result = $client->GetCatalogueRecordDetail(array('catalogueRecordDetailRequest' => array('arenaMember' => $this->arenaMember, 'id' => $localId, 'language' => $language, 'cover' => array('enable' => 'no'), 'facets' => array('enable' => 'no'), 'holdings' => array('enable' => 'yes'), 'linkedRecords' => array('enable' => 'no'), 'ratings' => array('enable' => 'no'), 'ratingAverage' => array('enable' => 'no'), 'reviews' => array('enable' => 'no'), 'similarRecords' => array('suggestionCount' => 10, 'enable' => 'no'), 'tags' => array('count' => 10, 'enable' => 'no'))));
-            if ($result->catalogueRecordDetailResponse->status->type != 'ok') {
-                $this->debugLog("Catalogue record detail request failed for '$id'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('catalog_error_technical');
-            }
+    	$year = '';
+    	$edition = '';
+    	
+    	if ($p > 0) {
+    		$localId = substr($localId, $p + 1);
+    	}
+    	$p = strpos($localId, '_');
+    	if ($p > 0) {
+    		$localId = substr($localId, $p + 1);
+    	}
+    	$client = new SoapClient($this->catalogue_wsdl, $this->soapOptions);
+    	try {
+    		global $interface;
+    		$language = $interface->getLanguage();
+    		if (!in_array($language, array('en', 'sv', 'fi'))) {
+    			$language = 'en';
+    		}
+    
+    		$this->debugLog("Catalogue record detail request for '$id':");
+    
+    		$result = $client->GetHoldings(array('getHoldingsRequest' => array('arenaMember' => $this->arenaMember, 'id' => $localId, 'language' => $language)));
+    		if ($result->getHoldingsResponse->status->type != 'ok') {
+    			$this->debugLog("GetHoldings request failed for '$id'");
+    			$this->debugLog("Request: " . $client->__getLastRequest());
+    			$this->debugLog("Response: " . $client->__getLastResponse());
+    			return new PEAR_Error('catalog_error_technical');
+    		}
+    
+    		$this->debugLog("Request: " . $client->__getLastRequest());
+    		$this->debugLog("Response: " . $client->__getLastResponse());
+    
+    		$vfHoldings = array();
+    		    		
+    		if (!isset($result->getHoldingsResponse->catalogueRecord->compositeHolding)) {
+    			return $vfHoldings;
+    		}
+   		
+    		$holdings = is_object($result->getHoldingsResponse->catalogueRecord->compositeHolding) ?
+    			array($result->getHoldingsResponse->catalogueRecord->compositeHolding) :
+    			$result->getHoldingsResponse->catalogueRecord->compositeHolding;
 
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-                
-            $vfHoldings = array();
-            if (!isset($result->catalogueRecordDetailResponse->holdings->holding)) {
-                return $vfHoldings;
-            }
-            $holdings = is_object($result->catalogueRecordDetailResponse->holdings->holding) ? array($result->catalogueRecordDetailResponse->holdings->holding) : $result->catalogueRecordDetailResponse->holdings->holding;
-
-            $copy = 0;
-            foreach ($holdings as $holding) {
-                $vfHolding = array(
-                    'id'           => $id,
-                    'number'       => 1,
-                    'barcode'      => ' ',
-                    'availability' => true,
-                    'status'       => 'Available',
-                    'location'     => '',
-                    'reserve'      => 'N',
-                    'callnumber'   => '',
-                    'duedate'      => '',
-                    'returnDate'   => false,
-                    'is_holdable'  => true,
-                    'addLink'      => false
-                );
-                $vfHolding['id'] = $id;
-                $vfHolding['location'] = $holding->branch;
-                if (isset($holding->collection) && $holding->collection) {
-                    $vfHolding['location'] .= ', ' . $holding->collection;
-                }
-                if (isset($holding->department) && $holding->department) {
-                    $vfHolding['location'] .= ', ' . $holding->department;
-                }
-                if (isset($holding->location) && $holding->location) {
-                    $vfHolding['location'] .= ', ' . $holding->location;
-                }
-                $vfHolding['callnumber'] = isset($holding->shelfMark) ? $holding->shelfMark : '';
-                
-                $available = null;
-                switch ($holding->status) {
-                case 'availableForLoan': 
-                    $available = true;
-                    break;
-                case 'nonAvailableForLoan':
-                    if ($holding->nofReference == 0) {
-                        $available = false;
-                    }
-                    break;
-                case 'overdueLoan':
-                    $available = false;
-                    break;
-                case 'ordered':
-                case 'returnedToday':
-                    $available = null;
-                    break;
-                default:
-                    $this->debugLog('Unhandled status ' + $holding->status + " for $id");
-                }
-                    
-                $vfHolding['number'] = $copy++;
-                $vfHolding['status'] = $holding->status;
-                $vfHolding['availability'] = $available;
-                $vfHolding['reserve'] = 'N';
-                //$vfHolding['is_holdable'] = isset($available);
-                $vfHoldings[] = $vfHolding;
-            }
-            return empty($vfHoldings) ? false : $vfHoldings;
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-            return new PEAR_Error('catalog_error_technical');;
-        }
+    		$copy = 0;
+    		
+    		if ($holdings[0]->type == 'year') {
+    			
+    			foreach ($holdings as $holding) {
+    				
+    				$year = $holding->value;
+    				$holdingsEditions = is_object($holding->compositeHolding) ? 
+    					array($holding->compositeHolding) : 
+    					$holding->compositeHolding;
+    				
+    				foreach ($holdingsEditions as $holdingsEdition) {
+    					$edition = $holdingsEdition->value;
+    					$holdingsOrganisations = is_object($holdingsEdition->compositeHolding) ? 
+    						array($holdingsEdition->compositeHolding) : 
+    						$holdingsEdition->compositeHolding;
+    				
+    					foreach ($holdingsOrganisations as $holdingsOrganisation) {
+    						$this->parseHoldings($holdingsOrganisations, $id, $copy, $vfHoldings, $year, $edition);
+    					}
+    				}	
+    			}
+    		} else {
+    			$this->parseHoldings($holdings, $id, $copy, $vfHoldings, '', '');
+    		}
+    		
+    		return empty($vfHoldings) ? false : $vfHoldings;
+    	} catch (Exception $e) {
+    		$this->debugLog($e->getMessage());
+    		$this->debugLog("Request: " . $client->__getLastRequest());
+    		$this->debugLog("Response: " . $client->__getLastResponse());
+    		return new PEAR_Error('catalog_error_technical');;
+    	}
+    }
+    
+    /**
+     * This is responsible for iterating the organisation holdings
+     * 
+     * @param array     $organisationHoldings Organisation holdings 
+     * @param string    $id                   The record id to retrieve the holdings
+     * @param reference &$copy			  	  Counter
+     * @param reference &$vfHoldings	 	  Reference
+     * @param string 	$year				  Publication year of the magazine
+     * @param string 	$edition			  Edition of the magazine
+     *
+     * @return null
+     * @access protected
+     */ 
+    protected  function parseHoldings($organisationHoldings, $id, &$copy, &$vfHoldings, $year, $edition) 
+    {
+    	foreach ($organisationHoldings as $organisation) {
+    		 
+    		$organisationName = $organisation->value;
+    		$reservationStatus = ($organisation->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
+    		 
+    		$holdingsBranch = is_object($organisation->compositeHolding) ? array($organisation->compositeHolding) : $organisation->compositeHolding;
+    		 
+    		foreach ($holdingsBranch as $branch) {
+    			
+  			  	// TODO: mfhd_id, availability
+    			$vfHolding = array(
+    					'id'           => $id,
+    					'mfhd_id'      => '635670',
+    					'number'       => '',
+    					'barcode'      => $id,
+    					'availability' => true,
+    					'status'       => '',
+    					'location'     => '',
+    					'reserve'      => $reservationStatus,
+    					'callnumber'   => '',
+    					'duedate'      => '',
+    					'returnDate'   => false,
+    					'is_holdable'  => true,
+    					'addLink'      => false,
+    					'summary'      => $edition
+    			);
+    
+    			$vfHolding['id'] = $id;
+    			$vfHolding['location'] = $organisationName;
+    			$vfHolding['location'] .= ', '. $branch->value . ' ' . $branch->holdings->holding->department . ' ' . $edition;
+    			$vfHolding['number'] = isset($branch->holdings->holding->nofTotal) ? $branch->holdings->holding->nofTotal : '';
+    			$vfHolding['callnumber'] = isset($branch->holdings->holding->shelfMark) ? $branch->holdings->holding->shelfMark : '';
+    			$vfHolding['status'] = isset($branch->holdings->holding->status) ? $branch->holdings->holding->status : '';
+    			
+    			$available = null;
+    			$status = $branch->status;
+    			switch ($branch->status) {
+    			case 'availableForLoan':
+    				$available = true;
+    				$status = 'Available';
+    				break;
+    			case 'onLoan':
+   					$available = false;
+   					$status = 'Charged';
+   					break;
+   				case 'nonAvailableForLoan':
+   					if ($holding->nofReference == 0) {
+    					$available = false;
+    					$status = 'Not Available For Loan';
+    				}
+    				break;
+   				case 'overdueLoan':
+   					$available = false;
+   					break;
+   				case 'ordered':
+   					$available = false;
+   					break;
+   				case 'returnedToday':
+    				$available = true;
+    				break;
+    			default:
+    				$this->debugLog('Unhandled status ' + $branch->status + " for $id");
+    			}
+    
+    			$vfHolding['number'] = $copy++;
+    			$vfHolding['status'] = $status;
+    			$vfHolding['availability'] = $available;
+    			$vfHolding['reserve'] = 'N';
+    			$vfHolding['is_holdable'] = $reservationStatus;
+    			$vfHoldings[] = $vfHolding;
+    		}
+    		 
+    	}
     }
 
     /**
@@ -454,8 +522,7 @@ class AxiellWebServices implements DriverInterface
             
             // Sort the Loans
             $date = array();
-            foreach ($transList as $key => $row)
-            {
+            foreach ($transList as $key => $row) {
             	$date[$key] = $row['duedate'];
             }
             array_multisort($date, SORT_ASC, $transList);
