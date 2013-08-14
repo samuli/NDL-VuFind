@@ -18,7 +18,7 @@ function registerLoadHandler(linkClass, method) {
             e.preventDefault();
         });
     });
-an}
+}
 
 function loadBrowseOptions(method, params) {
     $('#list4container').empty().removeClass('browseNav');
