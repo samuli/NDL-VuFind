@@ -1,5 +1,4 @@
 <!-- START of: RecordDrivers/Index/holdings.tpl -->
-
 <h3>{translate text=$source prefix='source_'}</h3>
 
 {if $id|substr:0:7 == 'helmet.'}
@@ -73,7 +72,11 @@
   {if $row.callnumber}
   <tr>
     <th>{translate text="Call Number"}: </th>
+    {if $locationServiceUrl}
+    <td><a class="openLocationService" href="{$locationServiceUrl}&callno={$row.callnumber|escape:'url'}" target>{$row.callnumber|escape}</a></td>
+    {else}
     <td>{$row.callnumber|escape}</td>
+    {/if}
   </tr>
   {/if}
   {if $row.summary}
@@ -188,5 +191,4 @@ $(document).ready(function() {
 });
 </script>
 {/literal}
-
 <!-- END of: RecordDrivers/Index/holdings.tpl -->

@@ -26,11 +26,15 @@
       {else}
         {if $searchType == 'basic'}
            {translate text="Search"}: {$lookfor|escape:"html"}
-        {elseif $searchType == 'advanced'}
+        {elseif ($searchType == 'advanced' && !$orFilters)}
            {translate text="Advanced Search"}: "{$lookfor|escape:"html"}"
-        {elseif ($searchType == 'advanced') || ($searchType != 'advanced' && $orFilters)}
+        {elseif ($searchType != 'advanced' && $orFilters)}
           {foreach from=$orFilters item=values key=filter}
           AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}
+        {elseif ($searchType == 'advanced' && $orFilters)}
+          {translate text="Advanced Search"}: "{$lookfor|escape:"html"}
+          {foreach from=$orFilters item=values key=filter}
+          AND ({foreach from=$values item=value name=orvalues}{translate text=$filter|ucfirst}:{translate text=$value prefix='facet_'}{if !$smarty.foreach.orvalues.last} OR {/if}{/foreach}){/foreach}"
         {/if}
       {/if}
       </h2>
