@@ -152,57 +152,7 @@ textarea {
   overflow: auto;
   vertical-align: top;
 }
-@media print {
-  * {
-    text-shadow: none !important;
-    color: #000 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-  }
-  a,
-  a:visited {
-    text-decoration: underline;
-  }
-  a[href]:after {
-    content: " (" attr(href) ")";
-  }
-  abbr[title]:after {
-    content: " (" attr(title) ")";
-  }
-  .ir a:after,
-  a[href^="javascript:"]:after,
-  a[href^="#"]:after {
-    content: "";
-  }
-  pre,
-  blockquote {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
-  thead {
-    display: table-header-group;
-  }
-  tr,
-  img {
-    page-break-inside: avoid;
-  }
-  img {
-    max-width: 100% !important;
-  }
-  @page  {
-    margin: 0.5cm;
-  }
-  p,
-  h2,
-  h3 {
-    orphans: 3;
-    widows: 3;
-  }
-  h2,
-  h3 {
-    page-break-after: avoid;
-  }
-}
+
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -866,7 +816,7 @@ pre code {
   color: #ffffff;
   vertical-align: baseline;
   white-space: nowrap;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+/*  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); */
   background-color: #999999;
 }
 .label {
@@ -880,6 +830,7 @@ pre code {
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;
+  color:#505050;
 }
 .label:empty,
 .badge:empty {
@@ -889,10 +840,17 @@ a.label:hover,
 a.label:focus,
 a.badge:hover,
 a.badge:focus {
-  color: #ffffff;
+  color:#505050;
   text-decoration: none;
   cursor: pointer;
 }
+a.badge:hover,
+a.badge:focus {
+  color:#505050;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .label-important,
 .badge-important {
   background-color: #b94a48;

@@ -32,6 +32,7 @@ body.fancybox-lock {
 
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
+    font-weight:500;
 }
 
 h1, h2, h3 {
@@ -40,7 +41,7 @@ h1, h2, h3 {
 
 .highlight {
     font-weight: bold;
-    text-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+    /* text-shadow: 2px 2px 3px rgba(0,0,0,0.3); */
 }
 .offscreen {
     display: inline;
@@ -120,7 +121,7 @@ a.btn-small.btn-inverse {
     margin-right: 0;
 }
 
-/* Breadscrumbs */
+/* Breadcrumbs */
 
 #topBar {
     margin-bottom: 10px;
@@ -136,17 +137,26 @@ a.btn-small.btn-inverse {
 
 .breadcrumb > li {
     text-shadow: none;
+    display: block; /* IE8 */
+    float: left; 
+    margin-right: 5px; 
 }
 .breadcrumb > li > .divider, .breadcrumb span {
-    text-shadow: none;
-    background: url("../images/bg_breadcrumb-dark.png") no-repeat scroll left center transparent;
     color: transparent;
-/*
-    opacity: 0.4;
-*/
+    display: inline-block;
+    height: 15px;
     overflow: hidden;
-    padding: 0 .2em;
+    padding: 0;
+    position: relative;
+    text-indent: -999px;
+    text-shadow: none;
+    top: 2px;
     width: 10px;
+    background: url("../images/bg_breadcrumb-dark.png") no-repeat scroll left center transparent;
+}
+
+.icon-home {
+    background-position: 0 -25px;
 }
 
 /* Nav */
@@ -283,18 +293,18 @@ a.clear_input:hover {
 
 .keepFilters {
     background-color: #ffffff;
-    opacity: .65;
     left: 50%;
     margin-left: -103px;
-    padding: 0;
+    padding: 1px;
     position: relative;
     width: 206px;
 }
 .keepFilters label {
-    color: #000000;
+    color: #666666;
     font-weight: bold;
-    margin: 0 0 0 2px;
+    margin: 1px 0 0 3px;
     padding: 0;
+    vertical-align: top;
 }
 
 /* MetaLib */
@@ -321,8 +331,8 @@ a.clear_input:hover {
 .blurbLine {
     font-size: 22px;
     font-weight: 400;
-    color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0,0,0,.75);
+    color: #505050;
+    /* text-shadow: 1px 1px 2px rgba(0,0,0,.75); */
 }
 
 
@@ -338,8 +348,10 @@ a.clear_input:hover {
 a.badge.advancedLink, a.badge.localLink, a.badge.metalibLink,
 a.badge.pciLink, a.badge.browseLink, a.badge.showSearchHelp,
 a.badge.account, a.badge.login, a.badge.logout{
-    //background-color: rgba(0,0,0,.3);
-    text-shadow: 1px 1px 2px rgba(0,0,0,.5);    
+  /*  //background-color: rgba(0,0,0,.3);
+     text-shadow: 1px 1px 2px rgba(0,0,0,.5);  */
+     letter-spacing:0.3px;
+     
 }
 a.badge.advancedLink:hover, a.badge.localLink:hover, a.badge.metalibLink:hover,
 a.badge.pciLink:hover, a.badge.browseLink:hover, a.badge.showSearchHelp:hover,
@@ -1271,7 +1283,7 @@ div.truncateField {
 }
 
 .recordTitle, .collectionTitle {
-    margin: 0;
+    margin: 0 0 .5em 0;
 }
 
 .recordcover {
@@ -2806,7 +2818,7 @@ a.panel_open {
     -webkit-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0;
     left: 0;
-    padding: 5px 0;
+    padding: 7px 2px;
     position: fixed;
     top: 45%;
 }
@@ -2850,6 +2862,11 @@ a.panel_open {
     width: 80px;
     margin: .3em .4em;
     padding: .5em;
+}
+
+.block {
+	display:block;
+	margin-bottom:3px;
 }
 
 

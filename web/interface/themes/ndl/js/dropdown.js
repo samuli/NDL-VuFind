@@ -15,13 +15,15 @@ function initDropdowns() {
         $(".dropdown dd ul").hide();
     });
     
-    $(".dropdown dt a").bind('click', function() {
+    $(".dropdown dt a").bind('click', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
         dropdown.find('dd ul').fadeToggle(100);
+
+        toggleKeepFiltersOption(true);
         return false;
     });
 
-    $(".dropdown dd ul li a").bind('click', function() {
+    $(".dropdown dd ul li a").bind('click', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
         var text = $(this).html();
         dropdown.find('dt a').html(text);
@@ -32,7 +34,9 @@ function initDropdowns() {
         
         source.find('option').removeAttr('selected');
         source.find('option[value="'+$(this).find("span.value").text()+'"]').attr('selected', 'selected').change();
-        return false;
+        e.preventDefault();
+        
+        setMainFocus();
     });    
 };
 

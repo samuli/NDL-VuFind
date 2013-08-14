@@ -9,7 +9,7 @@
     <div class="searchFormOuterWrapper">
 	    <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">
-	        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" autocomplete="off" class="last mainFocus" placeholder='{translate text="Find"}&hellip;' />
+	        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" autocomplete="off" class="last mainFocus clearable" placeholder='{translate text="Find"}&hellip;' />
 	      </div>
 	      <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
 	      <div class="clear"></div>

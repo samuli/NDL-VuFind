@@ -1101,10 +1101,17 @@ body > .ui-widget .button {
 .keepFilters {
     clear: none;
     float: left;
-    margin: 11px 0 0 5px;
+    margin: 6px 0 0 12px;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-radius: 10px 10px 10px 10px;
+    color: #666666;
+    padding: 8px 11px 6px 8px;
 }
 .keepFilters input {
     margin-top: .15em;
+}
+.keepFilters label {
+    vertical-align: top;
 }
 
 

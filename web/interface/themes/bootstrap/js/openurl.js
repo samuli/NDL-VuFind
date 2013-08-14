@@ -1,20 +1,20 @@
 $(document).ready(function() {
     // assign action to the openUrlWindow link class
-    $('a.openUrlWindow').unbind('click').click(function(){
+    $('a.openUrlWindow').unbind('click').click(function(e){
         var params = extractParams($(this).attr('class'));
         var settings = params.window_settings;
         window.open($(this).attr('href'), 'openurl', settings);
-        return false;
+        e.preventDefault();
     });
 
     // assign action to the openUrlEmbed link class
-    $('a.openUrlEmbed').unbind('click').click(function(){
+    $('a.openUrlEmbed').unbind('click').click(function(e){
         $(this).unbind('inview');
         var params = extractParams($(this).attr('class'));
         var openUrl = $(this).children('span.openUrl:first').attr('title');
         $(this).hide();
         loadResolverLinks($('#openUrlEmbed'+params.openurl_id).show(), openUrl);
-        return false;
+        e.preventDefault();
     });
 });
 
@@ -28,7 +28,7 @@ function loadResolverLinks($target, openUrl) {
             if (response.status == 'OK') {
                 $target.removeClass('ajax_availability').empty().append(response.data);
                 link = $target.find('.openurl_more');
-                link.click(function() {
+                link.click(function(e) {
                     var div = $(this).siblings('.openurlDiv');
                     var self = $(this);
                     if (div.length > 0) {
@@ -48,7 +48,7 @@ function loadResolverLinks($target, openUrl) {
                     	self.find(".more_img").hide();
                         self.find(".less_img").show();
                     }
-                	return false;
+                    e.preventDefault();
                 });
             } else {
                 $target.removeClass('ajax_availability').addClass('error')

@@ -89,7 +89,9 @@
     {* Load retina style sheet last *}
     {* css media="screen, projection" filename="retina.css" *}
     
-    {css media="print" filename="print.css"}
+    {* Disabled print styles until a fix for IE8 is found *}
+    {* {css media="print" filename="print.css"} *}
+    
     {if $dateRangeLimit}
       {css media="screen, projection" filename="jslider/jslider.css"}
     {/if}
@@ -148,6 +150,9 @@
 
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
+
+    {* Load dropdown menu modification *}
+    {js filename="dropdown.js"}
 
     {* Load Mozilla Persona support *}
     {if $mozillaPersona}
@@ -322,6 +327,7 @@ $(document).ready(function() {
 
       <div class="visible-phone">
         <a class="btn btn-mini btn-warning panel_open" href="#" rel="panel">
+          <i class="icon-align-justify block"></i>
           <i class="icon-chevron-right"></i>
         </a>
 

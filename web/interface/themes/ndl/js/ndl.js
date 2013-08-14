@@ -58,9 +58,9 @@ function initHeaderMenu() {
     }
     
     // Don't try to open #-links
-    $('#headerMenu > li > a[href="#"]').click(function() {
+    $('#headerMenu > li > a[href="#"]').click(function(e) {
         $(this).blur();
-        return false;
+        e.preventDefault();
     });
 }
 
@@ -243,3 +243,4 @@ function initCustomEyeCandy() {
         $(this).children('span').stop().delay(100).animate({top:-50}, 150);
     });
 }
+

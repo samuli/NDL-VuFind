@@ -6,18 +6,18 @@ $(document).ready(function(){
     registerAjaxCommentRecord();
 
     // bind click action to export record menu
-    $('a.exportMenu').click(function(){
+    $('a.exportMenu').click(function(e){
         toggleMenu('exportMenu');
-        return false;
+        e.preventDefault();
     });
 
     // bind click action on toolbar links
-    $('a.citeRecord').click(function() {
+    $('a.citeRecord').click(function(e) {
         var id = this.id.substr('citeRecord'.length);
         var $dialog = getLightbox('Record', 'Cite', id, null, this.title);
-        return false;
+        e.preventDefault();
     });
-    $('a.smsRecord').click(function() {
+    $('a.smsRecord').click(function(e) {
         var id = this.id.substr('smsRecord'.length);
         var module = 'Record';
         if ($(this).hasClass('smsSummon')) {
@@ -26,9 +26,9 @@ $(document).ready(function(){
             module = 'WorldCat';
         }
         var $dialog = getLightbox(module, 'SMS', id, null, this.title);
-        return false;
+        e.preventDefault();
     });
-    $('#addThis a.mail, a.mailRecord').click(function() {
+    $('#addThis a.mail, a.mailRecord').click(function(e) {
         var id = this.id.substr('mailRecord'.length);
         var module = 'Record';
         if ($(this).hasClass('mailSummon')) {
@@ -41,23 +41,23 @@ $(document).ready(function(){
             module = 'PCI';
         }
         var $dialog = getLightbox(module, 'Email', id, null, this.title);
-        return false;
+        e.preventDefault();
     });
-    $('a.feedbackRecord').click(function() {
+    $('a.feedbackRecord').click(function(e) {
         var id = this.id.substr('feedbackRecord'.length);
         var $dialog = getLightbox('Record', 'Feedback', id, null, this.title);
-        return false;
+        e.preventDefault();
     });
-    $('a.tagRecord').click(function() {
+    $('a.tagRecord').click(function(e) {
         var id = this.id.substr('tagRecord'.length);
         var $dialog = getLightbox('Record', 'AddTag', id, null, this.title, 'Record', 'AddTag', id);
-        return false;
+        e.preventDefault();
     });
-    $('a.deleteRecordComment').click(function() {
+    $('a.deleteRecordComment').click(function(e) {
         var commentId = this.id.substr('recordComment'.length);
         var recordId = this.href.match(/\/Record\/([^\/]+)\//)[1];
         deleteRecordComment(recordId, commentId);
-        return false;
+        e.preventDefault();
     });
     
     // add highlighting to subject headings when mouseover
@@ -303,10 +303,10 @@ function refreshCommentList(recordId) {
                 commentUl = 'ul[id="commentList'+ recordId + '"]';
                 $(commentUl).empty();
                 $(commentUl).append(response.data);
-                $(commentUl + ' a.deleteRecordComment').unbind('click').click(function() {
+                $(commentUl + ' a.deleteRecordComment').unbind('click').click(function(e) {
                     var commentId = $(this).attr('id').substr('recordComment'.length);
                     deleteRecordComment(recordId, commentId);
-                    return false;
+                    e.preventDefault();
                 });
                 $('#commentCount').text($(commentUl + ' li:not(#emptyListItem)').length);
             }
