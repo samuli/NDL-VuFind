@@ -5089,4 +5089,9 @@ form#feedbackForm label {
     #headerMenu .menuLogin {
         padding-top: 0px;
     }
-} 
+}
+
+#locationServiceFrame {
+    width: 100%;
+    height: 100%;
+}

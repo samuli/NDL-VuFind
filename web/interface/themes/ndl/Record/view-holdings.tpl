@@ -19,4 +19,11 @@
   </script>
 </div>
 </div>
+{if $locationServiceModal}
+    <div id="modalLocationService" title="{translate text="Location Service"}">
+        <a id="locationServiceDirectLink" href="" target="_blank" class="right">{translate text="Open in a New Window"}</a>
+        <iframe id="locationServiceFrame" src=""></iframe>
+    </div>
+    {js filename="locationservice.js"}
+{/if}
 <!-- END of: Record/view-holdings.tpl -->
