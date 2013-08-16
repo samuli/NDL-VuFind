@@ -34,34 +34,6 @@ $(document).ready(function(){
     $('#searchFormKeepFilters').change(function() { filterAll(this); });
 
 
-    // Toggle Keep filters -option
-
-    // detect when mouse is inside search area 
-    $('#searchFormContainer').hover(
-        function() {
-            $(this).addClass("hover");
-        },
-        function() {
-            $(this).removeClass("hover");
-        }
-    );
-
-    // show when search field is focused
-    $('#searchForm_input').focus(function(e) { toggleKeepFiltersOption(true); });
-
-    // show when prefilter is changed
-    $("#searchForm_filter").change(function(e) { toggleKeepFiltersOption(true); });
-    
-    // hide when mouse is clicked and search field is not focused and mouse is not inside search area
-    $(document).mouseup(function() {
-        if (!$('#searchForm_input').is(":focus") && !$('#searchFormContainer').hasClass("hover")) {
-            toggleKeepFiltersOption(false);
-        }
-    });
-
-    // preserve active search term and prefilter
-    origSearchTerm = $('#searchForm_input').val();
-    origPrefilter = $("#searchForm_filter").val();
 
 
     // attach click event to the search help links
@@ -133,6 +105,38 @@ $(document).ready(function(){
     //ContextHelp
     contextHelp.init();
     contextHelp.contextHelpSys.load();
+
+
+
+    // Toggle Keep filters -option
+
+    // detect when mouse is inside search area 
+    $('#searchFormContainer').hover(
+        function() {
+            $(this).addClass("hover");
+        },
+        function() {
+            $(this).removeClass("hover");
+        }
+    );
+
+    // show when search field is focused
+    $('#searchForm_input').focus(function(e) { toggleKeepFiltersOption(true); });
+
+    // show when prefilter is changed
+    $("#searchForm_filter").change(function(e) { toggleKeepFiltersOption(true); });
+    
+    // hide when mouse is clicked and search field is not focused and mouse is not inside search area
+    $(document).mouseup(function() {
+        if (!$('#searchForm_input').is(":focus") && !$('#searchFormContainer').hasClass("hover")) {
+            toggleKeepFiltersOption(false);
+        }
+    });
+
+    // preserve active search term and prefilter
+    origSearchTerm = $('#searchForm_input').val();
+    origPrefilter = $("#searchForm_filter").val();
+
 });
 
 function toggleMenu(elemId) {
