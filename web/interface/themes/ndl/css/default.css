@@ -391,13 +391,16 @@ div.sidegroup {
     padding-bottom: 12px;
     padding-top: 12px;
 }
-.menuSearch > a span:after, .menuHelp > a span:after, .menuLogin > a span:after,
-.menuLibCard > span:after {
-    content: "";
-    display: inline-block;
-    height: 9px;
-    padding-left: 8px;
-    width: 11px;
+.menuArrow { 
+    display: block;
+    float: right;
+    height: 6px;
+    margin: 0 3px 0 7px;
+    padding: 0 !important;
+    position: relative;
+    text-indent: -999px;
+    top: 8px;
+    width: 10px;
 }
 
 #headerMenu ul.subNav li {
@@ -480,13 +483,14 @@ div.sidegroup {
 
 #headerMenu .menuLibCard form {
     float: right;
-    margin: 0;
+    margin: 0 0 0 11px;
     padding: 0;
     position: relative;
-    left: -14px;
-    top: -9px;  
+    top: -9px;
 }
-
+#headerMenu .menuLibCard > span {
+    float:left;
+}
 
 #header .lang {
     margin: 42px 0 0;
