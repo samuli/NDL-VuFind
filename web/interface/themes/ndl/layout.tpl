@@ -139,8 +139,22 @@
     
     {* Load Mozilla Persona support *}
     {if $mozillaPersona}
-    <script type="text/javascript" src="https://login.persona.org/include.js"></script>
     {js filename="persona.js"}
+        <script type="text/javascript">
+        {literal}
+        $(document).ready(function() {        
+		        $.ajax({
+		            url: 'https://login.persona.org/include.js',
+		            dataType: 'script',
+		            success: function() {
+		                {/literal}
+		                mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
+		                {literal}
+		            }
+		        });
+        });
+        {/literal}
+        </script>
     {/if}
 
     {literal}
@@ -149,9 +163,6 @@
         $(document).ready(function() {
             $('.truncateField').not('.recordSummary').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}", less: "{/literal}{translate text="less"}{literal}"});
             $('.recordSummary.truncateField').collapse({maxLength: 150, maxRows: 5, more: " ", less: " "});{/literal}
-            {if $mozillaPersona}
-                mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
-            {/if}
             {literal}
         });
         // Load child theme custom functions

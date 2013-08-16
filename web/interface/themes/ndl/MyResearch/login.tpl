@@ -29,14 +29,23 @@
   <div class="loginAction">
     <h3>{$loginNumber}. {translate text="login_title_email"}</h3>
     <a id="personaLogin" class="persona-login" href=""><span>{translate text="Mozilla Persona"}</span></a>
-{literal}
+{if $lightbox}
     <script type="text/javascript">
-$(document).ready(function() {
-{/literal}
-    mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if});
-{literal}
-});
-{/literal}
+    {literal}
+    $(document).ready(function() {        
+        $.ajax({
+            url: 'https://login.persona.org/include.js',
+            dataType: 'script',
+            success: function() {
+                {/literal}
+                mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
+                {literal}
+            }
+        });
+    });
+    {/literal}
+    </script>
+{/if}
     </script>    
   </div>
   <div class="loginDescription{$lbSmall}">
