@@ -21,7 +21,7 @@
 	  {if $metalibEnabled}
 	      <a href="{$path}/MetaLib/Home" class="small metalibLink">{translate text="MetaLib Search"}</a>
 	  {/if}
-	      <a href="{$path}" class="small metalibLink">{translate text="Local Search"}</a>
+	      <a href="{$url}" class="small metalibLink">{translate text="Local Search"}</a>
 	    </div>
     </div>
     <div class="searchContextHelp">

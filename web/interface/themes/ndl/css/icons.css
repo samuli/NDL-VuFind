@@ -27,9 +27,10 @@
 
 /* Navi */
 
-.menuSearch > a span:after, .menuHelp > a span:after, .menuLogin > a span.loggedIn:after {
-    content: "▾";
-    float:right;
+.menuArrow {
+    background-image:url("../images/icons16-24px-02.png");
+    background-position:-683px -2327px;
+    background-repeat:none;
 }
 .menuHome > a span {
     background-image: url("../images/icons16-24px-02.png");
