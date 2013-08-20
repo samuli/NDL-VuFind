@@ -216,7 +216,7 @@ class Home extends Collection
             $result = $result[$browseField]['data'];
 
             //sort the $results and get the position of the from string once sorted
-            $key = $this->sortFindKeyLocation(&$result, $from);
+            $key = $this->sortFindKeyLocation($result, $from);
 
             //offset the key by how many pages in we are
             $key = $key + ($limit * $page);
@@ -292,7 +292,7 @@ class Home extends Collection
         $key = 0;
 
         //sort the values into $facetsNormalized
-        $facetsNormalizedSorted = $this->normalizeAndSortFacets(&$result);
+        $facetsNormalizedSorted = $this->normalizeAndSortFacets($result);
 
         //define the from regex to match
         $regExForFrom = '/^' . preg_quote($from) . '.*/';
@@ -316,7 +316,7 @@ class Home extends Collection
 
             //add from and sort
             array_push($result, array($from, 0));//giving count of zero to highlight
-            $facetsNormalizedSorted = $this->normalizeAndSortFacets(&$result);
+            $facetsNormalizedSorted = $this->normalizeAndSortFacets($result);
 
             $i = 0;
             foreach ($facetsNormalizedSorted as $resVals) {
