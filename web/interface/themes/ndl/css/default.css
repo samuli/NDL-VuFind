@@ -2283,6 +2283,7 @@ dl.narrowList a {
        commented this out because it breaks a few things and I don't know where
        it should be applied */
 }
+.newItem .header,
 #main .contentHeader,
 #main .browseHeader {
     background: #b2e3ea;
@@ -2292,6 +2293,7 @@ dl.narrowList a {
 #main .browseHeader {
     background:#b2e3ea;
 }
+.newItem .header,
 #main .contentHeader h1,
 #main .browseHeader h1,
 #main .advSearchHeader h1 {
@@ -4158,6 +4160,12 @@ tr:nth-child(even) td.gridMouseOver {
 
 .limitSelect {
     text-align: right;
+}
+
+/************************* NEWITEM PAGE ****************************/
+
+.newItem form.search {
+    padding: 3em 0;
 }
 
 /************************* COLLECTIONS PAGE ************************/
