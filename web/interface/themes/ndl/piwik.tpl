@@ -9,7 +9,7 @@ _paq.push(['setTrackerUrl', u+'piwik.php']);{/literal}
   {if ($module eq "Record")}
     {if $recordFormat}
       {if $recordFormat.1}
-        {assign var=newRecordFormat value=$recordFormat. 1}
+        {assign var=newRecordFormat value=$recordFormat.1}
       {else}
         {assign var=newRecordFormat value=$recordFormat.0}
       {/if}
