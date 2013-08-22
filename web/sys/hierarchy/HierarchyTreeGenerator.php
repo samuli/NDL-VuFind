@@ -132,7 +132,7 @@ class HierarchyTreeGenerator
         } else {
             $starttime = microtime(true);
             $count = 0;
-            $xml = $this->getTree($hierarchyTopID, &$count);
+            $xml = $this->getTree($hierarchyTopID, $count);
             file_put_contents($cacheFile, $xml);
             error_log(
                 "Hierarchy of $count records built in " .
