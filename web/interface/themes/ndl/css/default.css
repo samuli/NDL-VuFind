@@ -3041,6 +3041,9 @@ div.resultLinks {
 div.resultLinks a {
     font-weight: bold;
 }
+.module-Collection #collectionHeader a.fullRecordLink {
+    padding-left: .6em;
+}
 .resultLinks .button {
     margin-right: 10px;
 }
