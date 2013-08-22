@@ -1675,8 +1675,9 @@ class SearchObject_Solr extends SearchObject_Base
         //   reason
         // The marc_error nodes can also cause problems, so let's get rid
         //   of them at the same time.
-        // Finally we add the record image to the array: for MARC records we
+        // We add the record image to the array: for MARC records we
         // use bookcover.php, for everything else thumbnail.php.
+        // Finally we remove an extra slash in format values.
         for ($i = 0; $i < count($result['response']['docs']); $i++) {
             if (isset($result['response']['docs'][$i]['fullrecord'])) {
                 unset($result['response']['docs'][$i]['fullrecord']);
@@ -1708,6 +1709,13 @@ class SearchObject_Solr extends SearchObject_Base
                             '/thumbnail.php?id=' .
                             urlencode($id) . '&index=0&size=large';
             }
+            
+            if (isset($result['response']['docs'][$i]['format'])) {
+                foreach ($result['response']['docs'][$i]['format'] as &$format) {
+                    $format = rtrim($format, '/');
+                }
+                unset($format);
+            }                   
         }
         
         // Serialize our results from PHP arrays to XML
