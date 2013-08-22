@@ -113,15 +113,9 @@ class LidoRecord extends IndexRecord
         $interface->assign('summImages', $this->getAllImages());
         if (in_array('Image', $this->getFormats()) && $this->getSubtitle() == '') {
             if ($this->getHighlightedTitle()) {
-                $interface->assign('summHighlightedTitle', $this->getHighlightedTitle() . ' ' . $this->getDescription());
+                $interface->assign('summHighlightedTitle', $this->getHighlightedTitle());
             }
-            $summary = $this->getSummary();
-            if ($summary) {
-                $summary = ' ' . $summary[0];
-            } else {
-                $summary = '';
-            }
-            $interface->assign('summTitle', $this->getTitle() . $summary);
+            $interface->assign('summTitle', $this->getTitle());
         }
         $interface->assign('summSubtitle', $this->getSubtitle());
         
@@ -208,18 +202,6 @@ class LidoRecord extends IndexRecord
         return false;
     }
 
-    /**
-     * Get the description of the current record.
-     *
-     * @return string
-     * @access protected
-     */
-    protected function getDescription()
-    {
-        return isset($this->fields['description']) ?
-        $this->fields['description'] : '';
-    }
-    
     /**
      * Check if an item has holdings in order to show or hide the holdings tab
      *
