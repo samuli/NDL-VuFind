@@ -1698,16 +1698,16 @@ class SearchObject_Solr extends SearchObject_Base
 
             if ($type === 'marc') {
                 if ($isbn) {
-                    $result['response']['docs'][$i]['imageUrl'] =
-                                $configArray['Site']['url'] .
-                                '/bookcover.php?isn=' .
-                                urlencode($isbn) . '&size=large';
+                    $result['response']['docs'][$i]['imageUrl']
+                        = $configArray['Site']['url'] .
+                        '/bookcover.php?isn=' .
+                        urlencode($isbn) . '&size=large';
                 }
             } else if ($id) {
-                $result['response']['docs'][$i]['imageUrl'] =
-                            $configArray['Site']['url'] .
-                            '/thumbnail.php?id=' .
-                            urlencode($id) . '&index=0&size=large';
+                $result['response']['docs'][$i]['imageUrl'] 
+                    = $configArray['Site']['url'] .
+                    '/thumbnail.php?id=' .
+                    urlencode($id) . '&index=0&size=large';
             }
             
             if (isset($result['response']['docs'][$i]['format'])) {
