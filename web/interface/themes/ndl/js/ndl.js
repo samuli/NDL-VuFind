@@ -168,13 +168,15 @@ function initSidebarFacets() {
         var parentDl = $(this).parent('dl');
         
         // Do nothing if facet selected
-        if (parentDl.find('img[alt="Selected"]').length > 0) return false;
+        if (parentDl.find('img[alt="Selected"]').length > 0 || parentDl.hasClass('active')) return false;
         
         // Make sure this facet has options
         if (parentDl.find('dd').length > 0) {
             
+            if (!parentDl.hasClass('timeline')) {
             // Slide them
             parentDl.children('dd').slideToggle(100);
+            } else parentDl.children('dd').hide();
          
             // If user has clicked "more", hide the additional facets too
             if (!parentDl.next('dl').hasClass('offscreen') && parentDl.hasClass('open')) {
@@ -184,6 +186,10 @@ function initSidebarFacets() {
                 
             // Finally, mark this facet container opened
             parentDl.toggleClass('open collapsed');
+            if (!parentDl.hasClass('collapsed')) {
+                parentDl.removeClass('timeline');
+                moveMainYearForm(parentDl);
+            }
         }
         
         // Extend to default facets (without dd children)
@@ -193,6 +199,61 @@ function initSidebarFacets() {
             parentDl.toggleClass('open collapsed');
         }
         
+    });
+    
+    // Add clickable timeline icon function
+    $('.timelineview').click(function(e) {
+        e.stopPropagation();
+        var parentDl = $(this).closest('dl.narrowList');
+        if (!parentDl.hasClass('collapsed')) {
+            parentDl.find('> dt').trigger('click');
+        }
+        parentDl.toggleClass('timeline');
+        moveMainYearForm(parentDl);
+	});
+    
+    // Keep main year form visible
+    moveMainYearForm = function(el) {
+        if (!el.hasClass('timeline')) {
+            $('.mainYearForm').appendTo('.mainYearFormContainer1');
+        } else {
+            $('.mainYearForm').appendTo('.mainYearFormContainer2');
+        }
+    }
+    
+    $('.resultDates').click(function(e) {
+        e.stopPropagation();
+    })
+    
+    // Timeline search functionality
+    $(".mainYearForm").submit(function(e){
+        e.preventDefault();
+        // Get dates, build query
+        var from = $('.mainYearForm #mainYearFrom').val(),
+            to = $('.mainYearForm #mainYearTo').val(),
+            action = $('.mainYearForm').attr('action');
+        if (action.indexOf("?") < 0) {
+            action += '?'; // No other parameters, therefore add ?
+        } else {
+            action += '&'; // Other parameters found, therefore add &
+        }
+        var query = action + 'daterange[]=main_date_str&';
+        
+        // Require numerical values
+        if (!isNaN(from) && !isNaN(to)) {
+            if (from == '' && to == '') { // both dates empty; use removal url
+                query = action;
+            } else if (from == '') { // only start date set
+                query += 'main_date_strto='+padZeros(to);
+            } else if (to == '')  { // only end date set
+                query += 'main_date_strfrom='+padZeros(from);
+            } else { // both dates set
+                query += 'main_date_strfrom='+padZeros(from)+'&main_date_strto='+padZeros(to);
+            }
+            
+            // Perform the new search
+            window.location = query;   
+        }
     });
 }
 
@@ -231,6 +292,18 @@ function initFixedLimitSearch() {
         })
    }
    
+}
+
+// Padding function
+function padZeros(number, length) {
+    if (typeof length == 'undefined') {
+        length = 4;
+    }
+    var str = '' + number;
+    while (str.length < length) {
+        str = '0' + str;
+    }
+    return str;
 }
 
 // Custom jQuery effects

@@ -129,7 +129,7 @@ class PubDateVisAjax implements RecommendationInterface
      */
     public function getTemplate()
     {
-        return 'Search/Recommend/TopPubDateVisAjax.tpl';
+        return 'Search/Recommend/SidePubDateVisAjax.tpl';
     }
 
     /**
