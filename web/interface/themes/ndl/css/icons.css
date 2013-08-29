@@ -188,7 +188,7 @@ a.clear_input {
 }
 .dateVisClear a {
     background-image: url(../images/icons16-24px-03.png);
-    background-position: -995px -728px; 
+    background-position: -363px -728px; 
 }
 .holdPlace:before {
     background-image: url(../images/icons16-24px-03.png);
@@ -308,7 +308,7 @@ a.clear_input {
     background-position: -14px -612px;
 }
 .resultNoImage.formatthesis,
-.resultNoImage.formatdissertation, {
+.resultNoImage.formatdissertation {
     background-image: url(../images/icons48px-03.png);
     background-position: -7px -1499px;
 }
@@ -321,18 +321,18 @@ a.clear_input {
     background-position: -13px -482px;
 }
 .resultNoImage.formatvideo,
-.resultNoImage.formataudiovideo, {
+.resultNoImage.formataudiovideo {
     background-image: url(../images/icons48px-03.png);
     background-position: -14px -1242px;
 }
 .resultNoImage.formatsound,
-.resultNoImage.formataudio, {
+.resultNoImage.formataudio {
     background-image: url(../images/icons48px-03.png);
     background-position: -12px -1113px;
 }
 .resultNoImage.formatother,
 .resultNoImage.formatreferenceentry,
-.resultNoImage.formatwebsite, {
+.resultNoImage.formatwebsite {
     background-image: url(../images/icons48px-03.png);
     background-position: -17px -1632px;
 }

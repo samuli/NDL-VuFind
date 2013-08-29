@@ -1153,7 +1153,7 @@ div.dialogLoading {
 .no-hits {
     margin-bottom: 4em;
 }
-.no-hits #topPubDateVis {
+.no-hits #sidePubDateVis {
     display: none;
 }
 .no-hits .error {
@@ -2061,7 +2061,7 @@ li.result blockquote {
 .sidegroup ul.dynatree-container li {
     padding:0 0 0 5px;
 }
-.sidegroup dl.collapsible {
+.sidegroup dl.collapsible dt {
     cursor:pointer;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2628,9 +2628,10 @@ ul.recordSet .addToFavLink a {
     height:75px;
     clear:both;
 }
-.resultDates {
-    background:#f2f2f2;
+.resultDates, .resultDates .content {
+    background:#4C4C4C;
 }
+
 .resultDatesHeader {
     background:#4d4d4d;
     clear:both;
@@ -2827,15 +2828,23 @@ ul.recordSet .addToFavLink a {
 
 /*Date Range Visualizer */
 
+.sidebarOnLeft .timeline.open.collapsed dt {
+    margin-left: 0;
+}
+.timeline.open.collapsed dt {
+    margin-left: -740px;   
+}
+
 .dateVis {
-    box-shadow:0 1px 10px rgba(0,0,0,.15) inset;
+    background:#f8f8f8;
+    border-radius:0 5px 5px 0;
     margin:0;
     padding:0;
-    width:950px;
+    width:910px;
     height:110px;
     cursor:crosshair;
     position:relative;
-    left:0;
+    left:40px;
 }
 .dateVisClear a {
     line-height: 1.3em;
@@ -2914,6 +2923,145 @@ div.dateVisHandle.visible {
 .resultDates.expanded {
     height:110px;
 }
+
+.timeline .resultDates {
+    border-radius: 5px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.timeline {
+    padding-bottom:0 !important;
+}
+
+.timeline dd {
+    display:none !important;
+}
+.timeline ~ #narrowGroupHidden_main_date_str {
+    display:none !important;
+}
+
+.navmenu.year.open.collapsed dd {
+    display:block;
+}
+
+.narrowList.navmenu.year dt {
+z-index:1000;
+	position:relative;
+	width:210px;
+		-moz-transition:all 0.1s linear;
+}
+.narrowList.navmenu.year.collapsible.timeline.open.collapsed dt{
+	width:950px;
+	z-index:1000;
+	position:relative;
+    padding-bottom:15px;
+}
+
+.sidegroup dl.year.collapsible.timeline.open.collapsed dt {
+    background: url("../images/datevis_handle_close.png") no-repeat scroll 101.6% 6% #4C4C4C;
+}
+.sidegroup dl.year.collapsible.timeline.open.active.collapsed dt {
+    background:#4C4C4C;
+}
+.timelineview {
+  background: url("../images/timelineview.png") repeat scroll 0 0 transparent;
+    display: inline-block;
+    float: right;
+    height: 18px;
+    margin-right: 30px;
+    text-indent: -9999px;
+    width: 33px;
+}
+
+.active .timelineview {
+    margin-right:0;
+}
+
+.mainYearForm input[type="text"] {
+    width:43px;
+    margin-right:4px;
+}
+
+.resultDates {
+    cursor:default;
+}
+
+.resultDates .mainYearForm input[type="text"] {
+    box-shadow:none;
+    border:0; 
+}
+
+.mainYearForm input[type="submit"] {
+    background: url("../images/icons16-24px-02.png") repeat scroll -673px -946px #00A3B5;
+    border: 0 none;
+    border-radius: 8px 8px 8px 8px;
+    cursor:pointer;
+    display: inline-block;
+    height: 23px;
+    margin-top: 1px;
+    text-indent: -99999px;
+    width: 32px;
+}
+
+.mainYearFormContainer2 {
+    clear: both;
+    float: right;
+    margin-right: 10px;
+    margin-top:2px;
+}
+
+#sidePubDateVis {
+    margin-top:40px;
+    position:relative;
+}
+
+.dateVisNavigation * {
+    cursor:pointer;
+    position:absolute;
+}
+.dateVisNavigation .zoomIn {
+    height: 26px;
+    left: 3px;
+    top: 5px;
+    width: 26px;
+}
+
+.dateVisNavigation .zoomOut {
+    height: 26px;
+    left: 3px;
+    top: 35px;
+    width: 26px;
+}
+
+.dateVisNavigation .next {
+    height: 16px;
+    left: 17px;
+    top: 79px;
+    width: 11px;
+}
+
+.dateVisNavigation .prev {
+    height: 16px;
+    left: 3px;
+    top: 79px;
+    width: 11px;
+}
+
+.dateVisNavigation {
+    background: url("../images/dateVisNavigation.png") no-repeat 2px 5px #f8f8f8;
+    border-radius: 5px 0 0 5px;
+    height: 110px;
+    left: 0;
+    position: absolute;
+    width: 40px;
+}
+
+.dateVis.loading {
+    background: url(../images/ajax_loading.gif) no-repeat center center #f8f8f8;
+}
+
+
 /* Pagination */
 .pagination {
     position:relative;
@@ -4268,7 +4416,7 @@ tr:nth-child(even) td.gridMouseOver {
     padding-right: 4px;
     margin-left: 3px;
 }
-.collectionDetails #topPubDateVis {
+.collectionDetails #sidePubDateVis {
     display: none;
 }
 .collectionViewSelection {
@@ -5129,3 +5277,5 @@ form#feedbackForm label {
 #locationServiceDirectLink {
     height: 5%;
 }
+
+

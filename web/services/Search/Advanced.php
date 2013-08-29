@@ -278,12 +278,15 @@ class Advanced extends Action
             $searchesConf = getExtraConfigArray('Searches');
             
             // Move primary languages (if set) to the top of the language list
-            if (isset($facets['Language']) && 
-                isset($searchesConf['PrimaryLanguages']['lang'])) {
+            if (isset($facets['Language']) 
+                && isset($searchesConf['PrimaryLanguages']['lang'])
+            ) {
 
                 $primaryLanguages = $searchesConf['PrimaryLanguages']['lang'];
-                $facets['Language'] = $this->_orderLanguageFacets($facets['Language'], 
-                    $primaryLanguages);
+                $facets['Language'] = $this->_orderLanguageFacets(
+                    $facets['Language'], 
+                    $primaryLanguages
+                );
             }
         }
         return $facets;
@@ -292,10 +295,10 @@ class Advanced extends Action
     /**
      * Move primary languages to top of the language facet array
      *
-     * @param array  $languages         The alphabetical language facet array
-     * @param array  $primaryLanguages  The languages to be prioritized
+     * @param array $languages        The alphabetical language facet array
+     * @param array $primaryLanguages The languages to be prioritized
      * 
-     * @return array                    The re-ordered language facet array
+     * @return array The re-ordered language facet array
      * @access private
      */
     private function _orderLanguageFacets($languages, $primaryLanguages) 

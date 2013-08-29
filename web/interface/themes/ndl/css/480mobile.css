@@ -335,6 +335,20 @@
         margin:0;
     }
     
+    
+    .timelineview,
+    dd.mainYearFormContainer1 {
+        display:none !important;
+    }
+    
+    dd.mainYearFormContainer1 + dd {
+        padding-top: 7px;
+    }
+    
+    .narrowList.navmenu.year dt {
+        width: 450px;
+    }
+    
     /* Advanced search */
     #searchHolder .group {
         padding:8px;

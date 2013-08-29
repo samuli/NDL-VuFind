@@ -68,18 +68,10 @@
         {* Recommendations *}
         {if $topRecommendations}
           {foreach from=$topRecommendations item="recommendations"}
-             
             {include file=$recommendations}
           {/foreach}
         {/if}
       </div>
-    </div>
-  </div>
-  <div class="resultDatesHeader {if !empty($visFacets.main_date_str[0])}expanded{/if}">
-    <div class="content">
-      <span class="dateVisHandle">{translate text='Results timeline'}<span class="dateVisHelp {if !empty($visFacets.main_date_str[0])}visible{/if}"><span class="infoIndicator">i</span>{translate text='You can narrow the search by selecting a period on the timeline'}</span></span>
-      <div class="dateVisHandle dateVisOpen {if empty($visFacets.main_date_str[0])}visible{/if}"></div>
-      <div class="dateVisHandle dateVisClose {if !empty($visFacets.main_date_str[0])}visible{/if}"></div>
     </div>
   </div>
 <div class="resultViewOptions">
@@ -145,9 +137,7 @@
     </div>
     {if !empty($sideFacetSet)}
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-        {foreach from=$sideRecommendations item="recommendations"}
-          {include file=$recommendations}
-        {/foreach}
+          {include file=$sideRecommendations.SideFacets}
         {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}
     </div>
     {/if}

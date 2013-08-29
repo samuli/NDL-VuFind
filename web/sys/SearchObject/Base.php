@@ -2120,7 +2120,7 @@ abstract class SearchObject_Base
             && !empty($this->recommend[$location])
         ) {
             foreach ($this->recommend[$location] as $current) {
-                $retval[] = $current->getTemplate();
+                $retval[get_class($current)] = $current->getTemplate();
             }
         }
         return $retval;
