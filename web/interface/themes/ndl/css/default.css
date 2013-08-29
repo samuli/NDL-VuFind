@@ -3533,6 +3533,15 @@ h5.recordTabHeader {
 .backToResults span.icon {
     padding:1px 2px 2px 20px;
 }
+.backToResults + .advancedOptions {
+    padding-top: 6px;
+}
+.backToResults + .advancedOptions .editAdvancedSearch {
+}
+.backToResults + .advancedOptions .newAdvancedSearch,
+.backToResults + .advancedOptions .backToSearchHistory {
+    margin-left: 10px; 
+}
 .resultscroller {
     text-align: center;
     width: 22%;
