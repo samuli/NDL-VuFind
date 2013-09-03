@@ -236,7 +236,7 @@ class MetaLib
                     // Clean and validate input -- note that index may be in a
                     // different field depending on whether this is a basic or
                     // advanced search.
-                    $lookfor = $params['lookfor'];
+                    $lookfor = urlencode($params['lookfor']);
                     if (isset($params['field'])) {
                         $index = $params['field'];
                     } else if (isset($params['index'])) {

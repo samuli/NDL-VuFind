@@ -268,7 +268,7 @@ class Wikipedia implements RecommendationInterface
     protected function parseWikipedia($body)
     {
         global $configArray;
-
+        
         // Check if data exists or not
         if (isset($body['query']['pages']['-1'])) {
             return new PEAR_Error('No page found');
@@ -286,7 +286,7 @@ class Wikipedia implements RecommendationInterface
             preg_match('/\[\[(.*)\]\]/', $as_lines[0], $matches);
             return $this->getWikipedia($matches[1]);
         }
-
+        
         /* Infobox */
 
         // We are looking for the infobox inside "{{...}}"
@@ -296,18 +296,31 @@ class Wikipedia implements RecommendationInterface
         $infoboxStr = '';
         foreach ($matches[1] as $m) {
             // If this is the Infobox
-            if (substr($m, 0, 8) == "{Infobox") {
+            if (substr($m, 0, 8) == "{Infobox") {  
                 // Keep the string for later, we need the body block that follows it
                 $infoboxStr = "{".$m."}";
                 break;
             }
         }
-        
+
+        if (!$infoboxStr) {
+            // Next we are looking for the infobox inside style definition tags
+            preg_match('/.*\|\}/s', $body['*'], $styles);
+            $infoboxStr = '';
+            if (strpos($styles[0], "Infobox") !== false ) {
+                // Keep the string for later, we need the body block that follows it
+                $infoboxStr = $styles[0];
+            }        
+        }
+                
         // If Infobox not found with name, try to find it by content
         if (!$infoboxStr && isset($matches[1]) && $matches[1]) {
+            // Look for the beginning of the actual contents
+            $contentsStart = strpos($body['*'], '\'\'\'');
             $index = 0;
             foreach ($matches[1] as $m) {
-                if (strstr($m, "\n|") || strstr($m, "\n |")) {
+                $matchStart = strpos($body['*'], $m);                
+                if ((strstr($m, "\n|") || strstr($m, "\n |")) && $matchStart < $contentsStart) {    
                     $infoboxStr = "{".$m."}";
                     break;
                 }
@@ -425,7 +438,7 @@ class Wikipedia implements RecommendationInterface
                     // If it's a file link get rid of it
                     if (strtolower(substr($n, 0, 7)) == "[[file:"
                         || strtolower(substr($n, 0, 8)) == "[[image:"
-                        || preg_match('/^\[\[\w{1,5}:/', $n)
+                        || preg_match('/^\[\[\w{1,5}:/', $n)                       
                     ) {
                         $body = str_replace($nm, "", $body);
                     }
@@ -452,23 +465,34 @@ class Wikipedia implements RecommendationInterface
         // Fix pronunciation guides
         $pattern[] = '/({{)pron-en\|([^}]*)(}})/Us';
         $replacement[] = translate("pronounced") . " /$2/";
+        $pattern[] = '/({{)IPAc-en\|([^}]*)(}})/Us';
+        $replacement[] = "$2";
 
         // Fix dashes
         $pattern[] = '/{{ndash}}/';
-        $replacement[] = ' - ';
+        $replacement[] = ' - ';   
 
-        // Removes citations
-        $pattern[] = '/({{)[^}]*(}})[;,] /Us';
+        // Fix birth and death dates, if needed
+        $pattern[] = '/({{)(Birth|Death) date\|.*(\d{4})\|(\d{1,2})\|(\d{1,2})(}})/Us';
+        $replacement[] = "$5.$4.$3";  
+              
+        // Removes citations expect for quotes
+        $pattern[] = '/({{)[^(quote\|)][^}]*(}})[;,] /Us';
         $replacement[] = "";
-        $pattern[] = '/({{)[^}]*(}})/Us';
+        $pattern[] = '/({{)[^(quote\|)][^}]*(}})/Us';
         $replacement[] = "";
+        
+        // Fix quotes
+        $pattern[] = '/({{)quote\|([^}]*)(}})/Us';
+        $replacement[] = " <blockquote>$2</blockquote> ";        
+        
         //  <ref ... > ... </ref> OR <ref> ... </ref>
         $pattern[] = '/<ref[^\/]*>.*<\/ref>/Us';
         $replacement[] = "";
         //    <ref ... />
         $pattern[] = '/<ref.*\/>/Us';
-        $replacement[] = "";
-
+        $replacement[] = "";       
+        
         // Removes comments followed by carriage returns to avoid excess whitespace
         $pattern[] = '/<!--.*-->\n*/Us';
         $replacement[] = '';

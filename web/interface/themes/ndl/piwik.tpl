@@ -27,6 +27,15 @@ _paq.push(['setCustomVariable',  2, "RecordData", "{$id|escape:"html"}|-|{$coreS
     {if $coreInstitutions}
 _paq.push(['setCustomVariable',  3, "RecordInstitution", "{$coreInstitutions.0|escape:"html"}", "page"]);
     {/if}
+  {elseif ($module eq "Search" or $module eq "MetaLib" or $module eq "PCI")}
+    {if $filterList}
+_paq.push(['setCustomVariable',  1, "Facets", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}|{$filter.display|escape:"html"}\t{/foreach}{/foreach}", "page"]);
+_paq.push(['setCustomVariable',  2, "FacetTypes", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}\t{/foreach}{/foreach}", "page"]);
+    {/if}
+    {if $searchType}
+_paq.push(['setCustomVariable',  3, "SearchType", "{$searchType|escape:"html"}", "page"]
+    {/if}
+_paq.push(['trackSiteSearch', "{if $lookfor}{$lookfor|escape:"html"}{/if}", "{if $activePrefilter}{$activePrefilter|escape:"html"}{else}-{/if}", {if $recordCount}{$recordCount|escape:"html"}{else}false{/if}]);
   {/if}
 {literal}
 _paq.push(['enableLinkTracking']); 
