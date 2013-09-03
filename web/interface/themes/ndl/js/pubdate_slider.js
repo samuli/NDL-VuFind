@@ -1,14 +1,16 @@
 $(document).ready(function(){
     // create the slider for the publish date facet
-	$("#publishDateSlider").jslider({ from: 0, to: 2020, 
-									 heterogeneity: ['50/1800', '75/1910'], 
-        							 scale: [0, '|', 900, '|', '1800', '|', 1910, '|', 2020], 
-        							 limits: false, step: 1, 
-        							 dimension: '', 
-        							 format: {locale: 'fi'},
-        							 callback: function(){
-        							 updateFields();
-        						   }
+    var date = new Date();
+    var endDate = date.getFullYear() + 2;
+    $("#publishDateSlider").jslider({ from: 0, to: endDate, 
+                                      heterogeneity: ['50/1800', '75/1910'], 
+                                      scale: [0, '|', 900, '|', '1800', '|', 1910, '|', endDate], 
+                                      limits: false, step: 1, 
+                                      dimension: '', 
+                                      format: {locale: 'fi'},
+                                      callback: function(){
+                                        updateFields();
+                                      }
         });
         $('#publishDatefrom, #publishDateto').change(function(){
             updateSlider();

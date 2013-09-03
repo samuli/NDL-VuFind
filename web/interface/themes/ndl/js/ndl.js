@@ -237,18 +237,18 @@ function initSidebarFacets() {
         } else {
             action += '&'; // Other parameters found, therefore add &
         }
-        var query = action + 'daterange[]=main_date_str&';
-        
+        var query = action + 'sdaterange[]=search_sdaterange_mv&';
+                
         // Require numerical values
         if (!isNaN(from) && !isNaN(to)) {
             if (from == '' && to == '') { // both dates empty; use removal url
                 query = action;
             } else if (from == '') { // only start date set
-                query += 'main_date_strto='+padZeros(to);
+                query += 'search_sdaterange_mvto='+padZeros(to);
             } else if (to == '')  { // only end date set
-                query += 'main_date_strfrom='+padZeros(from);
+                query += 'search_sdaterange_mvfrom='+padZeros(from);
             } else { // both dates set
-                query += 'main_date_strfrom='+padZeros(from)+'&main_date_strto='+padZeros(to);
+                query += 'search_sdaterange_mvfrom='+padZeros(from)+'&search_sdaterange_mvto='+padZeros(to);
             }
             
             // Perform the new search
@@ -299,11 +299,17 @@ function padZeros(number, length) {
     if (typeof length == 'undefined') {
         length = 4;
     }
+    // Room for any leading negative sign
+    var negative = false;
+    if (number < 0) {
+        negative = true;
+        number = Math.abs(number);
+    }
     var str = '' + number;
     while (str.length < length) {
         str = '0' + str;
     }
-    return str;
+    return (negative ? '-' : '') + str;
 }
 
 // Custom jQuery effects

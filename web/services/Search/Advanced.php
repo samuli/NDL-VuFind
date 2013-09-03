@@ -93,6 +93,9 @@ class Advanced extends Action
             $interface->assign(
                 'dateRangeLimit', $this->_getDateRangeSettings($savedSearch)
             );
+            $interface->assign(
+                'spatialDateRangeLimit', $this->getSpatialDateRangeSettings($savedSearch)
+            );
         }
 
         // Send search type settings to the template
@@ -107,6 +110,38 @@ class Advanced extends Action
         $interface->setPageTitle('Advanced Search');
         $interface->setTemplate('advanced.tpl');
         $interface->display('layout.tpl');
+    }
+
+    /**
+     * Get the current settings for the spatial date range facet, if it is set:
+     *
+     * @param object $savedSearch Saved search object (false if none)
+     *
+     * @return array              Date range: Key 0 = from, Key 1 = to.
+     * @access protected
+     */
+    protected function getSpatialDateRangeSettings($savedSearch = false)
+    {
+        // Default to blank strings:
+        $from = $to = '';
+
+        // Check to see if there is an existing range in the search object:
+        if ($savedSearch) {
+            $filters = $savedSearch->getFilters();
+            if (isset($filters['search_sdaterange_mv'])) {
+                foreach ($filters['search_sdaterange_mv'] as $current) {
+                    if ($range = VuFindSolrUtils::parseSpatialDateRange($current)) {
+                        $from = $range['from'] == '*' ? '' : $range['from'];
+                        $to = $range['to'] == '*' ? '' : $range['to'];
+                        $savedSearch->removeFilter('search_sdaterange_mv:' . $current);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Send back the settings:
+        return array($from, $to);
     }
 
     /**

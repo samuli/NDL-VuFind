@@ -98,20 +98,21 @@
       </div>
     {else}
         {assign var="mainYear" value="Main Year"}
-        <dl class="narrowList navmenu{if $cluster.label ==='Main Year'} year{if !empty($visFacets.main_date_str[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}">
+        {assign var="dateRange" value="Date Range"}
+        <dl class="narrowList navmenu{if $cluster.label ==='Main Year'} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}">
            
         <dt>{translate text=$cluster.label}
-          {if $cluster.label ==='Main Year'}<span class="timelineview">open timeline</span>
-            {include file=$sideRecommendations.PubDateVisAjax}
+          {if $cluster.label === 'Main Year'}<span class="timelineview">open timeline</span>
+            {include file=$sideRecommendations.DateRangeVisAjax}
           {/if}
         </dt>
-        {if $cluster.label ==='Main Year'}
+        {if $cluster.label === 'Main Year'}
             <dd class="mainYearFormContainer1">
-              <form action="{if $filterList.$mainYear.0}{$filterList.$mainYear.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm">
-                <input id="mainYearFrom" type="text" value="{$visFacets.main_date_str.0}">-
-                <input id="mainYearTo" type="text" value="{$visFacets.main_date_str.1}">
-                <input id="mainYearFromRange" type="hidden" value="{$visFacets.main_date_str.0}">
-                <input id="mainYearToRange" type="hidden" value="{$visFacets.main_date_str.1}">
+              <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm">
+                <input id="mainYearFrom" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
+                <input id="mainYearTo" type="text" value="{$visFacets.search_sdaterange_mv.1}">
+                <input id="mainYearFromRange" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
+                <input id="mainYearToRange" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
                 <input type="submit" value="{translate text='Search'}">
               </form>
             </dd>
