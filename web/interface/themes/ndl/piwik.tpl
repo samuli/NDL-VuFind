@@ -33,7 +33,7 @@ _paq.push(['setCustomVariable',  1, "Facets", "{foreach from=$filterList item=fi
 _paq.push(['setCustomVariable',  2, "FacetTypes", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}\t{/foreach}{/foreach}", "page"]);
     {/if}
     {if $searchType}
-_paq.push(['setCustomVariable',  3, "SearchType", "{$searchType|escape:"html"}", "page"]
+_paq.push(['setCustomVariable',  3, "SearchType", "{$searchType|escape:"html"}", "page"]);
     {/if}
 _paq.push(['trackSiteSearch', "{if $lookfor}{$lookfor|escape:"html"}{/if}", "{if $activePrefilter}{$activePrefilter|escape:"html"}{else}-{/if}", {if $recordCount}{$recordCount|escape:"html"}{else}false{/if}]);
   {/if}
