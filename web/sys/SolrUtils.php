@@ -147,6 +147,24 @@ class VuFindSolrUtils
         }
         return array('from' => trim($matches[1]), 'to' => trim($matches[2]));
     }
+
+    /**
+     * Parse "from" and "to" values out of a spatial date range query (or return false if the
+     * query is not a range).
+     *
+     * @param string $query Solr query to parse.
+     *
+     * @return array|bool   Array with 'from' and 'to' values extracted from range
+     * or false if the provided query is not a range.
+     * @access public
+     */
+    public static function parseSpatialDateRange($query)
+    {
+        if (!preg_match('/\([\d-]+\s+([\d-]+)\s+([\d-]+)\s+[\d-]+\)/', $query, $matches)) {
+            return false;
+        }
+        return array('from' => $matches[1] * 86400, 'to' => $matches[2] * 86400);
+    }
 }
 
 ?>

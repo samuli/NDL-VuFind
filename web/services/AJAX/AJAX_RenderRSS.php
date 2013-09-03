@@ -138,11 +138,63 @@ class AJAX_RenderRSS extends Action
                     }
                 }
                 /* ...and if that fails, we try to extract the image url from the
-                 * description element */
+                 * content:encoded element... */
+                if(!array_key_exists("imageUrl", $item) &&
+                   array_key_exists('content:encoded', $item)) {
+                    // let's load the HTML
+                    $dom = new DOMDocument;
+                    $dom->loadHTML($item['content:encoded']);
+                    
+                    /*
+                     * first, let's see if there are <a> elements with <img>
+                     * children; they are likely links to full-size images
+                     */
+                    $anchors = $dom->getElementsByTagName('a');
+                    foreach ($anchors as $anchor) {
+                        foreach($anchor->childNodes as $anchorChild) {
+                            $imageChild = false;
+                            if($anchorChild->nodeName == "img") {
+                                $imageChild = true;
+                                break;
+                            }
+                        }
+                        if($imageChild) {
+                            $href = $anchor->getAttribute('href');
+                            if($href) {
+                                if((substr($href, -4) == '.jpg') ||
+                                   (substr($href, -4) == '.gif') ||
+                                   (substr($href, -4) == '.png') ||
+                                   (substr($href, -5) == '.jpeg')) {
+                                    $item['imageUrl'] = $href;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    /*
+                     * if there are no <a> elements with <img> children, let's
+                     * settle for an <img> element with no <a> parent
+                     */
                 if(!array_key_exists("imageUrl", $item)) {
+                        $images = $dom->getElementsByTagName('img');
+                        if($images &&
+                           $images->item(0) &&
+                           $images->item(0)->getAttribute('src')) {
+                            $item['imageUrl'] = $images->item(0)->getAttribute('src');
+                        }
+                    }
+                }
+                /* ...and if that fails, we try to extract the image url from the
+                 * description element */
+                if(!array_key_exists("imageUrl", $item) &&
+                   array_key_exists('description', $item)) {
                     preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
+                    if($matches) {
                     $item['imageUrl'] = $matches[1];
                 }
+                }
+                
 
                 /* remove all HTML tags */
                 $item['description'] = strip_tags($item['description']);

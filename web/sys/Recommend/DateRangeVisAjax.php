@@ -1,10 +1,10 @@
 <?php
 /**
- * publishDateVis
+ * DateRangeVis
  *
  * PHP version 5
  *
- * Copyright (C) Till Kinstler 2011.
+ * Copyright (C) The National Library of Finland 2013.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -21,31 +21,29 @@
  *
  * @category VuFind
  * @package  Recommendations
- * @author   Till Kinstler <kinstler@gbv.de>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
 
-require_once 'sys/Recommend/Interface.php';
+require_once 'sys/Recommend/PubDateVisAjax.php';
 
 /**
- * PubDateVisAjax Recommendations Module
+ * DateRangeVisAjax Recommendations Module
  *
- * This class displays a visualisation of facet values in a recommendation module
+ * This class displays a visualisation of facet values in a recommendation module 
+ * and uses another index field for result filtering. 
  *
  * @category VuFind
  * @package  Recommendations
- * @author   Till Kinstler <kinstler@gbv.de>
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
  */
-class PubDateVisAjax implements RecommendationInterface
+class DateRangeVisAjax extends PubDateVisAjax
 {
-    protected $searchObject;
-    protected $baseSettings;
-    protected $zooming;
-    protected $dateFacets = array();
-
+    protected $filterField = '';
+    
     /**
      * Constructor
      *
@@ -58,34 +56,10 @@ class PubDateVisAjax implements RecommendationInterface
      */
     public function __construct($searchObject, $params)
     {
-        $this->searchObject = $searchObject;
-        $params = explode(':', $params);
-        if ($params[0] == "true" || $params[0] == "false") {
-            $this->zooming = $params[0];
-            $this->dateFacets = array_slice($params, 1);
-        } else {
-            $this->zooming = "false";
-            $this->dateFacets = $params;
-        }
-        
-
+        parent::__construct($searchObject, $params);
+        $this->filterField = array_shift($this->dateFacets);
     }
-
-    /**
-     * init
-     *
-     * Called before the SearchObject performs its main search.  This may be used
-     * to set SearchObject parameters in order to generate recommendations as part
-     * of the search.
-     *
-     * @return void
-     * @access public
-     */
-    public function init()
-    {
-        // nothing to do
-    }
-
+    
     /**
      * process
      *
@@ -99,21 +73,20 @@ class PubDateVisAjax implements RecommendationInterface
     public function process()
     {
         global $interface;
+        
+        parent::process();
 
-        // currently only works with Solr SearchObject
-        if (is_a($this->searchObject, 'SearchObject_Solr')) {
-            $visFacets = $this->processDateFacets(
-                $this->searchObject->getFilters()
-            );
-            $interface->assign(
-                'visFacets',
-                $visFacets
-            );
-            $interface->assign('zooming', $this->zooming);
-            $interface->assign('facetFields', implode(':', $this->dateFacets));
-            $interface->assign(
-                'searchParams', $this->searchObject->renderSearchUrlParams()
-            );
+        $interface->assign('filterField', $this->filterField);
+        $filters = $this->searchObject->getFilters();
+        $url = $this->searchObject->renderLinkWithoutFilter(
+            isset($filters[$this->filterField][0])
+            ? $this->filterField .':' . $filters[$this->filterField][0] : null
+        );
+        $parts = explode('?', $url);
+        if (isset($parts[1])) {
+            $interface->assign('searchParamsWithoutFilter', $parts[1]);
+        } else {
+            $interface->assign('searchParamsWithoutFilter', '');
         }
     }
 
@@ -129,9 +102,9 @@ class PubDateVisAjax implements RecommendationInterface
      */
     public function getTemplate()
     {
-        return 'Search/Recommend/SidePubDateVisAjax.tpl';
+        return 'Search/Recommend/DateRangeVisAjax.tpl';
     }
-
+    
     /**
      * Support method for getVisData() -- extract details from applied filters.
      *
@@ -143,23 +116,22 @@ class PubDateVisAjax implements RecommendationInterface
     protected function processDateFacets($filters)
     {
         $result = array();
-        foreach ($this->dateFacets as $current) {
-            $from = $to = '';
-            if (isset($filters[$current])) {
-                foreach ($filters[$current] as $filter) {
-                    if ($range = VuFindSolrUtils::parseRange($filter)) {
-                        $from = $range['from'] == '*' ? '' : $range['from'];
-                        $to = $range['to'] == '*' ? '' : $range['to'];
-                        break;
-                    }
+        $from = $to = '';
+        if (isset($filters[$this->filterField])) {
+            foreach ($filters[$this->filterField] as $filter) {
+                if ($range = VuFindSolrUtils::parseSpatialDateRange($filter)) {
+                    $startDate = new DateTime("@{$range['from']}");
+                    $endDate = new DateTime("@{$range['to']}");
+                    $from = $startDate->format('Y');
+                    $to = $endDate->format('Y');
+                    break;
                 }
             }
-            $result[$current] = array($from, $to);
-            $result[$current]['label']
-                = $this->searchObject->getFacetLabel($current);
         }
+        $result[$this->filterField] = array($from, $to);
+        $result[$this->filterField]['label']
+            = $this->searchObject->getFacetLabel($current);
         return $result;
     }
+    
 }
-
-?>
