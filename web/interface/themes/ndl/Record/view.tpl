@@ -58,7 +58,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   {/if}
 
   {if $lastsearch}
-    <div class="backToResults grid_6">
+    <div class="backToResults {if $lastsearch|strstr:'join'}grid_6{else}grid_12{/if}">
       <a href="{$lastsearch|escape}#record{$id|escape:"url"}"><div class="button buttonFinna icon"><span class="icon">&laquo;</span></div>{translate text="Back to Search Results"}</a>
     </div>
   {/if}
@@ -73,7 +73,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   <a href="{$path}/Search/Advanced?edit={$searchId}" class="backToSearchHistory">{translate text="Search History"}</a>
 *}
   {if $previousRecord || $nextRecord}
-    <div class="resultscroller grid_5 push_3">
+    <div class="resultscroller grid_5 {if $lastsearch|strstr:'join'}push_3{else}push_7{/if}">
     {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></a>
     {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></span>{/if}
     {$currentRecordPosition} / {$resultTotal}
