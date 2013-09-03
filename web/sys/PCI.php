@@ -180,8 +180,7 @@ class PCI
         <QueryTerm>
             <IndexField>%s</IndexField>
             <PrecisionOperator>exact</PrecisionOperator>
-            <Value/>
-            %s
+            <includeValue>%s</includeValue>
         </QueryTerm>
 EOE;
 
@@ -192,10 +191,9 @@ EOE;
                 if ($key == 'creationdate') {
                     $value = "[$value TO $value]";
                 }
-                $includeValues .= '<includeValue>'.htmlspecialchars($value, ENT_COMPAT, 'UTF-8').'</includeValue>';
+                $facetKey = 'facet_' . $key;
+                $filterTerms .= sprintf($facetXml, htmlspecialchars($facetKey, ENT_COMPAT, 'UTF-8'), htmlspecialchars($value, ENT_COMPAT, 'UTF-8'));
             }
-            $key = 'facet_' . $key;
-            $filterTerms .= sprintf($facetXml, htmlspecialchars($key, ENT_COMPAT, 'UTF-8'), $includeValues);
         }        
 
         $queryTermXml = <<<EOF
@@ -205,7 +203,6 @@ EOE;
             <Value>%s</Value>
         </QueryTerm>
 EOF;
-
         // handle queryterms
         $queryTerms = '';
 
