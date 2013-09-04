@@ -2,30 +2,38 @@
 
 {js filename="check_item_statuses.js"}
 {js filename="check_save_statuses.js"}
-{js filename="jquery.cookie.js"}
-{js filename="openurl.js"}
 {if $showPreviews}
 {js filename="preview.js"}
 {/if}
-{if $metalibEnabled}
-{js filename="metalib_links.js"}
-{/if}
 
-{include file="Search/rsi.tpl"}
-{include file="Search/openurl_autocheck.tpl"}
-
-<form method="post" name="addForm" action="{$url}/Cart/Home">
-<table style="border-bottom:1px solid #eee;">
-  <tr>
+  <ul class="recordSet galleryView">
   {foreach from=$recordSet item=record name="recordLoop"}
-   <td class="gridCell gridCellHover">
-       <span class="recordNumber">{$recordStart+$smarty.foreach.recordLoop.iteration-1}</span>
-       {* This is raw HTML -- do not escape it: *}{$record}
-   </td>
-   {if (($smarty.foreach.recordLoop.iteration % 4) == 0) && (!$smarty.foreach.recordLoop.last)}</tr><tr>{/if}
+    <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
+      {$record}
+    </li>
   {/foreach}
-  </tr>
-</table>
-</form>
-
+  </ul>
+  <script type="text/javascript">
+    {literal}
+    $(function() {
+        $('.galleryView li.result').hover(function() {
+            var gridContent = $(this).find('.gridContent');
+            var h, o = 52;
+            
+            gridContent.toggleClass('visible');
+            if (gridContent.hasClass('visible')) {
+                h = gridContent[0].scrollHeight -1;
+                if (h <= 54) {
+                    return;
+                }
+            } else {
+                h = o;
+            }
+            gridContent.animate({
+                'height' : h
+            }, 50);
+        });
+    });
+    {/literal}
+  </script>
 <!-- END of: Search/list-grid.tpl -->

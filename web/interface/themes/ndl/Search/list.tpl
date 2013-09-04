@@ -83,15 +83,13 @@
          {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
       </div>
       <div class="resultOptions">
-        <!--
+        {if $viewList|@count gt 1}
         <div class="viewButtons">
-          {if $viewList|@count gt 1}
-            {foreach from=$viewList item=viewData key=viewLabel}
-              {if !$viewData.selected}<a href="{$viewData.viewUrl|escape}" title="{translate text='Switch view to'} {translate text=$viewData.desc}" >{/if}<img src="{$path}/images/view_{$viewData.viewType}.png" {if $viewData.selected}title="{translate text=$viewData.desc} {translate text="view already selected"}"{/if}/>{if !$viewData.selected}</a>{/if}
-            {/foreach}
-          {/if}
+          {foreach from=$viewList item=viewData key=viewLabel}
+            <a href="{$viewData.viewUrl|escape}" class="view-{$viewData.viewType} {if $viewData.selected}active{/if}" title="{translate text='Switch view to'} {translate text=$viewData.desc}"></a>
+          {/foreach}
         </div>
-        -->
+        {/if}
         <div class="resultOptionSort">
           <form action="{$path}/Search/SortResults" method="post">
             <label for="sort_options_1">{translate text='Sort'}</label>
@@ -103,7 +101,7 @@
             <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
           </form>
         </div>
-
+          
         <div class="resultOptionLimit"> 
           {if $limitList|@count gt 1}
             <form action="{$path}/Search/LimitResults" method="post">
