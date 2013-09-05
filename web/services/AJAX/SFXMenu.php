@@ -136,8 +136,14 @@ EOF;
             echo "$link\n";
         }
         foreach ($html->find('head script') as $script) {
-            if (substr($script->src, 0, 1) == '/') {
+            if (substr($script->src, 0, 1) == '/' || substr($script->src, 0, 1) == '.') {
                 $script->src = $proxyURL . urlencode($script->src);
+            } else {
+                $src = parse_url($script->src);
+                // proxify only if not secure url
+                if ((strcasecmp($src['scheme'], 'http') == 0)) {
+                    $script->src = $proxyURL . urlencode($src['path']);
+                } 
             }
             echo "$script\n";
         }

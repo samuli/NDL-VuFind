@@ -87,7 +87,7 @@
         //<![CDATA[
         $(document).ready(function() {
         {/literal}
-          enableDynatree('#facet_{$title}', '{$title}', '{$fullPath}');
+          enableDynatree('#facet_{$title}', '{$title}', '{$fullPath}', '{$action}');
         {literal}  
         });
         //]]>
@@ -97,9 +97,28 @@
         <span class="facet_loading hide"></span>
       </div>
     {else}
-      <dl class="narrowList navmenu">
-        <dt>{translate text=$cluster.label}</dt>
-        {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
+        {assign var="mainYear" value="Main Year"}
+        {assign var="dateRange" value="Date Range"}
+        <dl class="narrowList navmenu{if $cluster.label ==='Main Year'} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}">
+           
+        <dt>{translate text=$cluster.label}
+          {if $cluster.label === 'Main Year'}<span class="timelineview">open timeline</span>
+            {include file=$sideRecommendations.DateRangeVisAjax}
+          {/if}
+        </dt>
+        {if $cluster.label === 'Main Year'}
+            <dd class="mainYearFormContainer1">
+              <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm">
+                <input id="mainYearFrom" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
+                <input id="mainYearTo" type="text" value="{$visFacets.search_sdaterange_mv.1}">
+                <input id="mainYearFromRange" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
+                <input id="mainYearToRange" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
+                <input type="submit" value="{translate text='Search'}">
+              </form>
+            </dd>
+        {/if}
+       
+          {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
           {if $smarty.foreach.narrowLoop.iteration == 6}
           <dd id="more{$title}"><a href="#" onclick="moreFacets('{$title}'); return false;">{translate text='more'} ...</a></dd>
         </dl>

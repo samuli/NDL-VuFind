@@ -117,7 +117,7 @@
 {* Main Listing *}
 <div class="resultListContainer">
   <div class="content">
-  <div id="resultList" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_17">
+  <div id="resultList" class="{if ($sidebarOnLeft && !empty($sideFacetSet))}sidebarOnLeft last{/if} grid_17">
 
   {if $subpage}
     {include file=$subpage}
@@ -125,7 +125,7 @@
     {$pageContent}
   {/if}
   </div>
-  
+  {if !empty($sideFacetSet)}
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
       {if $sideRecommendations}
         {foreach from=$sideRecommendations item="recommendations"}
@@ -134,6 +134,7 @@
         {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}
       {/if}
     </div>
+  {/if}
   </div>
 </div>
           

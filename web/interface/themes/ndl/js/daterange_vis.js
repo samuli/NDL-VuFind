@@ -1,5 +1,4 @@
 var visNavigation = '', visDateStart, visDateEnd, visMove;
-var dateVisYearLimit =  new Date().getFullYear() + 5;
 
 // Move dates: params either + or -
 function moveVis(start,end) {
@@ -19,12 +18,12 @@ $(document).ready(function() {
 });
 
 // Load the visualizer
-function loadVis(action, facetFields, searchParams, baseURL, collection, collectionAction) {
+function loadVis(action, filterField, facetField, searchParams, baseURL, collection, collectionAction) {
     
     // Build AJAX url
-    var url = baseURL + '/AJAX/JSON_Vis?method=getVisData&facetFields=' + encodeURIComponent(facetFields) + '&' + searchParams;
+    var url = baseURL + '/AJAX/JSON_DateRangeVis?method=getVisData&' + searchParams;
     if (typeof collection != 'undefined'){
-    	url+= '&collection=' + collection + '&collectionAction='+ collectionAction;
+        url+= '&collection=' + collection + '&collectionAction='+ collectionAction;
     }
     // AJAX call
     $.getJSON(url, function (data) {
@@ -32,22 +31,18 @@ function loadVis(action, facetFields, searchParams, baseURL, collection, collect
             $.each(data['data'], function(key, val) {
                 
                 var vis = $(".dateVis");
-               
+                
                 // Get data limits
                 dataMin = parseInt(val['data'][0][0], 10);
                 dataMax = parseInt(val['data'][val['data'].length - 1][0], 10);
 
                 // Compare with the values set by the user
-                if (val['min'] == 0 || visDateStart < dataMin) {
+                if (val['min'] == 0) {
                   val['min'] = dataMin;
                 }
 
-                if (val['max'] == 0 || visDateEnd > dataMax) {
+                if (val['max'] == 0) {
                   val['max'] = dataMax;
-                }
-                
-                if (val['max'] > dateVisYearLimit) {
-                    val['max'] = dateVisYearLimit;
                 }
                 
                 // Left & right limits have to be processed separately
@@ -60,10 +55,21 @@ function loadVis(action, facetFields, searchParams, baseURL, collection, collect
                 } else if (action == 'next' && val['min'] > val['max']) {
                   val['min'] = val['max']; 
                 }
+
+                if (typeof visDateStart === 'undefined') {
+                    visDateStart = parseInt(val['min'], 10);
+                }
+                if (typeof visDateEnd === 'undefined') {
+                    visDateEnd = parseInt(val['max'], 10);
+                    var maxYear = new Date().getFullYear() + 5;
+                    if (visDateEnd > maxYear) {
+                        visDateEnd = maxYear;
+                    }
+                }
                 
                 // Check for values outside the selected range and remove them
                 for (i=0; i<val['data'].length; i++) {
-                    if (val['data'][i][0] < val['min'] -5 || val['data'][i][0] > parseInt(val['max'], 10) + 5) {
+                    if (val['data'][i][0] < visDateStart - 5 || val['data'][i][0] > visDateEnd + 5) {
                         // Remove this
                         val['data'].splice(i,1);
                         i--;
@@ -82,8 +88,8 @@ function loadVis(action, facetFields, searchParams, baseURL, collection, collect
                     colors: ["#00a3b5"],
                     legend: { noColumns: 2 },
                     xaxis: { 
-                        min: val['min'],
-                        max: val['max'],
+                        min: visDateStart,
+                        max: visDateEnd,
                         tickDecimals: 0, 
                         font :{
                             size: 13,
@@ -119,12 +125,8 @@ function loadVis(action, facetFields, searchParams, baseURL, collection, collect
                 if ($('#mainYearFrom').val() || $('#mainYearTo').val()) {
                     plot.setSelection({ x1: preFromVal , x2: preToVal});
                 } 
-
-                // Print date values in the input boxes
-                $('#mainYearFromRange').val(val['min']);
-                $('#mainYearToRange').val(val['max']);
                 
-                $('.dateVis').removeClass('loading');
+                vis.removeClass('loading');
                 
             });
         }

@@ -68,18 +68,10 @@
         {* Recommendations *}
         {if $topRecommendations}
           {foreach from=$topRecommendations item="recommendations"}
-             
             {include file=$recommendations}
           {/foreach}
         {/if}
       </div>
-    </div>
-  </div>
-  <div class="resultDatesHeader {if !empty($visFacets.main_date_str[0])}expanded{/if}">
-    <div class="content">
-      <span class="dateVisHandle">{translate text='Results timeline'}<span class="dateVisHelp {if !empty($visFacets.main_date_str[0])}visible{/if}"><span class="infoIndicator">i</span>{translate text='You can narrow the search by selecting a period on the timeline'}</span></span>
-      <div class="dateVisHandle dateVisOpen {if empty($visFacets.main_date_str[0])}visible{/if}"></div>
-      <div class="dateVisHandle dateVisClose {if !empty($visFacets.main_date_str[0])}visible{/if}"></div>
     </div>
   </div>
 <div class="resultViewOptions">
@@ -91,15 +83,13 @@
          {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
       </div>
       <div class="resultOptions">
-        <!--
+        {if $viewList|@count gt 1}
         <div class="viewButtons">
-          {if $viewList|@count gt 1}
-            {foreach from=$viewList item=viewData key=viewLabel}
-              {if !$viewData.selected}<a href="{$viewData.viewUrl|escape}" title="{translate text='Switch view to'} {translate text=$viewData.desc}" >{/if}<img src="{$path}/images/view_{$viewData.viewType}.png" {if $viewData.selected}title="{translate text=$viewData.desc} {translate text="view already selected"}"{/if}/>{if !$viewData.selected}</a>{/if}
-            {/foreach}
-          {/if}
+          {foreach from=$viewList item=viewData key=viewLabel}
+            <a href="{$viewData.viewUrl|escape}" class="view-{$viewData.viewType} {if $viewData.selected}active{/if}" title="{translate text='Switch view to'} {translate text=$viewData.desc}"></a>
+          {/foreach}
         </div>
-        -->
+        {/if}
         <div class="resultOptionSort">
           <form action="{$path}/Search/SortResults" method="post">
             <label for="sort_options_1">{translate text='Sort'}</label>
@@ -111,7 +101,7 @@
             <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
           </form>
         </div>
-
+          
         <div class="resultOptionLimit"> 
           {if $limitList|@count gt 1}
             <form action="{$path}/Search/LimitResults" method="post">
@@ -136,52 +126,24 @@
 {* Main Listing *}
 <div class="resultListContainer">
   <div class="content">
-    <div id="resultList" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_17">
+    <div id="resultList" class="{if ($sidebarOnLeft && !empty($sideFacetSet))}sidebarOnLeft last{/if} grid_17">
       {if $subpage}
         {include file=$subpage}
       {else}
         {$pageContent}
       {/if}
     </div>
+    {if !empty($sideFacetSet)}
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-      {if $sideRecommendations}
-        {foreach from=$sideRecommendations item="recommendations"}
-          {include file=$recommendations}
-        {/foreach}
+          {include file=$sideRecommendations.SideFacets}
         {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}
-      {/if}
     </div>
+    {/if}
   </div>
 </div>
           
 {include file="Search/paging.tpl" position="Bottom"}
-<div class="resultSearchTools">
-  <div class="content">
-    <div class="searchtools">
-      <ul>
-        <li class="toolSavedSearch">
-          {if $savedSearch}
-            <span class="searchtoolsHeader"><a href="{$url}/MyResearch/SaveSearch?delete={$searchId}">{translate text='save_search_remove'}</a></span>
-          {else}
-            <span class="searchtoolsHeader"><a href="{$url}/MyResearch/SaveSearch?save={$searchId}">{translate text="save_search"}</a></span>
-            <span class="searchtoolsText">
-            </span>
-          {/if}
-        </li>
-        <li class="toolRssLink">
-          <span class="searchtoolsHeader"><a href="{$rssLink|escape}">{translate text="Get RSS Feed"}</a></span>
-          <span class="searchtoolsText">
-          </span>
-        </li>
-        <li class="toolMailSearch">
-          <span class="searchtoolsHeader"><a href="{$url}/Search/Email" class="mailSearch mail" id="mailSearch{$searchId|escape}" title="{translate text='Email this Search'}">{translate text="Email this Search"}</a></span>
-          <span class="searchtoolsText">
-          </span>
-        </li>
-      </ul>  
-    </div>
-  </div>
-</div>
+{include file="Search/result-search-tools.tpl"}
   {* End Main Listing *}
   {* Narrow Search Options *}
   {* End Narrow Search Options *}

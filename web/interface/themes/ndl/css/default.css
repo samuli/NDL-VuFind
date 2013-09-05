@@ -62,8 +62,8 @@ body {
 
 #main {
     background:#fff;
-    overflow: auto;
     position:relative;
+    z-index:2;
 }
 #main.main-home {
     padding:0;
@@ -80,6 +80,11 @@ only screen and (min-device-pixel-ratio: 1.5) {
         background: url('../images/beta-overlay@2x.png');
         background-size: 80px 73px;
     }
+}
+
+#footer {
+    position:relative;
+    z-index:1;
 }
 
 /*** basic styles for common elements ***/
@@ -391,13 +396,16 @@ div.sidegroup {
     padding-bottom: 12px;
     padding-top: 12px;
 }
-.menuSearch > a span:after, .menuHelp > a span:after, .menuLogin > a span:after,
-.menuLibCard > span:after {
-    content: "";
-    display: inline-block;
-    height: 9px;
-    padding-left: 8px;
-    width: 11px;
+.menuArrow { 
+    display: block;
+    float: right;
+    height: 6px;
+    margin: 0 3px 0 7px;
+    padding: 0 !important;
+    position: relative;
+    text-indent: -999px;
+    top: 8px;
+    width: 10px;
 }
 
 #headerMenu ul.subNav li {
@@ -480,13 +488,14 @@ div.sidegroup {
 
 #headerMenu .menuLibCard form {
     float: right;
-    margin: 0;
+    margin: 0 0 0 11px;
     padding: 0;
     position: relative;
-    left: -14px;
-    top: -9px;  
+    top: -9px;
 }
-
+#headerMenu .menuLibCard > span {
+    float:left;
+}
 
 #header .lang {
     margin: 42px 0 0;
@@ -1149,7 +1158,7 @@ div.dialogLoading {
 .no-hits {
     margin-bottom: 4em;
 }
-.no-hits #topPubDateVis {
+.no-hits #sidePubDateVis {
     display: none;
 }
 .no-hits .error {
@@ -2057,7 +2066,7 @@ li.result blockquote {
 .sidegroup ul.dynatree-container li {
     padding:0 0 0 5px;
 }
-.sidegroup dl.collapsible {
+.sidegroup dl.collapsible dt {
     cursor:pointer;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2279,6 +2288,7 @@ dl.narrowList a {
        commented this out because it breaks a few things and I don't know where
        it should be applied */
 }
+.newItem .header,
 #main .contentHeader,
 #main .browseHeader {
     background: #b2e3ea;
@@ -2288,6 +2298,7 @@ dl.narrowList a {
 #main .browseHeader {
     background:#b2e3ea;
 }
+.newItem .header,
 #main .contentHeader h1,
 #main .browseHeader h1,
 #main .advSearchHeader h1 {
@@ -2614,17 +2625,17 @@ ul.recordSet .addToFavLink a {
 .resultTerms {
     background:#b3e3e9;
 }
-.myResearchMenu,
-.resultViewOptions {
+.myResearchMenu {
     background:#e6e6e6;
 }
 .resultViewOptions {
     height:75px;
     clear:both;
 }
-.resultDates {
-    background:#f2f2f2;
+.resultDates, .resultDates .content {
+    background:#4C4C4C;
 }
+
 .resultDatesHeader {
     background:#4d4d4d;
     clear:both;
@@ -2644,6 +2655,35 @@ ul.recordSet .addToFavLink a {
 .module-Search .resultPagination.sidebarOnLeft .pagination {
     float: right;
 }
+
+/* Result view options */
+.viewButtons {
+    float:left;
+}
+.viewButtons a {
+    display:block;
+    width:32px;
+    height:32px;
+    float:left;
+    margin-right:16px;
+    border:2px solid transparent;
+    margin-top:-2px;
+}
+.viewButtons .view-list {
+    background:url(../images/view_list.png) no-repeat;
+}
+
+.viewButtons .view-grid {
+    background:url(../images/view_grid.png) no-repeat;
+    width:33px;
+}
+
+.viewButtons a.active {
+    border: 2px solid #4C4C4C;
+    border-radius: 8px 8px 8px 8px;
+}
+
+
 /* page titles */
 .resultLinks,
 /* module-Search h2.account is actually under user account */
@@ -2821,15 +2861,23 @@ ul.recordSet .addToFavLink a {
 
 /*Date Range Visualizer */
 
+.sidebarOnLeft .timeline.open.collapsed dt {
+    margin-left: 0;
+}
+.timeline.open.collapsed dt {
+    margin-left: -740px;   
+}
+
 .dateVis {
-    box-shadow:0 1px 10px rgba(0,0,0,.15) inset;
+    background:#f8f8f8;
+    border-radius:0 5px 5px 0;
     margin:0;
     padding:0;
-    width:950px;
+    width:910px;
     height:110px;
     cursor:crosshair;
     position:relative;
-    left:0;
+    left:40px;
 }
 .dateVisClear a {
     line-height: 1.3em;
@@ -2908,6 +2956,145 @@ div.dateVisHandle.visible {
 .resultDates.expanded {
     height:110px;
 }
+
+.timeline .resultDates {
+    border-radius: 5px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.timeline {
+    padding-bottom:0 !important;
+}
+
+.timeline dd {
+    display:none !important;
+}
+.timeline ~ #narrowGroupHidden_main_date_str {
+    display:none !important;
+}
+
+.navmenu.year.open.collapsed dd {
+    display:block;
+}
+
+.narrowList.navmenu.year dt {
+z-index:1000;
+	position:relative;
+	width:210px;
+		-moz-transition:all 0.1s linear;
+}
+.narrowList.navmenu.year.collapsible.timeline.open.collapsed dt{
+	width:950px;
+	z-index:1000;
+	position:relative;
+    padding-bottom:15px;
+}
+
+.sidegroup dl.year.collapsible.timeline.open.collapsed dt {
+    background: url("../images/datevis_handle_close.png") no-repeat scroll 101.6% 6% #4C4C4C;
+}
+.sidegroup dl.year.collapsible.timeline.open.active.collapsed dt {
+    background:#4C4C4C;
+}
+.timelineview {
+  background: url("../images/timelineview.png") repeat scroll 0 0 transparent;
+    display: inline-block;
+    float: right;
+    height: 18px;
+    margin-right: 30px;
+    text-indent: -9999px;
+    width: 33px;
+}
+
+.active .timelineview {
+    margin-right:0;
+}
+
+.mainYearForm input[type="text"] {
+    width:48px;
+    margin-right:4px;
+}
+
+.resultDates {
+    cursor:default;
+}
+
+.resultDates .mainYearForm input[type="text"] {
+    box-shadow:none;
+    border:0; 
+}
+
+.mainYearForm input[type="submit"] {
+    background: url("../images/icons16-24px-02.png") repeat scroll -673px -946px #00A3B5;
+    border: 0 none;
+    border-radius: 8px 8px 8px 8px;
+    cursor:pointer;
+    display: inline-block;
+    height: 23px;
+    margin-top: 1px;
+    text-indent: -99999px;
+    width: 32px;
+}
+
+.mainYearFormContainer2 {
+    clear: both;
+    float: right;
+    margin-right: 10px;
+    margin-top:2px;
+}
+
+#sidePubDateVis {
+    margin-top:40px;
+    position:relative;
+}
+
+.dateVisNavigation * {
+    cursor:pointer;
+    position:absolute;
+}
+.dateVisNavigation .zoomIn {
+    height: 26px;
+    left: 3px;
+    top: 5px;
+    width: 26px;
+}
+
+.dateVisNavigation .zoomOut {
+    height: 26px;
+    left: 3px;
+    top: 35px;
+    width: 26px;
+}
+
+.dateVisNavigation .next {
+    height: 16px;
+    left: 17px;
+    top: 79px;
+    width: 11px;
+}
+
+.dateVisNavigation .prev {
+    height: 16px;
+    left: 3px;
+    top: 79px;
+    width: 11px;
+}
+
+.dateVisNavigation {
+    background: url("../images/dateVisNavigation.png") no-repeat 2px 5px #f8f8f8;
+    border-radius: 5px 0 0 5px;
+    height: 110px;
+    left: 0;
+    position: absolute;
+    width: 40px;
+}
+
+.dateVis.loading {
+    background: url(../images/ajax_loading.gif) no-repeat center center #f8f8f8;
+}
+
+
 /* Pagination */
 .pagination {
     position:relative;
@@ -3034,6 +3221,9 @@ div.resultLinks {
 .module-Collection #collectionHeader a,
 div.resultLinks a {
     font-weight: bold;
+}
+.module-Collection #collectionHeader a.fullRecordLink {
+    padding-left: .6em;
 }
 .resultLinks .button {
     margin-right: 10px;
@@ -3523,6 +3713,15 @@ h5.recordTabHeader {
 }
 .backToResults span.icon {
     padding:1px 2px 2px 20px;
+}
+.backToResults + .advancedOptions {
+    padding-top: 6px;
+}
+.backToResults + .advancedOptions .editAdvancedSearch {
+}
+.backToResults + .advancedOptions .newAdvancedSearch,
+.backToResults + .advancedOptions .backToSearchHistory {
+    margin-left: 10px; 
 }
 .resultscroller {
     text-align: center;
@@ -4103,39 +4302,114 @@ div.unavailable, div.fatalError {
 
 /* Grid View */
 
-.viewButtons {
-    text-align: right;
+ul.recordSet.galleryView {
+    width:104%;
 }
 
-.gridImageBox {
-    text-align:center;
-    width:155px;
-    height:130px;
-    overflow:hidden;
-    display:block;
+ul.recordSet.galleryView li.result {
+    height: 163px;
+    border: 1px solid #FFFFFF;
+    display: inline-block;
+   /* height: 185px;*/
+    margin-bottom: 20px;
+    margin-right: 10px;
+    /*overflow: hidden;*/
+    position: relative;
+    vertical-align: top;
+    width: 124px;
+    transition:all .1s;
 }
 
-.gridImage{
-    height:130px;
+ul.recordSet.galleryView li.result:hover {
+    border:1px solid #ddd;
+    border-bottom:none;
+    overflow:visible;
+    z-index:120;
+}
+
+ul.recordSet.galleryView .resultNoImage {
+    border:0;
 }
 
 .gridTitleBox {
-    height:55px;
-    display:block;
-    text-align:center;
-    width:155px;
+    background: url(../images/white_90.png) repeat;
+    bottom: 0;
+    font-size: 100%;
+    padding: 5px 5px 5px;
+    text-align: center;
+    word-wrap: break-word;
+    z-index: 10;
+    min-height:45px;
 }
 
-.gridTitle {
-    display:block;
-    height:40px;
+
+.gridContent {
+    position: absolute;
+    top: 111px;
+    z-index: 100;
+    height:52px;
     overflow:hidden;
+    border:1px solid transparent;
+    border-top:none;
+    left:-1px;
+    width:124px;
+    border-bottom: 5px solid rgba(255, 255, 255, 0.85);
 }
 
-td.gridCell {
-    width: 25%;
+.gridContent.visible {
+    border:1px solid #ddd;
+    border-top:none;
+    box-shadow:0 10px 18px -19px rgba(0, 0, 0, 0.7);
 }
 
+ul.recordSet.galleryView .coverDiv {
+    min-height: 126px;
+    max-height:165px;
+}
+
+ul.recordSet.galleryView .summcover {
+    min-height:100px;
+    width:auto;
+    max-width:none;
+}
+
+ul.recordSet.galleryView .result .imagelinks {
+    position:absolute;
+    left:0px;
+    top:0px;
+    max-width: 126px;
+    background:none;
+    padding:0;
+}
+.galleryView .result .imagelinks a {
+    background:#fff;
+    background: url(../images/white_90.png) repeat;
+    border:none;
+    font-size:12px;
+    padding:2px;
+}
+
+ul.recordSet.galleryView .addToFavLink {
+    background: url(../images/white_90.png) repeat;
+    height: 22px;
+    padding-right: 3px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 10;
+    display:none;
+}
+ul.recordSet.galleryView .gridPublished {
+    visibility:hidden;
+    padding-top:5px;
+    font-size:12px;
+}
+ul.recordSet.galleryView li.result:hover .gridPublished {
+    visibility:visible;
+}
+ul.recordSet.galleryView li.result:hover .addToFavLink {
+    display:block;
+}
 tr:nth-child(even) td.gridCell {background-color:white;}
 
 /* These two separate styles cannot be combined; they are both needed for
@@ -4154,6 +4428,12 @@ tr:nth-child(even) td.gridMouseOver {
 
 .limitSelect {
     text-align: right;
+}
+
+/************************* NEWITEM PAGE ****************************/
+
+.newItem form.search {
+    padding: 3em 0;
 }
 
 /************************* COLLECTIONS PAGE ************************/
@@ -4244,7 +4524,7 @@ tr:nth-child(even) td.gridMouseOver {
     padding-right: 4px;
     margin-left: 3px;
 }
-.collectionDetails #topPubDateVis {
+.collectionDetails #sidePubDateVis {
     display: none;
 }
 .collectionViewSelection {
@@ -5100,5 +5380,10 @@ form#feedbackForm label {
 
 #locationServiceFrame {
     width: 100%;
-    height: 100%;
+    height: 95%;
 }
+#locationServiceDirectLink {
+    height: 5%;
+}
+
+

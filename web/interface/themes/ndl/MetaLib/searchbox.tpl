@@ -49,10 +49,11 @@
       
 	    <div class="searchFormOuterWrapper">
 	      <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+          <a href="{$path}/Metalib/Advanced" class="small  advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
 	      {if $pciEnabled && !$dualResultsEnabled}
 	          <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
 	      {/if}
-        <a href="{$path}" class="small metalibLink">{translate text="Local Search"}</a>
+        <a href="{$url}" class="small metalibLink">{translate text="Local Search"}</a>
 	      </div>
 	    </div>
       

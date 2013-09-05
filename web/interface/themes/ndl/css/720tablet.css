@@ -157,14 +157,25 @@
     
     /* Search results: header */
     
-    .dateVis { 
-        width:720px;
-    }
     .dateVisClear a {
         right:15px;
     }
     .resultHeader .headerLeft {
         width: 300px;
+    }
+    
+    .resultDatesHeader,
+    .resultDates{
+        display:none;
+    }
+    .currentPage > span:first-child {
+        display:none;
+    }
+    .resultOptions label {
+        display:none;
+    }
+    .resultOptionLimit {
+        margin-left:15px;
     }
         
     /* Search results: sidebar */
@@ -180,6 +191,39 @@
     ul.filters span {
         max-width: 110px;
     }
+    
+    .narrowList.navmenu.year dt {
+        width:150px;
+    }
+    
+    .narrowList.navmenu.year.collapsible.timeline.open.collapsed dt {
+        width:690px;
+    }
+    
+    .dateVis { 
+        width:650px;
+    }
+    
+    .timelineview { 
+        margin-right:34px;
+    }
+    
+    .mainYearForm input[type="text"] {
+        width:31px;
+    }
+    
+    .mainYearFormContainer2 {
+        margin-right:30px;
+    }
+    
+    .timeline.open.collapsed dt {
+        margin-left: -540px;
+    }
+    
+    .sideBarOnLeft .timeline.open.collapsed dt {
+        margin-left: 0;
+    }
+    
     
     /* Advanced seach */
     #searchHolder .group {
@@ -224,6 +268,11 @@
     }
     .citation th { 
         width:100px;
+    }
+    
+    ul.recordSet.galleryView li.result {
+        margin-right:40px;
+        margin-bottom:40px;
     }
     
     /* Myresearch */

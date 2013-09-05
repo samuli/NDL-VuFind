@@ -46,17 +46,34 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
     {if $infoMsg}<div class="info">{$infoMsg|translate}</div>{/if}
   </div>
   {/if}
+
+  {if !(empty($searchId))}
+  {* searchId exists only after search, not when jumping from record to record 
+     so we need to save the searchId to be able to reference it from other records *}
+    <script type="text/javascript">
+    {literal}
+      $.cookie('lastSearchId', {/literal}{$searchId}{literal}, { path: '/vufind/Record/' });
+    {/literal}
+    </script>
+  {/if}
+
   {if $lastsearch}
-    <div class="backToResults grid_12">
-        <a href="{$lastsearch|escape}#record{$id|escape:"url"}"><div class="button buttonFinna icon"><span class="icon">&laquo;</span></div>{translate text="Back to Search Results"}</a>
-     <!--{if isset($searchId) && isset($searchType) && $searchType == 'advanced'}
-        <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a>
-        <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a>
-     {/if}-->
+    <div class="backToResults {if $lastsearch|strstr:'join'}grid_6{else}grid_12{/if}">
+      <a href="{$lastsearch|escape}#record{$id|escape:"url"}"><div class="button buttonFinna icon"><span class="icon">&laquo;</span></div>{translate text="Back to Search Results"}</a>
     </div>
   {/if}
+  {if $lastsearch|strstr:"join"}
+  {* Advanced Search URL always contains substring 'join' *}
+    <div class="advancedOptions grid_10">
+      <a href="{$path}/Search/Advanced?edit={*$smarty.cookies.lastSearchId*}" class="editAdvancedSearch">{translate text="Edit this Advanced Search"}</a>
+      <a href="{$path}/Search/Advanced" class="newAdvancedSearch">{translate text="Start a new Advanced Search"}</a>
+    </div>
+  {/if}
+{*
+  <a href="{$path}/Search/Advanced?edit={$searchId}" class="backToSearchHistory">{translate text="Search History"}</a>
+*}
   {if $previousRecord || $nextRecord}
-    <div class="resultscroller grid_5 push_7">
+    <div class="resultscroller grid_5 {if $lastsearch|strstr:'join'}push_3{else}push_7{/if}">
     {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></a>
     {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></span>{/if}
     {$currentRecordPosition} / {$resultTotal}
@@ -69,6 +86,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 {else}
   &nbsp;
 {/if}
+
 <div class="clear"></div>
 </div>
 
@@ -271,6 +289,14 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   <div class="clear"></div>
 </div>
 
-
+<script type="text/javascript">
+{literal}
+  $(document).ready(function() {
+    var searchID = $.cookie('lastSearchId');
+    var editURL = $('.editAdvancedSearch').attr('href') + searchID;
+    $('.editAdvancedSearch').attr('href', editURL);
+  });
+{/literal}
+</script>
 
 <!-- END of: Record/view.tpl -->

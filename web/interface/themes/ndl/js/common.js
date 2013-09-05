@@ -34,34 +34,6 @@ $(document).ready(function(){
     $('#searchFormKeepFilters').change(function() { filterAll(this); });
 
 
-    // Toggle Keep filters -option
-
-    // detect when mouse is inside search area 
-    $('#searchFormContainer').hover(
-        function() {
-            $(this).addClass("hover");
-        },
-        function() {
-            $(this).removeClass("hover");
-        }
-    );
-
-    // show when search field is focused
-    $('#searchForm_input').focus(function(e) { toggleKeepFiltersOption(true); });
-
-    // show when prefilter is changed
-    $("#searchForm_filter").change(function(e) { toggleKeepFiltersOption(true); });
-    
-    // hide when mouse is clicked and search field is not focused and mouse is not inside search area
-    $(document).mouseup(function() {
-        if (!$('#searchForm_input').is(":focus") && !$('#searchFormContainer').hasClass("hover")) {
-            toggleKeepFiltersOption(false);
-        }
-    });
-
-    // preserve active search term and prefilter
-    origSearchTerm = $('#searchForm_input').val();
-    origPrefilter = $("#searchForm_filter").val();
 
 
     // attach click event to the search help links
@@ -133,6 +105,38 @@ $(document).ready(function(){
     //ContextHelp
     contextHelp.init();
     contextHelp.contextHelpSys.load();
+
+
+
+    // Toggle Keep filters -option
+
+    // detect when mouse is inside search area 
+    $('#searchFormContainer').hover(
+        function() {
+            $(this).addClass("hover");
+        },
+        function() {
+            $(this).removeClass("hover");
+        }
+    );
+
+    // show when search field is focused
+    $('#searchForm_input').focus(function(e) { toggleKeepFiltersOption(true); });
+
+    // show when prefilter is changed
+    $("#searchForm_filter").change(function(e) { toggleKeepFiltersOption(true); });
+    
+    // hide when mouse is clicked and search field is not focused and mouse is not inside search area
+    $(document).mouseup(function() {
+        if (!$('#searchForm_input').is(":focus") && !$('#searchFormContainer').hasClass("hover")) {
+            toggleKeepFiltersOption(false);
+        }
+    });
+
+    // preserve active search term and prefilter
+    origSearchTerm = $('#searchForm_input').val();
+    origPrefilter = $("#searchForm_filter").val();
+
 });
 
 function toggleMenu(elemId) {
@@ -262,12 +266,22 @@ function initClearable(){
 
 function initSearchInputListener() {
     var searchInput = $('#searchForm_input');
-    var disableListener;
     $(window).keypress(function(e) {
-        var letter = String.fromCharCode(e.which);
         
         if (e && (!$(e.target).is('input[type="text"], textarea') && searchInput.length > 0) 
-            && !$(".ui-dialog").is(":visible") && !disableListener) {
+              && !$(".ui-dialog").is(":visible") 
+              && (e.which !== 0 && e.charCode !== 0 && e.charCode !== 32)
+              && !(e.metaKey || e.ctrlKey || e.altKey)) {
+            
+            var letter = String.fromCharCode(e.which);
+            
+            // IE 8-9
+            if (typeof document.createElement("input").placeholder == 'undefined') {
+                if (searchInput.val() == searchInput.attr('placeholder')) {
+                  searchInput.val('');
+                  searchInput.removeClass('placeholder');
+                }
+            }
             
             // Move cursor to the end of the input
             var tmpVal = searchInput.val();
@@ -279,23 +293,8 @@ function initSearchInputListener() {
             }, 150);
            
             e.preventDefault();
-       } 
-       disableListener = false;
-
+       }
     });
-    
-    // Disable on pressing a modifier key
-    $(window).keydown(function(e) {
-        if (e.metaKey || e.ctrlKey || e.altKey || e.which == 224 || e.which == 91) {
-            disableListener = true;
-        }
-    });
-    
-    // Re-enable on keyup
-    $(window).keyup(function(e) {
-        disableListener = false;
-    });
-    
 }
 
 function htmlEncode(value){

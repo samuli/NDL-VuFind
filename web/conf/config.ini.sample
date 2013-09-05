@@ -37,7 +37,7 @@ locale          = fi_FI
 timezone        = "Europe/Helsinki"
 ; A string used to format user interface date strings using the PHP date() function
 ; default is m-d-Y (MM-DD-YYYY 01-01-2010)
-displayDateFormat = "d.m.Y"
+displayDateFormat = "j.n.Y"
 ; A string used to format user interface time strings using the PHP date() function
 ; default is H:i (HH:MM 23:01)
 displayTimeFormat = "H:i"
@@ -668,6 +668,7 @@ WorldCat = WorldCat.ini             ; extra WorldCat configuration details
 sms = sms.ini                       ; SMS carriers configuration details
 datasources = datasources.ini       ; Data source configuration details
 MultiBackend = MultiBackend.ini     ; MultiBackend configuration details
+LocationService = LocationService.ini
 
 ; If you uncomment the following lines, any settings you create in a file
 ; called config.local.ini will override the defaults found in config.ini.

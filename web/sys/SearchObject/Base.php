@@ -328,11 +328,14 @@ abstract class SearchObject_Base
 
                     // Convert date display format from [YYYY TO YYYY] to YYYY - YYYY
                     if ($field == 'main_date_str') {
-                        $display = preg_replace("/\[([0-9]+)( TO )([0-9]+)\]/", "$1 - $3", $display);
-                        
-                    // Prevent displaying of coordinates in the geographical filter
+                        $display = preg_replace('/\[([0-9]+)( TO )([0-9]+)\]/', "$1 - $3", $display);
                     } else if (strstr($field, 'location_geo')) {
+                        // Prevent displaying of coordinates in the geographical filter
                         $display = translate('Geographical filter');
+                    } else if (strstr($field, 'search_sdaterange_mv')) {
+                        // Pretty display of date ranges
+                        $display = $this->spatialDateRangeFilterToString($display);
+                        $facetLabel = 'Date Range'; 
                     }
                     
                     $list[$facetLabel][] = array(
@@ -798,6 +801,96 @@ abstract class SearchObject_Base
     }
 
     /**
+     * Support method for initDateFilters() -- build a spatial filter query based on a range
+     * of dates (expressed as days from unix epoch). 
+     * See the index schema definition for more information.
+     *
+     * @param string $field field to use for filtering.
+     * @param string $from  year or date (yyyy-mm-dd) for start of range.
+     * @param string $to    year or date (yyyy-mm-dd) for end of range.
+     *
+     * @return string       filter query.
+     * @access protected
+     */
+    protected function buildSpatialDateRangeFilter($field, $from, $to)
+    {
+        $oldTZ = date_default_timezone_get();
+        try {
+            date_default_timezone_set('UTC');
+            if ($from == '' || $from == '*') {
+                $from = -4371587;
+            } else {
+                // Make sure year has four digits
+                if (preg_match('/^(-?)(\d+)(.*)/', $from, $matches)) {
+                    $from = $matches[1] . str_pad($matches[2], 4, '0', STR_PAD_LEFT) . $matches[3];
+                }
+                // A crude check to see if this is a complete date to accommodate different years
+                // (1990, -12 etc.)
+                if (strlen($from) < 10) {
+                    $from .= '-01-01';
+                }
+                $fromDate = new DateTime("{$from}T00:00:00");
+                // Need format instead of getTimestamp for dates before epoch
+                $from = $fromDate->format('U') / 86400;
+            }
+            if ($to == '' || $to == '*') {
+                $to = 2932896;
+            } else {
+                // Make sure year has four digits
+                if (preg_match('/^(-?)(\d+)(.*)/', $to, $matches)) {
+                    $to = $matches[1] . str_pad($matches[2], 4, '0', STR_PAD_LEFT) . $matches[3];
+                }
+                // A crude check to see if this is a complete date to accommodate different years
+                // (1990, -12 etc.)
+                if (strlen($to) < 10) {
+                    $to .= '-12-31';
+                }
+                $toDate = new DateTime("{$to}T00:00:00");
+                // Need format instead of getTimestamp for dates before epoch
+                $to = $toDate->format('U') / 86400;
+            }
+        } catch (Exception $e) {
+            date_default_timezone_set($oldTZ);
+            return '';
+        } 
+        date_default_timezone_set($oldTZ);
+        
+        if ($from > $to) {
+            PEAR::RaiseError(new PEAR_Error("Invalid date range specified."));
+        }
+        
+        // Assume Solr syntax -- this should be overridden in child classes where
+        // other indexing methodologies are used.
+         
+        return "{$field}:\"Intersects(-4371587 $from $to 2932896)\"";
+    }
+
+    /**
+     * Convert spatial date range filter to displayable string
+     * 
+     * @param string $filter Spatial date range filter
+     * 
+     * @return string Resulting display string
+     */
+    protected function spatialDateRangeFilterToString($filter)
+    {
+        $range = VuFindSolrUtils::parseSpatialDateRange($filter);
+        if ($range === false) {
+            return $filter;
+        }
+        $startDate = new DateTime("@{$range['from']}");
+        $endDate = new DateTime("@{$range['to']}");
+        if ($startDate->format('m') == 1 && $startDate->format('d') == 1 
+            && $endDate->format('m') == 12 && $endDate->format('d') == 31
+        ) {
+            return $startDate->format('Y') . ' - ' . $endDate->format('Y');
+        }
+        $date = new VuFindDate();
+        return $date->convertToDisplayDate('U', $range['from']) . ' - ' 
+            . $date->convertToDisplayDate('U', $range['to']);
+    }
+    
+    /**
      * Support method for initFilters() -- initialize date-related filters.  Factored
      * out as a separate method so that it can be more easily overridden by child
      * classes.
@@ -819,6 +912,21 @@ abstract class SearchObject_Base
                 if (!empty($range) && ($yearFrom != '*' || $yearTo != '*')) {
                     $dateFilter
                         = $this->buildDateRangeFilter($range, $yearFrom, $yearTo);
+                    $this->addFilter($dateFilter);
+                }
+            }
+        }
+        if (isset($_REQUEST['sdaterange'])) {
+            $ranges = is_array($_REQUEST['sdaterange']) ?
+                $_REQUEST['sdaterange'] : array($_REQUEST['sdaterange']);
+            foreach ($ranges as $range) {
+                $dateFrom = $_REQUEST["{$range}from"];
+                $dateTo = $_REQUEST["{$range}to"];
+
+                // Build filter only if necessary:
+                if (!empty($range)) {
+                    $dateFilter
+                        = $this->buildSpatialDateRangeFilter($range, $dateFrom, $dateTo);
                     $this->addFilter($dateFilter);
                 }
             }
@@ -2120,7 +2228,7 @@ abstract class SearchObject_Base
             && !empty($this->recommend[$location])
         ) {
             foreach ($this->recommend[$location] as $current) {
-                $retval[] = $current->getTemplate();
+                $retval[get_class($current)] = $current->getTemplate();
             }
         }
         return $retval;
@@ -2370,7 +2478,7 @@ abstract class SearchObject_Base
         // Advanced search?
         if ($this->searchType == $this->advancedSearchType) {
             foreach ($this->searchTerms as $group) {
-                foreach ($group['group'] as $item){
+                foreach ($group['group'] as $item) {
                     if ($item['lookfor'] !== '') {
                         return false;
                     }

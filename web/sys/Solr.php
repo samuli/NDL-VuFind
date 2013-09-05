@@ -1662,7 +1662,7 @@ class Solr implements IndexEngine
                     $dedupData = array();
                     foreach ($localIds as $localId) {
                         $localPriority = null;
-                        $source = reset(explode('.', $localId, 2));
+                        list($source, $localPart) = explode('.', $localId, 2);
                         if (!empty($buildingPriority)) {
                             if (isset($buildingPriority[$source])) {
                                 $localPriority = -$buildingPriority[$source];

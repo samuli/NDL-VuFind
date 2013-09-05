@@ -7,7 +7,7 @@
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub={$addThis|escape:"url"}"></script>
 {/if}
 <div id="collectionHeader">
-  <div class="content"><a href="{$url}/Record/{$collectionID}">&laquo; {translate text="Full Record"}</a></div>
+  <div class="content"><a href="{$url}/Record/{$collectionID}" class="fullRecordLink">{translate text="Full Record"} &raquo;</a></div>
 </div>
 <div class="content">
 <div id="resultsCollection" class="">

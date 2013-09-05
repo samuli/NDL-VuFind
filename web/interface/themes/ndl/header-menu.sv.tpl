@@ -4,7 +4,7 @@
 
 <li class="menuAbout"><a href="{$path}/Content/about" role="menuitem"><span>{translate text='navigation_about'}</span></a></li>
 
-<li class="menuSearch menuSearch_{$userLang}"><a href="#" aria-haspopup="true"><span>{translate text='navigation_search'}</span></a>
+<li class="menuSearch menuSearch_{$userLang}"><a href="#" aria-haspopup="true"><span>{translate text='navigation_search'}</span><span class="menuArrow"></span></a>
   <ul class="subNav" role="menu">
     <li>
       <a href="{$path}/Search/Advanced" role="menuitem">
@@ -43,7 +43,7 @@
   </ul>
 </li>
 
-<li class="menuHelp menuHelp_{$userLang}"><a href="#" aria-haspopup="true"><span>{translate text='navigation_help'}</span></a>
+<li class="menuHelp menuHelp_{$userLang}"><a href="#" aria-haspopup="true"><span>{translate text='navigation_help'}</span><span class="menuArrow"></span></a>
   <ul class="subNav" role="menu">
     <li>
       <a href="{$path}/Content/searchhelp" role="menuitem">

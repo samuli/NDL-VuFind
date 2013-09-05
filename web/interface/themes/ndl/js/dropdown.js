@@ -35,8 +35,6 @@ function initDropdowns() {
         source.find('option').removeAttr('selected');
         source.find('option[value="'+$(this).find("span.value").text()+'"]').attr('selected', 'selected').change();
         e.preventDefault();
-        
-        setMainFocus();
     });    
 };
 
