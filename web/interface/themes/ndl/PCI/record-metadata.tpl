@@ -13,7 +13,7 @@
         <div class="truncateField">
             {if $record.author}
             {foreach from=$record.author item=author name="loop"}
-              <a href="{$url}/MetaLib/Search?type=Author&amp;lookfor={$author|unhighlight|escape:"url"}">{$author|highlight}</a>{if !$smarty.foreach.loop.last},{/if} 
+              <a href="{$url}/PCI/Search?type=Author&amp;lookfor={$author|unhighlight|trim|escape:"url"}">{$author|trim|highlight}</a>{if !$smarty.foreach.loop.last}, {/if} 
             {/foreach}
             <br/>
             {/if}

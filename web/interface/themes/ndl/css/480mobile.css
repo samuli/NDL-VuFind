@@ -289,6 +289,18 @@
         float: left;
         margin-top: 8px;
     }
+    .viewButtons a {
+        margin-right:5px;
+    }
+    
+    .resultOptionLimit {
+        margin-left: 0;
+    }
+    
+    ul.recordSet.galleryView li.result {
+        margin-right:30px;
+        margin-bottom:30px;
+    }
 
     /* Search results: bottom */
     .advSearchContent, #authorList, #resultsCollection, .pagination, .searchtools {

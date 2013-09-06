@@ -817,7 +817,7 @@ abstract class SearchObject_Base
         $oldTZ = date_default_timezone_get();
         try {
             date_default_timezone_set('UTC');
-            if ($from == '*') {
+            if ($from == '' || $from == '*') {
                 $from = -4371587;
             } else {
                 // Make sure year has four digits
@@ -833,7 +833,7 @@ abstract class SearchObject_Base
                 // Need format instead of getTimestamp for dates before epoch
                 $from = $fromDate->format('U') / 86400;
             }
-            if ($to == '*') {
+            if ($to == '' || $to == '*') {
                 $to = 2932896;
             } else {
                 // Make sure year has four digits
@@ -855,13 +855,10 @@ abstract class SearchObject_Base
         } 
         date_default_timezone_set($oldTZ);
         
-        // Make sure that $to is less than $from:
-        if ($to < $from) {
-            $tmp = $to;
-            $to = $from;
-            $from = $tmp;
+        if ($from > $to) {
+            PEAR::RaiseError(new PEAR_Error("Invalid date range specified."));
         }
-
+        
         // Assume Solr syntax -- this should be overridden in child classes where
         // other indexing methodologies are used.
          

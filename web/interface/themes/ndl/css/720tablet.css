@@ -163,6 +163,20 @@
     .resultHeader .headerLeft {
         width: 300px;
     }
+    
+    .resultDatesHeader,
+    .resultDates{
+        display:none;
+    }
+    .currentPage > span:first-child {
+        display:none;
+    }
+    .resultOptions label {
+        display:none;
+    }
+    .resultOptionLimit {
+        margin-left:15px;
+    }
         
     /* Search results: sidebar */
     
@@ -254,6 +268,11 @@
     }
     .citation th { 
         width:100px;
+    }
+    
+    ul.recordSet.galleryView li.result {
+        margin-right:40px;
+        margin-bottom:40px;
     }
     
     /* Myresearch */
