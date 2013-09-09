@@ -152,7 +152,7 @@ class Resource extends DB_DataObject
         $comment->user_id = $user->id;
         $comment->resource_id = $this->id;
         $comment->comment = $body;
-        $comment->created = date('Y-m-d h:i:s');
+        $comment->created = date('Y-m-d H:i:s');
         $comment->insert();
 
         return true;
