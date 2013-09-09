@@ -133,6 +133,7 @@ class Results extends Action
         $interface->assign('viewList',   $searchObject->getViewList());
         $interface->assign('rssLink',    $searchObject->getRSSUrl());
         $interface->assign('limitList',  $searchObject->getLimitList());
+        $interface->assign('searchWithoutFilters', $searchObject->renderSearchUrlWithoutFilters());
 
         // We'll need recommendations no matter how many results we found:
         $interface->assign(

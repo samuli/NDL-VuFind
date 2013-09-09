@@ -1018,6 +1018,23 @@ abstract class SearchObject_Base
         //   add to the base url and return
         return $url . join("&", $params);
     }
+    
+    /**
+     * Build a url for the current search without filters
+     *
+     * @return string URL of a search
+     * @access public
+     */
+    public function renderSearchUrlWithoutFilters()
+    {
+        // Get the base URL and initialize the parameters attached to it:
+        $url = $this->getBaseUrl();
+        $params = $this->getSearchParams();
+        
+        // Join parameters with an escaped ampersand,
+        //   add to the base url and return
+        return $url . join("&", $params);
+    }
 
     /**
      * render the URL search parameters of the current search
