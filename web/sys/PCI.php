@@ -156,7 +156,7 @@ class PCI
             return unserialize($resource->data);
         } else {
             $id = preg_replace('/^pci\./', '', $id);
-            $params = array('group' => array('lookfor' => $id, 'field' => 'rid'));
+            $params = array(array('group' => array(array('lookfor' => $id, 'field' => 'rid'))));
             $result = $this->query($params);
             return $result['response']['docs'][0];
         }
@@ -205,11 +205,9 @@ EOE;
 EOF;
         // handle queryterms
         $queryTerms = '';
-
         foreach ($searchTerms as $params) {
             // Advanced Search
             if (isset($params['group'])) {
-                $thisGroup = array();
                 // Process each search group
                 foreach ($params['group'] as $group) {
                     $queryTerms .= sprintf($queryTermXml, $group['field'], 'contains', htmlspecialchars($group['lookfor'], ENT_COMPAT, 'UTF-8'));
@@ -311,8 +309,7 @@ EOD;
                     return $b['count'] - $a['count'];
                 }
             );            
-        }
-        
+        }      
         return array('recordCount' => $hits, 'response' => array('numFound' => $hits, 'start' => 0, 'docs' => $records), 'facetFields' => $facets);
     }
     
