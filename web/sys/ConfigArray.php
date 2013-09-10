@@ -73,8 +73,13 @@ function getExtraConfigArray($name)
         $filename = preg_replace('/(.*)\./', '\\1.local.', $filename);
         $localOverride = @parse_ini_file($filename, true);
         if ($localOverride) {
-            foreach ($localOverride as $k => $v) {
-                $extraConfigs[$name][$k] = $v;
+            foreach ($localOverride as $section => $settings) {
+                if ($name == 'searches' && $section == 'General') {
+                    // Don't override whole General section of searches.ini
+                    $extraConfigs[$name][$section] = iniMerge($extraConfigs[$name][$section], $settings);
+                } else {
+                    $extraConfigs[$name][$section] = $settings;
+                }
             }
         }
     }
