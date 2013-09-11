@@ -198,7 +198,19 @@ class UInterface extends Smarty
             } else {
                 $myRes = isset($configArray['Site']['defaultLoggedInModule'])
                     ? $configArray['Site']['defaultLoggedInModule'] : 'MyResearch';
-                $shibTarget = $configArray['Site']['url'] . '/' . $myRes . '/Home';
+                $myRes .= '/Home';
+                
+                // Override default location with followup location if set
+                if (isset($_REQUEST['followupModule'])) {
+                    $myRes = $_REQUEST['followupModule'];
+                    if (isset($_REQUEST['followupAction'])) {
+                        $myRes .= '/' . $_REQUEST['followupAction']; 
+                    } else {
+                        $myRes .= '/Home';
+                    }
+                }
+                
+                $shibTarget = $configArray['Site']['url'] . '/' . $myRes;
             }
             $sessionInitiator = $configArray['Shibboleth']['login'];
             $sessionInitiator .= (strpos($sessionInitiator, '?') === false) ? '?' : '&';
