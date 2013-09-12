@@ -358,7 +358,11 @@
     }
     
     .narrowList.navmenu.year dt {
-        width: 450px;
+        width: 450px !important;
+        margin-left: 0 !important;
+    }
+    .sidegroup dl.year.collapsible.timeline.open.collapsed dt {
+        background-position: 102.8% 46% !important;
     }
     
     /* Advanced search */
