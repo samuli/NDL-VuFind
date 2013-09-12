@@ -1,5 +1,6 @@
 $(document).ready(function() {
     registerLoadHandlers();
+    autoLoadBrowseOptions('list2container');
 });
 
 function registerLoadHandlers() {
@@ -32,6 +33,7 @@ function loadBrowseOptions(method, params) {
             if(response.status == 'OK') {
                 $('#'+params.target).empty().append(response.data);
                 registerLoadHandlers();
+                autoLoadBrowseOptions(params.target);
             }
         }
     }); 
@@ -40,4 +42,10 @@ function loadBrowseOptions(method, params) {
 function highlightBrowseLink(link) {
     $(link).parentsUntil('div.browseNav').children('li').removeClass('active');
     $(link).parent('li').addClass('active');    
+}
+
+function autoLoadBrowseOptions(el) {
+    if (el == 'list2container' || el == 'list3container') {
+        $('#'+el+' ul > li:first-child a').trigger('click');
+    }
 }
