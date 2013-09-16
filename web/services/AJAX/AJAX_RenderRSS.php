@@ -212,11 +212,9 @@ class AJAX_RenderRSS extends Action
             }
             
             /* calculate the scroll speed for the carousel */
-            if($rssFeed['type'] == 'carousel') {
                 $rssFeed['scrollSpeed'] = 1000 *
                                           ($rssFeed['scrolledItems'] /
                                           $rssFeed['itemsPerPage']);
-            }
         
             $interface->assign('rssFeed', $rssFeed);
             $interface->display('Search/rss.tpl');
