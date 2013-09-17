@@ -26,7 +26,7 @@ $this->assign('pageCount', $pageCount);
         <span class="paginationMove paginationFirst {if !empty($pageLinks.first)}visible{/if}">{$pageLinks.first}<span>&#9668;&#9668;</span></span>
         <span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>
         <span class="paginationPages">{$pageLinks.pages}</span>
-        / <span class="paginationPages">{$pageCount|number_format:0:".":"&#x2006;"}</span>
+        / <span class="paginationPages">{$pageCount|number_format:0:".":" "|replace:" ":"&#x2006;"}</span>
         <span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>
         <span class="paginationMove paginationLast {if !empty($pageLinks.last)}visible{/if}">{$pageLinks.last}<span>&#9654;&#9654;</span></span>
       </div>

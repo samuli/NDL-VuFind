@@ -8,7 +8,7 @@
   <div class="resultViewOptions clearfix">
     <div class="resultNumbers">
       <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
-      <span class="resultTotals">{$recordCount}</span>
+      <span class="resultTotals">{$recordCount|number_format:0:".":" "|replace:" ":"&#x2006;"}</span>
     </div>
 	  <div class="resultOptions">
 	    {if $recordCount}<a href="{$more|escape}">{translate text="More Results"} &raquo;</a>{/if}
