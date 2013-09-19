@@ -240,9 +240,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           <a id="componentstab" href="{$url}/Record/{$id|escape:"url"}/ComponentParts{if $dynamicTabs}?subPage=1{/if}#tabnav" class="first"><span></span>{translate text='Contents/Parts'}</a>
         </li>
         {/if}
+        {if $userCommentsEnabled}
         <li{if $tab == 'UserComments'} class="active"{/if}>
-          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Comments'} (<span id="commentCount">{$commentCount}</span>)</a>
+          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{if $ratingsDisabled}{translate text='Comments'}{else}{translate text='Ratings'}{/if} (<span id="commentCount">{$commentCount}</span>)</a>
         </li>
+        {/if}
         {if $hasReviews}
         <li{if $tab == 'Reviews'} class="active"{/if}>
           <a id="reviewstab" href="{$url}/Record/{$id|escape:"url"}/Reviews{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Reviews'}</a>

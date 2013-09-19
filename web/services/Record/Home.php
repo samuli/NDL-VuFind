@@ -55,13 +55,9 @@ class Home extends Action
             $configArray['Site']['defaultRecordTab'] : 'Holdings';
             
         // Get number of comments for this record
-        $resource = new Resource();
-        $resource->record_id = $_REQUEST['id'];
-        if ($resource->find(true)) {
-            $commentCount = $resource->getCommentCount();
-        } else {
-            $commentCount = 0;
-        }       
+        require_once 'services/MyResearch/lib/Comments.php';
+        $comments = new Comments();
+        $commentCount = $comments->getCommentCount($_REQUEST['id']);    
         $interface->assign(compact('commentCount'));
 
         // We need to do a whole bunch of extra work to determine the default

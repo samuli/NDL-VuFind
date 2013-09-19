@@ -47,6 +47,8 @@ class Comments extends DB_DataObject
     public $user_id;                         // int(11)  not_null multiple_key
     public $resource_id;                     // int(11)  not_null multiple_key
     public $comment;                         // blob(65535)  not_null blob
+    public $rating;                          // float
+    public $type;                            // boolean, 0 = comment, 1 = rating
     public $created;                         // datetime(19)  not_null binary
 
     /* Static get */
@@ -55,4 +57,67 @@ class Comments extends DB_DataObject
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
     // @codingStandardsIgnoreEnd
+
+    /**
+     * Get a list of all comments associated with this resource.
+     *
+     * @return array
+     * @access public
+     */
+    public function getComments($recordId)
+    {
+        $recordId = mysql_real_escape_string($recordId);        
+        $sql = "SELECT comments.*, user.firstname || user.lastname as fullname, " .
+               "user.username " .
+               "FROM comments " . 
+               "RIGHT OUTER JOIN user ON comments.user_id = user.id " . 
+               "JOIN comments_record ON comments.id = comments_record.comment_id " . 
+               "WHERE comments_record.record_id = '$recordId' " .
+               "AND comments.visible = 1 " . 
+               "ORDER BY comments.created ";        
+
+        $commentList = array();
+
+        $result = $this->query($sql);
+        
+        if ($this->N) {
+            while ($this->fetch()) {
+                $commentList[] = clone($this);
+            }
+        }
+
+        return $commentList;
+    }
+
+    /**
+     * Get number of comments on record.
+     *
+     * @return int
+     * @access public
+     */
+    public function getCommentCount($record_id)
+    {
+        require_once 'services/MyResearch/lib/Comments_record.php';
+        $commentsRecord = new Comments_record();
+        $commentsRecord->record_id = $record_id;
+        return $commentsRecord->count('id');
+    }    
+
+    /**
+     * Add a link to a record.
+     *
+     * @return boolean success
+     * @access public
+     */
+    public function addLinks($recordIdArray)
+    {
+        require_once 'services/MyResearch/lib/Comments_record.php';
+        foreach ($recordIdArray as $recordId) {
+            $commentsRecord = new Comments_record();
+            $commentsRecord->record_id = $recordId;
+            $commentsRecord->comment_id = $this->id;
+            $commentsRecord->insert();
+        }
+        return true;
+    }    
 }

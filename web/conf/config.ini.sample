@@ -28,6 +28,7 @@ local           = /usr/local/vufind/web
 email           = finna-posti@helsinki.fi 
 title           = Finna
 theme           = institution
+userComments    = true
 ; Uncomment the following line to use a different theme for mobile devices
 ;mobile_theme    = jquerymobile
 language        = fi    ; default -- more options available in [Languages] below.

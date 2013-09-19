@@ -36,21 +36,18 @@ require_once 'DB/DataObject.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://pear.php.net/package/DB_DataObject/ PEAR Documentation
  */ // @codingStandardsIgnoreStart
-class User_resource extends DB_DataObject
+class Comments_record extends DB_DataObject
 {
     ###START_AUTOCODE
     /* the code below is auto generated do not remove the above tag */
 
-    public $__table = 'user_resource';       // table name
-    public $id;                              // int(11)  not_null primary_key auto_increment
-    public $user_id;                         // int(11)  not_null multiple_key
-    public $resource_id;                     // int(11)  not_null multiple_key
-    public $list_id;                         // int(11)  multiple_key
-    public $notes;                           // blob(65535)  blob
-    public $saved;                           // timestamp(19)  not_null unsigned zerofill binary timestamp
+    public $__table = 'comments_record';
+    public $id;
+    public $record_id;
+    public $comment_id;
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User_resource',$k,$v); }
+    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Comments_record',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

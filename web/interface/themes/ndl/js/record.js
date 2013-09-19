@@ -5,6 +5,27 @@ $(document).ready(function(){
     // register the record comment form to be submitted via AJAX
     registerAjaxCommentRecord();
 
+    // bind click action to edit comment link
+    $('a.editRecordComment').live('click', function(e){
+        e.preventDefault();
+        var id = this.id.substr('recordCommentEdit'.length);
+        $('input#commentId').val(id);
+        var comment = $('#comment' + id);
+        comment.css('font-style', 'italic');
+        var commentText = comment.text();
+        $('textarea#comment').val(comment.text());
+        $('html, body').animate({
+            scrollTop: $("#comment").offset().top
+        }, 500);
+        e.preventDefault();
+    });
+    
+    // bind click action to edit comment link
+    $(':reset').live('click', function(e){
+        $('input#commentId').val(0);
+        $('div.comment').css('font-style', 'normal');
+    });
+
     // bind click action to export record menu
     $('a.exportMenu').click(function(e){
         toggleMenu('exportMenu');
@@ -292,6 +313,29 @@ function registerAjaxCommentRecord() {
     });
 }
 
+function registerAjaxInappropriateComment() {
+    $('form[name="inappropriateComment"]').unbind('submit').submit(function(){
+        var form = this;
+        var id = form.id.value;
+        var url = path + '/AJAX/JSON?' + $.param({method:'inappropriateComment'});
+        $(form).ajaxSubmit({
+            url: url,
+            dataType: 'json',
+            success: function(response, statusText, xhr, $form) {
+                if (response.status == 'OK') {
+                    refreshCommentList(id);
+                    $(form).resetForm();
+                    refreshCommentList($("input[name=id]").val());                
+                    hideLightbox();
+                } else {
+                    displayFormError($form, response.data);
+                }
+            }
+        });
+        return false;
+    });
+}
+
 function refreshCommentList(recordId) {
     var url = path + '/AJAX/JSON?' + $.param({method:'getRecordCommentsAsHTML',id:recordId});
     $.ajax({
@@ -309,6 +353,10 @@ function refreshCommentList(recordId) {
                     e.preventDefault();
                 });
                 $('#commentCount').text($(commentUl + ' li:not(#emptyListItem)').length);
+                $.each($('.starRatingReadOnly'), function() {
+                    $(this).raty($.extend(icons, {readOnly : true, half: true, score : $(this).attr('data-score')}));
+                });
+                $('#starRating').raty('cancel', false);
             }
         }
     });

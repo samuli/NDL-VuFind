@@ -176,6 +176,11 @@ class Record extends Action
         if (isset($configArray['Content']['previews'])) {
             $interface->assignPreviews();
         }
+        
+        // Determine whether comments or reviews are enabled
+        if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
+            $interface->assign('userCommentsEnabled', true);
+        }
 
         // Determine whether to include script tag for syndetics plus
         if (isset($configArray['Syndetics']['plus'])

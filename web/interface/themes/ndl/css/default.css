@@ -3823,7 +3823,7 @@ ul.commentList {
 }
 ul.commentList li {
     background-color: #f2f2f2;
-    padding: 0.5em 1em 1em 1em;
+    padding: 0.5em 1em 2em 1em;
     margin-bottom:1em;
 }
 ul.commentList li div.posted {
@@ -5385,5 +5385,16 @@ form#feedbackForm label {
 #locationServiceDirectLink {
     height: 5%;
 }
-
-
+div.starRatingReadOnly {
+    display: inline;
+    margin-right: 10px;
+    padding-top: 3px;
+}
+div#starRating {
+    display: inline;
+}
+a.inappropriate {
+    position: relative;
+    float: right;
+    clear: both;
+}
