@@ -54,8 +54,8 @@ if(($feed['type'] == "carousel") ||
 
             calculateCarouselDimensions = function() {
                 
-                var containerWidth = $('#NDLCarousel.includeDescription li').width();
-                var containerHeight = $('#NDLCarousel.includeDescription li').height();
+                var containerWidth = $('#NDLCarousel li').width();
+                var containerHeight = $('#NDLCarousel li').height();
                 var containerRatio = containerWidth / containerHeight;
                   
                 // Determine height if it is not set
