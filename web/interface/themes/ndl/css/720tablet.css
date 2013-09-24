@@ -275,6 +275,11 @@
         margin-bottom:40px;
     }
     
+    table.holdingsContainerHolding .checkedout {
+        display: inline-block;
+        width: 98px;
+    }
+    
     /* Myresearch */
     
     .ui-tabs .ui-tabs-nav li a {
