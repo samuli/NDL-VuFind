@@ -9,6 +9,7 @@ $(document).ready(function() {
     initDateVis();
     initFeedbackScroll();
     initFixedLimitSearch();
+    initMetaLibLoadingIndicator();
     initCustomEyeCandy();
     initScrollRecord();
 });
@@ -310,6 +311,14 @@ function padZeros(number, length) {
         str = '0' + str;
     }
     return (negative ? '-' : '') + str;
+}
+
+// Metalib loading indicator
+function initMetaLibLoadingIndicator() {
+    $('.searchformMetaLib #searchForm_searchButton').click(function() {
+        $('.searchFormWrapper .clear_input').addClass('metaLibLoading');
+        $('#searchForm_input').css('color', '#aaa');
+    });
 }
 
 // Custom jQuery effects
