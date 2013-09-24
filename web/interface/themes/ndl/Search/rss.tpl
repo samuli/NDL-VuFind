@@ -49,7 +49,7 @@ if(($feed['type'] == "carousel") ||
 
     <script>
         $(document).ready(function(){
-            c-{/literal}{$rssFeed.id}{literal} = new NDLCarousel(
+            c{/literal}{$rssFeed.id}{literal} = new NDLCarousel(
                 '{/literal}{$rssFeed.id}',
                 {$rssFeed.itemsPerPage},
                 {$rssFeed.scrolledItems},
