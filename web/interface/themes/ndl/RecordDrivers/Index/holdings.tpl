@@ -62,6 +62,7 @@
   {/if}
   {foreach from=$holdings item=holding key=location name=holdings}
     {assign var=prevMfhdId value=''}
+    {assign var="copyCount" value="0"}
     {foreach from=$holding item=row name=items}
       {assign var="itemsIteration" value=$smarty.foreach.items.iteration}
       {if $prevMfhdId != $row.mfhd_id}
