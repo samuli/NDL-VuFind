@@ -34,6 +34,8 @@ require_once 'services/MyResearch/lib/Resource.php';
 require_once 'services/MyResearch/lib/Resource_tags.php';
 require_once 'services/MyResearch/lib/Tags.php';
 
+require_once 'modules/geshi.php';
+
 /**
  * Index Record Driver
  *
@@ -1347,6 +1349,20 @@ class IndexRecord implements RecordInterface
     {
         global $interface;
         $interface->assign('details', $this->fields);
+        
+        // Try to get an XML presentation
+        $xml = trim($this->fields['fullrecord']);
+
+        // Prettify XML
+        $doc = new DOMDocument;
+        $doc->preserveWhiteSpace = false;
+        if ($doc->loadXML($xml)) {
+            $doc->formatOutput = true;
+            $geshi = new GeSHi($doc->saveXML(), 'xml');
+            $geshi->enable_classes(); 
+            $interface->assign('record', $geshi->parse_code());
+        }
+
         return 'RecordDrivers/Index/staff.tpl';
     }
 
