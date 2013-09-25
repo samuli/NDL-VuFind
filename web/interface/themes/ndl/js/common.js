@@ -609,7 +609,7 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
                 });
 
                 // Set title and text position
-                self.currentCarousel.children('h4').each(function() {
+                self.currentCarousel.find('h4').each(function() {
                     var myHeight = $(this).find('a').height() + 12; // 6px + 6px padding
                     $(this).siblings('p').css('top', myHeight);
                 });
@@ -633,21 +633,28 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
     });
 
     this.currentCarousel.filter('.includeDescription').children('li').mouseenter(function() {
-         $(this).children('h4').stop().animate({
+        var headers = $(this).find('h4');
+        var paragraphs = $(this).find('p');
+        var h4Height = headers.first().height() + 12;
+        headers.stop().animate({
             top: 0
          }, 50, function() {
-            $(this).siblings('p').stop(true,true).delay(50).fadeIn(200);
+            paragraphs.stop(true,true).delay(50).fadeIn(200);
          });
+
     });
 
     this.currentCarousel.filter('.includeDescription').children('li').mouseleave(function() {
-        h4Height = $(this).find('a').height() + 12;
-        $(this).children('h4').stop().animate({
+        var headers = $(this).children('h4');
+        var paragraphs = $(this).children('p');
+        var h4Height = $(this).find('a').height() + 12;
+        headers.stop().animate({
             top: self.carouselHeight - h4Height
         }, 100, function() {  // callback function necessary to remove css top property
             $(this).css('top', '')
         });
-        $(this).children('p').stop(true, true).fadeOut(200);
+        paragraphs.stop(true, true).fadeOut(200);
+
     });
 
     // Function to refresh carousel when layout changes
