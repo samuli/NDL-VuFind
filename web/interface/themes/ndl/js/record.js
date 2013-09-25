@@ -369,8 +369,7 @@ function refreshCommentList(recordId) {
                     average = total/count
                 }
                 if ($('input[name="type"]').val() == 1) {
-                    var ratingCount = $('#ratingCount').text();
-                    $('#ratingCount').text(ratingCount);
+                    $('#ratingCount').text(count);
                     $('#averageRating').raty('readOnly', false);
                     $('#averageRating').raty('score', average.toFixed(2));
                     $('#averageRating').raty('readOnly', true);
