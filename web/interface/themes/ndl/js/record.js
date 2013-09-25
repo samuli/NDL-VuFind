@@ -8,8 +8,9 @@ $(document).ready(function(){
     // bind click action to edit comment link
     $('a.editRecordComment').live('click', function(e){
         e.preventDefault();
+        $('#formContainer').show();
         var id = this.id.substr('recordCommentEdit'.length);
-        $('input#commentId').val(id);
+        $('input[name="commentId"]').val(id);
         var comment = $('#comment' + id);
         comment.css('font-style', 'italic');
         var commentText = comment.text();
@@ -17,10 +18,16 @@ $(document).ready(function(){
         $('html, body').animate({
             scrollTop: $("#comment").offset().top
         }, 500);
-        e.preventDefault();
     });
     
-    // bind click action to edit comment link
+    // attach click event to the report inappropriate link
+    $('a.inappropriateRecordComment').unbind('click').live('click', function(e) {
+        e.preventDefault();
+        var id = $('input[name="recordId"]').val();
+        var $dialog = getPageInLightbox(this.href+'&lightbox=1', this.title, 'Record', '', id);
+    });
+    
+    // bind click action to reset comment link
     $(':reset').live('click', function(e){
         $('input#commentId').val(0);
         $('div.comment').css('font-style', 'normal');
@@ -74,7 +81,7 @@ $(document).ready(function(){
         var $dialog = getLightbox('Record', 'AddTag', id, null, this.title, 'Record', 'AddTag', id);
         e.preventDefault();
     });
-    $('a.deleteRecordComment').click(function(e) {
+    $('a.deleteRecordComment').live('click', function(e) {
         var commentId = this.id.substr('recordComment'.length);
         var recordId = this.href.match(/\/Record\/([^\/]+)\//)[1];
         deleteRecordComment(recordId, commentId);
@@ -284,7 +291,7 @@ function registerAjaxCommentRecord() {
     $('form[name="commentRecord"]').live('submit', function(){
         if (!$(this).valid()) { return false; }
         var form = this;
-        var id = form.id.value;
+        var id = form.recordId.value;
         var url = path + '/AJAX/JSON?' + $.param({method:'commentRecord',id:id});
         $(form).ajaxSubmit({
             url: url,
@@ -292,7 +299,11 @@ function registerAjaxCommentRecord() {
             success: function(response, statusText, xhr, $form) {
                 if (response.status == 'OK') {
                     refreshCommentList(id);
-                    $(form).resetForm();
+                    if($('input[name="type"]').val() == 1) {
+                        $('#formContainer').hide();
+                    } else {
+                        $(form).resetForm();
+                    }
                 } else if (response.status == 'NEED_AUTH') {
                     $dialog = getLightbox('AJAX', 'Login', id, null, 'Login');
                     $dialog.dialog({
@@ -314,9 +325,10 @@ function registerAjaxCommentRecord() {
 }
 
 function registerAjaxInappropriateComment() {
-    $('form[name="inappropriateComment"]').unbind('submit').submit(function(){
+    $('form[name="inappropriateComment"]').unbind('submit').live('submit', function(e){
+        e.preventDefault();
         var form = this;
-        var id = form.id.value;
+        var id = form.recordId.value;
         var url = path + '/AJAX/JSON?' + $.param({method:'inappropriateComment'});
         $(form).ajaxSubmit({
             url: url,
@@ -325,7 +337,7 @@ function registerAjaxInappropriateComment() {
                 if (response.status == 'OK') {
                     refreshCommentList(id);
                     $(form).resetForm();
-                    refreshCommentList($("input[name=id]").val());                
+                    refreshCommentList(id);                
                     hideLightbox();
                 } else {
                     displayFormError($form, response.data);
@@ -344,19 +356,25 @@ function refreshCommentList(recordId) {
         success: function(response) {
             
             if (response.status == 'OK') {
+                $('#commentsContainer').replaceWith(response.data);
                 commentUl = 'ul[id="commentList'+ recordId + '"]';
-                $(commentUl).empty();
-                $(commentUl).append(response.data);
-                $(commentUl + ' a.deleteRecordComment').unbind('click').click(function(e) {
-                    var commentId = $(this).attr('id').substr('recordComment'.length);
-                    deleteRecordComment(recordId, commentId);
-                    e.preventDefault();
-                });
                 $('#commentCount').text($(commentUl + ' li:not(#emptyListItem)').length);
+                var count = 0, total = 0, average = 0;
                 $.each($('.starRatingReadOnly'), function() {
-                    $(this).raty($.extend(icons, {readOnly : true, half: true, score : $(this).attr('data-score')}));
+                    var stars = $(this).raty('score');
+                    count++;
+                    total = total + stars;
                 });
-                $('#starRating').raty('cancel', false);
+                if (count>0) {
+                    average = total/count
+                }
+                if ($('input[name="type"]').val() == 1) {
+                    var ratingCount = $('#ratingCount').text();
+                    $('#ratingCount').text(ratingCount);
+                    $('#averageRating').raty('readOnly', false);
+                    $('#averageRating').raty('score', average.toFixed(2));
+                    $('#averageRating').raty('readOnly', true);
+                }
             }
         }
     });

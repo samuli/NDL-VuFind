@@ -69,7 +69,7 @@ class UserComments extends Record
                     $interface->display('Record/report-inappropriate.tpl');
                     exit();
                 } else {
-                    echo 'foo';
+                    //TODO: non ajax functionality
                     exit();
                 }
         }
@@ -158,7 +158,7 @@ class UserComments extends Record
         }
         $commentInapp = new Comments_inappropriate();
         $commentInapp->comment_id = $_REQUEST['commentId'];
-        $commentInapp->user_id = isset($user) ? $user->id : NULL;
+        $commentInapp->user_id = isset($user) && is_object($user) ? $user->id : NULL;
         $commentInapp->created = date('Y-m-d H:i:s');
         // TODO: strip tags just in case
         $commentInapp->reason = $_REQUEST['reason'];
@@ -191,9 +191,27 @@ class UserComments extends Record
             $commentInapp->find();
             while ($commentInapp->fetch()) {
                 $usersComments[] = $commentInapp->comment_id;
-            }      
+            }
+            $commentedByUser = false;
+            foreach ($commentList as $comment) {
+                if ($user->id == $comment->user_id) {
+                    $commentedByUser = true;
+                    break;
+                }
+            }
+            
         }
+        require_once 'RecordDrivers/Factory.php';
         
+        $db = ConnectionManager::connectToIndex();
+        if (!($record = $db->getRecord($_REQUEST['id']))) {
+            PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
+        }
+        $recordDriver = RecordDriverFactory::initRecordDriver($record);
+        if ($recordDriver->getSector() == 'lib') {
+            $interface->assign('ratings', true);
+        }                
+        $interface->assign(compact('commentedByUser'));        
         $interface->assign('reported', array_merge($reported, $usersComments));
     }
 
@@ -211,7 +229,7 @@ class UserComments extends Record
         if (!isset($_GET['id'])) {
             return false;
         }
-
+        
         if ($_REQUEST['commentId'] == 0) {
             $searchObject = SearchObjectFactory::initSearchObject();
               // Shortcut: if this record is not the top record, let's not find out the count.
@@ -232,11 +250,22 @@ class UserComments extends Record
             } else {
                   $idArray = $result['response']['docs'][0]["local_ids_str_mv"];
             }
+            if ($_REQUEST['type']==1) {
+                $commentsByUser = new Comments();
+                $commentList = $commentsByUser->getComments($_REQUEST['recordId']);
+                foreach ($commentList as $comment) {
+                    if ($comment->user_id == $user->id) {
+                        //return false;
+                    }
+                }
+                
+            }            
             $comments = new Comments();
             $comments->user_id = $user->id;
             $rating = (float)$_REQUEST['rating'];
             $comments->rating = ($rating > 0 && $rating <= 5) ? $rating : NULL;
             $comments->comment = $_REQUEST['comment'];
+            $comments->type = $_REQUEST['type'];
             $comments->created = date('Y-m-d H:i:s');
             $comments->insert();
             $comments->addLinks($idArray);
@@ -246,6 +275,7 @@ class UserComments extends Record
             $comments->get($_REQUEST['commentId']);
             if ($comments->user_id == $user->id) {
                 $comments->comment = $_REQUEST['comment'];
+                $comments->rating = $_REQUEST['rating'];
                 $comments->updated = date('Y-m-d H:i:s');            
                 $comments->update();
                 return true;                

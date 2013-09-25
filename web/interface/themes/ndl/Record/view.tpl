@@ -174,6 +174,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
         </li>
         {/if}
+        {if $ratings && $recordRating}
+        <li>
+            <div id="averageRating" data-score="{if $recordRating.ratingAverage}{$recordRating.ratingAverage}{else}0{/if}"></div> (<span id="ratingCount">{$recordRating.ratingCount}</span> {if $recordRating.ratingCount==1}{translate text="rating"}{else}{translate text="ratings"}{/if})
+        </li>
+        {/if}
       </ul>
       {if $bookBag}
       <div class="cartSummary">
@@ -197,6 +202,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       <div id="qrcode"><!-- span class="overlay"></span --></div>
       {js filename="qrcodeNDL.js"}
       </div> *}
+      
   </div>
    <div class="grid_12 prefix_1">
    {include file=$coreMetadata}
@@ -242,7 +248,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {/if}
         {if $userCommentsEnabled}
         <li{if $tab == 'UserComments'} class="active"{/if}>
-          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{if $ratingsDisabled}{translate text='Comments'}{else}{translate text='Ratings'}{/if} (<span id="commentCount">{$commentCount}</span>)</a>
+          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{if $ratings}{translate text='Ratings'}{else}{translate text='Comments'}{/if} (<span id="commentCount">{$commentCount}</span>)</a>
         </li>
         {/if}
         {if $hasReviews}
@@ -290,13 +296,19 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   
   <div class="clear"></div>
 </div>
-
 <script type="text/javascript">
 {literal}
   $(document).ready(function() {
+    var icons = {starHalf    : path+'/interface/themes/ndl/images/raty/star-half.png',
+                 starOff     : path+'/interface/themes/ndl/images/raty/star-off.png',
+                 starOn      : path+'/interface/themes/ndl/images/raty/star-on.png'
+                };
     var searchID = $.cookie('lastSearchId');
     var editURL = $('.editAdvancedSearch').attr('href') + searchID;
     $('.editAdvancedSearch').attr('href', editURL);
+    {/literal}{if $ratings && $recordRating}{literal}
+    $('#averageRating').raty($.extend(icons, {readOnly : true, half: true, score : $('div#averageRating').attr('data-score')}));
+    {/literal}{/if}{literal}
   });
 {/literal}
 </script>

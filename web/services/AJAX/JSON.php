@@ -582,7 +582,7 @@ class JSON extends Action
 
         $interface->assign('id', $_GET['id']);
         UserComments::assignComments();
-        $html = $interface->fetch('Record/view-comments-list.tpl');
+        $html = $interface->fetch('Record/view-comments.tpl');
         return $this->output($html, JSON::STATUS_OK);
     }
 

@@ -4,6 +4,7 @@
 {if not $submitted}
 {if $errorMsg}<p class="error">{$errorMsg}</p>{/if}
 <form id="inappropriateForm" action="" method="post" name="inappropriateComment">
+    <input type="hidden" name="recordId" value="{$id}"></input>
     <input type="hidden" name="commentId" value="{$commentId}"></input>
     <label>{translate text='Choose'}:</label><br>
     <label for="inapp1"><input id="inapp1" type="radio" name="reason" checked="checked" value="{translate text='inappropriate_reason_1'}" /> {translate text='inappropriate_reason_1'}</label><br>

@@ -1624,6 +1624,17 @@ class IndexRecord implements RecordInterface
     }    
     
     /**
+     * Get organization sector library/museum/archive
+     *
+     * @return string sector
+     * @access public
+     */
+    public function getSector()
+    {
+        return substr($this->fields['sector_str_mv'][0], 2, 3);
+    }    
+    
+    /**
      * Get Tree Source
      *
      * Returns the configuration setting for hierarchy tree caching time when

@@ -59,7 +59,7 @@ class Comments extends DB_DataObject
     // @codingStandardsIgnoreEnd
 
     /**
-     * Get a list of all comments associated with this resource.
+     * Get a list of all comments associated with this record.
      *
      * @return array
      * @access public
@@ -88,19 +88,45 @@ class Comments extends DB_DataObject
 
         return $commentList;
     }
-
+    
+    /**
+     * Get average rating from ratings associated with this record.
+     *
+     * @return array
+     * @access public
+     */
+    public function getAverageRating($recordId)
+    {
+        $recordId = mysql_real_escape_string($recordId);        
+        $sql = "SELECT AVG(comments.rating) as average, " .
+               "COUNT(comments.id) as numberOfRatings " .
+               "FROM comments " . 
+               "JOIN comments_record ON comments.id = comments_record.comment_id " . 
+               "WHERE comments_record.record_id = '$recordId' " .
+               "AND comments.rating IS NOT NULL " .
+               "AND comments.visible = 1";
+        $this->query($sql);      
+        $this->fetch();
+        return (array('ratingAverage' => $this->average, 'ratingCount' => $this->numberOfRatings));
+    }
+        
     /**
      * Get number of comments on record.
      *
      * @return int
      * @access public
      */
-    public function getCommentCount($record_id)
+    public function getCommentCount($recordId)
     {
-        require_once 'services/MyResearch/lib/Comments_record.php';
-        $commentsRecord = new Comments_record();
-        $commentsRecord->record_id = $record_id;
-        return $commentsRecord->count('id');
+        $recordId = mysql_real_escape_string($recordId);        
+        $sql = "SELECT count(comments_record.id) as numberOfComments " .
+                "FROM comments_record " . 
+                "JOIN comments ON comments.id = comments_record.comment_id " . 
+                "WHERE comments_record.record_id = '$recordId' " .
+                "AND comments.visible = 1";
+         $this->query($sql);  
+         $this->fetch();
+         return $this->numberOfComments;
     }    
 
     /**

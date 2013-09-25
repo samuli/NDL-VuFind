@@ -98,7 +98,7 @@ function getPageInLightbox(href, message, followupModule, followupAction, follow
     __dialogHandle.processFollowup = false;
     __dialogHandle.followupModule = followupModule;
     __dialogHandle.followupAction = followupAction;
-    __dialogHandle.recordId = id;
+    __dialogHandle.recordId = null;
     __dialogHandle.postParams = null;
 
     // done

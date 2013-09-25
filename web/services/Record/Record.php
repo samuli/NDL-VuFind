@@ -181,6 +181,21 @@ class Record extends Action
         if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
             $interface->assign('userCommentsEnabled', true);
         }
+        
+        // Ratings for libraries, comments for museums and archives
+        if ($this->recordDriver->getSector() == 'lib') {
+            $interface->assign('ratings', true);
+        }
+        
+        if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
+            // Get number of comments for this record
+            require_once 'services/MyResearch/lib/Comments.php';
+            $comments = new Comments();
+            $commentCount = $comments->getCommentCount($_REQUEST['id']);    
+            $interface->assign(compact('commentCount'));
+            $recordRating = $comments->getAverageRating($_REQUEST['id']);
+            $interface->assign(compact('recordRating'));            
+        }
 
         // Determine whether to include script tag for syndetics plus
         if (isset($configArray['Syndetics']['plus'])
