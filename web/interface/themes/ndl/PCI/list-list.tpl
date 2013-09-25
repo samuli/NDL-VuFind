@@ -63,7 +63,7 @@
         </div>
         <div class="resultItemLine3">
         {foreach from=$record.url item=recordLink}
-            <a href="{$recordLink|proxify|escape}">{$recordLink|escape:"html"|truncate:60:"...":true:true}</a><br />
+            <a target="_blank" href="{$recordLink|proxify|escape}">{$recordLink|escape:"html"|truncate:60:"...":true:true}</a><br />
         {/foreach}
         </div>
         <div class="resultItemLine4">

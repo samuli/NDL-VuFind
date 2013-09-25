@@ -164,10 +164,6 @@
         width: 300px;
     }
     
-    .resultDatesHeader,
-    .resultDates{
-        display:none;
-    }
     .currentPage > span:first-child {
         display:none;
     }

@@ -1,9 +1,5 @@
 <!-- START of: PCI/searchbox.tpl -->
 
-{if $dualResultsEnabled}
-  {include file='Search/searchbox.tpl'}
-{else}
-
 <div id="searchFormContainer" class="searchform searchformPCI last content">
   <form method="get" action="{$path}/PCI/Search" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
@@ -77,7 +73,5 @@
 
   </form>
 </div>
-
-{/if} {* $dualResultsEnabled *}
 
 <!-- END of: PCI/searchbox.tpl -->

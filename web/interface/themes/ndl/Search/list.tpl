@@ -56,7 +56,7 @@
       <div class="headerRight">
         <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
         <a class="button buttonFinna buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="Books etc."}</a>
-        <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
+        <a class="button buttonFinna" href="{$searchWithoutFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
       </div>
       {/if}
     </div> {* content *}
@@ -78,8 +78,8 @@
     <div class="content">
       <div class="resultNumbers">
         {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
-        <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
-        <span class="resultTotals">{$recordCount}</span>
+        <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart|number_format:0:".":" "|replace:" ":"&#x2006;"}&#8201;-&#8201;{$recordEnd|number_format:0:".":" "|replace:" ":"&#x2006;"} / </span>
+        <span class="resultTotals">{$recordCount|number_format:0:".":" "|replace:" ":"&#x2006;"}</span>
          {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
       </div>
       <div class="resultOptions">

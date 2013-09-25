@@ -51,6 +51,12 @@ class Fines extends MyResearch
         global $interface;
         global $finesIndexEngine;
 
+        // Assign the ID of the last search so the user can return to it.
+        $interface->assign(
+            'lastsearch',
+            isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : 'perkele'
+        );
+
         // Get My Fines
         if ($patron = UserAccount::catalogLogin()) {
             if (PEAR::isError($patron)) {

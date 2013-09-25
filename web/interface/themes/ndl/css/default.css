@@ -2979,10 +2979,9 @@ div.dateVisHandle.visible {
 }
 
 .narrowList.navmenu.year dt {
-z-index:1000;
+    z-index:1000;
 	position:relative;
 	width:210px;
-		-moz-transition:all 0.1s linear;
 }
 .narrowList.navmenu.year.collapsible.timeline.open.collapsed dt{
 	width:950px;
@@ -2992,7 +2991,7 @@ z-index:1000;
 }
 
 .sidegroup dl.year.collapsible.timeline.open.collapsed dt {
-    background: url("../images/datevis_handle_close.png") no-repeat scroll 101.6% 6% #4C4C4C;
+    background: url("../images/datevis_handle_close.png") no-repeat scroll 101.3% 4.8% #4C4C4C;
 }
 .sidegroup dl.year.collapsible.timeline.open.active.collapsed dt {
     background:#4C4C4C;
@@ -4310,17 +4309,14 @@ ul.recordSet.galleryView li.result {
     height: 163px;
     border: 1px solid #FFFFFF;
     display: inline-block;
-   /* height: 185px;*/
     margin-bottom: 20px;
     margin-right: 10px;
-    /*overflow: hidden;*/
     position: relative;
     vertical-align: top;
     width: 124px;
-    transition:all .1s;
 }
 
-ul.recordSet.galleryView li.result:hover {
+ul.recordSet.galleryView li.result.hover {
     border:1px solid #ddd;
     border-bottom:none;
     overflow:visible;
@@ -4356,7 +4352,7 @@ ul.recordSet.galleryView .resultNoImage {
     border-bottom: 5px solid rgba(255, 255, 255, 0.85);
 }
 
-.gridContent.visible {
+li.result.hover .gridContent {
     border:1px solid #ddd;
     border-top:none;
     box-shadow:0 10px 18px -19px rgba(0, 0, 0, 0.7);
@@ -4404,10 +4400,10 @@ ul.recordSet.galleryView .gridPublished {
     padding-top:5px;
     font-size:12px;
 }
-ul.recordSet.galleryView li.result:hover .gridPublished {
+ul.recordSet.galleryView li.result.hover .gridPublished {
     visibility:visible;
 }
-ul.recordSet.galleryView li.result:hover .addToFavLink {
+ul.recordSet.galleryView li.result.hover .addToFavLink {
     display:block;
 }
 tr:nth-child(even) td.gridCell {background-color:white;}
@@ -5397,4 +5393,11 @@ a.inappropriate {
     position: relative;
     float: right;
     clear: both;
+}
+div.commentDetails {
+    display: inline;
+}
+div.commentDetails > * {
+    margin-left: 10px;
+    line-height: 30px;
 }

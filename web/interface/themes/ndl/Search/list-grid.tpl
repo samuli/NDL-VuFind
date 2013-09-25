@@ -17,21 +17,16 @@
     {literal}
     $(function() {
         $('.galleryView li.result').hover(function() {
+            $(this).toggleClass('hover');
             var gridContent = $(this).find('.gridContent');
-            var h, o = 52;
-            
-            gridContent.toggleClass('visible');
-            if (gridContent.hasClass('visible')) {
+            var h = '', o = 52;
+            if ($(this).hasClass('hover')) {
                 h = gridContent[0].scrollHeight -1;
                 if (h <= 54) {
                     return;
                 }
-            } else {
-                h = o;
-            }
-            gridContent.animate({
-                'height' : h
-            }, 50);
+            } 
+            gridContent.css('height', h); // If h=='', reset element height
         });
     });
     {/literal}

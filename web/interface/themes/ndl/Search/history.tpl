@@ -1,6 +1,13 @@
 <!-- START of: Search/history.tpl -->
-
-{include file="MyResearch/menu.tpl"}
+{if $user}
+  {include file="MyResearch/menu.tpl"}
+{else}
+  <div class="myresearchHeader">
+    <div class="content">
+      <div class="grid_24"><h1>{translate text="Search History"}</h1></div>
+    </div>
+  </div>
+{/if}
 
 <div class="myResearch">
   <div class="content">
@@ -19,7 +26,7 @@
         <div class="info">{translate text="alert_email_address"}: {$user->email} (<a href="{$path}/MyResearch/Profile">{translate text="edit"}</a>)</div>
           {/if}
         {/if}
-        <h2>{translate text="history_saved_searches"}</h2>
+        {if $user}<h2>{translate text="history_saved_searches"}</h2>{/if}
         <table class="datagrid savedHistory" width="100%">
           <tr>
             <th width="15%">{translate text="history_time"}</th>
@@ -55,7 +62,7 @@
       {/if}
 
       {if $links}
-          <h2>{translate text="history_recent_searches"}</h2>
+          {if $user}<h2>{translate text="history_recent_searches"}</h2>{/if}
           <table class="datagrid sessionHistory" width="100%">
           <tr>
             <th width="15%">{translate text="history_time"}</th>
@@ -86,7 +93,7 @@
       {/if}
 
     {else}
-       <h2>{translate text="history_recent_searches"}</h2>
+       {if $user}<h2>{translate text="history_recent_searches"}</h2>{/if}
         <div class="noContentMessage">{translate text="history_no_searches"}</div>
     {/if}
   </div>
