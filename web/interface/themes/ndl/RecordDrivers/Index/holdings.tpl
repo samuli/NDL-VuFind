@@ -44,7 +44,7 @@
       {/if}
     {/if}
     {if $holdingTitleHold && $holdingTitleHold != 'block'}
-        <a class="button buttonFinna" class="holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
+        <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
     {/if}
     {if $holdingTitleHold == 'block'}
         {translate text="hold_error_blocked"}

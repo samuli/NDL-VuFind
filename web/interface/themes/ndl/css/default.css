@@ -3881,6 +3881,15 @@ table.datagrid td {
     border-top:none;
 }
 
+.holdingsPlaceHold .holdPlace {
+    background-image:none;
+}
+.holdingsPlaceHold .holdPlace:before {
+    background-image:none;
+    width:0;
+    height:0;
+    padding:0;
+}
 
 table.holdingsContainerHolding td {
     display:none;
@@ -3999,10 +4008,15 @@ table.holdingsContainerHolding .mobileLocation td {
     border:none;
 }
 
-
-table.holdingsContainerHolding .checkedout {
+table.holdingsContainerHolding .checkedout,
+table.holdingsContainerHolding .available {
     display: inline-block;
     width: 132px;
+}
+
+table.holdingsContainerHolding .callSlipPlace {
+    padding:0;
+    font-weight:bold;
 }
 
 /* Comments */
