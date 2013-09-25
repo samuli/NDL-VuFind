@@ -1148,6 +1148,11 @@ div.dialogLoading {
 .facet_loading {
     background-position:10px top;
 }
+.metaLibLoading {
+    background: url(../images/ajax_loading.gif) no-repeat center top !important;
+    cursor:pointer !important;
+    pointer-events: none;
+}
 #dyntabnav_spinner {
     position:relative;
     left:50%;
@@ -3798,21 +3803,207 @@ table.datagrid td {
     padding: 5px 10px 5px 10px;
 }
 
-/*table.datagrid td a {
-    color: #003366;
-}
-*/
-/*
-table.datagrid tr.evenrow {
-    background-color: #EEEEEE;
+.holdingsHoldingURLs {
+    background:url(../images/internet_link.png) no-repeat;
+    padding-left:30px;
+    font-weight:bold;
 }
 
-table.datagrid tr.oddrow {
-    background-color: #DDDDDD;
+.holdingsPlaceHold a {
+    color:#fff !important;
 }
-*/
-/* Try commenting out the next line if odd and even table rows give you trouble */
-/* table.datagrid tr:nth-child(odd) td, table.datagrid tr.odd td {background:#eeeeee;} */
+
+.holdingsHoldingURLs h5 {
+    color:#666;
+    border:none !important;
+    padding:0 !important;
+    margin:0 0 5px 0 !important;
+}
+
+.holdingsPlaceHold {
+    float:right;
+    margin: 10px 0;
+}
+
+#dyntabnav .holdingsContainerHeader h5 {
+    background:#18a3b7;
+    border: none;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    padding: 8px 12px;
+}
+
+.holdingsContainerHeading span.arrowIndicator {
+    background: url("../images/icons16-24px-02.png") repeat scroll -47px -2370px transparent;
+    display: inline-block;
+    height: 16px;
+    opacity: 0.8;
+    padding-right: 5px;
+    position: relative;
+    top: 2px;
+    width: 12px;
+}
+.holdingsContainerHolding.active span.arrowIndicator {
+    background: url("../images/icons16-24px-02.png") repeat scroll -49px -2319px transparent;
+}
+
+#dyntabnav .holdingsContainer h5 {
+    border:none;
+    padding:10px;
+    margin:0;
+}
+
+#dyntabnav h5.holdingsContainerHeading {
+    border-bottom: 1px solid #D7D7D7;
+    border-top: medium none;
+    color: #666666;
+    cursor: pointer;
+    display: block;
+    overflow: auto;
+    padding: 10px 15px 10px 30px;
+    position: relative;
+
+}
+
+#dyntabnav .holdingsContainerHeading.active {
+    border-bottom:none;
+}
+
+#dyntabnav table.holdingsContainerHolding:last-child,
+#dyntabnav .holdingsContainerHeading:last-child {
+    border-bottom:none;
+}
+
+.holdingsContainer {
+    border:1px solid #d7d7d7;
+    border-top:none;
+}
+
+
+table.holdingsContainerHolding td {
+    display:none;
+}
+table.holdingsContainerHolding th, 
+table.holdingsContainerHolding td {
+    padding:6px;
+}
+table.holdingsContainerHolding td.copyNumber {
+    padding-bottom:3px;
+    padding-top:3px;
+}
+table.holdingsContainerHolding.active td {
+    display:table-cell;
+}
+table.holdingsContainerHolding.visible {
+    display:block;
+}
+table.holdingsContainerHolding.active {
+    border-bottom: 2px solid #D7D7D7;
+}
+tr.avail {
+    display:none;
+}
+
+
+.holdingsContainerHeading .availability {
+    display:none;
+    width: 50%;
+}
+.holdingsContainerHeading .returnDate {
+    display: none;
+    float: right;
+    width: 50%;
+}
+.holdingsContainerHeading .location {
+    width:48%;
+}
+
+table.holdingsContainerHolding .locationLink a {
+    display: inline-block;
+    float: right;
+    padding-right:22px;
+    background:url(../images/record_location.png) center right no-repeat;
+}
+
+table.holdingsContainerHolding td,
+table.holdingsContainerHolding th {
+    vertical-align:top !important;
+}
+table.holdingsContainerHolding td:first-child {
+    font-weight:bold;
+}
+table.holdingsContainerHolding {
+    border-bottom: 1px solid #D7D7D7;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+tr.holdingsContainerHeading th.location {
+    padding-left: 23px;
+    text-indent: -17px;
+}
+
+table.holdingsContainerHolding .copyDetails > * {
+    border:none;
+}
+table.holdingsContainerHolding .copyDetails.hidden {
+    display:none;
+}
+table.holdingsContainerHolding .copyDetails.display {
+    display:table-row;
+}
+table.holdingsContainerHolding .copyDetails.first > *,
+table.holdingsContainerHolding td {
+    border-top:1px solid #d7d7d7;
+}
+
+table.holdingsContainerHolding .toggleCopyDetails * {
+    border:none;
+}
+
+table.holdingsContainerHolding  td.copyTitle  {
+    width: 28%;
+    padding-left:23px;
+}
+table.holdingsContainerHolding  tr.copyDetails.first > * {
+    padding-top:6px;
+}
+table.holdingsContainerHolding  tr.copyDetails td.copyTitle  {
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+table.holdingsContainerHolding td.copyNumber {
+    width:20% !important;
+}
+.holdingsContainerHeading .holdingDetails  {
+    width:30%;
+}
+
+
+.holdingsContainerHolding.visible + h5 {
+    border-top: 2px solid #D7D7D7;
+}
+
+table.holdingsContainerHolding .copyInfo {
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+
+table.holdingsContainerHolding .mobileLocation {
+    display:none;
+    text-align:right;
+}
+table.holdingsContainerHolding .mobileLocation td {
+    border:none;
+}
+
+
+table.holdingsContainerHolding .checkedout {
+    display: inline-block;
+    width: 132px;
+}
 
 /* Comments */
 

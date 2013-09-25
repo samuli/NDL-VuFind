@@ -66,6 +66,14 @@ h3, .hefty, .slogan, .title /* Result list title */ {
     font-size: 1.333em;
     line-height: 1.2em;
 }
+.NDLNews .title {
+    font-size: 1.1em;
+    line-height: 1.23em;
+}
+.NDLNews .date {
+    font-size: 1.1em;
+    line-height: 1.23em;
+}
 h2, .large {
     font-size: 1.777em;
     line-height: 1.2em;

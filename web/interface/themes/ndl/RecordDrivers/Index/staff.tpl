@@ -1,5 +1,7 @@
 <!-- START of: RecordDrivers/Index/staff.tpl -->
-
+{if $record}{$record}
+<hr/>
+{/if}
 <table class="citation">
   {foreach from=$details key='field' item='values'}
     <tr>
