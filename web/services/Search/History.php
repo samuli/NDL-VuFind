@@ -52,6 +52,12 @@ class History extends Action
         global $interface;
         global $user;
 
+        // Assign the ID of the last search so the user can return to it.
+        $interface->assign(
+            'lastsearch',
+            isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : 'perkele'
+        );
+
         $dateFormat = new VuFindDate();
         
         // In some contexts, we want to require a login before showing search

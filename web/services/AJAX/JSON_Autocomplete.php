@@ -83,6 +83,7 @@ class JSON_Autocomplete extends JSON
                 $_REQUEST = $params;
             }
         }
+        
         if ($autocomplete) {
             $this->output(
                 array_values(AutocompleteFactory::getSuggestions()), JSON::STATUS_OK

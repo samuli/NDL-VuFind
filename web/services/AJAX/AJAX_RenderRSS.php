@@ -75,6 +75,7 @@ class AJAX_RenderRSS extends Action
         /*
          * various configuration settings
          */
+        $rssFeed['id'] = $id;
         $rssFeed['type'] = $feed['type'];
         $rssFeed['numberOfItems'] = isset($feed['items']) ? $feed['items'] : 0;
         $rssFeed['itemsPerPage'] = isset($feed['itemsPerPage']) ? $feed['itemsPerPage'] : 4;
@@ -212,11 +213,9 @@ class AJAX_RenderRSS extends Action
             }
             
             /* calculate the scroll speed for the carousel */
-            if($rssFeed['type'] == 'carousel') {
                 $rssFeed['scrollSpeed'] = 1000 *
                                           ($rssFeed['scrolledItems'] /
                                           $rssFeed['itemsPerPage']);
-            }
         
             $interface->assign('rssFeed', $rssFeed);
             $interface->display('Search/rss.tpl');

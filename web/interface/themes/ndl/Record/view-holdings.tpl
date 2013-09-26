@@ -21,7 +21,7 @@
 </div>
 {if $locationServiceModal}
     <div id="modalLocationService" title="{translate text="Location Service"}">
-        <a id="locationServiceDirectLink" href="" target="_blank" class="right">{translate text="Open in a New Window"}</a>
+        <a id="locationServiceDirectLink" href="" target="_blank" class="">{translate text="Open in a New Window"}</a>
         <iframe id="locationServiceFrame" src=""></iframe>
     </div>
     {js filename="locationservice.js"}

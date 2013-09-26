@@ -505,3 +505,175 @@ function toggleKeepFiltersOption(mode) {
 }
 })(jQuery);
 
+function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
+    this.currentCarousel = $('#NDLCarousel-' + carouselId);
+    this.carouselParent = this.currentCarousel.parent();
+
+    this.carouselHeight, this.carouselWidth;
+    
+    this.carouselId = carouselId;
+    this.itemsPerPage = itemsPerPage;
+    this.scrolledItems = scrolledItems;
+    this.scrollSpeed = scrollSpeed;
+
+    this.horizontalPadding = 2 * parseInt(this.currentCarousel.children().first().css('margin-right'), 10);
+
+    var self = this;
+
+    this.render = function() {
+
+        self.currentCarousel.trigger('destroy');
+
+        self.carouselWidth = self.currentCarousel.parent().width();
+        this.itemWidth = (self.carouselWidth - (self.itemsPerPage * self.horizontalPadding)) / self.itemsPerPage;
+        self.carouselHeight = 1.36 * this.itemWidth;
+
+        self.currentCarousel.carouFredSel({
+            responsive: true,
+            // TODO: implement direction
+            //direction:{/literal}'{$rssFeed.direction}'{literal},
+            auto: 8000,
+            width: "100%",
+            items: self.itemsPerPage,
+            height: self.carouselHeight,
+            prev: '#NDLCarouselNavi-' + self.carouselId + ' .prev',
+            next: '#NDLCarouselNavi-' + self.carouselId + ' .next',
+            swipe: {
+                onTouch: false,
+                onMouse: false
+            },
+            scroll: {
+              items: self.scrolledItems,
+              duration: self.scrollSpeed,
+              fx: "directscroll",
+              pauseOnHover: true
+            },
+            onCreate: function(data) {
+
+                this.containerWidth = self.currentCarousel.children().first().width();
+                this.containerHeight = 1.36 * this.containerWidth;
+                this.containerRatio = this.containerWidth / this.containerHeight;
+
+                $('#NDLCarouselNavi-' + self.carouselId + ' li').css({
+                    'top'         : -(this.containerHeight / 2) - $('#NDLCarouselNavi-' + self.carouselId + ' .prev').height() / 2
+                });
+
+                self.currentCarousel.css({
+                    'height'         : self.carouselHeight
+                });
+                self.currentCarousel.parent().css({
+                    'height'         : self.carouselHeight
+                });
+                self.currentCarousel.children('li').css({
+                    'height'         : self.carouselHeight,
+                    'line-height' : self.carouselHeight + 'px'
+                });
+                
+                var currentContainer = this;
+
+                self.currentCarousel.filter('.includeDescription').find('img').each(function(){
+                    $(this).imagesLoaded(function() {
+                        $(this).css({
+                            'height'      : '',
+                            'width'       : '',
+                            'visibility'  : 'visible'
+                        });
+                        var imgWidth = $(this).width();
+                        var imgHeight = $(this).height();
+
+                        var imgRatio = imgWidth / imgHeight;
+                        var newWidth = 0;
+                        var newHeight = 0;
+
+                        if(currentContainer.containerRatio < imgRatio) {
+                            newWidth = currentContainer.containerHeight * imgRatio;
+                            newHeight = currentContainer.containerHeight;
+                        } else {
+                            newWidth = currentContainer.containerWidth;
+                            newHeight = currentContainer.containerWidth / imgRatio;
+                        }
+
+                        var verticalPosition = (newHeight - currentContainer.containerHeight) / 2;
+                        var horizontalPosition = (newWidth - currentContainer.containerWidth) / 2;
+
+                        $(this).css({
+                            'height'      : newHeight,
+                            'width'       : newWidth,
+                            'position'    : 'absolute',
+                            'left'        : - horizontalPosition,
+                            'top'         : - verticalPosition,
+                            //'display'     : 'none',
+                            'visibility'  : 'visible'
+                        });
+                    });
+                });
+
+                // Set title and text position
+                self.currentCarousel.find('h4').each(function() {
+                    var myHeight = $(this).find('a').height() + 12; // 6px + 6px padding
+                    $(this).siblings('p').css('top', myHeight);
+                });
+
+                self.currentCarousel.css(
+                    "visibility",
+                    "visible"
+                );
+            }
+        });
+
+
+    };
+
+    this.render();
+
+    // Make individual pick-ups clickable
+    this.currentCarousel.children('li').click(function() {
+                var href = $(this).find('a').attr('href');
+                window.location.href = href;
+    });
+
+    this.currentCarousel.filter('.includeDescription').children('li').mouseenter(function() {
+        var headers = $(this).find('h4');
+        var paragraphs = $(this).find('p');
+        var h4Height = headers.first().height() + 12;
+        headers.stop().animate({
+            top: 0
+         }, 50, function() {
+            paragraphs.stop(true,true).delay(50).fadeIn(200);
+         });
+
+    });
+
+    this.currentCarousel.filter('.includeDescription').children('li').mouseleave(function() {
+        var headers = $(this).children('h4');
+        var paragraphs = $(this).children('p');
+        var h4Height = $(this).find('a').height() + 12;
+        headers.stop().animate({
+            top: self.carouselHeight - h4Height
+        }, 100, function() {  // callback function necessary to remove css top property
+            $(this).css('top', '')
+        });
+        paragraphs.stop(true, true).fadeOut(200);
+
+    });
+
+    // Function to refresh carousel when layout changes
+    $(window).resize(function() {
+        delay(function(){
+            if(self.currentCarousel.parent().width() != self.carouselWidth) {
+                self.render();
+            }
+        }, 250);
+    });
+
+    // Delay function to execute renderCarousel only with the last call during resize
+    var delay = (function(){
+      var timer = 0;
+      return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+
+
+}

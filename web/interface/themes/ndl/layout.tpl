@@ -101,7 +101,9 @@
     {js filename="jquery.clearsearch.js"}
     {js filename="jquery.collapse.js"}
     {js filename="jquery.dynatree-1.2.2-mod.js"}
-    
+    {if $ratings}
+    {js filename="raty/jquery.raty.min.js"}
+    {/if}
     {* Load custom javascript functions *}
     {js filename="custom.js"}
 

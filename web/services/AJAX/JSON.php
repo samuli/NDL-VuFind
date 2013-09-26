@@ -549,6 +549,24 @@ class JSON extends Action
 
         return $this->output(translate('Done'), JSON::STATUS_OK);
     }
+    
+    /**
+     * Report comment inappropriate.
+     *
+     * @return void
+     * @access public
+     */
+    public function inappropriateComment()
+    {
+        include_once 'services/Record/UserComments.php';
+        
+        if (!UserComments::inappropriateComment()) {
+            return $this->output(
+                translate('inappropriate_comment_error_save'), JSON::STATUS_ERROR
+            );
+        }
+        return $this->output(translate('Done'), JSON::STATUS_OK);
+    }
 
     /**
      * Get list of comments for a record as HTML.
@@ -564,7 +582,7 @@ class JSON extends Action
 
         $interface->assign('id', $_GET['id']);
         UserComments::assignComments();
-        $html = $interface->fetch('Record/view-comments-list.tpl');
+        $html = $interface->fetch('Record/view-comments.tpl');
         return $this->output($html, JSON::STATUS_OK);
     }
 

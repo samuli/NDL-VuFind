@@ -3,7 +3,7 @@
   {if $img_count > 1}
     <div class="imagelinks">
     {foreach from=$summImages item=desc name=imgLoop}
-      <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" />
+      <a rel="{$summId|escape:"url"}" onclick="launchFancybox(this); return false;" href="{$url}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" />
       {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
       </a>
     {/foreach}
@@ -14,7 +14,7 @@
   </div>
   <div class="gridContent">
     <div class="gridTitleBox" >
-      <a class="gridTitle" href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}" id="thumbnail_link_{$summId|escape:"url"}" >
+      <a class="gridTitle" href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}">
       {if !$summTitle}{translate text='Title not available'}{elseif !empty($summHighlightedTitle)}{$summHighlightedTitle|truncate:80:"..."|highlight}{else}{$summTitle|truncate:80:"..."|escape}{/if}
       </a>
       <div class="gridPublished">
@@ -33,7 +33,7 @@
   
     <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
     {if $summThumb}
-      <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" id="thumbnail_{$summId|escape:"url"}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
+      <div class="resultImage"><a onclick="launchFancybox(this); return false;" href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" rel="{$summId|escape:"url"}" id="thumbnail_link_{$summId|escape:"url"}"><img src="{$summThumb|escape}" id="thumbnail_{$summId|escape:"url"}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
     {/if}
   </div> 
 </div>

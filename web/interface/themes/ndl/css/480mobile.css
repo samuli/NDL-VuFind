@@ -358,7 +358,11 @@
     }
     
     .narrowList.navmenu.year dt {
-        width: 450px;
+        width: 450px !important;
+        margin-left: 0 !important;
+    }
+    .sidegroup dl.year.collapsible.timeline.open.collapsed dt {
+        background-position: 102.8% 46% !important;
     }
     
     /* Advanced search */
@@ -499,8 +503,47 @@
     }
     #dyntabnav.ui-tabs .ui-tabs-nav li {
        border-bottom:3px solid #B3E3E9 !important;
-       
     }
+  .holdingsContainerHeading .locationLink {
+        display:none;
+    }
+    .holdingsContainerHeading .location {
+        width:48%;
+    }
+    .holdingsContainerHeading .holdingDetails {
+        width:52%;
+    }
+    .holdingsContainerHeading .availability {
+        width: 50%;
+        word-wrap: break-word;
+    }
+    .holdingsContainerHeading .returnDate {
+        padding-left: 2%;
+        width: 48%;
+        word-wrap: break-word;
+    }
+
+    .holdingsContainerHolding.active .mobileLocation {
+        display:table-row;
+    }
+
+    table.holdingsContainerHolding {
+        line-height:14px;
+    }
+
+    table.holdingsContainerHolding th {
+        width: 25%;
+    }
+    table.holdingsContainerHolding td.copyNumber {
+        width: 20% !important;
+    }
+
+    table.holdingsContainerHolding .checkedout,
+    table.holdingsContainerHolding .available {
+        display: inline-block;
+        width: 43%;
+    }
+
     /* Footer */
     
     #footer {
