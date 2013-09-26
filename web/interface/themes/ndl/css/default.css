@@ -3867,6 +3867,10 @@ table.datagrid td {
 
 }
 
+tr.holdingsContainerHeading {
+    cursor:pointer;
+}
+
 #dyntabnav .holdingsContainerHeading.active {
     border-bottom:none;
 }
