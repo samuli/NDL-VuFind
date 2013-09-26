@@ -183,6 +183,28 @@ a.clear_input {
     width: 18px;
 }
 
+/* Grid view & List view */
+.viewButtons .view-list {
+    background:url("../images/icons16-24px-04.png") no-repeat;
+    background-position: -111px -4px;
+}
+
+.viewButtons .view-grid {
+    background:url("../images/icons16-24px-04.png") no-repeat;
+    background-position: -219px -4px;
+}
+
+.viewButtons .view-list.active, .viewButtons .view-list:hover {
+    background:url("../images/icons16-24px-04.png") no-repeat;
+    background-position: -166px -4px;
+}
+.viewButtons .view-grid.active, .viewButtons .view-grid:hover {
+    background:url("../images/icons16-24px-04.png") no-repeat;
+    background-position: -272px -4px;
+}
+
+
+
 .breadcrumbinner span.iconlabel.formatdocument, 
 .breadcrumbinner span.iconlabel.formatlegaldocument {
     background-image: url(../images/icons16-24px-01.png);
@@ -466,6 +488,11 @@ span.dynatree-expander:hover {
 .dynatree-statusnode-wait span.dynatree-icon {
     background-position: 1px 5px;
     background-image: url("../images/ajax_loading_small.gif");
+}
+
+.timelineview {
+	background-image: url(../images/icons16-24px-04.png);
+    background-position: -6px -10px;
 }
 
 /* Main: Single record view */
