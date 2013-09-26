@@ -5,7 +5,7 @@
     <div class="posted">
       {if $comment->rating && $ratings}<div id="raty_{$comment->id}" class="starRatingReadOnly" data-score="{$comment->rating}"></div>{/if}
        <div class="commentDetails">
-           <strong>{if $comment->fullname}{$comment->fullname|escape:"html"}{else}{$comment->username|strstr:'@':true|replace:':':''|escape:"html"}{/if}</strong>
+           <strong>{if $comment->fullname}{$comment->fullname|escape:"html"}{else}{$comment->email|strstr:'@':true|replace:':':''|escape:"html"}{/if}</strong>
       {$comment->created|escape:"html"}
       {if $comment->user_id == $user->id}
         <a href="{$url}/Record/{$id|escape:"url"}/UserComments?edit={$comment->id}" id="recordCommentEdit{$comment->id|escape}" class="editRecordComment">{translate text='Edit'}</a>

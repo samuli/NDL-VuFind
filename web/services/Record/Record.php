@@ -189,7 +189,7 @@ class Record extends Action
         
         if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
             // Get number of comments for this record
-            require_once 'services/MyResearch/lib/Comments.php';
+            include_once 'services/MyResearch/lib/Comments.php';
             $comments = new Comments();
             $commentCount = $comments->getCommentCount($_REQUEST['id']);    
             $interface->assign(compact('commentCount'));
