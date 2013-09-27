@@ -61,6 +61,8 @@ class Comments extends DB_DataObject
     /**
      * Get a list of all comments associated with this record.
      *
+     * @param string $recordId Record ID
+     *
      * @return array
      * @access public
      */
@@ -68,7 +70,7 @@ class Comments extends DB_DataObject
     {
         $recordId = mysql_real_escape_string($recordId);        
         $sql = "SELECT comments.*, user.firstname || user.lastname as fullname, " .
-               "user.username " .
+               "user.email " .
                "FROM comments " . 
                "RIGHT OUTER JOIN user ON comments.user_id = user.id " . 
                "JOIN comments_record ON comments.id = comments_record.comment_id " . 
@@ -80,9 +82,13 @@ class Comments extends DB_DataObject
 
         $result = $this->query($sql);
         
+        $date = new VuFindDate();
         if ($this->N) {
             while ($this->fetch()) {
-                $commentList[] = clone($this);
+                $comment = clone($this);
+                $comment->created = $date->convertToDisplayDate('Y-m-d H:i:s', $comment->created) . ' ' . 
+                    $date->convertToDisplayTime('Y-m-d H:i:s', $comment->created);
+                $commentList[] = $comment;
             }
         }
 
@@ -91,6 +97,8 @@ class Comments extends DB_DataObject
     
     /**
      * Get average rating from ratings associated with this record.
+     *
+     * @param string $recordId Record ID
      *
      * @return array
      * @access public
@@ -113,6 +121,8 @@ class Comments extends DB_DataObject
     /**
      * Get number of comments on record.
      *
+     * @param string $recordId Record ID
+     *
      * @return int
      * @access public
      */
@@ -132,12 +142,14 @@ class Comments extends DB_DataObject
     /**
      * Add a link to a record.
      *
+     * @param string[] $recordIdArray Array of record IDs
+     *
      * @return boolean success
      * @access public
      */
     public function addLinks($recordIdArray)
     {
-        require_once 'services/MyResearch/lib/Comments_record.php';
+        include_once 'services/MyResearch/lib/Comments_record.php';
         foreach ($recordIdArray as $recordId) {
             $commentsRecord = new Comments_record();
             $commentsRecord->record_id = $recordId;

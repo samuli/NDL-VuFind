@@ -2670,24 +2670,10 @@ ul.recordSet .addToFavLink a {
     width:32px;
     height:32px;
     float:left;
-    margin-right:16px;
+    margin-right: 10px;
     border:2px solid transparent;
     margin-top:-2px;
 }
-.viewButtons .view-list {
-    background:url(../images/view_list.png) no-repeat;
-}
-
-.viewButtons .view-grid {
-    background:url(../images/view_grid.png) no-repeat;
-    width:33px;
-}
-
-.viewButtons a.active {
-    border: 2px solid #4C4C4C;
-    border-radius: 8px 8px 8px 8px;
-}
-
 
 /* page titles */
 .resultLinks,
@@ -3002,13 +2988,12 @@ div.dateVisHandle.visible {
     background:#4C4C4C;
 }
 .timelineview {
-  background: url("../images/timelineview.png") repeat scroll 0 0 transparent;
     display: inline-block;
     float: right;
-    height: 18px;
-    margin-right: 30px;
+    height: 19px;
+    margin-right: 32px;
     text-indent: -9999px;
-    width: 33px;
+    width: 35px;
 }
 
 .active .timelineview {
@@ -3867,6 +3852,10 @@ table.datagrid td {
 
 }
 
+tr.holdingsContainerHeading {
+    cursor:pointer;
+}
+
 #dyntabnav .holdingsContainerHeading.active {
     border-bottom:none;
 }
@@ -3881,6 +3870,15 @@ table.datagrid td {
     border-top:none;
 }
 
+.holdingsPlaceHold .holdPlace {
+    background-image:none;
+}
+.holdingsPlaceHold .holdPlace:before {
+    background-image:none;
+    width:0;
+    height:0;
+    padding:0;
+}
 
 table.holdingsContainerHolding td {
     display:none;
@@ -3999,10 +3997,15 @@ table.holdingsContainerHolding .mobileLocation td {
     border:none;
 }
 
-
-table.holdingsContainerHolding .checkedout {
+table.holdingsContainerHolding .checkedout,
+table.holdingsContainerHolding .available {
     display: inline-block;
     width: 132px;
+}
+
+table.holdingsContainerHolding .callSlipPlace {
+    padding:0;
+    font-weight:bold;
 }
 
 /* Comments */
@@ -4011,16 +4014,48 @@ ul.commentList {
     margin: 0 0 1em 0;
     list-style-type:none;
 }
+
+
 ul.commentList li {
-    background-color: #f2f2f2;
-    padding: 0.5em 1em 2em 1em;
-    margin-bottom:1em;
+    background-color: #EBF5F3;
+    border-radius: 10px 10px 10px 10px;
+    margin-bottom: 1em;
+    padding: 0 1em 2em;
+    border-radius: 10px 10px 10px 10px;
+    margin-bottom: 1em;
+    padding: 0 1em 2em;
 }
+
+#emptyListItem {
+	padding:1em;
+}
+#inappropriateForm label {
+    display: block;
+    font-weight: 500;
+    padding-bottom: 5px;
+}
+
+.recordAverageRating {
+    margin-top: 1em;
+}
+.ratingCount {
+	color: #757575;
+}
+#averageRating {
+    float: left;
+    margin-right: 5px;
+    position: relative;
+    top: 1px;
+}
+
 ul.commentList li div.posted {
-    color:#666;
-    padding-bottom: 1em;
-    width:100%;
+	border-bottom:2px solid #FFFFFF;
+    color: #666666;
+    display: inline-block;
+    height: 30px;
+    margin-bottom: 10px;
     text-align: right;
+    width: 100%;
 }
 form#commentRecord {
     padding-left: 1.5em;
@@ -5573,12 +5608,21 @@ form#feedbackForm label {
     height: 5%;
 }
 div.starRatingReadOnly {
-    display: inline;
+    display: inline-block;
     margin-right: 10px;
-    padding-top: 3px;
 }
+.starRatingReadOnly > img {
+    display: inline-block;
+    margin-top: 0;
+    position: relative;
+    top: 3px;
+}
+
 div#starRating {
-    display: inline;
+	display:inline;
+    display: inline-block;
+    position: relative;
+    top: 3px;
 }
 a.inappropriate {
     position: relative;

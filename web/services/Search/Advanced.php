@@ -141,6 +141,9 @@ class Advanced extends Action
         }
 
         // Send back the settings:
+        if ($from === '' || $to === '') {
+            return array('', '');
+        }
         $startDate = new DateTime("@$from");
         $endDate = new DateTime("@$to");
         if ($startDate->format('m') == 1 && $startDate->format('d') == 1 

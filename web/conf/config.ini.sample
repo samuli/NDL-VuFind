@@ -366,6 +366,8 @@ coverimages    = NLF,OpenLibrary
 coverwidth = 126
 coverheight = 126
 coverbackground = ffffff
+; How long cover images are cached locally in minutes. Default is one day
+;covercachetime = 1440
 
 ; This setting controls the image to display when no book cover is available.
 ; The path is relative to web subdirectory of the VuFind install directory:

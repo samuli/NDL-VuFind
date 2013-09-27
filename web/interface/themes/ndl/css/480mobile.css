@@ -538,7 +538,8 @@
         width: 20% !important;
     }
 
-    table.holdingsContainerHolding .checkedout {
+    table.holdingsContainerHolding .checkedout,
+    table.holdingsContainerHolding .available {
         display: inline-block;
         width: 43%;
     }

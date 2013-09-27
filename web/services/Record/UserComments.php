@@ -64,14 +64,14 @@ class UserComments extends Record
 
         // Process Inappropriate Comment
         if (isset($_GET['inappropriate'])) {
-                if (isset($_GET['lightbox'])) {
-                    $interface->assign('commentId', $_GET['inappropriate']);
-                    $interface->display('Record/report-inappropriate.tpl');
-                    exit();
-                } else {
-                    //TODO: non ajax functionality
-                    exit();
-                }
+            if (isset($_GET['lightbox'])) {
+                $interface->assign('commentId', $_GET['inappropriate']);
+                $interface->display('Record/report-inappropriate.tpl');
+                exit();
+            } else {
+                //TODO: non ajax functionality
+                exit();
+            }
         }
 
         if (isset($_REQUEST['comment'])) {
@@ -158,7 +158,7 @@ class UserComments extends Record
         }
         $commentInapp = new Comments_inappropriate();
         $commentInapp->comment_id = $_REQUEST['commentId'];
-        $commentInapp->user_id = isset($user) && is_object($user) ? $user->id : NULL;
+        $commentInapp->user_id = isset($user) && is_object($user) ? $user->id : null;
         $commentInapp->created = date('Y-m-d H:i:s');
         // TODO: strip tags just in case
         $commentInapp->reason = $_REQUEST['reason'];
@@ -185,7 +185,7 @@ class UserComments extends Record
         $interface->assign('commentList', $commentList);
         $reported = isset($_SESSION['reportedComments']) ? $_SESSION['reportedComments'] : array();
         $usersComments = array();
-        if(is_object($user)) {
+        if (is_object($user)) {
             $commentInapp = new Comments_inappropriate();
             $commentInapp->user_id = $user->id;
             $commentInapp->find();
@@ -201,7 +201,7 @@ class UserComments extends Record
             }
             
         }
-        require_once 'RecordDrivers/Factory.php';
+        include_once 'RecordDrivers/Factory.php';
         
         $db = ConnectionManager::connectToIndex();
         if (!($record = $db->getRecord($_REQUEST['id']))) {
@@ -250,12 +250,12 @@ class UserComments extends Record
             } else {
                   $idArray = $result['response']['docs'][0]["local_ids_str_mv"];
             }
-            if ($_REQUEST['type']==1) {
+            if ($_REQUEST['type'] == 1) {
                 $commentsByUser = new Comments();
                 $commentList = $commentsByUser->getComments($_REQUEST['recordId']);
                 foreach ($commentList as $comment) {
                     if ($comment->user_id == $user->id) {
-                        //return false;
+                        return false;
                     }
                 }
                 
@@ -263,7 +263,7 @@ class UserComments extends Record
             $comments = new Comments();
             $comments->user_id = $user->id;
             $rating = (float)$_REQUEST['rating'];
-            $comments->rating = ($rating > 0 && $rating <= 5) ? $rating : NULL;
+            $comments->rating = ($rating > 0 && $rating <= 5) ? $rating : null;
             $comments->comment = $_REQUEST['comment'];
             $comments->type = $_REQUEST['type'];
             $comments->created = date('Y-m-d H:i:s');

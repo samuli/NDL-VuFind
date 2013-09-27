@@ -13,8 +13,16 @@ $(document).ready(function(){
         $('input[name="commentId"]').val(id);
         var comment = $('#comment' + id);
         comment.css('font-style', 'italic');
-        var commentText = comment.text();
         $('textarea#comment').val(comment.text());
+        
+        var rating = $('#raty_' + id);
+        if (rating.length) {
+            $('#starRating').raty('score', rating.attr('data-score'));
+            $('#formContainer').find("input[type='reset']").unbind('click').click(function() { $('#formContainer').hide(); });
+        } else {
+            $('#formContainer').find("input[type='reset']").unbind('click').click(function() { $("#commentRecord input[name='commentId']").val(0); });
+        }
+        
         $('html, body').animate({
             scrollTop: $("#comment").offset().top
         }, 500);
