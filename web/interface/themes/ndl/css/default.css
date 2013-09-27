@@ -2244,6 +2244,18 @@ dl.narrowList a {
 .sidegroup dd a span:hover {
     text-decoration:none;
 }
+.checkboxFilter {
+    padding: 1em 7px;
+}
+.checkboxFilter input {
+    float: left;
+}
+.checkboxFilter label {
+    display: block;
+    font-weight: normal;
+    margin-left: 2em;
+}
+
 .suggestedTopics {
     float: left;
 }
