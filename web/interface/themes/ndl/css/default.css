@@ -2629,7 +2629,8 @@ ul.recordSet .addToFavLink a {
     display: block;
     float: left;
     height: 20px;
-    width: 23px;
+    margin-top: -1px;
+    width: 25px;
 }
 
 .iconlabel {
