@@ -2624,10 +2624,18 @@ ul.recordSet .addToFavLink a {
 
 /* Resource types (subject to change!) */
 
-.iconlabel { /* Common for all */
-    padding:2px .5em .5em 25px;
+.iconlabel:before {
+    content: "";
+    display: block;
+    float: left;
+    height: 20px;
+    width: 23px;
+}
+
+.iconlabel {
     margin-right:1em;
 }
+
 .icon { /* If using icon only */
     padding: 1px 2px 1px 20px;
     margin-right: 2px;
