@@ -517,8 +517,35 @@ class UInterface extends Smarty
         }
         return $tpl;
     }
-    
+        
     // @codingStandardsIgnoreStart
+
+    /**
+     * Convert theme file name to an absolute path
+     * 
+     * @param string $resource_name File name
+     * 
+     * @return string Absolute path
+     */
+    protected function convertToAbsolutePath($resource_name)
+    {
+        foreach (is_array($this->template_dir) ? $this->template_dir : array($this->template_dir) as $_curr_path) {
+            $_fullpath = $_curr_path . DIRECTORY_SEPARATOR . $resource_name;
+            if (file_exists($_fullpath) && is_file($_fullpath)) {
+                $resource_name = $_fullpath;
+                break;
+            }
+            // didn't find the file, try include_path
+            $_params = array('file_path' => $_fullpath);
+            require_once(SMARTY_CORE_DIR . 'core.get_include_path.php');
+            if(smarty_core_get_include_path($_params, $this)) {
+                $resource_name = $_params['new_file_path'];
+                break;
+            }
+        }
+        return $resource_name;
+    }
+    
     /**
      * called for included templates
      *
@@ -532,6 +559,8 @@ class UInterface extends Smarty
     {
         if (isset($params['smarty_include_tpl_file'])) {
             $params['smarty_include_tpl_file'] = $this->getLocalOverride($params['smarty_include_tpl_file'], false);
+            // Change resource_name to absolute path so that Smarty caching must take into account the theme directory
+            $params['smarty_include_tpl_file'] = $this->convertToAbsolutePath($params['smarty_include_tpl_file']);
         }
         return parent::_smarty_include($params);
     }
@@ -547,6 +576,10 @@ class UInterface extends Smarty
     function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
         $resource_name = $this->getLocalOverride($resource_name, false);
+        
+        // Change resource_name to absolute path so that Smarty caching must take into account the theme directory
+        $resource_name = $this->convertToAbsolutePath($resource_name);
+        
         return parent::fetch($resource_name, $cache_id, $compile_id, $display);
     }
     
