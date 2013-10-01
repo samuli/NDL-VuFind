@@ -55,15 +55,14 @@ ConnectionManager::connectToDatabase();
 $search = new SearchEntry();
 $expired = $search->getExpiredSearches($daysOld);
 if (empty($expired)) {
-    die("No expired searches to delete.\n");
+    die(date('Y-m-d H:i:s') . " No expired searches to delete.\n");
 }
-$count = 0;
 while (!empty($expired)) {
-    $count += count($expired);
+    $count = count($expired);
     foreach ($expired as $oldSearch) {
         $oldSearch->delete();
     }
-    echo "{$count} expired searches deleted.\n";
+    echo date('Y-m-d H:i:s') . " {$count} expired searches deleted.\n";
     $expired = $search->getExpiredSearches($daysOld);
 }
 ?>
