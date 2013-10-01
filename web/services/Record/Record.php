@@ -144,15 +144,22 @@ class Record extends Action
         $defaultTab = isset($configArray['Site']['defaultRecordTab']) ?
             $configArray['Site']['defaultRecordTab'] : 'Holdings';
 
-        if (isset($configArray['Site']['hideHoldingsTabWhenEmpty'])
-            && $configArray['Site']['hideHoldingsTabWhenEmpty']
-        ) {
-            $showHoldingsTab = $this->recordDriver->hasHoldings();
-            $interface->assign('hasHoldings', $showHoldingsTab);
-            $defaultTab =  (!$showHoldingsTab && $defaultTab == "Holdings") ?
-                "Description" : $defaultTab;
+        // Don't let bots crawl holdings
+        if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+            $this->hasHoldings = false;
+            $interface->assign('hasHoldings', false);
+            $defaultTab = 'Description';
         } else {
-            $interface->assign('hasHoldings', true);
+            if (isset($configArray['Site']['hideHoldingsTabWhenEmpty'])
+                && $configArray['Site']['hideHoldingsTabWhenEmpty']
+            ) {
+                $showHoldingsTab = $this->recordDriver->hasHoldings();
+                $interface->assign('hasHoldings', $showHoldingsTab);
+                $defaultTab =  (!$showHoldingsTab && $defaultTab == "Holdings") ?
+                    "Description" : $defaultTab;
+            } else {
+                $interface->assign('hasHoldings', true);
+            }
         }
 
         $tab = (isset($_GET['action'])) ? $_GET['action'] : $defaultTab;
