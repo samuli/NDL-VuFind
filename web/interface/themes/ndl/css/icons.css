@@ -7,17 +7,6 @@
     background-position:0 0;
 }
 
-
-/*** Elements with 32px icons ***/
-
-.SOMETHING {
-    background-image: url(../images/icons32px.png);
-    background-repeat: no-repeat;
-    background-position:0 0;
-}
-
-/*** Elements with 32px icons ***/
-
 .resultNoImage {
     background-repeat: no-repeat;
     background-position:0 0;
@@ -59,77 +48,77 @@
     float:right;
     background:none;
 }
-/* Front page: search suggestion icons */
+/* Content type icons */
 
-.iconlabel.formatdocument, 
-.iconlabel.formatlegaldocument {
+.iconlabel.formatdocument:before, 
+.iconlabel.formatlegaldocument:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -385px;
 }
-.iconlabel.formatarticle, .iconlabel.formatnewspaperarticle {
+.iconlabel.formatarticle:before, .iconlabel.formatnewspaperarticle:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -187px -384px
 }
-.iconlabel.formatreferenceentry {
+.iconlabel.formatreferenceentry:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -777px;
 }
-.iconlabel.formatbookchapter {
+.iconlabel.formatbookchapter:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -187px -47px;
 }
-.iconlabel.formatphysicalobject {
+.iconlabel.formatphysicalobject:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -218px;
 }
-.iconlabel.formatmap {
+.iconlabel.formatmap:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -161px;
 }
-.iconlabel.formatbook {
+.iconlabel.formatbook:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -47px;
 }
-.iconlabel.formatimage {
+.iconlabel.formatimage:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -495px;
 }
-.iconlabel.formatjournal {
+.iconlabel.formatjournal:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -104px;
 }
-.iconlabel.formatmusicalscore,
-.iconlabel.formatscore  {
+.iconlabel.formatmusicalscore:before,
+.iconlabel.formatscore:before  {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -330px;
 }
-.iconlabel.formatthesis,
-.iconlabel.formatdissertation {
+.iconlabel.formatthesis:before,
+.iconlabel.formatdissertation:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -720px;
 }
-.iconlabel.formatworkofart {
+.iconlabel.formatworkofart:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -663px;
 }
- .iconlabel.formatdatabase {
+ .iconlabel.formatdatabase:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -275px;
 }
-.iconlabel.formatvideo, 
-.iconlabel.formataudiovideo,
-.iconlabel.formatvideo {
+.iconlabel.formatvideo:before, 
+.iconlabel.formataudiovideo:before,
+.iconlabel.formatvideo:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -606px;
 }
-.iconlabel.formatsound,
-.iconlabel.formatsoundrecording,
-.iconlabel.formataudio {
+.iconlabel.formatsound:before,
+.iconlabel.formatsoundrecording:before,
+.iconlabel.formataudio:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -551px;
 }
-.iconlabel.formatother,
-.iconlabel.formatwebsite
+.iconlabel.formatother:before,
+.iconlabel.formatwebsite:before
 {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -777px;
@@ -177,10 +166,11 @@ a.clear_input {
     width: 17px;
 }
 .breadcrumbinner span.iconlabel {
+    background: none;
     margin-right: 7px;
     margin-top: 5px;
     padding: 0;
-    width: 18px;
+    width: 17px;
 }
 
 /* Grid view & List view */
@@ -205,75 +195,75 @@ a.clear_input {
 
 
 
-.breadcrumbinner span.iconlabel.formatdocument, 
-.breadcrumbinner span.iconlabel.formatlegaldocument {
+.breadcrumbinner span.iconlabel.formatdocument:before, 
+.breadcrumbinner span.iconlabel.formatlegaldocument:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -677px -385px;
 }
-.breadcrumbinner span.iconlabel.formatarticle, .breadcrumbinner span.iconlabel.formatnewspaperarticle {
+.breadcrumbinner span.iconlabel.formatarticle:before, .breadcrumbinner span.iconlabel.formatnewspaperarticle:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -820px -384px
 }
-.breadcrumbinner span.iconlabel.formatreferenceentry {
+.breadcrumbinner span.iconlabel.formatreferenceentry:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -679px -777px;
 }
-.breadcrumbinner span.iconlabel.formatbookchapter {
+.breadcrumbinner span.iconlabel.formatbookchapter:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -820px -47px;
 }
-.breadcrumbinner span.iconlabel.formatphysicalobject {
+.breadcrumbinner span.iconlabel.formatphysicalobject:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -678px -218px;
 }
-.breadcrumbinner span.iconlabel.formatmap {
+.breadcrumbinner span.iconlabel.formatmap:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -679px -161px;
 }
-.breadcrumbinner span.iconlabel.formatbook {
+.breadcrumbinner span.iconlabel.formatbook:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -678px -47px;
 }
-.breadcrumbinner span.iconlabel.formatimage {
+.breadcrumbinner span.iconlabel.formatimage:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -679px -495px;
 }
-.breadcrumbinner span.iconlabel.formatjournal {
+.breadcrumbinner span.iconlabel.formatjournal:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -679px -104px;
 }
-.breadcrumbinner span.iconlabel.formatmusicalscore,
-.breadcrumbinner span.iconlabel.formatscore  {
+.breadcrumbinner span.iconlabel.formatmusicalscore:before,
+.breadcrumbinner span.iconlabel.formatscore:before  {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -679px -330px;
 }
-.breadcrumbinner span.iconlabel.formatthesis,
-.breadcrumbinner span.iconlabel.formatdissertation {
+.breadcrumbinner span.iconlabel.formatthesis:before,
+.breadcrumbinner span.iconlabel.formatdissertation:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -677px -720px;
 }
-.breadcrumbinner span.iconlabel.formatworkofart {
+.breadcrumbinner span.iconlabel.formatworkofart:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -678px -663px;
 }
- .breadcrumbinner span.iconlabel.formatdatabase {
+ .breadcrumbinner span.iconlabel.formatdatabase:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -679px -275px;
 }
-.breadcrumbinner span.iconlabel.formatvideo, 
-.breadcrumbinner span.iconlabel.formataudiovideo,
-.breadcrumbinner span.iconlabel.formatvideo {
+.breadcrumbinner span.iconlabel.formatvideo:before, 
+.breadcrumbinner span.iconlabel.formataudiovideo:before,
+.breadcrumbinner span.iconlabel.formatvideo:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -678px -606px;
 }
-.breadcrumbinner span.iconlabel.formatsound,
-.breadcrumbinner span.iconlabel.formatsoundrecording,
-.breadcrumbinner span.iconlabel.formataudio {
+.breadcrumbinner span.iconlabel.formatsound:before,
+.breadcrumbinner span.iconlabel.formatsoundrecording:before,
+.breadcrumbinner span.iconlabel.formataudio:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -678px -551px;
 }
-.breadcrumbinner span.iconlabel.formatother,
-.breadcrumbinner span.iconlabel.formatwebsite
+.breadcrumbinner span.iconlabel.formatother:before,
+.breadcrumbinner span.iconlabel.formatwebsite:before
 {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -679px -777px;
@@ -718,58 +708,60 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 
 /* Myresearch */
 
-/* Front page: search suggestion icons */
+.myResearch .iconlabel:before {
+    margin-top:1px;
+}
 
-.myResearch .formatdocument {
+.myResearch .formatdocument:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -385px;
 }
-.myResearch .formatphysicalobject {
+.myResearch .formatphysicalobject:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -218px;
 }
- .myResearch .formatmap {
+ .myResearch .formatmap:before {
      background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -161px;
 }
-.myResearch .formatbook {
+.myResearch .formatbook:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -48px;
 }
-.myResearch .formatimage {
+.myResearch .formatimage:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -495px;
 }
-.myResearch .formatjournal {
+.myResearch .formatjournal:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -104px;
 }
- .myResearch .formatmusicalscore {
+ .myResearch .formatmusicalscore:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -330px;
 }
-.myResearch .formatthesis {
+.myResearch .formatthesis:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -720px;
 }
-.myResearch .formatworkofart {
+.myResearch .formatworkofart:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -663px;
 }
- .myResearch .formatdatabase {
+ .myResearch .formatdatabase:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -275px;
 }
-.myResearch .formatvideo {
+.myResearch .formatvideo:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -606px;
 }
-.myResearch .formatsound,
-.myResearch .formatsoundrecording {
+.myResearch .formatsound:before,
+.myResearch .formatsoundrecording:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -551px;
 }
-.myResearch .formatother {
+.myResearch .formatother:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -777px;
 }

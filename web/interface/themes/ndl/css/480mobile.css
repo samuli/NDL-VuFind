@@ -252,6 +252,10 @@
         display:none;
     }
     
+    #introduction .iconlabel:before {
+        margin-top: 5px;
+    }
+    
     /* Search results */
     
     #resultList.grid_17 {
@@ -511,7 +515,6 @@
         width:52%;
     }
     .holdingsContainerHeading .availability {
-        width: 50%;
         word-wrap: break-word;
     }
     .holdingsContainerHeading .returnDate {
@@ -538,7 +541,6 @@
     table.holdingsContainerHolding .checkedout,
     table.holdingsContainerHolding .available {
         display: inline-block;
-        width: 43%;
     }
 
     /* Footer */

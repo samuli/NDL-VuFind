@@ -77,12 +77,6 @@
     margin:0;
     padding-left:0;
 }
-#introduction.section .iconlabel {
-    display: inline-block;
-    line-height: 18px;
-    min-height: 19px;
-    padding: 0 0 0 25px;
-}
 
 ul.documentTypes li {
     float: left;
