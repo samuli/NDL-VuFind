@@ -51,6 +51,12 @@ class Holdings extends Record
         global $interface;
         global $configArray;
 
+        // Don't let bots crawl holdings
+        if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+            http_response_code(403);
+            die("Crawling of this page not allowed");
+        }
+        
         if (!$this->hasHoldings 
             && !(isset($configArray['Site']['ajaxRecordTabs']) && $configArray['Site']['ajaxRecordTabs'])
         ) {
