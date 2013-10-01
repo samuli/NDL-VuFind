@@ -189,7 +189,9 @@ function initSidebarFacets() {
             parentDl.toggleClass('open collapsed');
             if (!parentDl.hasClass('collapsed')) {
                 parentDl.removeClass('timeline');
-                moveMainYearForm(parentDl);
+                if (parentDl.hasClass('year')) {
+                    moveMainYearForm(parentDl);
+                }
             }
         }
         
