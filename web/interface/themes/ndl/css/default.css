@@ -3928,7 +3928,6 @@ tr.avail {
 
 .holdingsContainerHeading .availability {
     display:none;
-    width: 50%;
 }
 .holdingsContainerHeading .returnDate {
     display: none;
@@ -3996,6 +3995,9 @@ table.holdingsContainerHolding  tr.copyDetails td.copyTitle  {
 table.holdingsContainerHolding td.copyNumber {
     width:20% !important;
 }
+table.holdingsContainerHolding .statusExtra {
+    margin-left:15px;
+}
 .holdingsContainerHeading .holdingDetails  {
     width:30%;
 }
@@ -4021,7 +4023,6 @@ table.holdingsContainerHolding .mobileLocation td {
 table.holdingsContainerHolding .checkedout,
 table.holdingsContainerHolding .available {
     display: inline-block;
-    width: 132px;
 }
 
 table.holdingsContainerHolding .callSlipPlace {
