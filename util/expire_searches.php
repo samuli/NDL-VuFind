@@ -57,9 +57,13 @@ $expired = $search->getExpiredSearches($daysOld);
 if (empty($expired)) {
     die("No expired searches to delete.\n");
 }
-$count = count($expired);
-foreach ($expired as $oldSearch) {
-    $oldSearch->delete();
+$count = 0;
+while (!empty($expired)) {
+    $count += count($expired);
+    foreach ($expired as $oldSearch) {
+        $oldSearch->delete();
+    }
+    echo "{$count} expired searches deleted.\n";
+    $expired = $search->getExpiredSearches($daysOld);
 }
-echo "{$count} expired searches deleted.\n";
 ?>
