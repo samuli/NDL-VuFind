@@ -91,9 +91,13 @@ class Maintenance extends Admin
             if (empty($expired)) {
                 $interface->assign('status', "No expired searches to delete.");
             } else {
-                $count = count($expired);
-                foreach ($expired as $oldSearch) {
-                    $oldSearch->delete();
+                $count = 0;
+                while (!empty($expired)) {
+                    $count += count($expired);
+                    foreach ($expired as $oldSearch) {
+                        $oldSearch->delete();
+                    }
+                    $expired = $search->getExpiredSearches($daysOld);
                 }
                 $interface->assign('status', "{$count} expired searches deleted.");
             }
