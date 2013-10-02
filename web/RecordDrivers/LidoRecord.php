@@ -332,6 +332,28 @@ class LidoRecord extends IndexRecord
             $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
             $materials = isset($node->eventMaterialsTech->displayMaterialsTech) ? (string)$node->eventMaterialsTech->displayMaterialsTech : '';
             $place = isset($node->eventPlace->displayPlace) ? (string)$node->eventPlace->displayPlace : '';
+            $places = array();
+            if (!$place) {
+                if (isset($node->eventPlace->place->namePlaceSet)) {
+                    $eventPlace = array();
+                    foreach ($node->eventPlace->place->namePlaceSet as $namePlaceSet) {
+                        $eventPlace[] = isset($namePlaceSet) ? (string)$namePlaceSet->appellationValue : '';
+                    }
+                    $places[] = implode(', ', $eventPlace);
+                }
+                if (isset($node->eventPlace->place->partOfPlace)) {
+                    foreach ($node->eventPlace->place->partOfPlace as $partOfPlace) {
+                        $partOfPlaceName = array(); 
+                        while (isset($partOfPlace->namePlaceSet)):
+                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? (string)$partOfPlace->namePlaceSet->appellationValue : '';
+                            $partOfPlace = $partOfPlace->partOfPlace;
+                        endwhile;
+                        $places[] = implode(', ', $partOfPlaceName);
+                    }
+                }
+            } else {
+                $places[] = $place;    
+            }
             $actors = array();
             if (isset($node->eventActor->actorInRole)) {
                 foreach ($node->eventActor->actorInRole as $actor) {
@@ -344,7 +366,7 @@ class LidoRecord extends IndexRecord
             $culture = isset($node->culture->term) ? (string)$node->culture->term : '';
             $description = isset($node->eventDescriptionSet->descriptiveNoteValue) ? (string)$node->eventDescriptionSet->descriptiveNoteValue : '';
             $event = array('type' => $type, 'name' => $name, 'date' => $date, 'method' => $method, 'materials' => $materials,
-                'place' => $place, 'actors' => $actors, 'culture' => $culture, 'description' => $description);
+                'place' => $places, 'actors' => $actors, 'culture' => $culture, 'description' => $description);
             $events[$type][] = $event;
         }
         return $events;    
