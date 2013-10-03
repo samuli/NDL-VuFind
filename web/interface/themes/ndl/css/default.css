@@ -1127,8 +1127,16 @@ body > .ui-widget .button {
 label.invalid {
     color:#EA5200;
     padding-bottom:2px;
-    padding-left:22px;
     margin-left: 5px;
+}
+
+label.invalid:before {
+    content: "";
+    display: block;
+    float: left;
+    height: 18px;
+    margin-top: 2px;
+    width: 22px;
 }
 
 
@@ -3051,7 +3059,8 @@ div.dateVisHandle.visible {
     clear: both;
     float: right;
     margin-right: 10px;
-    margin-top:2px;
+    margin-top: 2px;
+    position: relative;
 }
 
 #sidePubDateVis {
@@ -5545,7 +5554,6 @@ form#feedbackForm input[type=submit] {
 form#feedbackForm textarea { 
     width: 470px;
     display: block;
-    margin-bottom: 0;
 }
 
 .module-Feedback p {

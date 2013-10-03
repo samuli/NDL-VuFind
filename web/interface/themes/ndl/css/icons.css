@@ -563,7 +563,7 @@ span.dynatree-expander:hover {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -41px -2098px;
 }
-label.invalid {
+label.invalid:before {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -997px 0px;
 }

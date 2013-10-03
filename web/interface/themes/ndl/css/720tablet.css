@@ -274,7 +274,6 @@
     table.holdingsContainerHolding .checkedout,
     table.holdingsContainerHolding .available {
         display: inline-block;
-        width: 98px;
     }
     
     /* Myresearch */
