@@ -108,7 +108,7 @@ class SearchEntry extends DB_DataObject
 
         // Find expired, unsaved searches:
         $sql = 'SELECT * FROM "search" WHERE "saved"=0 AND "created"<' .
-            "'{$expireDate}' LIMIT 1,10000";
+            "'{$expireDate}' LIMIT 0,10000";
         $s = new SearchEntry();
         $s->query($sql);
         $searches = array();
