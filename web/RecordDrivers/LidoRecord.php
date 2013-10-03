@@ -329,6 +329,27 @@ class LidoRecord extends IndexRecord
             $name = isset($node->eventName->appellationValue) ? (string)$node->eventName->appellationValue : '';
             $type = isset($node->eventType->term) ? mb_strtolower((string)$node->eventType->term) : '';
             $date = isset($node->eventDate->displayDate) ? (string)$node->eventDate->displayDate : '';
+            if (!$date && isset($node->eventDate->date)) {
+                $startDate = (string)$node->eventDate->date->earliestDate;
+                $endDate = (string)$node->eventDate->date->latestDate;
+                if (strlen($startDate) == 4 && strlen($endDate) == 4) {
+                    $date = "$startDate-$endDate";
+                } else {
+                    $startDateType = 'Y-m-d';
+                    $endDateType = 'Y-m-d';
+                    if (strlen($startDate) == 7) {
+                        $startDateType = 'Y-m';
+                    }                    
+                    if (strlen($endDate) == 7) {
+                        $endDateType = 'Y-m';
+                    }
+                    $vufindDate = new VuFindDate();
+                    $date = $vufindDate->convertToDisplayDate($startDateType, $startDate);
+                    if ($startDate != $endDate) {
+                        $date .= '-' . $vufindDate->convertToDisplayDate($endDateType, $endDate);
+                    }
+                }
+            }
             $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
             $materials = isset($node->eventMaterialsTech->displayMaterialsTech) ? (string)$node->eventMaterialsTech->displayMaterialsTech : '';
             $place = isset($node->eventPlace->displayPlace) ? (string)$node->eventPlace->displayPlace : '';
