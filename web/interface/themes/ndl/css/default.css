@@ -2252,16 +2252,30 @@ dl.narrowList a {
 .sidegroup dd a span:hover {
     text-decoration:none;
 }
+.checkboxFilter input {
+    visibility: hidden;
+    width: 30px;
+    height: 30px;
+    float: left;
+}
 .checkboxFilter {
     padding: 1em 7px;
-}
-.checkboxFilter input {
-    float: left;
+    position: relative;
 }
 .checkboxFilter label {
     display: block;
     font-weight: normal;
-    margin-left: 2em;
+}
+.checkboxFilter input + label:before {
+    position: absolute;
+    top: 50%;
+    margin-top: -13px;
+    display: block;
+    content: "";
+    float: left;
+    width: 30px;
+    height: 30px;
+    left: 10px;
 }
 
 .suggestedTopics {
