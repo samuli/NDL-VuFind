@@ -58,6 +58,9 @@ class DatabaseAuthentication implements Authentication
             $user->authMethod = 'Database';
             if (!$user->find(true)) {
                 $user = new PEAR_Error('authentication_error_invalid');
+            } else {
+                $user->last_login = date('Y-m-d H:i:s');
+                $user->update();
             }
         }
         return $user;

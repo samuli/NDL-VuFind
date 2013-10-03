@@ -261,6 +261,7 @@ class LDAPAuthentication implements Authentication
     protected function synchronizeVufindDatabaseWithLDAPEntries(
         $userIsInVufindDatabase, $user
     ) {
+        $user->last_login = date('Y-m-d H:i:s');
         if ($userIsInVufindDatabase) {
             $user->update();
         } else {

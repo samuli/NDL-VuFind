@@ -159,6 +159,7 @@ class ShibbolethAuthentication implements Authentication
      */
     private function _synchronizeVufindDatabase($userIsInVufindDatabase, $user)
     {
+        $user->last_login = date('Y-m-d H:i:s');
         if ($userIsInVufindDatabase) {
             $user->update();
         } else {

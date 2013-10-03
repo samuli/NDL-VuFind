@@ -87,13 +87,14 @@ class MozillaPersonaAuthentication implements Authentication
         if (!$userIsInVufindDatabase || !$user->email) {
             $user->email = $result->email;
         }
+        $user->last_login = date('Y-m-d H:i:s');
         if ($userIsInVufindDatabase) {
             $user->update();
         } else {
             $user->created = date('Y-m-d');
             $user->insert();
         }
-
+    
         return $user;
     }
 }

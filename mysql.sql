@@ -110,6 +110,7 @@ CREATE TABLE `user` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `language` varchar(30) NOT NULL DEFAULT '',
   `due_date_reminder` int(11) NOT NULL DEFAULT 0,
+  `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `due_date_reminder` (`due_date_reminder`)
