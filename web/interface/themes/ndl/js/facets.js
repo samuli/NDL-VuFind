@@ -1,7 +1,7 @@
 function enableDynatree(tree, facet, url, action)
 {
   var query = url.split('?')[1];
-  $(tree).dynatree({
+  tree.dynatree({
     isLazy: true,
     query: query,
     action: action,
@@ -15,7 +15,7 @@ function enableDynatree(tree, facet, url, action)
     }
   });
   var node = $(tree).dynatree("getRoot");
-  $('#facet_' + facet).find('.facet_loading').show();
+  tree.find('.facet_loading').show();
   getFacetList(node, query, action, facet, 0, '');
 }
 

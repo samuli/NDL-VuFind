@@ -87,6 +87,13 @@ class SideFacets implements RecommendationInterface
             $this->_hierarchicalFacets = $config['SpecialFacets']['hierarchical'];
         }        
         
+        // Get a list of fields that should be open on default.
+        if (isset($config['SpecialFacets']['default'])) {
+            $this->_defaultFacets = $config['SpecialFacets']['default'];
+        } else {
+            $this->_defaultFacets = array();
+        }
+        
         // Checkbox facets:
         $this->_checkboxFacets
             = ($checkboxSection && isset($config[$checkboxSection]))
@@ -141,6 +148,8 @@ class SideFacets implements RecommendationInterface
             $this->_processDateFacets($this->_searchObject->getFilters())
         );
         $interface->assign('hierarchicalFacets', $this->_hierarchicalFacets);
+        $interface->assign('defaultFacets', $this->_defaultFacets);
+        
         $interface->assign(
             'sideFacetSet', $this->_searchObject->getFacetList($this->_mainFacets)
         );

@@ -155,9 +155,7 @@ function initSidebarFacets() {
         if ($(this).find('img[alt="Selected"]').length > 0) {
                 $(this).addClass('active');
         }
-        
-        else if ($(this).find('dd').length == 0) $(this).addClass('collapsed open');
-        
+
         // Mark dl collapsible
         $(this).addClass('collapsible');
     });
@@ -168,38 +166,45 @@ function initSidebarFacets() {
         // Get the facet container
         var parentDl = $(this).parent('dl');
         
-        // Do nothing if facet selected
-        if (parentDl.find('img[alt="Selected"]').length > 0 || parentDl.hasClass('active')) return false;
-        
-        // Make sure this facet has options
-        if (parentDl.find('dd').length > 0) {
-            
-            if (!parentDl.hasClass('timeline')) {
-            // Slide them
-            parentDl.children('dd').slideToggle(100);
-            } else parentDl.children('dd').hide();
+        if (parentDl.hasClass('hierarcicalFacet')) {
+            var target = parentDl.next('div.dynatree-facet');  
+            var id = target.attr('id').substr('facet_'.length);
+            enableDynatree(target, id, '/vufind/Search/Results?lookfor=&type=AllFields&prefiltered=-&view=list', 'Results');
+            parentDl.removeClass('hierarcicalFacet');
+            parentDl.toggleClass('collapsed open');
+        } else {
+            // Do nothing if facet selected
+            if (parentDl.find('img[alt="Selected"]').length > 0 || parentDl.hasClass('active')) return false;
+
+            // Make sure this facet has options
+            if (parentDl.find('dd').length > 0) {
+                if (!parentDl.hasClass('timeline')) {
+                // Slide them
+                parentDl.children('dd').slideToggle(100);
+                } else parentDl.children('dd').hide();
+
+                // If user has clicked "more", hide the additional facets too
+                if (!parentDl.next('dl').hasClass('offscreen') && parentDl.hasClass('open')) {
+                    parentDl.next('dl[id*="Hidden"]').addClass('offscreen');
+                    parentDl.find('dd[id*="more"]').hide();
+                }
+
+                // Finally, mark this facet container opened
+                parentDl.toggleClass('open collapsed');
+                if (!parentDl.hasClass('collapsed')) {
+                    parentDl.removeClass('timeline');
+                    moveMainYearForm(parentDl);
+                }
+
+            }
+
+            // Extend to dynamic facets (without dd children)
+            else {
+                parentDl.nextAll('div.dynatree-facet:first').slideToggle(100);
+                parentDl.toggleClass('collapsed open');
+            }
          
-            // If user has clicked "more", hide the additional facets too
-            if (!parentDl.next('dl').hasClass('offscreen') && parentDl.hasClass('open')) {
-                parentDl.next('dl[id*="Hidden"]').addClass('offscreen');
-                parentDl.find('dd[id*="more"]').hide();
-            }
-                
-            // Finally, mark this facet container opened
-            parentDl.toggleClass('open collapsed');
-            if (!parentDl.hasClass('collapsed')) {
-                parentDl.removeClass('timeline');
-                moveMainYearForm(parentDl);
-            }
-        }
-        
-        // Extend to default facets (without dd children)
-        
-        else {
-            parentDl.nextUntil('div').last().next().slideToggle(100);
-            parentDl.toggleClass('open collapsed');
-        }
-        
+        }        
     });
     
     // Add clickable timeline icon function
