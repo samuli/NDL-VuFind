@@ -1121,6 +1121,8 @@ body > .ui-widget .button {
 }
 .keepFilters label {
     vertical-align: top;
+    font-weight:400;
+    letter-spacing:0.2px;
 }
 
 
@@ -1949,9 +1951,10 @@ li.result blockquote {
 .resultContentList {
     margin: 2px 0 1em 0;
 }
-.resultContentList a {
-    padding: 2px 0 0 5px;
-    display: inline-block;
+.resultContentList li {
+    color: #00A3B5;
+    list-style-type: disc;
+    margin-left: 15px;
 }
  .resultHierarchyLinks .hierarchyDesc {
     font-size: 0.75em;
@@ -2265,6 +2268,7 @@ dl.narrowList a {
 .checkboxFilter label {
     display: block;
     font-weight: normal;
+    letter-spacing: 0.2px;
 }
 .checkboxFilter input + label:before {
     position: absolute;
@@ -2834,6 +2838,8 @@ ul.recordSet .addToFavLink a {
 .resultOptionSort label,
 .resultOptionLimit label {
     padding: 10px 8px 12px 15px;
+    font-weight:400;
+    letter-spacing:0.2px;
 }
 .dropdown {
     float:left;
@@ -3836,6 +3842,7 @@ table.datagrid td {
     background:url(../images/internet_link.png) no-repeat;
     padding-left:30px;
     font-weight:bold;
+    margin-bottom:10px;
 }
 
 .holdingsPlaceHold a {
@@ -3846,7 +3853,13 @@ table.datagrid td {
     color:#666;
     border:none !important;
     padding:0 !important;
-    margin:0 0 5px 0 !important;
+    margin:0 0 2px 0 !important;
+}
+
+.holdingsOnline li{
+	color:#00a3b5;
+	list-style-type:disc;
+	margin-left:15px;
 }
 
 .holdingsPlaceHold {
@@ -5679,4 +5692,9 @@ div.commentDetails {
 div.commentDetails > * {
     margin-left: 10px;
     line-height: 30px;
+}
+
+.module-Content .main .menu .grid_6.fixed {
+position:fixed !important;
+top:10px;
 }

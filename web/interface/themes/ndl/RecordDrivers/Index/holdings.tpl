@@ -3,16 +3,19 @@
 <div class="holdingsHeader clearfix">
   <div class="holdingsHoldingURLs">
   {if !empty($holdingURLs) || $holdingsOpenURL}
-    <h5>{translate text="Internet"}</h5>
+    <h5>{translate text="available_online"}</h5>
+    <ul class="holdingsOnline">
     {if !empty($holdingURLs)}
       {foreach from=$holdingURLs item=desc key=currentUrl name=loop}
-        <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
+        <li><a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a></li>
       {/foreach}
     {/if}
+    
     {if $holdingsOpenURL}
       {include file="Search/openurl.tpl" openUrl=$holdingsOpenURL}
     {/if}
   {/if}
+    </ul>
   </div>
   <div class="holdingsHeaderLinks">
     {if $id|substr:0:7 == 'helmet.'}
