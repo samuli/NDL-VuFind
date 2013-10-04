@@ -80,6 +80,7 @@
       {css media="screen, projection" filename="chosen/chosen.css"}
     {/if}
     <!--[if lt IE 9]>{css media="screen, projection" filename="ie.css"}<![endif]-->
+    <!--[if !IE 8]><!-->{css media="screen, projection" filename="non-ie8.css"}<!--<![endif]-->
 
     {* Set global javascript variables *}
     <script type="text/javascript">

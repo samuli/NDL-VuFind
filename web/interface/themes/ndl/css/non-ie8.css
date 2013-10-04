@@ -1,0 +1,27 @@
+/* CSS for browsers other than IE 8 */
+
+.checkboxFilter input + label:before {
+    background-image: url(../images/icons16-24px-04.png);
+    background-position: -363px -9px;
+}
+.checkboxFilter input:checked + label:before {
+    background-position: -323px -9px;
+}
+.checkboxFilter input {
+    visibility: hidden;
+}
+.checkboxFilter {
+    position: relative;
+}
+
+.checkboxFilter input + label:before {
+    position: absolute;
+    top: 50%;
+    margin-top: -13px;
+    display: block;
+    content: "";
+    float: left;
+    width: 30px;
+    height: 30px;
+    left: 10px;
+}

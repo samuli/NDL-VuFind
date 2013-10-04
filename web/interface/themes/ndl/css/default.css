@@ -2103,6 +2103,18 @@ div.sidegroup h4 {
 div.sidegroup h4 {
     background: #00A3B5;
 }
+.checkboxFilter {
+    padding: 1em 7px;
+}
+.checkboxFilter input {
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+.checkboxFilter label {
+    display: block;
+    font-weight: normal;
+}
 .sidegroup dl.collapsible dt {
     background: url("../images/datevis_handle_open.png") no-repeat scroll 107% 50% #4C4C4C;
 }
@@ -2252,32 +2264,6 @@ dl.narrowList a {
 .sidegroup dd a span:hover {
     text-decoration:none;
 }
-.checkboxFilter input {
-    visibility: hidden;
-    width: 30px;
-    height: 30px;
-    float: left;
-}
-.checkboxFilter {
-    padding: 1em 7px;
-    position: relative;
-}
-.checkboxFilter label {
-    display: block;
-    font-weight: normal;
-}
-.checkboxFilter input + label:before {
-    position: absolute;
-    top: 50%;
-    margin-top: -13px;
-    display: block;
-    content: "";
-    float: left;
-    width: 30px;
-    height: 30px;
-    left: 10px;
-}
-
 .suggestedTopics {
     float: left;
 }
