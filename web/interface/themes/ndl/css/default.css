@@ -2256,14 +2256,13 @@ dl.narrowList a {
     text-decoration:none;
 }
 .checkboxFilter input {
-    visibility: hidden;
+	visibility: hidden;
     width: 30px;
     height: 30px;
     float: left;
 }
 .checkboxFilter {
     padding: 1em 7px;
-    position: relative;
 }
 .checkboxFilter label {
     display: block;
@@ -2281,7 +2280,6 @@ dl.narrowList a {
     height: 30px;
     left: 10px;
 }
-
 .suggestedTopics {
     float: left;
 }

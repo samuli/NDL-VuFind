@@ -48,13 +48,6 @@
     float:right;
     background:none;
 }
-.checkboxFilter input + label:before {
-    background-image: url(../images/icons16-24px-04.png);
-    background-position: -363px -9px;
-}
-.checkboxFilter input:checked + label:before {
-    background-position: -323px -9px;
-}
 
 /* Content type icons */
 
