@@ -8,18 +8,37 @@ $(document).ready(function() {
     initDropdowns();
 });
 
+
 function initDropdowns() {
-    
     // Hide dropdown when clicking outside
     $(document).bind('click', function(e) {
         $(".dropdown dd ul").hide();
+
+        // send menuClose events
+        $(".dropdown").each(function(ind,obj) {
+            if ($(this).data("menuOpen") === 1) {
+                $(obj).trigger("menuClose");
+            }
+            $(obj).data("menuOpen", 0);
+        });        
     });
     
     $(".dropdown dt a").bind('click', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
-        dropdown.find('dd ul').fadeToggle(100);
 
-        toggleKeepFiltersOption(true);
+        dropdown.find('dd ul').fadeToggle({duration:100});
+
+        // send menuOpen/menuClose events
+        var parent = $(this).parent().parent();
+        var menuOpen = parent.data("menuOpen");
+        
+        var event = !(menuOpen === 1) ? 'menuOpen' : 'menuClose';
+        if (typeof parent[event]) {
+            parent.trigger(event);
+        }
+        // save state
+        parent.data("menuOpen", menuOpen === 1 ? 0 : 1);
+        
         return false;
     });
 
@@ -34,8 +53,10 @@ function initDropdowns() {
         
         source.find('option').removeAttr('selected');
         source.find('option[value="'+$(this).find("span.value").text()+'"]').attr('selected', 'selected').change();
+
         e.preventDefault();
-    });    
+    });
+    $(".dropdown").data("menuOpen", 0);    
 };
 
 // Function for creating dropdowns
