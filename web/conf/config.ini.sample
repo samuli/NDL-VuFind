@@ -28,6 +28,7 @@ local           = /usr/local/vufind/web
 email           = finna-posti@helsinki.fi 
 title           = Finna
 theme           = institution
+userComments    = true
 ; Uncomment the following line to use a different theme for mobile devices
 ;mobile_theme    = jquerymobile
 language        = fi    ; default -- more options available in [Languages] below.
@@ -365,6 +366,8 @@ coverimages    = NLF,OpenLibrary
 coverwidth = 126
 coverheight = 126
 coverbackground = ffffff
+; How long cover images are cached locally in minutes. Default is one day
+;covercachetime = 1440
 
 ; This setting controls the image to display when no book cover is available.
 ; The path is relative to web subdirectory of the VuFind install directory:

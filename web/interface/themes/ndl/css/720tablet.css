@@ -164,10 +164,6 @@
         width: 300px;
     }
     
-    .resultDatesHeader,
-    .resultDates{
-        display:none;
-    }
     .currentPage > span:first-child {
         display:none;
     }
@@ -273,6 +269,11 @@
     ul.recordSet.galleryView li.result {
         margin-right:40px;
         margin-bottom:40px;
+    }
+    
+    table.holdingsContainerHolding .checkedout,
+    table.holdingsContainerHolding .available {
+        display: inline-block;
     }
     
     /* Myresearch */

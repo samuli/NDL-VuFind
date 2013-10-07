@@ -47,6 +47,8 @@ class Comments extends DB_DataObject
     public $user_id;                         // int(11)  not_null multiple_key
     public $resource_id;                     // int(11)  not_null multiple_key
     public $comment;                         // blob(65535)  not_null blob
+    public $rating;                          // float
+    public $type;                            // boolean, 0 = comment, 1 = rating
     public $created;                         // datetime(19)  not_null binary
 
     /* Static get */
@@ -55,4 +57,140 @@ class Comments extends DB_DataObject
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
     // @codingStandardsIgnoreEnd
+
+    /**
+     * Get a list of all comments associated with this record.
+     *
+     * @param string $recordId Record ID
+     *
+     * @return array
+     * @access public
+     */
+    public function getComments($recordId)
+    {
+        $recordId = mysql_real_escape_string($recordId);        
+        $sql = "SELECT comments.*, user.firstname || user.lastname as fullname, " .
+               "user.email " .
+               "FROM comments " . 
+               "RIGHT OUTER JOIN user ON comments.user_id = user.id " . 
+               "JOIN comments_record ON comments.id = comments_record.comment_id " . 
+               "WHERE comments_record.record_id = '$recordId' " .
+               "AND comments.visible = 1 " . 
+               "ORDER BY comments.created ";        
+
+        $commentList = array();
+
+        $result = $this->query($sql);
+        
+        $date = new VuFindDate();
+        if ($this->N) {
+            while ($this->fetch()) {
+                $comment = clone($this);
+                $comment->created = $date->convertToDisplayDate('Y-m-d H:i:s', $comment->created) . ' ' . 
+                    $date->convertToDisplayTime('Y-m-d H:i:s', $comment->created);
+                $commentList[] = $comment;
+            }
+        }
+
+        return $commentList;
+    }
+    
+    /**
+     * Get average rating from ratings associated with this record.
+     *
+     * @param string $recordId Record ID
+     *
+     * @return array
+     * @access public
+     */
+    public function getAverageRating($recordId)
+    {
+        $recordId = mysql_real_escape_string($recordId);        
+        $sql = "SELECT AVG(comments.rating) as average, " .
+               "COUNT(comments.id) as numberOfRatings " .
+               "FROM comments " . 
+               "JOIN comments_record ON comments.id = comments_record.comment_id " . 
+               "WHERE comments_record.record_id = '$recordId' " .
+               "AND comments.rating IS NOT NULL " .
+               "AND comments.visible = 1";
+        $this->query($sql);      
+        $this->fetch();
+        return (array('ratingAverage' => $this->average, 'ratingCount' => $this->numberOfRatings));
+    }
+        
+    /**
+     * Get number of comments on record.
+     *
+     * @param string $recordId Record ID
+     *
+     * @return int
+     * @access public
+     */
+    public function getCommentCount($recordId)
+    {
+        $recordId = mysql_real_escape_string($recordId);        
+        $sql = "SELECT count(comments_record.id) as numberOfComments " .
+                "FROM comments_record " . 
+                "JOIN comments ON comments.id = comments_record.comment_id " . 
+                "WHERE comments_record.record_id = '$recordId' " .
+                "AND comments.visible = 1";
+         $this->query($sql);  
+         $this->fetch();
+         return $this->numberOfComments;
+    }    
+
+    /**
+     * Add links to records.
+     *
+     * @param string[] $recordIdArray Array of record IDs
+     *
+     * @return boolean success
+     * @access public
+     */
+    public function addLinks($recordIdArray)
+    {
+        include_once 'services/MyResearch/lib/Comments_record.php';
+        foreach ($recordIdArray as $recordId) {
+            $commentsRecord = new Comments_record();
+            $commentsRecord->record_id = $recordId;
+            $commentsRecord->comment_id = $this->id;
+            $commentsRecord->insert();
+        }
+        return true;
+    }
+
+    /**
+     * Verify links to records
+     * @param string[] $recordIdArray Array of record IDs
+     *
+     * @return boolean True if any links were fixed
+     * @access public
+     */
+    public function verifyLinks($recordIdArray)
+    {
+        $fixed = false;
+        include_once 'services/MyResearch/lib/Comments_record.php';
+        // Remove any orphaned links
+        $commentsRecord = new Comments_record();
+        $commentsRecord->comment_id = $this->id;
+        if ($commentsRecord->find()) {
+            while ($commentsRecord->fetch()) {
+                if (!in_array($commentsRecord->record_id, $recordIdArray)) {
+                    $commentsRecord->delete();
+                    $fixed = true;            
+                }    
+            }           
+        }
+        // Add missing links
+        foreach ($recordIdArray as $recordId) {
+            $commentsRecord = new Comments_record();
+            $commentsRecord->record_id = $recordId;
+            $commentsRecord->comment_id = $this->id;
+            if (!$commentsRecord->find()) {
+                $commentsRecord->insert();
+                $fixed = true;
+            }
+        }
+        return $fixed;
+    }
 }

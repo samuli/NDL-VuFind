@@ -161,6 +161,7 @@ class SIPAuthentication implements Authentication
         $user->major = 'null';
         $user->college = 'null';
 
+        $user->last_login = date('Y-m-d H:i:s');
         if ($insert) {
             $user->created = date('Y-m-d');
             $user->insert();

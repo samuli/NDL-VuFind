@@ -19,7 +19,9 @@ $.validator.addMethod("phoneUS", function(phone_number, element) {
         phone_number.match(/^(\([2-9]\d{2}\)|[2-9]\d{2})[2-9]\d{2}\d{4}$/);
 }, 'Please specify a valid phone number');
 
+
 $(document).ready(function(){
+
     // initialize autocomplete
     initAutocomplete();    
 
@@ -29,9 +31,6 @@ $(document).ready(function(){
 
     // support "jump menu" dropdown boxes
     $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
-
-    // attach click event to the "keep filters" checkbox
-    $('#searchFormKeepFilters').change(function() { filterAll(this); });
 
 
 
@@ -121,22 +120,56 @@ $(document).ready(function(){
     );
 
     // show when search field is focused
-    $('#searchForm_input').focus(function(e) { toggleKeepFiltersOption(true); });
+    var searchInput = $('#searchForm_input');
+    var prefilterMenu = $("#searchForm").find(".dropdown");
 
-    // show when prefilter is changed
-    $("#searchForm_filter").change(function(e) { toggleKeepFiltersOption(true); });
-    
-    // hide when mouse is clicked and search field is not focused and mouse is not inside search area
-    $(document).mouseup(function() {
-        if (!$('#searchForm_input').is(":focus") && !$('#searchFormContainer').hasClass("hover")) {
-            toggleKeepFiltersOption(false);
-        }
+
+    // attach click event to the "keep filters" checkbox
+    $('#searchFormKeepFilters').change(function(e) { 
+        filterAll(this);
+        toggleKeepFiltersOption(false); 
     });
 
-    // preserve active search term and prefilter
-    origSearchTerm = $('#searchForm_input').val();
-    origPrefilter = $("#searchForm_filter").val();
 
+    // Show "keep filters" checkbox when search input is focused or changed
+    searchInput.focus(function(e) { 
+        toggleKeepFiltersOption(true); 
+    });
+    searchInput.change(function(e) {
+        toggleKeepFiltersOption(true);
+    });
+    searchInput.keydown(function(e) {
+        toggleKeepFiltersOption(true);
+    });
+
+    // Hide "keep filters" checkbox when search input is blurred
+    searchInput.blur(function(e) { 
+        toggleKeepFiltersOption(false); 
+    });
+    
+    
+    // Show "keep filters" checkbox when prefilter -menu is opened
+    prefilterMenu.bind("menuOpen", function() { 
+        // position prefilter menu to leave vertical space for retain filters -checkbox
+        if (isKeepFiltersOptionPresent()) {
+            $(".searchbox .dropdown dd ul").css('top', '40px');
+        }
+        toggleKeepFiltersOption(true); 
+    });
+    // Hide "keep filters" checkbox when prefilter -menu is closed
+    prefilterMenu.bind("menuClose", function() { toggleKeepFiltersOption(false); });
+
+
+    // When search form is submitted, insert a hidden field for "keep filters" -value. 
+    // This way the variable gets posted also when the checkbox is unchecked.
+    var searchForm = $('#searchForm');
+    searchForm.submit(function(e) {
+        var opt = $(this).find("#searchFormKeepFilters");
+        if (opt) {
+            var retainFilters = opt.is(":checked") ? 1 : 0;
+            $(this).append('<input type="hidden" name="retainFilters" value="' + retainFilters + '" />');            
+        }
+    });
 });
 
 function toggleMenu(elemId) {
@@ -208,7 +241,9 @@ function initAutocomplete() {
     var params = extractParams(searchInput.attr('class'));
     var maxItems = params.maxItems > 0 ? params.maxItems : 10;
     var minLength = params.minLength > 0 ? params.minLength : 3;
+    var position = isKeepFiltersOptionPresent() ? { offset: '0 46'} : { offset: '0 6'};
     ac = searchInput.autocomplete({
+        position: position,
         minLength: minLength,
         select: function(e, ui) {
             if (e.keyCode === 13 && searchInput.val() != ui.item.label) {
@@ -241,7 +276,11 @@ function initAutocomplete() {
                     }
                 }
                 });
-        }
+        },
+        open: function() {
+            $('.ui-autocomplete').css('width', '618px');
+            toggleKeepFiltersOption(true);                
+        },
     });
 
     ac.data( "autocomplete" )._renderItem = function(ul, item) {
@@ -454,28 +493,35 @@ function isTouchDevice() {
         || !!('onmsgesturechange' in window); // IE10
 };
 
-function toggleKeepFiltersOption(mode) {
-    // force visible if search term or prefilter has been modified
-    var currentSearchTerm = $('#searchForm_input').val();
-    var currentPrefilter = $("#searchForm_filter").val();
-    if (origSearchTerm != currentSearchTerm || origPrefilter != currentPrefilter) {
-        mode = true;
+
+_hideKeepFiltersTimer = null;
+function toggleKeepFiltersOption(mode) {    
+    var obj = $("#searchForm").find(".keepFilters");
+    if (mode) {        
+        obj.show();
     }
 
-    var obj = $("#searchForm").find(".keepFilters");
-    if (mode) {
-        obj.show();
-    } else {
-        // already hidden?
-        if (!obj.is(":visible")) {
-            return;
-        }
-        // search field focused?
-        if ($('#searchForm_input').is(":focus")) {
-            return;
-        }
+    if (_hideKeepFiltersTimer) {
+        window.clearTimeout(_hideKeepFiltersTimer);
     }
-    obj.stop().fadeTo( 300, (mode ? 1 : 0), function() { if (!mode) { $(this).hide(); }} );
+    
+    if (mode) {
+        obj.stop().fadeTo(50,1);
+    } else {
+        // Hide checkbox after a small delay. 
+        // This way the user notices the new checkbox value before it is hidden.
+        _hideKeepFiltersTimer = window.setTimeout(function() {
+            obj.stop().fadeTo(400,0,function() { 
+                if (!mode) { 
+                    $(this).hide(); 
+                }
+            });
+        }, 1000);        
+    }
+}
+
+function isKeepFiltersOptionPresent() {
+    return $('#searchFormKeepFilters').length > 0;
 }
 
 (function($) {
@@ -505,3 +551,175 @@ function toggleKeepFiltersOption(mode) {
 }
 })(jQuery);
 
+function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
+    this.currentCarousel = $('#NDLCarousel-' + carouselId);
+    this.carouselParent = this.currentCarousel.parent();
+
+    this.carouselHeight, this.carouselWidth;
+    
+    this.carouselId = carouselId;
+    this.itemsPerPage = itemsPerPage;
+    this.scrolledItems = scrolledItems;
+    this.scrollSpeed = scrollSpeed;
+
+    this.horizontalPadding = 2 * parseInt(this.currentCarousel.children().first().css('margin-right'), 10);
+
+    var self = this;
+
+    this.render = function() {
+
+        self.currentCarousel.trigger('destroy');
+
+        self.carouselWidth = self.currentCarousel.parent().width();
+        this.itemWidth = (self.carouselWidth - (self.itemsPerPage * self.horizontalPadding)) / self.itemsPerPage;
+        self.carouselHeight = 1.36 * this.itemWidth;
+
+        self.currentCarousel.carouFredSel({
+            responsive: true,
+            // TODO: implement direction
+            //direction:{/literal}'{$rssFeed.direction}'{literal},
+            auto: 8000,
+            width: "100%",
+            items: self.itemsPerPage,
+            height: self.carouselHeight,
+            prev: '#NDLCarouselNavi-' + self.carouselId + ' .prev',
+            next: '#NDLCarouselNavi-' + self.carouselId + ' .next',
+            swipe: {
+                onTouch: false,
+                onMouse: false
+            },
+            scroll: {
+              items: self.scrolledItems,
+              duration: self.scrollSpeed,
+              fx: "directscroll",
+              pauseOnHover: true
+            },
+            onCreate: function(data) {
+
+                this.containerWidth = self.currentCarousel.children().first().width();
+                this.containerHeight = 1.36 * this.containerWidth;
+                this.containerRatio = this.containerWidth / this.containerHeight;
+
+                $('#NDLCarouselNavi-' + self.carouselId + ' li').css({
+                    'top'         : -(this.containerHeight / 2) - $('#NDLCarouselNavi-' + self.carouselId + ' .prev').height() / 2
+                });
+
+                self.currentCarousel.css({
+                    'height'         : self.carouselHeight
+                });
+                self.currentCarousel.parent().css({
+                    'height'         : self.carouselHeight
+                });
+                self.currentCarousel.children('li').css({
+                    'height'         : self.carouselHeight,
+                    'line-height' : self.carouselHeight + 'px'
+                });
+                
+                var currentContainer = this;
+
+                self.currentCarousel.filter('.includeDescription').find('img').each(function(){
+                    $(this).imagesLoaded(function() {
+                        $(this).css({
+                            'height'      : '',
+                            'width'       : '',
+                            'visibility'  : 'visible'
+                        });
+                        var imgWidth = $(this).width();
+                        var imgHeight = $(this).height();
+
+                        var imgRatio = imgWidth / imgHeight;
+                        var newWidth = 0;
+                        var newHeight = 0;
+
+                        if(currentContainer.containerRatio < imgRatio) {
+                            newWidth = currentContainer.containerHeight * imgRatio;
+                            newHeight = currentContainer.containerHeight;
+                        } else {
+                            newWidth = currentContainer.containerWidth;
+                            newHeight = currentContainer.containerWidth / imgRatio;
+                        }
+
+                        var verticalPosition = (newHeight - currentContainer.containerHeight) / 2;
+                        var horizontalPosition = (newWidth - currentContainer.containerWidth) / 2;
+
+                        $(this).css({
+                            'height'      : newHeight,
+                            'width'       : newWidth,
+                            'position'    : 'absolute',
+                            'left'        : - horizontalPosition,
+                            'top'         : - verticalPosition,
+                            //'display'     : 'none',
+                            'visibility'  : 'visible'
+                        });
+                    });
+                });
+
+                // Set title and text position
+                self.currentCarousel.find('h4').each(function() {
+                    var myHeight = $(this).find('a').height() + 12; // 6px + 6px padding
+                    $(this).siblings('p').css('top', myHeight);
+                });
+
+                self.currentCarousel.css(
+                    "visibility",
+                    "visible"
+                );
+            }
+        });
+
+
+    };
+
+    this.render();
+
+    // Make individual pick-ups clickable
+    this.currentCarousel.children('li').click(function() {
+                var href = $(this).find('a').attr('href');
+                window.location.href = href;
+    });
+
+    this.currentCarousel.filter('.includeDescription').children('li').mouseenter(function() {
+        var headers = $(this).find('h4');
+        var paragraphs = $(this).find('p');
+        var h4Height = headers.first().height() + 12;
+        headers.stop().animate({
+            top: 0
+         }, 50, function() {
+            paragraphs.stop(true,true).delay(50).fadeIn(200);
+         });
+
+    });
+
+    this.currentCarousel.filter('.includeDescription').children('li').mouseleave(function() {
+        var headers = $(this).children('h4');
+        var paragraphs = $(this).children('p');
+        var h4Height = $(this).find('a').height() + 12;
+        headers.stop().animate({
+            top: self.carouselHeight - h4Height
+        }, 100, function() {  // callback function necessary to remove css top property
+            $(this).css('top', '')
+        });
+        paragraphs.stop(true, true).fadeOut(200);
+
+    });
+
+    // Function to refresh carousel when layout changes
+    $(window).resize(function() {
+        delay(function(){
+            if(self.currentCarousel.parent().width() != self.carouselWidth) {
+                self.render();
+            }
+        }, 250);
+    });
+
+    // Delay function to execute renderCarousel only with the last call during resize
+    var delay = (function(){
+      var timer = 0;
+      return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+
+
+}

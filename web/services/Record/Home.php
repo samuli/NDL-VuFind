@@ -53,32 +53,27 @@ class Home extends Action
         // Execute Default Tab
         $defaultTab = isset($configArray['Site']['defaultRecordTab']) ?
             $configArray['Site']['defaultRecordTab'] : 'Holdings';
-            
-        // Get number of comments for this record
-        $resource = new Resource();
-        $resource->record_id = $_REQUEST['id'];
-        if ($resource->find(true)) {
-            $commentCount = $resource->getCommentCount();
+        
+        // Don't let bots crawl holdings
+        if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+            $defaultTab = 'Description';
         } else {
-            $commentCount = 0;
-        }       
-        $interface->assign(compact('commentCount'));
-
-        // We need to do a whole bunch of extra work to determine the default
-        // tab if we have the hideHoldingsTabWhenEmpty setting turned on; only
-        // do this work if we absolutely have to!
-        if (isset($configArray['Site']['hideHoldingsTabWhenEmpty'])
-            && $configArray['Site']['hideHoldingsTabWhenEmpty']
-            && $defaultTab == "Holdings"
-        ) {
-            $db = ConnectionManager::connectToIndex();
-            if (!($record = $db->getRecord($_REQUEST['id']))) {
-                PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
+            // We need to do a whole bunch of extra work to determine the default
+            // tab if we have the hideHoldingsTabWhenEmpty setting turned on; only
+            // do this work if we absolutely have to!
+            if (isset($configArray['Site']['hideHoldingsTabWhenEmpty'])
+                && $configArray['Site']['hideHoldingsTabWhenEmpty']
+                && $defaultTab == "Holdings"
+            ) {
+                $db = ConnectionManager::connectToIndex();
+                if (!($record = $db->getRecord($_REQUEST['id']))) {
+                    PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
+                }
+                $recordDriver = RecordDriverFactory::initRecordDriver($record);
+                $showHoldingsTab = $recordDriver->hasHoldings();
+    
+                $defaultTab = $showHoldingsTab ? 'Holdings' : 'Description';
             }
-            $recordDriver = RecordDriverFactory::initRecordDriver($record);
-            $showHoldingsTab = $recordDriver->hasHoldings();
-
-            $defaultTab = $showHoldingsTab ? 'Holdings' : 'Description';
         }
 
         include_once $defaultTab . '.php';

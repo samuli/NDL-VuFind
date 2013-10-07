@@ -153,7 +153,7 @@ End Cover Image *}
 
   {if !empty($coreInstitutions)}
   <tr valign="top" class="recordCollection">
-    <th>{translate text='Location'}: </th>
+    <th>{translate text='Organization'}: </th>
     <td>
       {foreach from=$coreInstitutions item=field name=loop}
         {translate text=$field prefix='source_'}<br/>
@@ -221,12 +221,18 @@ End Cover Image *}
       {foreach from=$events item=event name=eventLoop}
         {if $event.name}{$event.name}<br/>{/if}
         {if $event.date}{$event.date|escape}{else}{translate text="(undated)"}{/if} 
-        {if !empty($event.method)} &ndash; {$event.method|escape}{/if}
-        {if !empty($event.materials)} &ndash; {$event.materials|escape}{/if}
-        {if !empty($event.place)} &ndash; {$event.place|escape}{/if}
-        {if !empty($event.culture)} &ndash; {$event.culture|escape}{/if}
+        {if !empty($event.method)} <br/> {$event.method|escape}{/if}
+        {if !empty($event.materials)} <br/> {$event.materials|escape}{/if}
+        {if !empty($event.place)}
+        <br/>
+            {foreach from=$event.place item=place name=placesLoop}
+                {if $smarty.foreach.placesLoop.index > 0}<br/> {/if}
+                {$place|escape}
+            {/foreach} 
+        {/if}           
+        {if !empty($event.culture)} <br/> {$event.culture|escape}{/if}
         {if !empty($event.actors)}
-        &ndash;
+        <br/>
 	        {foreach from=$event.actors item=actor name=actorsLoop}
 	          {if $smarty.foreach.actorsLoop.index > 1}, {/if}
 	          {$actor.name|escape}{if !empty($actor.role)} ({$actor.role|escape}){/if}

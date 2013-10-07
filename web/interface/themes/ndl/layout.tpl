@@ -80,6 +80,7 @@
       {css media="screen, projection" filename="chosen/chosen.css"}
     {/if}
     <!--[if lt IE 9]>{css media="screen, projection" filename="ie.css"}<![endif]-->
+    <!--[if !IE 8]><!-->{css media="screen, projection" filename="non-ie8.css"}<!--<![endif]-->
 
     {* Set global javascript variables *}
     <script type="text/javascript">
@@ -101,7 +102,9 @@
     {js filename="jquery.clearsearch.js"}
     {js filename="jquery.collapse.js"}
     {js filename="jquery.dynatree-1.2.2-mod.js"}
-    
+    {if $ratings}
+    {js filename="raty/jquery.raty.min.js"}
+    {/if}
     {* Load custom javascript functions *}
     {js filename="custom.js"}
 
@@ -116,7 +119,10 @@
 
     {* Load dialog/lightbox functions *}
     {js filename="lightbox.js"}
-    
+
+    {* Load dropdown menu modification *}
+    {js filename="dropdown.js"}
+
     {* Load common javascript functions *}
     {js filename="common.js"}
     
@@ -131,8 +137,6 @@
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
 
-    {* Load dropdown menu modification *}
-    {js filename="dropdown.js"}
     
     {* Load ndl theme functions *}
     {js filename="ndl.js"}

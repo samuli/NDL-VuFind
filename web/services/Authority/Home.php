@@ -51,7 +51,7 @@ class Home extends Base
         global $configArray;
 
         // Cache homepage
-        $interface->caching = 1; 
+        $interface->caching = 0; 
         $cacheId = 'auth-homepage|' . $interface->lang . '|' . 
             (UserAccount::isLoggedIn() ? '1' : '0');
         if (!$interface->is_cached('layout.tpl', $cacheId)) {

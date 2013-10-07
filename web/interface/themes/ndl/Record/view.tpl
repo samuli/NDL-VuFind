@@ -174,6 +174,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
         </li>
         {/if}
+        {if $ratings && $recordRating}
+        <li class="recordAverageRating">
+            <div id="averageRating" data-score="{if $recordRating.ratingAverage}{$recordRating.ratingAverage}{else}0{/if}"></div><span id="ratingCount">({$recordRating.ratingCount})</span>
+        </li>
+        {/if}
       </ul>
       {if $bookBag}
       <div class="cartSummary">
@@ -197,6 +202,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       <div id="qrcode"><!-- span class="overlay"></span --></div>
       {js filename="qrcodeNDL.js"}
       </div> *}
+      
   </div>
    <div class="grid_12 prefix_1">
    {include file=$coreMetadata}
@@ -240,9 +246,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           <a id="componentstab" href="{$url}/Record/{$id|escape:"url"}/ComponentParts{if $dynamicTabs}?subPage=1{/if}#tabnav" class="first"><span></span>{translate text='Contents/Parts'}</a>
         </li>
         {/if}
+        {if $userCommentsEnabled}
         <li{if $tab == 'UserComments'} class="active"{/if}>
-          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Comments'} (<span id="commentCount">{$commentCount}</span>)</a>
+          <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{if $ratings}{translate text='Ratings'}{else}{translate text='Comments'}{/if} (<span id="commentCount">{$commentCount}</span>)</a>
         </li>
+        {/if}
         {if $hasReviews}
         <li{if $tab == 'Reviews'} class="active"{/if}>
           <a id="reviewstab" href="{$url}/Record/{$id|escape:"url"}/Reviews{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Reviews'}</a>
@@ -288,13 +296,19 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   
   <div class="clear"></div>
 </div>
-
 <script type="text/javascript">
 {literal}
   $(document).ready(function() {
+    var icons = {starHalf    : path+'/interface/themes/ndl/images/raty/star-half.png',
+                 starOff     : path+'/interface/themes/ndl/images/raty/star-off.png',
+                 starOn      : path+'/interface/themes/ndl/images/raty/star-on.png'
+                };
     var searchID = $.cookie('lastSearchId');
     var editURL = $('.editAdvancedSearch').attr('href') + searchID;
     $('.editAdvancedSearch').attr('href', editURL);
+    {/literal}{if $ratings && $recordRating}{literal}
+    $('#averageRating').raty($.extend(icons, {readOnly : true, half: true, score : $('div#averageRating').attr('data-score')}));
+    {/literal}{/if}{literal}
   });
 {/literal}
 </script>

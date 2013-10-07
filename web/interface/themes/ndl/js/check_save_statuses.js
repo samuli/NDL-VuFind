@@ -2,7 +2,6 @@ $(document).ready(function() {
     checkSaveStatuses();
     // attach click event to the save record link
     $('a.saveRecord').unbind('click').click(function(e) {
-        console.log("SaveRecord click");
         var id = this.id.substr('saveRecord'.length);
         var $dialog = getLightbox('Record', 'Save', id, null, this.title, 'Record', 'Save', id);
         e.preventDefault();

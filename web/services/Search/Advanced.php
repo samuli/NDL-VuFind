@@ -141,7 +141,17 @@ class Advanced extends Action
         }
 
         // Send back the settings:
-        return array($from, $to);
+        if ($from === '' || $to === '') {
+            return array('', '');
+        }
+        $startDate = new DateTime("@$from");
+        $endDate = new DateTime("@$to");
+        if ($startDate->format('m') == 1 && $startDate->format('d') == 1 
+            && $endDate->format('m') == 12 && $endDate->format('d') == 31
+        ) {
+            return array(ltrim($startDate->format('Y'), '0'), ltrim($endDate->format('Y'), '0'));
+        }
+        return array($startDate->format('Y-m-d'), $endDate->format('Y-m-d'));
     }
 
     /**
@@ -202,7 +212,7 @@ class Advanced extends Action
                     if ($range = VuFindSolrUtils::parseRange($current)) {
                         $from = $range['from'] == '*' ? '' : $range['from'];
                         $to = $range['to'] == '*' ? '' : $range['to'];
-                        $savedSearch->removeFilter('publishDate:' . $current);
+                        $savedSearch->removeFilter('main_date_str:' . $current);
                         break;
                     }
                 }

@@ -144,15 +144,22 @@ class Record extends Action
         $defaultTab = isset($configArray['Site']['defaultRecordTab']) ?
             $configArray['Site']['defaultRecordTab'] : 'Holdings';
 
-        if (isset($configArray['Site']['hideHoldingsTabWhenEmpty'])
-            && $configArray['Site']['hideHoldingsTabWhenEmpty']
-        ) {
-            $showHoldingsTab = $this->recordDriver->hasHoldings();
-            $interface->assign('hasHoldings', $showHoldingsTab);
-            $defaultTab =  (!$showHoldingsTab && $defaultTab == "Holdings") ?
-                "Description" : $defaultTab;
+        // Don't let bots crawl holdings
+        if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+            $this->hasHoldings = false;
+            $interface->assign('hasHoldings', false);
+            $defaultTab = 'Description';
         } else {
-            $interface->assign('hasHoldings', true);
+            if (isset($configArray['Site']['hideHoldingsTabWhenEmpty'])
+                && $configArray['Site']['hideHoldingsTabWhenEmpty']
+            ) {
+                $showHoldingsTab = $this->recordDriver->hasHoldings();
+                $interface->assign('hasHoldings', $showHoldingsTab);
+                $defaultTab =  (!$showHoldingsTab && $defaultTab == "Holdings") ?
+                    "Description" : $defaultTab;
+            } else {
+                $interface->assign('hasHoldings', true);
+            }
         }
 
         $tab = (isset($_GET['action'])) ? $_GET['action'] : $defaultTab;
@@ -175,6 +182,26 @@ class Record extends Action
         // Determine whether to display book previews
         if (isset($configArray['Content']['previews'])) {
             $interface->assignPreviews();
+        }
+        
+        // Determine whether comments or reviews are enabled
+        if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
+            $interface->assign('userCommentsEnabled', true);
+        }
+        
+        // Ratings for libraries, comments for museums and archives
+        if ($this->recordDriver->getSector() == 'lib') {
+            $interface->assign('ratings', true);
+        }
+        
+        if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
+            // Get number of comments for this record
+            include_once 'services/MyResearch/lib/Comments.php';
+            $comments = new Comments();
+            $commentCount = $comments->getCommentCount($_REQUEST['id']);    
+            $interface->assign(compact('commentCount'));
+            $recordRating = $comments->getAverageRating($_REQUEST['id']);
+            $interface->assign(compact('recordRating'));            
         }
 
         // Determine whether to include script tag for syndetics plus

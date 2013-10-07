@@ -130,9 +130,10 @@ class UInterface extends Smarty
             'autocomplete',
             is_object($searchObject) ? $searchObject->getAutocompleteStatus() : false
         );
+        
         $this->assign(
-            'retainFiltersByDefault', $searchObject->getRetainFilterSetting()
-        );
+                      'retainFiltersByDefault', $searchObject->getRetainFilterByDefaultSetting()
+                      );
 
         if (isset($configArray['Site']['showBookBag'])) {
             $this->assign(
@@ -198,7 +199,19 @@ class UInterface extends Smarty
             } else {
                 $myRes = isset($configArray['Site']['defaultLoggedInModule'])
                     ? $configArray['Site']['defaultLoggedInModule'] : 'MyResearch';
-                $shibTarget = $configArray['Site']['url'] . '/' . $myRes . '/Home';
+                $myRes .= '/Home';
+                
+                // Override default location with followup location if set
+                if (isset($_REQUEST['followupModule'])) {
+                    $myRes = $_REQUEST['followupModule'];
+                    if (isset($_REQUEST['followupAction'])) {
+                        $myRes .= '/' . $_REQUEST['followupAction']; 
+                    } else {
+                        $myRes .= '/Home';
+                    }
+                }
+                
+                $shibTarget = $configArray['Site']['url'] . '/' . $myRes;
             }
             $sessionInitiator = $configArray['Shibboleth']['login'];
             $sessionInitiator .= (strpos($sessionInitiator, '?') === false) ? '?' : '&';
@@ -435,6 +448,20 @@ class UInterface extends Smarty
             $this->assign('currentCatalogAccount', $user->cat_username);
             $this->assign('catalogAccounts', $user->getCatalogAccounts());
         }
+
+
+        // Override default value for retain filters -option (searches.ini::retain_filters_by_default)
+        // if it can be found in the request URL or has previously been saved as a session variable.
+        $retainFilters = null;
+        if (isset($_REQUEST['retainFilters'])) {
+            $retainFilters = $_REQUEST['retainFilters'] === '1';
+        } elseif (isset($_SESSION['retainFilters'])) {
+            $retainFilters = $_SESSION['retainFilters'] === 1;   
+        }
+        if (!is_null($retainFilters)) {
+            $_SESSION['retainFilters'] = (int)$retainFilters;
+            $this->assign('retainFiltersByDefault', $retainFilters);
+        }
     }
 
     /**
@@ -505,8 +532,35 @@ class UInterface extends Smarty
         }
         return $tpl;
     }
-    
+        
     // @codingStandardsIgnoreStart
+
+    /**
+     * Convert theme file name to an absolute path
+     * 
+     * @param string $resource_name File name
+     * 
+     * @return string Absolute path
+     */
+    protected function convertToAbsolutePath($resource_name)
+    {
+        foreach (is_array($this->template_dir) ? $this->template_dir : array($this->template_dir) as $_curr_path) {
+            $_fullpath = $_curr_path . DIRECTORY_SEPARATOR . $resource_name;
+            if (file_exists($_fullpath) && is_file($_fullpath)) {
+                $resource_name = $_fullpath;
+                break;
+            }
+            // didn't find the file, try include_path
+            $_params = array('file_path' => $_fullpath);
+            require_once(SMARTY_CORE_DIR . 'core.get_include_path.php');
+            if(smarty_core_get_include_path($_params, $this)) {
+                $resource_name = $_params['new_file_path'];
+                break;
+            }
+        }
+        return $resource_name;
+    }
+    
     /**
      * called for included templates
      *
@@ -520,6 +574,8 @@ class UInterface extends Smarty
     {
         if (isset($params['smarty_include_tpl_file'])) {
             $params['smarty_include_tpl_file'] = $this->getLocalOverride($params['smarty_include_tpl_file'], false);
+            // Change resource_name to absolute path so that Smarty caching must take into account the theme directory
+            $params['smarty_include_tpl_file'] = $this->convertToAbsolutePath($params['smarty_include_tpl_file']);
         }
         return parent::_smarty_include($params);
     }
@@ -535,6 +591,10 @@ class UInterface extends Smarty
     function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
         $resource_name = $this->getLocalOverride($resource_name, false);
+        
+        // Change resource_name to absolute path so that Smarty caching must take into account the theme directory
+        $resource_name = $this->convertToAbsolutePath($resource_name);
+        
         return parent::fetch($resource_name, $cache_id, $compile_id, $display);
     }
     

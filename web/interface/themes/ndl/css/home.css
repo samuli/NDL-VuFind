@@ -77,12 +77,6 @@
     margin:0;
     padding-left:0;
 }
-#introduction.section .iconlabel {
-    display: inline-block;
-    line-height: 18px;
-    min-height: 19px;
-    padding: 0 0 0 25px;
-}
 
 ul.documentTypes li {
     float: left;
@@ -108,12 +102,12 @@ ul.documentTypes li {
 #carouselContainer li {
     margin-bottom:.5em;
 }
-#NDLCarousel {
+.NDLCarousel {
     list-style: none;
     visibility: hidden;
 }
 
-#NDLCarousel li {
+.NDLCarousel li {
     float: left;
     background-repeat: no-repeat;
     background-size: cover;
@@ -123,30 +117,30 @@ ul.documentTypes li {
     position: relative;
     text-align:center;
 }
-#NDLCarousel a,
-#NDLCarousel a:link {
+.NDLCarousel a,
+.NDLCarousel a:link {
     color:#eee;
     font-weight:bold;
 }
-#NDLCarousel li h4,
-#NDLCarousel li p {
+.NDLCarousel li h4,
+.NDLCarousel li p {
     text-align:left;
 }
-#NDLCarousel.small img {
+.NDLCarousel.small img {
     max-height: 84%;
     max-width: 90%;
     position: absolute;
     left: 0;
     bottom: 15%;
 }
-#NDLCarousel.includeDescription img {
+.NDLCarousel.includeDescription img {
     vertical-align:middle;
 }
-.carousel-direction-up #NDLCarousel img {
+.carousel-direction-up .NDLCarousel img {
 	bottom:0;
 	max-height:120px;
 }
-#NDLCarousel.noText img {
+.NDLCarousel.noText img {
     bottom: 0;
     left: 0;
     max-height: 100%;
@@ -154,7 +148,7 @@ ul.documentTypes li {
     position: absolute;
 }
 
-#NDLCarousel h4 {
+.NDLCarousel h4 {
     font-size: 100%;
     width: 90%;
     line-height: 1em;
@@ -164,14 +158,14 @@ ul.documentTypes li {
     overflow: hidden;
     font-weight: normal;
 }
-#NDLCarousel.small h4 {
+.NDLCarousel.small h4 {
     height: 10%;
     position: absolute;
     bottom: 0;
     left: 0;
     font-size: 130%;
 }
-.carousel-direction-up #NDLCarousel h4 { 
+.carousel-direction-up .NDLCarousel h4 { 
 	left: 105px;
     line-height: 1.23em;
     overflow: visible;
@@ -179,10 +173,10 @@ ul.documentTypes li {
     width: 300px;
 	font-size:1.1em;
 }
-#NDLCarousel.noText h4 {
+.NDLCarousel.noText h4 {
     display: none;
 }
-#NDLCarousel.includeDescription h4  {
+.NDLCarousel.includeDescription h4  {
     background: url("../images/px_69.png") repeat;
     bottom: 0;
     margin: 0;
@@ -194,11 +188,11 @@ ul.documentTypes li {
     transition:all .2s;
 }
 
-#NDLCarousel.includeDescription h4 a {
+.NDLCarousel.includeDescription h4 a {
     display:block;
     float:left;
 }
-#NDLCarousel.includeDescription p {
+.NDLCarousel.includeDescription p {
     display: none;
     color: #ddd;
     line-height: 1.2em;
@@ -209,68 +203,68 @@ ul.documentTypes li {
     width: 94%;
     height: 100%;
 }
-#NDLCarousel img {
+.NDLCarousel img {
 
 }
 /*
-#NDLCarousel a,
-#NDLCarousel a:hover {
+.NDLCarousel a,
+.NDLCarousel a:hover {
     text-decoration: none;
     color: #ddd;
 }
 */
-#NDLCarousel.includeDescription li {
+.NDLCarousel.includeDescription li {
     font-size: 100%;
     background-position: center;
     overflow: hidden;
     margin:0 5px 0 5px;
     background: #808080;
 }
-#NDLCarousel.includeDescription img {
+.NDLCarousel.includeDescription img {
     max-height: 5000px;
     max-width: 5000px;
 }
-#NDLCarouselNavi {
+.NDLCarouselNavi {
     display: block;
     position: relative;
     width: 100%;
 }
-#NDLCarouselNavi li {
+.NDLCarouselNavi li {
     position: absolute;
     display: block;
     width: 24px;
     height: 24px;
     top: -112px;
 }
-#NDLCarouselNavi #prev {
+.NDLCarouselNavi .prev {
     left: -32px;
 }
-#NDLCarouselNavi #next {
+.NDLCarouselNavi .next {
     right: -32px;
 }
 
-.carousel-direction-up #NDLCarouselNavi {
+.carousel-direction-up .NDLCarouselNavi {
     display: none;
     position: absolute;
     width: 24px;
 	left:210px;
 	top:0;
 }
-.carousel-direction-up #NDLCarouselNavi li {
+.carousel-direction-up .NDLCarouselNavi li {
     position: absolute;
     display: block;
     width: 24px;
     height: 24px;
     top: 0;
 }
-.carousel-direction-up #NDLCarouselNavi #prev {
+.carousel-direction-up .NDLCarouselNavi #prev {
     background-position: -363px -792px;
     cursor: pointer;
     left: 0;
     margin-left: 30px;
     top: 400px;
 }
-.carousel-direction-up #NDLCarouselNavi #next {
+.carousel-direction-up .NDLCarouselNavi #next {
     background-position: -363px -856px;
     cursor: pointer;
     left: 0;
@@ -356,11 +350,25 @@ ul.documentTypes li {
     margin-top:15px;
     z-index:5;
 }
-
+.NDLNews li {
+    clear: both;
+    padding-bottom: 1.8em;
+}
 .NDLNews .date {
     color: #666666;
-    font-size: 12px;
-    line-height: 16px;
+    display: block;
+    float: left;
+    width: 3.5em;
+}
+.NDLNews  .title {
+    position: absolute;
+}
+.NDLNews  .moreLink {
+    margin-top: 1em;
+}
+.NDLNews img {
+    width: 100px;
+    padding-right: 2em;
 }
 
 .home-section.third .loginBoxHome {

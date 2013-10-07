@@ -308,7 +308,7 @@
     {assign var="idPrefix" value=$id|substr:0:8}
     {if !empty($coreURLs) || $coreOpenURL || $idPrefix == 'metalib_'}
     <tr valign="top" class="recordURLs">
-      <th>{translate text='Online Access'}: </th>
+      <th>{translate text='available_online'}: </th>
       <td>
         {foreach from=$coreURLs item=desc key=currentUrl name=loop}
           <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>

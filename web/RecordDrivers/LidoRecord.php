@@ -125,8 +125,8 @@ class LidoRecord extends IndexRecord
         } else {
             $mainFormat = '';
         }
-        if (isset($this->fields['main_date_str'])) {
-            $interface->assign('summDate', array($this->fields['main_date_str']));
+        if ($this->getResultDates()) {
+            $interface->assign('summDate', $this->getResultDates());
         }
         if (isset($this->fields['event_creation_displaydate_str'])) {
             if ($mainFormat == 'Image') {
@@ -329,9 +329,52 @@ class LidoRecord extends IndexRecord
             $name = isset($node->eventName->appellationValue) ? (string)$node->eventName->appellationValue : '';
             $type = isset($node->eventType->term) ? mb_strtolower((string)$node->eventType->term) : '';
             $date = isset($node->eventDate->displayDate) ? (string)$node->eventDate->displayDate : '';
+            if (!$date && isset($node->eventDate->date)) {
+                $startDate = (string)$node->eventDate->date->earliestDate;
+                $endDate = (string)$node->eventDate->date->latestDate;
+                if (strlen($startDate) == 4 && strlen($endDate) == 4) {
+                    $date = "$startDate-$endDate";
+                } else {
+                    $startDateType = 'Y-m-d';
+                    $endDateType = 'Y-m-d';
+                    if (strlen($startDate) == 7) {
+                        $startDateType = 'Y-m';
+                    }                    
+                    if (strlen($endDate) == 7) {
+                        $endDateType = 'Y-m';
+                    }
+                    $vufindDate = new VuFindDate();
+                    $date = $vufindDate->convertToDisplayDate($startDateType, $startDate);
+                    if ($startDate != $endDate) {
+                        $date .= '-' . $vufindDate->convertToDisplayDate($endDateType, $endDate);
+                    }
+                }
+            }
             $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
             $materials = isset($node->eventMaterialsTech->displayMaterialsTech) ? (string)$node->eventMaterialsTech->displayMaterialsTech : '';
             $place = isset($node->eventPlace->displayPlace) ? (string)$node->eventPlace->displayPlace : '';
+            $places = array();
+            if (!$place) {
+                if (isset($node->eventPlace->place->namePlaceSet)) {
+                    $eventPlace = array();
+                    foreach ($node->eventPlace->place->namePlaceSet as $namePlaceSet) {
+                        $eventPlace[] = isset($namePlaceSet) ? (string)$namePlaceSet->appellationValue : '';
+                    }
+                    $places[] = implode(', ', $eventPlace);
+                }
+                if (isset($node->eventPlace->place->partOfPlace)) {
+                    foreach ($node->eventPlace->place->partOfPlace as $partOfPlace) {
+                        $partOfPlaceName = array(); 
+                        while (isset($partOfPlace->namePlaceSet)):
+                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? (string)$partOfPlace->namePlaceSet->appellationValue : '';
+                            $partOfPlace = $partOfPlace->partOfPlace;
+                        endwhile;
+                        $places[] = implode(', ', $partOfPlaceName);
+                    }
+                }
+            } else {
+                $places[] = $place;    
+            }
             $actors = array();
             if (isset($node->eventActor->actorInRole)) {
                 foreach ($node->eventActor->actorInRole as $actor) {
@@ -344,7 +387,7 @@ class LidoRecord extends IndexRecord
             $culture = isset($node->culture->term) ? (string)$node->culture->term : '';
             $description = isset($node->eventDescriptionSet->descriptiveNoteValue) ? (string)$node->eventDescriptionSet->descriptiveNoteValue : '';
             $event = array('type' => $type, 'name' => $name, 'date' => $date, 'method' => $method, 'materials' => $materials,
-                'place' => $place, 'actors' => $actors, 'culture' => $culture, 'description' => $description);
+                'place' => $places, 'actors' => $actors, 'culture' => $culture, 'description' => $description);
             $events[$type][] = $event;
         }
         return $events;    
@@ -363,6 +406,26 @@ class LidoRecord extends IndexRecord
             $results[] = (string)$node;
         }
         return $results;
+    }
+    
+    /**
+     * Get an array of dates for results list display
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getResultDates()
+    {
+        $dates = array();
+        $initialDate = isset($this->fields['creation_daterange']) ? $this->fields['creation_daterange'] : '';
+        if ($initialDate) {
+            $dates = explode(',', $initialDate);
+            foreach ($dates as &$date) {
+                $date = substr($date, 0, 4);
+            }   
+            unset($date);      
+        }      
+        return $dates;
     }
     
 }
