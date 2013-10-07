@@ -255,6 +255,40 @@ function initSidebarFacets() {
             window.location = query;   
         }
     });
+
+    // PCI Timeline search functionality
+    $(".mainYearFormPCI").submit(function(e){
+        e.preventDefault();
+        // Get dates, build query
+        var from = $('.mainYearFormPCI #mainYearFromPCI').val(),
+            to = $('.mainYearFormPCI #mainYearToPCI').val(),
+            action = $('.mainYearFormPCI').attr('action');
+        if (action.indexOf("?") < 0) {
+            action += '?'; // No other parameters, therefore add ?
+        } else {
+            action += '&'; // Other parameters found, therefore add &
+        }
+        var query = action + 'filter[]=creationdate%3A';
+                
+        // Require numerical values
+        if (!isNaN(from) && !isNaN(to)) {
+            if (from == '' && to == '') { // both dates empty; use removal url
+                query = action;
+            } else if (from == '') { // only end date set
+                query += '"'+padZeros(to)+'"';
+            } else if (to == '')  { // only start date set
+                query += '"'+padZeros(from)+'"';
+            } else { // both dates set
+                query += '"['+padZeros(from)+' TO '+padZeros(to)+']'+'"';
+            }
+            query += '&view=list&limit=10';
+
+            // Perform the new search
+            window.location = query;   
+        }
+    });
+
+
 }
 
 // Scroll the feedback button 
