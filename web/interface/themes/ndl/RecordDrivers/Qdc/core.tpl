@@ -1,4 +1,4 @@
-<!-- START of: RecordDrivers/Index/core.tpl -->
+<!-- START of: RecordDrivers/Qdc/core.tpl -->
 
 <div id="recordMetadata">
     
@@ -291,6 +291,23 @@
       </td>
     </tr>
     {/if}
+    
+    {if !empty($coreAbstracts)}
+    <tr valign="top" class="recordAbstracts">
+        <th>{translate text='Abstract'}: </th>
+        <td>
+            <div class="truncateField">
+            {* Shows the abstract first in the language chosen by the user, if the abstract exists, then in other languages *}
+            {if $coreAbstracts.$userLang}
+                {$coreAbstracts.$userLang|escape}
+                {foreach from=$coreAbstracts key=lang item=abstract}{if $lang != $userLang}<br/><br/>{$abstract|escape}{/if}{/foreach}
+            {else}
+                {foreach from=$coreAbstracts key=lang item=abstract name=abstractLoop}{if !$smarty.foreach.abstractLoop.first}<br/><br/>{/if}{$abstract|escape}{/foreach}
+            {/if}
+            </div>
+        </td>
+    </tr>   
+    {/if}
 
     {if $extendedMetadata}
       {include file=$extendedMetadata}
@@ -308,7 +325,7 @@
     {assign var="idPrefix" value=$id|substr:0:8}
     {if !empty($coreURLs) || $coreOpenURL || $idPrefix == 'metalib_'}
     <tr valign="top" class="recordURLs">
-      <th>{translate text='available_online'}: </th>
+      <th>{translate text='Online Access'}: </th>
       <td>
         {foreach from=$coreURLs item=desc key=currentUrl name=loop}
           <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
@@ -429,4 +446,4 @@
     </script>
 {/literal}
 
-<!-- END of: RecordDrivers/Index/core.tpl -->
+<!-- END of: RecordDrivers/Qdc/core.tpl -->

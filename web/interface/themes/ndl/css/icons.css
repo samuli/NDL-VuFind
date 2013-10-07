@@ -48,6 +48,7 @@
     float:right;
     background:none;
 }
+
 /* Content type icons */
 
 .iconlabel.formatdocument:before, 
@@ -563,7 +564,7 @@ span.dynatree-expander:hover {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -41px -2098px;
 }
-label.invalid {
+label.invalid:before {
     background-image: url(../images/icons16-24px-02.png);
     background-position: -997px 0px;
 }
@@ -708,58 +709,60 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 
 /* Myresearch */
 
-/* Front page: search suggestion icons */
+.myResearch .iconlabel:before {
+    margin-top:1px;
+}
 
-.myResearch .formatdocument {
+.myResearch .formatdocument:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -385px;
 }
-.myResearch .formatphysicalobject {
+.myResearch .formatphysicalobject:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -218px;
 }
- .myResearch .formatmap {
+ .myResearch .formatmap:before {
      background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -161px;
 }
-.myResearch .formatbook {
+.myResearch .formatbook:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -48px;
 }
-.myResearch .formatimage {
+.myResearch .formatimage:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -495px;
 }
-.myResearch .formatjournal {
+.myResearch .formatjournal:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -104px;
 }
- .myResearch .formatmusicalscore {
+ .myResearch .formatmusicalscore:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -330px;
 }
-.myResearch .formatthesis {
+.myResearch .formatthesis:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -45px -720px;
 }
-.myResearch .formatworkofart {
+.myResearch .formatworkofart:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -663px;
 }
- .myResearch .formatdatabase {
+ .myResearch .formatdatabase:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -275px;
 }
-.myResearch .formatvideo {
+.myResearch .formatvideo:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -606px;
 }
-.myResearch .formatsound,
-.myResearch .formatsoundrecording {
+.myResearch .formatsound:before,
+.myResearch .formatsoundrecording:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -46px -551px;
 }
-.myResearch .formatother {
+.myResearch .formatother:before {
     background-image: url(../images/icons16-24px-01.png);
     background-position: -47px -777px;
 }

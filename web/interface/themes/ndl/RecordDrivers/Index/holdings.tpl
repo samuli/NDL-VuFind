@@ -3,16 +3,19 @@
 <div class="holdingsHeader clearfix">
   <div class="holdingsHoldingURLs">
   {if !empty($holdingURLs) || $holdingsOpenURL}
-    <h5>{translate text="Internet"}</h5>
+    <h5>{translate text="available_online"}</h5>
+    <ul class="holdingsOnline">
     {if !empty($holdingURLs)}
       {foreach from=$holdingURLs item=desc key=currentUrl name=loop}
-        <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
+        <li><a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a></li>
       {/foreach}
     {/if}
+    
     {if $holdingsOpenURL}
       {include file="Search/openurl.tpl" openUrl=$holdingsOpenURL}
     {/if}
   {/if}
+    </ul>
   </div>
   <div class="holdingsHeaderLinks">
     {if $id|substr:0:7 == 'helmet.'}
@@ -80,7 +83,6 @@
           <th colspan="2" class="location"><span class="arrowIndicator"></span>{$location|translate|escape}</th>
           <th colspan="2" class="holdingDetails">
             <span class="availability">{translate text="Available"}</span>
-            <span class="returnDate">{translate text="Due"}:</span>
           </th>
           <th class="locationLink">
             {if $locationServiceUrl}
@@ -250,8 +252,8 @@ $(document).ready(function() {
     var availableCount = $(this).find('.avail td').text();
         $headingAvail = $(this).find('.holdingsContainerHeading .availability');
         iBlock = {'display': 'inline-block'},
-        msg = '{/literal}{translate text="Available"}{literal}';
-
+        msg = '{/literal}{translate text="Available"}{literal}',
+        due = '{/literal}{translate text="Closest due"}{literal}';
     /* If there are available copies, show the number */
     if (availableCount > 0) {
       $headingAvail.addClass('available');
@@ -262,8 +264,7 @@ $(document).ready(function() {
         var returnDateSplit = $(this).text().split('.'); /* Split the date and build it anew */
         var returnDate = new Date(returnDateSplit[2], returnDateSplit[1] - 1, returnDateSplit[0]);
         if (typeof prevDate == 'undefined' || returnDate < prevDate) { 
-          firstDate = returnDate; /* Get the closest date to today... */
-          firstDateText = $(this).parent().prev('.checkedout').text(); /* ...and the accompanying text */
+          firstDate = returnDate; /* Get the closest date to today */
         }
         prevDate = firstDate;
       })
@@ -271,10 +272,9 @@ $(document).ready(function() {
       /* If a return date exists */
       if (typeof firstDate != 'undefined') {
         var $dateTarget = $(this).find('.holdingDetails .returnDate');
-        $dateTarget.append(' ' + firstDate.getDate() + '.' + 
-          (firstDate.getMonth() + 1) + '.' +firstDate.getFullYear()).css(iBlock)
 
-        $headingAvail.addClass('checkedout').text(firstDateText).css(iBlock);
+        $headingAvail.addClass('checkedout').text(due + ' ' + ' ' + firstDate.getDate() + '.' + 
+          (firstDate.getMonth() + 1) + '.' +firstDate.getFullYear()).css(iBlock);
 
       } else { /* Without a date, only show the checkedout message */
         var availText = $(this).find('.checkedout').text();

@@ -116,6 +116,7 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                     to = Math.floor(ranges.xaxis.to);
                     $('#mainYearFrom').val(from);
                     $('#mainYearTo').val(to);
+                    $('body').click();
                 });
                 
                 // Set pre-selections

@@ -188,22 +188,21 @@ function initSidebarFacets() {
                     parentDl.next('dl[id*="Hidden"]').addClass('offscreen');
                     parentDl.find('dd[id*="more"]').hide();
                 }
-
+                
                 // Finally, mark this facet container opened
                 parentDl.toggleClass('open collapsed');
                 if (!parentDl.hasClass('collapsed')) {
                     parentDl.removeClass('timeline');
-                    moveMainYearForm(parentDl);
+                    if (parentDl.hasClass('year')) {
+                        moveMainYearForm(parentDl);
+                    }
                 }
-
             }
-
             // Extend to dynamic facets (without dd children)
             else {
                 parentDl.nextAll('div.dynatree-facet:first').slideToggle(100);
                 parentDl.toggleClass('collapsed open');
             }
-         
         }        
     });
     

@@ -140,7 +140,7 @@ class Comments extends DB_DataObject
     }    
 
     /**
-     * Add a link to a record.
+     * Add links to records.
      *
      * @param string[] $recordIdArray Array of record IDs
      *
@@ -157,5 +157,40 @@ class Comments extends DB_DataObject
             $commentsRecord->insert();
         }
         return true;
-    }    
+    }
+
+    /**
+     * Verify links to records
+     * @param string[] $recordIdArray Array of record IDs
+     *
+     * @return boolean True if any links were fixed
+     * @access public
+     */
+    public function verifyLinks($recordIdArray)
+    {
+        $fixed = false;
+        include_once 'services/MyResearch/lib/Comments_record.php';
+        // Remove any orphaned links
+        $commentsRecord = new Comments_record();
+        $commentsRecord->comment_id = $this->id;
+        if ($commentsRecord->find()) {
+            while ($commentsRecord->fetch()) {
+                if (!in_array($commentsRecord->record_id, $recordIdArray)) {
+                    $commentsRecord->delete();
+                    $fixed = true;            
+                }    
+            }           
+        }
+        // Add missing links
+        foreach ($recordIdArray as $recordId) {
+            $commentsRecord = new Comments_record();
+            $commentsRecord->record_id = $recordId;
+            $commentsRecord->comment_id = $this->id;
+            if (!$commentsRecord->find()) {
+                $commentsRecord->insert();
+                $fixed = true;
+            }
+        }
+        return $fixed;
+    }
 }
