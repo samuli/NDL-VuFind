@@ -12,6 +12,7 @@ $(document).ready(function() {
     initMetaLibLoadingIndicator();
     initCustomEyeCandy();
     initScrollRecord();
+    initScrollMenu();
 });
 
 // Header menu
@@ -333,4 +334,23 @@ function initCustomEyeCandy() {
         $(this).children('span').stop().delay(100).animate({top:-50}, 150);
     });
 }
+
+// Toggle fixed menu bar
+ function initScrollMenu() {
+   if (document.querySelectorAll('div.menu').length >= 1) {
+	$(window).on('scroll', function () {
+		var menuSize	=	($(window).height()) - ($('.menu .grid_6').outerHeight()),
+        scrollTop     = $(document).scrollTop(),
+        elementOffset = $('.menu .content').offset().top,
+        distance      = (elementOffset - scrollTop);
+       if (distance < 0) {
+         $('.menu .grid_6').addClass('fixed');
+       }
+ 	   if ((distance > 0) || (menuSize < 0)) {
+         $('.menu .grid_6').removeClass('fixed');
+       }
+    });
+   }
+ }
+
 
