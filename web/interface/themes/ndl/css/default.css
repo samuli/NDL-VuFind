@@ -1414,6 +1414,7 @@ ul.cartContent {
 .ui-autocomplete {
     max-height: 300px;
     overflow: hidden;
+    width: 618px !important;
 }
 
 /** Publication Year facet */

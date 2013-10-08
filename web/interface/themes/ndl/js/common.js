@@ -278,9 +278,8 @@ function initAutocomplete() {
                 });
         },
         open: function() {
-            $('.ui-autocomplete').css('width', '618px');
             toggleKeepFiltersOption(true);                
-        },
+        }
     });
 
     ac.data( "autocomplete" )._renderItem = function(ul, item) {
