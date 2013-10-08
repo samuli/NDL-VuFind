@@ -12,6 +12,7 @@ $(document).ready(function() {
     initMetaLibLoadingIndicator();
     initCustomEyeCandy();
     initScrollRecord();
+    initScrollMenu();
 });
 
 // Header menu
@@ -258,6 +259,40 @@ function initSidebarFacets() {
             window.location = query;   
         }
     });
+
+    // PCI Timeline search functionality
+    $(".mainYearFormPCI").submit(function(e){
+        e.preventDefault();
+        // Get dates, build query
+        var from = $('.mainYearFormPCI #mainYearFromPCI').val(),
+            to = $('.mainYearFormPCI #mainYearToPCI').val(),
+            action = $('.mainYearFormPCI').attr('action');
+        if (action.indexOf("?") < 0) {
+            action += '?'; // No other parameters, therefore add ?
+        } else {
+            action += '&'; // Other parameters found, therefore add &
+        }
+        var query = action + 'filter[]=creationdate%3A';
+                
+        // Require numerical values
+        if (!isNaN(from) && !isNaN(to)) {
+            if (from == '' && to == '') { // both dates empty; use removal url
+                query = action;
+            } else if (from == '') { // only end date set
+                query += '"'+padZeros(to)+'"';
+            } else if (to == '')  { // only start date set
+                query += '"'+padZeros(from)+'"';
+            } else { // both dates set
+                query += '"['+padZeros(from)+' TO '+padZeros(to)+']'+'"';
+            }
+            query += '&view=list&limit=10';
+
+            // Perform the new search
+            window.location = query;   
+        }
+    });
+
+
 }
 
 // Scroll the feedback button 
@@ -333,4 +368,23 @@ function initCustomEyeCandy() {
         $(this).children('span').stop().delay(100).animate({top:-50}, 150);
     });
 }
+
+// Toggle fixed menu bar
+ function initScrollMenu() {
+   if (document.querySelectorAll('div.menu').length >= 1) {
+	$(window).on('scroll', function () {
+		var menuSize	=	($(window).height()) - ($('.menu .grid_6').outerHeight()),
+        scrollTop     = $(document).scrollTop(),
+        elementOffset = $('.menu .content').offset().top,
+        distance      = (elementOffset - scrollTop);
+       if (distance < 0) {
+         $('.menu .grid_6').addClass('fixed');
+       }
+ 	   if ((distance > 0) || (menuSize < 0)) {
+         $('.menu .grid_6').removeClass('fixed');
+       }
+    });
+   }
+ }
+
 

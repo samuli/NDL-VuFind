@@ -1101,6 +1101,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('summHierarchyTopId', $this->getHierarchyTopId());
         $interface->assign('summHierarchyTopTitle', $this->getHierarchyTopTitle());
         $interface->assign('summInstitutions', $this->getInstitutions());
+        $interface->assign('summOnlineURLs', $this->getOnlineURLs());
         
         //collection module only
         if (isset($configArray['Collections']['collections'])
@@ -3155,6 +3156,50 @@ class IndexRecord implements RecordInterface
             return reset($this->fields['source_str_mv']);
         }
         return '';
+    }
+    
+    /**
+     * Get online url's
+     * 
+     * @return string Source ID
+     */
+    protected function getOnlineURLs()
+    {
+        if (!isset($this->fields['online_urls_str_mv'])) {
+            return array();
+        }
+        
+        $urls = array();
+        foreach ($this->fields['online_urls_str_mv'] as $url) {
+            $newURL = json_decode($url, true);
+            // If there's no dedup data, don't display sources either
+            if (!isset($this->fields['dedup_data'])) {
+                $newURL['source'] = '';
+            }
+            // Check for duplicates
+            $found = false;
+            foreach ($urls as &$existingUrl) {
+                if ($newURL['url'] == $existingUrl['url']) {
+                    $found = true;
+                    if (is_array($existingUrl['source'])) {
+                        $existingUrl['source'][] = $newURL['source'];
+                    } else {
+                        $existingUrl['source'] = array(
+                            $existingUrl['source'],
+                            $newURL['source']
+                        );
+                    }
+                    if (!$existingUrl['text']) {
+                        $existingUrl['text'] = $newURL['text'];
+                    }
+                    break;
+                }
+            }
+            if (!$found) {
+                $urls[] = $newURL;
+            }
+        }
+        return $urls; 
     }
     
     /**
