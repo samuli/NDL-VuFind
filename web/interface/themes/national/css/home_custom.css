@@ -220,7 +220,7 @@
 
 /* Section: Popular Searches & Map Search */
 
-.section#popular-map {
+.section#popular-map, .section#home-timeline {
     background:#e1eff4;
 }
 
