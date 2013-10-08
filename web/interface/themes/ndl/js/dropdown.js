@@ -11,38 +11,25 @@ $(document).ready(function() {
 
 function initDropdowns() {
     // Hide dropdown when clicking outside
-    $(document).bind('click', function(e) {
-        $(".dropdown dd ul").hide();
-
-        // send menuClose events
-        $(".dropdown").each(function(ind,obj) {
-            if ($(this).data("menuOpen") === 1) {
-                $(obj).trigger("menuClose");
-            }
-            $(obj).data("menuOpen", 0);
-        });        
+    $(document).on('click touchstart', function(e) {
+        $(".dropdown").trigger("toggle", [false]);
     });
     
-    $(".dropdown dt a").bind('click', function(e) {
+    $(".dropdown dt a").on('click touchstart', function(e) {
+
+        $(".dropdown").each(function(ind,o) { 
+            var parObj = $(e.target).parent().parent();
+            if ($(this).get(0) != parObj.get(0)) {
+                $(this).trigger("toggle", [false]);
+            }
+        });
+        
         var dropdown = $(this).closest('dl.dropdown');
-
-        dropdown.find('dd ul').fadeToggle({duration:100});
-
-        // send menuOpen/menuClose events
-        var parent = $(this).parent().parent();
-        var menuOpen = parent.data("menuOpen");
-        
-        var event = !(menuOpen === 1) ? 'menuOpen' : 'menuClose';
-        if (typeof parent[event]) {
-            parent.trigger(event);
-        }
-        // save state
-        parent.data("menuOpen", menuOpen === 1 ? 0 : 1);
-        
+        dropdown.trigger("toggle", [!dropdown.data("menuOpen")]);
         return false;
     });
 
-    $(".dropdown dd ul li a").bind('click', function(e) {
+    $(".dropdown dd ul li a").on('click touchstart', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
         var text = $(this).html();
         dropdown.find('dt a').html(text);
@@ -56,8 +43,22 @@ function initDropdowns() {
 
         e.preventDefault();
     });
-    $(".dropdown").data("menuOpen", 0);    
-};
+    $(".dropdown").data("menuOpen", 0);
+    $(".dropdown").on("toggle", function(e, mode) {
+        $(this).find('dd ul').fadeTo(100, mode ? 1 : 0);
+        
+        var currentMode = $(this).data("menuOpen");
+        if (currentMode == mode) {
+          return;
+        }
+        // send menuOpen/menuClose events
+        var event = mode ? 'menuOpen' : 'menuClose';
+        $(this).trigger(event);
+
+        // save state
+        $(this).data("menuOpen", mode ? 1 : 0);
+    });
+}
 
 // Function for creating dropdowns
 function createDropdowns(){
