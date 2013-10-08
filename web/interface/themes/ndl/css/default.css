@@ -2277,9 +2277,7 @@ dl.narrowList a {
     text-decoration:none;
 }
 .checkboxFilter input {
-	visibility: hidden;
     width: 30px;
-    height: 30px;
     float: left;
 }
 .checkboxFilter {
