@@ -130,9 +130,10 @@ class UInterface extends Smarty
             'autocomplete',
             is_object($searchObject) ? $searchObject->getAutocompleteStatus() : false
         );
+        
         $this->assign(
-            'retainFiltersByDefault', $searchObject->getRetainFilterSetting()
-        );
+                      'retainFiltersByDefault', $searchObject->getRetainFilterByDefaultSetting()
+                      );
 
         if (isset($configArray['Site']['showBookBag'])) {
             $this->assign(
@@ -446,6 +447,20 @@ class UInterface extends Smarty
         if ($user && !PEAR::isError($user)) {
             $this->assign('currentCatalogAccount', $user->cat_username);
             $this->assign('catalogAccounts', $user->getCatalogAccounts());
+        }
+
+
+        // Override default value for retain filters -option (searches.ini::retain_filters_by_default)
+        // if it can be found in the request URL or has previously been saved as a session variable.
+        $retainFilters = null;
+        if (isset($_REQUEST['retainFilters'])) {
+            $retainFilters = $_REQUEST['retainFilters'] === '1';
+        } elseif (isset($_SESSION['retainFilters'])) {
+            $retainFilters = $_SESSION['retainFilters'] === 1;   
+        }
+        if (!is_null($retainFilters)) {
+            $_SESSION['retainFilters'] = (int)$retainFilters;
+            $this->assign('retainFiltersByDefault', $retainFilters);
         }
     }
 

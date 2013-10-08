@@ -119,7 +119,10 @@
 
     {* Load dialog/lightbox functions *}
     {js filename="lightbox.js"}
-    
+
+    {* Load dropdown menu modification *}
+    {js filename="dropdown.js"}
+
     {* Load common javascript functions *}
     {js filename="common.js"}
     
@@ -134,8 +137,6 @@
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
 
-    {* Load dropdown menu modification *}
-    {js filename="dropdown.js"}
     
     {* Load ndl theme functions *}
     {js filename="ndl.js"}

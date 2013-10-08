@@ -48,9 +48,10 @@
 
   {if ($filterList || $hasCheckboxFilters) && !$disableKeepFilterControl}
     <div class="keepFilters">
-      <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/>
-      <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
-
+      <div class="checkboxFilter">
+        <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters" />
+        <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
+      </div>     
       <div class="offscreen">
     {foreach from=$filterList item=data key=field name=filterLoop}
       {foreach from=$data item=value}

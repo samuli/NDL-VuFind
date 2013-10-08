@@ -125,8 +125,8 @@ class LidoRecord extends IndexRecord
         } else {
             $mainFormat = '';
         }
-        if (isset($this->fields['main_date_str'])) {
-            $interface->assign('summDate', array($this->fields['main_date_str']));
+        if ($this->getResultDates()) {
+            $interface->assign('summDate', $this->getResultDates());
         }
         if (isset($this->fields['event_creation_displaydate_str'])) {
             if ($mainFormat == 'Image') {
@@ -406,6 +406,26 @@ class LidoRecord extends IndexRecord
             $results[] = (string)$node;
         }
         return $results;
+    }
+    
+    /**
+     * Get an array of dates for results list display
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getResultDates()
+    {
+        $dates = array();
+        $initialDate = isset($this->fields['creation_daterange']) ? $this->fields['creation_daterange'] : '';
+        if ($initialDate) {
+            $dates = explode(',', $initialDate);
+            foreach ($dates as &$date) {
+                $date = substr($date, 0, 4);
+            }   
+            unset($date);      
+        }      
+        return $dates;
     }
     
 }
