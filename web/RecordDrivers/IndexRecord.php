@@ -321,7 +321,9 @@ class IndexRecord implements RecordInterface
         
         // Collections
         $interface->assign('coreCollections', $this->getCollections());
-        
+
+        $interface->assign('coreMergedRecordData', $this->getMergedRecordData());
+
         // Send back the template name:
         return 'RecordDrivers/Index/core.tpl';
     }
@@ -1154,7 +1156,7 @@ class IndexRecord implements RecordInterface
         
         // All images
         $interface->assign('summImages', $this->getAllImages());
-        
+
         // Send back the template to display:
         return 'RecordDrivers/Index/result-' . $view . '.tpl';
     }
@@ -3048,6 +3050,31 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['dedup_data']) ? $this->fields['dedup_data'] : array();
     }
     
+
+    public function getMergedRecordData()
+    {
+        // TODO: make this nicer also.
+        $searchObject = SearchObjectFactory::initSearchObject();
+        $query = 'local_ids_str_mv:"' . addcslashes($this->getUniqueID(), '"') . '"';
+        $searchObject->initBrowseScreen();
+        $searchObject->disableLogging();
+        $searchObject->setQueryString($query);
+       	$result = $searchObject->processSearch();
+        $searchObject->close();
+        if (PEAR::isError($result)) {
+        	PEAR::raiseError($result->getMessage());
+        }
+        $res = array();
+        if (isset($result['response']['docs'][0]['dedup_data'])) {
+            $res['dedup_data'] = $result['response']['docs'][0]['dedup_data'];
+        }            
+        if (isset($result['response']['docs'][0]['online_urls_str_mv'])) {
+            $res['urls'] = $result['response']['docs'][0]['online_urls_str_mv'];
+        }
+        return $res;
+    }
+
+
     /**
      * Return an external URL where a displayable description text
      * can be retrieved from, if available; false otherwise.
