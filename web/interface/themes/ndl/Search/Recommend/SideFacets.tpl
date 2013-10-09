@@ -79,10 +79,10 @@
         </fieldset>
       </form>
       {elseif is_array($hierarchicalFacets) && in_array($title, $hierarchicalFacets)}
-      <dl class="narrowList navmenu{if is_array($defaultFacets) && !in_array($title, $defaultFacets)} hierarcicalFacet{else} collapsed open{/if}">
+      <dl class="narrowList navmenu{if is_array($defaultFacets) && !in_array($title, $defaultFacets) && !in_array($title, $activeFacets)} hierarcicalFacet{else} collapsed open{/if}">
           <dt>{translate text=$cluster.label}</dt>
       </dl>
-      {if is_array($defaultFacets) && in_array($title, $defaultFacets)}
+      {if in_array($title, $activeFacets) || (is_array($defaultFacets) && in_array($title, $defaultFacets))}
       {literal}
       <script type="text/javascript">
           //<![CDATA[

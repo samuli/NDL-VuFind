@@ -169,7 +169,7 @@ function initSidebarFacets() {
         if (parentDl.hasClass('hierarcicalFacet')) {
             var target = parentDl.next('div.dynatree-facet');  
             var id = target.attr('id').substr('facet_'.length);
-            enableDynatree(target, id, '/vufind/Search/Results?lookfor=&type=AllFields&prefiltered=-&view=list', 'Results');
+            enableDynatree(target, id, fullPath, action);
             parentDl.removeClass('hierarcicalFacet');
             parentDl.toggleClass('collapsed open');
         } else {
