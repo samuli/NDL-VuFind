@@ -147,9 +147,10 @@
     }
     .keepFilters {
         clear: left;
-        padding-bottom: 13px;
         float: right;
         margin-right: 10px;
+        left: 229px;
+        top: 54px;
     }
     .keepdFilters > input {
         display: block;
@@ -158,6 +159,9 @@
         margin-top: 3px;
     }
     
+    .ui-autocomplete {
+        width: 458px !important;
+    }
     
 
     /* Front page */

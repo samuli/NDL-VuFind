@@ -1385,7 +1385,7 @@ abstract class SearchObject_Base
      * @return bool
      * @access public
      */
-    public function getRetainFilterSetting()
+    public function getRetainFilterByDefaultSetting()
     {
         return $this->retainFiltersByDefault;
     }

@@ -23,6 +23,10 @@
     </div>
   </div>
 </div>
+<div id="home-timeline" class="section clearfix">
+  {include file="Search/Recommend/DateRangeVisAjax.tpl"}
+</div>
+{* <!--
 <div id="popular-map" class="section clearfix">
   <div class="content">
     <div class="grid_14">
@@ -41,5 +45,6 @@
     </div>
   </div>
 </div>
-    
+--> *}
+
 <!-- END of: Search/home-content.sv.tpl -->

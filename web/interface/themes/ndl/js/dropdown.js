@@ -8,22 +8,29 @@ $(document).ready(function() {
     initDropdowns();
 });
 
+
 function initDropdowns() {
-    
     // Hide dropdown when clicking outside
-    $(document).bind('click', function(e) {
-        $(".dropdown dd ul").hide();
+    $(document).on('click touchstart', function(e) {
+        $(".dropdown").trigger("toggle", [false]);
     });
     
-    $(".dropdown dt a").bind('click', function(e) {
+    $(".dropdown dt a").on('click touchstart', function(e) {
+        $(".dropdown").each(function(ind,o) { 
+            var parObj = $(e.target).parent().parent();
+            if ($(this).get(0) != parObj.get(0)) {
+                $(this).trigger("toggle", [false]);
+            }
+        });
+        
         var dropdown = $(this).closest('dl.dropdown');
-        dropdown.find('dd ul').fadeToggle(100);
+        dropdown.trigger("toggle", [!dropdown.data("menuOpen")]);
 
-        toggleKeepFiltersOption(true);
+        // prevent event from bubbling to document.click
         return false;
     });
 
-    $(".dropdown dd ul li a").bind('click', function(e) {
+    $(".dropdown dd ul li a").on('click touchstart', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
         var text = $(this).html();
         dropdown.find('dt a').html(text);
@@ -34,9 +41,27 @@ function initDropdowns() {
         
         source.find('option').removeAttr('selected');
         source.find('option[value="'+$(this).find("span.value").text()+'"]').attr('selected', 'selected').change();
+
         e.preventDefault();
-    });    
-};
+    });
+    $(".dropdown").data("menuOpen", 0);
+    $(".dropdown").on("toggle", function(e, mode) {
+        var currentMode = $(this).data("menuOpen");
+        if (currentMode == mode) {
+          return;
+        }
+
+        var menu = $(this).find('dd ul');
+        menu.stop().fadeTo(100, mode ? 1 : 0, function() { if (!mode) { menu.hide(); } });
+
+        // send menuOpen/menuClose events
+        var event = mode ? 'menuOpen' : 'menuClose';
+        $(this).trigger(event);
+
+        // save state
+        $(this).data("menuOpen", mode ? 1 : 0);
+    });
+}
 
 // Function for creating dropdowns
 function createDropdowns(){

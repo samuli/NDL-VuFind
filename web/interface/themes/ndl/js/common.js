@@ -19,7 +19,9 @@ $.validator.addMethod("phoneUS", function(phone_number, element) {
         phone_number.match(/^(\([2-9]\d{2}\)|[2-9]\d{2})[2-9]\d{2}\d{4}$/);
 }, 'Please specify a valid phone number');
 
+
 $(document).ready(function(){
+
     // initialize autocomplete
     initAutocomplete();    
 
@@ -29,9 +31,6 @@ $(document).ready(function(){
 
     // support "jump menu" dropdown boxes
     $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
-
-    // attach click event to the "keep filters" checkbox
-    $('#searchFormKeepFilters').change(function() { filterAll(this); });
 
 
 
@@ -121,22 +120,56 @@ $(document).ready(function(){
     );
 
     // show when search field is focused
-    $('#searchForm_input').focus(function(e) { toggleKeepFiltersOption(true); });
+    var searchInput = $('#searchForm_input');
+    var prefilterMenu = $("#searchForm").find(".dropdown");
 
-    // show when prefilter is changed
-    $("#searchForm_filter").change(function(e) { toggleKeepFiltersOption(true); });
-    
-    // hide when mouse is clicked and search field is not focused and mouse is not inside search area
-    $(document).mouseup(function() {
-        if (!$('#searchForm_input').is(":focus") && !$('#searchFormContainer').hasClass("hover")) {
-            toggleKeepFiltersOption(false);
-        }
+
+    // attach click event to the "keep filters" checkbox
+    $('#searchFormKeepFilters').change(function(e) { 
+        filterAll(this);
+        toggleKeepFiltersOption(false); 
     });
 
-    // preserve active search term and prefilter
-    origSearchTerm = $('#searchForm_input').val();
-    origPrefilter = $("#searchForm_filter").val();
 
+    // Show "keep filters" checkbox when search input is focused or changed
+    searchInput.focus(function(e) { 
+        toggleKeepFiltersOption(true); 
+    });
+    searchInput.change(function(e) {
+        toggleKeepFiltersOption(true);
+    });
+    searchInput.keydown(function(e) {
+        toggleKeepFiltersOption(true);
+    });
+
+    // Hide "keep filters" checkbox when search input is blurred
+    searchInput.blur(function(e) { 
+        toggleKeepFiltersOption(false); 
+    });
+    
+    
+    // Show "keep filters" checkbox when prefilter -menu is opened
+    prefilterMenu.bind("menuOpen", function() { 
+        // position prefilter menu to leave vertical space for retain filters -checkbox
+        if (isKeepFiltersOptionPresent()) {
+            $(".searchbox .dropdown dd ul").css('top', '40px');
+        }
+        toggleKeepFiltersOption(true); 
+    });
+    // Hide "keep filters" checkbox when prefilter -menu is closed
+    prefilterMenu.bind("menuClose", function() { toggleKeepFiltersOption(false); });
+
+
+    // When search form is submitted, insert a hidden field for "keep filters" -value. 
+    // This way the variable gets posted also when the checkbox is unchecked.
+    var searchForm = $('#searchForm');
+    searchForm.submit(function(e) {
+        var opt = $(this).find("#searchFormKeepFilters");
+        if (opt) {
+            var retainFilters = opt.is(":checked") ? 1 : 0;
+            $(this).append('<input type="hidden" name="retainFilters" value="' + retainFilters + '" />');            
+        }
+    });
 });
 
 function toggleMenu(elemId) {
@@ -208,7 +241,9 @@ function initAutocomplete() {
     var params = extractParams(searchInput.attr('class'));
     var maxItems = params.maxItems > 0 ? params.maxItems : 10;
     var minLength = params.minLength > 0 ? params.minLength : 3;
+    var position = isKeepFiltersOptionPresent() ? { offset: '0 46'} : { offset: '0 6'};
     ac = searchInput.autocomplete({
+        position: position,
         minLength: minLength,
         select: function(e, ui) {
             if (e.keyCode === 13 && searchInput.val() != ui.item.label) {
@@ -241,6 +276,9 @@ function initAutocomplete() {
                     }
                 }
                 });
+        },
+        open: function() {
+            toggleKeepFiltersOption(true);                
         }
     });
 
@@ -454,28 +492,35 @@ function isTouchDevice() {
         || !!('onmsgesturechange' in window); // IE10
 };
 
-function toggleKeepFiltersOption(mode) {
-    // force visible if search term or prefilter has been modified
-    var currentSearchTerm = $('#searchForm_input').val();
-    var currentPrefilter = $("#searchForm_filter").val();
-    if (origSearchTerm != currentSearchTerm || origPrefilter != currentPrefilter) {
-        mode = true;
+
+_hideKeepFiltersTimer = null;
+function toggleKeepFiltersOption(mode) {    
+    var obj = $("#searchForm").find(".keepFilters");
+    if (mode) {        
+        obj.show();
     }
 
-    var obj = $("#searchForm").find(".keepFilters");
-    if (mode) {
-        obj.show();
-    } else {
-        // already hidden?
-        if (!obj.is(":visible")) {
-            return;
-        }
-        // search field focused?
-        if ($('#searchForm_input').is(":focus")) {
-            return;
-        }
+    if (_hideKeepFiltersTimer) {
+        window.clearTimeout(_hideKeepFiltersTimer);
     }
-    obj.stop().fadeTo( 300, (mode ? 1 : 0), function() { if (!mode) { $(this).hide(); }} );
+    
+    if (mode) {
+        obj.stop().fadeTo(50,1);
+    } else {
+        // Hide checkbox after a small delay. 
+        // This way the user notices the new checkbox value before it is hidden.
+        _hideKeepFiltersTimer = window.setTimeout(function() {
+            obj.stop().fadeTo(400,0,function() { 
+                if (!mode) { 
+                    $(this).hide(); 
+                }
+            });
+        }, 1000);        
+    }
+}
+
+function isKeepFiltersOptionPresent() {
+    return $('#searchFormKeepFilters').length > 0;
 }
 
 (function($) {

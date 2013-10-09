@@ -94,7 +94,7 @@ class QdcRecord extends IndexRecord
         $lang = '';
         foreach ($this->xml->xpath('/qualifieddc/abstract') as $node) {
             $abstract = (string)$node;
-            $lang = (string)$node[@lang];
+            $lang = (string)$node['lang'];
             if ($lang == "en") {
                 $lang .= "-gb";
             }
