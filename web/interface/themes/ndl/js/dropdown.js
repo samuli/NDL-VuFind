@@ -16,7 +16,6 @@ function initDropdowns() {
     });
     
     $(".dropdown dt a").on('click touchstart', function(e) {
-
         $(".dropdown").each(function(ind,o) { 
             var parObj = $(e.target).parent().parent();
             if ($(this).get(0) != parObj.get(0)) {
@@ -26,6 +25,8 @@ function initDropdowns() {
         
         var dropdown = $(this).closest('dl.dropdown');
         dropdown.trigger("toggle", [!dropdown.data("menuOpen")]);
+
+        // prevent event from bubbling to document.click
         return false;
     });
 
@@ -45,12 +46,14 @@ function initDropdowns() {
     });
     $(".dropdown").data("menuOpen", 0);
     $(".dropdown").on("toggle", function(e, mode) {
-        $(this).find('dd ul').fadeTo(100, mode ? 1 : 0);
-        
         var currentMode = $(this).data("menuOpen");
         if (currentMode == mode) {
           return;
         }
+
+        var menu = $(this).find('dd ul');
+        menu.stop().fadeTo(100, mode ? 1 : 0, function() { if (!mode) { menu.hide(); } });
+
         // send menuOpen/menuClose events
         var event = mode ? 'menuOpen' : 'menuClose';
         $(this).trigger(event);
