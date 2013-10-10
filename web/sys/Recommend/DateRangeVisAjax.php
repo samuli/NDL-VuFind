@@ -130,7 +130,7 @@ class DateRangeVisAjax extends PubDateVisAjax
         }
         $result[$this->filterField] = array($from, $to);
         $result[$this->filterField]['label']
-            = $this->searchObject->getFacetLabel($current);
+            = $this->searchObject->getFacetLabel($this->filterField);
         return $result;
     }
     

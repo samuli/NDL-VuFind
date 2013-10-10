@@ -2226,6 +2226,11 @@ dl.narrowList a {
 .sidegroup dl dd {
     display:none;
 }
+
+dl.defaultFacet dd {
+    display: block;
+}
+
 .sidegroup dl.active dd {
     display:block;
 }
@@ -5379,6 +5384,7 @@ span.dynatree-node a {
     text-decoration: none;
     padding: 0;
     border: none;
+    color: #00A3B5;
 }
 span.dynatree-node .facetTitle {
     max-width: 130px;
