@@ -176,11 +176,12 @@ class PCI
      */
     protected function buildQuery($searchTerms, $filterList, $startRec, $limit, $sortBy)
     {
+        // 'includeValue' changed to 'Value' due to searches not working otherwise
         $facetXml = <<<EOE
         <QueryTerm>
             <IndexField>%s</IndexField>
             <PrecisionOperator>exact</PrecisionOperator>
-            <includeValue>%s</includeValue>
+            <Value>%s</Value>
         </QueryTerm>
 EOE;
 
@@ -189,7 +190,13 @@ EOE;
             $includeValues = '';
             foreach ($values as $value) {
                 if ($key == 'creationdate') {
-                    $value = "[$value TO $value]";
+                    // Do we have a single value or range
+                    if (strpos($value,'TO') !== false) {
+                        $value = $value;
+                    }
+                    else {
+                        $value = "[$value TO $value]";
+                    }
                 }
                 $facetKey = 'facet_' . $key;
                 $filterTerms .= sprintf($facetXml, htmlspecialchars($facetKey, ENT_COMPAT, 'UTF-8'), htmlspecialchars($value, ENT_COMPAT, 'UTF-8'));

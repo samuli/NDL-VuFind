@@ -4,9 +4,9 @@
   <div class="content">
     <div class="grid_14">
       <div id="siteDescription">
-        <h2>För dig som söker information och intressanta upplevelser</h2>
-        <p>Finna är en ny sökportal för alla som använder arkivens, bibliotekens och museernas tjänster. </p>
-        <p>Testa sökfunktionen, <a href="{$path}/Feedback/Home">ge respons</a> eller <a class="color-violet" href="{$path}/Content/about">läs mer</a> om tjänsten i testversionen av Finna!</p>
+        <h2>För alla som söker information och upplevelser</h2>
+        <p>Finna är en sökportal som samlar material från olika arkiv, bibliotek och museer. Innehållet utökas kontinuerligt.
+</p><p>I Finna kan du också bläddra och läsa i flera hundratusen<a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'> e-resurser.</a></p>
       </div>
     </div>
     <div class="grid_10 push_right">
@@ -23,6 +23,10 @@
     </div>
   </div>
 </div>
+<div id="home-timeline" class="section clearfix">
+  {include file="Search/Recommend/DateRangeVisAjax.tpl"}
+</div>
+{* <!--
 <div id="popular-map" class="section clearfix">
   <div class="content">
     <div class="grid_14">
@@ -41,5 +45,6 @@
     </div>
   </div>
 </div>
-    
+--> *}
+
 <!-- END of: Search/home-content.sv.tpl -->

@@ -268,7 +268,8 @@ class IndexRecord implements RecordInterface
         ) {
             $interface->assign('coreURLs', $this->getURLs());
         }
-
+        $interface->assign('coreOnlineURLs', $this->getOnlineURLs());
+        
         // The secondary author array may contain a corporate or primary author;
         // let's be sure we filter out duplicate values.
         $mainAuthor = $this->getPrimaryAuthor();
@@ -321,7 +322,9 @@ class IndexRecord implements RecordInterface
         
         // Collections
         $interface->assign('coreCollections', $this->getCollections());
-        
+
+        $interface->assign('coreMergedRecordData', $this->getMergedRecordData());
+
         // Send back the template name:
         return 'RecordDrivers/Index/core.tpl';
     }
@@ -1101,6 +1104,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('summHierarchyTopId', $this->getHierarchyTopId());
         $interface->assign('summHierarchyTopTitle', $this->getHierarchyTopTitle());
         $interface->assign('summInstitutions', $this->getInstitutions());
+        $interface->assign('summOnlineURLs', $this->getOnlineURLs());
         
         //collection module only
         if (isset($configArray['Collections']['collections'])
@@ -1153,7 +1157,7 @@ class IndexRecord implements RecordInterface
         
         // All images
         $interface->assign('summImages', $this->getAllImages());
-        
+
         // Send back the template to display:
         return 'RecordDrivers/Index/result-' . $view . '.tpl';
     }
@@ -3048,6 +3052,36 @@ class IndexRecord implements RecordInterface
     }
     
     /**
+     * Get an array of dedup and link data associated with the record.
+     * 
+     * @return array:null
+     * @access protected
+     */
+    protected function getMergedRecordData()
+    {
+        // TODO: make this nicer also.
+        $searchObject = SearchObjectFactory::initSearchObject();
+        $query = 'local_ids_str_mv:"' . addcslashes($this->getUniqueID(), '"') . '"';
+        $searchObject->initBrowseScreen();
+        $searchObject->disableLogging();
+        $searchObject->setQueryString($query);
+       	$result = $searchObject->processSearch();
+        $searchObject->close();
+        if (PEAR::isError($result)) {
+        	PEAR::raiseError($result->getMessage());
+        }
+        $res = array();
+        if (isset($result['response']['docs'][0]['dedup_data'])) {
+            $res['dedup_data'] = $result['response']['docs'][0]['dedup_data'];
+        }            
+        if (isset($result['response']['docs'][0]['online_urls_str_mv'])) {
+            $res['urls'] = $this->combineURLArray($result['response']['docs'][0]['online_urls_str_mv'], true);
+        }
+        return $res;
+    }
+
+
+    /**
      * Return an external URL where a displayable description text
      * can be retrieved from, if available; false otherwise.
      *
@@ -3155,6 +3189,62 @@ class IndexRecord implements RecordInterface
             return reset($this->fields['source_str_mv']);
         }
         return '';
+    }
+    
+    /**
+     * Get online url's
+     * 
+     * @return string Source ID
+     */
+    protected function getOnlineURLs()
+    {
+        if (!isset($this->fields['online_urls_str_mv'])) {
+            return array();
+        }
+        return $this->combineURLArray($this->fields['online_urls_str_mv'], isset($this->fields['dedup_data']));
+    }
+    
+    /**
+     * A helper function that merges an array of JSON-encoded URLs
+     *
+     * @param array $urlArray Array of JSON-encoded URL attributes
+     * @param bool  $sources  Whether to store data source of each URL
+     * 
+     * @return array Array of URL information
+     */
+    protected function combineURLArray($urlArray, $sources = true)
+    {
+        $urls = array();
+        foreach ($urlArray as $url) {
+            $newURL = json_decode($url, true);
+            // If there's no dedup data, don't display sources either
+            if (!$sources) {
+                $newURL['source'] = '';
+            }
+            // Check for duplicates
+            $found = false;
+            foreach ($urls as &$existingUrl) {
+                if ($newURL['url'] == $existingUrl['url']) {
+                    $found = true;
+                    if (is_array($existingUrl['source'])) {
+                        $existingUrl['source'][] = $newURL['source'];
+                    } else {
+                        $existingUrl['source'] = array(
+                            $existingUrl['source'],
+                            $newURL['source']
+                        );
+                    }
+                    if (!$existingUrl['text']) {
+                        $existingUrl['text'] = $newURL['text'];
+                    }
+                    break;
+                }
+            }
+            if (!$found) {
+                $urls[] = $newURL;
+            }
+        }
+        return $urls; 
     }
     
     /**

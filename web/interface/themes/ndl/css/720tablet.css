@@ -16,7 +16,7 @@
 }
 
 @media only screen and (max-width: 1020px) {
-    
+
     /* General */
     .backgroundContainer {
         width:100%;
@@ -274,7 +274,6 @@
     table.holdingsContainerHolding .checkedout,
     table.holdingsContainerHolding .available {
         display: inline-block;
-        width: 98px;
     }
     
     /* Myresearch */
@@ -318,6 +317,17 @@
     body {
       min-width: 720px;
     }
+
+
+    
+    .keepFilters {
+        left: 228px;
+    }
+    .ui-autocomplete {
+        width: 457px !important;
+    }
+    
+
 
     /* `Container
     ----------------------------------------------------------------------------------------------------*/

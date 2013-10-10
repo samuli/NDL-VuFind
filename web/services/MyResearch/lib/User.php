@@ -64,6 +64,7 @@ class User extends DB_DataObject
     public $created;                         // datetime(19)  not_null binary
     public $language;                        // string(30)  not_null
     public $due_date_reminder;               // int(11)  not_null
+    public $last_login;                      // datetime(19)  not_null binary
     
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User',$k,$v); }
@@ -84,7 +85,7 @@ class User extends DB_DataObject
         return array(
             'id', 'username', 'password', 'cat_username', 'cat_password',
             'firstname', 'lastname', 'email', 'college', 'home_library', 'major',
-            'language', 'due_date_reminder'
+            'language', 'due_date_reminder', 'last_login'
         );
     }
 
@@ -558,7 +559,7 @@ class User extends DB_DataObject
         
         return true;
     }
-    
+        
     /**
      * Get a list of catalog accounts
      * 
@@ -583,4 +584,29 @@ class User extends DB_DataObject
         }
         return $accounts;
     }
+    
+    /**
+     * Get an array of User objects representing expired users.
+     *
+     * @param int $daysOld Age in days of an "expired" user.
+     *
+     * @return array       Matching User objects.
+     * @access public
+     */
+    public function getExpiredUsers($daysOld = 365)
+    {
+        // Find expired users:
+        $sql = 'SELECT * FROM "user" WHERE datediff(now(), last_login)>' . $daysOld .
+            ' LIMIT 0,10000';
+        $u = new User();
+        $u->query($sql);
+        $users = array();
+        if ($u->N) {
+            while ($u->fetch()) {
+                $users[] = clone($u);
+            }
+        }
+        return $users;
+    }
+    
 }

@@ -143,6 +143,7 @@
           {assign var=displayFormat value=$recordFormat} 
         {/if}
         <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
+        <span class="rsi"></span>
         {if !empty($extendedPhysical)}
           {assign var=extendedContentDisplayed value=1}
           {foreach from=$extendedPhysical item=field name=loop}
@@ -308,22 +309,35 @@
     {assign var="idPrefix" value=$id|substr:0:8}
     {if !empty($coreURLs) || $coreOpenURL || $idPrefix == 'metalib_'}
     <tr valign="top" class="recordURLs">
+      {if $coreOnlineURLs || $coreMergedRecordData.urls}
+      <th>{translate text='available_online'}: </th>
+      <td>
+        {if $coreMergedRecordData.urls}
+          {assign var="displayURLs" value=$coreMergedRecordData.urls}
+        {else}
+          {assign var="displayURLs" value=$coreOnlineURLs}
+        {/if}
+        {foreach from=$displayURLs item=urldesc}
+          <a href="{$urldesc.url|proxify|escape}" class="fulltext" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}<br/>
+        {/foreach}
+      {else}
       <th>{translate text='Online Access'}: </th>
       <td>
         {foreach from=$coreURLs item=desc key=currentUrl name=loop}
           <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
         {/foreach}
-        {if $coreOpenURL}
-          {include file="Search/openurl.tpl" openUrl=$coreOpenURL}
-          {include file="Search/rsi.tpl"}
-          {include file="Search/openurl_autocheck.tpl"}
-        {/if}
-        {if $idPrefix == 'metalib_'}
-          <span class="metalib_link">
-            <span id="metalib_link_{$id|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$id|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a></span>
-            <span id="metalib_link_na_{$id|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
-          </span>
-        {/if}
+      {/if}
+      {if $coreOpenURL}
+        {include file="Search/openurl.tpl" openUrl=$coreOpenURL}
+        {include file="Search/rsi.tpl"}
+        {include file="Search/openurl_autocheck.tpl"}
+      {/if}
+      {if $idPrefix == 'metalib_'}
+        <span class="metalib_link">
+          <span id="metalib_link_{$id|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$id|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a></span>
+          <span id="metalib_link_na_{$id|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
+        </span>
+      {/if}
       </td>
     </tr>
     {/if}

@@ -104,7 +104,8 @@ function fetchFromRecord($id, $size, $index = null)
     }
 
     $localFile = 'images/covers/' . $size . '/' . urlencode($id) . (isset($index) ? "_$index" : '') . '.jpg';
-    if (is_readable($localFile)) {
+    $maxAge = isset($configArray['Content']['covercachetime']) ? $configArray['Content']['covercachetime'] : 1440; 
+    if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
         // Load local cache if available
         header('Content-type: image/jpeg');
         echo readfile($localFile);
@@ -120,7 +121,7 @@ function fetchFromRecord($id, $size, $index = null)
         if (!isset($index)) {
             $url = $recordDriver->getThumbnailURL($size);
         } else {
-            $images = array_keys($recordDriver->getAllImages());
+            $images = array_keys($recordDriver->getAllImages($size));
             if (isset($images[$index])) {
                 $url = $images[$index];
             } 

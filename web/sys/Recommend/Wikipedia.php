@@ -305,9 +305,8 @@ class Wikipedia implements RecommendationInterface
 
         if (!$infoboxStr) {
             // Next we are looking for the infobox inside style definition tags
-            preg_match('/.*\|\}/s', $body['*'], $styles);
             $infoboxStr = '';
-            if (strpos($styles[0], "Infobox") !== false ) {
+            if (preg_match('/.*\|\}/s', $body['*'], $styles) && strpos($styles[0], 'Infobox') !== false ) {
                 // Keep the string for later, we need the body block that follows it
                 $infoboxStr = $styles[0];
             }        

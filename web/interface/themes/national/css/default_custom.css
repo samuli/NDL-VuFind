@@ -84,3 +84,28 @@ span.dynatree-node a {
     color:#00A3B5;
 }
 
+.backgroundContainer {
+	background-position:center top;
+}
+.organsationsTable, .organisationsTable th, .organisationsTable td {
+	vertical-align:top;
+}
+.tableHeaders {
+	font-size:1.2em;
+	letter-spacing:0.3px;
+	
+}
+.tableHeaders td {
+	border-bottom:3px solid #DCDCDC;
+	padding:10px;
+	padding-bottom:5px;
+}
+.organisations {
+	margin:5px 0 0 0 !important;
+}
+.organisations li{
+	list-style-type:none;
+	margin:0;
+	margin-top:5px;
+	list-style-position:outside;
+}

@@ -20,7 +20,7 @@
         {if $facetPrefix == '0/' || $facetPrefix == '1/' || $facetPrefix == '2/' || $facetPrefix == '3/'}
         <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText" title="{$filter.display|escape}">{translate text=$field}: {$filter.display|substr:2|escape}</span></a></li>
         {else} 
-        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$filter.display|escape}</span></a></li>
+        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"TO":"-"}</span></a></li>
         {/if}
       {/foreach}
     {/foreach}
@@ -79,43 +79,50 @@
         </fieldset>
       </form>
       {elseif is_array($hierarchicalFacets) && in_array($title, $hierarchicalFacets)}
-      <dl class="narrowList navmenu">
-        <dt>{translate text=$cluster.label}</dt>
+      <dl class="narrowList navmenu{if is_array($defaultFacets) && !in_array($title, $defaultFacets) && !in_array($title, $activeFacets)} hierarcicalFacet{else} collapsed open{/if}">
+          <dt>{translate text=$cluster.label}</dt>
       </dl>
-        {literal}
-        <script type="text/javascript">
-        //<![CDATA[
-        $(document).ready(function() {
-        {/literal}
-          enableDynatree('#facet_{$title}', '{$title}', '{$fullPath}', '{$action}');
-        {literal}  
-        });
-        //]]>
-        </script>
-        {/literal}
+      {if in_array($title, $activeFacets) || (is_array($defaultFacets) && in_array($title, $defaultFacets))}
+      {literal}
+      <script type="text/javascript">
+          //<![CDATA[
+          $(document).ready(function() { 
+              enableDynatree($('#facet_{/literal}{$title}'), '{$title}', '{$fullPath}', '{$action}');
+          {literal}});
+          //]]>
+      </script>
+      {/literal}
+      {/if}
       <div id="facet_{$title}" class="dynatree-facet">
-        <span class="facet_loading hide"></span>
+          <span class="facet_loading hide"></span>
       </div>
     {else}
         {assign var="mainYear" value="Main Year"}
         {assign var="dateRange" value="Date Range"}
-        <dl class="narrowList navmenu{if $cluster.label ==='Main Year'} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}">
-           
+        <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
         <dt>{translate text=$cluster.label}
           {if $cluster.label === 'Main Year'}<span class="timelineview">open timeline</span>
             {include file=$sideRecommendations.DateRangeVisAjax}
           {/if}
         </dt>
-        {if $cluster.label === 'Main Year'}
-            <dd class="mainYearFormContainer1">
-              <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm">
-                <input id="mainYearFrom" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
-                <input id="mainYearTo" type="text" value="{$visFacets.search_sdaterange_mv.1}">
-                <input id="mainYearFromRange" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
-                <input id="mainYearToRange" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
-                <input type="submit" value="{translate text='Search'}">
-              </form>
-            </dd>
+        {if (($cluster.label === 'Main Year') || ($cluster.label === 'Published'))}
+          <dd class="mainYearFormContainer1">
+          {if $module == "PCI"}
+            <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearFormPCI">
+              <input id="mainYearFromPCI" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
+              <input id="mainYearToPCI" type="text" value="{$visFacets.search_sdaterange_mv.1}">
+              <input id="mainYearFromRangePCI" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
+              <input id="mainYearToRangePCI" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
+          {else}
+            <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm">
+              <input id="mainYearFrom" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
+              <input id="mainYearTo" type="text" value="{$visFacets.search_sdaterange_mv.1}">
+              <input id="mainYearFromRange" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
+              <input id="mainYearToRange" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
+          {/if}
+              <input type="submit" value="{translate text='Search'}">
+            </form>
+          </dd>
         {/if}
        
           {foreach from=$cluster.list item=thisFacet name="narrowLoop"}

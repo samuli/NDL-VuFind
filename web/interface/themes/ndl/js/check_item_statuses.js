@@ -7,7 +7,7 @@ function checkItemStatuses() {
         return $(i).attr('id').substr('record'.length);
     });
     if (id.length) {
-        $(".ajax_availability").show();
+        $("div[id^='callnumAndLocation'] .ajax_availability").show();
         $.ajax({
             dataType: 'json',
             url: path + '/AJAX/JSON?method=getItemStatuses',
@@ -73,9 +73,9 @@ function checkItemStatuses() {
                     });
                 } else {
                     // display the error message on each of the ajax status place holder
-                    $(".ajax_availability").empty().append(response.data);
+                    $("div[id^='callnumAndLocation'] .ajax_availability").empty().append(response.data);
                 }
-                $(".ajax_availability").removeClass('ajax_availability');
+                $("div[id^='callnumAndLocation'] .ajax_availability").removeClass('ajax_availability');
             }
         });
     }

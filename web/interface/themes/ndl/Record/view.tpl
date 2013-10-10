@@ -52,7 +52,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
      so we need to save the searchId to be able to reference it from other records *}
     <script type="text/javascript">
     {literal}
-      $.cookie('lastSearchId', {/literal}{$searchId}{literal}, { path: '/vufind/Record/' });
+      $.cookie('lastSearchId', {/literal}{$searchId}{literal}, { path: '/' });
     {/literal}
     </script>
   {/if}
@@ -175,8 +175,8 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         </li>
         {/if}
         {if $ratings && $recordRating}
-        <li>
-            <div id="averageRating" data-score="{if $recordRating.ratingAverage}{$recordRating.ratingAverage}{else}0{/if}"></div> (<span id="ratingCount">{$recordRating.ratingCount}</span> {if $recordRating.ratingCount==1}{translate text="rating"}{else}{translate text="ratings"}{/if})
+        <li class="recordAverageRating">
+            <div id="averageRating" data-score="{if $recordRating.ratingAverage}{$recordRating.ratingAverage}{else}0{/if}"></div><span id="ratingCount">({$recordRating.ratingCount})</span>
         </li>
         {/if}
       </ul>

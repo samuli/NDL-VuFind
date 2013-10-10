@@ -2,8 +2,6 @@
 
 {if $openUrlEmbed}{assign var="openUrlId" value=$openUrlCounter->increment()}{/if}
 
-<span class="rsi"></span>
-
 <a href="{$openUrlBase|escape}?{$openUrl|escape}" 
 {if $openUrlEmbed} 
 class="fulltext openUrlEmbed openurl_id:{$openUrlId}"

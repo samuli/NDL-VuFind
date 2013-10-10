@@ -80,12 +80,15 @@
       {css media="screen, projection" filename="chosen/chosen.css"}
     {/if}
     <!--[if lt IE 9]>{css media="screen, projection" filename="ie.css"}<![endif]-->
+    <!--[if !IE 8]><!-->{css media="screen, projection" filename="non-ie8.css"}<!--<![endif]-->
 
     {* Set global javascript variables *}
     <script type="text/javascript">
     <!--//--><![CDATA[//><!--
       var path = '{$url}';
       var userLang = '{$userLang}';
+      var fullPath = '{$fullPath}';
+      var action = '{$action}';
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}
@@ -118,7 +121,10 @@
 
     {* Load dialog/lightbox functions *}
     {js filename="lightbox.js"}
-    
+
+    {* Load dropdown menu modification *}
+    {js filename="dropdown.js"}
+
     {* Load common javascript functions *}
     {js filename="common.js"}
     
@@ -133,8 +139,6 @@
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
 
-    {* Load dropdown menu modification *}
-    {js filename="dropdown.js"}
     
     {* Load ndl theme functions *}
     {js filename="ndl.js"}

@@ -232,10 +232,6 @@ class UserComments extends Record
         
         if ($_REQUEST['commentId'] == 0) {
             $searchObject = SearchObjectFactory::initSearchObject();
-              // Shortcut: if this record is not the top record, let's not find out the count.
-              // This assumes that component parts cannot have component parts.
-
-            $searchObject = SearchObjectFactory::initSearchObject();
             $query = 'local_ids_str_mv:"' . addcslashes($_GET['id'], '"') . '"';
             $searchObject->disableLogging();
             $searchObject->setQueryString($query);
@@ -246,9 +242,9 @@ class UserComments extends Record
             }
 
             if ($result['response']['numFound'] == 0) {
-                  $idArray = array($_GET['id']);
+                $idArray = array($_GET['id']);
             } else {
-                  $idArray = $result['response']['docs'][0]["local_ids_str_mv"];
+                $idArray = $result['response']['docs'][0]["local_ids_str_mv"];
             }
             if ($_REQUEST['type'] == 1) {
                 $commentsByUser = new Comments();

@@ -123,7 +123,8 @@ function fetchFromISBN($isn, $size)
     if (!is_readable($localFile) && $isbn->get10()) {
         $localFile = 'images/covers/' . $size . '/' . $isbn->get10() . '.jpg';
     }
-    if (is_readable($localFile)) {
+    $maxAge = isset($configArray['Content']['covercachetime']) ? $configArray['Content']['covercachetime'] : 1440; 
+    if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
         // Load local cache if available
         header('Content-type: image/jpeg');
         echo readfile($localFile);

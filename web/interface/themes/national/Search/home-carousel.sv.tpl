@@ -1,20 +1,21 @@
-<!-- START of: Search/home-carousel.sv.tpl -->
+<!-- START of: Search/home-carousel.fi.tpl -->
 
 <h2 class="ribbon">Pärlor ur samlingarna</h2>
 <div class="slides_container">
   <div class="slide">
     <ul>
       <li class="grid_6">
-        {image src="constantinus.jpg"}
+        {image src="01alaska.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Constantinus Africanus: Theorica Pantegni</span></div>
+          <div class="pickup-header"><span>Alaskasamlingen i Kulturernas museum</span></div>
           <div class="pickup-text">
-            Den medeltida medicinska läro- och handboken Theorica Pantegni är den äldsta inbundna handskriften i Finland och en av Nationalbibliotekets pärlor. Finlands första omfattande och allmänna medicinska verk på latin har digitaliserats och transkriberats till moderna bokstäver.
-            <a href="{$url}/Record/fennica.971448">Till sökresultatet »</a>
+           En ceremoniell huvudbonad som användes av aleuterna i Alaska i början av 1800-talet. 
+Alaskasamlingen omfattar ca 500 föremål som är insamlade av bl.a. Arvid Adolf Etholén, guvernör över ryska Alaska, och prästen Uno Cygnaeus. I samlingen finns bl.a. kläder, fångstredskap och små skulpturer av valrossbetar.  
+            <a href="{$url}//Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22">Till sökresultatet »</a>
           </div>
         </div>
       </li>
-      <li class="grid_6">
+       <li class="grid_6">
         {image src="kamera.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>A. K. Cajanders kamera</span></div>
@@ -25,46 +26,67 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="tyyppitalo.jpg"}
+        {image src="03nuorisobarometri.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Typhusritningarna</span></div>
+          <div class="pickup-header"><span>Välfärd i många led: ungdomsbarometern 2012</span></div>
           <div class="pickup-text">
-            Materialet består av ett industriellt producerat byggnadsbestånd som har spelat en stor roll för oss finländare. Den kanske bäst kända typhusmodellen är frontmannahuset, som togs fram för att lösa bostadsbristen efter vinter- och fortsättningskriget. Typhusen var moderna familjebostäder som till sitt utseende skiljde sig från det traditionella byggnadsbeståndet.
-            <a href="{$url}/Collection/narc.VAKKA-319655.KA">Till sökresultatet »</a>
+            I Finna finns också undersökningar, e-tidningar, artiklar och andra publikationer som är tillgängliga via webben. Ungdomsbarometern 2012 beskriver familjernas vardag, fostran och levnadssätt. Enligt barometern är de unga mer intresserade av politik i dag än någonsin tidigare under uppföljningen.
+            <a href="{$url}{"/Record/jykdok.1231846"|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
-      </li>
+      </li>  
       <li class="grid_6">
-        {image src="jyx.jpg"}
+        {image src="04uudistusarkisto.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Publikationsarkivet JYX</span></div>
+          <div class="pickup-header"><span>Lantmäteristyrelsens arkiv för renoverade kartor</span></div>
           <div class="pickup-text">
-            Jyväskylä universitets JYX hör till de 100 mest ansedda publiceringsarkiven i världen. I JYX, som är öppet för alla, sparas doktorsavhandlingar, artiklar, examensarbeten och e-tidskrifter. I JYX finns också digitaliserat material ur universitetets samlingar, t.ex. historiska kartor och musik. År 2011 laddades mer än 1,5 miljoner filer ner från JYX.
-            <a href="{$url}/Record/metalib_finelib.FIN25672">Till sökresultatet »</a>
+Lantmäteristyrelsens renoverade kartor är den största kartsamlingen i Riksarkivet. Den innehåller renritade kartor från 1600-talet till 1900-talet som tillkommit i samband med lantmäteriförrättningar. Samlingen innehåller kartor över områden från hela Finland och de överlåtna områdena. 
+
+            <a href="{$url}{"/Collection/narc.VAKKA-312108.KA"|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
-      </li>   
+      </li>  
     </ul>
   </div>
   <div class="slide">
     <ul> 
       <li class="grid_6">
-        {image src="valskari.jpg"}
+        {image src="05hvittrask.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Zacharias Topelius: Fältskärns berättelser</span></div>
+          <div class="pickup-header"><span>Nationalromantiska Hvitträsk (byggt 1901–1903)</span></div>
           <div class="pickup-text">
-            Topelius uppskattade romanserie handlar om Finlands och Sveriges historia från Gustav II Adolf till Gustav III. I de händelserika berättelserna skildras viktiga historiska händelser och tidsperioder i ljuset av enskilda individers livsöden. Finlands roll i det svenska rikets historia står i fokus.  
-            <a href="{$url}{"/Search/Results?lookfor=Välskärin+kertomuksia&type=AllFields&filter[]=authorStr%3ATopelius%2C+Zacharias&view=list"|escape:'html'}">Till sökresultatet »</a>
+            Hvitträsk i Kyrkslätt ritades av arkitekterna Gesellius, Lindgren och Saarinen. Hvitträsk är ett helhetskonstverk och den främsta representanten för den finska art nouveau-stilen. Föremål och interiörer digitaliserades inom ramen för det internationella projektet Partage Plus. 
+            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
       <li class="grid_6">
-        {image src="moottorisaha.jpg"}
+        {image src="06halonen.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Motorsåg, Valmet-Stihl-BLK/105</span></div>
+          <div class="pickup-header"><span>Pekka Halonen: Tomater (1913). Konstmuseet Ateneum</span></div>
           <div class="pickup-text">
-            Den här enmansmotorsågen med bensindriven tvåtaktsmotor och vridbart svärd ingår i Finlands skogsmuseum Lustos samlingar. Skogsarbetsverktyget användes i Puumala 1959–1963. <span class="caption">Foto: Timo Kilpeläinen/Lusto</span>
-            <a href="{$url}/Record/lusto.M011-124885">Till sökresultatet »</a>
+            Utställningen Den förtrollade sjön i Ateneum 11.10.2013–9.2.2014 berättar om livet i konstnärssamhället vid Tusby träsk och de fascinerande hemmen där flera av de viktigaste personerna inom det finländska kulturlivet bodde och arbetade. <span class="caption">Foto: Statens konstmuseum, Centralarkivet för bildkonst/Hannu Pakarinen.</span>
+            <a href="{$url}/Record/muusa.urn%3Auuid%3A0AC744B9-02DE-478F-B221-A838B1B123A1">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+       {image src="constantinus.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Constantinus Africanus: Theorica Pantegni</span></div>
+          <div class="pickup-text">
+            Den medeltida medicinska läro- och handboken Theorica Pantegni är den äldsta inbundna handskriften i Finland och en av Nationalbibliotekets pärlor. Finlands första omfattande och allmänna medicinska verk på latin har digitaliserats och transkriberats till moderna bokstäver.
+            <a href="{$url}/Record/fennica.971448">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="korvaus.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Arkivet för Statskontorets ersättningsärenden</span></div>
+          <div class="pickup-text">
+            Statskontorets ersättningsärenden hade till uppgift att ersätta lös och fast egendom som gick förlorad tillsammans med de överlåtna områdena efter vinter- och fortsättningskriget. Ersättningsansökningarna och bilagorna förvaras i original i Riksarkivet.
+            <a href="{$url}{"/Search/Results?lookfor=Valtiokonttorin+korvausasiaintoimiston+arkisto&type=AllFields&view=list"|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
@@ -74,4 +96,4 @@
 <a class="prev disabled" href="#"></a>
 <a class="next disabled" href="#"></a>
 
-<!-- END of: Search/home-carousel.sv.tpl -->
+<!-- END of: Search/home-carousel.fi.tpl -->

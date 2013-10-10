@@ -147,9 +147,10 @@
     }
     .keepFilters {
         clear: left;
-        padding-bottom: 13px;
         float: right;
         margin-right: 10px;
+        left: 229px;
+        top: 54px;
     }
     .keepdFilters > input {
         display: block;
@@ -158,6 +159,9 @@
         margin-top: 3px;
     }
     
+    .ui-autocomplete {
+        width: 458px !important;
+    }
     
 
     /* Front page */
@@ -174,9 +178,6 @@
     }
     #introduction .grid_9.documentTypes {
         width:100%;
-    }
-    #content-carousel {
-        display:none;
     }
     #introduction .grid_10 {
         margin: 0;
@@ -253,6 +254,10 @@
     }
     #carouselContainer {
         display:none;
+    }
+    
+    #introduction .iconlabel:before {
+        margin-top: 5px;
     }
     
     /* Search results */
@@ -514,7 +519,6 @@
         width:52%;
     }
     .holdingsContainerHeading .availability {
-        width: 50%;
         word-wrap: break-word;
     }
     .holdingsContainerHeading .returnDate {
@@ -541,7 +545,6 @@
     table.holdingsContainerHolding .checkedout,
     table.holdingsContainerHolding .available {
         display: inline-block;
-        width: 43%;
     }
 
     /* Footer */

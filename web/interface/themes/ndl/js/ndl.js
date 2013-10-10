@@ -12,6 +12,7 @@ $(document).ready(function() {
     initMetaLibLoadingIndicator();
     initCustomEyeCandy();
     initScrollRecord();
+    initScrollMenu();
 });
 
 // Header menu
@@ -155,9 +156,7 @@ function initSidebarFacets() {
         if ($(this).find('img[alt="Selected"]').length > 0) {
                 $(this).addClass('active');
         }
-        
-        else if ($(this).find('dd').length == 0) $(this).addClass('collapsed open');
-        
+
         // Mark dl collapsible
         $(this).addClass('collapsible');
     });
@@ -168,38 +167,44 @@ function initSidebarFacets() {
         // Get the facet container
         var parentDl = $(this).parent('dl');
         
-        // Do nothing if facet selected
-        if (parentDl.find('img[alt="Selected"]').length > 0 || parentDl.hasClass('active')) return false;
-        
-        // Make sure this facet has options
-        if (parentDl.find('dd').length > 0) {
-            
-            if (!parentDl.hasClass('timeline')) {
-            // Slide them
-            parentDl.children('dd').slideToggle(100);
-            } else parentDl.children('dd').hide();
-         
-            // If user has clicked "more", hide the additional facets too
-            if (!parentDl.next('dl').hasClass('offscreen') && parentDl.hasClass('open')) {
-                parentDl.next('dl[id*="Hidden"]').addClass('offscreen');
-                parentDl.find('dd[id*="more"]').hide();
-            }
+        if (parentDl.hasClass('hierarcicalFacet')) {
+            var target = parentDl.next('div.dynatree-facet');  
+            var id = target.attr('id').substr('facet_'.length);
+            enableDynatree(target, id, fullPath, action);
+            parentDl.removeClass('hierarcicalFacet');
+            parentDl.toggleClass('collapsed open');
+        } else {
+            // Do nothing if facet selected
+            if (parentDl.find('img[alt="Selected"]').length > 0 || parentDl.hasClass('active')) return false;
+
+            // Make sure this facet has options
+            if (parentDl.find('dd').length > 0) {
+                if (!parentDl.hasClass('timeline')) {
+                // Slide them
+                parentDl.children('dd').slideToggle(100);
+                } else parentDl.children('dd').hide();
+
+                // If user has clicked "more", hide the additional facets too
+                if (!parentDl.next('dl').hasClass('offscreen') && parentDl.hasClass('open')) {
+                    parentDl.next('dl[id*="Hidden"]').addClass('offscreen');
+                    parentDl.find('dd[id*="more"]').hide();
+                }
                 
-            // Finally, mark this facet container opened
-            parentDl.toggleClass('open collapsed');
-            if (!parentDl.hasClass('collapsed')) {
-                parentDl.removeClass('timeline');
-                moveMainYearForm(parentDl);
+                // Finally, mark this facet container opened
+                parentDl.toggleClass('open collapsed');
+                if (!parentDl.hasClass('collapsed')) {
+                    parentDl.removeClass('timeline');
+                    if (parentDl.hasClass('year')) {
+                        moveMainYearForm(parentDl);
+                    }
+                }
             }
-        }
-        
-        // Extend to default facets (without dd children)
-        
-        else {
-            parentDl.nextUntil('div').last().next().slideToggle(100);
-            parentDl.toggleClass('open collapsed');
-        }
-        
+            // Extend to dynamic facets (without dd children)
+            else {
+                parentDl.nextAll('div.dynatree-facet:first').slideToggle(100);
+                parentDl.toggleClass('collapsed open');
+            }
+        }        
     });
     
     // Add clickable timeline icon function
@@ -256,6 +261,40 @@ function initSidebarFacets() {
             window.location = query;   
         }
     });
+
+    // PCI Timeline search functionality
+    $(".mainYearFormPCI").submit(function(e){
+        e.preventDefault();
+        // Get dates, build query
+        var from = $('.mainYearFormPCI #mainYearFromPCI').val(),
+            to = $('.mainYearFormPCI #mainYearToPCI').val(),
+            action = $('.mainYearFormPCI').attr('action');
+        if (action.indexOf("?") < 0) {
+            action += '?'; // No other parameters, therefore add ?
+        } else {
+            action += '&'; // Other parameters found, therefore add &
+        }
+        var query = action + 'filter[]=creationdate%3A';
+                
+        // Require numerical values
+        if (!isNaN(from) && !isNaN(to)) {
+            if (from == '' && to == '') { // both dates empty; use removal url
+                query = action;
+            } else if (from == '') { // only end date set
+                query += '"'+padZeros(to)+'"';
+            } else if (to == '')  { // only start date set
+                query += '"'+padZeros(from)+'"';
+            } else { // both dates set
+                query += '"['+padZeros(from)+' TO '+padZeros(to)+']'+'"';
+            }
+            query += '&view=list&limit=10';
+
+            // Perform the new search
+            window.location = query;   
+        }
+    });
+
+
 }
 
 // Scroll the feedback button 
@@ -331,4 +370,23 @@ function initCustomEyeCandy() {
         $(this).children('span').stop().delay(100).animate({top:-50}, 150);
     });
 }
+
+// Toggle fixed menu bar
+ function initScrollMenu() {
+   if (document.querySelectorAll('div.menu').length >= 1) {
+	$(window).on('scroll', function () {
+		var menuSize	=	($(window).height()) - ($('.menu .grid_6').outerHeight()),
+        scrollTop     = $(document).scrollTop(),
+        elementOffset = $('.menu .content').offset().top,
+        distance      = (elementOffset - scrollTop);
+       if (distance < 0) {
+         $('.menu .grid_6').addClass('fixed');
+       }
+ 	   if ((distance > 0) || (menuSize < 0)) {
+         $('.menu .grid_6').removeClass('fixed');
+       }
+    });
+   }
+ }
+
 
