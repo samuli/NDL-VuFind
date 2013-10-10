@@ -52,7 +52,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
      so we need to save the searchId to be able to reference it from other records *}
     <script type="text/javascript">
     {literal}
-      $.cookie('lastSearchId', {/literal}{$searchId}{literal}, { path: '/vufind/Record/' });
+      $.cookie('lastSearchId', {/literal}{$searchId}{literal}, { path: '/' });
     {/literal}
     </script>
   {/if}
