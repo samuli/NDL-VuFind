@@ -1835,9 +1835,6 @@ ul.recordSet .resultColumn2 {
     line-height: 16px;
     padding: 0 0 6px;
 }
-ul.recordSet .resolver {
-    padding-top:6px;
-}
 ul.recordSet .resultCheckbox {
     position:absolute;
     display:none;
@@ -2657,16 +2654,16 @@ ul.recordSet .addToFavLink a {
     background-position: left top;
     padding-left:18px;
 }
+.rsi {
+	  clear: both;
+}
 .peerReviewed {
     background-image:url(../images/silk/user_green.png);
     background-repeat:no-repeat;
     padding-left:18px
 }
 .fulltextAvailable {
-    background-image:url(../images/silk/world.png);
-    background-repeat:no-repeat;
-    color:#009900;
-    padding-left:18px
+	  display: none;
 }
 
 
