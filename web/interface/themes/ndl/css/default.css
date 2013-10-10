@@ -1731,6 +1731,9 @@ table.profileGroup th {
 .loginForm .loginTitle {
     margin-bottom: 1em;
 }
+.loginInfo {
+	margin-bottom:15px;
+}
 .loginTitle {
     font-weight: bold;
     font-size: 1.230em;
