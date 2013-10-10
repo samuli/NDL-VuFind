@@ -59,7 +59,7 @@
       	<a href="{$url}/Search/Results?lookfor={$summAuthor|escape:"url"}&amp;type=Author">{if !empty($summHighlightedAuthor)}{$summHighlightedAuthor|highlight}{else}{$summAuthor|escape}{/if}</a>
       	{/if}
 
-      	{if $summDate}<br/>{translate text='Main Year'}: {$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}{/if}
+      	{if $summDate}<br/>{translate text='Year'}: {$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0}&mdash;{$summDate.1|escape}{/if}{/if}
       	{if $summImageDate}<br/>{translate text='Photo Taken:'} {$summImageDate|escape}{/if}
       	{if $summCreationDate}<br/>{translate text='Created:'} {$summCreationDate|escape}{/if}
       	{if $summUseDate}<br/>{translate text='Used:'} {$summUseDate|escape}{if $summUsePlace}, {$summUsePlace|escape}{/if}{/if}
