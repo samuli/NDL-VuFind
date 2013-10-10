@@ -5,6 +5,73 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
+        {image src="01alaska.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Kulttuurien museon Alaska-kokoelma</span></div>
+          <div class="pickup-text">
+            Alaskan aleuttien 1800-luvun alkupuolella käyttämä seremoniallinen päähine. Kulttuurien museon Alaska-kokoelmaan kuuluu noin 500 esinettä, joita ovat keränneet mm. Venäjän Alaskassa kenraalikuvernöörinä toiminut Arvid Adolf Etholén ja pappina toiminut Uno Cygnaeus. Kokoelmaan kuuluu mm. vaatteita, pyyntivälineitä ja pieniä mursunluuveistoksia. 
+            <a href="{$url}//Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="kamera.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>A.K. Cajanderin kamera</span></div>
+          <div class="pickup-text">
+            Suomen Metsämuseo Luston kokoelmiin kuuluva metsätieteilijä ja poliitikko A. K. Cajanderin käyttämä kamera. <span class="caption">Kuva: Agata Teperek/Lusto</span>
+            <a href="{$url}/Record/lusto.M011-332446">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="03nuorisobarometri.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Monipolvinen hyvinvointi: nuorisobarometri 2012</span></div>
+          <div class="pickup-text">
+            Finnan kautta löytyy myös verkossa saatavilla olevia tutkimuksia, e-lehtiä, artikkeleja ja muita julkaisuja. Nuorisobarometri 2012 käsittelee perheiden arkea ja kasvatusta sekä elintapoja. Sen mukaan nuoret ovat nyt kiinnostuneempia politiikasta kuin koskaan aiemmin seuranta-aikana.
+            <a href="{$url}{"/Record/jykdok.1231846"|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>  
+      <li class="grid_6">
+        {image src="04uudistusarkisto.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Maanmittaushallituksen uudistusarkisto</span></div>
+          <div class="pickup-text">
+            Maanmittaushallituksen uudistusarkisto on suurin Kansallisarkistossa
+            säilytettävä karttakokoelma. Se sisältää maanmittaustoimituksissa syntyneitä
+            puhtaaksipiirrettyjä karttoja 1600-luvulta 1900-luvulle. Aineistoa on koko
+            Suomesta sekä luovutetulta alueelta.
+            <a href="{$url}{"/Collection/narc.VAKKA-312108.KA"|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>  
+    </ul>
+  </div>
+  <div class="slide">
+    <ul> 
+      <li class="grid_6">
+        {image src="05hvittrask.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Kansallisromanttinen Hvitträsk (rakennettu 1901–1903)</span></div>
+          <div class="pickup-text">
+            Kirkkonummella sijaitsevan Hvitträskin suunnittelivat arkkitehdit Gesellius, Lindgren ja Saarinen. Suomalaisen art nouveau –tyylin keskeisenä kokonaistaideteoksena pidettävän Hvitträskin esineistö ja sisustukset digitoitiin osana kansainvälistä Partage Plus -projektia. 
+            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"'|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="06halonen.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Pekka Halonen: Tomaatteja (1913). Ateneumin taidemuseo</span></div>
+          <div class="pickup-text">
+            Järven lumo -näyttely Ateneumissa 11.10.2013–09.02.2014 kertoo Tuusulanjärven taiteilijayhteisön elämästä ja sen kiehtovista kodeista, joissa asui ja työskenteli suomalaisen kulttuurielämän keskeisiä tekijöitä perheineen.<span class="caption">Kuva: Valtion taidemuseo, Kuvataiteen keskusarkisto / Hannu Pakarinen.</span>
+            <a href="{$url}/Record/muusa.urn%3Auuid%3A0AC744B9-02DE-478F-B221-A838B1B123A1">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
         {image src="constantinus.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Constantinus Africanus: Theorica Pantegni</span></div>
@@ -12,68 +79,6 @@
             Keskiaikainen latinankielinen lääketieteen oppi- ja käsikirja Theorica Pantegni on Suomen vanhin sidottu käsikirjoitus ja yksi Kansalliskirjaston 
             kokoelman helmistä. Tämä ensimmäinen kattava latinankielinen lääketieteen yleisesitys on digitoitu ja transkriboitu eli kirjoitettu modernein kirjaimin latinaksi. 
             <a href="{$url}/Record/fennica.971448">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
-        {image src="kamera.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>A. K. Cajanderin kamera</span></div>
-          <div class="pickup-text">
-            Suomen Metsämuseo Luston kokoelmiin kuuluva metsätieteilijä ja poliitikko A. K. Cajanderin käyttämä kamera. <span class="caption">Kuva Agata Teperek/Lusto</span>
-            <a href="{$url}/Record/lusto.M011-332446">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
-        {image src="tyyppitalo.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Tyyppitalopiirustukset</span></div>
-          <div class="pickup-text">
-            Tyyppitalopiirustusten aineisto koostuu suomalaisille hyvin keskeisestä teollisesti tuotetusta rakennuskannasta. Tyyppitalomalleista ehkä tunnetuin on 
-            rintamamiestalo, joka syntyi talvi- ja jatkosodan jälkeen ratkaisuksi asuntotarpeeseen. Tyyppitalot olivat moderneja perheasuntoja, jotka erosivat 
-            ulkonäkönsä osalta perinteisestä rakennuskannasta.
-            <a href="{$url}/Collection/narc.VAKKA-319655.KA">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
-        {image src="jyx.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>JYX-julkaisuarkisto</span></div>
-          <div class="pickup-text">
-            Jyväskylän yliopiston JYX on yksi maailman 100 arvostetuimmasta julkaisuarkistosta. JYXiin tallennetaan kaikkien saataville 
-            yliopiston väitöskirjoja, artikkeleita, opinnäytteitä ja verkkolehtiä. JYXissä ovat myös yliopiston kokoelmista digitoidut aineistot, 
-            kuten historialliset kartat sekä musiikkia. Vuonna 2011 JYX:istä ladattiin yli 1,5 miljoonaa tiedostoa.
-            <a href="{$url}/Record/metalib_finelib.FIN25672">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>   
-    </ul>
-  </div>
-  <div class="slide">
-    <ul> 
-      <li class="grid_6">
-        {image src="valskari.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Zacharias Topelius: Välskärin kertomuksia </span></div>
-          <div class="pickup-text">
-            Topeliuksen suosittu romaanisarja kertoo Suomen ja Ruotsin historiasta Kustaa II Aadolfin ajoista Kustaa 
-            III:n aikoihin asti. Vaiherikkaissa tarinoissa suuret historialliset tapahtumat ja aikakaudet elävöityvät 
-            yksilöiden elämänkohtaloiden kautta. Suomen osuus Ruotsin valtakunnan historiassa nousee tärkeään asemaan. 
-            <a href="{$url}{"/Search/Results?lookfor=Välskärin+kertomuksia&type=AllFields&filter[]=authorStr%3ATopelius%2C+Zacharias&view=list"|escape:'html'}">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
-        {image src="moottorisaha.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Moottorisaha Valmet-Stihl-BLK/105</span></div>
-          <div class="pickup-text">
-            Suomen Metsämuseo Luston kokoelmiin kuuluva yhdenmiehen vaihteistovetoinen moottorisaha kaksitahtisella 
-            bensiinikäyttöisellä polttomoottorilla ja käännettävällä teräosalla. Metsurin työväline, jota on käytetty 
-            Puumalassa vuosina 1959 &ndash; 1963. <span class="caption">Kuva Timo Kilpeläinen/Lusto</span>
-            <a href="{$url}/Record/lusto.M011-124885">Hakutulokseen »</a>
           </div>
         </div>
       </li>
@@ -86,20 +91,7 @@
             talvi- ja jatkosodan seurauksena luovutetuille alueille jääneestä irtaimesta ja
             kiinteästä omaisuudesta. Alkuperäisiä korvaushakemuksia liitteineen säilytetään
             Kansallisarkistossa.
-            <a href="{$url}{"/Search/Results?lookfor=Valtiokonttorin+korvausasiaintoimiston+arkisto&prefilter=-"|escape:'html'}">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
-        {image src="uudistusarkisto.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Maanmittaushallituksen uudistusarkisto</span></div>
-          <div class="pickup-text">
-            Maanmittaushallituksen uudistusarkisto on suurin Kansallisarkistossa
-            säilytettävä karttakokoelma. Se sisältää maanmittaustoimituksissa syntyneitä
-            puhtaaksipiirrettyjä karttoja 1600-luvulta 1900-luvulle. Aineistoa on koko
-            Suomesta sekä luovutetulta alueelta.
-            <a href="{$url}{"/Search/Results?lookfor=Maanmittaushallituksen+uudistusarkisto&prefilter=-"|escape:'html'}">Hakutulokseen »</a>
+            <a href="{$url}{"/Search/Results?lookfor=Valtiokonttorin+korvausasiaintoimiston+arkisto&type=AllFields&view=list"|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
