@@ -11,6 +11,7 @@ function customInit() {
 $(document).ready(function() {
     initCarousel();
     initInfoBox();
+    initScrollBackground();
 });
 
 // Load random header background and related info text
@@ -123,4 +124,18 @@ function toggleInfoBox() {
     box.stop(true, true).animate({ width: boxWidth, height: boxHeight}, 200);
     $('.infoBoxText').stop(true, true).vToggle().fadeToggle(300);
 };
+
+// Scroll the background (parallax) 
+function initScrollBackground() {
+  if (!isTouchDevice() && $('#header').height() > 400) {
+   var backgroundheight = $('#header').height()+30;
+   $(window).scroll(function () { 
+   	 scrollTop = $(document).scrollTop();
+   	    if ($(document).scrollTop() <= backgroundheight) {
+   	 		$('.backgroundContainer').css('background-position', '50% '+scrollTop*0.5+'px');
+   	    }
+     });
+  }
+}
+
 
