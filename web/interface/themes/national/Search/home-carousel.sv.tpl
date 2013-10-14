@@ -11,7 +11,7 @@
           <div class="pickup-text">
            En ceremoniell huvudbonad som användes av aleuterna i Alaska i början av 1800-talet. 
 Alaskasamlingen omfattar ca 500 föremål som är insamlade av bl.a. Arvid Adolf Etholén, guvernör över ryska Alaska, och prästen Uno Cygnaeus. I samlingen finns bl.a. kläder, fångstredskap och små skulpturer av valrossbetar.  
-            <a href="{$url}//Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22">Till sökresultatet »</a>
+            <a href="{$url}/Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22&view=grid&limit=100">Till sökresultatet »</a>
           </div>
         </div>
       </li>
@@ -56,7 +56,7 @@ Lantmäteristyrelsens renoverade kartor är den största kartsamlingen i Riksark
           <div class="pickup-header"><span>Nationalromantiska Hvitträsk (byggt 1901–1903)</span></div>
           <div class="pickup-text">
             Hvitträsk i Kyrkslätt ritades av arkitekterna Gesellius, Lindgren och Saarinen. Hvitträsk är ett helhetskonstverk och den främsta representanten för den finska art nouveau-stilen. Föremål och interiörer digitaliserades inom ramen för det internationella projektet Partage Plus. 
-            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"'|escape:'html'}">Till sökresultatet »</a>
+            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&view=grid&limit=100"'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
