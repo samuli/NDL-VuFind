@@ -53,7 +53,10 @@
       <a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}" class="title">{if !empty($summHighlightedTitle)}{$summHighlightedTitle|addEllipsis:$summTitle|highlight}{elseif !$summTitle}{translate text='Title not available'}{else}{$summTitle|truncate:180:"..."|escape}{/if}</a>
     </h4>
    
-    <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
+    <div class="resultItemFormat">
+      <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
+      <span class="rsi"></span>
+    </div>
     
     {if !empty($coreOtherLinks)}
         {assign var=prevOtherLinkHeading value=''}
@@ -138,10 +141,6 @@
       </div>
 
       {if $summOpenUrl || !empty($summURLs) || !empty($summOnlineURLs)}
-        {if $summOpenUrl}
-        <span class="openUrlSeparator"></span>
-          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
-        {/if}
         {if $summOnlineURLs}
         <div>
           {if $sumOnlineURLs|@count > 2}
@@ -155,6 +154,9 @@
             <li><a href="{$urldesc.url|proxify|escape}" class="fulltext" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}</li>
           {/foreach}
           </ul>
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
           </div>
         </div>
         {elseif $summURLs}
@@ -170,13 +172,19 @@
           	<li><a href="{$recordurl|proxify|escape}" class="fulltext" target="_blank" title="{$recordurl|escape}">{if $recordurl == $urldesc}{$recordurl|truncate_url|escape}{else}{$urldesc|translate_prefix:'link_'|escape}{/if}</a></li>
           {/foreach}
           </ul>
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
           </div>
         </div>
+        {else}
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
         {/if}
       {/if}
       
       {if $summId|substr:0:8 == 'metalib_'}
-        <br/>
         <span class="metalib_link">
           <span id="metalib_link_{$summId|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$summId|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a><br/></span>
           <span id="metalib_link_na_{$summId|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>

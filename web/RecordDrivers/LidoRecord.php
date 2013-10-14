@@ -149,16 +149,25 @@ class LidoRecord extends IndexRecord
      * Return an associative array of image URLs associated with this record (key = URL,
      * value = description), if available; false otherwise. 
      *
+     * @param string $size Size of requested images
+     *
      * @return mixed
      * @access protected
      */
-    public function getAllImages()
+    public function getAllImages($size = 'large')
     {
         $urls = array();
         $url = '';
-        foreach ($this->xml->xpath('/lidoWrap/lido/administrativeMetadata/resourceWrap/resourceSet/resourceRepresentation/linkResource') as $node) {
-            $url = (string)$node;
-            $urls[$url] = '';
+        foreach ($this->xml->xpath('/lidoWrap/lido/administrativeMetadata/resourceWrap/resourceSet/resourceRepresentation') as $node) {
+            if ($node->linkResource) {
+                $attributes = $node->attributes();
+                if (!$attributes->type 
+                    || (($size != 'large' && $attributes->type == 'thumb') || $size == 'large' && $attributes->type == 'large' || $attributes->type == 'zoomview')
+                ) {
+                    $url = (string)$node->linkResource;
+                    $urls[$url] = '';
+                }
+            }
         }
         return $urls;
     }
@@ -195,11 +204,8 @@ class LidoRecord extends IndexRecord
      */
     public function getThumbnailURL($size = 'small')
     {
-        global $configArray;
-        if (isset($this->fields['thumbnail']) && $this->fields['thumbnail']) {
-            return $this->fields['thumbnail'];
-        }
-        return false;
+        $urls = $this->getAllImages($size);
+        return $urls ? reset(array_keys($urls)) : false;
     }
 
     /**

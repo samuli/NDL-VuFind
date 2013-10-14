@@ -20,6 +20,7 @@
   <div class="contentHeader loginContentHeader"><div class="content"><h1>{translate text='Login'}</h1></div></div>
   <div class="content loginForm">
   {if $message}<div class="error" id="errormessage">{$message|translate}</div>{/if}
+  <p class="loginInfo grid_15">{translate text="Login information"}</p>
   <div class="loginTitle">
     {translate text='login_choices'}
   </div>

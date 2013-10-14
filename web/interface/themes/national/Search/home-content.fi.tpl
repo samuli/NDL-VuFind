@@ -6,7 +6,7 @@
       <div id="siteDescription">
         <h2>Tietoa tarvitseville ja elämyksiä etsiville</h2>
         <p>Finna on tiedonhakupalvelu, joka kokoaa yhteen aineistoja arkistoista, kirjastoista ja museoista. Sisältö täydentyy jatkuvasti uusilla aineistoilla.
-</p><p>Palvelun kautta pääset selaamaan ja lukemaan myös satoja tuhansia <a href='Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>sähköisiä aineistoja.</a></p>
+</p><p>Palvelun kautta pääset selaamaan ja lukemaan myös satoja tuhansia <a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>sähköisiä aineistoja.</a></p>
       </div>
     </div>
     <div class="grid_10 push_right">

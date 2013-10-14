@@ -1731,6 +1731,9 @@ table.profileGroup th {
 .loginForm .loginTitle {
     margin-bottom: 1em;
 }
+.loginInfo {
+	margin-bottom:15px;
+}
 .loginTitle {
     font-weight: bold;
     font-size: 1.230em;
@@ -1834,9 +1837,6 @@ ul.recordSet .resultColumn2 {
 #recordSet ul.recordSet .resultColumn2 > * {
     line-height: 16px;
     padding: 0 0 6px;
-}
-ul.recordSet .resolver {
-    padding-top:6px;
 }
 ul.recordSet .resultCheckbox {
     position:absolute;
@@ -2657,16 +2657,16 @@ ul.recordSet .addToFavLink a {
     background-position: left top;
     padding-left:18px;
 }
+.rsi {
+	  clear: both;
+}
 .peerReviewed {
     background-image:url(../images/silk/user_green.png);
     background-repeat:no-repeat;
     padding-left:18px
 }
 .fulltextAvailable {
-    background-image:url(../images/silk/world.png);
-    background-repeat:no-repeat;
-    color:#009900;
-    padding-left:18px
+	  display: none;
 }
 
 
@@ -2689,6 +2689,26 @@ ul.recordSet .addToFavLink a {
 .icon { /* If using icon only */
     padding: 1px 2px 1px 20px;
     margin-right: 2px;
+}
+.fixposition {
+	display: inline-block;
+    height: 21px;
+    padding-right: 10px;
+    width: 20px;
+    margin-left:-4px;
+}
+
+.fixline {
+	display: inline-block;
+    position: relative;
+    top: -3px;
+}
+.privacyTable {
+		margin:1.5em 0;
+}
+.privacyTable td {
+	border-bottom:1px solid #e4e4e4;
+	padding-left:0;
 }
 
 .myResearch .icon {
