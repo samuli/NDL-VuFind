@@ -1,4 +1,4 @@
-<!-- START of: header-menu.tpl -->
+<!-- START of: header-menu.en_gb.tpl -->
 
 <li class="menuHome"><a href="{$path}/" role="menuitem"><span>{translate text='Home page'}</span></a></li>
 
@@ -63,4 +63,4 @@
 
 {include file="login-element.tpl"}
 
-<!-- END of: header-menu.tpl -->
+<!-- END of: header-menu.en_gb.tpl -->
