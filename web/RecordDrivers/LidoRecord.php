@@ -162,7 +162,7 @@ class LidoRecord extends IndexRecord
             if ($node->linkResource) {
                 $attributes = $node->attributes();
                 if (!$attributes->type 
-                    || (($size != 'large' && $attributes->type == 'thumb') || $size == 'large' && $attributes->type == 'large')
+                    || (($size != 'large' && $attributes->type == 'thumb') || $size == 'large' && $attributes->type == 'large' || $attributes->type == 'zoomview')
                 ) {
                     $url = (string)$node->linkResource;
                     $urls[$url] = '';
