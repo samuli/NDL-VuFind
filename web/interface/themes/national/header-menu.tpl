@@ -1,22 +1,23 @@
-<!-- START of: header-menu.en-gb.tpl -->
+<!-- START of: header-menu.tpl -->
 
 <li class="menuHome"><a href="{$path}/" role="menuitem"><span>{translate text='Home page'}</span></a></li>
 
 <li class="menuAbout"><a href="#"><span>{translate text='navigation_about'}</span><span class="menuArrow"></span></a>
-	<ul class="subNav" role="menu">
-	<li>
-		<a href="{$path}/Content/about">
-		<span>{translate text="About Finna"}</span>
-		<span>{translate text="about_finna_desc"}</span>
-	</li>
+  <ul class="subNav" role="menu">
+    <li>
+      <a href="{$path}/Content/about">
+      <span>{translate text="About Finna"}</span>
+      <span>{translate text="about_finna_desc"}</span>
+      </a>
+    </li>
     <li>
       <a href="{$path}/Content/organisations" role="menuitem">
         <span>{translate text="Organisations"}</span>
         <span>{translate text="organisations_desc"}</span>
       </a>
     </li>
+  </ul>
 </li>    
-    </ul>
 <li class="menuSearch menuSearch_{$userLang}"><a href="#" aria-haspopup="true"><span>{translate text='Search'}</span><span class="menuArrow"></span></a>
   <ul class="subNav" role="menu">
     <li>
@@ -62,4 +63,4 @@
 
 {include file="login-element.tpl"}
 
-<!-- END of: header-menu.en-gb.tpl -->
+<!-- END of: header-menu.tpl -->
