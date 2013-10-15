@@ -1,3 +1,4 @@
+<!-- START of: RecordDrivers/Index/result.tpl -->
 <div class="result recordId" id="record{$summId|escape}">
 
 <div class="resultColumn1">
@@ -17,7 +18,7 @@
   {if $img_count > 1}
     <div class="imagelinks">
   {foreach from=$summImages item=desc name=imgLoop}
-      <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" />
+      <a data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='Open record'}"  data-author="{$summAuthor}" href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" />
       {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
       </a>
   {/foreach}
@@ -32,8 +33,14 @@
   {/if}
   {* Cover image *}
     <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
-  {if $summThumb}
-      <div class="resultImage"><a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a></div>
+  {if $summThumb && $img_count == 1}
+      <div class="resultImage summcover"><a class="fancybox fancybox.image" data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='Open record'}" data-author="{$summAuthor}" href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" rel="gallery"><img src="{$summThumb|escape}" alt="{translate text='Cover Image'}" /></a></div>
+  {else if $summThumb && $img_count > 1}
+  <div class="resultImage">
+      <a class="title fancybox-trigger" href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}">
+          <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
+      </a>
+  </div>  
   {/if}
 
   </div> 
@@ -46,7 +53,10 @@
       <a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}" class="title">{if !empty($summHighlightedTitle)}{$summHighlightedTitle|addEllipsis:$summTitle|highlight}{elseif !$summTitle}{translate text='Title not available'}{else}{$summTitle|truncate:180:"..."|escape}{/if}</a>
     </h4>
    
-    <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
+    <div class="resultItemFormat">
+      <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
+      <span class="rsi"></span>
+    </div>
     
     {if !empty($coreOtherLinks)}
         {assign var=prevOtherLinkHeading value=''}
@@ -130,17 +140,31 @@
       {/if}
       </div>
 
-      {if $summOpenUrl || !empty($summURLs)}
-        {if $summOpenUrl}
-        <span class="openUrlSeparator"></span>
-          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
-        {/if}
-        {if $summURLs}
+      {if $summOpenUrl || !empty($summURLs) || !empty($summOnlineURLs)}
+        {if $summOnlineURLs}
         <div>
-          {if $summURLs|@count > 2}
+          {if $sumOnlineURLs|@count > 2}
           <p class="resultContentToggle"><a href="#" class="toggleHeader">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></a></p>
           {else}
           <p class="resultContentToggle">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></p>
+          {/if}
+          <div class="resultContentList">
+          <ul>
+          {foreach from=$summOnlineURLs item=urldesc}
+            <li><a href="{$urldesc.url|proxify|escape}" class="fulltext" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}</li>
+          {/foreach}
+          </ul>
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
+          </div>
+        </div>
+        {elseif $summURLs}
+        <div>
+          {if $summURLs|@count > 2}
+          <p class="resultContentToggle"><a href="#" class="toggleHeader">{translate text='Online Access'}<img src="{path filename="images/down.png"}" width="11" height="6" /></a></p>
+          {else}
+          <p class="resultContentToggle">{translate text='Online Access'}<img src="{path filename="images/down.png"}" width="11" height="6" /></p>
           {/if}
           <div class="resultContentList">
           <ul>
@@ -148,13 +172,19 @@
           	<li><a href="{$recordurl|proxify|escape}" class="fulltext" target="_blank" title="{$recordurl|escape}">{if $recordurl == $urldesc}{$recordurl|truncate_url|escape}{else}{$urldesc|translate_prefix:'link_'|escape}{/if}</a></li>
           {/foreach}
           </ul>
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
           </div>
         </div>
+        {else}
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
         {/if}
       {/if}
       
       {if $summId|substr:0:8 == 'metalib_'}
-        <br/>
         <span class="metalib_link">
           <span id="metalib_link_{$summId|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$summId|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a><br/></span>
           <span id="metalib_link_na_{$summId|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
@@ -220,3 +250,4 @@
 </div>
 
 {if $summCOinS}<span class="Z3988" title="{$summCOinS|escape}"></span>{/if}
+<!-- END of: RecordDrivers/Index/result.tpl -->

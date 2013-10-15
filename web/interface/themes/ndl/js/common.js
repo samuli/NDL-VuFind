@@ -28,12 +28,8 @@ $(document).ready(function(){
     // initialize clearable fields (embedded clear button)
     // Do this before setting focus
     initClearable();
-
-    // support "jump menu" dropdown boxes
-    $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
-
-
-
+    
+    initJumpMenus();
 
     // attach click event to the search help links
     /*
@@ -278,9 +274,8 @@ function initAutocomplete() {
                 });
         },
         open: function() {
-            $('.ui-autocomplete').css('width', '618px');
             toggleKeepFiltersOption(true);                
-        },
+        }
     });
 
     ac.data( "autocomplete" )._renderItem = function(ul, item) {
@@ -334,6 +329,14 @@ function initSearchInputListener() {
             e.preventDefault();
        }
     });
+}
+
+function initJumpMenus() {
+    // support "jump menu" dropdown boxes
+    $('select.jumpMenu').change(function(){ $(this).parent('form').submit(); });
+
+    // support "jump menu to url" dropdown boxes
+    $('select.jumpMenuURL').change(function(e) { window.location.href = $(e.target).val(); });
 }
 
 function htmlEncode(value){

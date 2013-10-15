@@ -1716,12 +1716,25 @@ class Solr implements IndexEngine
                     assert($dedupRecord);
                     if ($dedupRecord) {
                         $dedupRecord['local_ids_str_mv'] = $doc['local_ids_str_mv'];
-                        $dedupRecord['dedup_data'] = $doc['dedup_data'];
+                        foreach ($doc['dedup_data'] as $dedupDataKey => $dedupData) {
+                            if (!$this->_recordSources || isset($sourcePriority[$dedupDataKey])) {
+                                $dedupRecord['dedup_data'][$dedupDataKey] = $dedupData;
+                            }
+                        }
                         // Duplicate highlighting information
                         if (isset($result['highlighting'][$doc['id']])) {
                             $result['highlighting'][$dedupRecord['id']] = $result['highlighting'][$doc['id']];
-                        } 
-                        	        					
+                        }
+                        if (isset($doc['online_urls_str_mv'])) {
+                            $dedupRecord['online_urls_str_mv'] = array();
+                            foreach ($doc['online_urls_str_mv'] as $onlineURL) {
+                                $onlineURLArray = json_decode($onlineURL, true);
+                                if (!$this->_recordSources || isset($sourcePriority[$onlineURLArray['source']])) {
+                                    $dedupRecord['online_urls_str_mv'][] = $onlineURL;
+                                }
+                            }
+                        }
+                        
                         $doc = $dedupRecord;
                     }
                 }

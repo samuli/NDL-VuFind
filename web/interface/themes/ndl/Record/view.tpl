@@ -52,7 +52,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
      so we need to save the searchId to be able to reference it from other records *}
     <script type="text/javascript">
     {literal}
-      $.cookie('lastSearchId', {/literal}{$searchId}{literal}, { path: '/vufind/Record/' });
+      $.cookie('lastSearchId', {/literal}{$searchId}{literal}, { path: '/' });
     {/literal}
     </script>
   {/if}
@@ -107,7 +107,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {if $img_count > 1}
           <div class="coverImageLinks">
         {foreach from=$coreImages item=desc name=imgLoop}
-            <a href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
+            <a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-linktext="{translate text='Open record'}" data-author="{$coreAuthor}"  href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
               {*if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if
               <img src="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small" />
               *}
@@ -116,7 +116,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           </div>
         {/if}
         
-        {if $coreThumbLarge}<a id="thumbnail_link" href="{$coreThumbLarge|escape}" onclick="launchFancybox(this); return false;" rel="{$id|escape:"url"}">{/if}
+        {if $coreThumbLarge}{if $img_count > 1}<a class="title fancybox-trigger" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large"><span></span>{else}<a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-linktext="{translate text='Open record'}" data-author="{$coreAuthor}" class="fancybox fancybox.image" href="{$coreThumbLarge|escape}" rel="gallery">{/if}{/if}
         <span></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
         {if $coreThumbLarge}</a>
         {js filename="init_fancybox.js"}
@@ -137,7 +137,6 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         *}
         
         {*<li><a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li> *}
-        <li><a href="{$url}/Record/{$id|escape:"url"}/Feedback" class="feedbackRecord mail" id="feedbackRecord{$id|escape}" title="{translate text="Send Feedback"}">{translate text="Send Feedback"}</a></li>
         {* Citation commented out for now
         <li><a href="{$url}/Record/{$id|escape:"url"}/Cite" class="citeRecord cite" id="citeRecord{$id|escape}" title="{translate text="Cite this"}">{translate text="Cite this"}</a></li> *}
         {* AddThis-Bookmark commented out
@@ -171,15 +170,35 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
             {js filename="qrcodeNDL.js"}
           </li>
           </ul>
-
         </li>
         {/if}
+
+        <li>
+          <div id="recordProvidedBy">
+            <label for="deduprecordMenu">{translate text='Record Provided By'}</label>
+            {if $coreMergedRecordData.dedup_data}
+            <select truncateLength="19" id="deduprecordMenu" name="deduprecordMenu" class="dropdown jumpMenuURL">
+              {foreach from=$coreMergedRecordData.dedup_data key=source item=dedupData name=loop}
+              <option value="{$url}/Record/{$dedupData.id|escape:"url"}"{if $dedupData.id == $id} selected="selected"{/if}>{capture name="organization"}{translate text=$source prefix='source_'}{/capture}{assign var="pos" value=$smarty.capture.organization|strpos:" - "}{if $pos}{$smarty.capture.organization|substr:$pos+3}{else}{$smarty.capture.organization}{/if}</option>
+            {/foreach}
+            </select>
+            {else}
+            <div class="recordProvidedByOrganization">{capture name="organization"}{translate text=$coreSource prefix='source_'}{/capture}{assign var="pos" value=$smarty.capture.organization|strpos:" - "}{if $pos}{$smarty.capture.organization|substr:$pos+3}{else}{$smarty.capture.organization}</div>{/if}
+            {/if}
+          </div>
+        </li>
+        <div id="recordFeedback">
+          <li>
+            <a href="{$url}/Record/{$id|escape:"url"}/Feedback" class="feedbackRecord mail" id="feedbackRecord{$id|escape}" title="{translate text="Send Feedback"}">{translate text="Send Feedback"}</a>
+          </li>
+        </div>
         {if $ratings && $recordRating}
         <li class="recordAverageRating">
             <div id="averageRating" data-score="{if $recordRating.ratingAverage}{$recordRating.ratingAverage}{else}0{/if}"></div><span id="ratingCount">({$recordRating.ratingCount})</span>
         </li>
-        {/if}
+        {/if}        
       </ul>
+      
       {if $bookBag}
       <div class="cartSummary">
       <form method="post" name="addForm" action="{$url}/Cart/Home">

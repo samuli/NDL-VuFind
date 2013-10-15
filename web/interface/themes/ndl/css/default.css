@@ -898,6 +898,11 @@ body > ul.ui-menu.ui-widget li a.ui-corner-all {
     border-top-left-radius:0;
     border-top-right-radius:0;
 }
+.menuHolder .dropdown dd ul li a,
+#recordProvidedBy .dropdown dd ul li a {
+    padding-right: 20px;
+}
+
 .dropdown dd ul li a:hover,
 body > ul.ui-menu.ui-widget li a:hover { 
     background-color: #ddd; 
@@ -1414,6 +1419,7 @@ ul.cartContent {
 .ui-autocomplete {
     max-height: 300px;
     overflow: hidden;
+    width: 618px !important;
 }
 
 /** Publication Year facet */
@@ -1730,6 +1736,9 @@ table.profileGroup th {
 .loginForm .loginTitle {
     margin-bottom: 1em;
 }
+.loginInfo {
+	margin-bottom:15px;
+}
 .loginTitle {
     font-weight: bold;
     font-size: 1.230em;
@@ -1833,9 +1842,6 @@ ul.recordSet .resultColumn2 {
 #recordSet ul.recordSet .resultColumn2 > * {
     line-height: 16px;
     padding: 0 0 6px;
-}
-ul.recordSet .resolver {
-    padding-top:6px;
 }
 ul.recordSet .resultCheckbox {
     position:absolute;
@@ -2225,6 +2231,11 @@ dl.narrowList a {
 .sidegroup dl dd {
     display:none;
 }
+
+dl.defaultFacet dd {
+    display: block;
+}
+
 .sidegroup dl.active dd {
     display:block;
 }
@@ -2651,16 +2662,16 @@ ul.recordSet .addToFavLink a {
     background-position: left top;
     padding-left:18px;
 }
+.rsi {
+	  clear: both;
+}
 .peerReviewed {
     background-image:url(../images/silk/user_green.png);
     background-repeat:no-repeat;
     padding-left:18px
 }
 .fulltextAvailable {
-    background-image:url(../images/silk/world.png);
-    background-repeat:no-repeat;
-    color:#009900;
-    padding-left:18px
+	  display: none;
 }
 
 
@@ -2683,6 +2694,26 @@ ul.recordSet .addToFavLink a {
 .icon { /* If using icon only */
     padding: 1px 2px 1px 20px;
     margin-right: 2px;
+}
+.fixposition {
+	display: inline-block;
+    height: 21px;
+    padding-right: 10px;
+    width: 20px;
+    margin-left:-4px;
+}
+
+.fixline {
+	display: inline-block;
+    position: relative;
+    top: -3px;
+}
+.privacyTable {
+		margin:1.5em 0;
+}
+.privacyTable td {
+	border-bottom:1px solid #e4e4e4;
+	padding-left:0;
 }
 
 .myResearch .icon {
@@ -2882,10 +2913,15 @@ ul.recordSet .addToFavLink a {
     font-size:1em;
     line-height:1em;
     padding: 10px 12px 10px 15px;
+
     width:auto;
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
+.dropdown dt a:focus {
+    color: #ffffff;
+}
+
 .dropdown dt a:after {
     content: "";
     display: inline-block;
@@ -3408,7 +3444,7 @@ div.recordsubcontent .call-slip-form form > p  {
 }
 .coverImages img#thumbnail {
     padding-bottom:20px !important;
-    border-bottom:1px solid #bbb;
+    border-bottom:1px solid #bcdce0;
 }
 .coverImageLinks a {
     background-position: 50% 50%;
@@ -3618,7 +3654,7 @@ table.authors th {
 #dyntabnav .ui-state-default.ui-state-hover {
 }
 #dyntabnav .ui-tabs-panel .content {
-    overflow: auto;
+    overflow: visible;
 }
 #dyntabnav .ui-tabs-panel {
     padding: 20px 0 40px;
@@ -3731,6 +3767,82 @@ h5.recordTabHeader {
     width: 20px;
     height: 20px;
 }
+
+#recordProvidedBy {
+    border-top: 1px solid #bcdce0;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+    padding-top: 1em;
+    overflow: visible;
+
+}
+#recordProvidedBy label {
+    font-weight: normal;
+    display: block;
+    padding-bottom: 0.2em;
+}
+
+.recordProvidedByOrganization {
+    font-weight: bold;
+    margin-bottom: -6px;
+    padding-top: 9px;
+}
+
+
+#recordProvidedBy .dropdown dt a {
+    padding: 10px 10px 10px 8px;
+}
+
+#recordProvidedBy .dropdown dt a:after {
+    padding-left: 8px;
+    float: right;
+    margin-top: 3px;
+}
+
+#recordFeedback {
+    border-bottom: 1px solid #bcdce0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    clear: both;
+}
+
+#recordProvidedBy .dropdown dt {
+    width: 150px;
+}
+
+#recordProvidedBy .dropdown dt a {
+
+}
+
+#recordProvidedBy > ul {
+    margin-top: 4em;
+    padding-top: 1.5em;
+}
+
+.holdingsContainerHeader dl.dropdown dd ul,
+#recordProvidedBy dl.dropdown dd ul {
+    overflow: auto;
+    max-height: 450px;
+}
+
+.holdingsContainerHeader dl.dropdown {
+    min-width: 260px;
+
+}
+
+.dropdownMenuIcon {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -679px -2324px;
+    content: "";
+    display: inline-block;
+    height: 12px;
+    float: right;
+    margin-top: -20px;
+    margin-right: 8px;
+    width: 15px;
+}
+
+
 
 /*
 .toolbar ul li a:hover{
@@ -3887,6 +3999,8 @@ table.datagrid td {
     margin: 10px 0;
 }
 
+
+#dyntabnav .holdingsContainerHeader .menuHolder,
 #dyntabnav .holdingsContainerHeader h5 {
     background:#18a3b7;
     border: none;
@@ -3894,6 +4008,16 @@ table.datagrid td {
     font-size: 14px;
     font-weight: bold;
     margin: 0;
+    padding: 8px 12px;
+}
+
+#dyntabnav .holdingsContainerHeader .menuHolder {
+    height: 30px;
+    padding: 8px 0px;
+}
+
+#dyntabnav .holdingsContainer p.accessRights {
+    margin: 10px 0;    
     padding: 8px 12px;
 }
 
@@ -3909,6 +4033,10 @@ table.datagrid td {
 }
 .holdingsContainerHolding.active span.arrowIndicator {
     background: url("../images/icons16-24px-02.png") repeat scroll -49px -2319px transparent;
+}
+
+#dyntabnav .holdingsContainer {
+    clear: both;
 }
 
 #dyntabnav .holdingsContainer h5 {
@@ -4092,7 +4220,6 @@ ul.commentList {
     margin: 0 0 1em 0;
     list-style-type:none;
 }
-
 
 ul.commentList li {
     background-color: #EBF5F3;
@@ -5358,6 +5485,7 @@ span.dynatree-node a {
     text-decoration: none;
     padding: 0;
     border: none;
+    color: #00A3B5;
 }
 span.dynatree-node .facetTitle {
     max-width: 130px;

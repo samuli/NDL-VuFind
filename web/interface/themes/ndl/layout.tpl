@@ -87,6 +87,8 @@
     <!--//--><![CDATA[//><!--
       var path = '{$url}';
       var userLang = '{$userLang}';
+      var fullPath = '{$fullPath}';
+      var action = '{$action}';
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}

@@ -79,28 +79,27 @@
         </fieldset>
       </form>
       {elseif is_array($hierarchicalFacets) && in_array($title, $hierarchicalFacets)}
-      <dl class="narrowList navmenu">
-        <dt>{translate text=$cluster.label}</dt>
+      <dl class="narrowList navmenu{if is_array($defaultFacets) && !in_array($title, $defaultFacets) && !in_array($title, $activeFacets)} hierarcicalFacet{else} collapsed open{/if}">
+          <dt>{translate text=$cluster.label}</dt>
       </dl>
-        {literal}
-        <script type="text/javascript">
-        //<![CDATA[
-        $(document).ready(function() {
-        {/literal}
-          enableDynatree('#facet_{$title}', '{$title}', '{$fullPath}', '{$action}');
-        {literal}  
-        });
-        //]]>
-        </script>
-        {/literal}
+      {if in_array($title, $activeFacets) || (is_array($defaultFacets) && in_array($title, $defaultFacets))}
+      {literal}
+      <script type="text/javascript">
+          //<![CDATA[
+          $(document).ready(function() { 
+              enableDynatree($('#facet_{/literal}{$title}'), '{$title}', '{$fullPath}', '{$action}');
+          {literal}});
+          //]]>
+      </script>
+      {/literal}
+      {/if}
       <div id="facet_{$title}" class="dynatree-facet">
-        <span class="facet_loading hide"></span>
+          <span class="facet_loading hide"></span>
       </div>
     {else}
         {assign var="mainYear" value="Main Year"}
         {assign var="dateRange" value="Date Range"}
-        <dl class="narrowList navmenu{if (($cluster.label === 'Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}">
-           
+        <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
         <dt>{translate text=$cluster.label}
           {if $cluster.label === 'Main Year'}<span class="timelineview">open timeline</span>
             {include file=$sideRecommendations.DateRangeVisAjax}

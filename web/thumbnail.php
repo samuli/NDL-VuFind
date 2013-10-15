@@ -121,7 +121,7 @@ function fetchFromRecord($id, $size, $index = null)
         if (!isset($index)) {
             $url = $recordDriver->getThumbnailURL($size);
         } else {
-            $images = array_keys($recordDriver->getAllImages());
+            $images = array_keys($recordDriver->getAllImages($size));
             if (isset($images[$index])) {
                 $url = $images[$index];
             } 
