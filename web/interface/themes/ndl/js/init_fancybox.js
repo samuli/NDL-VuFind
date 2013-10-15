@@ -13,10 +13,15 @@ $(document).ready(function() {
                                   var author = $(this.element).data('author');
                                   var url = $(this.element).data('url');
                                   var linkText = $(this.element).data('linktext');
+                                  if ((dates != '') && (author != '')) {
+                                  	var dot = '. ';
+                                  }
+                                  else {
+                                  	var dot = '';
+                                  }
                                   this.title = '<h3 class="fancyTitle">'+photoTitle+'</h3>'
-                                               +'<div class="fancyAuthor">'+author+'</div>'
+                                               +'<div class="fancyAuthorAndDates">'+author+dot+dates+'</div>'
                                                +'<div class="fancyBuilding">'+building+'</div>'
-                                               +'<div class="fancyDates">'+dates+'</div>'
                                                +'<div class="fancyLink"><a href="'+url+'">'+linkText+'</a></div>';
                                                
                               },
