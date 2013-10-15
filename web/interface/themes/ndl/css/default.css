@@ -835,6 +835,7 @@ a.clear_input:hover {
     padding: 5px;
     width: 162px;
     position:relative; /* To make PIE work */
+    
 }
 
 .dropdown dt a p {
@@ -2922,6 +2923,7 @@ ul.recordSet .addToFavLink a {
     color: #ffffff;
 }
 
+
 .dropdown dt a:after {
     content: "";
     display: inline-block;
@@ -3791,6 +3793,10 @@ h5.recordTabHeader {
 
 #recordProvidedBy .dropdown dt a {
     padding: 10px 10px 10px 8px;
+}
+#recordProvidedBy .dropdown dt a:after {
+    position:absolute;
+    right: 7px;
 }
 
 #recordProvidedBy .dropdown dt a:after {

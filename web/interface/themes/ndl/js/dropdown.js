@@ -71,20 +71,41 @@ function initDropdowns() {
         var a = $(this).find('dt a');
         var txt = a.html();
         if (txt) {
-            // link text is followed by a hidden <span> with the actual url, ignore this
-            txt = txt.substring(0,txt.indexOf("<span"));
-            // cut away already added &hellip;
             var pos = txt.indexOf("…");
+            if (pos != -1) {
+                // already truncated, abort
+                return;
+            }
+
+            // link text is followed by a hidden <span> with the actual url, ignore this
+            pos = txt.indexOf("<span");
             if (pos != -1) {
                 txt = txt.substring(0,pos);
             }
-            var maxLen = $(this).attr("truncateLength");    
-            if (maxLen) {
-                if (txt.length > maxLen) {
-                    txt = txt.substring(0,maxLen-3) + "&hellip;";
-                    a.html(txt);
+            
+            
+            var truncated = txt;
+            if ($(this).hasClass("dropdownTruncate")) {
+                // truncate label
+                a.html(".");
+                var singleLineHeight = a.height();
+                var txtLen = txt.length;
+                var ind = 0;            
+                while(ind <= txtLen) {
+                    truncated = txt.substring(0,ind++);
+                    a.html(truncated + " &nbsp;");
+                    if (a.height() > singleLineHeight) {
+                        // leave space for icon
+                        ind = ind-6;
+                        if (ind < 0) {
+                            ind = 0;
+                        }                    
+                        truncated = txt.substring(0,ind) + '&hellip;';
+                        break;
+                    }
                 }
             }
+            a.html(truncated);
         }
     });
 
@@ -106,20 +127,21 @@ function createDropdowns(){
         var target = 'styled_'+idName+counter;
         counter++;
         
-        var truncateLength = $(this).attr("truncateLength");
-        var html = '<dl id="'+target+'" class="dropdown ' + idName + '"';
-        if (truncateLength) {
-            html += ' truncateLength="' + truncateLength + '"';
+        var classNames = "dropdown";
+        if ($(this).hasClass("dropdownTruncate")) {
+            classNames += " dropdownTruncate";
         }
+        var html = '<dl id="'+target+'" class="' + classNames + ' ' + idName + '"';
         html += '></dl>';
         $(this).hide().addClass('stylingDone').before(html);
 
-        var txt = selected.text();
+        var txt = selected.text();        
         $('#'+target).append('<dt><a href="#">' + txt + 
                              '<span class="value">' + selected.val() + 
                              '</span></a></dt>');
+        
         $("#"+target).append('<dd><ul></ul></dd>');
-
+        
         options.each(function(){
             if ($(this).text()) {
                 $("#"+target+" dd ul").append('<li><a href="#" class="big">' + 

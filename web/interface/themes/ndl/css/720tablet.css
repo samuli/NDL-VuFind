@@ -275,7 +275,21 @@
     table.holdingsContainerHolding .available {
         display: inline-block;
     }
+
+    #recordProvidedBy .dropdown dt a {
+        width: 100px;        
+    }
+
+    #recordProvidedBy .dropdown dt a:after {
+        right: 4px;
+    }
     
+    .menuHolder dl.dropdown dd ul,
+    #recordProvidedBy dl.dropdown dd ul {
+        max-height: 200px;
+    }
+
+
     /* Myresearch */
     
     .ui-tabs .ui-tabs-nav li a {
