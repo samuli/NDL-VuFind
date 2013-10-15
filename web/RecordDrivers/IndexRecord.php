@@ -223,6 +223,7 @@ class IndexRecord implements RecordInterface
 
         // These variables are only used by the core template, and they are prefixed
         // with "core" to prevent conflicts with other variable names.
+        $interface->assign('coreSource', $this->getSourceID());
         $interface->assign('coreTitle', $this->getTitle());
         $interface->assign('coreShortTitle', $this->getShortTitle());
         $interface->assign('coreSubtitle', $this->getSubtitle());
@@ -326,6 +327,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreCollections', $this->getCollections());
 
         $interface->assign('coreMergedRecordData', $this->getMergedRecordData());
+
 
         // Send back the template name:
         return 'RecordDrivers/Index/core.tpl';

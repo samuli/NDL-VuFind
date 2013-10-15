@@ -137,7 +137,6 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         *}
         
         {*<li><a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li> *}
-        <li><a href="{$url}/Record/{$id|escape:"url"}/Feedback" class="feedbackRecord mail" id="feedbackRecord{$id|escape}" title="{translate text="Send Feedback"}">{translate text="Send Feedback"}</a></li>
         {* Citation commented out for now
         <li><a href="{$url}/Record/{$id|escape:"url"}/Cite" class="citeRecord cite" id="citeRecord{$id|escape}" title="{translate text="Cite this"}">{translate text="Cite this"}</a></li> *}
         {* AddThis-Bookmark commented out
@@ -171,15 +170,35 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
             {js filename="qrcodeNDL.js"}
           </li>
           </ul>
-
         </li>
         {/if}
+
+        <li>
+          <div id="recordProvidedBy">
+            <label for="deduprecordMenu">{translate text='Record Provided By'}</label>
+            {if $coreMergedRecordData.dedup_data}
+            <select truncateLength="19" id="deduprecordMenu" name="deduprecordMenu" class="dropdown jumpMenuURL">
+              {foreach from=$coreMergedRecordData.dedup_data key=source item=dedupData name=loop}
+              <option value="{$url}/Record/{$dedupData.id|escape:"url"}"{if $dedupData.id == $id} selected="selected"{/if}>{capture name="organization"}{translate text=$source prefix='source_'}{/capture}{assign var="pos" value=$smarty.capture.organization|strpos:" - "}{if $pos}{$smarty.capture.organization|substr:$pos+3}{else}{$smarty.capture.organization}{/if}</option>
+            {/foreach}
+            </select>
+            {else}
+            <div class="recordProvidedByOrganization">{capture name="organization"}{translate text=$coreSource prefix='source_'}{/capture}{assign var="pos" value=$smarty.capture.organization|strpos:" - "}{if $pos}{$smarty.capture.organization|substr:$pos+3}{else}{$smarty.capture.organization}</div>{/if}
+            {/if}
+          </div>
+        </li>
+        <div id="recordFeedback">
+          <li>
+            <a href="{$url}/Record/{$id|escape:"url"}/Feedback" class="feedbackRecord mail" id="feedbackRecord{$id|escape}" title="{translate text="Send Feedback"}">{translate text="Send Feedback"}</a>
+          </li>
+        </div>
         {if $ratings && $recordRating}
         <li class="recordAverageRating">
             <div id="averageRating" data-score="{if $recordRating.ratingAverage}{$recordRating.ratingAverage}{else}0{/if}"></div><span id="ratingCount">({$recordRating.ratingCount})</span>
         </li>
-        {/if}
+        {/if}        
       </ul>
+      
       {if $bookBag}
       <div class="cartSummary">
       <form method="post" name="addForm" action="{$url}/Cart/Home">
