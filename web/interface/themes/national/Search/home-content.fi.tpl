@@ -24,6 +24,11 @@
   </div>
 </div>
 <div id="home-timeline" class="section clearfix">
+  <div class="content">
+    <p><span class="large">Aikarajaushaulla löydät </span> kuvat, teokset, esineet, asiakirjat ja muut aineistot historiasta nykypäivään.
+    <br />Rajaus kohdistuu valmistusvuoteen.
+    </p>
+  </div>
   {include file="Search/Recommend/DateRangeVisAjax.tpl"}
 </div>
 {* <!--
