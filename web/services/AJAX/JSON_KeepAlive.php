@@ -50,5 +50,16 @@ class JSON_KeepAlive extends JSON
         unset($_SESSION['no_store']);
         return $this->output(true, JSON::STATUS_OK);
     }
+
+    /**
+     * No-op, just verify that VuFind is up and running
+     *
+     * @return true
+     * @access public
+     */
+    public function noop()
+    {
+        return $this->output(true, JSON::STATUS_OK);
+    }
 }
 
