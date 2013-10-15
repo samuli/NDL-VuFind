@@ -51,7 +51,7 @@
     {js filename="jquery.metadata.js"}
     {js filename="jquery.validate.min.js"}
     {js filename="jquery.qrcode.js"}
-    {js filename="jquery.dataTables.js"}   
+    {js filename="jquery.dataTables.min.js"}   
     {js filename="jquery.clearsearch.js"}
     {js filename="jquery.collapse.js"}
     {js filename="jquery.dynatree-1.2.2-mod.js"}
