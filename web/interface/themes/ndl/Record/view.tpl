@@ -179,11 +179,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
             {if $coreMergedRecordData.dedup_data}
             <select id="deduprecordMenu" name="deduprecordMenu" class="dropdown dropdownTruncate jumpMenuURL">
               {foreach from=$coreMergedRecordData.dedup_data key=source item=dedupData name=loop}
-              <option value="{$url}/Record/{$dedupData.id|escape:"url"}"{if $dedupData.id == $id} selected="selected"{/if}>{capture name="organization"}{translate text=$source prefix='source_'}{/capture}{assign var="pos" value=$smarty.capture.organization|strpos:" - "}{if $pos}{$smarty.capture.organization|substr:$pos+3}{else}{$smarty.capture.organization}{/if}</option>
+              <option value="{$url}/Record/{$dedupData.id|escape:"url"}"{if $dedupData.id == $id} selected="selected"{/if}>{translate text=$source prefix='source_'}</option>
             {/foreach}
             </select>
             {else}
-            <div class="recordProvidedByOrganization">{capture name="organization"}{translate text=$coreSource prefix='source_'}{/capture}{assign var="pos" value=$smarty.capture.organization|strpos:" - "}{if $pos}{$smarty.capture.organization|substr:$pos+3}{else}{$smarty.capture.organization}</div>{/if}
+            <div class="recordProvidedByOrganization">{translate text=$coreSource prefix='source_'}</div>
             {/if}
           </div>
         </li>

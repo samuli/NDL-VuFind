@@ -901,7 +901,8 @@ body > ul.ui-menu.ui-widget li a.ui-corner-all {
 }
 .menuHolder .dropdown dd ul li a,
 #recordProvidedBy .dropdown dd ul li a {
-    padding-right: 20px;
+    white-space: nowrap;
+    padding-right: 30px;
 }
 
 .dropdown dd ul li a:hover,
@@ -3827,13 +3828,14 @@ h5.recordTabHeader {
 
 .holdingsContainerHeader dl.dropdown dd ul,
 #recordProvidedBy dl.dropdown dd ul {
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     max-height: 450px;
 }
 
 .holdingsContainerHeader dl.dropdown {
+    font-size: 13px;
     min-width: 260px;
-
 }
 
 .dropdownMenuIcon {
