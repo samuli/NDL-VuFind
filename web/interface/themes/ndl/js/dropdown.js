@@ -32,8 +32,10 @@ function initDropdowns() {
 
     $(".dropdown dd ul li a").not(".initDone").on('click touchstart', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
-        var text = $(this).html();
-        dropdown.find('dt a').html(text);
+        if (!dropdown.hasClass("dropdownStatic")) {
+            var text = $(this).html();
+            dropdown.find('dt a').html(text);
+        }
         dropdown.find('dd ul').fadeOut(100);
         
 
@@ -43,7 +45,10 @@ function initDropdowns() {
         var source = dropdown.next('select');
         
         source.find('option').removeAttr('selected');
-        source.find('option[value="'+$(this).find("span.value").text()+'"]').attr('selected', 'selected').change();
+        var val = $(this).find("span.value").text();
+        // attempt to find option-elements
+        source.find('option[value="'+val+'"]').attr('selected', 'selected').change();
+        dropdown.trigger("menuClick", val);
 
         e.preventDefault();
     });
@@ -128,15 +133,21 @@ function createDropdowns(){
         counter++;
         
         var classNames = "dropdown";
+        // truncate label?
         if ($(this).hasClass("dropdownTruncate")) {
             classNames += " dropdownTruncate";
         }
+        // keep label fixed regardless of selected option
+        var staticLabel = $(this).hasClass("dropdownStatic");
+        if (staticLabel) {
+            classNames += " dropdownStatic";
+        }
+
         var html = '<dl id="'+target+'" class="' + classNames + ' ' + idName + '"';
         html += '></dl>';
         $(this).hide().addClass('stylingDone').before(html);
 
-        var txt = selected.text();        
-        $('#'+target).append('<dt><a href="#">' + txt + 
+        $('#'+target).append('<dt><a href="#">' + selected.text() + 
                              '<span class="value">' + selected.val() + 
                              '</span></a></dt>');
         
@@ -145,8 +156,8 @@ function createDropdowns(){
         options.each(function(){
             if ($(this).text()) {
                 $("#"+target+" dd ul").append('<li><a href="#" class="big">' + 
-                    $(this).text() + '<span class="value">' + 
-                    $(this).val() + '</span></a></li>');
+                                              $(this).text() + '<span class="value">' + 
+                                              $(this).val() + '</span></a></li>');
             } else {
                 $("#"+target+" dd ul").append('<li style="height: 2px"><hr/></li>');
             }
