@@ -1992,11 +1992,20 @@ li.result blockquote {
 }
 
 .summDedupData {
-    margin-top: 6px;
+    margin-top: 15px;
 }
 
 .dedupform {
-    font-size: 13px;
+    color: #666666;
+    font-family: "helvetica neue";
+    font-size: 1em;
+    padding: 2px 0;
+    letter-spacing: 0.2px;
+}
+
+.dedupform option {
+    padding: 0 3px 1px 7px;
+    
 }
 
 .itemLocationInfo {
