@@ -5906,3 +5906,18 @@ top:10px;
 .fancyLink {
 	text-align:right;
 }
+
+.fancyLink a {
+    display:inline-block;
+}
+
+.fancyLink a:before {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -362px -2370px;    
+    content: "";
+    display: block;
+    float: left;
+    height: 15px;
+    margin-top: 2px;
+    width: 17px;
+}

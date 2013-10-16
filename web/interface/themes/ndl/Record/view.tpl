@@ -116,7 +116,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           </div>
         {/if}
         
-        {if $coreThumbLarge}{if $img_count > 1}<a class="title fancybox-trigger" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large"><span></span>{else}<a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-linktext="{translate text='Open record'}" data-author="{$coreAuthor}" class="fancybox fancybox.image" href="{$coreThumbLarge|escape}" rel="gallery">{/if}{/if}
+        {if $coreThumbLarge}{if $img_count > 1}<a class="title fancybox-trigger" id="thumbnail_link" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large"><span></span>{else}<a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-linktext="{translate text='Open record'}" data-author="{$coreAuthor}" class="fancybox fancybox.image" href="{$coreThumbLarge|escape}" rel="gallery">{/if}{/if}
         <span></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
         {if $coreThumbLarge}</a>
         {js filename="init_fancybox.js"}

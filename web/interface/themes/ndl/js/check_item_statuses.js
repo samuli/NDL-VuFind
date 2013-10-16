@@ -26,7 +26,6 @@ function checkItemStatuses(id) {
             success: function(response) {
                 if(response.status == 'OK') {
                     $.each(response.data, function(i, result) {
-                        console.log(result);
                         var safeId = jqEscape(result.id);
                         if (result.total && result.total > 0) {
                             $('#availableHoldings' + safeId + ' span.availableNumber').text(result.total);
@@ -65,7 +64,7 @@ function checkItemStatuses(id) {
                                         + result.locationList[x].location + '</span> ';
                                 } else if (result.use_unknown_status) {
                                     if (result.locationList[x].location) {
-                                        locationListHTML += '<span class="availableLoc>' 
+                                        locationListHTML += '<span class="availableLoc">' 
                                             + result.locationList[x].location + '</span> ';
                                     }
                                 } else {
