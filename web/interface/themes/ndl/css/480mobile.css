@@ -259,6 +259,11 @@
     #introduction .iconlabel:before {
         margin-top: 5px;
     }
+
+
+    #home-timeline {
+        display: none;
+    }
     
     /* Search results */
     
