@@ -3470,6 +3470,7 @@ div.recordsubcontent .call-slip-form form > p  {
     padding: 3px;
     margin: 0 auto;
     max-width: 150px;
+    display:block;
 }
 .holdsMessage {
     margin-top: 1em;
@@ -5853,4 +5854,18 @@ div.commentDetails > * {
 .module-Content .main .menu .grid_6.fixed {
 position:fixed !important;
 top:10px;
+}
+
+/** fancybox text styles **/
+
+.fancyTitle {
+ font-size:1.2em;
+ margin:0.2em 0;
+}
+.fancyAuthorAndDates {
+
+}
+                                          
+.fancyLink {
+	text-align:right;
 }
