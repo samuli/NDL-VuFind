@@ -1100,7 +1100,7 @@ class JSON extends Action
                 'location' => htmlentities($location, ENT_COMPAT, 'UTF-8'),
                 'callnumbers' =>
                     htmlentities($locationCallnumbers, ENT_COMPAT, 'UTF-8'),
-                'availableCount' => $details['availableCount']
+                'availableCount' => isset($details['availableCount']) ? $details['availableCount'] : null
             );
             $locationList[] = $locationInfo;
         }
