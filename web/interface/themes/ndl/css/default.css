@@ -1798,7 +1798,7 @@ ul.recordSet {
     list-style-type: none;
 }
 ul.recordSet li.result {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 ul.recordSet li.result:hover {
@@ -1978,6 +1978,49 @@ li.result blockquote {
 }
 .resultItemLine2, .resultItemLine3, .resultItemLine4 {
     color: #666;
+}
+
+.resultItemLine3 > select.dedupform {
+    font-size: 13px;
+    line-height: 16px;
+    margin:5px 0;
+}
+
+.resultItemLine3 .availableTotals {
+    display: inline;
+    margin-left: 10px;
+}
+
+.summDedupData {
+    margin-top: 6px;
+}
+
+.dedupform {
+    font-size: 13px;
+}
+
+.itemLocationInfo {
+    line-height: 18px;
+    margin-bottom: 3px;
+    margin-left: 17px;
+    text-indent: -19px;
+}
+
+div[id*="locationDetails"] {
+    margin: 2px 0 4px;
+
+}
+
+ul.recordSet .resolver {
+    padding-top: 4px;
+}
+
+.availableTotals, .noAvailabilityInfo, .moreDataLink {
+    display:none;
+}
+
+.groupLocation .availableLoc:before, .groupLocation .checkedoutLoc:before {
+    width: 14px;
 }
 
 .resultItemLine3 .highlight {
@@ -2552,15 +2595,12 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 30px;
     margin-right:0;
 }
-.available:before {
+.available:before, .availableLoc:before {
     content: "";
     display: inline-block;
     height: 11px;
     width: 11px;
     padding-left: 5px;
-}
-.availableLoc {
-    padding-left: 16px;
 }
 .available {
     color: #00B270;
@@ -2579,7 +2619,7 @@ ul.recordSet .addToFavLink a {
 .openurl_more img {
     display:none;
 }
-.checkedout:before {
+.checkedout:before, .checkedoutLoc:before {
     content: "";
     display: inline-block;
     height: 11px;
@@ -2588,9 +2628,6 @@ ul.recordSet .addToFavLink a {
 }
 .checkedout {
     color:#ff461e;
-}
-.checkedoutLoc {
-    padding-left: 16px;
 }
 .holdPlace:before, .UBRequestPlace:before {
     content: "";

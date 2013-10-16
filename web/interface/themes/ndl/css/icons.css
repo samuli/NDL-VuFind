@@ -276,17 +276,17 @@ a.clear_input {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -2047px -1439px;
 }
-.availableLoc {
+.availableLoc:before {
     background-image: url(../images/icons16-24px-03.png);
-    background-position: -2047px -1398px;
+    background-position: -2047px -1439px;
 }
 .checkedout:before {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -994px -1439px;
 }
-.checkedoutLoc {
+.checkedoutLoc:before {
     background-image: url(../images/icons16-24px-03.png);
-    background-position: -994px -1398px;
+    background-position: -994px -1439px;
 }
 .dateVisClear a {
     background-image: url(../images/icons16-24px-03.png);
