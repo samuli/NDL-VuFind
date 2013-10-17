@@ -169,9 +169,9 @@
         {elseif $summURLs}
         <div>
           {if $summURLs|@count > 2}
-          <p class="resultContentToggle"><a href="#" class="toggleHeader">{translate text='Contents'}<img src="{path filename="images/down.png"}" width="11" height="6" /></a></p>
+          <p class="resultContentToggle"><a href="#" class="toggleHeader">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></a></p>
           {else}
-          <p class="resultContentToggle">{translate text='Contents'}<img src="{path filename="images/down.png"}" width="11" height="6" /></p>
+          <p class="resultContentToggle">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></p>
           {/if}
           <div class="resultContentList">
           <ul>
