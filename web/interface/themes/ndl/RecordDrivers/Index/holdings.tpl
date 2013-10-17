@@ -99,7 +99,7 @@
           </table>
         {/if}
         {assign var=prevMfhdId value=$row.mfhd_id}
-        <table class="holdingsContainerHolding  {if $smarty.foreach.holdings.first}active{/if}" id="holding_{$prevMfhdId}_{$itemsIteration}" cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
+        <table class="holdingsContainerHolding  {if $smarty.foreach.items.first && $smarty.foreach.holdings.first}active{/if}" id="holding_{$prevMfhdId}_{$itemsIteration}" cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
         <tr class="holdingsContainerHeading">
           <th colspan="2" class="location"><span class="arrowIndicator"></span>{$location|translate|escape}</th>
           <th colspan="2" class="holdingDetails">
