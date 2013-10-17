@@ -131,7 +131,7 @@
         <div id="availableHoldings{$summId|escape}" class="availableLoc availableTotals"><span class="availableNumber"></span> <span>{translate text="status_Available}</span><span id="loadingIndicator{$summId|escape}" style="margin-left:5px"></span></div>
         {else}
           {foreach from=$summDedupData key=source item=dedupData name=loop}
-            <strong><a class="dedupDataId {$dedupData.id|escape:"url"}" href="{$url}/Record/{$dedupData.id|escape:"url"}">{translate text=$source prefix='source_'}</a></strong>
+            <strong>{translate text=$source prefix='source_'}</strong>
           {/foreach}
         {/if}
       {/if}

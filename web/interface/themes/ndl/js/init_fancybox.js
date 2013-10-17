@@ -9,8 +9,11 @@ $(document).ready(function() {
                               afterLoad   : function() {
                                   var dates = $(this.element).data('dates');
                                   var photoTitle = $(this.element).data('title');
-                                  var building = $(this.element).data('building');
                                   var author = $(this.element).data('author');
+                                  var building = '';
+                                  if (!author) {
+                                    building = $(this.element).data('building');
+                                  }
                                   var url = $(this.element).data('url');
                                   var linkText = $(this.element).data('linktext');
                                   if ((dates != '') && (author != '')) {
