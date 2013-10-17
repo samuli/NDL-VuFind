@@ -1,3 +1,4 @@
+<!-- START of: RecordDrivers/Index/result.tpl -->
 <div class="result recordId" id="record{$summId|escape}">
 
 <div class="resultColumn1">
@@ -51,7 +52,7 @@
     </div>
    
     <div class="resultItemFormat"><span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span></div>
-    
+    <span class="rsi"></span>
     {if !empty($coreOtherLinks)}
         {assign var=prevOtherLinkHeading value=''}
         {foreach from=$coreOtherLinks item=coreOtherLink}
@@ -146,12 +147,26 @@
       <div id="nodata{$summId|escape}" class="noAvailabilityInfo">{translate text="No holdings available"}</div>
       <a id="moredata{$summId|escape}" class="clearfix moreDataLink" href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}">{translate text="More holdings"} »</a>
     </div>
-      {if $summOpenUrl || !empty($summURLs)}
-        {if $summOpenUrl}
-        <span class="openUrlSeparator"></span>
-          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
-        {/if}
-        {if $summURLs}
+      {if $summOpenUrl || !empty($summURLs) || !empty($summOnlineURLs)}
+        {if $summOnlineURLs}
+        <div>
+          {if $sumOnlineURLs|@count > 2}
+          <p class="resultContentToggle"><a href="#" class="toggleHeader">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></a></p>
+          {else}
+          <p class="resultContentToggle">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></p>
+          {/if}
+          <div class="resultContentList">
+          <ul>
+          {foreach from=$summOnlineURLs item=urldesc}
+            <li><a href="{$urldesc.url|proxify|escape}" class="fulltext" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}</li>
+          {/foreach}
+          </ul>
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
+          </div>
+        </div>
+        {elseif $summURLs}
         <div>
           {if $summURLs|@count > 2}
           <p class="resultContentToggle"><a href="#" class="toggleHeader">{translate text='Contents'}<img src="{path filename="images/down.png"}" width="11" height="6" /></a></p>
@@ -159,11 +174,20 @@
           <p class="resultContentToggle">{translate text='Contents'}<img src="{path filename="images/down.png"}" width="11" height="6" /></p>
           {/if}
           <div class="resultContentList">
+          <ul>
           {foreach from=$summURLs key=recordurl item=urldesc}
-          <a href="{$recordurl|proxify|escape}" class="fulltext" target="_blank" title="{$recordurl|escape}">{if $recordurl == $urldesc}{$recordurl|truncate_url|escape}{else}{$urldesc|translate_prefix:'link_'|escape}{/if}</a>
+            <li><a href="{$recordurl|proxify|escape}" class="fulltext" target="_blank" title="{$recordurl|escape}">{if $recordurl == $urldesc}{$recordurl|truncate_url|escape}{else}{$urldesc|translate_prefix:'link_'|escape}{/if}</a></li>
           {/foreach}
+          </ul>
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
           </div>
         </div>
+        {else}
+	        {if $summOpenUrl}
+	          {include file="Search/openurl.tpl" openUrl=$summOpenUrl}
+	        {/if}
         {/if}
       {/if}
       
@@ -234,3 +258,4 @@
 </div>
 
 {if $summCOinS}<span class="Z3988" title="{$summCOinS|escape}"></span>{/if}
+<!-- END of: RecordDrivers/Index/result.tpl -->

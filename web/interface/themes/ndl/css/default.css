@@ -1987,7 +1987,7 @@ li.result blockquote {
 }
 
 .resultItemLine3 .availableTotals {
-    display: inline;
+    display: none;
     margin-left: 10px;
 }
 

@@ -29,7 +29,7 @@ function checkItemStatuses(id) {
                         var safeId = jqEscape(result.id);
                         if (result.total && result.total > 0) {
                             $('#availableHoldings' + safeId + ' span.availableNumber').text(result.total);
-                            $('#availableHoldings' + safeId).show();
+                            $('#availableHoldings' + safeId).css('display', 'inline')
                         }
                         $('#record' + safeId + ' .dedupform').removeAttr('selected').
                             find('option[value="'+safeId+'"]').attr('selected', '1');
