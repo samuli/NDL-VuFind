@@ -182,7 +182,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     display: block;
     margin: 0;
     padding: 0 0 5px;
-    color:#fff;
+    color:#444444;
 }
 #headerMenu .subNav li {
     line-height:.9em;
@@ -196,10 +196,13 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     text-decoration: none;
 }
 #headerMenu li a:focus span:first-child {
-    color:#fff;
+    color:#fdf07f;
 }
-#headerMenu li a:hover span, #headerMenu li a:focus span {
-    color: #fff;
+#headerMenu li a:hover span,
+#headerMenu li a:focus span,
+#headerMenu .dropdown li a:hover span:first-child,
+#headerMenu .dropdown li a:focus span:first-child {
+    color: #444444;
     text-decoration: none;
 }
 
@@ -375,7 +378,7 @@ div.sidegroup {
     padding: 0px;
     position: absolute; 
 
-    top: 27px;
+    top: 10px;
     left:-10px;
 /*
     left: 54px;
@@ -439,6 +442,7 @@ div.sidegroup {
     padding: 0 0 5px;
 }
 
+/*
 #headerMenu ul.subNav li
  {
     color:#444;
@@ -454,6 +458,7 @@ div.sidegroup {
     border-top-left-radius:0;
     border-top-right-radius:0;
 }
+*/
 #headerMenu ul.subNav li:hover
  { 
     background-color: #e6e6e6; 
@@ -463,6 +468,7 @@ div.sidegroup {
 #headerMenu ul.subNav li:first-child {
     border: none;
 }
+
 #headerMenu ul.subNav li:hover:first-child {
     -moz-border-radius: 10px 10px 0 0;
     -webkit-border-radius: 10px 10px 0 0;
@@ -470,15 +476,18 @@ div.sidegroup {
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
-#headerMenu ul.subNav li:hover:last-child {   
+#headerMenu ul.subNav li:hover:last-child {
     -moz-border-radius: 0 0 10px 10px;
     -webkit-border-radius: 0 0 10px 10px;
     border-radius:  0 0 10px 10px;
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
-#headerMenu .menuHelp ul.subNav li:hover:first-child,
-#headerMenu .menuLibCard ul.subNav li:hover:first-child {
+
+#headerMenu .menuHelp ul.subNav li a:hover:first-child,
+#headerMenu .menuHelp ul.subNav li:hover:last-child,
+#headerMenu .menuLibCard ul.subNav li a:hover:first-child,
+#headerMenu .menuLibCard ul.subNav li:hover:last-child {
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
     border-radius:  10px 10px 10px 10px;
@@ -835,9 +844,16 @@ a.clear_input:hover {
     padding: 5px;
     width: 162px;
     position:relative; /* To make PIE work */
-    
 }
 
+#headerMenu .dropdown dt a {
+    background: none;
+    font-weight: bold;
+    padding: 3px 0 0;
+}
+#headerMenu .dropdown dt a:hover {
+    color: #fdf07f;
+}
 .dropdown dt a p {
     color: #444;
     cursor: pointer;
@@ -931,6 +947,15 @@ body > ul.ui-menu.ui-widget li:last-child a:hover {
     color: #444;
     display: none;
     float: right;    
+}
+#headerMenu .dropdown dd li,
+#headerMenu .dropdown dd ul {
+    min-width: 240px;
+    padding: 0;
+    width: 100%;
+}
+#headerMenu .dropdown dd ul li a {
+    padding: 7px 9px;
 }
 
 /** Search Box Dropdown **/

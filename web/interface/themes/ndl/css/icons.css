@@ -43,6 +43,10 @@
     background-image: url(../images/icons16-24px-02.png);
     background-position: -673px -2324px;
 }
+#headerMenu .dropdown dt a:after {
+    background-position: -676px -2327px;
+    height: 7px;
+}
 .dropdown.catalogAccount dt a:after {
     content: "▾";
     float:right;
