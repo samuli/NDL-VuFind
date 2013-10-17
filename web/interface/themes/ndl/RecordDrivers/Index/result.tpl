@@ -123,7 +123,6 @@
         <select class="dedupform">
         {foreach from=$summDedupData key=source item=dedupData name=loop}
         {if $dedupData}
-        {$dedupData|@var_dump}
         <option value="{$dedupData.id|escape:"url"}" class="dedupDataId {$source} {$dedupData.id|escape:"url"}">{translate text=$source prefix='source_'}</option>
         {/if}
         {/foreach}
