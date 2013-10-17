@@ -1122,7 +1122,7 @@ body > .ui-widget .button {
     background: none repeat scroll 0 0 #FFFFFF;
     border-radius: 10px 10px 10px 10px;
     color: #666666;
-    padding: 8px 11px 6px 12px;
+    padding: 8px 3px 9px 7px;
     position: absolute;
     top: 44px;
     left: 389px;
@@ -1141,6 +1141,9 @@ body > .ui-widget .button {
     padding: 0;
 }
 
+.checkboxFilter label[for="Limittoonlinematerials"] {
+    margin-left:35px;
+}
 
 
 label.invalid {
