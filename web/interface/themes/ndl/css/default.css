@@ -5933,3 +5933,8 @@ top:10px;
     margin-top: 2px;
     width: 17px;
 }
+
+.fancybox-skin {
+    min-width: 160px;
+    word-wrap: break-word;
+}
