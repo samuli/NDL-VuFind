@@ -2,7 +2,14 @@
 
 <li class="menuHome"><a href="{$path}/" role="menuitem"><span>{translate text='Home page'}</span></a></li>
 
-<li class="menuAbout"><a href="{$path}/Content/about"><span>{translate text='navigation_about'}</span></a></li>
+<li class="menuAbout"><a href="{$path}/Content/about"><span style="line-height: 1.5em;">{translate text='navigation_about'}</span></a></li>
+
+<li class="menuAbout menuAbout_{$userLang}">
+  <ul class="dropdown dropdownStatic stylingDone">
+    <li><a href="{$path}/Content/about">{translate text='navigation_about'}</a></li>
+  </ul>
+</li>
+
 
 <li class="menuSearch menuSearch_{$userLang}">
   <dl class="dropdown dropdownStatic stylingDone">

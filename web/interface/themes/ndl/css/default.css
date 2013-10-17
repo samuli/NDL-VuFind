@@ -162,7 +162,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
 }
 #nav, .nav {
     background:url(../images/px_69.png);
-    padding-bottom: 10px;
+    padding-bottom: 8px;
 }
 #nav .lang {
     margin-top: 12px;
@@ -378,7 +378,7 @@ div.sidegroup {
     padding: 0px;
     position: absolute; 
 
-    top: 10px;
+    top: 5px;
     left:-10px;
 /*
     left: 54px;
@@ -849,10 +849,14 @@ a.clear_input:hover {
 #headerMenu .dropdown dt a {
     background: none;
     font-weight: bold;
-    padding: 3px 0 0;
+    padding: 0px 0 0;
+    line-height: 1.5em;
 }
 #headerMenu .dropdown dt a:hover {
     color: #fdf07f;
+}
+#headerMenu .catalogAccount dt  a:hover {
+    color: #ffffff;
 }
 .dropdown dt a p {
     color: #444;
@@ -2979,7 +2983,7 @@ ul.recordSet .addToFavLink a {
 .groupJoinOptions {
     margin-top:-8px;
 }
-.dropdown dt a {
+.dropdown dt a, #headerMenu .catalogAccount dt a {
     display:block;
     background: #00a3b5;
     border: none;
