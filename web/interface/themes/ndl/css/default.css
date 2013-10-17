@@ -1960,7 +1960,7 @@ li.result blockquote {
     margin-left: 18px;
 }
 .resultContentToggle {
-    margin: 1em 0 0 0;
+    margin: 8px 0 0;
 }
 .resultContentToggle img {
     margin: 0 0 1px 5px;
@@ -1992,7 +1992,7 @@ li.result blockquote {
 }
 
 .summDedupData {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .dedupform {
