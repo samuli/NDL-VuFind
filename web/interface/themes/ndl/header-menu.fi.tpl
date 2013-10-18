@@ -39,7 +39,7 @@
         {/if}
         <li><a class="big" href="#">
           <span>Selaa luetteloa</span>
-          <span>Selaa tagien, tekijän, aiheen, genren, alueen tai aikakauden mukaan.</span>
+          <span>Selaa avainsanojen, tekijän, aiheen, genren, alueen tai aikakauden mukaan.</span>
           <span class="value">{$path}/Browse/Home</span></a>
         </li>
         <li><a class="big" href="#">
@@ -59,7 +59,7 @@
       <ul class="subNav" role="menu">
         <li><a class="big" href="#">
           <span>Hakuohje</span>
-          <span>Yksityiskohtaiset ohjeet hakuun.</span>
+          <span>Yksityiskohtaiset ohjeet hakuun</span>
           <span class="value">{$path}/Content/searchhelp</span></a>
         </li>
       </ul>
