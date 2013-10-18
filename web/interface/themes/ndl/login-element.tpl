@@ -1,5 +1,4 @@
 <!-- START of: login-element.tpl -->
-
 {if !$hideLogin}
 <li class="menuLogin menuLogin_{$userLang}">
   {if $user}
@@ -8,14 +7,12 @@
       {elseif $user->lastname || $user->firstname}{if $user->firstname}{assign var=fullname value=$user->firstname|cat:' '|cat:$user->lastname}{else}{assign var=fullname value=$user->lastname}{/if}{$fullname|truncate:20:'...':true:false|escape}{/if}</a></dt>
     <dd>
       <ul class="subNav" role="menu">
-        <li><!-- a class="big" href="#" -->
+        <li>
           <a class="big account" href="{$path}/MyResearch/Home">
             <span>{translate text="Your Account"}</span>
             <span>{translate text="your_account_info"}</span>
-            <span class="value">{$path}/MyResearch/Home</a>
-          <!-- /a -->
+            <span class="value">{$path}/MyResearch/Home</a></span>
         </li>
-
         {if $mozillaPersonaCurrentUser}
         <li>
           <a id="personaLogout" class="logout" href="">
@@ -25,7 +22,7 @@
         </li>
         {else}
         <li>
-          <a class="logout" ">
+          <a class="logout" href="">
             <span>{translate text="Log Out"}</span>
             <span class="value">{$path}/MyResearch/Logout</span>
           </a>
@@ -40,7 +37,7 @@
   <li class="menuLibCard menuLibCard_{$userLang}">
     <span>{translate text="Select Library Card"} :
     </span>
-    <form method="post" action="" style="float:right;">
+    <form id="catalogAccountForm" method="post" action="" style="float:right;">
       <select id="catalogAccount" name="catalogAccount" title="{translate text="Selected Library Card"}" class="jumpMenu">
         {foreach from=$catalogAccounts item=account}
         <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|truncate:15:'...':true:false|escape}</option>

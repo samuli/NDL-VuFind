@@ -17,8 +17,12 @@ $(document).ready(function() {
 
 // Header menu
 function initHeaderMenu() {
-    $("#headerMenu .dropdown").on("menuClick", function(e,url) {
-      document.location = url;       
+    // Catalog account -dropdown action is handled by the surrounding <form>
+    // Persona logout is handled in persona.js
+    $("#headerMenu .dropdown").not(".catalogAccount").on("menuClick", function(e,url) {
+        if (url && url != "") { 
+            document.location = url;
+        }
     });
 }
 
