@@ -214,7 +214,8 @@
 }
 @media only screen and (max-width: 730px) {
     #content-carousel {
-        display:none;
+        height: 0px;
+        overflow: hidden;
     }
 }
 
