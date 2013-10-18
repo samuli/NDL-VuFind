@@ -31,7 +31,7 @@
     <li>
       <a href="{$path}/Browse/Home" role="menuitem">
         <span>Selaa luetteloa</span>
-        <span>Selaa tagien, tekijän, aiheen, genren, alueen tai aikakauden mukaan.</span>
+        <span>Selaa avainsanojen, tekijän, aiheen, genren, alueen tai aikakauden mukaan.</span>
       </a>
     </li>
     <li>
@@ -49,7 +49,7 @@
       <a href="{$path}/Content/searchhelp" role="menuitem">
         <span>Hakuohje</span>
 
-        <span>Yksityiskohtaiset ohjeet hakuun.</span>
+        <span>Yksityiskohtaiset ohjeet hakuun</span>
 
       </a>
     </li>

@@ -9,7 +9,7 @@
     <li>
       <a href="{$path}/Search/Advanced" role="menuitem">
         <span>Advanced search</span>
-        <span>More refined search terms and map search.</span>
+        <span>More refined search terms and map search</span>
       </a>
     </li>
     {if $dualResultsEnabled}
@@ -31,7 +31,7 @@
     <li>
       <a href="{$path}/Browse/Home" role="menuitem">
         <span>Browse the catalogue</span>
-        <span>Browse by author, topic, genre, area, era or tags.</span>
+        <span>Browse by author, topic, genre, area, era or tags</span>
       </a>
     </li>
     <li>
@@ -48,7 +48,7 @@
     <li>
       <a href="{$path}/Content/searchhelp" role="menuitem">
         <span>Search tips</span>
-        <span>Detailed search instructions.</span>
+        <span>Detailed search instructions</span>
       </a>
     </li>
   </ul> 

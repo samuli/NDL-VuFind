@@ -43,7 +43,7 @@
     <form method="post" action="" style="float:right;">
       <select id="catalogAccount" name="catalogAccount" title="{translate text="Selected Library Card"}" class="jumpMenu">
         {foreach from=$catalogAccounts item=account}
-          <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|truncate:15:'...':true:false|escape}</option>
+          <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{translate text=$account.account_name|truncate:15:'...':true:false|escape}</option>
         {/foreach}
         <option value="new">{translate text="Add"}...</option>
       </select>

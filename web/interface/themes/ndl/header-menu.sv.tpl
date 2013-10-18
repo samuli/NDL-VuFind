@@ -9,7 +9,7 @@
     <li>
       <a href="{$path}/Search/Advanced" role="menuitem">
         <span>Utökad sökning</span>
-        <span>Fler sökvillkor och sökning på karta.</span>
+        <span>Fler sökvillkor och sökning på karta</span>
       </a>
     </li>
     {if $dualResultsEnabled}
@@ -48,7 +48,7 @@
     <li>
       <a href="{$path}/Content/searchhelp" role="menuitem">
         <span>Söktips</span>
-        <span>Detaljerade sökanvisningar.</span>
+        <span>Detaljerade sökanvisningar</span>
       </a>
     </li>
   </ul> 
