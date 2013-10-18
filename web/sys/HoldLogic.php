@@ -151,7 +151,7 @@ class HoldLogic
         // Don't format holdings as we want to keep call numbers separate 
         // and it would ruin notes and summaries
         //return $this->formatHoldings($holdings);
-        return $holdings;
+        return $this->sortHoldings($holdings);
     }
 
     /**
@@ -490,5 +490,28 @@ class HoldLogic
 
         return $link;
     }
+    
+    /**
+     * Support method to rearrange the holdings array by location, 
+     * call number, and number.
+     * 
+     * @param array $holdings An associative array of location => item array
+     *
+     * @return array          An associative array keyed by location 
+     * @access protected
+     */
+    protected function sortHoldings($holdings)
+    {
+        $callNumber = array();
+        $number = array();
+        foreach ($holdings as $location => &$items) {
+            foreach ($items as $key => $row) {
+                $callNumber[$key] = $row['callnumber'];
+                $number[$key] = $row['number'];
+            }
+            array_multisort($callNumber, SORT_ASC, $number, SORT_NUMERIC, $items);
+        }
+        return $holdings;
+    }    
 }
 ?>

@@ -43,6 +43,10 @@
     background-image: url(../images/icons16-24px-02.png);
     background-position: -673px -2324px;
 }
+#headerMenu .dropdown dt a:after {
+    background-position: -676px -2327px;
+    height: 7px;
+}
 .dropdown.catalogAccount dt a:after {
     content: "▾";
     float:right;
@@ -171,7 +175,7 @@ a.clear_input {
     margin-right: 7px;
     margin-top: 5px;
     padding: 0;
-    width: 17px;
+    width: 18px;
 }
 
 /* Grid view & List view */
@@ -276,17 +280,17 @@ a.clear_input {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -2047px -1439px;
 }
-.availableLoc {
+.availableLoc:before {
     background-image: url(../images/icons16-24px-03.png);
-    background-position: -2047px -1398px;
+    background-position: -2047px -1439px;
 }
 .checkedout:before {
     background-image: url(../images/icons16-24px-03.png);
     background-position: -994px -1439px;
 }
-.checkedoutLoc {
+.checkedoutLoc:before {
     background-image: url(../images/icons16-24px-03.png);
-    background-position: -994px -1398px;
+    background-position: -994px -1439px;
 }
 .dateVisClear a {
     background-image: url(../images/icons16-24px-03.png);

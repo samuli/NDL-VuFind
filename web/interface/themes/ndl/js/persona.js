@@ -42,9 +42,11 @@ function mozillaPersonaSetup(currentUser, autoLogoutEnabled)
     if (signinLink) {
       signinLink.onclick = function() { navigator.id.request(); return false; };
     }
-    var signoutLink = document.getElementById('personaLogout');
+    var signoutLink = $("#personaLogout");
     if (signoutLink) {
-      signoutLink.onclick = function() { navigator.id.logout(); personaLogout(); return false; };
+      signoutLink.on("click touchstart", function() {
+        navigator.id.logout(); personaLogout(); return false; 
+      });
     }    
 }
 

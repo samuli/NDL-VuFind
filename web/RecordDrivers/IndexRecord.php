@@ -223,6 +223,7 @@ class IndexRecord implements RecordInterface
 
         // These variables are only used by the core template, and they are prefixed
         // with "core" to prevent conflicts with other variable names.
+        $interface->assign('coreSource', $this->getSourceID());
         $interface->assign('coreTitle', $this->getTitle());
         $interface->assign('coreShortTitle', $this->getShortTitle());
         $interface->assign('coreSubtitle', $this->getSubtitle());
@@ -249,7 +250,9 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreContainerIssue', $this->getContainerIssue());    
         $interface->assign('coreInstitutions', $this->getInstitutions());
         $interface->assign('coreClassifications', $this->getClassifications());
-        $interface->assign('coreDissertationNote', $this->getDissertationNote());
+        $interface->assign('coreDissertationNote', $this->getDissertationNote());        
+        $interface->assign('coreBuilding', $this->getBuilding());
+        $interface->assign('coreAuthor', $this->getPrimaryAuthor());
                 
         // Only display OpenURL link if the option is turned on and we have
         // an ISSN.  We may eventually want to make this rule more flexible,
@@ -324,6 +327,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreCollections', $this->getCollections());
 
         $interface->assign('coreMergedRecordData', $this->getMergedRecordData());
+
 
         // Send back the template name:
         return 'RecordDrivers/Index/core.tpl';
@@ -1087,6 +1091,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('summHighlightedAuthor', $this->getHighlightedAuthor());
         $interface->assign('summAuthor', $this->getPrimaryAuthor());
         $interface->assign('summAuthorForSearch', $this->getPrimaryAuthorForSearch());
+        $interface->assign('summBuilding', $this->getBuilding());
         $interface->assign('summDate', $this->getPublicationDates());
         $interface->assign('summISBN', $this->getCleanISBN());
         $interface->assign('summThumb', $this->getThumbnail());
@@ -1700,6 +1705,18 @@ class IndexRecord implements RecordInterface
     public function getUniqueID()
     {
         return $this->fields['id'];
+    }
+
+    
+    /**
+     * Return building from index
+     *
+     * @return string building.
+     * @access public
+     */
+    public function getBuilding()
+    {
+        return $this->fields['building'];
     }
 
     /**

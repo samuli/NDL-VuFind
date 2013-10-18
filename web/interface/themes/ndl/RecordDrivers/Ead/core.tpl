@@ -343,7 +343,7 @@
 
     {assign var="idPrefix" value=$id|substr:0:8}
     <tr valign="top" class="recordURLs">
-      <th>{translate text='Online Access'}: </th>
+      <th>{translate text='available_online'}: </th>
       <td>
         <div class="truncateField">
           {if $displayFormat == 'Document/ArchiveItem' && !$coreDigitizedMaterial}

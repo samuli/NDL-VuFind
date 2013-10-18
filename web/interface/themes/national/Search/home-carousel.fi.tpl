@@ -10,7 +10,7 @@
           <div class="pickup-header"><span>Kulttuurien museon Alaska-kokoelma</span></div>
           <div class="pickup-text">
             Alaskan aleuttien 1800-luvun alkupuolella käyttämä seremoniallinen päähine. Kulttuurien museon Alaska-kokoelmaan kuuluu noin 500 esinettä, joita ovat keränneet mm. Venäjän Alaskassa kenraalikuvernöörinä toiminut Arvid Adolf Etholén ja pappina toiminut Uno Cygnaeus. Kokoelmaan kuuluu mm. vaatteita, pyyntivälineitä ja pieniä mursunluuveistoksia. 
-            <a href="{$url}//Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22">Hakutulokseen »</a>
+            <a href="{$url}/Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22&view=grid&limit=100">Hakutulokseen »</a>
           </div>
         </div>
       </li>
@@ -57,7 +57,7 @@
           <div class="pickup-header"><span>Kansallisromanttinen Hvitträsk (rakennettu 1901–1903)</span></div>
           <div class="pickup-text">
             Kirkkonummella sijaitsevan Hvitträskin suunnittelivat arkkitehdit Gesellius, Lindgren ja Saarinen. Suomalaisen art nouveau –tyylin keskeisenä kokonaistaideteoksena pidettävän Hvitträskin esineistö ja sisustukset digitoitiin osana kansainvälistä Partage Plus -projektia. 
-            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"'|escape:'html'}">Hakutulokseen »</a>
+            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&view=grid&limit=100"'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
