@@ -2850,6 +2850,14 @@ ul.recordSet .addToFavLink a {
     margin-top:-2px;
 }
 
+.viewButtons .view-grid {
+    float: right;
+}
+
+.viewButtons .view-list {
+    float: left;
+}
+
 /* page titles */
 .resultLinks,
 /* module-Search h2.account is actually under user account */

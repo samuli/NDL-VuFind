@@ -12,6 +12,9 @@
             <input id="mainYearToRange" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
             <input type="submit" value="{translate text='Search'}">
           </form>
+          <script type="text/javascript">
+            var visNationalHome = true;
+          </script>
         {/if}
         </div>
         {* load jQuery flot *}

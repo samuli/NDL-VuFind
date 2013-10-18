@@ -167,7 +167,7 @@
     /* Front page */
     
     #introduction {
-        margin-bottom:-1px; /* fix for gray horizontal line */
+        /*margin-bottom:-1px; /* fix for gray horizontal line */
         padding:0;
     }
    
