@@ -162,7 +162,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
 }
 #nav, .nav {
     background:url(../images/px_69.png);
-    padding-bottom: 10px;
+    padding-bottom: 8px;
 }
 #nav .lang {
     margin-top: 12px;
@@ -182,7 +182,7 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     display: block;
     margin: 0;
     padding: 0 0 5px;
-    color:#fff;
+    color:#444444;
 }
 #headerMenu .subNav li {
     line-height:.9em;
@@ -196,10 +196,13 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
     text-decoration: none;
 }
 #headerMenu li a:focus span:first-child {
-    color:#fff;
+    color:#fdf07f;
 }
-#headerMenu li a:hover span, #headerMenu li a:focus span {
-    color: #fff;
+#headerMenu li a:hover span,
+#headerMenu li a:focus span,
+#headerMenu .dropdown li a:hover span:first-child,
+#headerMenu .dropdown li a:focus span:first-child {
+    color: #444444;
     text-decoration: none;
 }
 
@@ -375,7 +378,7 @@ div.sidegroup {
     padding: 0px;
     position: absolute; 
 
-    top: 27px;
+    top: 5px;
     left:-10px;
 /*
     left: 54px;
@@ -439,6 +442,7 @@ div.sidegroup {
     padding: 0 0 5px;
 }
 
+/*
 #headerMenu ul.subNav li
  {
     color:#444;
@@ -454,6 +458,7 @@ div.sidegroup {
     border-top-left-radius:0;
     border-top-right-radius:0;
 }
+*/
 #headerMenu ul.subNav li:hover
  { 
     background-color: #e6e6e6; 
@@ -463,6 +468,7 @@ div.sidegroup {
 #headerMenu ul.subNav li:first-child {
     border: none;
 }
+
 #headerMenu ul.subNav li:hover:first-child {
     -moz-border-radius: 10px 10px 0 0;
     -webkit-border-radius: 10px 10px 0 0;
@@ -470,15 +476,18 @@ div.sidegroup {
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
-#headerMenu ul.subNav li:hover:last-child {   
+#headerMenu ul.subNav li:hover:last-child {
     -moz-border-radius: 0 0 10px 10px;
     -webkit-border-radius: 0 0 10px 10px;
     border-radius:  0 0 10px 10px;
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
-#headerMenu .menuHelp ul.subNav li:hover:first-child,
-#headerMenu .menuLibCard ul.subNav li:hover:first-child {
+
+#headerMenu .menuHelp ul.subNav li a:hover:first-child,
+#headerMenu .menuHelp ul.subNav li:hover:last-child,
+#headerMenu .menuLibCard ul.subNav li a:hover:first-child,
+#headerMenu .menuLibCard ul.subNav li:hover:last-child {
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
     border-radius:  10px 10px 10px 10px;
@@ -837,6 +846,18 @@ a.clear_input:hover {
     position:relative; /* To make PIE work */
 }
 
+#headerMenu .dropdown dt a {
+    background: none;
+    font-weight: bold;
+    padding: 0px 0 0;
+    line-height: 1.5em;
+}
+#headerMenu .dropdown dt a:hover {
+    color: #fdf07f;
+}
+#headerMenu .catalogAccount dt  a:hover {
+    color: #ffffff;
+}
 .dropdown dt a p {
     color: #444;
     cursor: pointer;
@@ -898,6 +919,12 @@ body > ul.ui-menu.ui-widget li a.ui-corner-all {
     border-top-left-radius:0;
     border-top-right-radius:0;
 }
+.menuHolder .dropdown dd ul li a,
+#recordProvidedBy .dropdown dd ul li a {
+    white-space: nowrap;
+    padding-right: 30px;
+}
+
 .dropdown dd ul li a:hover,
 body > ul.ui-menu.ui-widget li a:hover { 
     background-color: #ddd; 
@@ -924,6 +951,15 @@ body > ul.ui-menu.ui-widget li:last-child a:hover {
     color: #444;
     display: none;
     float: right;    
+}
+#headerMenu .dropdown dd li,
+#headerMenu .dropdown dd ul {
+    min-width: 240px;
+    padding: 0;
+    width: 100%;
+}
+#headerMenu .dropdown dd ul li a {
+    padding: 7px 9px;
 }
 
 /** Search Box Dropdown **/
@@ -1115,7 +1151,7 @@ body > .ui-widget .button {
     background: none repeat scroll 0 0 #FFFFFF;
     border-radius: 10px 10px 10px 10px;
     color: #666666;
-    padding: 8px 11px 6px 12px;
+    padding: 8px 3px 9px 7px;
     position: absolute;
     top: 44px;
     left: 389px;
@@ -1134,6 +1170,9 @@ body > .ui-widget .button {
     padding: 0;
 }
 
+.checkboxFilter label[for="Limittoonlinematerials"] {
+    margin-left:35px;
+}
 
 
 label.invalid {
@@ -1791,7 +1830,7 @@ ul.recordSet {
     list-style-type: none;
 }
 ul.recordSet li.result {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 ul.recordSet li.result:hover {
@@ -1953,7 +1992,7 @@ li.result blockquote {
     margin-left: 18px;
 }
 .resultContentToggle {
-    margin: 1em 0 0 0;
+    margin: 8px 0 0;
 }
 .resultContentToggle img {
     margin: 0 0 1px 5px;
@@ -1971,6 +2010,58 @@ li.result blockquote {
 }
 .resultItemLine2, .resultItemLine3, .resultItemLine4 {
     color: #666;
+}
+
+.resultItemLine3 > select.dedupform {
+    font-size: 13px;
+    line-height: 16px;
+    margin:5px 0;
+}
+
+.resultItemLine3 .availableTotals {
+    display: none;
+    margin-left: 10px;
+}
+
+.summDedupData {
+    margin-top: 10px;
+}
+
+.dedupform {
+    color: #666666;
+    font-family: "helvetica neue";
+    font-size: 1em;
+    padding: 2px 0;
+    letter-spacing: 0.2px;
+}
+
+.dedupform option {
+    padding: 0 3px 1px 7px;
+    
+}
+
+.itemLocationInfo {
+    line-height: 18px;
+    margin-bottom: 3px;
+    margin-left: 17px;
+    text-indent: -19px;
+}
+
+div[id*="locationDetails"] {
+    margin: 2px 0 4px;
+
+}
+
+ul.recordSet .resolver {
+    padding-top: 4px;
+}
+
+.availableTotals, .noAvailabilityInfo, .moreDataLink {
+    display:none;
+}
+
+.groupLocation .availableLoc:before, .groupLocation .checkedoutLoc:before {
+    width: 14px;
 }
 
 .resultItemLine3 .highlight {
@@ -2545,15 +2636,12 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 30px;
     margin-right:0;
 }
-.available:before {
+.available:before, .availableLoc:before {
     content: "";
     display: inline-block;
     height: 11px;
     width: 11px;
     padding-left: 5px;
-}
-.availableLoc {
-    padding-left: 16px;
 }
 .available {
     color: #00B270;
@@ -2572,7 +2660,7 @@ ul.recordSet .addToFavLink a {
 .openurl_more img {
     display:none;
 }
-.checkedout:before {
+.checkedout:before, .checkedoutLoc:before {
     content: "";
     display: inline-block;
     height: 11px;
@@ -2581,9 +2669,6 @@ ul.recordSet .addToFavLink a {
 }
 .checkedout {
     color:#ff461e;
-}
-.checkedoutLoc {
-    padding-left: 16px;
 }
 .holdPlace:before, .UBRequestPlace:before {
     content: "";
@@ -2898,7 +2983,7 @@ ul.recordSet .addToFavLink a {
 .groupJoinOptions {
     margin-top:-8px;
 }
-.dropdown dt a {
+.dropdown dt a, #headerMenu .catalogAccount dt a {
     display:block;
     background: #00a3b5;
     border: none;
@@ -2908,10 +2993,16 @@ ul.recordSet .addToFavLink a {
     font-size:1em;
     line-height:1em;
     padding: 10px 12px 10px 15px;
+
     width:auto;
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
+.dropdown dt a:focus {
+    color: #ffffff;
+}
+
+
 .dropdown dt a:after {
     content: "";
     display: inline-block;
@@ -3434,7 +3525,7 @@ div.recordsubcontent .call-slip-form form > p  {
 }
 .coverImages img#thumbnail {
     padding-bottom:20px !important;
-    border-bottom:1px solid #bbb;
+    border-bottom:1px solid #bcdce0;
 }
 .coverImageLinks a {
     background-position: 50% 50%;
@@ -3457,6 +3548,7 @@ div.recordsubcontent .call-slip-form form > p  {
     padding: 3px;
     margin: 0 auto;
     max-width: 150px;
+    display:block;
 }
 .holdsMessage {
     margin-top: 1em;
@@ -3644,7 +3736,7 @@ table.authors th {
 #dyntabnav .ui-state-default.ui-state-hover {
 }
 #dyntabnav .ui-tabs-panel .content {
-    overflow: auto;
+    overflow: visible;
 }
 #dyntabnav .ui-tabs-panel {
     padding: 20px 0 40px;
@@ -3757,6 +3849,87 @@ h5.recordTabHeader {
     width: 20px;
     height: 20px;
 }
+
+#recordProvidedBy {
+    border-top: 1px solid #bcdce0;
+    margin-bottom: 0.5em;
+    margin-top: 1em;
+    padding-top: 1em;
+    overflow: visible;
+
+}
+#recordProvidedBy label {
+    font-weight: normal;
+    display: block;
+    padding-bottom: 0.2em;
+}
+
+.recordProvidedByOrganization {
+    font-weight: bold;
+    margin-bottom: -6px;
+    padding-top: 9px;
+}
+
+
+#recordProvidedBy .dropdown dt a {
+    padding: 10px 10px 10px 8px;
+}
+#recordProvidedBy .dropdown dt a:after {
+    position:absolute;
+    right: 7px;
+}
+
+#recordProvidedBy .dropdown dt a:after {
+    padding-left: 8px;
+    float: right;
+    margin-top: 3px;
+}
+
+#recordFeedback {
+    border-bottom: 1px solid #bcdce0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    clear: both;
+}
+
+#recordProvidedBy .dropdown dt {
+    width: 150px;
+}
+
+#recordProvidedBy .dropdown dt a {
+
+}
+
+#recordProvidedBy > ul {
+    margin-top: 4em;
+    padding-top: 1.5em;
+}
+
+.holdingsContainerHeader dl.dropdown dd ul,
+#recordProvidedBy dl.dropdown dd ul {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 450px;
+}
+
+.holdingsContainerHeader dl.dropdown {
+    font-size: 13px;
+    min-width: 260px;
+}
+
+.dropdownMenuIcon {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -679px -2324px;
+    content: "";
+    display: inline-block;
+    height: 12px;
+    float: right;
+    margin-top: -20px;
+    margin-right: 8px;
+    width: 15px;
+}
+
+
 
 /*
 .toolbar ul li a:hover{
@@ -3913,6 +4086,8 @@ table.datagrid td {
     margin: 10px 0;
 }
 
+
+#dyntabnav .holdingsContainerHeader .menuHolder,
 #dyntabnav .holdingsContainerHeader h5 {
     background:#18a3b7;
     border: none;
@@ -3920,6 +4095,16 @@ table.datagrid td {
     font-size: 14px;
     font-weight: bold;
     margin: 0;
+    padding: 8px 12px;
+}
+
+#dyntabnav .holdingsContainerHeader .menuHolder {
+    height: 30px;
+    padding: 8px 0px;
+}
+
+#dyntabnav .holdingsContainer p.accessRights {
+    margin: 10px 0;    
     padding: 8px 12px;
 }
 
@@ -3935,6 +4120,10 @@ table.datagrid td {
 }
 .holdingsContainerHolding.active span.arrowIndicator {
     background: url("../images/icons16-24px-02.png") repeat scroll -49px -2319px transparent;
+}
+
+#dyntabnav .holdingsContainer {
+    clear: both;
 }
 
 #dyntabnav .holdingsContainer h5 {
@@ -4118,7 +4307,6 @@ ul.commentList {
     margin: 0 0 1em 0;
     list-style-type:none;
 }
-
 
 ul.commentList li {
     background-color: #EBF5F3;
@@ -5744,4 +5932,38 @@ div.commentDetails > * {
 .module-Content .main .menu .grid_6.fixed {
 position:fixed !important;
 top:10px;
+}
+
+/** fancybox text styles **/
+
+.fancyTitle {
+ font-size:1.2em;
+ margin:0.2em 0;
+}
+.fancyAuthorAndDates {
+
+}
+                                          
+.fancyLink {
+	text-align:right;
+}
+
+.fancyLink a {
+    display:inline-block;
+}
+
+.fancyLink a:before {
+    background-image: url("../images/icons16-24px-02.png");
+    background-position: -362px -2370px;    
+    content: "";
+    display: block;
+    float: left;
+    height: 15px;
+    margin-top: 2px;
+    width: 17px;
+}
+
+.fancybox-skin {
+    min-width: 160px;
+    word-wrap: break-word;
 }

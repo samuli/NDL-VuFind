@@ -300,6 +300,7 @@ class JSON extends Action
 
         // If any IDs were missing, send back appropriate dummy data, including a
         // "missing data" flag which can be used to completely suppress status info:
+        
         foreach ($missingIds as $missingId => $junk) {
             $statuses[] = array(
                 'id'                   => $missingId,
@@ -313,7 +314,7 @@ class JSON extends Action
                 'missing_data'         => true
             );
         }
-
+        
         // Done
         return $this->output($statuses, JSON::STATUS_OK);
     }
@@ -1064,11 +1065,16 @@ class JSON extends Action
         // Summarize call number, location and availability info across all items:
         $locations =  array();
         $available = false;
+        $truncated = false;
+        $availableCount = 0;
         $use_unknown_status = false;
         foreach ($record as $info) {
+
             // Find an available copy
             if ($info['availability']) {
                 $available = $locations[$info['location']]['available'] = true;
+                $locations[$info['location']]['availableCount'] = !isset($locations[$info['location']]['availableCount']) ? 1 : $locations[$info['location']]['availableCount'] + 1;
+                $availableCount++;
             }
             // Check for a use_unknown_message flag
             if (isset($info['use_unknown_message'])
@@ -1093,9 +1099,15 @@ class JSON extends Action
                     isset($details['available']) ? $details['available'] : false,
                 'location' => htmlentities($location, ENT_COMPAT, 'UTF-8'),
                 'callnumbers' =>
-                    htmlentities($locationCallnumbers, ENT_COMPAT, 'UTF-8')
+                    htmlentities($locationCallnumbers, ENT_COMPAT, 'UTF-8'),
+                'availableCount' => isset($details['availableCount']) ? $details['availableCount'] : null
             );
             $locationList[] = $locationInfo;
+        }
+
+        if (count($locationList) >= 5) {
+            $locationList = array_slice($locationList, 0, 5);
+            $truncated = true;
         }
 
         $availability_message = $use_unknown_status
@@ -1114,7 +1126,9 @@ class JSON extends Action
             'reserve_message' => $record[0]['reserve'] == 'Y'
                 ? translate('on_reserve') : translate('Not On Reserve'),
             'callnumber' => false,
-            'use_unknown_status' => $use_unknown_status
+            'use_unknown_status' => $use_unknown_status,
+            'total' => $availableCount,
+            'truncated' => ($truncated ? true : false),
         );
     }
 

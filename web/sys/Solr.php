@@ -1227,6 +1227,11 @@ class Solr implements IndexEngine
             $options['hl.simple.post'] = '{{{{END_HILITE}}}}';
         }
 
+        // Hack to make it possible to see the search debug information
+        if (isset($_REQUEST['debugSolrQuery'])) {
+            $options['debugQuery'] = 'true';
+        }
+        
         if ($this->debug) {
             echo '<pre>Search options: ' . print_r($options, true) . "\n";
 
@@ -1643,6 +1648,29 @@ class Solr implements IndexEngine
         }
         $result = json_decode($result, true);
 
+        if (isset($_REQUEST['debugSolrQuery']) && isset($result['debug'])) {
+            echo "<!--\n";
+            //print_r($result);
+            if (!isset($result['response']['docs'])) {
+                echo "No records found\n";
+            } else {
+                echo "Records listed:\n";
+                foreach ($result['response']['docs'] as $doc) {
+                    echo 'ID: ' . $doc['id'];
+                    if (isset($doc['merged_boolean'])) {
+                        echo ': ' . implode(', ', $doc['local_ids_str_mv']);
+                    } 
+                    echo "\n";
+                    if (isset($doc['merged_child_boolean'])) {
+                        echo " deduplicated with ";
+                        //foreach ($doc['local_ids_str_mv'])
+                    }
+                }
+            }
+            print_r($result['debug']);
+            echo "-->\n";
+        }
+        
         // Handle merged records (choose the local record by priority)
         if ($this->_mergedRecords && isset($result['response']['docs'])) {
             $datasourceConfig = getExtraConfigArray('datasources');

@@ -15,7 +15,7 @@ function initDropdowns() {
         $(".dropdown").trigger("toggle", [false]);
     });
     
-    $(".dropdown dt a").on('click touchstart', function(e) {
+    $(".dropdown dt a").not(".initDone").on('click touchstart', function(e) {
         $(".dropdown").each(function(ind,o) { 
             var parObj = $(e.target).parent().parent();
             if ($(this).get(0) != parObj.get(0)) {
@@ -30,22 +30,32 @@ function initDropdowns() {
         return false;
     });
 
-    $(".dropdown dd ul li a").on('click touchstart', function(e) {
+    $(".dropdown dd ul li a").not(".initDone").on('click touchstart', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
-        var text = $(this).html();
-        dropdown.find('dt a').html(text);
+        if (!dropdown.hasClass("dropdownStatic")) {
+            var text = $(this).html();
+            dropdown.find('dt a').html(text);
+        }
         dropdown.find('dd ul').fadeOut(100);
         
+
+        dropdown.trigger("truncate");
+
         // Get id of the hidden select element
         var source = dropdown.next('select');
         
         source.find('option').removeAttr('selected');
-        source.find('option[value="'+$(this).find("span.value").text()+'"]').attr('selected', 'selected').change();
+        var val = $(this).find("span.value").text();
+        // attempt to find option-elements
+        source.find('option[value="'+val+'"]').attr('selected', 'selected').change();
+        dropdown.trigger("menuClick", val);
 
         e.preventDefault();
     });
-    $(".dropdown").data("menuOpen", 0);
-    $(".dropdown").on("toggle", function(e, mode) {
+
+    $(".dropdown").not(".initDone").data("menuOpen", 0);
+
+    $(".dropdown").not(".initDone").on("toggle", function(e, mode) {
         var currentMode = $(this).data("menuOpen");
         if (currentMode == mode) {
           return;
@@ -61,30 +71,93 @@ function initDropdowns() {
         // save state
         $(this).data("menuOpen", mode ? 1 : 0);
     });
+
+    $(".dropdown").not(".initDone").on("truncate", function(e) {
+        var a = $(this).find('dt a');
+        var txt = a.html();
+        if (txt) {
+            var pos = txt.indexOf("…");
+            if (pos != -1) {
+                // already truncated, abort
+                return;
+            }
+
+            // link text is followed by a hidden <span> with the actual url, ignore this
+            pos = txt.indexOf("<span");
+            if (pos != -1) {
+                txt = txt.substring(0,pos);
+            }
+            
+            
+            var truncated = txt;
+            if ($(this).hasClass("dropdownTruncate")) {
+                // truncate label
+                a.html(".");
+                var singleLineHeight = a.height();
+                var txtLen = txt.length;
+                var ind = 0;            
+                while(ind <= txtLen) {
+                    truncated = txt.substring(0,ind++);
+                    a.html(truncated + " &nbsp;");
+                    if (a.height() > singleLineHeight) {
+                        // leave space for icon
+                        ind = ind-6;
+                        if (ind < 0) {
+                            ind = 0;
+                        }                    
+                        truncated = txt.substring(0,ind) + '&hellip;';
+                        break;
+                    }
+                }
+            }
+            a.html(truncated);
+        }
+    });
+
+
+    $(".dropdown").trigger("truncate");
+    $(".dropdown dt a").removeClass("initDone").addClass("initDone");
+    $(".dropdown dd ul li a").removeClass("initDone").addClass("initDone");
+    $(".dropdown").removeClass("initDone").addClass("initDone");
 }
 
 // Function for creating dropdowns
 function createDropdowns(){
     var counter = 0;
-    $('.styledDropdowns, .searchForm_styled, .jumpMenu, .resultOptionLimit select').not('.stylingDone').each(function() { 
+    $('.styledDropdowns, .searchForm_styled, .jumpMenu, .jumpMenuURL, .resultOptionLimit select').not('.stylingDone').each(function() { 
         var source = $(this);
         var selected = source.find("option:selected");
         var options = $("option", source);
         var idName = $(this).attr("id");
         var target = 'styled_'+idName+counter;
         counter++;
+        
+        var classNames = "dropdown";
+        // truncate label?
+        if ($(this).hasClass("dropdownTruncate")) {
+            classNames += " dropdownTruncate";
+        }
+        // keep label fixed regardless of selected option
+        var staticLabel = $(this).hasClass("dropdownStatic");
+        if (staticLabel) {
+            classNames += " dropdownStatic";
+        }
 
-        $(this).hide().addClass('stylingDone').before('<dl id="'+target+'" class="dropdown ' + idName + '"></dl>');
+        var html = '<dl id="'+target+'" class="' + classNames + ' ' + idName + '"';
+        html += '></dl>';
+        $(this).hide().addClass('stylingDone').before(html);
+
         $('#'+target).append('<dt><a href="#">' + selected.text() + 
-    '<span class="value">' + selected.val() + 
-    '</span></a></dt>');
+                             '<span class="value">' + selected.val() + 
+                             '</span></a></dt>');
+        
         $("#"+target).append('<dd><ul></ul></dd>');
-
+        
         options.each(function(){
             if ($(this).text()) {
                 $("#"+target+" dd ul").append('<li><a href="#" class="big">' + 
-                    $(this).text() + '<span class="value">' + 
-                    $(this).val() + '</span></a></li>');
+                                              $(this).text() + '<span class="value">' + 
+                                              $(this).val() + '</span></a></li>');
             } else {
                 $("#"+target+" dd ul").append('<li style="height: 2px"><hr/></li>');
             }

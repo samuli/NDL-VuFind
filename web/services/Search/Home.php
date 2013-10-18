@@ -93,6 +93,13 @@ class Home extends Action
                     $interface->assign('facetList', $facetList);
                 }
             }
+          // Get theme(s)
+          $themes = explode(',', $interface->getVuFindTheme());
+          // if theme 'national' in use initialize visFacets for Timeline in Home Page
+          if (in_array("national", $themes)) {
+            $visFacets = array('search_sdaterange_mv' => array(0 => "", 1 => "", 'label' => "Other"));
+            $interface->assign('visFacets', $visFacets);
+          }
         }
         $interface->display('layout.tpl', $cacheId);
     }

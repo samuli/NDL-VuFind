@@ -56,13 +56,36 @@
 </div>
 
 <div class="holdingsContainerHeader">
+  {if $coreMergedRecordData.dedup_data}
+  <div class="menuHolder">
+    <select id="dedupRecordHoldingsMenu" name="deduprecordHoldingsMenu" class="dropdown jumpMenuURL">
+      {foreach from=$coreMergedRecordData.dedup_data key=source item=dedupData name=loop}
+      <option value="{$url}/Record/{$dedupData.id|escape:"url"}#holdingstab"{if $dedupData.id == $id} selected="selected"{/if}>{translate text=$source prefix='source_'}</option>
+      {/foreach}
+    </select>
+  </div>
+  {else}
   <h5>{translate text=$source prefix='source_'}</h5>
+  {/if}
+  
 </div>
 
 <div class="holdingsContainer clearfix">
   {if !$holdings}
-    <h5>{translate text="No holdings information available"}</h5>
+     <h5>{translate text="No holdings information available"}</h5>
+  {else}
+     <div>
+       {* Display link to access rights for records from fennica, viola and vaari *} 
+     {if $coreSource == 'fennica' || $coreSource == 'viola' || $coreSource == 'vaari'}  
+     <p class="accessRights"><a href="
+     {if $coreSource == 'fennica' || $coreSource == 'viola'}{if $userLang == 'fi'}http://www.kansalliskirjasto.fi/kokoelmatjapalvelut/lainaus/kansalliskokoelmankaytosta.html{elseif $userLang == 'sv'}http://www.nationalbiblioteket.fi/tjanster/lainaus/kansalliskokoelmankaytosta.html{else}http://www.nationallibrary.fi/services/lainaus/kansalliskokoelmankaytosta.html{/if}
+     {elseif $coreSource == 'vaari'}http://www.varastokirjasto.fi/{if $userLang == 'fi'}kaukolainaus/varastokirjaston-palvelut-henkiloasiakkaille/{elseif $userLang == 'sv'}utlaning/service-for-privatkunder/{else}loans-and-requests/ill-services-for-private-customers/{/if}
+     {/if}
+     " target="_blank">{translate text="Record access rights"}</a></p>
+     {/if}
+     </div>
   {/if}
+
   {foreach from=$holdings item=holding key=location name=holdings}
     {assign var=prevMfhdId value=''}
     {assign var="copyCount" value="0"}
@@ -76,10 +99,8 @@
           </table>
         {/if}
         {assign var=prevMfhdId value=$row.mfhd_id}
-        <table class="holdingsContainerHolding" id="holding_{$prevMfhdId}_{$itemsIteration}" cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
+        <table class="holdingsContainerHolding  {if $smarty.foreach.items.first && $smarty.foreach.holdings.first}active{/if}" id="holding_{$prevMfhdId}_{$itemsIteration}" cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
         <tr class="holdingsContainerHeading">
-
-          
           <th colspan="2" class="location"><span class="arrowIndicator"></span>{$location|translate|escape}</th>
           <th colspan="2" class="holdingDetails">
             <span class="availability">{translate text="Available"}</span>
@@ -297,6 +318,13 @@ $(document).ready(function() {
     var $dialog = getPageInLightbox(href + '&lightbox=1', $(this).text(), 'Record', '', id);
     return false;
   });
+
+  createDropdowns();
+
+  initDropdowns();
+
+  initJumpMenus();
+  
 });
 </script>
 {/literal}

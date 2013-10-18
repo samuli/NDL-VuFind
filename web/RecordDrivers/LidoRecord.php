@@ -125,8 +125,9 @@ class LidoRecord extends IndexRecord
         } else {
             $mainFormat = '';
         }
-        if ($this->getResultDates()) {
-            $interface->assign('summDate', $this->getResultDates());
+        $resultDates = $this->getResultDates();
+        if ($resultDates) {
+            $interface->assign('summDate', $resultDates);
         }
         if (isset($this->fields['event_creation_displaydate_str'])) {
             if ($mainFormat == 'Image') {
@@ -422,16 +423,27 @@ class LidoRecord extends IndexRecord
      */
     protected function getResultDates()
     {
-        $dates = array();
-        $initialDate = isset($this->fields['creation_daterange']) ? $this->fields['creation_daterange'] : '';
-        if ($initialDate) {
-            $dates = explode(',', $initialDate);
-            foreach ($dates as &$date) {
-                $date = substr($date, 0, 4);
-            }   
-            unset($date);      
-        }      
-        return $dates;
+        if (!isset($this->fields['creation_sdaterange'])) {
+            return null;
+        }
+        $range = explode(' ', $this->fields['creation_sdaterange'], 2);
+        if (!$range) {
+            return null;
+        }
+        $range[0] *= 86400;
+        $range[1] *= 86400;
+        $startDate = new DateTime("@{$range[0]}");
+        $endDate = new DateTime("@{$range[1]}");
+        if ($startDate->format('m') == 1 && $startDate->format('d') == 1 
+            && $endDate->format('m') == 12 && $endDate->format('d') == 31
+        ) {
+            return array($startDate->format('Y'), $endDate->format('Y'));
+        }
+        $date = new VuFindDate();
+        return array(
+            $date->convertToDisplayDate('U', $range[0]), 
+            $date->convertToDisplayDate('U', $range[1])
+        );        
     }
     
 }

@@ -17,52 +17,8 @@ $(document).ready(function() {
 
 // Header menu
 function initHeaderMenu() {
-    
-    // For non-touch devices
-    if (!isTouchDevice()) {
-        function headerOver() {
-            var timeoutId = $('#headerMenu > li > ul').data('timeoutId');
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-
-            var subMenu = $(this).siblings('.subNav');
-            if (subMenu.length > 0) {
-                $('#headerMenu > li > ul').stop(true, true).fadeOut(50);
-                subMenu.stop(false, false).fadeIn(30);
-            }
-        };
-
-        function headerOut() {
-            var subMenu = $('#headerMenu > li > ul');
-            subMenu.data('timeoutId', setTimeout(function() {
-            subMenu.stop(false, false).fadeOut(50);
-            }, 300));
-        };
-        
-        $('#headerMenu > li > a').mouseenter(headerOver);
-        $('#headerMenu').mouseleave(headerOut);
-
-
-        // Fix for touch devices
-        $('#headerMenu > li > a').live('click touchend', function(e) {
-            var el = $(this);
-            var link = el.attr('href');
-            if (link != '#') window.location = link;
-        });
-    }
-    
-    // Touch devices
-    else {
-        $('#headerMenu > li > a').bind('touchstart', function() {
-            $(this).siblings('ul.subNav').toggleClass('activeTouch');
-        })
-    }
-    
-    // Don't try to open #-links
-    $('#headerMenu > li > a[href="#"]').click(function(e) {
-        $(this).blur();
-        e.preventDefault();
+    $("#headerMenu .dropdown").on("menuClick", function(e,url) {
+      document.location = url;       
     });
 }
 
