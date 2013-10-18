@@ -11,7 +11,7 @@
       <ul class="subNav" role="menu">
         <li><a class="big" href="#">
           <span>Utökad sökning</span>
-          <span>Fler sökvillkor och sökning på karta.</span>
+          <span>Fler sökvillkor och sökning på karta</span>
           <span class="value">{$path}/Search/Advanced</span></a>
         </li>
         {if $dualResultsEnabled}
@@ -52,7 +52,7 @@
       <ul class="subNav" role="menu">
         <li><a class="big" href="#">
           <span>Söktips</span>
-          <span>Detaljerade sökanvisningar.</span>
+          <span>Detaljerade sökanvisningar</span>
           <span class="value">{$path}/Content/searchhelp</span></a>
         </li>
       </ul>

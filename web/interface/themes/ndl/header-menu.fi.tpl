@@ -4,13 +4,6 @@
 
 <li class="menuAbout"><a href="{$path}/Content/about"><span style="line-height: 1.5em;">{translate text='navigation_about'}</span></a></li>
 
-<li class="menuAbout menuAbout_{$userLang}">
-  <ul class="dropdown dropdownStatic stylingDone">
-    <li><a href="{$path}/Content/about">{translate text='navigation_about'}</a></li>
-  </ul>
-</li>
-
-
 <li class="menuSearch menuSearch_{$userLang}">
   <dl class="dropdown dropdownStatic stylingDone">
     <dt><a href="#">{translate text='navigation_search'}</a></dt>
@@ -39,7 +32,7 @@
         {/if}
         <li><a class="big" href="#">
           <span>Selaa luetteloa</span>
-          <span>Selaa tagien, tekijän, aiheen, genren, alueen tai aikakauden mukaan.</span>
+          <span>Selaa avainsanojen, tekijän, aiheen, genren, alueen tai aikakauden mukaan.</span>
           <span class="value">{$path}/Browse/Home</span></a>
         </li>
         <li><a class="big" href="#">
@@ -59,7 +52,7 @@
       <ul class="subNav" role="menu">
         <li><a class="big" href="#">
           <span>Hakuohje</span>
-          <span>Yksityiskohtaiset ohjeet hakuun.</span>
+          <span>Yksityiskohtaiset ohjeet hakuun</span>
           <span class="value">{$path}/Content/searchhelp</span></a>
         </li>
       </ul>

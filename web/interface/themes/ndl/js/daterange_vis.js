@@ -35,6 +35,11 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                 // Get data limits
                 dataMin = parseInt(val['data'][0][0], 10);
                 dataMax = parseInt(val['data'][val['data'].length - 1][0], 10);
+                
+                // National home page: render default view from 1800 to present
+                if (typeof visNationalHome !== 'undefined' && visNationalHome) {
+                    dataMin = 1800;
+                }
 
                 // Compare with the values set by the user
                 if (val['min'] == 0) {
@@ -59,13 +64,22 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                 if (typeof visDateStart === 'undefined') {
                     visDateStart = parseInt(val['min'], 10);
                 }
+                
+                var maxYear = new Date().getFullYear();
+                
                 if (typeof visDateEnd === 'undefined') {
                     visDateEnd = parseInt(val['max'], 10);
-                    var maxYear = new Date().getFullYear() + 5;
+                    
                     if (visDateEnd > maxYear) {
                         visDateEnd = maxYear;
                     }
                 }
+                
+                 /* Limit range to 0 - now
+                    (Disabled for now)
+                
+                visDateEnd = visDateEnd > maxYear ? maxYear : visDateEnd;
+                visDateStart = visDateStart < -1000 ? 0 : visDateStart; */
                 
                 // Check for values outside the selected range and remove them
                 for (i=0; i<val['data'].length; i++) {

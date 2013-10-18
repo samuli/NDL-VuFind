@@ -34,7 +34,7 @@
     <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
   {if $summThumb}
       <div class="resultImage">
-          <a class="title fancybox fancybox.image" data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='Open record'}"  data-author="{$summAuthor}" href="{$summThumb|escape}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+          <a class="title fancybox fancybox.image" data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" href="{$summThumb|escape}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
               <img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" />
           </a>
       </div>
