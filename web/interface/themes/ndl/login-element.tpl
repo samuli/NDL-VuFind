@@ -50,9 +50,9 @@
   {/if}
   
   {else}
-  <a href="{$path}/MyResearch/Home"><span id="userId">{translate text="Login"}</span>
+  <a href="{$path}/MyResearch/Home"><span id="userId">{translate text="Login"}</span></a>
   {/if}
-  
+</li>  
 {/if}  
 
 <!-- END of: login-element.tpl -->

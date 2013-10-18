@@ -89,6 +89,11 @@
       var userLang = '{$userLang}';
       var fullPath = '{$fullPath}';
       var action = '{$action}';
+      
+      // String translations
+      var trNext = "{translate text="Next"}";
+      var trPrev = "{translate text="Prev"}";
+      var trClose = "{translate text="Close"}";
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}
