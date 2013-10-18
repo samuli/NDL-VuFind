@@ -16,7 +16,7 @@
 
 .checkboxFilter input + label:before {
     position: absolute;
-    top: 50%;
+    top: 53%;
     margin-top: -13px;
     display: block;
     content: "";

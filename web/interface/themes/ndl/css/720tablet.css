@@ -164,6 +164,10 @@
         width: 300px;
     }
     
+    .section#home-timeline #sidePubDateVis {
+    max-width: 690px;
+    }
+    
     .currentPage > span:first-child {
         display:none;
     }
