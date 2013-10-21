@@ -109,3 +109,6 @@ span.dynatree-node a {
 	margin-top:5px;
 	list-style-position:outside;
 }
+#mapSearch {
+	display:none;
+}
