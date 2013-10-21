@@ -216,7 +216,7 @@ function processImageURL($url, $localFile, $size, $cache = true)
 {
     global $configArray;
     
-    if ($image = @file_get_contents($url)) {
+    if ($image = @file_get_contents(trim($url))) {
         // Figure out file paths -- $tempFile will be used to store the downloaded
         // image for analysis.  $finalFile will be used for long-term storage if
         // $cache is true or for temporary display purposes if $cache is false.

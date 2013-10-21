@@ -48,6 +48,12 @@
           <span class="value">{$path}/MetaLib/Home</span></a>
         </li>
         {/if}
+        <li>
+          <a class="big" href="#">
+          <span>{translate text="Browse the Catalog"}</span>
+          <span>{translate text="catalog_desc"}</span>
+          <span class="value">{$path}/Browse/Home</span></a>
+        </li>
         <li><a class="big" href="#">
           <span>{translate text="Search History"}</span>
           <span>{translate text="search_history_desc"}</span>
