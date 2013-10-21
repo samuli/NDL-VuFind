@@ -26,7 +26,7 @@ vufindString.hideTree = "{translate text="hierarchy_hide_tree"}";
     	  {if $showTreeSearch}
             <div id="treeSearch" >
               <span id="treeSearchNoResults">{translate text="No results"}</span>
-              <input id="search" type="button" value='{translate text="Search"}' />
+              <input id="search" class="button buttonFinna" type="button" value='{translate text="Search"}' />
               <select id="treeSearchType" name="type" >
                 <option value="AllFields">{translate text="All Fields"}</option>
                 <option value="Title">{translate text="Title"}</option>
