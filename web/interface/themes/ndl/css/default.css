@@ -2201,8 +2201,9 @@ div.sidegroup h4 {
     background: #4C4C4C;
     color: #FFFFFF;
     font-size: 1.23em;
-    padding: 10px 10px 12px;
+    padding: 10px 44px 12px 10px;
     margin:0;
+    word-wrap: break-word;
 }
 div.sidegroup h4 {
     background: #00A3B5;
@@ -3167,7 +3168,7 @@ div.dateVisHandle.visible {
 .narrowList.navmenu.year dt {
     z-index:1000;
 	position:relative;
-	width:210px;
+	width: 176px;
 }
 .narrowList.navmenu.year.collapsible.timeline.open.collapsed dt{
 	width:950px;
@@ -3184,16 +3185,44 @@ div.dateVisHandle.visible {
 }
 .timelineview {
     display: inline-block;
-    float: right;
     height: 19px;
-    margin-right: 32px;
+    position: relative;
     text-indent: -9999px;
     width: 35px;
+}
+
+.yearLabel {
+    margin-right:10px;
+}
+
+.sidebarOnLeft .timelineview {
+    margin-right:0;
+}
+
+.sidebarOnLeft .year .yearLabel {
+    margin-right: 10px;
 }
 
 .active .timelineview {
     margin-right:0;
 }
+
+.year.open.timeline .timelineview {
+    float:right;
+}
+
+.sidegroup .year.open.timeline dt {
+    padding-right:10px;
+}
+
+.timeline.open .timelineview {
+    margin-right: 34px;
+}
+
+.timeline.open.active .timelineview {
+    margin-right: 0;
+}
+
 
 .mainYearForm input[type="text"],
 .mainYearFormPCI input[type="text"] {

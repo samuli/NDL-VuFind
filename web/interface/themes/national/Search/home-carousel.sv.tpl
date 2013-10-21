@@ -16,12 +16,12 @@ Alaskasamlingen omfattar ca 500 föremål som är insamlade av bl.a. Arvid Adolf
         </div>
       </li>
        <li class="grid_6">
-        {image src="kamera.jpg"}
+        {image src="02vr.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>A. K. Cajanders kamera</span></div>
+          <div class="pickup-header"><span>VR:s reseaffischer</span></div>
           <div class="pickup-text">
-            Den här kameran som tillhörde skogsvetenskapsmannen och politikern A. K. Cajander ingår i Finlands skogsmuseum Lustos samlingar. <span class="caption">Foto: Agata Teperek/Lusto</span>
-            <a href="{$url}/Record/lusto.M011-332446">Till sökresultatet »</a>
+Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har använt affischerna på stationerna, i tågen och vid olika evenemang och har bytt till sig affischer från olika länder. Affischerna har skapats av bl.a. konstnärerna Erik Bruun, Osmo K. Oksanen och Juha Anttinen och fotograferna Fred Runeberg, E. Tolvanen och Yrjö Metsälä.
+            <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>Till sökresultatet »</a>
           </div>
         </div>
       </li>
