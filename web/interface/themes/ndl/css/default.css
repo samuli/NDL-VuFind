@@ -5118,6 +5118,12 @@ tr:nth-child(even) td.gridMouseOver {
     color: #fff;
     text-decoration: none;
 }
+.collectionID #moreInfoToggle {
+	top: 7px;	
+}
+.collectionID #collectionInfo {
+	margin-top: 20px;
+}
 
 /* toolbar was changed to collection-toolbar in Collection/view.tpl & Collection/view-alt.tpl */
 .collection-toolbar {
