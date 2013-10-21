@@ -2211,8 +2211,12 @@ div.sidegroup h4 {
     padding: 1em 7px;
 }
 .checkboxFilter input {
-    width: 30px;
     float: left;
+    height: 22px;
+    left: -5px;
+    position: relative;
+    top: -5px;
+    width: 30px;
 }
 .checkboxFilter label {
     display: block;
@@ -2378,7 +2382,7 @@ dl.defaultFacet dd {
     float: left;
 }
 .checkboxFilter {
-    padding: 1em 7px;
+    padding: 15px 7px 10px;
 }
 .checkboxFilter label {
     display: block;
@@ -3232,6 +3236,9 @@ div.dateVisHandle.visible {
     margin-top:40px;
     position:relative;
 }
+#mainYearFrom, #mainYearTo {
+    box-shadow: 0 3px 11px -8px #808080;
+}
 
 .dateVisNavigation * {
     cursor:pointer;
@@ -3252,17 +3259,17 @@ div.dateVisHandle.visible {
 }
 
 .dateVisNavigation .next {
-    height: 16px;
+    height: 23px;
     left: 17px;
-    top: 79px;
+    top: 76px;
     width: 11px;
 }
 
 .dateVisNavigation .prev {
-    height: 16px;
-    left: 3px;
-    top: 79px;
-    width: 11px;
+    height: 23px;
+    left: 1px;
+    top: 76px;
+    width: 12px;
 }
 
 .dateVisNavigation {
@@ -5110,6 +5117,12 @@ tr:nth-child(even) td.gridMouseOver {
 #moreInfoToggle:hover {
     color: #fff;
     text-decoration: none;
+}
+.collectionID #moreInfoToggle {
+	top: 7px;	
+}
+.collectionID #collectionInfo {
+	margin-top: 20px;
 }
 
 /* toolbar was changed to collection-toolbar in Collection/view.tpl & Collection/view-alt.tpl */

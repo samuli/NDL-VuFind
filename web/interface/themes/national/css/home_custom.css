@@ -230,7 +230,15 @@
 .section#home-timeline .resultDates {
     border-radius: 5px;
     height: auto;
-    margin: -30px 0 40px;
+    margin: 0px 0 30px;
+    
+}
+.section#home-timeline #sidePubDateVis {
+   border: 1px solid #FAFAFA;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 2px 12px -11px #000000;
+    max-width: 950px;
+    margin-bottom: 5px;
 }
 
 .section#home-timeline .content {
@@ -242,6 +250,9 @@
     background: transparent;
     margin-top: 0;
     padding-left: 5px;
+}
+.section#home-timeline p.grid_18 {
+	margin-bottom:-20px;
 }
 
 .section#popular-map .content {
@@ -340,6 +351,7 @@
     #popular-map .grid_14 {
         padding-top:25px;
     }
+
 }
 
 @media only screen and (max-width: 1020px) {
@@ -347,3 +359,5 @@
         padding-top:25px !important;
     }
 }
+
+

@@ -25,8 +25,8 @@
 </div>
 <div id="home-timeline" class="section clearfix">
   <div class="content">
-    <p><span class="large">Genom att begränsa sökningen </span> till en viss tidsintervall kan du hitta bilder, verk, föremål, dokument eller
-    <br />annat material från en viss tid. Sökningen begränsas enligt framställningsår.
+    <p class="grid_18"><span class="large">Genom att begränsa sökningen </span> till en viss tidsintervall kan du hitta bilder, verk, föremål, dokument eller
+    annat material från en viss tid. Sökningen begränsas enligt framställningsår.
     </p>
   </div>
   {include file="Search/Recommend/DateRangeVisAjax.tpl"}

@@ -164,6 +164,10 @@
         width: 300px;
     }
     
+    .section#home-timeline #sidePubDateVis {
+    max-width: 690px;
+    }
+    
     .currentPage > span:first-child {
         display:none;
     }
@@ -275,7 +279,13 @@
     table.holdingsContainerHolding .available {
         display: inline-block;
     }
-
+	.resultItemLine3 .availableTotals {
+    	display:block !important;
+		font-weight:500;
+		clear:both;
+    	margin-left: -2px;
+	}
+	
     #recordProvidedBy .dropdown dt a {
         width: 100px;        
     }

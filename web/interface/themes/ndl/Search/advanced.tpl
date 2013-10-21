@@ -5,7 +5,7 @@
   <div class="advSearchHeader">
     <div class="content">
       <div class="grid_24">
-        <h1>{translate text='Advanced Search'}</h1><a class="advancedSearchHelpButton" href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a>
+        <h1>{translate text='Advanced Search'}</h1><a class="advancedSearchHelpButton" href="{$url}/Content/searchhelp#advancedsearch" target="_blank">{translate text="Search Tips"}</a>
       </div>
     </div>
   </div>

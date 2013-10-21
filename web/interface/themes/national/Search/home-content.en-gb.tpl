@@ -24,8 +24,8 @@
 </div>
 <div id="home-timeline" class="section clearfix">
   <div class="content">
-    <p><span class="large">By narrowing your search by year, </span> you can find images, books, objects, documents and other material
-    <br />from the past to the present.
+    <p class="grid_18"><span class="large">By narrowing your search by year, </span> you can find images, books, objects, documents and other material
+   from the past to the present.
     </p>
   </div>
   {include file="Search/Recommend/DateRangeVisAjax.tpl"}
