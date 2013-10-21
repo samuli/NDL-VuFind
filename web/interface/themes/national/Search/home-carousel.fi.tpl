@@ -15,12 +15,12 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="kamera.jpg"}
+        {image src="02vr.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>A.K. Cajanderin kamera</span></div>
+          <div class="pickup-header"><span>VR:n matkailujulisteita</span></div>
           <div class="pickup-text">
-            Suomen Metsämuseo Luston kokoelmiin kuuluva metsätieteilijä ja poliitikko A. K. Cajanderin käyttämä kamera. <span class="caption">Kuva: Agata Teperek/Lusto</span>
-            <a href="{$url}/Record/lusto.M011-332446">Hakutulokseen »</a>
+            Suomen Rautatiemuseon julistekokoelma on 1930–2000 -luvuilta. VR on käyttänyt julisteita asemilla, junissa ja erilaisissa tapahtumissa sekä tehnyt kansainvälistä julistevaihtoa. Kuvaajina  ja piirtäjinä ovat toimineet mm. taiteilijat Erik Bruun, Osmo K. Oksanen, Juha Anttinen ja valokuvaajat Fred Runeberg, E. Tolvanen ja Yrjö Metsälä.
+            <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>Hakutulokseen »</a>
           </div>
         </div>
       </li>
