@@ -204,7 +204,8 @@ class UserComments extends Record
         include_once 'RecordDrivers/Factory.php';
         
         $db = ConnectionManager::connectToIndex();
-        if (!($record = $db->getRecord($_REQUEST['id']))) {
+        $id = $_REQUEST['id'];
+        if (!$record = $db->getRecord($id)) {
             PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
         }
         $recordDriver = RecordDriverFactory::initRecordDriver($record);
@@ -258,7 +259,7 @@ class UserComments extends Record
             }            
             $comments = new Comments();
             $comments->user_id = $user->id;
-            $rating = (float)$_REQUEST['rating'];
+            $rating = isset($_REQUEST['rating']) ? (float)$_REQUEST['rating'] : 0;
             $comments->rating = ($rating > 0 && $rating <= 5) ? $rating : null;
             $comments->comment = $_REQUEST['comment'];
             $comments->type = $_REQUEST['type'];

@@ -91,7 +91,7 @@ $(document).ready(function(){
     });
     $('a.deleteRecordComment').live('click', function(e) {
         var commentId = this.id.substr('recordComment'.length);
-        var recordId = this.href.match(/\/Record\/([^\/]+)\//)[1];
+        var recordId = $('input[name="recordId"]').val();
         deleteRecordComment(recordId, commentId);
         e.preventDefault();
     });
