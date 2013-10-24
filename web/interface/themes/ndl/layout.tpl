@@ -20,6 +20,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    <meta name="format-detection" content="telephone=no" />
     {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
     <title>{$pageTitle|truncate:64:"..."}</title>
