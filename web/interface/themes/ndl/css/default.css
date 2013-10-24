@@ -103,6 +103,10 @@ textarea,
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
 
+input[type="submit"] {
+    -webkit-appearance: none;
+}
+
 /*** work-in-progress disclaimer ***/
 .w-i-p, .ie {
     width: 100%;
