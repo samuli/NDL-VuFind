@@ -53,9 +53,15 @@ class RecordDriverFactory
     {
         global $configArray;
         
-        // Determine driver path based on record type:
-        $driver = ucwords($record['recordtype']) . 'Record';
+        // Determine driver path based on record type and try a Local version first:
+        $driver = ucwords($record['recordtype']) . 'RecordLocal';
         $path = "RecordDrivers/{$driver}.php";
+        
+        // Then the regular version:
+        if (!is_readable($path)) {
+            $driver = ucwords($record['recordtype']) . 'Record';
+            $path = "RecordDrivers/{$driver}.php";
+        }
         
         // If we can't load the driver, fall back to the default, index-based one:
         if (!is_readable($path)) {
