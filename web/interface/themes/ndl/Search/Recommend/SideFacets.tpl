@@ -100,7 +100,7 @@
         {assign var="mainYear" value="Main Year"}
         {assign var="dateRange" value="Date Range"}
         <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
-        <dt>{translate text=$cluster.label}
+        <dt><span class="yearLabel">{translate text=$cluster.label}</span>
           {if $cluster.label === 'Main Year'}<span class="timelineview">open timeline</span>
             {include file=$sideRecommendations.DateRangeVisAjax}
           {/if}

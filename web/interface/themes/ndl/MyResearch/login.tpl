@@ -24,61 +24,9 @@
   <div class="loginTitle">
     {translate text='login_choices'}
   </div>
-  
-  {if $mozillaPersona}
-    {assign var=loginNumber value=$loginNumber+1}
-  <div class="loginAction">
-    <h3>{$loginNumber}. {translate text="login_title_email"}</h3>
-    <a id="personaLogin" class="persona-login" href=""><span>{translate text="Mozilla Persona"}</span></a>
-{if $lightbox}
-    <script type="text/javascript">
-    {literal}
-    $(document).ready(function() {        
-        $.ajax({
-            url: 'https://login.persona.org/include.js',
-            dataType: 'script',
-            success: function() {
-                {/literal}
-                mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
-                {literal}
-            }
-        });
-    });
-    {/literal}
-    </script>
-{/if}
-    </script>    
-  </div>
-  <div class="loginDescription{$lbSmall}">
-    <div class="description">
-      <div class="descriptionTitle">{translate text='login_services_desc'}</div> 
-      {translate text='login_desc_email_html'}
-    </div>
-  </div>
-  {/if}
-  
-  {if $sessionInitiator}
-    {assign var=loginNumber value=$loginNumber+1}
-    {if $mozillaPersona}
-  <div class="separator{$lbSmall}"><span class="text">{translate text="login_separator"}</span></div>
-    {/if}
-  <div class="loginAction">
-    <h3>{$loginNumber}. {translate text="login_title_shibboleth"}</h3>
-    <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
-  </div>
-  <div class="loginDescription{$lbSmall}">
-    <div class="description">
-      <div class="descriptionTitle">{translate text='login_services_desc'}</div> 
-      {translate text='login_desc_shibboleth_html'}
-    </div>
-  </div>
-  {/if}
 
     {if $libraryCard && $authMethod != 'Shibboleth'}
     {assign var=loginNumber value=$loginNumber+1}
-    {if $mozillaPersona || $sessionInitiator}
-  <div class="separator{$lbSmall}"><span class="text">{translate text="login_separator"}</span></div>
-    {/if}
   <div class="loginAction">
     <h3>{$loginNumber}. {translate text='login_title_local'}</h3>
     <form method="post" action="{$url}/MyResearch/Home" name="loginForm" id="loginForm">
@@ -129,6 +77,59 @@
     </div>
   </div>
   {/if}
+
+  {if $sessionInitiator}
+    {assign var=loginNumber value=$loginNumber+1}
+    {if $libraryCard}
+  <div class="separator{$lbSmall}"><span class="text">{translate text="login_separator"}</span></div>
+    {/if}
+  <div class="loginAction">
+    <h3>{$loginNumber}. {translate text="login_title_shibboleth"}</h3>
+    <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
+  </div>
+  <div class="loginDescription{$lbSmall}">
+    <div class="description">
+      <div class="descriptionTitle">{translate text='login_services_desc'}</div> 
+      {translate text='login_desc_shibboleth_html'}
+    </div>
+  </div>
+  {/if}
+
+  {if $mozillaPersona}
+    {assign var=loginNumber value=$loginNumber+1}
+    {if $libraryCard || $sessionInitiator}
+  <div class="separator{$lbSmall}"><span class="text">{translate text="login_separator"}</span></div>
+    {/if}
+
+  <div class="loginAction">
+    <h3>{$loginNumber}. {translate text="login_title_email"}</h3>
+    <a id="personaLogin" class="persona-login" href=""><span>{translate text="Mozilla Persona"}</span></a>
+{if $lightbox}
+    <script type="text/javascript">
+    {literal}
+    $(document).ready(function() {        
+        $.ajax({
+            url: 'https://login.persona.org/include.js',
+            dataType: 'script',
+            success: function() {
+                {/literal}
+                mozillaPersonaSetup({if $mozillaPersonaCurrentUser}"{$mozillaPersonaCurrentUser}"{else}null{/if}, {if $mozillaPersonaAutoLogout}true{else}false{/if});
+                {literal}
+            }
+        });
+    });
+    {/literal}
+    </script>
+{/if}
+  </div>
+  <div class="loginDescription{$lbSmall}">
+    <div class="description">
+      <div class="descriptionTitle">{translate text='login_services_desc'}</div> 
+      {translate text='login_desc_email_html'}
+    </div>
+  </div>
+  {/if}
+
 </div>
 {/if}
 

@@ -193,7 +193,15 @@
     }
     
     .narrowList.navmenu.year dt {
-        width:150px;
+        width: 116px;
+    }
+    
+    .sidegroup dt, div.sidegroup h4 {
+        font-size:1.10em;
+    }
+    
+    .resultListContainer div.sidegroup h4 {
+        font-size: 1.5em;
     }
     
     .narrowList.navmenu.year.collapsible.timeline.open.collapsed dt {
@@ -279,12 +287,6 @@
     table.holdingsContainerHolding .available {
         display: inline-block;
     }
-	.resultItemLine3 .availableTotals {
-    	display:block !important;
-		font-weight:500;
-		clear:both;
-    	margin-left: -2px;
-	}
 	
     #recordProvidedBy .dropdown dt a {
         width: 100px;        

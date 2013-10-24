@@ -15,12 +15,12 @@
         </div>
       </li>
        <li class="grid_6">
-        {image src="kamera.jpg"}
+         {image src="02vr.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>A.K. Cajander’s camera</span></div>
+          <div class="pickup-header"><span>Finnish rail travel posters</span></div>
           <div class="pickup-text">
-            The camera used by professor of forestry and politician A.K. Cajander is currently among the collections of Lusto – the Finnish Forest Museum.  <span class="caption">Photograph Agata Teperek/Lusto</span>
-            <a href="{$url}/Record/lusto.M011-332446">To the search result »</a>
+           The poster collection of the Finnish Railway Museum is from the 1930s to the 2000s. VR, the Finnish public railway company, has used the posters at stations, in trains and at various events, and has also exchanged posters with international partners. The drawings and illustrations have been created by artists including Erik Bruun, Osmo K. Oksanen and Juha Anttinen, as well as photographers Fred Runeberg, E. Tolvanen and Yrjö Metsälä.
+            <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>To the search result »</a>
           </div>
         </div>
       </li>
