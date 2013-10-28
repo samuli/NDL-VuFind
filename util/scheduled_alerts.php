@@ -188,6 +188,10 @@ class ScheduledAlerts
             
             $minSO = unserialize($s->search_object);
             $searchObject = SearchObjectFactory::deminify($minSO);
+            if (!($searchObject instanceof SearchObject_Solr)) {
+                $this->msg('Search ' . $s->id . ': search object type not supported');
+                continue;
+            }
             $searchObject->setSort('last_indexed desc');
             $searchTime = time();
             $searchDate = gmdate($iso8601, time());
