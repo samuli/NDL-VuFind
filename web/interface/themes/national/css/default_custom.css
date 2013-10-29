@@ -87,6 +87,19 @@ span.dynatree-node a {
 .backgroundContainer {
 	background-position:center top;
 }
+.backgroundContainer.background-1 {
+    background-image: url("../../national/images/header_background_1.jpg");
+}
+.backgroundContainer.background-2 {
+    background-image: url("../../national/images/header_background_2.jpg");
+}
+.backgroundContainer.background-3 {
+    background-image: url("../../national/images/header_background_3.jpg");
+}
+.backgroundContainer.background-4 {
+    background-image: url("../../national/images/header_background_4.jpg");
+}
+
 .organsationsTable, .organisationsTable th, .organisationsTable td {
 	vertical-align:top;
 }

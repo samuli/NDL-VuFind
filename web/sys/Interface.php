@@ -462,6 +462,14 @@ class UInterface extends Smarty
             $_SESSION['retainFilters'] = (int)$retainFilters;
             $this->assign('retainFiltersByDefault', $retainFilters);
         }
+         
+        // Assign national theme header image
+        $images = 4; // Number of available header images
+
+        $bgNumber = isset($_SESSION['bgNumber']) ? $_SESSION['bgNumber'] : rand(1, $images);
+        $_SESSION['bgNumber'] = $bgNumber;
+
+        $this->assign('bgNumber', $bgNumber);
     }
 
     /**
