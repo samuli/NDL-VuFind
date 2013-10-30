@@ -47,7 +47,8 @@ class Voyager implements DriverInterface
     protected $config;
     protected $statusRankings = false;        // used by pickStatus() method
     protected $dateFormat;
-
+    protected $logFile = '';
+    
     /**
      * Constructor
      *
@@ -71,6 +72,10 @@ class Voyager implements DriverInterface
         // Define Database Name
         $this->dbName = $this->config['Catalog']['database'];
 
+        if (isset($this->config['Debug']['log'])) {
+            $this->logFile = $this->config['Debug']['log'];
+        }
+        
         // Based on the configuration file, use either "SID" or "SERVICE_NAME"
         // to connect (correct value varies depending on Voyager's Oracle setup):
         $connectType = isset($this->config['Catalog']['connect_with_sid']) &&
@@ -143,6 +148,7 @@ class Voyager implements DriverInterface
             $sql = "SELECT * FROM $this->dbName.ITEM_STATUS_TYPE";
             try {
                 $sqlStmt = $this->db->prepare($sql);
+                $this->debugLogSQL(__FUNCTION__, $sql);
                 $sqlStmt->execute();
             } catch (PDOException $e) {
                 return new PEAR_Error($e->getMessage());
@@ -406,6 +412,7 @@ class Voyager implements DriverInterface
             // Execute SQL
             try {
                 $sqlStmt = $this->db->prepare($sql['string']);
+                $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
                 $sqlStmt->execute($sql['bind']);
             } catch (PDOException $e) {
                 return new PEAR_Error($e->getMessage());
@@ -792,6 +799,7 @@ class Voyager implements DriverInterface
                 "FROM {$this->dbName}.LOCATION WHERE LOCATION_ID=:id";
             $bind = array('id' => $id);
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, $bind);
             $sqlStmt->execute($bind);
             $sqlRow = $sqlStmt->fetch(PDO::FETCH_ASSOC);
             $cache[$id] = utf8_encode($sqlRow['LOCATION']);
@@ -954,6 +962,7 @@ class Voyager implements DriverInterface
             // Execute SQL
             try {
                 $sqlStmt = $this->db->prepare($sql['string']);
+                $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
                 $sqlStmt->execute($sql['bind']);
             } catch (PDOException $e) {
                 return new PEAR_Error($e->getMessage());
@@ -1004,6 +1013,7 @@ class Voyager implements DriverInterface
         try {
             $data = array();
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, array(':id' => $id));
             $sqlStmt->execute(array(':id' => $id));
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $data[] = array(
@@ -1056,6 +1066,7 @@ class Voyager implements DriverInterface
             $sqlStmt->bindParam(
                 ':barcode', strtolower(utf8_decode($barcode)), PDO::PARAM_STR
             );
+            $this->debugLogSQL(__FUNCTION__, $sql, array(':login' => strtolower(utf8_decode($login))));
             $sqlStmt->execute();
             $row = $sqlStmt->fetch(PDO::FETCH_ASSOC);
             if (isset($row['PATRON_ID']) && ($row['PATRON_ID'] != '')) {
@@ -1216,6 +1227,7 @@ class Voyager implements DriverInterface
 
         try {
             $sqlStmt = $this->db->prepare($sql['string']);
+            $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
             $sqlStmt->execute($sql['bind']);
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $processRow = $this->processMyTransactionsData($row, $patron);
@@ -1356,6 +1368,7 @@ class Voyager implements DriverInterface
 
         try {
             $sqlStmt = $this->db->prepare($sql['string']);
+            $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
             $sqlStmt->execute($sql['bind']);
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $processFine= $this->processFinesData($row);
@@ -1536,6 +1549,7 @@ class Voyager implements DriverInterface
 
         try {
             $sqlStmt = $this->db->prepare($sql['string']);
+            $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
             $sqlStmt->execute($sql['bind']);
             while ($sqlRow = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $holds = $this->processMyHoldsData($sqlRow);
@@ -1706,6 +1720,7 @@ class Voyager implements DriverInterface
         $sql = $this->buildSqlFromArray($sqlArray);
         try {
             $sqlStmt = $this->db->prepare($sql['string']);
+            $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
             $sqlStmt->execute($sql['bind']);
             while ($sqlRow = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $callSlips = $this->processMyCallSlipsData($sqlRow);
@@ -1749,6 +1764,7 @@ class Voyager implements DriverInterface
                "AND PATRON.PATRON_ID = :id";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, array(':id' => $patron['id']));
             $sqlStmt->execute(array(':id' => $patron['id']));
             $patron = array();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
@@ -1903,6 +1919,7 @@ class Voyager implements DriverInterface
                "and LINE_ITEM.CREATE_DATE < to_date(:enddate, 'dd-mm-yyyy')";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, $bindParams);
             $sqlStmt->execute($bindParams);
             $row = $sqlStmt->fetch(PDO::FETCH_ASSOC);
             $items['count'] = $row['COUNT'];
@@ -1953,6 +1970,7 @@ class Voyager implements DriverInterface
                "where rnum >= :startRow";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, $bindParams);
             $sqlStmt->execute($bindParams);
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $items['results'][]['id'] = $row['BIB_ID'];
@@ -2017,6 +2035,7 @@ class Voyager implements DriverInterface
             "from $this->dbName.FUND {$whereClause} order by name";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, $bindParams);
             $sqlStmt->execute($bindParams);
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 // Process blacklist and whitelist to skip illegal values:
@@ -2073,6 +2092,7 @@ class Voyager implements DriverInterface
                "order by DEPARTMENT_NAME";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql);
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $deptList[$row['DEPARTMENT_ID']] = $row['DEPARTMENT_NAME'];
@@ -2109,6 +2129,7 @@ class Voyager implements DriverInterface
                "order by LAST_NAME";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, $bindParams);
             $sqlStmt->execute($bindParams);
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $instList[$row['INSTRUCTOR_ID']] = $row['NAME'];
@@ -2145,6 +2166,7 @@ class Voyager implements DriverInterface
                "order by COURSE_NUMBER";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, $bindParams);
             $sqlStmt->execute($bindParams);
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $courseList[$row['COURSE_ID']] = $row['NAME'];
@@ -2263,6 +2285,7 @@ class Voyager implements DriverInterface
 
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql, $bindParams);
             $sqlStmt->execute($bindParams);
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $recordList[] = $row;
@@ -2289,6 +2312,7 @@ class Voyager implements DriverInterface
                "where BIB_MASTER.SUPPRESS_IN_OPAC='Y'";
         try {
             $sqlStmt = $this->db->prepare($sql);
+            $this->debugLogSQL(__FUNCTION__, $sql);
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
                 $list[] = $row['BIB_ID'];
@@ -2298,6 +2322,40 @@ class Voyager implements DriverInterface
         }
 
         return $list;
+    }
+    
+    /**
+     * Write to debug log, if defined
+     * 
+     * @param string $msg Message to write
+     * 
+     * @return void
+     */
+    protected function debugLog($msg)
+    {
+        if (!$this->logFile) {
+            return;
+        }
+        $msg = date('Y-m-d H:i:s') . ' [' . getmypid() . "] [{$this->dbName}] $msg\n";        
+        file_put_contents($this->logFile, $msg, FILE_APPEND);
+    }
+    
+    /**
+     * Log SQL statement
+     * 
+     * @param string $func   Function name or description
+     * @param string $sql    The SQL statement
+     * @param array  $params SQL bind parameters
+     * 
+     * @return void
+     */
+    protected function debugLogSQL($func, $sql, $params = null)
+    {
+        $logString = "[$func] $sql";
+        if (isset($params)) {
+            $logString .= ', params: ' . print_r($params, true);
+        }
+        $this->debugLog($logString);
     }
 }
 

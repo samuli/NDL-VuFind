@@ -493,6 +493,7 @@ class VoyagerRestful extends Voyager
 
             try {
                 $sqlStmt = $this->db->prepare($sql);
+                $this->debugLogSQL(__FUNCTION__, $sql);
                 $sqlStmt->execute();
             } catch (PDOException $e) {
                 return new PEAR_Error($e->getMessage());
@@ -588,7 +589,7 @@ class VoyagerRestful extends Voyager
         // Send Request and Retrieve Response
         $client->sendRequest();
         $xmlResponse = $client->getResponseBody();
-        error_log("VR: $mode request $urlParams, body:\n$xml\nResults:\n$xmlResponse");
+        $this->debugLog("$mode request $urlParams, body:\n$xml\nResults:\n$xmlResponse");
         $oldLibXML = libxml_use_internal_errors();
         libxml_use_internal_errors(true);
         $simpleXML = simplexml_load_string($xmlResponse);
@@ -597,7 +598,8 @@ class VoyagerRestful extends Voyager
         if ($simpleXML === false) {
             $logger = new Logger();
             $error = libxml_get_last_error();
-            $logger->log('VoyagerRestful: Failed to parse response XML: ' . $error->message . ", response:\n" . $xmlResponse, PEAR_LOG_ERR);
+            $logger->log('Failed to parse response XML: ' . $error->message . ", response:\n" . $xmlResponse, PEAR_LOG_ERR);
+            $this->debugLog('Failed to parse response XML: ' . $error->message . ", response:\n" . $xmlResponse);
             return false;
         }
         return $simpleXML;
