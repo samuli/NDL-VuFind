@@ -113,15 +113,37 @@ span.dynatree-node a {
 	padding:10px;
 	padding-bottom:5px;
 }
-.organisations {
-	margin:5px 0 0 0 !important;
-}
-.organisations li{
-	list-style-type:none;
-	margin:0;
-	margin-top:5px;
-	list-style-position:outside;
-}
+
 #mapSearch {
 	display:none;
+}
+
+
+/** Content/organisations  **/
+.organisations {
+    margin:15px 0 0 0 !important;
+}
+ul.organisations li {
+    clear: both;
+    overflow: auto;
+    list-style-type: none;
+    margin: 0;
+    margin-top: 1px;
+    list-style-position: outside;
+}
+.organisations li div.name {
+    float: left;
+    margin-top: 6px;
+}
+.organisations li div.link {
+    float: left;
+    
+}
+.organisations li div.link a {
+    background-image: url("../../ndl/images/icons16-24px-02.png");
+    background-position: -359px -941px;
+    display: block;
+    width: 30px;
+    height: 35px;
+    margin-left: 3px;
 }
