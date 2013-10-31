@@ -15,7 +15,7 @@
         <li><a class="big" href="#">
           <span>{translate text="Organisations"}</span>
           <span>{translate text="organisations_desc"}</span>
-          <span class="value">{$path}/Content/organisations</span></a>
+          <span class="value">{$path}/Content/Organisations</span></a>
         </li>
       </ul>
     </dd>

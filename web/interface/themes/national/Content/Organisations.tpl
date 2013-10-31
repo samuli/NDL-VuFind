@@ -1,4 +1,4 @@
-<!-- START of: Content/organisations.fi.tpl -->
+<!-- START of: Content/Organisations.fi.tpl -->
 
 {assign var="title" value="organisations_topic"|translate"}
 {capture append="sections"}
@@ -41,4 +41,4 @@
 {/capture}
 {include file="$module/content.tpl" title=$title sections=$sections}
 
-<!-- END of: Content/organisations.fi.tpl -->
+<!-- END of: Content/Organisations.fi.tpl -->

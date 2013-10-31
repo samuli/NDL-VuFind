@@ -36,7 +36,7 @@ require_once 'Action.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-class organisations extends Action
+class Organisations extends Action
 {
     const BUILDING = 'building';
 
@@ -82,7 +82,7 @@ class organisations extends Action
             usort($res[$sector], function($a,$b) { return $a[0] > $b[0]; });
         }
 
-        $file = 'organisations.tpl';
+        $file = 'Organisations.tpl';
         $interface->setPageTitle(translate("content-organisations"));
         $interface->setTemplate($file);
         $interface->assign('organisations', $res);
