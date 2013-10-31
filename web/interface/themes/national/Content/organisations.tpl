@@ -1,49 +1,36 @@
 <!-- START of: Content/organisations.fi.tpl -->
 
-{assign var="title" value="organisations_topic"|translate|cat:" (10.10.2013)"}
+{assign var="title" value="organisations_topic"|translate"}
 {capture append="sections"}
 
 <p class="grid_18">{translate text="organisations_text"}</p>
 <div class="grid_24 organisations">
 <table class="organisationsTable">
 <tr class="tableHeaders">
-<td>{translate text="Archive_plural"}</td>
-<td>{translate text="Library_plural"}</td>
-<td>{translate text="Museum_plural"}</td>
+<td>{translate text="Archive_plural"} ({$cnt.arc})</td>
+<td>{translate text="Library_plural"} ({$cnt.lib})</td>
+<td>{translate text="Museum_plural"} ({$cnt.mus})</td>
 </tr>
 <tr>
 <td  width="33%">
 <ul class="organisations">
-<li>{translate text = "facet_0/NARC"}</li>
-<li>{translate text = "facet_0/MMA"}</li>
-<li>{translate text = "facet_0/TMA"}</li>
-<li>{translate text = "facet_0/OMA"}</li>
-<li>{translate text = "facet_0/HMA"}</li>
-<li>{translate text = "facet_0/VMA"}</li>
-<li>{translate text = "facet_0/JoMA"}</li>
-<li>{translate text = "facet_0/JyMA"}</li>
+  {foreach from=$organisations.arc item=i}
+  <li><div class="name">{$i[0]}</div><div class="link"><a title="{translate text="Find"}: {$i[0]}" href="{$i[1]}"></a></div></li>
+  {/foreach}
 </ul>
 </td>
 <td width="33%">
 <ul class="organisations">
-<li>{translate text = "facet_0/NLF"}</li>
-<li>{translate text = "facet_0/NRL"}</li>
-<li>{translate text = "facet_0/JYU"}</li>
+  {foreach from=$organisations.lib item=i}
+  <li><div class="name">{$i[0]}</div><div class="link"><a title="{translate text="Find"}: {$i[0]}" href="{$i[1]}"></a></div></li>
+  {/foreach}
 </ul>
 </td>
 <td width="33%">
 <ul class="organisations">
-<li>{translate text = "facet_0/Lusto"}</li>
-<li>{translate text = "facet_0/NBA"}</li>
-<li>{translate text = "facet_0/Metsastysmuseo"}</li>
-<li>{translate text = "facet_0/NurmeksenMuseo"}</li>
-<li>{translate text = "facet_0/PielisenMuseo"}</li>
-<li>{translate text = "facet_0/IlomantsinMuseosaatio"}</li>
-<li>{translate text = "facet_0/Ateneum"}</li>
-<li>{translate text = "facet_0/Tuusula"}</li>
-<li>{translate text = "facet_0/Sinebrychoff"}</li>
-<li>{translate text = "facet_0/LapinMetsamuseo"}</li>
-<li>{translate text = "facet_0/Verla"}</li>
+  {foreach from=$organisations.mus item=i}
+  <li><div class="name">{$i[0]}</div><div class="link"><a title="{translate text="Find"}: {$i[0]}" href="{$i[1]}"></a></div></li> 
+  {/foreach}
 </ul>
 </td>
 </tr>
