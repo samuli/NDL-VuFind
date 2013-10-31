@@ -3965,6 +3965,17 @@ h5.recordTabHeader {
     min-width: 260px;
 }
 
+.holdingsContainerHeader dl.dropdown dt > a {
+    background: url("../images/white_30.png");
+    margin-left: 10px;
+    display:inline-block;
+    padding: 9px 15px;
+}
+
+.holdingsContainerHeader dl.dropdown dd ul {
+    margin-left:10px;
+}
+
 .dropdownMenuIcon {
     background-image: url("../images/icons16-24px-02.png");
     background-position: -679px -2324px;
