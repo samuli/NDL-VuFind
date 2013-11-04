@@ -20,6 +20,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
+    <meta name="format-detection" content="telephone=no" />
     {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
     <title>{$pageTitle|truncate:64:"..."}</title>
@@ -239,7 +240,7 @@
     <div id="lightbox" onclick="hideLightbox(); return false;"></div>
     <div id="popupbox" class="popupBox"><b class="btop"><b></b></b></div>
     {* End LightBox *}
-    <div class="backgroundContainer"></div>
+    <div class="backgroundContainer background-{$bgNumber}"></div>
     <div id="page-wrapper" class="module-{$module}">
 
       {* Start BETA BANNER - Remove/comment out when not in beta anymore ===> *}

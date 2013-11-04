@@ -358,8 +358,7 @@
     }
     
     
-    .timelineview,
-    dd.mainYearFormContainer1 {
+    .timelineview {
         display:none !important;
     }
     

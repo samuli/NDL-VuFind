@@ -207,7 +207,7 @@ class AJAX_RenderRSS extends Action
                     $dateTime = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
                 }
                 $item['date'] = FALSE;
-                if($dateTime) {
+                if (isset($dateTime)) {
                     $item['date'] = $dateTime->format($rssFeed['dateFormat']);
                 }
             }

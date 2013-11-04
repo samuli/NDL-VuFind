@@ -181,6 +181,7 @@ class DueDateReminders
                 $loans = $catalog->getMyTransactions($patron);
                 if (PEAR::isError($loans)) {
                     $this->msg('Could not fetch loans for user ' . $user->id . ', account ' . $account->id . ' (' . $account->cat_username . ')');
+                    continue;
                 }
                 foreach ($loans as $loan) {
                     $dueDate = new DateTime($loan['duedate']);

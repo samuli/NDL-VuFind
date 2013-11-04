@@ -72,7 +72,7 @@
 	 	All users can create a <strong>Mozilla Persona account. </strong>You can also add your library card to the account if the library participates in Finna.	</li>
 	 <li>Students and staff of Finnish institutions of higher education can use the <strong>Haka institutional login.</strong> You can add your library card to the service if the library participates in Finna. This can be done after logging in.</li>
 	 <li>If your library participates in Finna, you can log in to the service directly with your library card.
-	   <p><a href="{$url}/Content/organisations">See the libraries whose cards can be used for logging in</a></p>
+	   <p><a href="{$url}/Content/Organisations">See the libraries whose cards can be used for logging in</a></p>
 	 </li>
    </ul>
    <h3>Account functions:</h3>

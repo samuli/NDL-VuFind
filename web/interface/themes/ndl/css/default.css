@@ -103,6 +103,10 @@ textarea,
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
 
+input[type="submit"] {
+    -webkit-appearance: none;
+}
+
 /*** work-in-progress disclaimer ***/
 .w-i-p, .ie {
     width: 100%;
@@ -3959,6 +3963,17 @@ h5.recordTabHeader {
 .holdingsContainerHeader dl.dropdown {
     font-size: 13px;
     min-width: 260px;
+}
+
+.holdingsContainerHeader dl.dropdown dt > a {
+    background: url("../images/white_30.png");
+    margin-left: 10px;
+    display:inline-block;
+    padding: 9px 15px;
+}
+
+.holdingsContainerHeader dl.dropdown dd ul {
+    margin-left:10px;
 }
 
 .dropdownMenuIcon {

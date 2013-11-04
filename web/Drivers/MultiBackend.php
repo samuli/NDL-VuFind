@@ -905,10 +905,17 @@ class MultiBackend implements DriverInterface
     {
         $source = strtolower($source);
         if (isset($this->config[$source])) {
-            $driver = $this->config[$source]['driver'];
+            // Try a local version first
+            $driver = $this->config[$source]['driver'] . "Local_$source";
+            if (!is_readable("Drivers/{$driver}.php")) {
+                $driver = $this->config[$source]['driver'] . "Local";
+            }
+            if (!is_readable("Drivers/{$driver}.php")) {
+                $driver = $this->config[$source]['driver'];
+            }
             try {
                 include_once "{$driver}.php";
-                return new $driver("{$driver}_{$source}.ini");
+                return new $driver($this->config[$source]['driver'] . "_{$source}.ini");
             } catch (Exception $e) {
                 error_log("MultiBackend: error initializing driver '$driver': " . $e->__toString());
                 return null;

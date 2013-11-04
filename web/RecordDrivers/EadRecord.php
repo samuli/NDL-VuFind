@@ -184,19 +184,34 @@ class EadRecord extends IndexRecord
      */
     protected function getYearRange()
     {
-        if (isset($this->fields['unit_daterange'])) {
-            $dates = explode(',', $this->fields['unit_daterange']);
-            $startYear = substr($dates[0], 0, 4);
-            $endYear = substr($dates[1], 0, 4);
-            $yearRange = '';
-            if ($startYear !== '0000') {
-                $yearRange .= $startYear;
+        if (isset($this->fields['unit_sdaterange'])) {
+            $range = explode(' ', $this->fields['unit_sdaterange'], 2);
+            if (!$range) {
+                return null;
             }
-            $yearRange .= '-';
-            if ($endYear !== '9999') {
-                $yearRange .= $endYear;
+            $range[0] *= 86400;
+            $range[1] *= 86400;
+            $startDate = new DateTime("@{$range[0]}");
+            $endDate = new DateTime("@{$range[1]}");
+            if ($startDate->format('m') == 1 && $startDate->format('d') == 1 
+                && $endDate->format('m') == 12 && $endDate->format('d') == 31
+            ) {
+                $startYear = $startDate->format('Y');
+                $endYear = $endDate->format('Y');
+                $yearRange = '';
+                if ($startYear != '-9999') {
+                    $yearRange .= $startYear;
+                }
+                $yearRange .= '-';
+                if ($endYear != '9999') {
+                    $yearRange .= $endYear;
+                }
+                return $yearRange;
             }
-            return $yearRange;
+            $date = new VuFindDate();
+            return $date->convertToDisplayDate('U', $range[0])
+                . '-' 
+                . $date->convertToDisplayDate('U', $range[1]);
         }
         return '';
     }

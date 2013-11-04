@@ -84,7 +84,7 @@ Voit esirajata haun valitsemalla pudotusvalikosta joko tietyn sektorin (museo, a
 	 </li>
 	 <li>
 	   <p>Jos kirjastosi on mukana Finnassa voit kirjautua suoraan omalla <strong>kirjastokortilla.</strong></p><p> 
-	   <a href="{$url}/Content/organisations">Katso Finnassa mukana olevat kirjastot, joiden kirjastokorteilla voit kirjautua</a></p>
+	   <a href="{$url}/Content/Organisations">Katso Finnassa mukana olevat kirjastot, joiden kirjastokorteilla voit kirjautua</a></p>
 	 </li>
    </ul>
    <h3>Oman tilin toiminnot:</h3>

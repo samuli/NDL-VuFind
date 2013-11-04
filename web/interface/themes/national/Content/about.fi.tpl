@@ -32,7 +32,7 @@ Finnan kuvailutieto on vapaasti kaikkien käytössä, mutta Finnassa näkyviin d
 
 <h3>Finnan vastuutahot</h3>
 <p>
-Kansalliskirjasto vastaa Finnan kehittämisestä ja ylläpidosta, mutta palvelua kehitetään yhdessä Finnan yhteistyökumppanien kanssa. Finnan sisällöistä vastaavat palveluun osallistuvat <a href='{$url}/Content/organisations'>arkistot, kirjastot ja museot</a>. Finna on osa opetus- ja kulttuuriministeriön <a href='http://www.kdk.fi/fi/tietoa-hankkeesta'>Kansallinen digitaalinen kirjasto</a> -hanketta 
+Kansalliskirjasto vastaa Finnan kehittämisestä ja ylläpidosta, mutta palvelua kehitetään yhdessä Finnan yhteistyökumppanien kanssa. Finnan sisällöistä vastaavat palveluun osallistuvat <a href='{$url}/Content/Organisations'>arkistot, kirjastot ja museot</a>. Finna on osa opetus- ja kulttuuriministeriön <a href='http://www.kdk.fi/fi/tietoa-hankkeesta'>Kansallinen digitaalinen kirjasto</a> -hanketta 
 </p>
 
 <h3>Finnan palvelukokonaisuus</h3>
