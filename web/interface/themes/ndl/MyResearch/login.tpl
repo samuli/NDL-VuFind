@@ -103,7 +103,7 @@
 
   <div class="loginAction">
     <h3>{$loginNumber}. {translate text="login_title_email"}</h3>
-    <a id="personaLogin" class="persona-login" href=""><span>{translate text="Mozilla Persona"}</span></a>
+    <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"html"}/{$followupAction}?submit"><span>{translate text="Mozilla Persona"}</span></a>
 {if $lightbox}
     <script type="text/javascript">
     {literal}

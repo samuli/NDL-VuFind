@@ -586,6 +586,19 @@ class JSON extends Action
         $html = $interface->fetch('Record/view-comments.tpl');
         return $this->output($html, JSON::STATUS_OK);
     }
+    
+    /**
+     * Update login-status HTML.
+     *
+     * @return void
+     * @access public
+     */
+    public function updateLoginStatus()
+    {
+        global $interface;
+        $html = $interface->fetch('login-element.tpl');
+        return $this->output($html, JSON::STATUS_OK);
+    }
 
     /**
      * Delete a record comment.

@@ -68,6 +68,13 @@ class Save extends Action
         global $interface;
         global $configArray;
 
+        // Check if the request is an ajax request
+        $isAjax = false;
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+            AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                $isAjax = true;
+        }
+
         // Check if user is logged in
         if (!$this->_user) {
             // Needed for "back to record" link in view-alt.tpl:
@@ -95,7 +102,7 @@ class Save extends Action
             exit();
         }
 
-        if (isset($configArray['Site']['quickAddToFavorites']) && $configArray['Site']['quickAddToFavorites']) {
+        if (isset($configArray['Site']['quickAddToFavorites']) && $configArray['Site']['quickAddToFavorites'] && $isAjax) {
             $this->saveRecord($this->_user);
             exit();
         }

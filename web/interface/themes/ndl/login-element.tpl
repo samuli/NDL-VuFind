@@ -1,6 +1,6 @@
 <!-- START of: login-element.tpl -->
 {if !$hideLogin}
-<li class="menuLogin menuLogin_{$userLang}">
+<li class="menuLogin menuLogin_{$userLang}" id="loginDetails">
   {if $user}
   <dl class="dropdown dropdownStatic stylingDone">
     <dt><a href="#">{if $mozillaPersonaCurrentUser}{$mozillaPersonaCurrentUser|truncate:20:'...':true:false|escape}
