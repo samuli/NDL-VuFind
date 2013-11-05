@@ -20,7 +20,7 @@
         {if $facetPrefix == '0/' || $facetPrefix == '1/' || $facetPrefix == '2/' || $facetPrefix == '3/'}
         <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText" title="{$filter.display|escape}">{translate text=$field}: {$filter.display|substr:2|escape}</span></a></li>
         {else} 
-        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
+        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{if $filter.field != 'building'}{translate text=$field}: {/if}{$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
         {/if}
       {/foreach}
     {/foreach}
