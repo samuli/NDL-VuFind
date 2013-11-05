@@ -135,8 +135,8 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                 vis.bind("plotselected", function (event, ranges) {
                     from = Math.floor(ranges.xaxis.from);
                     to = Math.floor(ranges.xaxis.to);
-                    $('#mainYearFrom').val(from);
-                    $('#mainYearTo').val(to);
+                    (from != '-9999') ? $('#mainYearFrom').val(from) : $('#mainYearFrom').val();
+                    (to != '9999') ? $('#mainYearTo').val(to) : $('#mainYearTo').val();
                     $('body').click();
                 });
                 

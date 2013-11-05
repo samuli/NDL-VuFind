@@ -6,10 +6,8 @@
         <div class="mainYearFormContainer2">
         {if $pageTemplate == 'home.tpl'}
           <form action="Search/Results?lookfor=&prefilter=-&SearchForm_submit={translate text="Find"}&retainFilters=0{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{/if}" class="mainYearForm">
-            <input id="mainYearFrom" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
-            <input id="mainYearTo" type="text" value="{$visFacets.search_sdaterange_mv.1}">
-            <input id="mainYearFromRange" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
-            <input id="mainYearToRange" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
+            <input id="mainYearFrom" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">-
+            <input id="mainYearTo" type="text" value="{if $visFacets.search_sdaterange_mv.1 != "9999"}{$visFacets.search_sdaterange_mv.1}{/if}">
             <input type="submit" value="{translate text='Search'}">
           </form>
           <script type="text/javascript">

@@ -924,7 +924,7 @@ abstract class SearchObject_Base
                 $dateTo = $_REQUEST["{$range}to"];
 
                 // Build filter only if necessary:
-                if (!empty($range)) {
+                if (!empty($range) && ($dateFrom != '' || $dateTo != '')) {
                     $dateFilter
                         = $this->buildSpatialDateRangeFilter($range, $dateFrom, $dateTo);
                     $this->addFilter($dateFilter);

@@ -32,8 +32,8 @@
               
             // Navigation: prev, next, out or in
             if (typeof action != 'undefined') {
-              visDateStart = ($('#mainYearFromRange').val() != '') ? parseInt($('#mainYearFromRange').val(),10) : 0;
-              visDateEnd = ($('#mainYearToRange').val() != '') ? parseInt($('#mainYearToRange').val(),10) : dateVisYearLimit;
+              visDateStart = ($('#mainYearFrom').val() != '') ? parseInt($('#mainYearFrom').val(),10) : 0;
+              visDateEnd = ($('#mainYearTo').val() != '') ? parseInt($('#mainYearTo').val(),10) : dateVisYearLimit;
                   
               // Require numerical values
               if (!isNaN(visDateStart) && !isNaN(visDateEnd)) {

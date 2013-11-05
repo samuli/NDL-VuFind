@@ -20,7 +20,7 @@
         {if $facetPrefix == '0/' || $facetPrefix == '1/' || $facetPrefix == '2/' || $facetPrefix == '3/'}
         <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText" title="{$filter.display|escape}">{translate text=$field}: {$filter.display|substr:2|escape}</span></a></li>
         {else} 
-        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"TO":"-"}</span></a></li>
+        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
         {/if}
       {/foreach}
     {/foreach}
@@ -109,16 +109,12 @@
           <dd class="mainYearFormContainer1">
           {if $module == "PCI"}
             <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearFormPCI">
-              <input id="mainYearFromPCI" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
-              <input id="mainYearToPCI" type="text" value="{$visFacets.search_sdaterange_mv.1}">
-              <input id="mainYearFromRangePCI" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
-              <input id="mainYearToRangePCI" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
+              <input id="mainYearFromPCI" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">-
+              <input id="mainYearToPCI" type="text" value="{if $visFacets.search_sdaterange_mv.1 != "9999"}{$visFacets.search_sdaterange_mv.1}{/if}">
           {else}
             <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm">
-              <input id="mainYearFrom" type="text" value="{$visFacets.search_sdaterange_mv.0}">-
-              <input id="mainYearTo" type="text" value="{$visFacets.search_sdaterange_mv.1}">
-              <input id="mainYearFromRange" type="hidden" value="{$visFacets.search_sdaterange_mv.0}">
-              <input id="mainYearToRange" type="hidden" value="{$visFacets.search_sdaterange_mv.1}">
+              <input id="mainYearFrom" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">-
+              <input id="mainYearTo" type="text" value="{if $visFacets.search_sdaterange_mv.1 != "9999"}{$visFacets.search_sdaterange_mv.1}{/if}">
           {/if}
               <input type="submit" value="{translate text='Search'}">
             </form>
