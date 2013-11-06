@@ -200,17 +200,30 @@ class UInterface extends Smarty
                 $myRes = isset($configArray['Site']['defaultLoggedInModule'])
                     ? $configArray['Site']['defaultLoggedInModule'] : 'MyResearch';
                 $myRes .= '/Home';
-                
+
                 // Override default location with followup location if set
                 if (isset($_REQUEST['followupModule'])) {
                     $myRes = $_REQUEST['followupModule'];
                     if (isset($_REQUEST['followupAction'])) {
                         $myRes .= '/' . $_REQUEST['followupAction']; 
+                        // Hack to allow quickadd to favorites after Shibboleth login
+                        if (isset($configArray['Site']['quickAddToFavorites'])
+                            && $configArray['Site']['quickAddToFavorites']
+                            && isset($_REQUEST['followupId'])
+                            && $_REQUEST['followupAction'] == 'Save'
+                        ) {
+                            $myRes = $_REQUEST['followupModule'] 
+                                . '/' . $_REQUEST['followupId'] 
+                                . '/' . $_REQUEST['followupAction']
+                                . '?submit';
+                        }                        
                     } else {
                         $myRes .= '/Home';
                     }
                 }
-                
+
+
+
                 $shibTarget = $configArray['Site']['url'] . '/' . $myRes;
             }
             $sessionInitiator = $configArray['Shibboleth']['login'];
