@@ -649,6 +649,18 @@ class SearchObject_Solr extends SearchObject_Base
     }
 
     /**
+     * Get preferred record source
+     *
+     * @return string OR null
+     * @access public
+     */    
+    public static function getPreferredRecordSource() 
+    {
+        return isset($_COOKIE['preferredRecordSource']) ?
+            $_COOKIE['preferredRecordSource'] : null;
+    }
+
+    /**
      * Set an overriding array of record IDs.
      *
      * @param array $ids Record IDs to load

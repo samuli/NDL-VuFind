@@ -105,6 +105,8 @@ function checkItemStatuses(id) {
 function selectItem() {
     $('.dedupform').change(function() {
         var id = $(this).val();
+        var location = $(this).find('option:selected').attr('class').split(' ')[1];
+        $.cookie("preferredRecordSource", location);
         var recordContainer = $(this).closest('.result.recordId');
         var currentRecord = recordContainer.attr('id').substr('record'.length);
         

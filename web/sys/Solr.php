@@ -145,6 +145,11 @@ class Solr implements IndexEngine
     private $_mergeBuildingPriority = array();
 
     /**
+     * Preferred record source
+     */
+    private $_preferredRecordSource = null;
+
+    /**
      * Whether to filter out component parts merged with host records
      */
     private $_hideComponentParts = false;
@@ -248,21 +253,22 @@ class Solr implements IndexEngine
         
         // Merged records
         if (isset($searchSettings['Records']['merged_records'])) {
-           	$this->_mergedRecords = $searchSettings['Records']['merged_records'];
-           	$this->_recordSources = isset($searchSettings['Records']['sources']) ? $searchSettings['Records']['sources'] : '';
+            $this->_mergedRecords = $searchSettings['Records']['merged_records'];
+            $this->_recordSources = isset($searchSettings['Records']['sources']) ? $searchSettings['Records']['sources'] : '';
+            $this->setPreferredRecordSource();
         }
         
         // Hide component parts?
         if (isset($searchSettings['General']['hide_component_parts'])) {
-        	$this->_hideComponentParts
-            	= $searchSettings['General']['hide_component_parts'];
-        }	    
+            $this->_hideComponentParts
+                = $searchSettings['General']['hide_component_parts'];
+        }       
 
         // Use UNICODE normalization?
         if (isset($configArray['Index']['unicode_normalization_form'])) {
-        	$this->_unicodeNormalizationForm
-            	= $configArray['Index']['unicode_normalization_form'];
-        }	    
+            $this->_unicodeNormalizationForm
+                = $configArray['Index']['unicode_normalization_form'];
+        }       
         
     }
 
@@ -1427,6 +1433,19 @@ class Solr implements IndexEngine
     {
         $this->_solrShards = $shards;
     }
+
+    /**
+     * Set the preferred record source
+     *
+     * @return void
+     * @access protected
+     */
+    protected function setPreferredRecordSource()
+    {
+        $this->_preferredRecordSource = SearchObject_Solr::getPreferredRecordSource();
+    }
+
+                
     
     /**
      * Submit REST Request to write data (protected wrapper to allow child classes
@@ -1714,9 +1733,17 @@ class Solr implements IndexEngine
                         }
                         $dedupData[$source] = array('id' => $localId, 'priority' => isset($localPriority) ? $localPriority : 99999);
                     }
+
+                    // If preferred record source is chosen and available,
+                    // change the value of dedupId
+                    if ($prefRec = $this->_preferredRecordSource) {
+                        $dedupId = isset($dedupData[$prefRec]['id']) 
+                            ? $dedupData[$prefRec]['id'] : $dedupId;
+                    }
+                    
                     $doc['dedup_id'] = $dedupId;
                     $idList[] = $dedupId;
-                		
+                        
                     // Sort dedupData by priority
                     uasort(
                         $dedupData, 
