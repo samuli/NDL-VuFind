@@ -128,8 +128,8 @@
             <div id="sliderWrapper" class="grid_10">
               <input type="hidden" name="sdaterange[]" value="search_sdaterange_mv"/>
               <label for="publishDatefrom" id="pubDateLegend">{translate text='Main Year'}</label>
-              <input type="text" size="5" maxlength="11" class="yearbox" name="search_sdaterange_mvfrom" id="publishDatefrom" value="{if $spatialDateRangeLimit.0}{$spatialDateRangeLimit.0|escape}{/if}" /> - 
-              <input type="text" size="5" maxlength="11" class="yearbox" name="search_sdaterange_mvto" id="publishDateto" value="{if $spatialDateRangeLimit.1}{$spatialDateRangeLimit.1|escape}{/if}" />
+              <input type="text" size="5" maxlength="11" class="yearbox" name="search_sdaterange_mvfrom" id="publishDatefrom" value="{if $spatialDateRangeLimit.0 && $spatialDateRangeLimit.0 != "-9999"}{$spatialDateRangeLimit.0|escape}{/if}" /> - 
+              <input type="text" size="5" maxlength="11" class="yearbox" name="search_sdaterange_mvto" id="publishDateto" value="{if $spatialDateRangeLimit.1 && $spatialDateRangeLimit.1 != "9999"}{$spatialDateRangeLimit.1|escape}{/if}" />
               <br/>
               <div class="{*span-10*}" id="sliderContainer">
                 <input id="publishDateSlider" class="dateSlider span-10" type="slider" name="sliderContainer" value="{if $spatialDateRangeLimit.0}{$spatialDateRangeLimit.0|escape}{else}0000{/if};{if $spatialDateRangeLimit.1}{$spatialDateRangeLimit.1|escape}{else}{$smarty.now|date_format:'%Y'}{/if}" />

@@ -108,8 +108,8 @@ function loadVis(action, facetFields, searchParams, baseURL, collection, collect
                 vis.bind("plotselected", function (event, ranges) {
                     from = Math.floor(ranges.xaxis.from);
                     to = Math.floor(ranges.xaxis.to);
-                    $('#mainYearFrom').val(from);
-                    $('#mainYearTo').val(to);
+                    (from != '-9999') ? $('#mainYearFrom').val(from) : $('#mainYearFrom').val();
+                    (to != '9999') ? $('#mainYearTo').val(to) : $('#mainYearTo').val();
                 });
                 
                 // Set pre-selections
@@ -119,10 +119,6 @@ function loadVis(action, facetFields, searchParams, baseURL, collection, collect
                 if ($('#mainYearFrom').val() || $('#mainYearTo').val()) {
                     plot.setSelection({ x1: preFromVal , x2: preToVal});
                 } 
-
-                // Print date values in the input boxes
-                $('#mainYearFromRange').val(val['min']);
-                $('#mainYearToRange').val(val['max']);
                 
                 $('.dateVis').removeClass('loading');
                 

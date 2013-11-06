@@ -81,8 +81,7 @@
       {translate text='by'}:
       <a href="{$url}/Search/Results?lookfor={$summAuthorForSearch|escape:"url"}&amp;type=Author">{if !empty($summHighlightedAuthor)}{$summHighlightedAuthor|highlight}{else}{$summAuthor|escape}{/if}</a>
       {/if}
-      {if $summDate}{translate text='Published'}: {$summDate.0|escape}{/if}
-      {if $summPublicationEndDate} - {if $summPublicationEndDate != 9999}{$summPublicationEndDate}{/if}{/if}
+      {if $summDate}{translate text='Published'}: {$summDate.0|escape}{/if}{if $summPublicationEndDate}&mdash;{if $summPublicationEndDate != 9999}{$summPublicationEndDate}{/if}{/if}
       {if !empty($summClassifications)}
         <div class="resultClassification">
             {* This is a single-line mess due to Smarty otherwise adding spaces *}

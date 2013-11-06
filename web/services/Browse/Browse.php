@@ -85,6 +85,22 @@ class Browse extends Action
 
         // Initialize the array of top-level browse options.
         $browseOptions = array();
+        
+        // Loop through the most common browse options. All may be individually 
+        // disabled in config.ini, but if no settings are found, they are assumed 
+        // to be on.
+        $remainingOptions = array(
+            'Author', 'Topic', 'Genre', 'Region', 'Era'
+        );
+        foreach ($remainingOptions as $current) {
+            $config = strtolower($current);
+            if (!isset($configArray['Browse'][$config])
+                || $configArray['Browse'][$config] == true
+            ) {
+                $browseOptions[] = $this->_buildBrowseOption($current, $current);
+                $interface->assign($config . 'Enabled', true);
+            }
+        }
 
         // First option: tags -- is it enabled in config.ini?  If no setting is
         // found, assume it is active.
@@ -122,21 +138,6 @@ class Browse extends Action
                 'LCC', ($dewey ? 'browse_lcc' : 'Call Number')
             );
             $interface->assign('lccEnabled', true);
-        }
-
-        // Loop through remaining browse options.  All may be individually disabled
-        // in config.ini, but if no settings are found, they are assumed to be on.
-        $remainingOptions = array(
-            'Author', 'Topic', 'Genre', 'Region', 'Era'
-        );
-        foreach ($remainingOptions as $current) {
-            $config = strtolower($current);
-            if (!isset($configArray['Browse'][$config])
-                || $configArray['Browse'][$config] == true
-            ) {
-                $browseOptions[] = $this->_buildBrowseOption($current, $current);
-                $interface->assign($config . 'Enabled', true);
-            }
         }
 
         $interface->assign('browseOptions', $browseOptions);
