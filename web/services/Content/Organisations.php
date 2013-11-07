@@ -54,7 +54,7 @@ class Organisations extends Action
         $sectors = array('arc', 'lib', 'mus');
         $res = array();
         $cnt = array();
-        foreach($sectors as $sector) {
+        foreach ($sectors as $sector) {
             $searchObject = SearchObjectFactory::initSearchObject();
             $query = "sector_str_mv:0\/$sector\/";
             $searchObject->initBrowseScreen();
@@ -70,7 +70,7 @@ class Organisations extends Action
             }
             
             if (isset($result[organisations::BUILDING]['data'])) {
-                foreach($result[organisations::BUILDING]['data'] as $i) {
+                foreach ($result[organisations::BUILDING]['data'] as $i) {
                     $building = $i[0];
                     // cut trailing '/', append 'facet_' and translate
                     $name = translate('facet_' . substr($building, 0, -1));
@@ -79,7 +79,12 @@ class Organisations extends Action
                 }            
             }
             $cnt[$sector] = count($res[$sector]);
-            usort($res[$sector], function($a,$b) { return $a[0] > $b[0]; });
+            usort(
+                $res[$sector], 
+                function($a,$b) { 
+                    return $a[0] > $b[0]; 
+                }
+            );
         }
 
         $file = 'Organisations.tpl';
