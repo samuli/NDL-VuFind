@@ -4893,7 +4893,7 @@ ul.recordSet.galleryView li.result {
     margin-right: 10px;
     position: relative;
     vertical-align: top;
-    width: 124px;
+    width: 157px;
 }
 
 ul.recordSet.galleryView li.result.hover {
@@ -4928,7 +4928,7 @@ ul.recordSet.galleryView .resultNoImage {
     border:1px solid transparent;
     border-top:none;
     left:-1px;
-    width:124px;
+    width:157px;
     border-bottom: 5px solid rgba(255, 255, 255, 0.85);
 }
 
@@ -4944,9 +4944,21 @@ ul.recordSet.galleryView .coverDiv {
 }
 
 ul.recordSet.galleryView .summcover {
-    min-height:100px;
+    min-height:126px;
     width:auto;
     max-width:none;
+    display:inline;
+}
+
+ul.recordSet.galleryView .resultImage {
+    margin: -118px 0 0 0;
+    width: 157px;
+    position: relative;
+    z-index: 2;
+}
+
+ul.recordSet.galleryView .resultNoImage {
+    left:18px;
 }
 
 ul.recordSet.galleryView .result .imagelinks {
