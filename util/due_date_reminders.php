@@ -174,8 +174,8 @@ class DueDateReminders
             $remindLoans = array();
             while ($account->fetch()) {
                 $patron = $catalog->patronLogin($account->cat_username, $account->cat_password);
-                if (PEAR::isError($patron)) {
-                    $this->msg('Catalog login failed for user ' . $user->id . ', account ' . $account->id . ' (' . $account->cat_username . ')');
+                if ($patron === null || PEAR::isError($patron)) {
+                    $this->msg('Catalog login failed for user ' . $user->id . ', account ' . $account->id . ' (' . $account->cat_username . '): ' . ($patron ? $patron->getMessage() : 'patron not found'));
                     continue;
                 }
                 $loans = $catalog->getMyTransactions($patron);
