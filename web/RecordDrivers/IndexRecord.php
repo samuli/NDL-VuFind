@@ -1110,6 +1110,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('summHierarchyTopTitle', $this->getHierarchyTopTitle());
         $interface->assign('summInstitutions', $this->getInstitutions());
         $interface->assign('summOnlineURLs', $this->getOnlineURLs());
+        $interface->assign('summNonPresenterAuthors', $this->getNonPresenterAuthors());
         
         //collection module only
         if (isset($configArray['Collections']['collections'])

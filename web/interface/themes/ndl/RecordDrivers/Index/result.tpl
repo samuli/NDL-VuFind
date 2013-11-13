@@ -80,6 +80,13 @@
       {if !empty($summAuthor)}
       {translate text='by'}:
       <a href="{$url}/Search/Results?lookfor={$summAuthorForSearch|escape:"url"}&amp;type=Author">{if !empty($summHighlightedAuthor)}{$summHighlightedAuthor|highlight}{else}{$summAuthor|escape}{/if}</a>
+      {else}
+        {if $summNonPresenterAuthors}
+        {translate text='Authors'}:
+        {foreach from=$summNonPresenterAuthors item=field name=loop}
+          <a href="{$url}/Search/Results?lookfor={$field.name|escape:"url"}&amp;type=Author">{$field.name|escape}{if $field.role}, {$field.role|escape}{/if}</a>{if !$smarty.foreach.loop.last} ; {/if}
+        {/foreach}
+        {/if}        
       {/if}
       {if $summDate}{translate text='Published'}: {$summDate.0|escape}{/if}{if $summPublicationEndDate}&mdash;{if $summPublicationEndDate != 9999}{$summPublicationEndDate}{/if}{/if}
       {if !empty($summClassifications)}
