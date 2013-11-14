@@ -186,58 +186,6 @@ class UInterface extends Smarty
 
         $this->assign('authMethod', $configArray['Authentication']['method']);
 
-        if (isset($configArray['Authentication']['shibboleth']) && $configArray['Authentication']['shibboleth']) {
-            if (!isset($configArray['Shibboleth']['login'])) {
-                throw new Exception(
-                    'Missing parameter in the config.ini. Check if ' .
-                    'the login parameter is set.'
-                );
-            }
-
-            if (isset($configArray['Shibboleth']['target'])) {
-                $shibTarget = $configArray['Shibboleth']['target'];
-            } else {
-                $myRes = isset($configArray['Site']['defaultLoggedInModule'])
-                    ? $configArray['Site']['defaultLoggedInModule'] : 'MyResearch';
-                $myRes .= '/Home';
-
-                // Override default location with followup location if set
-                if (isset($_REQUEST['followupModule'])) {
-                    $myRes = $_REQUEST['followupModule'];
-                    if (isset($_REQUEST['followupAction'])) {
-                        $myRes .= '/' . $_REQUEST['followupAction']; 
-                        // Hack to allow quickadd to favorites after Shibboleth login
-                        if (isset($configArray['Site']['quickAddToFavorites'])
-                            && $configArray['Site']['quickAddToFavorites']
-                            && isset($_REQUEST['followupId'])
-                            && $_REQUEST['followupAction'] == 'Save'
-                        ) {
-                            $myRes = $_REQUEST['followupModule'] 
-                                . '/' . $_REQUEST['followupId'] 
-                                . '/' . $_REQUEST['followupAction']
-                                . '?submit';
-                        }                        
-                    } else {
-                        $myRes .= '/Home';
-                    }
-                }
-
-
-
-                $shibTarget = $configArray['Site']['url'] . '/' . $myRes;
-            }
-            $sessionInitiator = $configArray['Shibboleth']['login'];
-            $sessionInitiator .= (strpos($sessionInitiator, '?') === false) ? '?' : '&';
-            $sessionInitiator .= 'target=' . urlencode($shibTarget);
-
-            if (isset($configArray['Shibboleth']['provider_id'])) {
-                $sessionInitiator = $sessionInitiator . '&providerId=' .
-                    urlencode($configArray['Shibboleth']['provider_id']);
-            }
-
-            $this->assign('sessionInitiator', $sessionInitiator);
-        }
-
         if (isset($configArray['Authentication']['libraryCard'])  && !$configArray['Authentication']['libraryCard']) {
             $this->assign('libraryCard', false);
         } else {
@@ -483,6 +431,61 @@ class UInterface extends Smarty
         $_SESSION['bgNumber'] = $bgNumber;
 
         $this->assign('bgNumber', $bgNumber);
+        
+        // Moved to here from constructor
+        if (isset($configArray['Authentication']['shibboleth']) && $configArray['Authentication']['shibboleth']) {
+            if (!isset($configArray['Shibboleth']['login'])) {
+                throw new Exception(
+                    'Missing parameter in the config.ini. Check if ' .
+                    'the login parameter is set.'
+                );
+            }
+            if (isset($configArray['Shibboleth']['target'])) {
+                $shibTarget = $configArray['Shibboleth']['target'];
+            } else {
+                if ($module == 'MyResearch' && $action == 'Home') {
+                    $myRes = isset($configArray['Site']['defaultLoggedInModule'])
+                        ? $configArray['Site']['defaultLoggedInModule'] : 'MyResearch';
+                    $myRes .= '/Home';
+                } else if ($module == 'MyResearch' && $action == 'SaveSearch') {
+                    $myRes = $module . '/' . $action . '?save=' . $_GET['save'];                    
+                } else {
+                    $myRes = $module . '/' . $action;
+                }
+                // Override default location with followup location if set
+                if (isset($_REQUEST['followupModule'])) {
+                    $myRes = $_REQUEST['followupModule'];
+                    if (isset($_REQUEST['followupAction'])) {
+                        $myRes .= '/' . $_REQUEST['followupAction']; 
+                        // Hack to allow quickadd to favorites after Shibboleth login
+                        if (isset($configArray['Site']['quickAddToFavorites'])
+                            && $configArray['Site']['quickAddToFavorites']
+                            && isset($_REQUEST['followupId'])
+                            && $_REQUEST['followupAction'] == 'Save'
+                        ) {
+                            $myRes = $_REQUEST['followupModule'] 
+                                . '/' . $_REQUEST['followupId'] 
+                                . '/' . $_REQUEST['followupAction']
+                                . '?submit';
+                        }                        
+                    } else {
+                        $myRes .= '/Home';
+                    }
+                }
+
+                $shibTarget = $configArray['Site']['url'] . '/' . $myRes;
+            }
+            $sessionInitiator = $configArray['Shibboleth']['login'];
+            $sessionInitiator .= (strpos($sessionInitiator, '?') === false) ? '?' : '&';
+            $sessionInitiator .= 'target=' . urlencode($shibTarget);
+
+            if (isset($configArray['Shibboleth']['provider_id'])) {
+                $sessionInitiator = $sessionInitiator . '&providerId=' .
+                    urlencode($configArray['Shibboleth']['provider_id']);
+            }
+
+            $this->assign('sessionInitiator', $sessionInitiator);
+        }
     }
 
     /**
