@@ -241,32 +241,36 @@ class AxiellWebServices implements DriverInterface
     		 
     		$organisationName = $organisation->value;
     		$reservationStatus = ($organisation->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
+    		$noOfReservations = isset($organisation->nofReservations) ? $organisation->nofReservations : '';
     		 
     		$holdingsBranch = is_object($organisation->compositeHolding) ? array($organisation->compositeHolding) : $organisation->compositeHolding;
     		 
     		foreach ($holdingsBranch as $branch) {
     			
-  			  	// TODO: mfhd_id, availability
-    			$vfHolding = array(
-    					'id'           => $id,
-    					'mfhd_id'      => '635670',
-    					'number'       => '',
-    					'barcode'      => $id,
-    					'availability' => true,
-    					'status'       => '',
-    					'location'     => '',
-    					'reserve'      => $reservationStatus,
-    					'callnumber'   => '',
-    					'duedate'      => '',
-    					'returnDate'   => false,
-    					'is_holdable'  => true,
-    					'addLink'      => false,
-    					'summary'      => $edition
+  			  	// TODO: mfhd_id
+    			$vfHolding = array(   					
+                        'id'                => $id,
+                        'mfhd_id'           => '635670',
+                        'item_id'           => $id,
+                        'number'            => '',
+                        'requests_placed'   => $noOfReservations,
+                        'barcode'           => $id,
+                        'availability'      => true,
+                        'status'      		=> '',
+                        'location'          => '',
+                        'reserve'           => $reservationStatus,
+                        'callnumber'        => '',
+                        'duedate'           => '',
+                        'returnDate'        => false,
+                        'is_holdable'       => true,
+                        'addLink'           => false,
+                        'summary'           => $edition
     			);
     
     			$vfHolding['id'] = $id;
     			$vfHolding['location'] = $organisationName;
     			$vfHolding['location'] .= ', '. $branch->value . ' ' . $branch->holdings->holding->department . ' ' . $edition;
+    			$vfHolding['location'] .=  isset($branch->holdings->holding->location) ? ', ' . $branch->holdings->holding->location : ''; 
     			$vfHolding['number'] = isset($branch->holdings->holding->nofTotal) ? $branch->holdings->holding->nofTotal : '';
     			$vfHolding['callnumber'] = isset($branch->holdings->holding->shelfMark) ? $branch->holdings->holding->shelfMark : '';
     			$vfHolding['status'] = isset($branch->holdings->holding->status) ? $branch->holdings->holding->status : '';
