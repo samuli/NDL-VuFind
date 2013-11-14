@@ -142,6 +142,9 @@ class SideFacets implements RecommendationInterface
         $interface->assign(
             'checkboxFilters', $this->_searchObject->getCheckboxFacets()
         );
+        $interface->assign(
+            'checkboxStatus', $this->_searchObject->getCheckboxFacetStatus()
+        );
         $filterList = $this->_searchObject->getFilterList(true);        
         $interface->assign(compact('filterList'));
         // facet categories that have selections

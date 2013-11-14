@@ -1238,6 +1238,7 @@ div.dialogLoading {
     border:none;
     color:#555;
     padding:0;
+    font-size: 1.23em;
 }
 .highlight {
     background: none;
@@ -1526,6 +1527,10 @@ fieldset.publishDateLimit .ui-slider {
     padding-right: 20px;
     margin-left: 0;
 }*/
+
+.no-hits #sidebarFacets {
+	margin-top: 0;
+}
 
 /*** MyResearch ***/
 
@@ -2292,7 +2297,8 @@ ul.filters span.roundButton {
 #sidebarRecommend div.sidegroup {
     margin-top: 1.2em;
 }
-.resultListContainer div.sidegroup h4 {
+.resultListContainer div.sidegroup h4,
+.no-hits div.sidegroup h4 {
     font-size: 1.6em;
     margin: 0;
     padding: 20px 10px;

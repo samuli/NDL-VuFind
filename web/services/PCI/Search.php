@@ -89,6 +89,11 @@ class Search extends Base
             $interface->assign('openUrlAutoCheck', true);
         }
 
+        // We'll need to assign search parameters for removal link
+        $interface->assign(
+            'searchParams', $this->searchObject->renderSearchUrlParams()
+        );
+        
         if ($result['recordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
             $this->_processJumpto($result);
