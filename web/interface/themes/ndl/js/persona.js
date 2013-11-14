@@ -18,7 +18,11 @@ function mozillaPersonaSetup(currentUser, autoLogoutEnabled)
           success: function(response, status, xhr) { 
             if (response.status == "OK") { 
               // No reload to avoid POST request problems
-              window.location = window.location.href;
+              if ($("#personaLogin").data('followup')) {
+                  window.location = $("#personaLogin").data('followupurl');
+              } else {
+                  window.location = window.location.href;
+              }
             } else {
               $("#personaLogin").removeClass("persona-login-loading");
               alert("Login failed");

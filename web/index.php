@@ -153,8 +153,8 @@ $module = preg_replace('/[^\w]/', '', $module);
 $action = (isset($_GET['action'])) ? $_GET['action'] : 'Home';
 $action = preg_replace('/[^\w]/', '', $action);
 
-// Special case: Always use the Home action for Content.
-if ($module == 'Content') {
+// Special case: Always use the Home action for Content unless an action is available.
+if ($module == 'Content' && !is_readable("services/$module/$action.php")) {
     $action = 'Home';
 }
 

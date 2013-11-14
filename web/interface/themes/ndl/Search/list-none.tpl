@@ -8,7 +8,7 @@
     {php}
       // Generate link to a non-prefiltered search
       parse_str($this->get_template_vars('searchParams'), $paramsArray);
-      unset($paramsArray['orfilter'], $paramsArray['prefiltered']);
+      unset($paramsArray['orfilter'], $paramsArray['prefiltered'], $paramsArray['filter']);
       $url = $this->get_template_vars('url') . '/Search/Results?';
       $this->assign('searchWithoutPrefilter', $url . http_build_query($paramsArray));
     {/php}

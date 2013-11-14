@@ -308,8 +308,24 @@
     }
     
     ul.recordSet.galleryView li.result {
-        margin-right:30px;
+        margin-right:20px;
         margin-bottom:30px;
+        width:137px;
+    }
+    .gridContent { 
+        width:137px;
+    }
+    
+    ul.recordSet.galleryView .summcover {
+        min-height:0;
+    }
+    
+    ul.recordSet.galleryView .resultImage {
+        width:137px;
+    }
+    
+    ul.recordSet.galleryView .resultNoImage {
+        left:10px;
     }
 
     /* Search results: bottom */
@@ -358,8 +374,7 @@
     }
     
     
-    .timelineview,
-    dd.mainYearFormContainer1 {
+    .timelineview {
         display:none !important;
     }
     

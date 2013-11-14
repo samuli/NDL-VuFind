@@ -104,15 +104,14 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                     xaxis: { 
                         min: visDateStart,
                         max: visDateEnd,
-                        tickDecimals: 0, 
+                        tickDecimals: 0,                         
                         font :{
                             size: 13,
                             family: "'helvetica neue', helvetica,arial,sans-serif",
                             color:'#fff',
                             weight:'bold'
-                        }                   
+                        }                  
                     },
-                    selection: {mode: "x", color:'#00a3b5;', borderWidth:0},
                     yaxis: { min: 0, ticks: [] },
                     grid: { 
                         backgroundColor: null, 
@@ -121,15 +120,23 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                         margin:0
                     }
                 };
-                
+
+                // Disable selection of time range (by dragging) when on Android
+                // (otherwise the timeline component doesn't always get redrawn 
+                // correctly after a selection has been made.) 
+                var isAndroid = navigator.userAgent.match(/(android)/i);
+                if (!isAndroid) {
+                    options['selection'] = {mode: "x", color:'#00a3b5;', borderWidth:0};
+                }
+
                 // Draw the plot
                 var plot = $.plot(vis, [val], options);
                 
                 vis.bind("plotselected", function (event, ranges) {
                     from = Math.floor(ranges.xaxis.from);
                     to = Math.floor(ranges.xaxis.to);
-                    $('#mainYearFrom').val(from);
-                    $('#mainYearTo').val(to);
+                    (from != '-9999') ? $('#mainYearFrom').val(from) : $('#mainYearFrom').val();
+                    (to != '9999') ? $('#mainYearTo').val(to) : $('#mainYearTo').val();
                     $('body').click();
                 });
                 

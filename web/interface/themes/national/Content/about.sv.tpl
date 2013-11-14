@@ -31,7 +31,7 @@ Beskrivningarna i Finna får fritt användas, men användningen av digitala bild
 
 <h3>Finnas ansvariga parter</h3>
 <p>
-Nationalbiblioteket ansvarar för utvecklingen och underhållet av Finna, men tjänsten utvecklas tillsammans med Finnas samarbetspartner. De <a href='{$url}/Content/organisations'>arkiv, bibliotek och museer</a> som medverkar i Finna ansvarar för innehållet. Finna är en del av undervisnings- och kulturministeriets <a href='http://www.kdk.fi/sv/information-om-projektet'>projekt det nationella digitala biblioteket.</a>
+Nationalbiblioteket ansvarar för utvecklingen och underhållet av Finna, men tjänsten utvecklas tillsammans med Finnas samarbetspartner. De <a href='{$url}/Content/Organisations'>arkiv, bibliotek och museer</a> som medverkar i Finna ansvarar för innehållet. Finna är en del av undervisnings- och kulturministeriets <a href='http://www.kdk.fi/sv/information-om-projektet'>projekt det nationella digitala biblioteket.</a>
 </p>
 
 <h3>Finnas tjänster</h3>

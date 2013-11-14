@@ -390,6 +390,10 @@ class SearchObject_Solr extends SearchObject_Base
             if ($action == 'JSON_Facets' or $action == 'JSON_FacetsNewItem') {
                 $this->limit = 0;
                 $this->spellcheck = false;
+                $this->facetConfig = array();
+                if (isset($_REQUEST['facetName'])) {
+                    $this->addFacet($_REQUEST['facetName']);
+                }
                 if ($action == 'JSON_FacetsNewItem') {
                     $this->searchType = 'newitem';
                 }
@@ -646,6 +650,18 @@ class SearchObject_Solr extends SearchObject_Base
     public function getOrFilters() 
     {
         return $this->orFilters;
+    }
+
+    /**
+     * Get preferred record source
+     *
+     * @return string OR null
+     * @access public
+     */    
+    public static function getPreferredRecordSource() 
+    {
+        return isset($_COOKIE['preferredRecordSource']) ?
+            $_COOKIE['preferredRecordSource'] : null;
     }
 
     /**

@@ -307,7 +307,7 @@
     {/if}
 
     {assign var="idPrefix" value=$id|substr:0:8}
-    {if !empty($coreURLs) || $coreOpenURL || $idPrefix == 'metalib_'}
+    {if !empty($coreURLs) || $coreOnlineURLs || $coreOpenURL || $coreMergedRecordData.urls || $idPrefix == 'metalib_'}
     <tr valign="top" class="recordURLs">
       {if $coreOnlineURLs || $coreMergedRecordData.urls}
       <th>{translate text='available_online'}: </th>
@@ -320,7 +320,7 @@
         {foreach from=$displayURLs item=urldesc}
           <a href="{$urldesc.url|proxify|escape}" class="fulltext" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}<br/>
         {/foreach}
-      {else}
+      {else if !empty($coreURLs)}
       <th>{translate text='Online Access'}: </th>
       <td>
         {foreach from=$coreURLs item=desc key=currentUrl name=loop}

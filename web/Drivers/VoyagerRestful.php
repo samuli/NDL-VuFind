@@ -680,9 +680,8 @@ class VoyagerRestful extends Voyager
             // Valid Response
             if ($reply == "ok" && isset($blocks->blocks)) {
                 $blockReason = array();
-                foreach ($blocks->blocks->institution->borrowingBlock
-                    as $borrowBlock
-                ) {
+                $borrowingBlocks = $blocks->xpath("//blocks/institution[@id='LOCAL']/borrowingBlock"); 
+                foreach ($borrowingBlocks as $borrowBlock) {
                     $blockReason[] = (string)$borrowBlock->blockReason;
                 }
             }

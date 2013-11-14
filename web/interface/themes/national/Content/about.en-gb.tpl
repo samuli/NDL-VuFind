@@ -30,7 +30,7 @@ The metadata stored in Finna are freely available, but the availability of digit
 
 <h3>Organisations responsible for Finna</h3>
 <p>
-The National Library of Finland bears the main responsibility for developing and maintaining Finna, but the actual development work is carried out together with Finna partners. The <a href='{$url}/Content/organisations'>archives, libraries and museums</a> involved in Finna are responsible for its content. Finna is part of the <a href='http://www.kdk.fi/en/information-on-the-project'>National Digital Library (NDL) project</a> of the Ministry of Education and Culture.
+The National Library of Finland bears the main responsibility for developing and maintaining Finna, but the actual development work is carried out together with Finna partners. The <a href='{$url}/Content/Organisations'>archives, libraries and museums</a> involved in Finna are responsible for its content. Finna is part of the <a href='http://www.kdk.fi/en/information-on-the-project'>National Digital Library (NDL) project</a> of the Ministry of Education and Culture.
 </p>
 
 <h3>Finna services</h3>

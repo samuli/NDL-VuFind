@@ -156,7 +156,7 @@ End Cover Image *}
     <th>{translate text='Organization'}: </th>
     <td>
       {foreach from=$coreInstitutions item=field name=loop}
-        {translate text=$field prefix='source_'}<br/>
+        {translate text=$field|rtrim:'/' prefix='source_'}<br/>
       {/foreach}
     </td>
   </tr>

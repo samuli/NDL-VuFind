@@ -47,20 +47,24 @@ class JSON_Facets extends JSON
      */
     public function getFacets()
     {
+        $facetConfig = getExtraConfigArray('facets');
+        
         // Initialize from the current search globals
         $searchObject = SearchObjectFactory::initSearchObject();
         $searchObject->init();
         
         $prefix = explode('/', isset($_REQUEST['facetPrefix']) ? $_REQUEST['facetPrefix'] : '', 2);
-        $prefix = isset($prefix[1]) ? $prefix[1] : $prefix[0];
+        $prefix = end($prefix);
         $facetName = $_REQUEST['facetName'];
         $level = isset($_REQUEST['facetLevel']) ? $_REQUEST['facetLevel'] : false;
+        
+        // Add any facet filters unless a specific prefix has been specified
         if ($level !== false) {
             $searchObject->addFacetPrefix(array($facetName => "$level/$prefix"));
         } elseif ($prefix) {
             $searchObject->addFacetPrefix(array($facetName => $prefix));
         }
-        $result = $searchObject->processSearch(true, true);
+        $result = $searchObject->processSearch(true, false);
         if (PEAR::isError($result)) {
             $this->output("Search failed: $result", JSON::STATUS_ERROR);
             return;
@@ -70,14 +74,36 @@ class JSON_Facets extends JSON
             $this->output(array(), JSON::STATUS_OK);
             return;
         }
-        $facets = $facets[$facetName]['list'];
+        if (!isset($facetConfig['FacetFilters'][$facetName])) {
+            $facets = $facets[$facetName]['list'];
+        } else {
+            $list = array();
+            foreach ($facets[$facetName]['list'] as $item) {
+                list($level) = explode('/', $item['untranslated']);
+                $match = false;
+                $levelSpecified = false;
+                foreach ($facetConfig['FacetFilters'][$facetName] as $filterItem) {
+                    list($filterLevel) = explode('/', $filterItem);
+                    if ($level == $filterLevel) {
+                        $levelSpecified = true;
+                    }
+                    if (strncmp($item['untranslated'], $filterItem, strlen($filterItem)) == 0) {
+                        $match = true;
+                    }   
+                }
+                if ($match || !$levelSpecified) {
+                    $list[] = $item;
+                } 
+            }
+            $facets = $list;
+        }
         
         // For hierarchical facets: Now that we have the current facet level, try next level
         // so that we can indicate which facets on this level have children.
         if ($level !== false) {
             ++$level;
             $searchObject->addFacetPrefix(array($facetName => "$level/$prefix"));
-            $result = $searchObject->processSearch(true, true);
+            $result = $searchObject->processSearch(true, false);
             if (PEAR::isError($result)) {
                 $this->output("Search failed: $result", JSON::STATUS_ERROR);
                 return;
@@ -85,6 +111,25 @@ class JSON_Facets extends JSON
             $subFacets = $searchObject->getFacetList(array($facetName => $facetName));
             if (isset($subFacets[$facetName]['list'])) {
                 foreach ($subFacets[$facetName]['list'] as $subFacet) {
+                    // Apply filters
+                    if (isset($facetConfig['FacetFilters'][$facetName])) {
+                        list($level) = explode('/', $subFacet['untranslated']);
+                        $match = false;
+                        $levelSpecified = false;
+                        foreach ($facetConfig['FacetFilters'][$facetName] as $filterItem) {
+                            list($filterLevel) = explode('/', $filterItem);
+                            if ($level == $filterLevel) {
+                                $levelSpecified = true;
+                            }
+                            if (strncmp($subFacet['untranslated'], $filterItem, strlen($filterItem)) == 0) {
+                                $match = true;
+                            }   
+                        }
+                        if (!$match && $levelSpecified) {
+                            continue;
+                        }
+                    }
+                    
                     $subFacetCode = implode('/', array_slice(explode('/', $subFacet['untranslated']), 1, $level));
                     foreach ($facets as &$facet) {
                         $facetCode = implode('/', array_slice(explode('/', $facet['untranslated']), 1, $level));

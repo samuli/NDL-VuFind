@@ -73,7 +73,7 @@
 	 <li> <strong>HAKA-inloggningen</strong> är avsedd i synnerhet för studenter och anställda vid högskolor. </li>
 	 <li>Om ditt bibliotek medverkar i Finna kan du registrera ditt<strong> bibliotekskort </strong>på tjänsten efter att du har loggat in dig.
 	   <p> 
-	   <a href="{$url}/Content/organisations">Om du har ett bibliotekskort till något av de här biblioteken kan du logga in med ditt kort.</a></p>
+	   <a href="{$url}/Content/Organisations">Om du har ett bibliotekskort till något av de här biblioteken kan du logga in med ditt kort.</a></p>
 	 </li>
 </ul>
    <h3>Funktionerna i Mitt konto:</h3>

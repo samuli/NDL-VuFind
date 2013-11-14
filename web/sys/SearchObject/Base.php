@@ -336,6 +336,20 @@ abstract class SearchObject_Base
                         // Pretty display of date ranges
                         $display = $this->spatialDateRangeFilterToString($display);
                         $facetLabel = 'Date Range'; 
+                    } else if ($field == 'building') {
+                        // Translate building format and build hierarchy
+                        $buildings = explode('/', rtrim($value, '/'));
+                        $mainBuilding = isset($buildings[1]) ? $buildings[1] : false;
+                        if ($mainBuilding) {
+                            $display = translate(array('prefix' => $translationPrefix, 'text' => '0/' . $buildings[1]));
+                            $buildings = array_slice($buildings, 2);
+                            $buildingTree = '';
+                            foreach ($buildings as $i => $building) {
+                                $buildingTree .= '/' . $building;
+                                $display .= ' > ' . translate(array('prefix' => $translationPrefix, 
+                                    'text' => $i + 1 . '/' . $mainBuilding . $buildingTree ));
+                            }
+                        }
                     }
                     
                     $list[$facetLabel][] = array(
@@ -924,7 +938,7 @@ abstract class SearchObject_Base
                 $dateTo = $_REQUEST["{$range}to"];
 
                 // Build filter only if necessary:
-                if (!empty($range)) {
+                if (!empty($range) && ($dateFrom != '' || $dateTo != '')) {
                     $dateFilter
                         = $this->buildSpatialDateRangeFilter($range, $dateFrom, $dateTo);
                     $this->addFilter($dateFilter);
@@ -1124,12 +1138,20 @@ abstract class SearchObject_Base
     {
         // Stash our old data for a minute
         $oldView = $this->view;
+        $oldLimit = $this->limit;
         // Add the new view
         $this->view = $newView;
+        // Set grid default limit to 100
+        if ($newView == 'grid') {
+            $this->limit = 100;
+        } else {
+            $this->limit = null;
+        }
         // Get the new url
         $url = $this->renderSearchUrl();
         // Restore the old data
         $this->view = $oldView;
+        $this->limit = $oldLimit;
         // Return the URL
         return $url;
     }

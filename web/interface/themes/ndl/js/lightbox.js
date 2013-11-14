@@ -192,7 +192,9 @@ function registerAjaxLogin() {
                                 // Hide "log in" options and show "log out" options:
                                 $('#loginOptions').hide();
                                 $('#logoutOptions').show();
-
+                                
+                                updateLoginStatus();
+                                
                                 // Update user save statuses if the current context calls for it:
                                 if (typeof(checkSaveStatuses) == 'function') {
                                     checkSaveStatuses();
@@ -220,6 +222,21 @@ function registerAjaxLogin() {
             }
         });
         return false;
+    });
+}
+
+function updateLoginStatus() {
+    var url = path + '/AJAX/JSON?' + $.param({method:'updateLoginStatus'});
+    $.ajax({
+        dataType: 'json',
+        url: url,
+        success: function(response) {
+            if (response.status == 'OK') {
+                $('#loginDetails').replaceWith(response.data);
+                createDropdowns();
+                initDropdowns();
+            }
+        }
     });
 }
 

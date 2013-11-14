@@ -96,13 +96,6 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
-a {
-    transition:color .1s;
-    -moz-transition: color .1s;
-    -webkit-transition: color .1s;
-    -ms-transition: color .1s;
-}
-
 /* link color */
 a, .ui-widget-content a,
 a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {

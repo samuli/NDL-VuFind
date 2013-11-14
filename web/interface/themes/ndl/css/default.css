@@ -11,6 +11,10 @@ NOTE! Layout information is outdated.
 
 */
 
+html,body {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+}
+
 body {
     margin:0;
     background: #4d4d4d;
@@ -2005,7 +2009,6 @@ li.result blockquote {
     margin: 2px 0 1em 0;
 }
 .resultContentList li {
-    color: #00A3B5;
     list-style-type: disc;
     margin-left: 15px;
 }
@@ -3965,6 +3968,17 @@ h5.recordTabHeader {
     min-width: 260px;
 }
 
+.holdingsContainerHeader dl.dropdown dt > a {
+    background: url("../images/white_30.png");
+    margin-left: 10px;
+    display:inline-block;
+    padding: 9px 15px;
+}
+
+.holdingsContainerHeader dl.dropdown dd ul {
+    margin-left:10px;
+}
+
 .dropdownMenuIcon {
     background-image: url("../images/icons16-24px-02.png");
     background-position: -679px -2324px;
@@ -4879,7 +4893,7 @@ ul.recordSet.galleryView li.result {
     margin-right: 10px;
     position: relative;
     vertical-align: top;
-    width: 124px;
+    width: 157px;
 }
 
 ul.recordSet.galleryView li.result.hover {
@@ -4894,7 +4908,8 @@ ul.recordSet.galleryView .resultNoImage {
 }
 
 .gridTitleBox {
-    background: url(../images/white_90.png) repeat;
+    background: url(../images/white_90.png) repeat; /* IE fallback */
+    background:rgba(255, 255, 255, .9);
     bottom: 0;
     font-size: 100%;
     padding: 5px 5px 5px;
@@ -4902,6 +4917,7 @@ ul.recordSet.galleryView .resultNoImage {
     word-wrap: break-word;
     z-index: 10;
     min-height:45px;
+    transition: background .05s;
 }
 
 
@@ -4914,14 +4930,18 @@ ul.recordSet.galleryView .resultNoImage {
     border:1px solid transparent;
     border-top:none;
     left:-1px;
-    width:124px;
+    width:157px;
     border-bottom: 5px solid rgba(255, 255, 255, 0.85);
 }
 
 li.result.hover .gridContent {
     border:1px solid #ddd;
     border-top:none;
-    box-shadow:0 10px 18px -19px rgba(0, 0, 0, 0.7);
+    box-shadow:0 13px 23px -14px rgba(0, 0, 0, 0.65);
+}
+
+li.result.hover .gridTitleBox { 
+    background:#fff;
 }
 
 ul.recordSet.galleryView .coverDiv {
@@ -4930,9 +4950,21 @@ ul.recordSet.galleryView .coverDiv {
 }
 
 ul.recordSet.galleryView .summcover {
-    min-height:100px;
+    min-height:126px;
     width:auto;
     max-width:none;
+    display:inline;
+}
+
+ul.recordSet.galleryView .resultImage {
+    margin: -118px 0 0 0;
+    width: 157px;
+    position: relative;
+    z-index: 2;
+}
+
+ul.recordSet.galleryView .resultNoImage {
+    left:18px;
 }
 
 ul.recordSet.galleryView .result .imagelinks {
@@ -5487,10 +5519,8 @@ div#closeContextHelp:active {
 }
 
 #modalDialog #hierarchyTree {
-    max-height: 100%;
+    max-height: 400px;
     min-height: 100%;
-    overflow: auto;
-    overflow-y: auto;   
 }
 
 #hierarchyTree ul {

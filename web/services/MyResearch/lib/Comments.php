@@ -161,6 +161,7 @@ class Comments extends DB_DataObject
 
     /**
      * Verify links to records
+     * 
      * @param string[] $recordIdArray Array of record IDs
      *
      * @return boolean True if any links were fixed

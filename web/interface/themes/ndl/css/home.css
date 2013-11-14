@@ -352,16 +352,19 @@ ul.documentTypes li {
 }
 .NDLNews li {
     clear: both;
-    padding-bottom: 1.8em;
+    padding-bottom: 12px;
+}
+.NDLNews li > a {
+    display:block;
+}
+.NDLNews li .date + a {
+    margin-left:46px;
 }
 .NDLNews .date {
     color: #666666;
     display: block;
     float: left;
     width: 3.5em;
-}
-.NDLNews  .title {
-    position: absolute;
 }
 .NDLNews  .moreLink {
     margin-top: 1em;
