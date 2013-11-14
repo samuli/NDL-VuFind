@@ -3,8 +3,20 @@
 <div class="{if $sidebarOnLeft}last {/if}no-hits">
   <div class="contentHeader noResultHeader"><div class="content"><h1>{translate text='nohit_heading'}</h1></div></div>
   <div class="content">
+  <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if} grid_17">
   <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
 
+  {if !empty($filterList) || $checkboxStatus != false} 
+    {php}
+      // Generate link to a non-prefiltered search
+      parse_str($this->get_template_vars('searchParams'), $paramsArray);
+      unset($paramsArray['orfilter'], $paramsArray['prefiltered'], $paramsArray['filter']);
+      $url = $this->get_template_vars('url') . '/PCI/Search?';
+      $this->assign('searchWithoutPrefilter', $url . http_build_query($paramsArray));
+    {/php}
+    <p><a id="searchWithoutPrefilter" href="{$searchWithoutPrefilter}"><strong>{translate text='Search without the prefilter'}</strong></a>
+  {/if}
+  
   {if $parseError}
     <p class="error">{translate text='nohit_parse_error'}</p>
   {/if}
@@ -41,6 +53,12 @@
       </div>
     </div>
   {/if}
+</div>
+      {if !empty($filterList) || $checkboxStatus != false}
+    <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
+          {include file=$sideRecommendations.SideFacets}
+    </div>
+    {/if}
 </div>
 </div>
 {* Narrow Search Options, commented out for now

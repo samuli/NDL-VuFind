@@ -1,7 +1,7 @@
 <!-- START of: Search/Recommend/SideFacets.tpl -->
 
 <div class="sidegroup">
-  {if $recordCount > 0}<h4>{translate text=$sideFacetLabel}</h4>{/if}
+  {if $recordCount > 0 || !empty($filterList) || $checkboxStatus != false}<h4>{translate text=$sideFacetLabel}</h4>{/if}
   {if isset($checkboxFilters) && count($checkboxFilters) > 0}
       {foreach from=$checkboxFilters item=current}
         <div class="checkboxFilter{if $recordCount < 1 && !$current.selected && !$current.alwaysVisible} hide{/if}">
