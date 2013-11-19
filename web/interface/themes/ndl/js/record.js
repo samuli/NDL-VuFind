@@ -333,7 +333,7 @@ function registerAjaxCommentRecord() {
 }
 
 function registerAjaxInappropriateComment() {
-    $('form[name="inappropriateComment"]').unbind('submit').live('submit', function(e){
+    $('form[name="inappropriateComment"]').unbind('submit').on('submit', function(e){
         e.preventDefault();
         var form = this;
         var id = form.recordId.value;
