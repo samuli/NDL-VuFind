@@ -502,9 +502,9 @@ class HoldLogic
      */
     protected function sortHoldings($holdings)
     {
-        $callNumber = array();
-        $number = array();
         foreach ($holdings as $location => &$items) {
+            $callNumber = array();
+            $number = array();
             foreach ($items as $key => $row) {
                 $callNumber[$key] = $row['callnumber'];
                 $number[$key] = $row['number'];
