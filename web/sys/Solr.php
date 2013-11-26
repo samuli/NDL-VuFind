@@ -302,8 +302,10 @@ class Solr implements IndexEngine
      */
     private function _loadSearchSpecs()
     {
+        global $configArray;
+        
         // Turn relative path into absolute path:
-        $fullPath = dirname(__FILE__) . '/../' . $this->searchSpecsFile;
+        $fullPath = $configArray['Site']['local'] . '/' . $this->searchSpecsFile;
 
         // Check for a local override file:
         $local = str_replace('.yaml', '.local.yaml', $fullPath);
