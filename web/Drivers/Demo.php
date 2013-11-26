@@ -188,7 +188,7 @@ class Demo implements DriverInterface
                 'duedate'      => '',
                 'is_holdable'  => true,
                 'addLink'      => rand()%10 == 0 ? 'block' : true,
-                'callslip'     => auto,
+                'callslip'     => 'auto',
                 'addCallSlipLink' => rand()%10 == 0 ? 'block' : 'check',
                 'ubrequest'    => 'auto',
                 'addUBRequestLink' => rand()%10 == 0 ? 'block' : 'check'
