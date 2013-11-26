@@ -87,19 +87,28 @@
   {/if}
 
   {foreach from=$holdings item=holding key=location name=holdings}
-    {assign var=prevMfhdId value=''}
+    {assign var=prevGroupId value=''}
     {assign var="copyCount" value="0"}
     {foreach from=$holding item=row name=items}
       {assign var="itemsIteration" value=$smarty.foreach.items.iteration}
-      {if $prevMfhdId != $row.mfhd_id}
+      {if isset($row.mfhd_id)}
+        {assign var="holdingsGroupId" value=$row.mfhd_id}
+      {else}
+        {if isset($row.callnumber)}
+          {assign var="holdingsGroupId" value=$row.callnumber|replace:'.':'_'}
+        {else}
+          {assign var="holdingsGroupId" value=$location|replace:'.':'_'}
+        {/if}
+      {/if}
+      {if $prevGroupId != $holdingsGroupId}
         {assign var="showCopyTitle" value=1}
         
-        {if $prevMfhdId}
+        {if $prevGroupId}
           <tr class="avail"><td>{$availCount}</td></tr>
           </table>
         {/if}
-        {assign var=prevMfhdId value=$row.mfhd_id}
-        <table class="holdingsContainerHolding  {if $smarty.foreach.items.first && $smarty.foreach.holdings.first}active{/if}" id="holding_{$prevMfhdId}_{$itemsIteration}" cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
+        {assign var=prevGroupId value=$holdingsGroupId}
+        <table class="holdingsContainerHolding  {if $smarty.foreach.items.first && $smarty.foreach.holdings.first}active{/if}" id="holding_{$prevGroupId}_{$itemsIteration}" cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Holdings details from'} {translate text=$location}">
         <tr class="holdingsContainerHeading">
           <th colspan="2" class="location"><span class="arrowIndicator"></span>{$location|translate|escape}</th>
           <th colspan="2" class="holdingDetails">

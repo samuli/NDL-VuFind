@@ -121,7 +121,10 @@ class Voyager implements DriverInterface
         // Put String Together
         $sqlString = "SELECT ". $modifier . implode(", ", $sql['expressions']);
         $sqlString .= " FROM " .implode(", ", $sql['from']);
-        $sqlString .= " WHERE " .implode(" AND ", $sql['where']);
+        $sqlString .= (!empty($sql['where']))
+            ? " WHERE " .implode(" AND ", $sql['where']) : "";
+        $sqlString .= (!empty($sql['group']))
+            ? " GROUP BY " .implode(", ", $sql['group']) : "";
         $sqlString .= (!empty($sql['order']))
             ? " ORDER BY " .implode(", ", $sql['order']) : "";
 
@@ -1066,11 +1069,11 @@ class Voyager implements DriverInterface
             $sqlStmt->bindParam(
                 ':barcode', strtolower(utf8_decode($barcode)), PDO::PARAM_STR
             );
-            $this->debugLogSQL(__FUNCTION__, $sql, array(':login' => strtolower(utf8_decode($login))));
+            $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower(utf8_decode($barcode)), ':login' => '****'));
             $sqlStmt->execute();
             $row = $sqlStmt->fetch(PDO::FETCH_ASSOC);
             if (isset($row['PATRON_ID']) && ($row['PATRON_ID'] != '')) {
-                return array(
+                $results = array(
                     'id' => utf8_encode($row['PATRON_ID']),
                     'firstname' => utf8_encode($row['FIRST_NAME']),
                     'lastname' => utf8_encode($row['LAST_NAME']),
@@ -1082,6 +1085,7 @@ class Voyager implements DriverInterface
                     'email' => null,
                     'major' => null,
                     'college' => null);
+                return $results;
             } else {
                 return null;
             }

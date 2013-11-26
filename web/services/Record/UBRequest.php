@@ -125,6 +125,13 @@ class UBRequest extends Record
                             : array();
                     $interface->assign('extraFields', $extraFields);
 
+                    $language = $interface->getLanguage();
+                    if (isset($this->checkUBRequests['helpText'][$language])) {
+                        $interface->assign('helpText', $this->checkUBRequests['helpText'][$language]);
+                    } elseif (isset($this->checkUBRequests['helpText'])) {
+                        $interface->assign('helpText', $this->checkUBRequests['helpText']);
+                    }
+                    
                     if (isset($_POST['placeRequest'])) {
                         if ($this->_placeRequest($patron)) {
                             // If we made it this far, we're ready to place the request;
