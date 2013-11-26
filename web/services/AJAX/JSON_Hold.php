@@ -1,6 +1,6 @@
 <?php
 /**
- * JSON handler for UB requests 
+ * JSON handler for hold requests 
  *
  * PHP version 5
  *
@@ -31,7 +31,7 @@ require_once 'JSON.php';
 // towards search results, so we'll keep this separate for now
 
 /**
- * JSON UB request action
+ * JSON hold action
  * 
  * @category VuFind
  * @package  Controller_Record
@@ -39,62 +39,17 @@ require_once 'JSON.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-class JSON_UBRequest extends JSON
+class JSON_Hold extends JSON
 {
     /**
-     * Check whether the request is valid
-     *
-     * @return void
-     * @access public
-     */
-    public function checkRequestIsValid()
-    {
-        if (isset($_REQUEST['id']) && isset($_REQUEST['data'])) {
-            // check if user is logged in
-            $user = UserAccount::isLoggedIn();
-            if (!$user) {
-                return $this->output(
-                    array(
-                        'options' => false,
-                        'msg' => translate('You must be logged in first')
-                    ), JSON::STATUS_NEED_AUTH
-                );
-            }
-
-            $catalog = ConnectionManager::connectToCatalog();
-            if ($catalog && $catalog->status) {
-                if ($patron = UserAccount::catalogLogin()) {
-                    if (!PEAR::isError($patron)) {
-                        $results = $catalog->checkUBRequestIsValid(
-                            $_REQUEST['id'], $_REQUEST['data'], $patron
-                        );
-
-                        if (!PEAR::isError($results)) {
-                            $msg = $results
-                                ? translate('ub_request_place_text')
-                                : translate('ub_request_error_blocked');
-                            return $this->output(
-                                array(
-                                    'options' => $results, 'msg' => $msg
-                               ), JSON::STATUS_OK
-                            );
-                        }
-                    }
-                }
-            }
-        }
-        return $this->output(translate('An error has occurred'), JSON::STATUS_ERROR);
-    }
-
-    /**
-     * Get a list of pickup locations for the given library
+     * Get a list of pickup locations for the given request group
      *
      * @return void
      * @access public
      */
     public function getPickUpLocations()
     {
-        if (isset($_REQUEST['id']) && isset($_REQUEST['pickupLib'])) {
+        if (isset($_REQUEST['id'])) {
             // check if user is logged in
             $user = UserAccount::isLoggedIn();
             if (!$user) {
@@ -109,17 +64,17 @@ class JSON_UBRequest extends JSON
             if ($catalog && $catalog->status) {
                 if ($patron = UserAccount::catalogLogin()) {
                     if (!PEAR::isError($patron)) {
-                        $results = $catalog->getUBPickupLocations(
+                        $results = $catalog->getPickupLocations(
+                            $patron,
                             array(
                                 'id' => $_REQUEST['id'],
-                                'patron' => $patron,
-                                'pickupLibrary' => $_REQUEST['pickupLib']
+                                'requestGroupId' => isset($_REQUEST['requestGroupId']) ? $_REQUEST['requestGroupId'] : null
                             )
                         );
 
                         if (!PEAR::isError($results)) {
                             foreach ($results as &$result) {
-                                $result['name'] = translate(array('prefix' => 'location_', 'text' => $result['name']));
+                                $result['locationDisplay'] = translate(array('prefix' => 'location_', 'text' => $result['locationDisplay']));
                             }
                         
                             return $this->output(

@@ -131,9 +131,7 @@ class UInterface extends Smarty
             is_object($searchObject) ? $searchObject->getAutocompleteStatus() : false
         );
         
-        $this->assign(
-                      'retainFiltersByDefault', $searchObject->getRetainFilterByDefaultSetting()
-                      );
+        $this->assign('retainFiltersByDefault', $searchObject->getRetainFilterByDefaultSetting());
 
         if (isset($configArray['Site']['showBookBag'])) {
             $this->assign(

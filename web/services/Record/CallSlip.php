@@ -124,6 +124,13 @@ class CallSlip extends Record
                             : array();
                     $interface->assign('extraFields', $extraFields);
 
+                    $language = $interface->getLanguage();
+                    if (isset($this->checkCallSlips['helpText'][$language])) {
+                        $interface->assign('helpText', $this->checkCallSlips['helpText'][$language]);
+                    } elseif (isset($this->checkCallSlips['helpText'])) {
+                        $interface->assign('helpText', $this->checkCallSlips['helpText']);
+                    }
+                    
                     if (isset($_POST['placeRequest'])) {
                         if ($this->_placeRequest($patron)) {
                             // If we made it this far, we're ready to place the request;

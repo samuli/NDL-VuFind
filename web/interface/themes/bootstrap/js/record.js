@@ -217,7 +217,7 @@ function checkUBRequestIsValid(element, requestURL) {
         url: url,
         success: function(response) {
             if (response.status == 'OK') {
-                if (response.data.options) {
+                if (response.data.options && response.data.options['success']) {
                     $(element).removeClass('checkUBRequest ajax_ub_request_availability').html(response.data.msg);
                 } else {
                     $(element).remove();

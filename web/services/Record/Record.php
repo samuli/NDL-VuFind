@@ -63,6 +63,7 @@ class Record extends Action
     {
         global $configArray;
         global $user;
+        global $interface;
 
         //$interface->caching = 1;
 

@@ -1208,7 +1208,7 @@ div.dialogLoading {
     height: 20px;
 }
 
-.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading {
+.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading, .ajax_hold_request_loading {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
@@ -2688,7 +2688,7 @@ ul.recordSet .addToFavLink a {
 .checkedout {
     color:#ff461e;
 }
-.holdPlace:before, .UBRequestPlace:before {
+.holdPlace:before, .callSlipPlace:before, .UBRequestPlace:before {
     content: "";
     display: inline-block;
     height: 11px;
@@ -2733,7 +2733,7 @@ ul.recordSet .addToFavLink a {
     margin-right:1em;
 }
 .checkRequest, .checkCallSlipRequest, .checkUBRequest {
-    background-image:url(../images/fugue/checkRequest.png);
+    background-image:url(../images/ajax_loading.gif);
     background-repeat:no-repeat;
     padding-left:18px;
 }
