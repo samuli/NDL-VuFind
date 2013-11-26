@@ -483,7 +483,31 @@ class VoyagerRestful extends Voyager
         return $transactions;
     }
 
-     /**
+    /**
+     * Sort function for sorting pickup locations
+     * 
+     * @param array $a Pickup location
+     * @param array $b Pickup location
+     * 
+     * @return number
+     */
+    protected function pickUpLocationsSortFunction($a, $b)
+    {
+        $pickUpLocationOrder = isset($this->config['Holds']['pickUpLocationOrder']) ? explode(":", $this->config['Holds']['pickUpLocationOrder']) : array();
+        $pickUpLocationOrder = array_flip($pickUpLocationOrder);
+        if (isset($pickUpLocationOrder[$a['locationID']])) {
+            if (isset($pickUpLocationOrder[$b['locationID']])) {
+                return $pickUpLocationOrder[$a['locationID']] - $pickUpLocationOrder[$b['locationID']];
+            }
+            return -1;
+        } 
+        if (isset($pickUpLocationOrder[$b['locationID']])) {
+            return 1;
+        }
+        return strcasecmp($a['locationDisplay'], $b['locationDisplay']);
+    }
+    
+    /**
      * Get Pick Up Locations
      *
      * This is responsible for gettting a list of valid library locations for
@@ -550,21 +574,7 @@ class VoyagerRestful extends Voyager
         }
         
         // Sort pick up locations
-        $sortFunction = function($a, $b) {
-            $pickUpLocationOrder = isset($this->config['Holds']['pickUpLocationOrder']) ? explode(":", $this->config['Holds']['pickUpLocationOrder']) : array();
-            $pickUpLocationOrder = array_flip($pickUpLocationOrder);
-            if (isset($pickUpLocationOrder[$a['locationID']])) {
-                if (isset($pickUpLocationOrder[$b['locationID']])) {
-                    return $pickUpLocationOrder[$a['locationID']] - $pickUpLocationOrder[$b['locationID']];
-                }
-                return -1;
-            } 
-            if (isset($pickUpLocationOrder[$b['locationID']])) {
-                return 1;
-            }
-            return strcasecmp($a['locationDisplay'], $b['locationDisplay']);
-        };
-        usort($pickResponse, $sortFunction);
+        usort($pickResponse, array($this, 'pickUpLocationsSortFunction'));
         
         return $pickResponse;
     }
@@ -607,6 +617,30 @@ class VoyagerRestful extends Voyager
         return $this->defaultRequestGroup;
     }
 
+    /**
+     * Sort function for sorting request groups
+     * 
+     * @param array $a Request group
+     * @param array $b Request group
+     * 
+     * @return number
+     */
+    protected function requestGroupSortFunction($a, $b)
+    {
+        $requestGroupOrder = isset($this->config['Holds']['requestGroupOrder']) ? explode(":", $this->config['Holds']['requestGroupOrder']) : array();
+        $requestGroupOrder = array_flip($requestGroupOrder);
+        if (isset($requestGroupOrder[$a['id']])) {
+            if (isset($requestGroupOrder[$b['id']])) {
+                return $requestGroupOrder[$a['id']] - $requestGroupOrder[$b['id']];
+            }
+            return -1;
+        } 
+        if (isset($requestGroupOrder[$b['id']])) {
+            return 1;
+        }
+        return strcasecmp($a['name'], $b['name']);
+    }
+    
     /**
      * Get request groups
      *
@@ -791,21 +825,7 @@ class VoyagerRestful extends Voyager
         }
         
         // Sort request groups
-        $sortFunction = function($a, $b) {
-            $requestGroupOrder = isset($this->config['Holds']['requestGroupOrder']) ? explode(":", $this->config['Holds']['requestGroupOrder']) : array();
-            $requestGroupOrder = array_flip($requestGroupOrder);
-            if (isset($requestGroupOrder[$a['id']])) {
-                if (isset($requestGroupOrder[$b['id']])) {
-                    return $requestGroupOrder[$a['id']] - $requestGroupOrder[$b['id']];
-                }
-                return -1;
-            } 
-            if (isset($requestGroupOrder[$b['id']])) {
-                return 1;
-            }
-            return strcasecmp($a['name'], $b['name']);
-        };
-        usort($results, $sortFunction);
+        usort($results, array($this, 'requestGroupSortFunction'));
         
         return $results;
     }
