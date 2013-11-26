@@ -3255,7 +3255,7 @@ div.dateVisHandle.visible {
 
 .mainYearForm input[type="submit"],
 .mainYearFormPCI input[type="submit"] {
-    background: url("../images/icons16-24px-02.png") repeat scroll -673px -946px #00A3B5;
+    background: url("../images/icons16-24px-02_white.png") no-repeat scroll 7px -946px #00A3B5;
     border: 0 none;
     border-radius: 8px 8px 8px 8px;
     cursor:pointer;
@@ -5811,7 +5811,7 @@ span.mapMarker  {
 /* National theme Buttons */
 
 .button {
-    background: #FFFFFF;
+    background: no-repeat #FFFFFF;
     border:none;
     border-radius: 10px 10px 10px 10px;
     color: #444;
@@ -5834,10 +5834,10 @@ span.mapMarker  {
     color:#444;
 }
 .buttonFinna {
-    background: #00a3b5;
+    background: no-repeat #00a3b5;
 }
 .buttonGrey {
-    background:#c1c1c1;
+    background: no-repeat #c1c1c1;
 }
 .buttonFinna,
 .buttonGrey,

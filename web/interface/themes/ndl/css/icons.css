@@ -2,12 +2,7 @@
 
 /*** Elements with 16-24px icons ***/
 
-* {
-    background-repeat: no-repeat;
-    background-position:0 0;
-}
-
-.resultNoImage {
+*, *:before, *:after, .resultNoImage {
     background-repeat: no-repeat;
     background-position:0 0;
 }
@@ -16,35 +11,37 @@
 
 /* Navi */
 
+.menuArrow,
+.menuHome > a span {
+    background-image:url("../images/icons16-24px-02_white.png");
+}
 .menuArrow {
-    background-image:url("../images/icons16-24px-02.png");
-    background-position:-683px -2327px;
-    background-repeat:none;
+    background-position:-3px -2327px;
 }
 .menuHome > a span {
-    background-image: url("../images/icons16-24px-02.png");
-    background-position: -681px -335px;
+    background-position: -1px -335px;
+    height: 10px;
 }
 .menuHome > a:hover span {
-    background-position: -820px -335px;
+    background-position: -1px -363px;
 }
 
 /* Common: Buttons */
 
 .deleteButton {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -995px -127px;
+    background-image: url(../images/icons16-24px-03_red.png);
+    background-position: -1px -127px;
 }
 .deleteButtonSmall {
-    background-image: url("../images/icons16-24px-02.png");
-    background-position: -992px -163px;
+    background-image: url("../images/icons16-24px-02_red.png");
+    background-position: 4px -163px;
 }
 .dropdown dt a:after {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -673px -2324px;
+    background-image: url(../images/icons16-24px-02_white.png);
+    background-position: 7px -2324px;
 }
 #headerMenu .dropdown dt a:after {
-    background-position: -676px -2327px;
+    background-position: 4px -2327px;
     height: 7px;
 }
 .dropdown.catalogAccount dt a:after {
@@ -55,118 +52,180 @@
 
 /* Content type icons */
 
-.iconlabel.formatdocument:before, 
-.iconlabel.formatlegaldocument:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -45px -385px;
+.iconlabel.formatdocument:before,
+.iconlabel.formatlegaldocument:before,
+.iconlabel.formatarticle:before,
+.iconlabel.formatnewspaperarticle:before,
+.iconlabel.formatreferenceentry:before,
+.iconlabel.formatbookchapter:before,
+.iconlabel.formatphysicalobject:before,
+.iconlabel.formatmap:before,
+.iconlabel.formatbook:before,
+.iconlabel.formatimage:before,
+.iconlabel.formatjournal:before,
+.iconlabel.formatmusicalscore:before,
+.iconlabel.formatscore:before,
+.iconlabel.formatthesis:before,
+.iconlabel.formatdissertation:before,
+.iconlabel.formatworkofart:before,
+.iconlabel.formatdatabase:before,
+.iconlabel.formatvideo:before,
+.iconlabel.formataudiovideo:before,
+.iconlabel.formatvideo:before,
+.iconlabel.formatsound:before,
+.iconlabel.formatsoundrecording:before,
+.iconlabel.formataudio:before,
+.iconlabel.formatother:before,
+.iconlabel.formatwebsite:before {
+    background-image: url(../images/icons16-24px-01_black.png);
 }
-.iconlabel.formatarticle:before, .iconlabel.formatnewspaperarticle:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -187px -384px
+.breadcrumbinner span.iconlabel.formatdocument:before, 
+.breadcrumbinner span.iconlabel.formatlegaldocument:before,
+.breadcrumbinner span.iconlabel.formatarticle:before,
+.breadcrumbinner span.iconlabel.formatnewspaperarticle:before,
+.breadcrumbinner span.iconlabel.formatreferenceentry:before,
+.breadcrumbinner span.iconlabel.formatbookchapter:before,
+.breadcrumbinner span.iconlabel.formatphysicalobject:before,
+.breadcrumbinner span.iconlabel.formatmap:before,
+.breadcrumbinner span.iconlabel.formatbook:before,
+.breadcrumbinner span.iconlabel.formatimage:before,
+.breadcrumbinner span.iconlabel.formatjournal:before,
+.breadcrumbinner span.iconlabel.formatmusicalscore:before,
+.breadcrumbinner span.iconlabel.formatscore:before,
+.breadcrumbinner span.iconlabel.formatthesis:before,
+.breadcrumbinner span.iconlabel.formatdissertation:before,
+.breadcrumbinner span.iconlabel.formatworkofart:before,
+.breadcrumbinner span.iconlabel.formatdatabase:before,
+.breadcrumbinner span.iconlabel.formatvideo:before, 
+.breadcrumbinner span.iconlabel.formataudiovideo:before,
+.breadcrumbinner span.iconlabel.formatvideo:before,
+.breadcrumbinner span.iconlabel.formatsound:before,
+.breadcrumbinner span.iconlabel.formatsoundrecording:before,
+.breadcrumbinner span.iconlabel.formataudio:before,
+.breadcrumbinner span.iconlabel.formatother:before,
+.breadcrumbinner span.iconlabel.formatwebsite:before {
+    background-image: url(../images/icons16-24px-01_white.png);
 }
-.iconlabel.formatreferenceentry:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -777px;
+.iconlabel.formatdocument:before,
+.iconlabel.formatlegaldocument:before,
+.breadcrumbinner span.iconlabel.formatdocument:before, 
+.breadcrumbinner span.iconlabel.formatlegaldocument:before {
+
+    background-position: 3px -335px;
 }
-.iconlabel.formatbookchapter:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -187px -47px;
+.iconlabel.formatarticle:before,
+.iconlabel.formatnewspaperarticle:before,
+.breadcrumbinner span.iconlabel.formatarticle:before,
+.breadcrumbinner span.iconlabel.formatnewspaperarticle:before {
+    background-position: 3px -363px
 }
-.iconlabel.formatphysicalobject:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -218px;
+.iconlabel.formatbookchapter:before,
+.breadcrumbinner span.iconlabel.formatbookchapter:before {
+    background-position: 2px -25px;
 }
-.iconlabel.formatmap:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -161px;
+.iconlabel.formatphysicalobject:before,
+.breadcrumbinner span.iconlabel.formatphysicalobject:before {
+    background-position: 2px -168px;
 }
-.iconlabel.formatbook:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -47px;
+.iconlabel.formatmap:before,
+.breadcrumbinner span.iconlabel.formatmap:before {
+    background-position: 1px -111px;
 }
-.iconlabel.formatimage:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -495px;
+.iconlabel.formatbook:before,
+.breadcrumbinner span.iconlabel.formatbook:before {
+    background-position: 2px 3px;
 }
-.iconlabel.formatjournal:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -104px;
+.iconlabel.formatimage:before,
+.breadcrumbinner span.iconlabel.formatimage:before {
+    background-position: 1px -445px;
+}
+.iconlabel.formatjournal:before,
+.breadcrumbinner span.iconlabel.formatjournal:before {
+    background-position: 1px -54px;
 }
 .iconlabel.formatmusicalscore:before,
-.iconlabel.formatscore:before  {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -330px;
+.iconlabel.formatscore:before,
+.breadcrumbinner span.iconlabel.formatmusicalscore:before,
+.breadcrumbinner span.iconlabel.formatscore:before  {
+    background-position: 1px -280px;
 }
 .iconlabel.formatthesis:before,
-.iconlabel.formatdissertation:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -45px -720px;
+.iconlabel.formatdissertation:before,
+.breadcrumbinner span.iconlabel.formatthesis:before,
+.breadcrumbinner span.iconlabel.formatdissertation:before {
+    background-position: 3px -670px;
 }
-.iconlabel.formatworkofart:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -663px;
+.iconlabel.formatworkofart:before,
+.breadcrumbinner span.iconlabel.formatworkofart:before {
+    background-position: 2px -613px;
 }
- .iconlabel.formatdatabase:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -275px;
+.iconlabel.formatdatabase:before,
+.breadcrumbinner span.iconlabel.formatdatabase:before {
+    background-position: 1px -225px;
 }
-.iconlabel.formatvideo:before, 
+.iconlabel.formatvideo:before,
 .iconlabel.formataudiovideo:before,
-.iconlabel.formatvideo:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -606px;
+.iconlabel.formatvideo:before,
+.breadcrumbinner span.iconlabel.formatvideo:before, 
+.breadcrumbinner span.iconlabel.formataudiovideo:before,
+.breadcrumbinner span.iconlabel.formatvideo:before {
+    background-position: 2px -556px;
 }
 .iconlabel.formatsound:before,
 .iconlabel.formatsoundrecording:before,
-.iconlabel.formataudio:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -551px;
+.iconlabel.formataudio:before,
+.breadcrumbinner span.iconlabel.formatsound:before,
+.breadcrumbinner span.iconlabel.formatsoundrecording:before,
+.breadcrumbinner span.iconlabel.formataudio:before {
+    background-position: 2px -501px;
 }
+.iconlabel.formatreferenceentry:before,
 .iconlabel.formatother:before,
-.iconlabel.formatwebsite:before
-{
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -777px;
+.iconlabel.formatwebsite:before,
+.breadcrumbinner span.iconlabel.formatreferenceentry:before,
+.breadcrumbinner span.iconlabel.formatother:before,
+.breadcrumbinner span.iconlabel.formatwebsite:before {
+    background-position: 1px -727px;
 }
 
 /* Header: info box */
 
 .toggleBox.openInfoBox {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -679px 0;
+    background-image: url(../images/icons16-24px-03_white.png);
+    background-position: 0 0;
 }
 .toggleBox.closeInfoBox {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -363px -128px;
+    background-image: url(../images/icons16-24px-03_turquoise.png);
+    background-position: 0 -128px;
 }
-
 
 /* Header: Search box */
 
 .advancedLink {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position:-678px -1132px;
+    background-image: url(../images/icons16-24px-03_white.png);
+    background-position: 1px -1132px;
 }
 .searchbox .dropdown dt a {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -1532px -246px; 
+    background-image: url(../images/icons16-24px-03_darkgrey.png);
+    background-position: 116px -246px;
+    background-repeat: no-repeat;
 }
 a.clear_input {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-1647px -2163px;
+    background-image: url(../images/icons16-24px-02_darkgrey.png);
+    background-position: 2px -2163px;
 }
 
 /* Header: Search suggestions */
 
 .correction .expandSearch {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -46px -56px;
+    background-image: url(../images/icons16-24px-02_black.png);
+    background-position: 2px -56px;
 }
 
 /* Header: Breadcrumbs */
 .breadcrumbinner > a:first-child {
-    background-image: url("../images/icons16-24px-02.png");
-    background-position: -681px -330px;
+    background-image: url("../images/icons16-24px-02_white.png");
+    background-position: -1px -330px;
     text-indent: -1000px;
     width: 17px;
 }
@@ -177,6 +236,7 @@ a.clear_input {
     padding: 0;
     width: 18px;
 }
+
 
 /* Grid view & List view */
 .viewButtons .view-list {
@@ -199,263 +259,205 @@ a.clear_input {
 }
 
 
-
-.breadcrumbinner span.iconlabel.formatdocument:before, 
-.breadcrumbinner span.iconlabel.formatlegaldocument:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -677px -385px;
-}
-.breadcrumbinner span.iconlabel.formatarticle:before, .breadcrumbinner span.iconlabel.formatnewspaperarticle:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -820px -384px
-}
-.breadcrumbinner span.iconlabel.formatreferenceentry:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -679px -777px;
-}
-.breadcrumbinner span.iconlabel.formatbookchapter:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -820px -47px;
-}
-.breadcrumbinner span.iconlabel.formatphysicalobject:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -678px -218px;
-}
-.breadcrumbinner span.iconlabel.formatmap:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -679px -161px;
-}
-.breadcrumbinner span.iconlabel.formatbook:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -678px -47px;
-}
-.breadcrumbinner span.iconlabel.formatimage:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -679px -495px;
-}
-.breadcrumbinner span.iconlabel.formatjournal:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -679px -104px;
-}
-.breadcrumbinner span.iconlabel.formatmusicalscore:before,
-.breadcrumbinner span.iconlabel.formatscore:before  {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -679px -330px;
-}
-.breadcrumbinner span.iconlabel.formatthesis:before,
-.breadcrumbinner span.iconlabel.formatdissertation:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -677px -720px;
-}
-.breadcrumbinner span.iconlabel.formatworkofart:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -678px -663px;
-}
- .breadcrumbinner span.iconlabel.formatdatabase:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -679px -275px;
-}
-.breadcrumbinner span.iconlabel.formatvideo:before, 
-.breadcrumbinner span.iconlabel.formataudiovideo:before,
-.breadcrumbinner span.iconlabel.formatvideo:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -678px -606px;
-}
-.breadcrumbinner span.iconlabel.formatsound:before,
-.breadcrumbinner span.iconlabel.formatsoundrecording:before,
-.breadcrumbinner span.iconlabel.formataudio:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -678px -551px;
-}
-.breadcrumbinner span.iconlabel.formatother:before,
-.breadcrumbinner span.iconlabel.formatwebsite:before
-{
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -679px -777px;
-}
-
-
 /* Main: Result header */
+
+.available:before, .availableLoc:before {
+    background-image: url(../images/icons16-24px-03_green.png);
+}
 .available:before {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -2047px -1439px;
+    background-position: 1px -1439px;
 }
 .availableLoc:before {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -2047px -1439px;
+    background-position: 1px -1439px;
+}
+.checkedout:before, .checkedoutLoc:before {
+    background-image: url(../images/icons16-24px-03_red.png);
 }
 .checkedout:before {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -994px -1439px;
+    background-position: 1px -1439px;
 }
 .checkedoutLoc:before {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -994px -1439px;
+    background-position: 1px -1439px;
+}
+.dateVisClear a, .holdPlace:before {
+    background-image: url(../images/icons16-24px-03_turquoise.png);
 }
 .dateVisClear a {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -363px -728px; 
+    background-position: 1px -728px; 
 }
 .holdPlace:before {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -363px -1398px;
+    background-position: 1px -1398px;
 }
 .holdPlace, .UBRequestPlace {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -353px -2371px; 
+    background-image: url(../images/icons16-24px-02_turquoise.png);
+    background-position: 11px -2371px; 
 }
 
 /* Main: Search results */
 
+.openurl_more, .info_more,
+.openurl_more.expanded, .info_more.expanded,
+.recordSet .fav,
+.currentTree, .hierarchyTreeLinkText,
+#toggleTree {
+    background-image: url(../images/icons16-24px-02_turquoise.png);
+}
 .openurl_more, .info_more {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -365px -2371px; 
+    background-position: -1px -2371px; 
 }
-
 .openurl_more.expanded, .info_more.expanded {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -365px -2321px;
+    background-position: -1px -2321px;
 }
-
 .recordSet .fav {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -361px -2049px;
+    background-position: 3px -2049px;
 }
 .recordSet .fav:hover {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -361px -2049px;
+    background-position: 3px -2049px;
 }
 
 .currentTree, .hierarchyTreeLinkText {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -365px -1497px;
+    background-position: -1px -1497px;
 }
 
 #toggleTree {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -365px -1500px;
-}
-/* Main: Pagination */
-
-.paginationMove.paginationNext.visible {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -362px -983px;
-}
-.paginationMove.paginationNext {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -1294px -983px;
+    background-position: -1px -1500px;
 }
 
-.paginationMove.paginationBack.visible {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -362px -919px;
-}
-.paginationMove.paginationBack {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -1294px -919px;
-}
+/* Main: Pagination + Single Record View scoller */
 
-.paginationMove.paginationLast.visible {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -362px -518px;
-}
-.paginationMove.paginationLast {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -1294px -518px;
-}
-
-.paginationMove.paginationFirst.visible {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -362px -453px;
+.paginationMove.paginationFirst,
+.paginationMove.paginationBack,
+.paginationMove.paginationNext,
+.paginationMove.paginationLast,
+.resultscroller .prevRecord.inactive,
+.resultscroller .nextRecord.inactive {
+    background-image: url(../images/icons16-24px-03_grey.png);
 }
 .paginationMove.paginationFirst {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -1294px -453px;
+    background-position: 1px -453px;
+}
+.paginationMove.paginationBack,
+.resultscroller .prevRecord.inactive {
+    background-position: 1px -919px;
+}
+.paginationMove.paginationNext,
+.resultscroller .nextRecord.inactive {
+    background-position: 1px -983px;
+}
+.paginationMove.paginationLast {
+    background-position: 1px -518px;
+}
+.paginationMove.paginationFirst.visible,
+.paginationMove.paginationBack.visible,
+.paginationMove.paginationNext.visible,
+.paginationMove.paginationLast.visible,
+.resultscroller .prevRecord,
+.resultscroller .nextRecord {
+    background-image: url(../images/icons16-24px-03_turquoise.png);
+}
+.paginationMove.paginationFirst.visible {
+    background-position: 1px -453px;
+}
+.paginationMove.paginationBack.visible,
+.resultscroller .prevRecord {
+    background-position: 1px -919px;
+}
+.paginationMove.paginationNext.visible,
+.resultscroller .nextRecord {
+    background-position: 1px -983px;
+}
+.paginationMove.paginationLast.visible {
+    background-position: 1px -518px;
 }
 
 /* Main: Search results image icons */
 
+.resultNoImage.formatdocument, .resultNoImage.formatlegaldocument,
+.resultNoImage.formatarticle, .resultNoImage.formatnewspaperarticle,
+.resultNoImage.formatphysicalobject,
+.resultNoImage.formatmap,
+.resultNoImage.formatbook,
+.resultNoImage.formatbookchapter,
+.resultNoImage.formatimage,
+.resultNoImage.formatjournal,
+.resultNoImage.formatmusicalscore,
+.resultNoImage.formatthesis, .resultNoImage.formatdissertation,
+.resultNoImage.formatworkofart,
+.resultNoImage.formatdatabase,
+.resultNoImage.formatvideo, .resultNoImage.formataudiovideo,
+.resultNoImage.formatsound, .resultNoImage.formataudio,
+.resultNoImage.formatother, .resultNoImage.formatreferenceentry,
+.resultNoImage.formatwebsite {
+    background-image: url(../images/icons48px-03.png);
+}
 .resultNoImage.formatdocument,
 .resultNoImage.formatlegaldocument {
-    background-image: url(../images/icons48px-03.png);
     background-position: -8px -735px;
 }
 .resultNoImage.formatarticle,
 .resultNoImage.formatnewspaperarticle {
-    background-image: url("../images/icons48px-03.png");
     background-position: -7px -1887px;
 }
 .resultNoImage.formatphysicalobject {
-    background-image: url(../images/icons48px-03.png);
     background-position: -11px -355px;
 }
 .resultNoImage.formatmap {
-    background-image: url(../images/icons48px-03.png);
     background-position: -14px -226px;
 }
 .resultNoImage.formatbook {
-    background-image: url(../images/icons48px-03.png);
     background-position: -12px 34px;
 }
 .resultNoImage.formatbookchapter {
-    background-image: url(../images/icons48px-03.png);
     background-position: -9px -1759px;
 }
 .resultNoImage.formatimage {
-    background-image: url(../images/icons48px-03.png);
     background-position: -14px -988px;
 }
 .resultNoImage.formatjournal {
-    background-image: url(../images/icons48px-03.png);
     background-position: -13px -98px;
 }
 .resultNoImage.formatmusicalscore {
-    background-image: url(../images/icons48px-03.png);
     background-position: -14px -612px;
 }
 .resultNoImage.formatthesis,
 .resultNoImage.formatdissertation {
-    background-image: url(../images/icons48px-03.png);
     background-position: -7px -1499px;
 }
 .resultNoImage.formatworkofart {
-    background-image: url(../images/icons48px-03.png);
     background-position: -11px -1370px;
 }
 .resultNoImage.formatdatabase {
-    background-image: url(../images/icons48px-03.png);
     background-position: -13px -482px;
 }
 .resultNoImage.formatvideo,
 .resultNoImage.formataudiovideo {
-    background-image: url(../images/icons48px-03.png);
     background-position: -14px -1242px;
 }
 .resultNoImage.formatsound,
 .resultNoImage.formataudio {
-    background-image: url(../images/icons48px-03.png);
     background-position: -12px -1113px;
 }
 .resultNoImage.formatother,
 .resultNoImage.formatreferenceentry,
 .resultNoImage.formatwebsite {
-    background-image: url(../images/icons48px-03.png);
     background-position: -17px -1632px;
 }
 
 /* Main: Search tools */
 
+.searchtools li.toolSavedSearch,
+.searchtools li.toolRssLink,
+.searchtools li.toolMailSearch {
+    background-image: url(../images/icons16-24px-02_black.png);
+}
 .searchtools li.toolSavedSearch {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-49px -2050px;
+    background-position: -1px -2050px;
 }
 .searchtools li.toolRssLink {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-49px -1061px;
+    background-position: -1px -1061px;
 }
 .searchtools li.toolMailSearch {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-49px -1775px;
+    background-position: -1px -1775px;
 }
 
 /* Main: facet sidebar */
@@ -467,15 +469,15 @@ a.clear_input {
 .dynatree-exp-e span.dynatree-expander:hover,
 .dynatree-exp-ed span.dynatree-expander:hover, 
 .dynatree-exp-el span.dynatree-expander:hover, 
-.dynatree-exp-edl span.dynatree-expander:hover {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -1300px -2319px;
+.dynatree-exp-edl span.dynatree-expander:hover,
+span.dynatree-expander, span.dynatree-expander:hover {
+    background-image: url(../images/icons16-24px-02_grey.png);
+    background-position: -1px -2319px;
 }
 
 span.dynatree-expander,
 span.dynatree-expander:hover {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -1298px -2369px;
+    background-position: 1px -2370px;
 }
 
 .dynatree-loading span.dynatree-expander,
@@ -492,181 +494,156 @@ span.dynatree-expander:hover {
 
 /* Main: Single record view */
 
+.resultLinks .button, .resultLinks .button span {
+    background-image: url(../images/icons16-24px-02_white.png);
+}
 .resultLinks .button {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -672px -2414px;
+    background-position: 8px -2414px;
 }
 .resultLinks .button span {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -679px -950px;
+    background-position: 1px -950px;
 }
-.resultscroller .prevRecord {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -362px -920px;
-}
-.resultscroller .prevRecord.inactive {
-    background-position: -1294px -919px;
-}
-.resultscroller .nextRecord {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -362px -984px;
-}
-.resultscroller .nextRecord.inactive {
-    background-position: -1294px -983px;
+#addThis .mail, .addthis_button_facebook, .addthis_button_twitter,
+.addthis_button_google_plusone_share,
+.fav, .mail, .export, .export img, .add, .delete,
+.citation .moreLink a:after, .citation .lessLink a:after {
+    background-image: url(../images/icons16-24px-02_turquoise.png);
 }
 #addThis .mail {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -359px -1771px;
+    background-position: 5px -1771px;
 }
 .addthis_button_facebook {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -361px -613px;
+    background-position: 3px -613px;
 }
 .addthis_button_twitter {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -361px -667px;
+    background-position: 3px -667px;
 }
 .addthis_button_google_plusone_share {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -361px -2480px;
+    background-position: 3px -2480px;
 }
 .fav {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -364px -2044px;
+    background-position: 0 -2044px;
 }
 .mail {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -364px -1717px;
-        
+    background-position: 0 -1717px;
 }
 .export {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -364px -1659px;
-        
+    background-position: 0 -1659px;        
 }
 .export img {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -363px -2317px;
+    background-position: 1px -2317px;
 }
 .add {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -357px -49px;
+    background-position: 7px -49px;
 }
 .delete {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -357px -158px;
+    background-position: 7px -158px;
 }
-.savedHistory .delete {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -158px;
-}
-.accountList .delete {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -158px;
-}
-.accountList .edit {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -2098px;
-}
-label.invalid:before {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -997px 0px;
-}
-
-#holdingstab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -214px;
-}
-#componentstab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -436px;
-}
-#commentstab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -1876px;
-}
-#reviewstab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -212px;
-}
-#excerpttab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -212px;
-}
-#hierarchytab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -1493px;
-}
-#maptab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -53px;
-}
-#detailstab {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -494px;
-}
-
-#tabnav .collectionContent {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -1603px;
-}
-#tabnav .collectionHierarchy {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -1493px;
-}
-
 .citation .moreLink a:after {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -362px -2318px;
+    background-position: 2px -2318px;
 }
 .citation .lessLink a:after {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -362px -2270px;
+    background-position: 2px -2270px;
+}
+.savedHistory .delete, .accountList .delete, .accountList .edit {
+    background-image: url(../images/icons16-24px-02_black.png);
+}
+.savedHistory .delete {
+    background-position: 7px -158px;
+}
+.accountList .delete {
+    background-position: 7px -158px;
+}
+.accountList .edit {
+    background-position: 7px -2098px;
+}
+label.invalid:before {
+    background-image: url(../images/icons16-24px-02_red.png);
+    background-position: 1px 0px;
+}
+#holdingstab, #componentstab, #commentstab, #reviewstab, #excerpttab,
+#hierarchytab, #maptab, #detailstab,
+#tabnav .collectionContent,
+#tabnav .collectionHierarchy {
+    background-image: url(../images/icons16-24px-02_black.png);
+}
+#holdingstab {
+    background-position: 7px -214px;
+}
+#componentstab {
+    background-position: 7px -436px;
+}
+#commentstab {
+    background-position: 7px -1876px;
+}
+#reviewstab {
+    background-position: 7px -212px;
+}
+#excerpttab {
+    background-position: 7px -212px;
+}
+#hierarchytab {
+    background-position: 7px -1493px;
+}
+#maptab {
+    background-position: 7px -53px;
+}
+#detailstab {
+    background-position: 7px -494px;
+}
+#tabnav .collectionContent {
+    background-position: 7px -1603px;
+}
+#tabnav .collectionHierarchy {
+    background-position: 7px -1493px;
 }
 
 /* Main: Myresearch */
 
+.sessionHistory .add,
+.editItem .edit, #sidebarFavoritesLists .edit,
+.editItem .delete,
+#sidebarFavoritesLists .delete {
+    background-image: url(../images/icons16-24px-02_black.png);
+}
 .sessionHistory .add {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -41px -49px;
+    background-position: 7px -49px;
 }
 .editItem .edit,
 #sidebarFavoritesLists .edit {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -47px -2104px;
+    background-position: 1px -2104px;
 }
 .editItem .delete,
 #sidebarFavoritesLists .delete {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -47px -166px
+    background-position: 1px -166px
 }
 #sidebarFavoritesLists #listAdd {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -492px -48px;
+    background-image: url(../images/icons16-24px-02_white.png);
+    background-position: 188px -48px;
 }
 
 /* Main: Advanced Search */
 
 .advancedSearchHelpButton {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -363px 1px;
+    background-image: url(../images/icons16-24px-03_turquoise.png);
+    background-position: 1px 1px;
 }
 #advancedSearchWrapper .searchButton {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -668px -996px;
+    background-image: url(../images/icons16-24px-02_white.png);
+    background-position: 12px -996px;
 }
-
+#zoomControlPlus, #zoomControlMinus {
+    background-image: url(../images/icons16-24px-02_black.png);
+}
 #zoomControlPlus {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -49px -56px;
+    background-position: -2px -56px;
 }
 #zoomControlMinus {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -49px -112px;
+    background-position: -2px -112px;
 }
 .helpIcon, .selectionMapHelpIcon { 
-    background-image: url(../images/icons16-24px-02.png);
-    background-position: -365px 0;
+    background-image: url(../images/icons16-24px-02_turquoise.png);
+    background-position: -1px 0;
 }
 
 /* jQuery UI Elements */
@@ -674,41 +651,42 @@ label.invalid:before {
 body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close,
 body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close:hover,
 body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position:-47px -728px;
+    background-image: url(../images/icons16-24px-03_black.png);
+    background-position: 0px -728px;
 }
 
 /* Datatables */
 
+.dataTable .sorting_asc:after, .dataTable .sorting_desc:after,
+.dataTables_paginate .paginate_disabled_previous:before,
+.dataTables_paginate .paginate_disabled_next:after {
+    background-image: url(../images/icons16-24px-02_grey.png);
+}
 .dataTable .sorting_asc:after {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-1295px -2317px;
+    background-position: 5px -2317px;
 }
-
 .dataTable .sorting_desc:after {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-1295px -2268px;
-}
-
-.dataTable .sorting:after {
-    background:none;
-    /*background-position:-44px -3368px;*/
+    background-position: 5px -2268px;
 }
 .dataTables_paginate .paginate_disabled_previous:before {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-1301px -2419px;
-}
-.dataTables_paginate .paginate_enabled_previous:before {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-365px -2419px;
-}
-.dataTables_paginate .paginate_enabled_next:after {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-358px -2368px;
+    background-position: -1px -2419px;
 }
 .dataTables_paginate .paginate_disabled_next:after {
-    background-image: url(../images/icons16-24px-02.png);
-    background-position:-1292px -2368px;
+    background-position: 10px -2368px;
+}
+.dataTable .sorting:after {
+    background:none;
+    /*background-position: 4px -3368px;*/
+}
+.dataTables_paginate .paginate_enabled_previous:before,
+.dataTables_paginate .paginate_enabled_next:after {
+    background-image: url(../images/icons16-24px-02_turquoise.png);
+}
+.dataTables_paginate .paginate_enabled_previous:before {
+    background-position: -1px -2419px;
+}
+.dataTables_paginate .paginate_enabled_next:after {
+    background-position: 6px -2368px;
 }
 
 /* Myresearch */
@@ -716,59 +694,61 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .myResearch .iconlabel:before {
     margin-top:1px;
 }
-
+.myResearch .formatdocument:before,
+.myResearch .formatphysicalobject:before,
+.myResearch .formatmap:before,
+.myResearch .formatbook:before,
+.myResearch .formatimage:before,
+.myResearch .formatjournal:before,
+.myResearch .formatmusicalscore:before,
+.myResearch .formatthesis:before,
+.myResearch .formatworkofart:before,
+.myResearch .formatdatabase:before,
+.myResearch .formatvideo:before,
+.myResearch .formatsound:before,
+.myResearch .formatsoundrecording:before,
+.myResearch .formatother:before {
+    background-image: url(../images/icons16-24px-01_black.png);
+}
 .myResearch .formatdocument:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -45px -385px;
+    background-position: 3px -333px;
 }
 .myResearch .formatphysicalobject:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -218px;
+    background-position: 2px -166px;
 }
- .myResearch .formatmap:before {
-     background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -161px;
+.myResearch .formatmap:before {
+    background-position: 1px -109px;
 }
 .myResearch .formatbook:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -48px;
+    background-position: 2px 4px;
 }
 .myResearch .formatimage:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -495px;
+    background-position: 1px -445px;
 }
 .myResearch .formatjournal:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -104px;
+    background-position: 1px -53px;
 }
- .myResearch .formatmusicalscore:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -330px;
+.myResearch .formatmusicalscore:before {
+    background-position: 1px -278px;
 }
 .myResearch .formatthesis:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -45px -720px;
+    background-position: 3px -668px;
 }
 .myResearch .formatworkofart:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -663px;
+    background-position: 2px -611px;
 }
- .myResearch .formatdatabase:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -275px;
+.myResearch .formatdatabase:before {
+    background-position: 1px -223px;
 }
 .myResearch .formatvideo:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -606px;
+    background-position: 2px -556px;
 }
 .myResearch .formatsound:before,
 .myResearch .formatsoundrecording:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -46px -551px;
+    background-position: 2px -499px;
 }
 .myResearch .formatother:before {
-    background-image: url(../images/icons16-24px-01.png);
-    background-position: -47px -777px;
+    background-position: 1px -725px;
 }
 
 /*** Webkit hacks ***/
@@ -778,23 +758,21 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 @media screen and (-webkit-min-device-pixel-ratio:0) {
 
     #advancedSearchWrapper .searchButton {
-        background-image: url(../images/icons16-24px-02.png);
-        background-position: -668px -999px;
+        background-image: url(../images/icons16-24px-02_white.png);
+        background-position: 12px -999px;
     }
 
 } 
 
-.NDLCarouselNavi .prev {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -47px -920px;
+.NDLCarouselNavi .prev, .NDLCarouselNavi .next {
+    background-image: url(../images/icons16-24px-03_black.png);
 }
-.NDLCarouselNavi .prev:hover {
-    background-position: -679px -920px;
+.NDLCarouselNavi .prev:hover, .NDLCarouselNavi .next:hover {
+    background-image: url(../images/icons16-24px-03_white.png);
+}.NDLCarouselNavi .prev {
+    background-position: 0px -920px;
 }
 .NDLCarouselNavi .next {
-    background-image: url(../images/icons16-24px-03.png);
-    background-position: -47px -984px;
+    background-position: 0px -984px;
 }
-.NDLCarouselNavi .next:hover {
-    background-position: -679px -984px;
-}
+
