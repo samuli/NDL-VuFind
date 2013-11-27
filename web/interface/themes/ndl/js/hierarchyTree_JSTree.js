@@ -12,7 +12,7 @@ function initHierarchyTree(q) {
           var f = e[k];
           var siblingIndicator = (f[2] === true) ? '<span class="hierarchy-expander id__'+f[0]+'"></span>' : '';
           var type = (key == 'root') ? '/Collection/' : '/Record/'; // Root level is collection
-          treeDoc += '<li class="id__'+f[0]+'">'+siblingIndicator+'<a href="'+path+type+f[0]+'">'+f[1]+'</a></li>';
+          treeDoc += '<li class="id__'+f[0]+'">'+siblingIndicator+'<a title="'+f[1]+'" href="'+path+type+f[0]+'">'+f[1]+'</a></li>';
         }
         treeDoc += '</ul>'; 
 
@@ -60,7 +60,7 @@ function expandBranch(id, target, pos) {
           ' class="openPath id__'+e[0]+'"' : '';
 
         var siblingIndicator = (e[2] === true) ? '<span class="hierarchy-expander id__'+e[0]+'"></span>' : '';
-        branchDoc += '<li'+openPathString+'>'+siblingIndicator+'<a href="'+path+'/Record/'+e[0]+'">'+e[1]+'</a></li>';
+        branchDoc += '<li'+openPathString+'>'+siblingIndicator+'<a title="'+e[1]+'" href="'+path+'/Record/'+e[0]+'">'+e[1]+'</a></li>';
       }
 
       // If results clipped, add "more" link
@@ -84,7 +84,7 @@ function expandBranch(id, target, pos) {
 }
 
 // Expander
-$(document).on('click', '#hierarchyTree .hierarchy-expander',function() {
+$('#hierarchyTree').on('click', '.hierarchy-expander', function() {
   var $target = $(this).closest('li');
   var id = $(this).attr('class').split(' ')[1].split('__')[1];
   var $children = $(this).siblings('ul');
@@ -102,7 +102,7 @@ $(document).on('click', '#hierarchyTree .hierarchy-expander',function() {
 });
 
 // More link
-$(document).on('click', '#hierarchyTree .moreLeaves a',function(e) {
+$('#hierarchyTree').on('click','.moreLeaves a', function(e) {
   e.preventDefault();
   var id = $(this).closest('ul').siblings('span.hierarchy-expander').attr('class').split(' ')[1].split('__')[1];
   var pos = $(this).parent('li').attr('class').split(' ')[1].split('pos__')[1];

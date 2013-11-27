@@ -95,10 +95,9 @@ class AJAX_HierarchyTree extends Action
     {
         $query = ($query == '') ? $_GET['q'] : $query;
         if ($results = $this->db->getRecord($query)) {
-
+            
             // If record has no parent, it is the root. 
-            if (!isset($results['hierarchy_parent_id'][0])) {
-
+            if (!isset($results['hierarchy_parent_id'][0]) || !$results['hierarchy_parent_id'][0]) {
                 // Add root data to the array
                 $returnArray['root'][] = array($results['id'], $results['title'], true, true);
 
