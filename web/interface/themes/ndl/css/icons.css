@@ -319,6 +319,10 @@ a.clear_input {
     background-position: -1px -1497px;
 }
 
+.result .hierarchyTreeLink .hierarchyTreeLinkText {
+    background-position: -1px -1503px;
+}
+
 #toggleTree {
     background-position: -1px -1500px;
 }
