@@ -5456,6 +5456,12 @@ div#closeContextHelp:active {
 
 /* Hierarchy tree */
 
+#hierarchyCollection {
+    clear: both;
+    margin-bottom: 2em;
+    margin-top: 2.2em;
+}
+
 #treeSearchNoResults {
     display:none;
 }
