@@ -173,7 +173,7 @@ class CheckedOut extends MyResearch
 
             if ($renewResult !== false) {
                 // Assign Blocks to the Template
-                $interface->assign('blocks', $renewResult['block']);
+                $interface->assign('blocks', $renewResult['blocks']);
 
                 // Assign Results to the Template
                 $interface->assign('renewResult', $renewResult['details']);
