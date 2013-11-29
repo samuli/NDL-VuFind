@@ -108,6 +108,11 @@ class DualResults extends Action
         // Will assign null for an advanced search
         $interface->assign('searchIndex',         $searchObject->getSearchIndex());
         
+        // Setup Display
+        $interface->assign('sitepath', $configArray['Site']['path']);
+        $interface->assign('more', $searchObject->renderSearchUrl());
+        $interface->assign('pci_more', str_replace('/Search/Results', '/PCI/Search', $searchObject->renderSearchUrl()));
+        
         if ($searchObject->getResultTotal() > 0) {
             // Assign interface variables
             $summary = $searchObject->getResultSummary();
@@ -131,11 +136,6 @@ class DualResults extends Action
                 $results = array_slice($results, 0, 10);
             }
             $interface->assign('recordSet', $results);
-
-            // Setup Display
-            $interface->assign('sitepath', $configArray['Site']['path']);
-            $interface->assign('more', $searchObject->renderSearchUrl());
-            $interface->assign('pci_more', str_replace('/Search/Results', '/PCI/Search', $searchObject->renderSearchUrl()));
         }
 
         // 'Finish' the search... complete timers and log search history.
