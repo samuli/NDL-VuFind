@@ -38,7 +38,6 @@ CREATE TABLE `comments` (
 -- Table structure for table `comments_inappropriate`
 --
 
-DROP TABLE IF EXISTS `comments_inappropriate`;
 CREATE TABLE `comments_inappropriate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
