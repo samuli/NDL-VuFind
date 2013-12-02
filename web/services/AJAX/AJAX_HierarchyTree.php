@@ -72,20 +72,6 @@ class AJAX_HierarchyTree extends Action
     }
 
     /**
-     * Output XML
-     *
-     * @param string $xml An xml string
-     *
-     * @return void
-     * @access public
-     */
-    public function output($xml)
-    {
-        header("Content-Type:text/xml");
-        echo $xml;
-    }
-
-    /**
      * Output JSON
      *
      * @param string $json A JSON string
@@ -99,103 +85,87 @@ class AJAX_HierarchyTree extends Action
         echo $json;
     }
 
-    /**
-     * Search the tree and echo a json result of items that
-     * matched the keywords.
+    /** 
+     * Outputs Json for a reverse path in the hierarchy
      *
      * @return void
      * @access public
      */
-    public function searchTree()
+    public function getHierarchyTree($query = '', $returnArray = array(), $level = 0)
     {
-    	global $configArray;
-    	
-    	$limit = isset($configArray['Hierarchy']['treeSearchLimit'])?
-    		$configArray['Hierarchy']['treeSearchLimit']: -1;
-        $resultIDs = array();
-        $hierarchyID = $_GET['hierarchyID'];
-        $lookfor = isset($_GET['lookfor'])? $_GET['lookfor']: "";
-        $searchType = isset($_GET['type'])? $_GET['type'] : "AllFields";
+        $query = ($query == '') ? $_GET['q'] : $query;
+        if ($results = $this->db->getRecord($query)) {
+            
+            // If record has no parent, it is the root. 
+            if (!isset($results['hierarchy_parent_id'][0]) || !$results['hierarchy_parent_id'][0]) {
+                // Add root data to the array
+                $returnArray['root'][] = array($results['id'], $results['title'], true, true);
 
-        //print_r($results);
-        $this->searchObject
-            = SearchObjectFactory::initSearchObject();
-        // Set the searchobjects collection id to the collection id
-        $this->searchObject->init();
-        $this->searchObject->addFilter('hierarchy_top_id:' . $hierarchyID);
-        $facets = $this->searchObject->getFullFieldFacets(array('id'), false, $limit+1);
+                // Reverse the array and return the data in JSON format
+                $returnArray = array_reverse($returnArray);
+                $jsonString = json_encode($returnArray);
+                $this->outputJSON($jsonString);
+                return;
+            }
 
-        if (isset($facets)) {
-            //print_r($ids);
-            foreach ($facets['id']['data'] as $id) {
-                $resultIDs[] =is_array($id)? $id[0]: $id;
-                unset($id);
+            $parent = $results['hierarchy_parent_id'][0];
+            $query = 'hierarchy_parent_id:"' . addcslashes($parent, '"') . '"';
+
+            // If result parent != hierarchy top, this is the outermost leaf level
+            $isBranch = ($results['hierarchy_parent_id'][0] == $results['hierarchy_top_id'][0]);
+
+            if ($search = $this->db->search($query, null, null, 0, 999)) {
+
+                if (isset($search['response']['docs'])) {
+                    foreach ($search['response']['docs'] as $doc) {
+
+                        
+                        $open = ($doc['id'] == $results['id'] && !$isBranch);
+                        $returnArray[$parent][] = array($doc['id'], $doc['title'], $isBranch, $open);
+                    }
+                }
+
+                $this->getHierarchyTree($parent, $returnArray, $level+1);
             }
         }
-        if (count($resultIDs) > $limit) {
-            $limitReached = true;
-        } else {
-            $limitReached = false;
+    }
+
+    /** 
+     * Outputs Json for a single hierarchy branch
+     *
+     * @return void
+     * @access public
+     */
+    public function getHierarchyBranch($getNumber = 10)
+    {
+        $q = isset($_GET['q'])? $_GET['q'] : "";
+        $pos = isset($_GET['pos'])? $_GET['pos'] : 0;
+        if ($pos != 0) { // If offset set, remove limit
+            $getNumber = 9999;
         }
-        $returnArray = array("limitReached" => $limitReached, "results" => array_slice($resultIDs, 0, $limit));
+        $query = 'hierarchy_parent_id:"' . addcslashes($q, '"') . '"';
+        $returnArray = array();
+        $returnArray[] = array('false', ''); // Results clipped? (default=false, no position)
+
+
+        if ($re = $this->db->search($query, null, null, $pos, $getNumber)) {
+            if (isset($re['response']['docs'])) {
+                foreach ($re['response']['docs'] as $doc) {
+                    $isBranch = ($doc['hierarchy_parent_id'] == $doc['hierarchy_top_id']);
+                    $returnArray[] = array($doc['id'], $doc['title'], $isBranch);
+                }
+
+                // Check if results > limit
+                if ($re['response']['numFound'] > $getNumber && 
+                    count($re['response']['docs']) >= $getNumber) {
+    
+                    $returnArray[0] = array('true', $getNumber + $pos);
+                }
+            }
+        }
+
         $jsonString = json_encode($returnArray);
         $this->outputJSON($jsonString);
-    }
-
-    /**
-     * Gets a Hierarchy Tree
-     *
-     * @return void
-     * @access public
-     */
-    public function getHierarchyTree()
-    {
-        global $interface;
-        global $configArray;
-
-        $hierarchyID = $_GET['hierarchyID'];
-        $context = $_GET['context'];
-        $mode = $_GET['mode'];
-
-        // Retrieve the record from the index
-        if ($record = $this->db->getRecord($_GET['id'])) {
-            $recordDriver = RecordDriverFactory::initRecordDriver($record);
-            $results = $recordDriver->getHierarchyTree(
-                false, $context, $mode, $hierarchyID
-            );
-            if (PEAR::isError($results)) {
-                $this->output(
-                    "<error>" . translate("hierarchy_tree_error") . "</error>"
-                );
-            } else {
-                $this->output($results);
-            }
-        } else {
-            $this->output(
-                "<error>" . translate("hierarchy_tree_error") . "</error>"
-            );
-        }
-    }
-
-    /**
-     * Outputs HTML for an individual Collection Record
-     *
-     * @return void
-     * @access public
-     */
-    public function getRecord()
-    {
-        global $interface;
-
-        // Retrieve the record from the index
-        if (!($record = $this->db->getRecord($_GET['id']))) {
-            $interface->assign("recordID", $_GET['id']);
-            echo $interface->fetch("Collection/collection-record-error.tpl");
-        } else {
-            $recordDriver = RecordDriverFactory::initRecordDriver($record);
-            $collectionRecord = $recordDriver->getCollectionRecord();
-            echo $interface->fetch($collectionRecord);
-        }
     }
 }
 

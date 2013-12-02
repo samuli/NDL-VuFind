@@ -58,6 +58,7 @@ class VoyagerRestful extends Voyager
     protected $pickupLocationsInRequestGroup;
     
     protected $getCache = array();
+    protected $sessionId = '';
     
     /**
      * Constructor
@@ -875,6 +876,9 @@ class VoyagerRestful extends Voyager
         
         // Create Proxy Request
         $client = new Proxy_Request($urlParams);
+        if ($this->sessionId) {
+            $client->addCookie('JSESSIONID', $this->sessionId);
+        }
 
         // Select Method
         if ($mode == "POST") {
@@ -892,9 +896,18 @@ class VoyagerRestful extends Voyager
         }
 
         // Send Request and Retrieve Response
+        $startTime = microtime(true);
         $client->sendRequest();
+        $cookies = $client->getResponseCookies();
+        if ($cookies) {
+            foreach ($cookies as $cookie) {
+                if ($cookie['name'] == 'JSESSIONID') {
+                    $this->sessionId = $cookie['value'];
+                }
+            }
+        }
         $xmlResponse = $client->getResponseBody();
-        $this->debugLog("$mode request $urlParams, body:\n$xml\nResults:\n$xmlResponse");
+        $this->debugLog('[' . round(microtime(true) - $startTime, 4) . "s] {$this->sessionId} $mode request $urlParams, body:\n$xml\nResults:\n$xmlResponse");
         $oldLibXML = libxml_use_internal_errors();
         libxml_use_internal_errors(true);
         $simpleXML = simplexml_load_string($xmlResponse);
@@ -1012,75 +1025,119 @@ class VoyagerRestful extends Voyager
      */
     public function renewMyItems($renewDetails)
     {
-        $renewProcessed = array();
-        $renewResult = array();
-        $failIDs = array();
-        $patronId = $renewDetails['patron']['id'];
-
+        $finalResult = array('blocks' => array(), 'details' => array());
+        $patron = $renewDetails['patron'];
+        
         // Get Account Blocks
-        $finalResult['blocks'] = $this->checkAccountBlocks($patronId);
+        $finalResult['blocks'] = $this->checkAccountBlocks($patron['id']);
 
         if ($finalResult['blocks'] === false) {
             // Add Items and Attempt Renewal
+            $itemIdentifiers = '';
+            
             foreach ($renewDetails['details'] as $renewID) {
-                
                 list($dbKey, $loanId) = explode("|", $renewID);
-    
-                // Create Rest API Renewal Key
-                $restRenewID = ($dbKey ? $dbKey : $this->ws_dbKey) . '-' . $loanId;
                 
-                // Build an array of item ids which may be of use in the template
-                // file
-                $failIDs[$loanId] = "";
+                if (!$dbKey) {
+                    $dbKey = $this->ws_dbKey;
+                }
+                $dbKey = htmlspecialchars($dbKey, ENT_COMPAT, 'UTF-8');
+                $loanId = htmlspecialchars($loanId, ENT_COMPAT, 'UTF-8');
+                
+                $itemIdentifiers .= <<<EOT
+      <myac:itemIdentifier>
+       <myac:itemId>$loanId</myac:itemId>
+       <myac:ubId>$dbKey</myac:ubId>
+      </myac:itemIdentifier>
 
-                // Verify renewability. We should be ok here, but verify.
-                $renewable = $this->isRenewable($patronId, $restRenewID);
+EOT;
+            }
 
-                // Don't even try to renew a non-renewable item; we don't want to
-                // break any rules, and Voyager's API doesn't always enforce well.
-                if (isset($renewable['renewable']) && $renewable['renewable']) {
-                    // Build Hierarchy
-                    $hierarchy = array(
-                        "patron" => $patronId,
-                        "circulationActions" => "loans"
-                    );
+            $patronId = htmlspecialchars($patron['id'], ENT_COMPAT, 'UTF-8');
+            $lastname = htmlspecialchars($patron['lastname'], ENT_COMPAT, 'UTF-8');
+            $barcode = htmlspecialchars($patron['cat_username'], ENT_COMPAT, 'UTF-8');
+            $localUbId = htmlspecialchars($this->ws_patronHomeUbId, ENT_COMPAT, 'UTF-8');
+            
+            // The RenewService has a weird prerequisite that AuthenticatePatronService
+            // must be called first and JSESSIONID header be preserved. There's no
+            // explanation why this is required, and a quick check implies that RenewService
+            // works without it at least in Voyager 8.1, but who knows if it fails with UB
+            // or something, so let's try to play along with the rules.
+            $xml = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:serviceParameters xmlns:ser="http://www.endinfosys.com/Voyager/serviceParameters">
+  <ser:patronIdentifier lastName="$lastname" patronHomeUbId="$localUbId">
+    <ser:authFactor type="B">$barcode</ser:authFactor>
+  </ser:patronIdentifier>
+</ser:serviceParameters>             
+EOT;
+            
+            $response = $this->makeRequest(array('AuthenticatePatronService' => false), array(), 'POST', $xml);
+            if ($response === false) {
+                return new PEAR_Error('renew_error_system');
+            }
+            
+            $xml = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:serviceParameters xmlns:ser="http://www.endinfosys.com/Voyager/serviceParameters">
+   <ser:parameters/>
+   <ser:definedParameters xsi:type="myac:myAccountServiceParametersType" xmlns:myac="http://www.endinfosys.com/Voyager/myAccount" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+$itemIdentifiers
+   </ser:definedParameters>
+  <ser:patronIdentifier lastName="$lastname" patronHomeUbId="$localUbId" patronId="$patronId">
+    <ser:authFactor type="B">$barcode</ser:authFactor>
+  </ser:patronIdentifier>
+</ser:serviceParameters>
+EOT;
 
-                    // Add Required Params
-                    $params = array(
-                        "patron_homedb" => $this->ws_patronHomeUbId,
-                        "view" => "full"
-                    );
-
-                    // Add to Hierarchy
-                    $hierarchy[$restRenewID] = false;
-
-                    // Attempt Renewal
-                    $renewalObj = $this->makeRequest($hierarchy, $params, "POST");
-
-                    $process = $this->processRenewals($renewalObj);
-                    if (PEAR::isError($process)) {
-                        return $process;
+            $response = $this->makeRequest(array('RenewService' => false), array(), 'POST', $xml);
+            if ($response === false) {
+                return false;
+            }
+            
+            // Process
+            $myac_ns = 'http://www.endinfosys.com/Voyager/myAccount';
+            $response->registerXPathNamespace('ser', 'http://www.endinfosys.com/Voyager/serviceParameters');
+            $response->registerXPathNamespace('myac', $myac_ns);
+            // The service doesn't actually return messages (in Voyager 8.1), but maybe in the future...
+            foreach ($response->xpath('//ser:message') as $message) {
+                if ($message->attributes()->type == 'system') {
+                    return false;
+                }
+            }
+            foreach ($response->xpath('//myac:clusterChargedItems') as $cluster) {
+                $cluster = $cluster->children($myac_ns);
+                $dbKey = (string)$cluster->cluster->ubSiteId;
+                foreach ($cluster->chargedItem as $chargedItem) {
+                    $chargedItem = $chargedItem->children($myac_ns);
+                    $renewStatus = $chargedItem->renewStatus;
+                    if (!$renewStatus) {
+                        continue;
                     }
-                    // Process Renewal
-                    $renewProcessed[] = $process;
+                    $renewed = false;
+                    foreach ($renewStatus->status as $status) {
+                        if ((string)$status == 'Renewed') {
+                            $renewed = true;
+                        }
+                    }
+                    
+                    $result = array();
+                    $result['item_id'] = (string)$chargedItem->itemId;
+                    $result['sysMessage'] = (string)$renewStatus->status;
+                    
+                    $dueDate = (string)$chargedItem->dueDate;
+                    $newDate = $this->dateFormat->convertToDisplayDate(
+                        "Y-m-d H:i", $dueDate
+                    );
+                    $newTime = $this->dateFormat->convertToDisplayTime(
+                        "Y-m-d H:i", $dueDate
+                    );
+                    $result['new_date'] = PEAR::isError($newDate) ? $dueDate : $newDate;
+                    $result['new_time'] = PEAR::isError($newTime) ? '' : $newTime;
+                    $result['success'] = $renewed;
+                    
+                    $finalResult['details'][$result['item_id']] = $result;
                 }
-            }
-
-            // Place Successfully processed renewals in the details array
-            foreach ($renewProcessed as $renewal) {
-                if ($renewal !== false) {
-                    $finalResult['details'][$renewal['item_id']] = $renewal;
-                    unset($failIDs[$renewal['item_id']]);
-                }
-            }
-            // Deal with unsuccessful results
-            foreach ($failIDs as $id => $junk) {
-                $finalResult['details'][$id] = array(
-                    "success" => false,
-                    "new_date" => false,
-                    "item_id" => $id,
-                    "sysMessage" => ""
-                );
             }
         }
         return $finalResult;

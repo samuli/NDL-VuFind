@@ -5454,164 +5454,150 @@ div#closeContextHelp:active {
 
 /*** Hierarchy Tree ***/
 
-#hierarchyTreeHolder {
-    background-color: #FFF;
-    border: none;
-    padding: 0.5em 0;   
+/* Hierarchy tree */
+
+#hierarchyCollection {
+    clear: both;
+    margin-bottom: 2em;
+    margin-top: 2.2em;
 }
 
-.collectionDetailsTree #hierarchyTreeHolder {
-    border-top: 0;   
+#treeSearchNoResults {
+    display:none;
 }
 
 #hierarchyTree {
+    max-width:700px;
+    min-height: 375px;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 0.5em 0.5em 0.5em 0;
-    max-height:375px;
-    min-height:375px;
-    overflow: hidden;
-    overflow-y: auto;    
-}
-#hierarchyCollection {
-    clear:both;
-    margin-top: 2em;
-    margin-bottom: 2em;
-}
-
-#treeSearch {
-    border-bottom: 1px solid #DCDCDC;
-    display:none;
-    float: right;
-    padding-bottom: .4em;
-    width: 100%;
-}
-
-#treeSearch #treeSearchText {
-    display:block;
-    float:right;
-    margin: 1px 0px 0px 0px;
-}
-
-#treeSearch #search {
-    display:block;
-    float:right;
-    margin: 0 .4em 0 0;
-}
-
-#treeSearch #treeSearchType {
-    display:block;
-    float:right;
-    margin: 0 4px;
-}
-
-#treeSearch #treeSearchNoResults {
-    display:none;
-    float:left;
-    color: #AF1B0A;
-    margin:3px 0px 0px 5px;
-}
-
-#treeSearch #treeSearchLoadingImg {
-    display:none;
-    float:right;
-    margin:3px 4px 4px 5px;
-}
-
-
-#treeSearchLimitReached {
-    display:none;
-    float:left;
-    color: #AF1B0A;
-    margin:3px 0px 0px 5px;
 }
 
 #modalDialog #hierarchyTree {
-    max-height: 400px;
-    min-height: 100%;
+    max-height:600px;
+    margin-right: 20px;
+}
+
+#hierarchyTree .openPath > a {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-radius: 3px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04) inset;
+    display: inline-block;
+    font-weight: bold;
+    margin: 2px 0 2px 15px;
+    padding: 1px 7px 2px;
+    width: 96%;
+}
+
+#hierarchyTree a {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    padding: 1px 6px;
+}
+
+#hierarchyTree li li li {
+    display:inline;
+}
+
+#hierarchyTree li li li a {
+    display:inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 35%;
+}
+
+#hierarchyTree li li li.openPath a {
+    width:35%;
+    margin: 2px 0 2px 8px;
+}
+
+#hierarchyTree li li li.moreLeaves a {
+    border: 1px solid #4CC8D6;
+    border-radius: 3px;
+    clear: both;
+    display: block;
+    float: left;
+    margin: 0 10px 10px 15px;
+    padding: 0 5px 0 8px;
+    width: auto;
+}
+
+#hierarchyTree li li li.moreLeaves {
+    display:block;
+}
+
+.hierarchy-expander {
+    position:absolute;
+    left:0;
+    top:0;
 }
 
 #hierarchyTree ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;   
+    margin-left:24px;
+}
+#hierarchyTree ul, #hierarchyTree li {
+    list-style:none;
 }
 
-.tree {
-    background-image:url(../images/fugue/tree.png);
-    background-repeat:no-repeat;
-    background-position: left;
-    padding:.5em .5em .5em 20px;
-    margin-right:1em;
-}
-
-.currentTree, .hierarchyTreeLinkText {
-    padding:.5em .5em .5em 25px;
-    margin-right:1em;
-}
-
-#hierarchyTree #treeList li {
-    background-image:url(../images/fugue/treeItem.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
-}
-
-#hierarchyTree #treeList li.currentRecord {
-    background-image:url(../images/fugue/treeItemCurrent.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+#hierarchyTree > ul {
+    margin-left:12px;
+    padding-bottom:10px;
 }
 
 
-#hierarchyTree #treeList li.hierarchy {
-    background-image:url(../images/fugue/collection.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+#hierarchyTree li {
+    clear:both;
+    position:relative;
+}
+  
+.moreLeaves {
+    font-size: 12px;
+    margin-top: 8px;
+} 
+
+#hierarchyTree .moreLeaves a {
+    border: 1px solid #4CC8D6;
+    border-radius: 3px;
+    margin: 0 10px 10px 15px;
+    padding: 0 5px 0 8px;
 }
 
-#hierarchyTree #treeList li.currentHierarchy {
-    background-image:url(../images/fugue/collectionCurrent.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+.openPath > span.hierarchy-expander ~ a {
+    margin-left: 15px;
 }
 
-#hierarchyTree #treeList li.currentHierarchy > a, #hierarchyTree #treeList li.currentRecord > a {
-    color: #000;
+.hierarchyLoading {
+    background: url("http://vufind-fe-kktest.lib.helsinki.fi/test/interface/themes/ndl/images/ajax_loading.gif") no-repeat scroll 0 0 #FFFFFF;
+    display: block;
+    height: 18px;
+    cursor:pointer;
+    width: 18px;
+    margin-left:12px;
+    opacity:.8;
 }
 
-#toggleTree {
-    background-image:url(../images/fugue/treeCurrent.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+.moreLeaves a span.hierarchyLoading {
+    display:inline-block;
+    position:relative;
+    top:4px;
 }
 
-#hierarchyRecord {
-    padding: 0 0.5em 0.5em;
+span.hierarchy-expander {
+    background-image: url("../images/icons16-24px-02_grey.png");
+    width:14px;
+    background-position: 1px -2369px;
+    height:16px;
+    cursor:pointer;
+    top: 2px;
 }
 
-#hierarchyRecord th {
-    width: 12em;
+span.hierarchy-expander.open {
+  background-position: -1px -2319px;
 }
-
-#treeSelector {
-    background-color: #FAFAFA;
-    border: 1px solid #DCDCDC;
-    border-bottom: 0 none;
-    padding: 0.25em; 
-}
-
-.collectionDetailsTree #treeSelector {
-    background-color: #FAFAFA;
-    border: 1px solid #DCDCDC;
-    border-top: 0 none;
-    padding: 0.25em; 
-}
-
-#treeSelector a {
-    margin-right: 1em;
+.currentTree, .hierarchyTreeLinkText { 
+    padding-left:22px;
 }
 
 .sysInfo {
@@ -5622,8 +5608,6 @@ div#closeContextHelp:active {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-
-
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
 

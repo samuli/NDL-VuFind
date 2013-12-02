@@ -360,7 +360,6 @@ function registerAjaxInappropriateComment() {
             dataType: 'json',
             success: function(response, statusText, xhr, $form) {
                 if (response.status == 'OK') {
-                    refreshCommentList(id);
                     $(form).resetForm();
                     refreshCommentList(id);                
                     hideLightbox();
