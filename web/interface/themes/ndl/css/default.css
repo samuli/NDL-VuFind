@@ -4126,7 +4126,7 @@ table.datagrid td {
 }
 
 .holdingsHoldingURLs {
-    background:url(../images/internet_link.png) no-repeat;
+    background:url(../images/icons16-24px.png) -404px -11px no-repeat;
     padding-left:30px;
     font-weight:bold;
     margin-bottom:10px;
@@ -4281,7 +4281,7 @@ table.holdingsContainerHolding .locationLink a {
     display: inline-block;
     float: right;
     padding-right:22px;
-    background:url(../images/record_location.png) center right no-repeat;
+    background:url(../images/icons16-24px-04.png) -443px -12px /*center right*/ no-repeat;
 }
 
 table.holdingsContainerHolding td,
