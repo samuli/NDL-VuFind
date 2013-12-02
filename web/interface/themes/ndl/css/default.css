@@ -3986,8 +3986,8 @@ h5.recordTabHeader {
 }
 
 .dropdownMenuIcon {
-    background-image: url("../images/icons16-24px-02.png");
-    background-position: -679px -2324px;
+    background-image: url("../images/icons16-24px-02_white.png");
+    background-position: 1px -2324px;
     content: "";
     display: inline-block;
     height: 12px;
@@ -4177,7 +4177,7 @@ table.datagrid td {
 }
 
 .holdingsContainerHeading span.arrowIndicator {
-    background: url("../images/icons16-24px-02.png") repeat scroll -47px -2370px transparent;
+    background: url("../images/icons16-24px-02_black.png") repeat scroll 1px -2370px transparent;
     display: inline-block;
     height: 16px;
     opacity: 0.8;
@@ -4187,7 +4187,7 @@ table.datagrid td {
     width: 12px;
 }
 .holdingsContainerHolding.active span.arrowIndicator {
-    background: url("../images/icons16-24px-02.png") repeat scroll -49px -2319px transparent;
+    background: url("../images/icons16-24px-02_black.png") repeat scroll -1px -2319px transparent;
 }
 
 #dyntabnav .holdingsContainer {
@@ -6027,8 +6027,8 @@ top:10px;
 }
 
 .fancyLink a:before {
-    background-image: url("../images/icons16-24px-02.png");
-    background-position: -362px -2370px;    
+    background-image: url("../images/icons16-24px-02_turquoise.png");
+    background-position: 2px -2370px;    
     content: "";
     display: block;
     float: left;
