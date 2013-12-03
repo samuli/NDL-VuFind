@@ -84,7 +84,7 @@ function expandBranch(id, target, pos) {
 }
 
 // Expander
-$('#hierarchyTree').on('click', '.hierarchy-expander', function() {
+$('#hierarchyTree, .collectionDetailsTree').on('click', '.hierarchy-expander', function() {
   var $target = $(this).closest('li');
   var id = $(this).attr('class').split(' ')[1].split('__')[1];
   var $children = $(this).siblings('ul');
@@ -102,7 +102,7 @@ $('#hierarchyTree').on('click', '.hierarchy-expander', function() {
 });
 
 // More link
-$('#hierarchyTree').on('click','.moreLeaves a', function(e) {
+$('#hierarchyTree, .collectionDetailsTree').on('click','.moreLeaves a', function(e) {
   e.preventDefault();
   var id = $(this).closest('ul').siblings('span.hierarchy-expander').attr('class').split(' ')[1].split('__')[1];
   var pos = $(this).parent('li').attr('class').split(' ')[1].split('pos__')[1];
