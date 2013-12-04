@@ -125,15 +125,10 @@ $(document).ready(function(){
 });
 
 function setUpCheckRequest() {
-    $('.checkRequest').each(function(i) {
-        if($(this).hasClass('checkRequest')) {
+    $('.checkRequest').unbind('inview').one('inview', function() {
+        if ($(this).hasClass('checkRequest')) {
             $(this).addClass('ajax_hold_availability');
-        }
-    });
-    
-    $('.checkRequest').each(function(i) {
-        if($(this).hasClass('checkRequest')) {
-            var isValid = checkRequestIsValid(this, this.href);
+            checkRequestIsValid(this, this.href);
         }
     });
 }
@@ -172,15 +167,10 @@ function checkRequestIsValid(element, requestURL) {
 }
 
 function setUpCheckCallSlipRequest() {
-    $('.checkCallSlipRequest').each(function(i) {
-        if($(this).hasClass('checkCallSlipRequest')) {
+    $('.checkCallSlipRequest').unbind('inview').one('inview', function() {
+        if ($(this).hasClass('checkCallSlipRequest')) {
             $(this).addClass('ajax_call_slip_availability');
-        }
-    });
-    
-    $('.checkCallSlipRequest').each(function(i) {
-        if($(this).hasClass('checkCallSlipRequest')) {
-            var isValid = checkCallSlipRequestIsValid(this, this.href);
+            checkCallSlipRequestIsValid(this, this.href);
         }
     });
 }
@@ -220,14 +210,9 @@ function checkCallSlipRequestIsValid(element, requestURL) {
 
 function setUpCheckUBRequest() {
     $('.checkUBRequest').each(function(i) {
-        if($(this).hasClass('checkUBRequest')) {
+        if ($(this).hasClass('checkUBRequest')) {
             $(this).addClass('ajax_ub_request_availability');
-        }
-    });
-    
-    $('.checkUBRequest').each(function(i) {
-        if($(this).hasClass('checkUBRequest')) {
-            var isValid = checkUBRequestIsValid(this, this.href);
+            checkUBRequestIsValid(this, this.href);
         }
     });
 }
@@ -253,7 +238,7 @@ function checkUBRequestIsValid(element, requestURL) {
         url: url,
         success: function(response) {
             if (response.status == 'OK') {
-                if (response.data.options) {
+                if (response.data.options && response.data.options['success'] !== false) {
                     $(element).removeClass('checkUBRequest ajax_ub_request_availability').html(response.data.msg);
                 } else {
                     $(element).remove();
@@ -295,6 +280,38 @@ function setUpUBRequestForm(recordId) {
     $("#pickupLibrary").change();
 }
 
+function setUpHoldRequestForm(recordId) {
+    $("#requestGroupId").change(function() {
+        var $emptyOption = $("#pickupLocation option[value='']");
+        $("#pickupLocation option[value!='']").remove();
+        $("#pickupLocationLabel").addClass("ajax_hold_request_loading");
+        var url = path + '/AJAX/JSON_Hold?' + $.param({method:'getPickupLocations', id: recordId, requestGroupId: $("#requestGroupId").val() });
+        $.ajax({
+            dataType: 'json',
+            cache: false,
+            url: url,
+            success: function(response) {
+                if (response.status == 'OK') {
+                    var defaultValue = $("#pickupLocation").data('default');
+                    $.each(response.data.locations, function() {
+                        var option = $("<option></option>").attr("value", this.locationID).text(this.locationDisplay);
+                        if (this.locationID == defaultValue || (defaultValue == '' && this.isDefault && $emptyOption.length == 0)) {
+                            option.attr("selected", "selected");
+                        }
+                        $("#pickupLocation").append(option);
+                    });
+                }
+                $("#pickupLocationLabel").removeClass("ajax_hold_request_loading");
+            },
+            fail: function() {
+                $("#pickupLocationLabel").removeClass("ajax_hold_request_loading");
+            }
+        });   
+        
+    });
+    $("#requestGroupId").change();
+}
+
 function registerAjaxCommentRecord() {
     $('form[name="commentRecord"]').live('submit', function(){
         if (!$(this).valid()) { return false; }
@@ -333,7 +350,7 @@ function registerAjaxCommentRecord() {
 }
 
 function registerAjaxInappropriateComment() {
-    $('form[name="inappropriateComment"]').unbind('submit').live('submit', function(e){
+    $('form[name="inappropriateComment"]').unbind('submit').on('submit', function(e){
         e.preventDefault();
         var form = this;
         var id = form.recordId.value;
@@ -343,7 +360,6 @@ function registerAjaxInappropriateComment() {
             dataType: 'json',
             success: function(response, statusText, xhr, $form) {
                 if (response.status == 'OK') {
-                    refreshCommentList(id);
                     $(form).resetForm();
                     refreshCommentList(id);                
                     hideLightbox();

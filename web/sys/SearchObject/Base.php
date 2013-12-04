@@ -1003,7 +1003,7 @@ abstract class SearchObject_Base
         }
         
         // Sorting
-        if ($this->sort != null && $this->sort != $this->getDefaultSort()) {
+        if ($this->sort != null) {
             $params[] = "sort=" . urlencode($this->sort);
         }
 
@@ -1024,7 +1024,7 @@ abstract class SearchObject_Base
         }
 
         // Limit
-        if ($this->limit != null && $this->limit != $this->defaultLimit) {
+        if ($this->limit != null) {
             $params[] = "limit=" . urlencode($this->limit);
         }
 
@@ -1574,6 +1574,27 @@ abstract class SearchObject_Base
         }
         return $facets;
     }
+    
+    /**
+     * Get status information on the boolean checkbox facets.
+     *
+     * @return boolean
+     * @access public
+     */
+    public function getCheckboxFacetStatus()
+    {
+        // Check if at least one of the checkboxes is selected
+        $facets = array();
+        $status = false;
+        foreach ($this->checkboxFacets as $field => $details) {
+            $facets[$field] = $details;
+            if ($this->hasFilter($details['filter'])) {
+                $status = true;
+                break;
+            }
+        }
+        return $status;
+    }    
 
     /**
      * Return an array of data summarising the results of a search.

@@ -1144,7 +1144,8 @@ class MarcRecord extends IndexRecord
             foreach ($urls as $url) {
                 // Is there an address in the current field?
                 $address = $url->getSubfield('u');
-                if ($address) {
+                // Require at least one dot surrounded by valid characters or a familiar scheme
+                if ($address && (preg_match('/[A-Za-z0-9]\.[A-Za-z0-9]/', $address) || preg_match('/^(http|ftp)s?:\/\//', $address))) {
                     $address = $address->getData();
 
                     // Is there a description?  If not, just use the URL itself.
@@ -1169,7 +1170,8 @@ class MarcRecord extends IndexRecord
             foreach ($urls as $url) {
                 // Is there an address in the current field?
                 $address = $url->getSubfield('u');
-                if ($address) {
+                // Require at least one dot surrounded by valid characters or a familiar scheme
+                if ($address && (preg_match('/[A-Za-z0-9]\.[A-Za-z0-9]/', $address) || preg_match('/^(http|ftp)s?:\/\//', $address))) {
                     $address = $address->getData();
 
                     // Is there a note?  If not, just use the URL itself.

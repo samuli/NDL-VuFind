@@ -1208,7 +1208,7 @@ div.dialogLoading {
     height: 20px;
 }
 
-.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading {
+.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading, .ajax_hold_request_loading {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
@@ -1238,6 +1238,7 @@ div.dialogLoading {
     border:none;
     color:#555;
     padding:0;
+    font-size: 1.23em;
 }
 .highlight {
     background: none;
@@ -1526,6 +1527,10 @@ fieldset.publishDateLimit .ui-slider {
     padding-right: 20px;
     margin-left: 0;
 }*/
+
+.no-hits #sidebarFacets {
+	margin-top: 0;
+}
 
 /*** MyResearch ***/
 
@@ -2292,7 +2297,8 @@ ul.filters span.roundButton {
 #sidebarRecommend div.sidegroup {
     margin-top: 1.2em;
 }
-.resultListContainer div.sidegroup h4 {
+.resultListContainer div.sidegroup h4,
+.no-hits div.sidegroup h4 {
     font-size: 1.6em;
     margin: 0;
     padding: 20px 10px;
@@ -2682,7 +2688,7 @@ ul.recordSet .addToFavLink a {
 .checkedout {
     color:#ff461e;
 }
-.holdPlace:before, .UBRequestPlace:before {
+.holdPlace:before, .callSlipPlace:before, .UBRequestPlace:before {
     content: "";
     display: inline-block;
     height: 11px;
@@ -2727,7 +2733,7 @@ ul.recordSet .addToFavLink a {
     margin-right:1em;
 }
 .checkRequest, .checkCallSlipRequest, .checkUBRequest {
-    background-image:url(../images/fugue/checkRequest.png);
+    background-image:url(../images/ajax_loading.gif);
     background-repeat:no-repeat;
     padding-left:18px;
 }
@@ -3249,7 +3255,7 @@ div.dateVisHandle.visible {
 
 .mainYearForm input[type="submit"],
 .mainYearFormPCI input[type="submit"] {
-    background: url("../images/icons16-24px-02.png") repeat scroll -673px -946px #00A3B5;
+    background: url("../images/icons16-24px-02_white.png") no-repeat scroll 7px -946px #00A3B5;
     border: 0 none;
     border-radius: 8px 8px 8px 8px;
     cursor:pointer;
@@ -3980,8 +3986,8 @@ h5.recordTabHeader {
 }
 
 .dropdownMenuIcon {
-    background-image: url("../images/icons16-24px-02.png");
-    background-position: -679px -2324px;
+    background-image: url("../images/icons16-24px-02_white.png");
+    background-position: 1px -2324px;
     content: "";
     display: inline-block;
     height: 12px;
@@ -4120,7 +4126,7 @@ table.datagrid td {
 }
 
 .holdingsHoldingURLs {
-    background:url(../images/internet_link.png) no-repeat;
+    background:url(../images/icons16-24px.png) -404px -11px no-repeat;
     padding-left:30px;
     font-weight:bold;
     margin-bottom:10px;
@@ -4171,7 +4177,7 @@ table.datagrid td {
 }
 
 .holdingsContainerHeading span.arrowIndicator {
-    background: url("../images/icons16-24px-02.png") repeat scroll -47px -2370px transparent;
+    background: url("../images/icons16-24px-02_black.png") repeat scroll 1px -2370px transparent;
     display: inline-block;
     height: 16px;
     opacity: 0.8;
@@ -4181,7 +4187,7 @@ table.datagrid td {
     width: 12px;
 }
 .holdingsContainerHolding.active span.arrowIndicator {
-    background: url("../images/icons16-24px-02.png") repeat scroll -49px -2319px transparent;
+    background: url("../images/icons16-24px-02_black.png") repeat scroll -1px -2319px transparent;
 }
 
 #dyntabnav .holdingsContainer {
@@ -4275,7 +4281,7 @@ table.holdingsContainerHolding .locationLink a {
     display: inline-block;
     float: right;
     padding-right:22px;
-    background:url(../images/record_location.png) center right no-repeat;
+    background:url(../images/icons16-24px-04.png) -443px -12px /*center right*/ no-repeat;
 }
 
 table.holdingsContainerHolding td,
@@ -5448,164 +5454,150 @@ div#closeContextHelp:active {
 
 /*** Hierarchy Tree ***/
 
-#hierarchyTreeHolder {
-    background-color: #FFF;
-    border: none;
-    padding: 0.5em 0;   
+/* Hierarchy tree */
+
+#hierarchyCollection {
+    clear: both;
+    margin-bottom: 2em;
+    margin-top: 2.2em;
 }
 
-.collectionDetailsTree #hierarchyTreeHolder {
-    border-top: 0;   
+#treeSearchNoResults {
+    display:none;
 }
 
 #hierarchyTree {
+    max-width:700px;
+    min-height: 375px;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding: 0.5em 0.5em 0.5em 0;
-    max-height:375px;
-    min-height:375px;
-    overflow: hidden;
-    overflow-y: auto;    
-}
-#hierarchyCollection {
-    clear:both;
-    margin-top: 2em;
-    margin-bottom: 2em;
-}
-
-#treeSearch {
-    border-bottom: 1px solid #DCDCDC;
-    display:none;
-    float: right;
-    padding-bottom: .4em;
-    width: 100%;
-}
-
-#treeSearch #treeSearchText {
-    display:block;
-    float:right;
-    margin: 1px 0px 0px 0px;
-}
-
-#treeSearch #search {
-    display:block;
-    float:right;
-    margin: 0 .4em 0 0;
-}
-
-#treeSearch #treeSearchType {
-    display:block;
-    float:right;
-    margin: 0 4px;
-}
-
-#treeSearch #treeSearchNoResults {
-    display:none;
-    float:left;
-    color: #AF1B0A;
-    margin:3px 0px 0px 5px;
-}
-
-#treeSearch #treeSearchLoadingImg {
-    display:none;
-    float:right;
-    margin:3px 4px 4px 5px;
-}
-
-
-#treeSearchLimitReached {
-    display:none;
-    float:left;
-    color: #AF1B0A;
-    margin:3px 0px 0px 5px;
 }
 
 #modalDialog #hierarchyTree {
-    max-height: 400px;
-    min-height: 100%;
+    max-height:600px;
+    margin-right: 20px;
+}
+
+#hierarchyTree .openPath > a {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border-radius: 3px;
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04) inset;
+    display: inline-block;
+    font-weight: bold;
+    margin: 2px 0 2px 15px;
+    padding: 1px 7px 2px;
+    width: 96%;
+}
+
+#hierarchyTree a {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    padding: 1px 6px;
+}
+
+#hierarchyTree li li li {
+    display:inline;
+}
+
+#hierarchyTree li li li a {
+    display:inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 35%;
+}
+
+#hierarchyTree li li li.openPath a {
+    width:35%;
+    margin: 2px 0 2px 8px;
+}
+
+#hierarchyTree li li li.moreLeaves a {
+    border: 1px solid #4CC8D6;
+    border-radius: 3px;
+    clear: both;
+    display: block;
+    float: left;
+    margin: 0 10px 10px 15px;
+    padding: 0 5px 0 8px;
+    width: auto;
+}
+
+#hierarchyTree li li li.moreLeaves {
+    display:block;
+}
+
+.hierarchy-expander {
+    position:absolute;
+    left:0;
+    top:0;
 }
 
 #hierarchyTree ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;   
+    margin-left:24px;
+}
+#hierarchyTree ul, #hierarchyTree li {
+    list-style:none;
 }
 
-.tree {
-    background-image:url(../images/fugue/tree.png);
-    background-repeat:no-repeat;
-    background-position: left;
-    padding:.5em .5em .5em 20px;
-    margin-right:1em;
-}
-
-.currentTree, .hierarchyTreeLinkText {
-    padding:.5em .5em .5em 25px;
-    margin-right:1em;
-}
-
-#hierarchyTree #treeList li {
-    background-image:url(../images/fugue/treeItem.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
-}
-
-#hierarchyTree #treeList li.currentRecord {
-    background-image:url(../images/fugue/treeItemCurrent.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+#hierarchyTree > ul {
+    margin-left:12px;
+    padding-bottom:10px;
 }
 
 
-#hierarchyTree #treeList li.hierarchy {
-    background-image:url(../images/fugue/collection.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+#hierarchyTree li {
+    clear:both;
+    position:relative;
+}
+  
+.moreLeaves {
+    font-size: 12px;
+    margin-top: 8px;
+} 
+
+#hierarchyTree .moreLeaves a {
+    border: 1px solid #4CC8D6;
+    border-radius: 3px;
+    margin: 0 10px 10px 15px;
+    padding: 0 5px 0 8px;
 }
 
-#hierarchyTree #treeList li.currentHierarchy {
-    background-image:url(../images/fugue/collectionCurrent.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+.openPath > span.hierarchy-expander ~ a {
+    margin-left: 15px;
 }
 
-#hierarchyTree #treeList li.currentHierarchy > a, #hierarchyTree #treeList li.currentRecord > a {
-    color: #000;
+.hierarchyLoading {
+    background: url("http://vufind-fe-kktest.lib.helsinki.fi/test/interface/themes/ndl/images/ajax_loading.gif") no-repeat scroll 0 0 #FFFFFF;
+    display: block;
+    height: 18px;
+    cursor:pointer;
+    width: 18px;
+    margin-left:12px;
+    opacity:.8;
 }
 
-#toggleTree {
-    background-image:url(../images/fugue/treeCurrent.png);
-    background-repeat: no-repeat;
-    padding: 0.25em 0 0 23px;
-    background-position: 0 0.25em;
+.moreLeaves a span.hierarchyLoading {
+    display:inline-block;
+    position:relative;
+    top:4px;
 }
 
-#hierarchyRecord {
-    padding: 0 0.5em 0.5em;
+span.hierarchy-expander {
+    background-image: url("../images/icons16-24px-02_grey.png");
+    width:14px;
+    background-position: 1px -2369px;
+    height:16px;
+    cursor:pointer;
+    top: 2px;
 }
 
-#hierarchyRecord th {
-    width: 12em;
+span.hierarchy-expander.open {
+  background-position: -1px -2319px;
 }
-
-#treeSelector {
-    background-color: #FAFAFA;
-    border: 1px solid #DCDCDC;
-    border-bottom: 0 none;
-    padding: 0.25em; 
-}
-
-.collectionDetailsTree #treeSelector {
-    background-color: #FAFAFA;
-    border: 1px solid #DCDCDC;
-    border-top: 0 none;
-    padding: 0.25em; 
-}
-
-#treeSelector a {
-    margin-right: 1em;
+.currentTree, .hierarchyTreeLinkText { 
+    padding-left:22px;
 }
 
 .sysInfo {
@@ -5616,8 +5608,6 @@ div#closeContextHelp:active {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-
-
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
 
@@ -5805,7 +5795,7 @@ span.mapMarker  {
 /* National theme Buttons */
 
 .button {
-    background: #FFFFFF;
+    background: no-repeat #FFFFFF;
     border:none;
     border-radius: 10px 10px 10px 10px;
     color: #444;
@@ -5828,10 +5818,10 @@ span.mapMarker  {
     color:#444;
 }
 .buttonFinna {
-    background: #00a3b5;
+    background: no-repeat #00a3b5;
 }
 .buttonGrey {
-    background:#c1c1c1;
+    background: no-repeat #c1c1c1;
 }
 .buttonFinna,
 .buttonGrey,
@@ -6037,8 +6027,8 @@ top:10px;
 }
 
 .fancyLink a:before {
-    background-image: url("../images/icons16-24px-02.png");
-    background-position: -362px -2370px;    
+    background-image: url("../images/icons16-24px-02_turquoise.png");
+    background-position: 2px -2370px;    
     content: "";
     display: block;
     float: left;

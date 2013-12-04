@@ -14,6 +14,10 @@
     <p class="error">{translate text=$results.sysMessage}</p>
   {/if}
 
+  {if $helpText}
+    <p class="helptext">{$helpText}</p>
+  {/if}
+
   {if $gatheredDetails}
   <div class="ub-request-form">
 

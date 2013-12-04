@@ -319,7 +319,7 @@ function registerAjaxCart() {
                 success: function(response, statusText, xhr, $form) {
                     if (response.status == 'OK') {
                         var items = getItemsFromCartCookie();
-                        redrawCartStatus()
+                        redrawCartStatus();
                         hideLightbox();
                     }
                     var $dialog = getLightbox('Cart', 'Home', null, null, vufindString.viewBookBag, '', '', '', {viewCart:"1"});
@@ -685,7 +685,7 @@ function registerAjaxRequestForm() {
                 hideLoadingGraphic($form);
                 if (response.substring(0, 5) == 'OK - ') {
                     $('#modalDialog').html(response.substring(5));
-                    setTimeout(function() { hideLightbox(); }, 2000);
+                    setTimeout(function() { hideLightbox(); window.location.reload(); }, 2000);
                 } else {
                     $('#modalDialog').empty().html(response);
                 }

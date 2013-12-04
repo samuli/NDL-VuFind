@@ -322,6 +322,22 @@
     </tr>
     {/if}
 
+    {if $coreOnlineURLs || $coreMergedRecordData.urls}
+    <tr valign="top" class="recordURLs">
+      <th>{translate text='available_online'}: </th>
+      <td>
+        {if $coreMergedRecordData.urls}
+          {assign var="displayURLs" value=$coreMergedRecordData.urls}
+        {else}
+          {assign var="displayURLs" value=$coreOnlineURLs}
+        {/if}
+        {foreach from=$displayURLs item=urldesc}
+          <a href="{$urldesc.url|proxify|escape}" class="fulltext" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}<br/>
+        {/foreach}
+      </td>
+    </tr>
+    {/if}
+
     {assign var="idPrefix" value=$id|substr:0:8}
     {if !empty($coreURLs) || $coreOpenURL || $idPrefix == 'metalib_'}
     <tr valign="top" class="recordURLs">

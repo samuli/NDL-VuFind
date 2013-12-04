@@ -31,7 +31,7 @@ require_once 'JSON.php';
 // towards search results, so we'll keep this separate for now
 
 /**
- * JSON Call Slips action
+ * JSON UB request action
  * 
  * @category VuFind
  * @package  Controller_Record

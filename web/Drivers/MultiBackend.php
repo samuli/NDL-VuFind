@@ -44,6 +44,7 @@ require_once 'Interface.php';
 class MultiBackend implements DriverInterface
 {
     protected $config = null;
+    protected $driverCache = array();
     
     /**
      * Constructor
@@ -512,9 +513,33 @@ class MultiBackend implements DriverInterface
     }
     
     /**
+     * Get request groups
+     *
+     * @param integer $bibId    BIB ID
+     * @param array   $patronId Patron information returned by the patronLogin
+     * method.
+     *
+     * @return array  An array of associative arrays with requestGroupId and
+     * name keys
+     */
+    public function getRequestGroups($bibId, $patronId)
+    {
+        $source = $this->getSource($bibId);
+        $driver = $this->getDriver($source);
+        if ($driver) {
+            $groups = $driver->getRequestGroups(
+                $this->stripIdPrefixes($bibId, $source),
+                $this->stripIdPrefixes($patronId, $source)
+            );
+            return $groups;
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+    
+    /**
      * Get Default Pick Up Location
      *
-     * Returns the default pick up location set in HorizonXMLAPI.ini
+     * Returns the default pick up location
      *
      * @param array $patron      Patron information returned by the patronLogin
      * method.
@@ -534,10 +559,45 @@ class MultiBackend implements DriverInterface
             if ($holdDetails) {
                 if ($this->getSource($holdDetails['id']) != $source) {
                     // TODO: any other error handling?
-                    return '';                 
+                    return false;                 
                 }
             }
             $locations = $driver->getDefaultPickUpLocation(
+                $this->stripIdPrefixes($patron, $source),
+                $this->stripIdPrefixes($holdDetails, $source)
+            );
+            return $this->addIdPrefixes($locations, $source);
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }    
+    
+    /**
+     * Get Default Request Group
+     *
+     * Returns the default request group
+     *
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the request group options
+     * or may be ignored.
+     *
+     * @return string A location ID
+     * @access public
+     */
+    public function getDefaultRequestGroup($patron = false, $holdDetails = null)
+    {
+        $source = $this->getSource($patron['cat_username']);
+        $driver = $this->getDriver($source);
+        if ($driver) {
+            if ($holdDetails) {
+                if ($this->getSource($holdDetails['id']) != $source) {
+                    // TODO: any other error handling?
+                    return false;                 
+                }
+            }
+            $locations = $driver->getDefaultRequestGroup(
                 $this->stripIdPrefixes($patron, $source),
                 $this->stripIdPrefixes($holdDetails, $source)
             );
@@ -904,6 +964,11 @@ class MultiBackend implements DriverInterface
     protected function getDriver($source)
     {
         $source = strtolower($source);
+        
+        if (isset($this->driverCache[$source])) {
+            return $this->driverCache[$source];
+        }
+        
         if (isset($this->config[$source])) {
             // Try a local version first
             $driver = $this->config[$source]['driver'] . "Local_$source";
@@ -915,7 +980,9 @@ class MultiBackend implements DriverInterface
             }
             try {
                 include_once "{$driver}.php";
-                return new $driver($this->config[$source]['driver'] . "_{$source}.ini");
+                $driver = new $driver($this->config[$source]['driver'] . "_{$source}.ini");
+                $this->driverCache[$source] = $driver;
+                return $driver;
             } catch (Exception $e) {
                 error_log("MultiBackend: error initializing driver '$driver': " . $e->__toString());
                 return null;

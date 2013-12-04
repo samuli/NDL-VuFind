@@ -72,7 +72,7 @@ class Hold extends Record
             if (!$validate) {
                 if (isset($_REQUEST['lightbox'])) {
                     $interface->assign('lightbox', true);
-                    $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                    $interface->assign('results', array('status' => 'hold_error_blocked'));
                     $interface->display('Record/hold-submit.tpl');
                 } else {
                     header(
@@ -93,10 +93,12 @@ class Hold extends Record
             if (UserAccount::isLoggedIn()) {
                 if ($patron = UserAccount::catalogLogin()) {
                     // Block invalid requests:
-                    if (!$this->catalog->checkRequestIsValid(
+                    $result = $this->catalog->checkRequestIsValid(
                         $this->recordDriver->getUniqueID(),
                         $this->gatheredDetails, $patron
-                    )) {
+                    );
+                    
+                    if (!$result || $result === 'block') {
                         if (isset($_REQUEST['lightbox'])) {
                             $interface->assign('lightbox', true);
                             $interface->assign('results', array('status' => 'hold_error_blocked'));
@@ -122,6 +124,17 @@ class Hold extends Record
                     $interface->assign('pickup', $libs);
                     $interface->assign('home_library', $user->home_library);
 
+                    if ($this->gatheredDetails['level'] != 'item') {
+                        // Get list of request groups
+                        $requestGroups = $this->catalog->getRequestGroups(
+                            $this->recordDriver->getUniqueID(), $patron['id']
+                        );
+                        if (PEAR::isError($requestGroups)) {
+                            PEAR::raiseError($requestGroups);
+                        }
+                        $interface->assign('requestGroups', $requestGroups);
+                    }
+                    
                     $interface->assign('defaultDuedate', $this->getDefaultDueDate());
 
                     $extraHoldFields = isset($this->checkHolds['extraHoldFields'])
@@ -133,7 +146,19 @@ class Hold extends Record
                         $patron, $this->gatheredDetails
                     );
                     $interface->assign('defaultPickUpLocation', $defaultPickUpLoc);
-
+                    
+                    $defaultRequestGroup = $this->catalog->getDefaultRequestGroup(
+                        $patron, $this->gatheredDetails
+                    );
+                    $interface->assign('defaultRequestGroup', $defaultRequestGroup);
+                    
+                    $language = $interface->getLanguage();
+                    if (isset($this->checkHolds['helpText'][$language])) {
+                        $interface->assign('helpText', $this->checkHolds['helpText'][$language]);
+                    } elseif (isset($this->checkHolds['helpText'])) {
+                        $interface->assign('helpText', $this->checkHolds['helpText']);
+                    }
+                
                     if (isset($_POST['placeHold'])) {
                         // If the form contained a pickup location, make sure that
                         // the value has not been tampered with:
@@ -186,7 +211,7 @@ class Hold extends Record
             // Shouldn't Be Here
             if (isset($_REQUEST['lightbox'])) {
                 $interface->assign('lightbox', true);
-                $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                $interface->assign('results', array('status' => 'hold_error_blocked'));
                 $interface->display('Record/hold-submit.tpl');
             } else {
                 header(
@@ -294,7 +319,7 @@ class Hold extends Record
     private function _validateHoldData($linkData)
     {
         foreach ($linkData as $details) {
-            $keyValueArray[$details] = $_GET[$details];
+            $keyValueArray[$details] = isset($_GET[$details]) ? $_GET[$details] : '';
         }
         $hashKey = generateHMAC($linkData, $keyValueArray);
 
@@ -317,12 +342,12 @@ class Hold extends Record
             // Get Values Passed from holdings.php
             $i=0;
             foreach ($linkData as $details) {
-                $this->gatheredDetails[$details] = $_GET[$details];
+                $this->gatheredDetails[$details] = isset($_GET[$details]) ? $_GET[$details] : '';
                 // Build Logon URL
                 if ($i == 0) {
-                    $this->logonURL = "?".$details."=".urlencode($_GET[$details]);
+                    $this->logonURL = "?".$details."=".urlencode(isset($_GET[$details]) ? $_GET[$details] : '');
                 } else {
-                    $this->logonURL .= "&".$details."=".urlencode($_GET[$details]);
+                    $this->logonURL .= "&".$details."=".urlencode(isset($_GET[$details]) ? $_GET[$details] : '');
                 }
                 $i++;
             }

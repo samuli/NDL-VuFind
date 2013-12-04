@@ -154,6 +154,9 @@ class CatalogConnection
             if (isset($functionConfig['extraHoldFields'])) {
                 $response['extraHoldFields'] = $functionConfig['extraHoldFields'];
             }
+            if (isset($functionConfig['helpText'])) {
+                $response['helpText'] = $functionConfig['helpText']; 
+            }
         } else if (method_exists($this->driver, 'getHoldLink')) {
             $response = array('function' => "getHoldLink");
         }
@@ -244,6 +247,9 @@ class CatalogConnection
             if (isset($functionConfig['extraFields'])) {
                 $response['extraFields'] = $functionConfig['extraFields'];
             }
+            if (isset($functionConfig['helpText'])) {
+                $response['helpText'] = $functionConfig['helpText']; 
+            }
         }
         return $response;
     }
@@ -272,6 +278,9 @@ class CatalogConnection
             $response['HMACKeys'] = explode(":", $functionConfig['HMACKeys']);
             if (isset($functionConfig['extraFields'])) {
                 $response['extraFields'] = $functionConfig['extraFields'];
+            }
+            if (isset($functionConfig['helpText'])) {
+                $response['helpText'] = $functionConfig['helpText']; 
             }
         }
         return $response;

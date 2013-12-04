@@ -174,10 +174,12 @@ class Demo implements DriverInterface
         // Create a fake entry for each one
         for ($i = 0; $i < $records; $i++) {
             $status = $this->_getFakeStatus();
+            $itemId = rand()%50000;
             $holding[] = array(
                 'id'           => $id,
                 'number'       => $i+1,
-                'barcode'      => sprintf("%08d", rand()%50000),
+                'item_id'      => $itemId,
+                'barcode'      => sprintf("%08d", $itemId),
                 'availability' => $status == 'Available',
                 'status'       => $status,
                 'location'     => $this->_getFakeLoc(),
@@ -186,6 +188,7 @@ class Demo implements DriverInterface
                 'duedate'      => '',
                 'is_holdable'  => true,
                 'addLink'      => rand()%10 == 0 ? 'block' : true,
+                'callslip'     => 'auto',
                 'addCallSlipLink' => rand()%10 == 0 ? 'block' : 'check',
                 'ubrequest'    => 'auto',
                 'addUBRequestLink' => rand()%10 == 0 ? 'block' : 'check'
@@ -594,6 +597,50 @@ class Demo implements DriverInterface
         return $locations[0]['locationID'];
     }
 
+    /**
+     * Get Default Request Group
+     *
+     * Returns the default request group
+     *
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the request group options
+     * or may be ignored.
+     *
+     * @return string       The default request group for the patron.
+     */
+    public function getDefaultRequestGroup($patron = false, $holdDetails = null)
+    {
+        $requestGroups = $this->getRequestGroups(0, 0);
+        return $requestGroups[0]['id'];
+    }
+
+    /**
+     * Get request groups
+     *
+     * @param integer $bibId    BIB ID
+     * @param array   $patronId Patron information returned by the patronLogin
+     * method.
+     *
+     * @return array  False if request groups not in use or an array of 
+     * associative arrays with id and name keys
+     */
+    public function getRequestGroups($bibId, $patronId)
+    {
+        return array(
+            array(
+                'id' => 1,
+                'name' => 'Main Library'
+            ),                
+            array(
+                'id' => 2,
+                'name' => 'Branch Library'
+            )
+        );
+    }
+    
     /**
      * Get Funds
      *
@@ -1190,19 +1237,22 @@ class Demo implements DriverInterface
         if ($function == 'Holds') {
             return array(
                 'HMACKeys' => 'id',
-                'extraHoldFields' => 'comments:pickUpLocation'
+                'extraHoldFields' => 'comments:pickUpLocation',
+                'helpText' => 'Demo hold help text<br/>with <strong>some formatting</strong>'
             );
         } 
         if ($function == 'CallSlips') {
             return array(
                 'HMACKeys' => 'item_id:mfhd_id',
-                'extraFields' => 'item-issue:comments'
+                'extraFields' => 'item-issue:comments',
+                'helpText' => 'Demo call slip help text<br/>with <strong>some formatting</strong>'
             );
         }
         if ($function == 'UBRequests') {
             return array(
                 'enabled' => true,
-                'HMACKeys' => ''
+                'HMACKeys' => '',
+                'helpText' => 'Demo UB request help text<br/>with <strong>some formatting</strong>'
             );
         }
         return array();

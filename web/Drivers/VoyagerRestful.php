@@ -52,6 +52,13 @@ class VoyagerRestful extends Voyager
     protected $defaultPickUpLocation;
     protected $holdCheckLimit;
     protected $callSlipCheckLimit;
+    protected $itemHolds;
+    protected $requestGroups;
+    protected $defaultRequestGroup;
+    protected $pickupLocationsInRequestGroup;
+    
+    protected $getCache = array();
+    protected $sessionId = '';
     
     /**
      * Constructor
@@ -76,13 +83,26 @@ class VoyagerRestful extends Voyager
             = (isset($this->config['pickUpLocations']))
             ? $this->config['pickUpLocations'] : false;
         $this->defaultPickUpLocation
-            = $this->config['Holds']['defaultPickUpLocation'];
+            = (isset($this->config['Holds']['defaultPickUpLocation']))
+            ? $this->config['Holds']['defaultPickUpLocation'] : false;
         $this->holdCheckLimit
             = isset($this->config['Holds']['holdCheckLimit'])
             ? $this->config['Holds']['holdCheckLimit'] : "15";
         $this->callSlipCheckLimit
             = isset($this->config['CallSlips']['checkLimit'])
             ? $this->config['CallSlips']['checkLimit'] : "15";
+        $this->itemHolds
+            = isset($this->config['Holds']['enableItemHolds'])
+            ? $this->config['Holds']['enableItemHolds'] : true;
+        $this->requestGroups
+            = isset($this->config['Holds']['enableRequestGroups'])
+            ? $this->config['Holds']['enableRequestGroups'] : false;
+        $this->defaultRequestGroup
+            = isset($this->config['Holds']['defaultRequestGroup'])
+            ? $this->config['Holds']['defaultRequestGroup'] : false;
+        $this->pickupLocationsInRequestGroup
+            = isset($this->config['Holds']['pickupLocationsInRequestGroup'])
+            ? $this->config['Holds']['pickupLocationsInRequestGroup'] : false;
     }
 
     /**
@@ -261,7 +281,7 @@ class VoyagerRestful extends Voyager
 
         foreach ($holding as $i => $row) {
             $is_borrowable = $this->isBorrowable($row['_fullRow']['ITEM_TYPE_ID']);
-            $is_holdable = $this->isHoldable($row['_fullRow']['STATUS_ARRAY']);
+            $is_holdable = $this->itemHolds && $this->isHoldable($row['_fullRow']['STATUS_ARRAY']);
             $isCallSlipAllowed = $this->isCallSlipAllowed($row);
             // If the item cannot be borrowed or if the item is not holdable,
             // set is_holdable to false
@@ -356,6 +376,14 @@ class VoyagerRestful extends Voyager
                 return $result;
             }
         }
+        
+        if ('title' == $level && $this->requestGroups) {
+            // Verify that there are valid request groups
+            if (!$this->getRequestGroups($id, $patron['id'])) {
+                return false;
+            }
+        }
+        
         return true;
     }
 
@@ -456,7 +484,31 @@ class VoyagerRestful extends Voyager
         return $transactions;
     }
 
-     /**
+    /**
+     * Sort function for sorting pickup locations
+     * 
+     * @param array $a Pickup location
+     * @param array $b Pickup location
+     * 
+     * @return number
+     */
+    protected function pickUpLocationsSortFunction($a, $b)
+    {
+        $pickUpLocationOrder = isset($this->config['Holds']['pickUpLocationOrder']) ? explode(":", $this->config['Holds']['pickUpLocationOrder']) : array();
+        $pickUpLocationOrder = array_flip($pickUpLocationOrder);
+        if (isset($pickUpLocationOrder[$a['locationID']])) {
+            if (isset($pickUpLocationOrder[$b['locationID']])) {
+                return $pickUpLocationOrder[$a['locationID']] - $pickUpLocationOrder[$b['locationID']];
+            }
+            return -1;
+        } 
+        if (isset($pickUpLocationOrder[$b['locationID']])) {
+            return 1;
+        }
+        return strcasecmp($a['locationDisplay'], $b['locationDisplay']);
+    }
+    
+    /**
      * Get Pick Up Locations
      *
      * This is responsible for gettting a list of valid library locations for
@@ -476,6 +528,7 @@ class VoyagerRestful extends Voyager
      */
     public function getPickUpLocations($patron = false, $holdDetails = null)
     {
+        $pickResponse = array();
         if ($this->ws_pickUpLocations) {
             foreach ($this->ws_pickUpLocations as $code => $library) {
                 $pickResponse[] = array(
@@ -484,17 +537,30 @@ class VoyagerRestful extends Voyager
                 );
             }
         } else {
-            $sql = "SELECT CIRC_POLICY_LOCS.LOCATION_ID as location_id, " .
-                "NVL(LOCATION.LOCATION_DISPLAY_NAME, LOCATION.LOCATION_NAME) " .
-                "as location_name from " .
-                $this->dbName . ".CIRC_POLICY_LOCS, $this->dbName.LOCATION " .
-                "where CIRC_POLICY_LOCS.PICKUP_LOCATION = 'Y' ".
-                "and CIRC_POLICY_LOCS.LOCATION_ID = LOCATION.LOCATION_ID";
+            $params = array();
+            if ($this->requestGroups && $this->pickupLocationsInRequestGroup && isset($holdDetails['requestGroupId'])) {
+                $sql = "SELECT CIRC_POLICY_LOCS.LOCATION_ID as location_id, " .
+                    "NVL(LOCATION.LOCATION_DISPLAY_NAME, LOCATION.LOCATION_NAME) " .
+                    "as location_name from " .
+                    $this->dbName . ".CIRC_POLICY_LOCS, $this->dbName.LOCATION, " .
+                    "$this->dbName.REQUEST_GROUP_LOCATION rgl " .
+                    "where CIRC_POLICY_LOCS.PICKUP_LOCATION = 'Y' ".
+                    "and CIRC_POLICY_LOCS.LOCATION_ID = LOCATION.LOCATION_ID " .
+                    "and rgl.GROUP_ID=:requestGroupId and rgl.LOCATION_ID = LOCATION.LOCATION_ID ";
+                $params['requestGroupId'] = $holdDetails['requestGroupId'];
+            } else {
+                $sql = "SELECT CIRC_POLICY_LOCS.LOCATION_ID as location_id, " .
+                    "NVL(LOCATION.LOCATION_DISPLAY_NAME, LOCATION.LOCATION_NAME) " .
+                    "as location_name from " .
+                    $this->dbName . ".CIRC_POLICY_LOCS, $this->dbName.LOCATION " .
+                    "where CIRC_POLICY_LOCS.PICKUP_LOCATION = 'Y' ".
+                    "and CIRC_POLICY_LOCS.LOCATION_ID = LOCATION.LOCATION_ID";
+            }
 
             try {
                 $sqlStmt = $this->db->prepare($sql);
-                $this->debugLogSQL(__FUNCTION__, $sql);
-                $sqlStmt->execute();
+                $this->debugLogSQL(__FUNCTION__, $sql, $params);
+                $sqlStmt->execute($params);
             } catch (PDOException $e) {
                 return new PEAR_Error($e->getMessage());
             }
@@ -507,6 +573,10 @@ class VoyagerRestful extends Voyager
                 );
             }
         }
+        
+        // Sort pick up locations
+        usort($pickResponse, array($this, 'pickUpLocationsSortFunction'));
+        
         return $pickResponse;
     }
 
@@ -529,6 +599,238 @@ class VoyagerRestful extends Voyager
         return $this->defaultPickUpLocation;
     }
 
+    /**
+     * Get Default Request Group
+     *
+     * Returns the default request group set in VoyagerRestful.ini
+     *
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Optional array, only passed in when getting a list
+     * in the context of placing a hold; contains most of the same values passed to
+     * placeHold, minus the patron data.  May be used to limit the request group options
+     * or may be ignored.
+     *
+     * @return string       The default request group for the patron.
+     */
+    public function getDefaultRequestGroup($patron = false, $holdDetails = null)
+    {
+        return $this->defaultRequestGroup;
+    }
+
+    /**
+     * Sort function for sorting request groups
+     * 
+     * @param array $a Request group
+     * @param array $b Request group
+     * 
+     * @return number
+     */
+    protected function requestGroupSortFunction($a, $b)
+    {
+        $requestGroupOrder = isset($this->config['Holds']['requestGroupOrder']) ? explode(":", $this->config['Holds']['requestGroupOrder']) : array();
+        $requestGroupOrder = array_flip($requestGroupOrder);
+        if (isset($requestGroupOrder[$a['id']])) {
+            if (isset($requestGroupOrder[$b['id']])) {
+                return $requestGroupOrder[$a['id']] - $requestGroupOrder[$b['id']];
+            }
+            return -1;
+        } 
+        if (isset($requestGroupOrder[$b['id']])) {
+            return 1;
+        }
+        return strcasecmp($a['name'], $b['name']);
+    }
+    
+    /**
+     * Get request groups
+     *
+     * @param integer $bibId    BIB ID
+     * @param array   $patronId Patron information returned by the patronLogin
+     * method.
+     *
+     * @return array  False if request groups not in use or an array of 
+     * associative arrays with id and name keys
+     */
+    public function getRequestGroups($bibId, $patronId)
+    {
+        if (!$this->requestGroups) {
+            return false;
+        }
+        
+        $itemCheck = isset($this->config['Holds']['checkItemsExist']) && $this->config['Holds']['checkItemsExist'];
+
+        if ($itemCheck) {
+            // First get hold information for the list of items Voyager 
+            // thinks are holdable
+            $request = $this->determineHoldType($patronId, $bibId);
+            if ($request != 'hold' && $result != 'recall') {
+                return false;
+            }
+            
+            $hierarchy = array();
+    
+            // Build Hierarchy
+            $hierarchy['record'] = $bibId;
+            $hierarchy[$request] = false;
+    
+            // Add Required Params
+            $params = array(
+                "patron" => $patronId,
+                "patron_homedb" => $this->ws_patronHomeUbId,
+                "view" => "full"
+            );
+    
+            $results = $this->makeRequest($hierarchy, $params, "GET", false);
+    
+            if ($results === false) {
+                return new PEAR_Error('Could not fetch hold information');
+            } 
+    
+            $items = array();
+            foreach ($results->hold as $hold) {
+                foreach ($hold->items->item as $item) {
+                    $items[(string)$item->item_id] = 1;
+                }
+            }
+        }
+        
+        // Find request groups (with items if item check is enabled)
+        if ($itemCheck) {
+            $sqlExpressions = array(
+                'rg.GROUP_ID',
+                'rg.GROUP_NAME',
+                'bi.ITEM_ID'
+            );
+            
+            $sqlFrom = array(
+                "$this->dbName.BIB_ITEM bi",
+                "$this->dbName.MFHD_ITEM mi",
+                "$this->dbName.MFHD_MASTER mm",
+                "$this->dbName.REQUEST_GROUP rg",
+                "$this->dbName.REQUEST_GROUP_LOCATION rgl",
+            );
+            
+            $sqlWhere = array(
+                'bi.BIB_ID=:bibId',
+                'mi.ITEM_ID=bi.ITEM_ID',
+                'mm.MFHD_ID=mi.MFHD_ID',
+                'rgl.LOCATION_ID=mm.LOCATION_ID',
+                'rg.GROUP_ID=rgl.GROUP_ID'
+            );
+    
+            $sqlBind = array(
+                'bibId' => $bibId
+            );
+        } else {
+            $sqlExpressions = array(
+                'rg.GROUP_ID',
+                'rg.GROUP_NAME'
+            );
+            
+            $sqlFrom = array(
+                "$this->dbName.REQUEST_GROUP rg"
+            );
+            
+            $sqlWhere = array(
+            );
+    
+            $sqlBind = array(
+            );
+
+            if ($this->pickupLocationsInRequestGroup) {
+                // Limit to request groups that have valid pickup locations
+                $sqlFrom[] = "$this->dbName.REQUEST_GROUP_LOCATION rgl";
+                $sqlFrom[] = "$this->dbName.CIRC_POLICY_LOCS cpl";
+                
+                $sqlWhere[] = "rgl.GROUP_ID=rg.GROUP_ID";
+                $sqlWhere[] = "cpl.LOCATION_ID=rgl.LOCATION_ID";
+                $sqlWhere[] = "cpl.PICKUP_LOCATION='Y'";
+            }
+        }
+        
+        if (isset($this->config['Holds']['checkItemsAvailable']) && $this->config['Holds']['checkItemsAvailable']) {
+            
+            // Build inner query first
+            $subExpressions = array(
+                'sub_rgl.GROUP_ID',
+                'sub_i.ITEM_ID',
+                'max(sub_ist.ITEM_STATUS) as STATUS'
+            );
+            
+            $subFrom = array(
+                "$this->dbName.ITEM_STATUS sub_ist",
+                "$this->dbName.BIB_ITEM sub_bi",
+                "$this->dbName.ITEM sub_i",
+                "$this->dbName.REQUEST_GROUP_LOCATION sub_rgl",
+                "$this->dbName.MFHD_ITEM sub_mi",
+                "$this->dbName.MFHD_MASTER sub_mm"
+            );
+            
+            $subWhere = array(
+                'sub_bi.BIB_ID=:subBibId',
+                'sub_i.ITEM_ID=sub_bi.ITEM_ID',
+                'sub_ist.ITEM_ID=sub_i.ITEM_ID',
+                'sub_mi.ITEM_ID=sub_i.ITEM_ID',
+                'sub_mm.MFHD_ID=sub_mi.MFHD_ID',
+                'sub_rgl.LOCATION_ID=sub_mm.LOCATION_ID'
+            );
+    
+            $subGroup = array(
+                'sub_rgl.GROUP_ID',
+                'sub_i.ITEM_ID'
+            );
+
+            $sqlBind['subBibId'] = $bibId;
+            
+            $subArray = array(
+                'expressions' => $subExpressions,
+                'from' => $subFrom,
+                'where' => $subWhere,
+                'group' => $subGroup,
+                'bind' => array()
+            );
+            
+            $subSql = $this->buildSqlFromArray($subArray);
+            
+            $sqlWhere[] = "not exists (select status.GROUP_ID from ({$subSql['string']}) status where status.status=1 and status.GROUP_ID = rgl.GROUP_ID)";    
+        }
+        
+        $sqlArray = array(
+            'expressions' => $sqlExpressions,
+            'from' => $sqlFrom,
+            'where' => $sqlWhere,
+            'bind' => $sqlBind
+        );
+        
+        $sql = $this->buildSqlFromArray($sqlArray);
+
+        try {
+            $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
+            $sqlStmt = $this->db->prepare($sql['string']);
+            $sqlStmt->execute($sql['bind']);
+        } catch (PDOException $e) {
+            return new PEAR_Error($e->getMessage());
+        }
+        
+        $groups = array();
+        while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
+            if (!$itemCheck || isset($items[$row['ITEM_ID']])) {
+                $groups[$row['GROUP_ID']] = utf8_encode($row['GROUP_NAME']);
+            }
+        }
+        
+        $results = array();
+        foreach ($groups as $groupId => $groupName) {
+            $results[] = array('id' => $groupId, 'name' => $groupName);
+        }
+        
+        // Sort request groups
+        usort($results, array($this, 'requestGroupSortFunction'));
+        
+        return $results;
+    }
+    
      /**
      * Make Request
      *
@@ -568,8 +870,15 @@ class VoyagerRestful extends Voyager
             $urlParams .= "?" . implode("&", $queryString);
         }
 
+        if ($mode == 'GET' && isset($this->getCache[$urlParams])) {
+            return $this->getCache[$urlParams];
+        }
+        
         // Create Proxy Request
         $client = new Proxy_Request($urlParams);
+        if ($this->sessionId) {
+            $client->addCookie('JSESSIONID', $this->sessionId);
+        }
 
         // Select Method
         if ($mode == "POST") {
@@ -587,9 +896,18 @@ class VoyagerRestful extends Voyager
         }
 
         // Send Request and Retrieve Response
+        $startTime = microtime(true);
         $client->sendRequest();
+        $cookies = $client->getResponseCookies();
+        if ($cookies) {
+            foreach ($cookies as $cookie) {
+                if ($cookie['name'] == 'JSESSIONID') {
+                    $this->sessionId = $cookie['value'];
+                }
+            }
+        }
         $xmlResponse = $client->getResponseBody();
-        $this->debugLog("$mode request $urlParams, body:\n$xml\nResults:\n$xmlResponse");
+        $this->debugLog('[' . round(microtime(true) - $startTime, 4) . "s] {$this->sessionId} $mode request $urlParams, body:\n$xml\nResults:\n$xmlResponse");
         $oldLibXML = libxml_use_internal_errors();
         libxml_use_internal_errors(true);
         $simpleXML = simplexml_load_string($xmlResponse);
@@ -601,6 +919,9 @@ class VoyagerRestful extends Voyager
             $logger->log('Failed to parse response XML: ' . $error->message . ", response:\n" . $xmlResponse, PEAR_LOG_ERR);
             $this->debugLog('Failed to parse response XML: ' . $error->message . ", response:\n" . $xmlResponse);
             return false;
+        }
+        if ($mode == 'GET') {
+            $this->getCache[$urlParams] = $simpleXML;
         }
         return $simpleXML;
     }
@@ -704,75 +1025,119 @@ class VoyagerRestful extends Voyager
      */
     public function renewMyItems($renewDetails)
     {
-        $renewProcessed = array();
-        $renewResult = array();
-        $failIDs = array();
-        $patronId = $renewDetails['patron']['id'];
-
+        $finalResult = array('blocks' => array(), 'details' => array());
+        $patron = $renewDetails['patron'];
+        
         // Get Account Blocks
-        $finalResult['blocks'] = $this->checkAccountBlocks($patronId);
+        $finalResult['blocks'] = $this->checkAccountBlocks($patron['id']);
 
         if ($finalResult['blocks'] === false) {
             // Add Items and Attempt Renewal
+            $itemIdentifiers = '';
+            
             foreach ($renewDetails['details'] as $renewID) {
-                
                 list($dbKey, $loanId) = explode("|", $renewID);
-    
-                // Create Rest API Renewal Key
-                $restRenewID = ($dbKey ? $dbKey : $this->ws_dbKey) . '-' . $loanId;
                 
-                // Build an array of item ids which may be of use in the template
-                // file
-                $failIDs[$loanId] = "";
+                if (!$dbKey) {
+                    $dbKey = $this->ws_dbKey;
+                }
+                $dbKey = htmlspecialchars($dbKey, ENT_COMPAT, 'UTF-8');
+                $loanId = htmlspecialchars($loanId, ENT_COMPAT, 'UTF-8');
+                
+                $itemIdentifiers .= <<<EOT
+      <myac:itemIdentifier>
+       <myac:itemId>$loanId</myac:itemId>
+       <myac:ubId>$dbKey</myac:ubId>
+      </myac:itemIdentifier>
 
-                // Verify renewability. We should be ok here, but verify.
-                $renewable = $this->isRenewable($patronId, $restRenewID);
+EOT;
+            }
 
-                // Don't even try to renew a non-renewable item; we don't want to
-                // break any rules, and Voyager's API doesn't always enforce well.
-                if (isset($renewable['renewable']) && $renewable['renewable']) {
-                    // Build Hierarchy
-                    $hierarchy = array(
-                        "patron" => $patronId,
-                        "circulationActions" => "loans"
-                    );
+            $patronId = htmlspecialchars($patron['id'], ENT_COMPAT, 'UTF-8');
+            $lastname = htmlspecialchars($patron['lastname'], ENT_COMPAT, 'UTF-8');
+            $barcode = htmlspecialchars($patron['cat_username'], ENT_COMPAT, 'UTF-8');
+            $localUbId = htmlspecialchars($this->ws_patronHomeUbId, ENT_COMPAT, 'UTF-8');
+            
+            // The RenewService has a weird prerequisite that AuthenticatePatronService
+            // must be called first and JSESSIONID header be preserved. There's no
+            // explanation why this is required, and a quick check implies that RenewService
+            // works without it at least in Voyager 8.1, but who knows if it fails with UB
+            // or something, so let's try to play along with the rules.
+            $xml = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:serviceParameters xmlns:ser="http://www.endinfosys.com/Voyager/serviceParameters">
+  <ser:patronIdentifier lastName="$lastname" patronHomeUbId="$localUbId">
+    <ser:authFactor type="B">$barcode</ser:authFactor>
+  </ser:patronIdentifier>
+</ser:serviceParameters>             
+EOT;
+            
+            $response = $this->makeRequest(array('AuthenticatePatronService' => false), array(), 'POST', $xml);
+            if ($response === false) {
+                return new PEAR_Error('renew_error_system');
+            }
+            
+            $xml = <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:serviceParameters xmlns:ser="http://www.endinfosys.com/Voyager/serviceParameters">
+   <ser:parameters/>
+   <ser:definedParameters xsi:type="myac:myAccountServiceParametersType" xmlns:myac="http://www.endinfosys.com/Voyager/myAccount" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+$itemIdentifiers
+   </ser:definedParameters>
+  <ser:patronIdentifier lastName="$lastname" patronHomeUbId="$localUbId" patronId="$patronId">
+    <ser:authFactor type="B">$barcode</ser:authFactor>
+  </ser:patronIdentifier>
+</ser:serviceParameters>
+EOT;
 
-                    // Add Required Params
-                    $params = array(
-                        "patron_homedb" => $this->ws_patronHomeUbId,
-                        "view" => "full"
-                    );
-
-                    // Add to Hierarchy
-                    $hierarchy[$restRenewID] = false;
-
-                    // Attempt Renewal
-                    $renewalObj = $this->makeRequest($hierarchy, $params, "POST");
-
-                    $process = $this->processRenewals($renewalObj);
-                    if (PEAR::isError($process)) {
-                        return $process;
+            $response = $this->makeRequest(array('RenewService' => false), array(), 'POST', $xml);
+            if ($response === false) {
+                return false;
+            }
+            
+            // Process
+            $myac_ns = 'http://www.endinfosys.com/Voyager/myAccount';
+            $response->registerXPathNamespace('ser', 'http://www.endinfosys.com/Voyager/serviceParameters');
+            $response->registerXPathNamespace('myac', $myac_ns);
+            // The service doesn't actually return messages (in Voyager 8.1), but maybe in the future...
+            foreach ($response->xpath('//ser:message') as $message) {
+                if ($message->attributes()->type == 'system') {
+                    return false;
+                }
+            }
+            foreach ($response->xpath('//myac:clusterChargedItems') as $cluster) {
+                $cluster = $cluster->children($myac_ns);
+                $dbKey = (string)$cluster->cluster->ubSiteId;
+                foreach ($cluster->chargedItem as $chargedItem) {
+                    $chargedItem = $chargedItem->children($myac_ns);
+                    $renewStatus = $chargedItem->renewStatus;
+                    if (!$renewStatus) {
+                        continue;
                     }
-                    // Process Renewal
-                    $renewProcessed[] = $process;
+                    $renewed = false;
+                    foreach ($renewStatus->status as $status) {
+                        if ((string)$status == 'Renewed') {
+                            $renewed = true;
+                        }
+                    }
+                    
+                    $result = array();
+                    $result['item_id'] = (string)$chargedItem->itemId;
+                    $result['sysMessage'] = (string)$renewStatus->status;
+                    
+                    $dueDate = (string)$chargedItem->dueDate;
+                    $newDate = $this->dateFormat->convertToDisplayDate(
+                        "Y-m-d H:i", $dueDate
+                    );
+                    $newTime = $this->dateFormat->convertToDisplayTime(
+                        "Y-m-d H:i", $dueDate
+                    );
+                    $result['new_date'] = PEAR::isError($newDate) ? $dueDate : $newDate;
+                    $result['new_time'] = PEAR::isError($newTime) ? '' : $newTime;
+                    $result['success'] = $renewed;
+                    
+                    $finalResult['details'][$result['item_id']] = $result;
                 }
-            }
-
-            // Place Successfully processed renewals in the details array
-            foreach ($renewProcessed as $renewal) {
-                if ($renewal !== false) {
-                    $finalResult['details'][$renewal['item_id']] = $renewal;
-                    unset($failIDs[$renewal['item_id']]);
-                }
-            }
-            // Deal with unsuccessful results
-            foreach ($failIDs as $id => $junk) {
-                $finalResult['details'][$id] = array(
-                    "success" => false,
-                    "new_date" => false,
-                    "item_id" => $id,
-                    "sysMessage" => ""
-                );
             }
         }
         return $finalResult;
@@ -1000,7 +1365,7 @@ class VoyagerRestful extends Voyager
      */
     protected function determineHoldType($patronId, $bibId, $itemId = false)
     {
-        if ($itemId && isset($this->config['Holds']['enableItemHolds']) && !$this->config['Holds']['enableItemHolds']) {
+        if ($itemId && !$this->itemHolds) {
             return false;
         }
 
@@ -1044,6 +1409,198 @@ class VoyagerRestful extends Voyager
         );
     }
 
+    /**
+     * Check whether the given patron has the given bib record on loan.
+     *  
+     * @param integer $patronId Patron ID
+     * @param integer $bibId    BIB ID
+     *    
+     * @return boolean
+     */
+    protected function isRecordOnLoan($patronId, $bibId)
+    {
+        $sqlExpressions = array(
+            'count(cta.ITEM_ID) CNT'
+        );
+        
+        $sqlFrom = array(
+            "$this->dbName.BIB_ITEM bi",
+            "$this->dbName.CIRC_TRANSACTIONS cta"
+        );
+        
+        $sqlWhere = array(
+            'cta.PATRON_ID=:patronId',
+            'bi.BIB_ID=:bibId',
+            'bi.ITEM_ID=cta.ITEM_ID'
+        );
+
+        if ($this->requestGroups) {
+            $sqlFrom[] = "$this->dbName.REQUEST_GROUP_LOCATION rgl";
+            $sqlFrom[] = "$this->dbName.MFHD_ITEM mi";
+            $sqlFrom[] = "$this->dbName.MFHD_MASTER mm";
+            
+            $sqlWhere[] = "mi.ITEM_ID=cta.ITEM_ID";
+            $sqlWhere[] = "mm.MFHD_ID=mi.MFHD_ID";
+            $sqlWhere[] = "rgl.LOCATION_ID=mm.LOCATION_ID";
+        }
+        
+        $sqlBind = array('patronId' => $patronId, 'bibId' => $bibId);
+
+        $sqlArray = array(
+            'expressions' => $sqlExpressions,
+            'from' => $sqlFrom,
+            'where' => $sqlWhere,
+            'bind' => $sqlBind
+        );
+        
+        $sql = $this->buildSqlFromArray($sqlArray);
+
+        try {
+            $sqlStmt = $this->db->prepare($sql['string']);
+            $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
+            $sqlStmt->execute($sql['bind']);
+            $sqlRow = $sqlStmt->fetch(PDO::FETCH_ASSOC);
+            return $sqlRow['CNT'] > 0;
+        } catch (PDOException $e) {
+            return new PEAR_Error($e->getMessage());
+        }
+    }
+    
+    /**
+     * Check whether items exist for the given BIB ID
+     * 
+     * @param integer $bibId          BIB ID
+     * @param integer $requestGroupId Request group ID or null
+     * 
+     * @return boolean;
+     */
+    protected function itemsExist($bibId, $requestGroupId)
+    {
+        $sqlExpressions = array(
+            'count(i.ITEM_ID) CNT'
+        );
+        
+        $sqlFrom = array(
+            "$this->dbName.BIB_ITEM bi",
+            "$this->dbName.ITEM i",
+            "$this->dbName.MFHD_ITEM mi",
+            "$this->dbName.MFHD_MASTER mm"
+        );
+        
+        $sqlWhere = array(
+            'bi.BIB_ID=:bibId',
+            'i.ITEM_ID=bi.ITEM_ID',
+            'mi.ITEM_ID=i.ITEM_ID',
+            'mm.MFHD_ID=mi.MFHD_ID'
+        );
+
+        if (isset($this->config['Holds']['excludedItemLocations']) && $this->config['Holds']['excludedItemLocations']) {
+            $sqlWhere[] = 'mm.LOCATION_ID not in (' . str_replace(':', ',', $this->config['Holds']['excludedItemLocations']) . ')';
+        }
+        
+        $sqlBind = array('bibId' => $bibId);
+        
+        if ($this->requestGroups && isset($requestGroupId)) {
+            $sqlFrom[] = "$this->dbName.REQUEST_GROUP_LOCATION rgl";
+            
+            $sqlWhere[] = "rgl.LOCATION_ID=mm.LOCATION_ID";
+            $sqlWhere[] = "rgl.GROUP_ID=:requestGroupId";
+            
+            $sqlBind['requestGroupId'] = $requestGroupId;
+        }
+        
+        $sqlArray = array(
+            'expressions' => $sqlExpressions,
+            'from' => $sqlFrom,
+            'where' => $sqlWhere,
+            'bind' => $sqlBind
+        );
+        
+        $sql = $this->buildSqlFromArray($sqlArray);
+        try {
+            $sqlStmt = $this->db->prepare($sql['string']);
+            $this->debugLogSQL(__FUNCTION__, $sql['string'], $sql['bind']);
+            $sqlStmt->execute($sql['bind']);
+            $sqlRow = $sqlStmt->fetch(PDO::FETCH_ASSOC);
+            return $sqlRow['CNT'] > 0;
+        } catch (PDOException $e) {
+            return new PEAR_Error($e->getMessage());
+        }
+    }
+        
+    /**
+     * Check whether there are items available for loan for the given BIB ID
+     * 
+     * @param integer $bibId          BIB ID
+     * @param integer $requestGroupId Request group ID or null
+     * 
+     * @return boolean;
+     */
+    protected function itemsAvailable($bibId, $requestGroupId)
+    {
+        // Build inner query first
+        $sqlExpressions = array(
+            'i.ITEM_ID',
+            'max(ist.ITEM_STATUS) as STATUS'
+        );
+        
+        $sqlFrom = array(
+            "$this->dbName.ITEM_STATUS ist",
+            "$this->dbName.BIB_ITEM bi",
+            "$this->dbName.ITEM i",
+            "$this->dbName.MFHD_ITEM mi",
+            "$this->dbName.MFHD_MASTER mm"            
+        );
+        
+        $sqlWhere = array(
+            'bi.BIB_ID=:bibId',
+            'i.ITEM_ID=bi.ITEM_ID',
+            'ist.ITEM_ID=i.ITEM_ID',
+            'mi.ITEM_ID=i.ITEM_ID',
+            'mm.MFHD_ID=mi.MFHD_ID'
+        );
+        
+        if (isset($this->config['Holds']['excludedItemLocations']) && $this->config['Holds']['excludedItemLocations']) {
+            $sqlWhere[] = 'mm.LOCATION_ID not in (' . str_replace(':', ',', $this->config['Holds']['excludedItemLocations']) . ')';  
+        }
+
+        $sqlGroup = array(
+            'i.ITEM_ID'
+        );
+        
+        $sqlBind = array('bibId' => $bibId);
+        
+        if ($this->requestGroups && isset($requestGroupId)) {
+            $sqlFrom[] = "$this->dbName.REQUEST_GROUP_LOCATION rgl";
+            
+            $sqlWhere[] = "rgl.LOCATION_ID=mm.LOCATION_ID";
+            $sqlWhere[] = "rgl.GROUP_ID=:requestGroupId";
+            
+            $sqlBind['requestGroupId'] = $requestGroupId;
+        }
+        
+        $sqlArray = array(
+            'expressions' => $sqlExpressions,
+            'from' => $sqlFrom,
+            'where' => $sqlWhere,
+            'group' => $sqlGroup,
+            'bind' => $sqlBind
+        );
+        
+        $sql = $this->buildSqlFromArray($sqlArray);
+        $outersql = "select count(avail.item_id) CNT from (${sql['string']}) avail where avail.STATUS=1"; // 1 = not charged
+        
+        try {
+            $sqlStmt = $this->db->prepare($outersql);
+            $this->debugLogSQL(__FUNCTION__, $outersql, $sql['bind']);
+            $sqlStmt->execute($sql['bind']);
+            $sqlRow = $sqlStmt->fetch(PDO::FETCH_ASSOC);
+            return $sqlRow['CNT'] > 0;
+        } catch (PDOException $e) {
+            return new PEAR_Error($e->getMessage());
+        }
+    }
+        
     /**
      * Place Hold
      *
@@ -1111,16 +1668,130 @@ class VoyagerRestful extends Voyager
             // Invalid Pick Up Point
             return $this->holdError("hold_invalid_pickup");
         }
+        
+        // Optional check that the bib has items
+        if (isset($this->config['Holds']['checkItemsExist']) && $this->config['Holds']['checkItemsExist']) {
+            $result = $this->itemsExist($bibId, isset($holdDetails['requestGroupId']) ? $holdDetails['requestGroupId'] : null);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+            if (!$result) {
+                return $this->holdError('hold_no_items');
+            }          
+        }
+        
+        // Optional check that the bib has no available items
+        if (isset($this->config['Holds']['checkItemsAvailable']) && $this->config['Holds']['checkItemsAvailable']) {
+            $disabledGroups = isset($this->config['Holds']['disableAvailabilityCheckForRequestGroups']) ? explode(':', $this->config['Holds']['disableAvailabilityCheckForRequestGroups']) : array();
+            if (!isset($holdDetails['requestGroupId']) || !in_array($holdDetails['requestGroupId'], $disabledGroups)) {
+                $result = $this->itemsAvailable($bibId, isset($holdDetails['requestGroupId']) ? $holdDetails['requestGroupId'] : null);
+                if (PEAR::isError($result)) {
+                    return $result;
+                }
+                if ($result) {
+                    return $this->holdError('hold_items_available');
+                }             
+            }          
+        }
 
-        // Build Request Data
-        $requestData = array(
-            'pickupLocation' => $pickUpLocation,
-            'lastInterestDate' => $lastInterestDate,
-            'comment' => $comment
-        );
-
+        // Optional check that the patron doesn't already have the bib on loan
+        if (isset($this->config['Holds']['checkLoans']) && $this->config['Holds']['checkLoans']) {
+            $result = $this->isRecordOnLoan($patron['id'], $bibId);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+            if ($result) {
+                return $this->holdError('hold_record_already_on_loan');
+            }
+        }
+        
+        // Use XML Over HTTP Web Services for request group specific requests
+        //  since the restful interface doesn't support them.
+        if ($this->requestGroups && !$itemId) {
+            if (!isset($holdDetails['requestGroupId']) || $holdDetails['requestGroupId'] === '') {
+                return $this->holdError('hold_invalid_request_group');
+            }
+            
+            $patronId = htmlspecialchars($patron['id'], ENT_COMPAT, 'UTF-8');
+            $lastname = htmlspecialchars($patron['lastname'], ENT_COMPAT, 'UTF-8');
+            $barcode = htmlspecialchars($patron['cat_username'], ENT_COMPAT, 'UTF-8');
+            $pickupLocation = htmlspecialchars($pickUpLocation, ENT_COMPAT, 'UTF-8');
+            $requestGroupId = htmlspecialchars($holdDetails['requestGroupId'], ENT_COMPAT, 'UTF-8');
+            $comment = htmlspecialchars($comment, ENT_COMPAT, 'UTF-8');
+            $bibId = htmlspecialchars($bibId, ENT_COMPAT, 'UTF-8');
+            $localUbId = htmlspecialchars($this->ws_patronHomeUbId, ENT_COMPAT, 'UTF-8');
+            
+            // Attempt Request
+            $xml =  <<<EOT
+<?xml version="1.0" encoding="UTF-8"?>
+<ser:serviceParameters xmlns:ser="http://www.endinfosys.com/Voyager/serviceParameters">
+  <ser:parameters>
+    <ser:parameter key="bibId">
+      <ser:value>$bibId</ser:value>
+    </ser:parameter>
+    <ser:parameter key="bibDbCode">
+      <ser:value>LOCAL</ser:value>
+    </ser:parameter>
+    <ser:parameter key="requestCode">
+      <ser:value>HOLD</ser:value>
+    </ser:parameter>
+    <ser:parameter key="requestSiteId">
+      <ser:value>$localUbId</ser:value>
+    </ser:parameter>
+    <ser:parameter key="CVAL">
+      <ser:value>anyCopyAt</ser:value>
+    </ser:parameter>
+    <ser:parameter key="requestGroupId">
+      <ser:value>$requestGroupId</ser:value>
+    </ser:parameter>
+    <ser:parameter key="PICK">
+      <ser:value>$pickupLocation</ser:value>
+    </ser:parameter>
+    <ser:parameter key="REQNNA">
+      <ser:value>$lastInterestDate</ser:value>
+    </ser:parameter>
+    <ser:parameter key="REQCOMMENTS">
+      <ser:value>$comment</ser:value>
+    </ser:parameter>
+  </ser:parameters>
+  <ser:patronIdentifier lastName="$lastname" patronHomeUbId="$localUbId" patronId="$patronId">
+    <ser:authFactor type="B">$barcode</ser:authFactor>
+  </ser:patronIdentifier>
+</ser:serviceParameters>               
+EOT;
+            
+            $response = $this->makeRequest(array('SendPatronRequestService' => false), array(), 'POST', $xml);
+            
+            if ($response === false) {
+                return $this->holdError('hold_error_system');
+            }
+            // Process
+            $response->registerXPathNamespace('ser', 'http://www.endinfosys.com/Voyager/serviceParameters');
+            $response->registerXPathNamespace('req', 'http://www.endinfosys.com/Voyager/requests');
+            foreach ($response->xpath('//ser:message') as $message) {
+                if ($message->attributes()->type == 'success') {
+                    return array(
+                        'success' => true,
+                        'status' => 'hold_request_success'
+                    );
+                }
+                if ($message->attributes()->type == 'system') {
+                    return $this->holdError('hold_error_system');
+                }
+            }
+    
+            return $this->holdError('hold_error_blocked');
+        } 
+        
         if ($this->checkItemRequests($patron['id'], $type, $bibId, $itemId)) {
             // Attempt Request
+            // Build Request Data
+            $requestData = array(
+                'pickupLocation' => $pickUpLocation,
+                'lastInterestDate' => $lastInterestDate,
+                'comment' => $comment
+            );
+
             $result = $this->makeItemRequests(
                 $patron['id'], $type, $level, $requestData, $bibId, $itemId
             );
@@ -1771,7 +2442,10 @@ EOT;
      */
     public function getUBRequestDetails($details)
     {
-        $patron = $details['patron'];
+    	  $patron = $details['patron'];
+        if (strstr('.', $patron['id']) === false) {
+            return false;
+        }
         list($source, $patronId) = explode('.', $patron['id'], 2);
         if (!isset($this->config['UBRequestSources'][$source])) {
             return $this->holdError('ub_request_unknown_patron_source');
@@ -1922,7 +2596,7 @@ EOT;
      */
     public function getUBPickupLocations($details)
     {
-        $patron = $details['patron'];
+    		$patron = $details['patron'];
         list($source, $patronId) = explode('.', $patron['id'], 2);
         if (!isset($this->config['UBRequestSources'][$source])) {
             return $this->holdError('ub_request_unknown_patron_source');
@@ -1994,7 +2668,7 @@ EOT;
         if (!isset($this->config['UBRequestSources'][$source])) {
             return $this->holdError('ub_request_unknown_patron_source');
         }
-        
+                
         list($catSource, $catUsername) = explode('.', $patron['cat_username'], 2);
         $patronId = htmlspecialchars($patronId, ENT_COMPAT, 'UTF-8');
         $patronHomeUbId = htmlspecialchars($this->config['UBRequestSources'][$source], ENT_COMPAT, 'UTF-8');
