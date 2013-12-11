@@ -86,6 +86,8 @@ class AJAX_RenderRSS extends Action
         $rssFeed['dateFormat'] = isset($feed['dateFormat']) ? $feed['dateFormat'] : "j.n.";
         $rssFeed['images'] = isset($feed['images']) ? $feed['images'] : false;
         $rssFeed['moreLink'] = isset($feed['moreLink']) ? $feed['moreLink'] : true;
+        $rssFeed['title'] = isset($feed['title']) ? $feed['title'] : false;
+        $rssFeed['height'] = isset($feed['height']) ? str_replace('px', '', $rssFeed['height']) : 0;
 
         if(strlen(trim($rssFeed['dateFormat'])) == 0) {
             $rssFeed['date'] = false;
@@ -122,6 +124,12 @@ class AJAX_RenderRSS extends Action
             } else {
                 $rssFeed['items'] = $rss->getItems();
             }
+            
+            if (trim($feed['title']) == 'rss') {
+                $rssFeed['title'] = isset($rss->channel['title']) ? $rss->channel['title'] : false;
+            }
+            
+            
 
             /* process the raw data in the array before passing it on to the
              * template */
@@ -211,7 +219,7 @@ class AJAX_RenderRSS extends Action
                     $item['date'] = $dateTime->format($rssFeed['dateFormat']);
                 }
             }
-            
+
             /* calculate the scroll speed for the carousel */
                 $rssFeed['scrollSpeed'] = 1000 *
                                           ($rssFeed['scrolledItems'] /

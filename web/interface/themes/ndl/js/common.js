@@ -554,7 +554,7 @@ function isKeepFiltersOptionPresent() {
 }
 })(jQuery);
 
-function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
+function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed, fixedHeight) {
     this.currentCarousel = $('#NDLCarousel-' + carouselId);
     this.carouselParent = this.currentCarousel.parent();
 
@@ -564,6 +564,9 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
     this.itemsPerPage = itemsPerPage;
     this.scrolledItems = scrolledItems;
     this.scrollSpeed = scrollSpeed;
+    
+    var customHeight = (typeof fixedHeight !== 'undefined' && fixedHeight > 0) ?
+        fixedHeight : false;
 
     this.horizontalPadding = 2 * parseInt(this.currentCarousel.children().first().css('margin-right'), 10);
 
@@ -575,7 +578,7 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
 
         self.carouselWidth = self.currentCarousel.parent().width();
         this.itemWidth = (self.carouselWidth - (self.itemsPerPage * self.horizontalPadding)) / self.itemsPerPage;
-        self.carouselHeight = 1.36 * this.itemWidth;
+        self.carouselHeight = customHeight ? customHeight : 1.36 * this.itemWidth;
 
         self.currentCarousel.carouFredSel({
             responsive: true,
@@ -600,7 +603,7 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed) {
             onCreate: function(data) {
 
                 this.containerWidth = self.currentCarousel.children().first().width();
-                this.containerHeight = 1.36 * this.containerWidth;
+                this.containerHeight = customHeight ? customHeight : 1.36 * this.containerWidth;
                 this.containerRatio = this.containerWidth / this.containerHeight;
 
                 $('#NDLCarouselNavi-' + self.carouselId + ' li').css({
