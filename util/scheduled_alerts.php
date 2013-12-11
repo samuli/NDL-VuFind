@@ -196,6 +196,7 @@ class ScheduledAlerts
             $searchTime = time();
             $searchDate = gmdate($iso8601, time());
             $searchObject->setLimit(50);
+            $searchObject->disableLogging();
             $results = $searchObject->processSearch();
             if (PEAR::isError($results)) {
                 $this->msg('Search ' . $s->id . ' failed: ' . $results->getMessage());
