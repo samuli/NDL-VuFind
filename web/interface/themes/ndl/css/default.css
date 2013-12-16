@@ -2908,7 +2908,7 @@ ul.recordSet .addToFavLink a {
 }
 
 .resultTerms .content {
-    overflow:auto;
+    word-wrap:break-word;
 }
 .searchTerms {
     float: left;
