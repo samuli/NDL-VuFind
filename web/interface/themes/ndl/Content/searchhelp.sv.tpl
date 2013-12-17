@@ -5,17 +5,17 @@
   {literal}
   <h2 title="Wildcard Searches">Jokertecken</h2>
   <p>Frågetecken <strong>?</strong> ersätter exakt ett tecken i sökordet.</p>
-  <p><i>Exempel: Sök för båda ”ahlqvist” och ”ahlkvist” med</i></p>
+  <p><i>Exempel: Sök både ”ahlqvist” och ”ahlkvist” med</i></p>
   <pre class="code"><i>te?t</i></pre>
   <p>Asterisk <strong>*</strong> ersätter 0, 1 eller flera tecken i sökordet.
   </p>
-  <p><i>Exempel: Ord ”testning”, ”testningen”, ”testningar” och ”testningarna” kan sökas med</i>
+  <p><i>Exempel: Orden ”testning”, ”testningen”, ”testningar” och ”testningarna” kan sökas med</i>
   </p>
   <pre class="code"><i>test*</i></pre>
   <p>Asterisken kan användas även inom ordet:</p>
-  <p><i>Exempel: Man hittar båda "huvud" och "hufvud" med</i></p>
+  <p><i>Exempel: Man hittar både "huvud" och "hufvud" med</i></p>
   <pre class="code"><i>hu*vud</i></pre>
-  <p>Obs! Jokertecknena <strong>?</strong> och <strong>*</strong> kan inte vara det första tecken i ordet.
+  <p>Obs! Jokertecknen <strong>?</strong> och <strong>*</strong> kan inte vara det första tecknet i ordet.
   </p>
   {/literal}
 {/capture}
