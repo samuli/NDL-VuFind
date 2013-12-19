@@ -383,11 +383,11 @@ class LidoRecord extends IndexRecord
                 $places[] = $place;    
             }
             $actors = array();
-            if (isset($node->eventActor->actorInRole)) {
-                foreach ($node->eventActor->actorInRole as $actor) {
-                    if (isset($actor->actor->nameActorSet->appellationValue)) {
-                        $role = isset($actor->roleActor->term) ? $actor->roleActor->term : '';
-                        $actors[] = array('name'  => $actor->actor->nameActorSet->appellationValue, 'role' => $role);
+            if (isset($node->eventActor)) {
+                foreach ($node->eventActor as $actor) {
+                    if (isset($actor->actorInRole->actor->nameActorSet->appellationValue)) {
+                        $role = isset($actor->actorInRole->roleActor->term) ? $actor->actorInRole->roleActor->term : '';
+                        $actors[] = array('name'  => $actor->actorInRole->actor->nameActorSet->appellationValue, 'role' => $role);
                     }        
                 }
             }
