@@ -29,6 +29,11 @@ _paq.push(['setCustomVariable', 2, "RecordData", "{$id|escape:"html"}|{$recordAu
     {if $coreInstitutions}
 _paq.push(['setCustomVariable', 3, "RecordInstitution", "{$coreInstitutions.0|escape:"html"}", "page"]);
     {/if}
+    {*
+     * DO NOT MOVE trackPageView AROUND. IF LOADED TOGETHER WITH
+     * trackSiteSearch, CUSTOM VARIABLES ARE TRACKED TWICE
+     *}
+    _paq.push(['trackPageView']);
   {elseif ($module eq "Search" or $module eq "MetaLib" or $module eq "PCI")}
     {if $filterList}
 _paq.push(['setCustomVariable', 1, "Facets", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}|{$filter.display|escape:"html"}\t{/foreach}{/foreach}", "page"]);
@@ -41,7 +46,6 @@ _paq.push(['trackSiteSearch', "{if $lookfor}{$lookfor|escape:"html"}{/if}", "{if
   {/if}
 {literal}
 _paq.push(['enableLinkTracking']); 
-_paq.push(['trackPageView']); 
 var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript'; g.defer=true; g.async=true; g.src=u+'piwik.js'; 
 s.parentNode.insertBefore(g,s); })();
  </script> 
