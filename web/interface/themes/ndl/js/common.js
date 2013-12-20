@@ -347,9 +347,9 @@ function htmlEncode(value){
     }
 }
 
-// mostly lifted from http://docs.jquery.com/Frequently_Asked_Questions#How_do_I_select_an_element_by_an_ID_that_has_characters_used_in_CSS_notation.3F
+// escape element id so that it can be used as a selector
 function jqEscape(myid) {
-    return String(myid).replace(/(:|\.)/g,'\\$1');
+    return String(myid).replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
 }
 
 function printIDs(ids) {

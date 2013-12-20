@@ -5496,11 +5496,11 @@ div#closeContextHelp:active {
     padding: 1px 6px;
 }
 
-#hierarchyTree li li li {
+#hierarchyTree li.item {
     display:inline;
 }
 
-#hierarchyTree li li li a {
+#hierarchyTree li.item a {
     display:inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -5508,12 +5508,12 @@ div#closeContextHelp:active {
     width: 35%;
 }
 
-#hierarchyTree li li li.openPath a {
+#hierarchyTree li.item.openPath a {
     width:35%;
     margin: 2px 0 2px 8px;
 }
 
-#hierarchyTree li li li.moreLeaves a {
+#hierarchyTree li.moreLeaves a {
     border: 1px solid #4CC8D6;
     border-radius: 3px;
     clear: both;
@@ -5524,7 +5524,7 @@ div#closeContextHelp:active {
     width: auto;
 }
 
-#hierarchyTree li li li.moreLeaves {
+#hierarchyTree li.moreLeaves {
     display:block;
 }
 
