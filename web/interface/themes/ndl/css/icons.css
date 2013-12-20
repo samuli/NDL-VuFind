@@ -604,6 +604,10 @@ label.invalid:before {
 
 /* Main: Myresearch */
 
+.userIcon {
+	
+}
+
 .sessionHistory .add,
 .editItem .edit, #sidebarFavoritesLists .edit,
 .editItem .delete,
@@ -694,6 +698,16 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 }
 
 /* Myresearch */
+
+.usericon {
+	display:inline-block;
+	background: url(../images/icons16-24px-04.png)no-repeat;
+	background-position: -445px -5px;
+	width:30px;
+	height:31px;
+	margin-right:5px;
+	
+}
 
 .myResearch .iconlabel:before {
     margin-top:1px;
