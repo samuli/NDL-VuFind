@@ -7,7 +7,7 @@ var _paq = _paq || [];
 _paq.push(['setSiteId', {/literal}{$piwikSiteId}{literal}]); 
 _paq.push(['setTrackerUrl', u+'piwik.php']);{/literal}
 _paq.push(['setCustomUrl', location.protocol + '//' + location.host + location.pathname]);
-  {if ($module eq "Record")}
+  {if ($module eq 'Record')}
     {if $recordFormat}
       {if $recordFormat.1}
         {assign var=newRecordFormat value=$recordFormat.1}
@@ -29,12 +29,8 @@ _paq.push(['setCustomVariable', 2, "RecordData", "{$id|escape:"html"}|{$recordAu
     {if $coreInstitutions}
 _paq.push(['setCustomVariable', 3, "RecordInstitution", "{$coreInstitutions.0|escape:"html"}", "page"]);
     {/if}
-    {*
-     * DO NOT MOVE trackPageView AROUND. IF LOADED TOGETHER WITH
-     * trackSiteSearch, CUSTOM VARIABLES ARE TRACKED TWICE
-     *}
-    _paq.push(['trackPageView']);
-  {elseif ($module eq "Search" or $module eq "MetaLib" or $module eq "PCI")}
+_paq.push(['trackPageView']);
+  {elseif (($module eq 'Search' and ($action eq 'Results' or $action eq 'DualResults')) or (($module eq 'MetaLib' or $module eq 'PCI') and $action eq 'Search'))}
     {if $filterList}
 _paq.push(['setCustomVariable', 1, "Facets", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}|{$filter.display|escape:"html"}\t{/foreach}{/foreach}", "page"]);
 _paq.push(['setCustomVariable', 2, "FacetTypes", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}\t{/foreach}{/foreach}", "page"]);
@@ -42,7 +38,10 @@ _paq.push(['setCustomVariable', 2, "FacetTypes", "{foreach from=$filterList item
     {if $searchType}
 _paq.push(['setCustomVariable', 3, "SearchType", "{$searchType|escape:"html"}", "page"]);
     {/if}
+{* Use trackSiteSearch *instead* of trackPageView in search pages *}
 _paq.push(['trackSiteSearch', "{if $lookfor}{$lookfor|escape:"html"}{/if}", "{if $activePrefilter}{$activePrefilter|escape:"html"}{else}-{/if}", {if $recordCount}{$recordCount|escape:"html"}{else}false{/if}]);
+  {else}
+_paq.push(['trackPageView']);
   {/if}
 {literal}
 _paq.push(['enableLinkTracking']); 
