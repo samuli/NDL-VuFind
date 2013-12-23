@@ -39,7 +39,7 @@ _paq.push(['setCustomVariable', 2, "FacetTypes", "{foreach from=$filterList item
 _paq.push(['setCustomVariable', 3, "SearchType", "{$searchType|escape:"html"}", "page"]);
     {/if}
 {* Use trackSiteSearch *instead* of trackPageView in search pages *}
-_paq.push(['trackSiteSearch', "{if $lookfor}{$lookfor|escape:"html"}{/if}", "{if $activePrefilter}{$activePrefilter|escape:"html"}{else}-{/if}", {if $recordCount}{$recordCount|escape:"html"}{else}false{/if}]);
+_paq.push(['trackSiteSearch', "{if $lookfor}{$lookfor|escape:"html"}{else}-{/if}", "{if $activePrefilter}{$activePrefilter|escape:"html"}{else}-{/if}", {if $recordCount}{$recordCount|escape:"html"}{else}false{/if}]);
   {else}
 _paq.push(['trackPageView']);
   {/if}
