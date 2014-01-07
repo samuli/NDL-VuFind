@@ -39,7 +39,7 @@
       <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
       <br class="clear"/>
     {if $loginTargets}
-      <select id="login_target" name="login_target" class="{jquery_validation required='This field is required'}">
+      <select id="login_target" name="login_target" class="{jquery_validation required='Please choose a library'}">
         <option value="">{translate text="Choose library"}</option>
       {foreach from=$loginTargets item=target}
         <option value="{$target}"{if $target == $defaultLoginTarget} selected="selected"{/if}>{translate text=$target prefix='source_'}</option>
