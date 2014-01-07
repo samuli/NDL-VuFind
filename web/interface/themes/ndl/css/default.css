@@ -2824,7 +2824,7 @@ ul.recordSet .addToFavLink a {
     background:#b3e3e9;
 }
 .myResearchMenu {
-    background:#e6e6e6;
+    background:#9fddce;
 }
 .resultViewOptions {
     height:75px;
@@ -2902,11 +2902,12 @@ ul.recordSet .addToFavLink a {
     background: #b2e3ea;
 }
 .module-Search h2.account,
-.myresearchHeader,
 .module-Cart h2 {
     background: #b2e3ea;
 }
-
+.myresearchHeader {
+    background: #b1e9dc;
+}
 .resultTerms .content {
     word-wrap:break-word;
 }
@@ -4728,13 +4729,13 @@ p.citationText {
 }
 
 .myResearchMenu {
+    height: 40px;
+    margin-bottom: 1em;
     margin-top: 0;
     padding: 0;
-    padding-top: 40px;
-    margin-bottom: 1em;
 }
 .myResearchMenu .ui-state-default {
-    background-color: #808080;
+    background-color: transparent;
     font-weight: bold;
 }
 .myResearchMenu .ui-state-default a {
@@ -4742,12 +4743,63 @@ p.citationText {
 }
 .myResearchMenu .ui-tabs-selected {
     background-color: #fff;
+    border-left:none !important;
+}
+.myResearchMenu .ui-tabs-selected + li {
+    border-left:none !important;
 }
 .myResearchMenu .ui-tabs-selected a {
     color: #808080;
 }
+.myResearchMenu ul.ui-tabs-nav > li {
+    border-radius:0 !important;
+    border-left:2px solid #B1E9DC;
+    padding:0 !important;
+    top:0 !important;
+}
+.myResearchMenu ul.ui-tabs-nav > li:first-child {
+    border-left:0;
+}
+.myResearchMenu ul.ui-tabs-nav > li:last-child {
+    border-right:2px solid #B1E9DC;
+}
+.myResearchMenu ul.ui-tabs-nav {
+    float:left;
+    clear:both;
+}
+.myResearchMenu ul.ui-tabs-nav > li a {
+    color:#444;
+    font-size:14px;
+    font-weight:normal;
+}
+.myResearchMenu ul.ui-tabs-nav > li,
+.myResearchMenu ul.ui-tabs-nav > li a {
+    height:40px;
+    padding-top:0;
+    line-height:41px; /* 40px makes bold text misaligned vertically */
+    margin-right:0;
+    margin-left:0;
+    padding-bottom:0;
+}
+.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected {
+    border-right:none;
+}
+.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected a {
+    font-weight:bold;
+}
 .myResearch .noContentMessage {
     margin-top: 0em;
+}
+
+.myresearchHeader form {
+    display:none;
+}
+
+.myresearchHeader .usericon {
+    display: block;
+    float: left;
+    margin-right: 8px;
+    margin-top: -4px;
 }
 .module-MyResearch .backLink {
     padding: 1.5em 0;
@@ -4761,6 +4813,11 @@ p.citationText {
 .module-Cart form input[type="submit"],
 .module-MyResearch form input[type="submit"] {
     margin: 15px 0;
+}
+
+#loginform #login_target {
+    margin-top: 12px;
+    padding: 5px 6px;
 }
 
 /* Browse Lists */

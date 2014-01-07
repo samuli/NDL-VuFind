@@ -467,6 +467,47 @@
         padding-left:5px;
         padding-right:5px;
     }
+    .myresearchHeader {
+        position:relative;
+    }
+    .myresearchHeader h1 {
+        float:left;
+    }
+    
+    .myresearchHeader .showHelp + form {
+        right:60px;
+    }
+    
+    .myresearchHeader form { 
+        position:absolute;
+        right:10px;
+        top:-3px;
+    }
+    
+    .myresearchHeader form {
+        display:block;
+    }
+    
+    .myresearchHeader form .dropdown dt a {
+        background:#fff;
+        color: #444444;
+        font-size: 16px;
+        font-weight: 500;
+    }
+    
+    .myresearchHeader form .dropdown dt a:after {
+        background-image: url("../images/icons16-24px-02_black.png");
+        margin-left:6px;
+    }
+    
+    .myResearchMenu {
+        display:none;
+    }
+    
+
+
+    
+    
     /* Login form */
     .loginForm .separator, .loginForm .separatorSmall {
         width:100%;
