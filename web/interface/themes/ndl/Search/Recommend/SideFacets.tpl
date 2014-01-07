@@ -1,7 +1,9 @@
 <!-- START of: Search/Recommend/SideFacets.tpl -->
 
 <div class="sidegroup">
-  {if $recordCount > 0 || !empty($filterList) || $checkboxStatus != false}<h4>{translate text=$sideFacetLabel}</h4>{/if}
+  {if $recordCount > 0 || !empty($filterList) || $checkboxStatus != false}
+  {if in_array('sideFacets', $contextHelp)}<span id="contextHelp_sideFacets" class="showHelp">{translate text="Search Tips"}</span>{/if}
+<h4>{translate text=$sideFacetLabel}</h4>{/if}
   {if isset($checkboxFilters) && count($checkboxFilters) > 0}
       {foreach from=$checkboxFilters item=current}
         <div class="checkboxFilter{if $recordCount < 1 && !$current.selected && !$current.alwaysVisible} hide{/if}">

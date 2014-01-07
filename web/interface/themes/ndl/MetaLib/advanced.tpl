@@ -5,7 +5,7 @@
   <input name="join" type="hidden" value="AND">
   <div class="advSearchHeader">
     <div class="content">
-      <h1>{translate text='Advanced Search'}</h1><a class="advancedSearchHelpButton" href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a>
+      <h1>{translate text='Advanced Search'}</h1>{if in_array('searchMetaLibAdvanced', $contextHelp)}<span id="contextHelp_searchMetaLibAdvanced" class="showHelp">{translate text="Search Tips"}</span>{/if}
     </div>
    </div>
     <div class="content">

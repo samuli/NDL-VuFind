@@ -249,6 +249,17 @@ class UInterface extends Smarty
         if (isset($configArray['Site']['dualResultsEnabled']) && $configArray['Site']['dualResultsEnabled']) {
             $this->assign('dualResultsEnabled', true);    
         }
+
+        // Resolve enabled context-help ids
+        $contextHelp = array();
+        if (isset($configArray['ContextHelp'])) {
+            foreach ($configArray['ContextHelp'] as $key => $val) {
+                if ((boolean)$val) {
+                    $contextHelp[] = $key;
+                }
+            }
+        }
+        $this->assign('contextHelp', $contextHelp);
     }
 
     /**
@@ -613,7 +624,7 @@ class UInterface extends Smarty
     function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
     {
         $resource_name = $this->getLocalOverride($resource_name, false);
-        
+
         // Change resource_name to absolute path so that Smarty caching must take into account the theme directory
         $resource_name = $this->convertToAbsolutePath($resource_name);
         

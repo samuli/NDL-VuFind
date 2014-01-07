@@ -1,6 +1,9 @@
 <!-- START of: MetaLib/searchbox.tpl -->
 
 <div id="searchFormContainer" class="searchform searchformMetaLib last content"> 
+{if in_array('searchMetaLib', $contextHelp)}
+ <span id="contextHelp_searchMetaLib" class="showHelp">{translate text="Search Tips"}</span>
+{/if}
     
 {if $searchType != 'MetaLibAdvanced'}
   <form method="get" action="{$path}/MetaLib/Search" name="searchForm" id="searchForm" class="search">

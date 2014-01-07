@@ -3,7 +3,8 @@
   <div class="myresearchHeader">
   <div class="content">
     <div class="grid_24"><span class="usericon"></span><h1>{translate text="Your Account"}</h1>
-        <form action="" method="post">
+{if in_array('myAccount', $contextHelp)}<span id="contextHelp_myAccount" class="showHelp">{translate text="Search Tips"}</span>{/if}
+      <form action="" method="post">
         <select id="myResearchMenuMobile" name="myresearchmenumobile" class="jumpMenuURL">
         <option value="{$url}/MyResearch/Profile"{if $pageTemplate=="profile.tpl"} selected="selected"{/if}>{translate text='Profile'}</option>
         <option value="{$url}/MyResearch/CheckedOut"{if $pageTemplate=="checkedout.tpl"} selected="selected"{/if}>{translate text='Checked Out Items'}</option>

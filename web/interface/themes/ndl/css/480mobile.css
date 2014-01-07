@@ -505,8 +505,15 @@
     }
     
 
+    .myresearchHeader .showHelp {
+        right: 5px;
+    }
 
-    
+    #searchFormContainer .showHelp {
+        position: absolute;
+        right: -35px;
+        top: 13px;
+    }
     
     /* Login form */
     .loginForm .separator, .loginForm .separatorSmall {

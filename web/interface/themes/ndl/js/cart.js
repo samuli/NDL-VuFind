@@ -69,7 +69,6 @@ function registerUpdateCart($form) {
 }
 
 function cartHelp(msg, elId) {
-    contextHelp.flash('#' + elId, '10', '1', 'down', 'right', msg, 5000);
 }
 
 function redrawCartStatus() {

@@ -1,7 +1,8 @@
 <!-- START of: Search/searchbox.tpl -->
-
 <div id="searchFormContainer" class="searchform last content">
-
+{if in_array('search', $contextHelp)}
+ <span id="contextHelp_search" class="showHelp">{translate text="Search Tips"}</span>
+{/if}
 {if $searchType != 'advanced'}
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
@@ -22,11 +23,6 @@
 	      <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
 	      <div class="clear"></div>
 	    </div>
-    </div>
-    <div class="searchContextHelp">
-    {if isset($userLang)}
-      {include file="Content/searchboxhelp.$userLang.tpl"}
-    {/if}
     </div>
     
   {* Do we have any checkbox filters? *}

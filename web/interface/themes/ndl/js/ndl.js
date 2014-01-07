@@ -13,6 +13,7 @@ $(document).ready(function() {
     initCustomEyeCandy();
     initScrollRecord();
     initScrollMenu();
+    initContextHelp();
 });
 
 // Header menu
@@ -348,5 +349,32 @@ function initCustomEyeCandy() {
     });
    }
  }
+
+
+
+function initContextHelp() {
+    $('.showHelp').each(function() {
+        var id = $(this).attr("id");
+        // id is prepended with 'contextHelp_' to avoid collisions, remove it.
+        var needle = "contextHelp_";
+        if (id.indexOf(needle) === 0) {
+            id = id.substr(needle.length);
+        }
+        $(this).data("contextHelp", id);
+    });
+
+    $('.showHelp').click(function(e) {        
+        var id = $(e.target).data("contextHelp");
+        if (!hopscotch.getCurrTour() || hopscotch.getCurrTour().id != id) {
+            hopscotch.endTour();
+            var success = function (data, textStatus, jqxhr) {
+                if (data.length) {
+                    hopscotch.startTour(eval('contextHelp'));
+                }
+            };
+            $.getScript(path + '/AJAX/JSON?method=getContextHelp&id=' + id, success);
+        }
+    });
+}
 
 
