@@ -1131,6 +1131,7 @@ label.invalid {
     color:#EA5200;
     padding-bottom:2px;
     margin-left: 5px;
+    display:block;
 }
 
 label.invalid:before {
@@ -4753,13 +4754,15 @@ p.citationText {
 .module-MyResearch form fieldset {
     width: 98%;
     max-width: 500px;
+    margin-bottom:0.6em;
 }
 .module-Cart form input[type="submit"],
 .module-MyResearch form input[type="submit"] {
     margin: 15px 0;
 }
 
-#loginForm #login_target {
+#loginForm #login_target,
+.module-MyResearch #login_target {
     margin-top: 12px;
     padding: 5px 6px;
 }
