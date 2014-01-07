@@ -939,6 +939,27 @@ class JSON extends Action
     }
 
     /**
+     * Return a Hopscotch help tour content file from theme directory.
+     *
+     * @return void
+     * @access public
+     */
+    public function getContextHelp()
+    {
+        global $interface;
+
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        if ($id) {
+            $tpl = 'ContextHelp/' . $id . '.' . $interface->lang . '.tpl';
+            if ($interface->template_exists($tpl)) {
+                // Content-type needs to be text/plain for this to be callable from JQuery::getScript.
+                header('Content-Type:text/plain; charset=UTF-8');  
+                echo $interface->fetch($tpl);
+            }
+        }
+    }
+
+    /**
      * Send output data and exit.
      *
      * @param mixed  $data   The response data

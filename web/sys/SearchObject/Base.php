@@ -1003,7 +1003,7 @@ abstract class SearchObject_Base
         }
         
         // Sorting
-        if ($this->sort != null && $this->sort != $this->getDefaultSort()) {
+        if ($this->sort != null) {
             $params[] = "sort=" . urlencode($this->sort);
         }
 
@@ -1024,7 +1024,7 @@ abstract class SearchObject_Base
         }
 
         // Limit
-        if ($this->limit != null && $this->limit != $this->defaultLimit) {
+        if ($this->limit != null) {
             $params[] = "limit=" . urlencode($this->limit);
         }
 

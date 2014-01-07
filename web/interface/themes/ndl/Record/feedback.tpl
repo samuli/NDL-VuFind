@@ -8,7 +8,7 @@
     <input type="hidden" name="type" value="{$module|escape}" />
     {assign var=sourceTranslated value=$datasource|translate_prefix:'source_'}
     {assign var=institutionTranslated value=$institution|translate_prefix:'facet_'}
-    <label class="displayBlock" for="feedback_to">{translate text='To'}: {$institutionTranslated}{if $sourceTranslated != $institutionTranslated} / {$sourceTranslated}{/if}</label>
+    <label class="displayBlock" for="feedback_to">{translate text='feedback_to'}: {$institutionTranslated}{if $sourceTranslated != $institutionTranslated} / {$sourceTranslated}{/if}</label>
     <label class="displayBlock" for="feedback_from">{translate text='Email From'}:</label>
     <input id="feedback_from" type="text" name="from" size="40" class="{jquery_validation required='This field is required' email='Email address is invalid'}"{if $user->email} value="{$user->email}"{/if}/>
     <label class="displayBlock" for="feedback_message">{translate text='Message'}:</label>

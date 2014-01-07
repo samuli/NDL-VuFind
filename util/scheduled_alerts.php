@@ -26,6 +26,7 @@
  * @link     http://vufind.org/wiki/developer_manual Wiki
  */
 
+require_once 'reminder_task.php';
 require_once 'util.inc.php';
 require_once 'RecordDrivers/Factory.php';  
 require_once 'services/MyResearch/lib/Search.php';
@@ -46,15 +47,15 @@ require_once 'sys/VuFindDate.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
  * 
- * Takes two optional parameters on command line:
+ * Takes two parameters on command line:
  * 
- * php scheduled_alerts.php [main directory] [domain base]
+ * php scheduled_alerts.php [main directory] [email]
  * 
  *   main directory   The main VuFind directory. Each web directory must reside under this (default: ..)
- *   domain base      Main domain name when using subdomains for different web directories. 
+ *   email            Email address for error reporting 
  * 
  */
-class ScheduledAlerts
+class ScheduledAlerts extends ReminderTask
 {
     /**
      * Send scheduled alerts
@@ -64,7 +65,7 @@ class ScheduledAlerts
      *
      * @return void
      */
-    public function sendAlerts($mainDir, $domainModelBase)
+    public function send()
     {
         global $configArray;
         global $interface;
@@ -140,34 +141,14 @@ class ScheduledAlerts
                         }
                     }
                 }
-                if (!isset($datasourceConfig[$institution])) {
-                    $institution = 'default';
+
+                if (!$configArray = $this->readInstitutionConfig($institution)) {
+                    continue;
                 }
                 
-                if (isset($datasourceConfig[$institution]['mainView'])) {
-                    // Read institution's configuration
-                    $this->msg("Switching to configuration of '$institution'");
-                    $configPath = "$mainDir/" . $datasourceConfig[$institution]['mainView'] . '/conf';
-                    $configArray = readConfig($configPath);
-                } else {
-                    // Use default configuration
-                    $this->msg("Switching to default configuration");
-                    $configArray = $mainConfig;
-                }
-                
-                // Setup url if necessary
-                if (preg_match('/^https?:\/\/localhost/', $configArray['Site']['url'])) {
-                    if ($domainModelBase) {
-                        $parts = explode('/', $datasourceConfig[$institution]['mainView']);
-                        if (end($parts) == 'default') {
-                            array_pop($parts);
-                        }
-                        $configArray['Site']['url'] = 'http://' . implode('.', array_reverse($parts)) . ".$domainModelBase";
-                    } elseif ($s->schedule_base_url) {
-                        $configArray['Site']['url'] = $s->schedule_base_url;
-                    }
-                }
-                
+                $configArray['Site']['url'] = $s->schedule_base_url;
+
+
                 // Start Interface
                 $interface = new UInterface($siteLocal);
                 $validLanguages = array_keys($configArray['Languages']);
@@ -196,6 +177,7 @@ class ScheduledAlerts
             $searchTime = time();
             $searchDate = gmdate($iso8601, time());
             $searchObject->setLimit(50);
+            $searchObject->disableLogging();
             $results = $searchObject->processSearch();
             if (PEAR::isError($results)) {
                 $this->msg('Search ' . $s->id . ' failed: ' . $results->getMessage());
@@ -262,7 +244,8 @@ class ScheduledAlerts
             // Update search date
             $s->changeLastExecuted($searchDate);
         }
-        
+
+        $this->reportErrors();        
         $this->msg('Scheduled alerts execution completed');
     }
 
@@ -279,5 +262,6 @@ class ScheduledAlerts
     }
 }
 
-$alerts = new ScheduledAlerts();
-$alerts->sendAlerts(isset($argv[1]) ? $argv[1] : '..', isset($argv[2]) ? $argv[2] : false);
+$alerts = new ScheduledAlerts( isset($argv[1]) ? $argv[1] : '..', 
+                               isset($argv[2]) ? $argv[2] : false);
+$alerts->send();

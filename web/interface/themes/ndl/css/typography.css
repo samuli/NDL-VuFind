@@ -522,18 +522,6 @@ a.summHoldings {
     font-size: smaller;
 }
 
-/* contextHelp */
-table#contextHelp td.body h2 {
-    font-size: 1.4em;
-    font-weight: bold;
-}
-table#contextHelp a {
-    font-weight: bold;
-}
-table#contextHelp p {
-    font-size: .9em;
-    font-weight: bold;
-}
 
 /* Hierarchy Tree */
 #hierarchyTree #treeList li.currentHierarchy > a, #hierarchyTree #treeList li.currentRecord > a {

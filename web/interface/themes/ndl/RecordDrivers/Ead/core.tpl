@@ -64,13 +64,20 @@
       <td><a href="{$url}/Search/Results?lookfor={$coreOrigination|escape:"url"}&amp;type=Author">{$coreOrigination|escape}</a></td>
     </tr>
     {/if}
-    {if $displayFormat != 'Document/ArchiveFonds'} 
+    {if $displayFormat != 'Document/ArchiveFonds' && $displayFormat != 'Document/ArchiveCollection'} 
     <tr valign="top" class="recordHierarchyLinks">
       <th>{translate text='Archive:'}</th>
-      <td>{foreach from=$coreHierarchyTopId name=loop key=topKey item=topId}<a href="{$url}/Collection/{$topId|escape:"url"}">{$coreHierarchyTopTitle.$topKey|truncate:180:"..."|escape}</a>{if !$smarty.foreach.loop.last}, {/if}{/foreach}</td>
+      {if $coreIsPartOfArchiveSeries}
+        {assign var="topIds" value=$coreHierarchyTopId}
+        {assign var="topTitles" value=$coreHierarchyTopTitle}
+      {else}
+        {assign var="topIds" value=$coreHierarchyParentId}
+        {assign var="topTitles" value=$coreHierarchyParentTitle}
+      {/if}
+      <td>{foreach from=$topIds name=loop key=topKey item=topId}<a href="{$url}/Collection/{$topId|escape:"url"}">{$topTitles.$topKey|truncate:180:"..."|escape}</a>{if !$smarty.foreach.loop.last}, {/if}{/foreach}</td>
     </tr>
     {/if}  
-    {if $displayFormat != 'Document/ArchiveFonds' && $displayFormat != 'Document/ArchiveSeries'} 
+    {if $coreIsPartOfArchiveSeries && $displayFormat != 'Document/ArchiveFonds' && $displayFormat != 'Document/ArchiveSeries'} 
     <tr valign="top" class="recordHierarchyLinks">
       <th>{translate text='Archive Series:'}</th>
       <td>{foreach from=$coreHierarchyParentId name=loop key=parentKey item=parentId}<a href="{$url}/Record/{$parentId|escape:"url"}">{$coreHierarchyParentTitle.$parentKey|truncate:180:"..."|escape}</a>{if !$smarty.foreach.loop.last}, {/if}{/foreach}</td>
@@ -294,6 +301,20 @@
     </tr>
     {/if}
 
+
+    {if !empty($coreMeasurements)}
+    <tr valign="top" class="recordMeasurements">
+      <th>{translate text='Measurements'}: </th>
+      <td>
+        {foreach from=$coreMeasurements item=field name=loop}
+          {$field|escape}
+          {if !$smarty.foreach.loop.last}, {/if}
+        {/foreach}
+        </div>
+      </td>
+    </tr>
+    {/if}
+
     {if !empty($coreGenres)}
     <tr valign="top" class="recordGenres">
       <th>{translate text='Genre'}: </th>
@@ -342,37 +363,43 @@
     {/if}
 
     {assign var="idPrefix" value=$id|substr:0:8}
+    {capture name="links"}
+      {if $coreDocumentOrderLinkTemplate && $displayFormat == 'Document/ArchiveItem' && !$coreDigitizedMaterial}
+         <a href="{eval var=$coreDocumentOrderLinkTemplate}" target="_blank">{translate text='Document Order'}<br/>            
+       {/if}
+       {if $extendedAccess && $coreUsagePermissionRequestLinkTemplate}
+         <a href="{eval var=$coreUsagePermissionRequestLinkTemplate}" target="_blank">{translate text='Usage Permission Request'}<br/>
+       {/if}
+       {if $coreExternalLinkTemplate}
+          <span class="vakkaLink">
+             <a href="{eval var=$coreExternalLinkTemplate}" target="_blank">{translate text="view_in_vakka"}</a><br/>
+          </span>
+       {/if}
+       {foreach from=$coreURLs item=desc key=currentUrl name=loop}
+         <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
+       {/foreach}
+       {if $coreOpenURL}
+         {include file="Search/openurl.tpl" openUrl=$coreOpenURL}
+         {include file="Search/rsi.tpl"}
+         {include file="Search/openurl_autocheck.tpl"}
+       {/if}
+       {if $idPrefix == 'metalib_'}
+         <span class="metalib_link">
+           <span id="metalib_link_{$id|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$id|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a></span>
+           <span id="metalib_link_na_{$id|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
+         </span>
+       {/if}
+    {/capture}
+    {if $smarty.capture.links|trim ne ""}
     <tr valign="top" class="recordURLs">
       <th>{translate text='available_online'}: </th>
       <td>
         <div class="truncateField">
-          {if $displayFormat == 'Document/ArchiveItem' && !$coreDigitizedMaterial}
-            <a href="{eval var=$coreDocumentOrderLinkTemplate}" target="_blank">{translate text='Document Order'}<br/>            
-          {/if}
-          {if $extendedAccess}
-            <a href="{eval var=$coreUsagePermissionRequestLinkTemplate}" target="_blank">{translate text='Usage Permission Request'}<br/>            
-          {/if}
-          <span class="vakkaLink">
-            <a href="http://www.narc.fi:8080/VakkaWWW/Selaus.action?kuvailuTaso=AM&avain={$coreOriginationId|regex_replace:'/^.*?\-/':''|escape}" target="_blank">{translate text="view_in_vakka"}</a><br/>
-          </span>
-          {foreach from=$coreURLs item=desc key=currentUrl name=loop}
-            <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
-          {/foreach}
-          {if $coreOpenURL}
-            {include file="Search/openurl.tpl" openUrl=$coreOpenURL}
-            {include file="Search/rsi.tpl"}
-            {include file="Search/openurl_autocheck.tpl"}
-          {/if}
-          {if $idPrefix == 'metalib_'}
-            <span class="metalib_link">
-              <span id="metalib_link_{$id|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$id|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a></span>
-              <span id="metalib_link_na_{$id|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
-            </span>
-          {/if}
+          {$smarty.capture.links}
         </div>
       </td>
     </tr>
-    
+    {/if}
     {*
     {if !empty($coreRecordLinks)}
     {foreach from=$coreRecordLinks item=coreRecordLink}

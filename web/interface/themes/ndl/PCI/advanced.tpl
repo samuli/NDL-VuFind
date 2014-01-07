@@ -4,7 +4,7 @@
   <div class="{*span-10*}">
     <div class="advSearchHeader">
       <div class="content">
-        <h1>{translate text='pci_advanced_search_description'}</h1><a class="advancedSearchHelpButton" href="{$url}/Content/searchhelp">{translate text="Search Tips"}</a>
+        <h1>{translate text='pci_advanced_search_description'}</h1>{if in_array('searchPCIAdvanced', $contextHelp)}<span id="contextHelp_searchPCIAdvanced" class="showHelp">{translate text="Search Tips"}</span>{/if}        
       </div>
      </div>
       <div class="content">

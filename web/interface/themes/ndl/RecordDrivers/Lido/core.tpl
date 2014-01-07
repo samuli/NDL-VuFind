@@ -234,7 +234,7 @@ End Cover Image *}
         {if !empty($event.actors)}
         <br/>
 	        {foreach from=$event.actors item=actor name=actorsLoop}
-	          {if $smarty.foreach.actorsLoop.index > 1}, {/if}
+	          {if $smarty.foreach.actorsLoop.index > 0}<br/> {/if}
 	          {$actor.name|escape}{if !empty($actor.role)} ({$actor.role|escape}){/if}
 	        {/foreach}
         {/if}

@@ -26,6 +26,8 @@
  * @link     http://vufind.org/wiki/developer_manual Wiki
  */
 
+
+require_once 'reminder_task.php';
 require_once 'util.inc.php';
 require_once 'services/MyResearch/lib/User.php';
 require_once 'services/MyResearch/lib/User_account.php';
@@ -37,6 +39,7 @@ require_once 'sys/Mailer.php';
 require_once 'sys/Translator.php';
 require_once 'sys/VuFindDate.php';
 
+
 /**
  * Due Date Reminders Sender
  * 
@@ -46,25 +49,23 @@ require_once 'sys/VuFindDate.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
  * 
- * Takes two optional parameters on command line:
  * 
- * php scheduled_alerts.php [main directory] [domain base]
+ * php due_date_reminders.php [main directory] [email]
  * 
  *   main directory   The main VuFind directory. Each web directory must reside under this (default: ..)
- *   domain base      Main domain name when using subdomains for different web directories. 
+ *   email            Email address for error reporting 
  * 
  */
-class DueDateReminders
+class DueDateReminders extends ReminderTask
 {
     /**
      * Send due date reminders
      *
      * @param string $mainDir         The main VuFind directory. Each web directory must reside under this (default: ..)
-     * @param string $domainModelBase Main domain name when using subdomains for different web directories.
      *
      * @return void
      */
-    public function sendReminders($mainDir, $domainModelBase)
+    public function send()
     {
         global $configArray;
         global $interface;
@@ -102,6 +103,7 @@ class DueDateReminders
         $institution = false;
         $todayTime = new DateTime();
         $catalog = ConnectionManager::connectToCatalog();
+
         while ($user->fetch()) {
             if (!$user->email || trim($user->email) == '') {
                 $this->msg('User ' . $user->username . ' does not have an email address, bypassing due date reminders');
@@ -112,7 +114,7 @@ class DueDateReminders
             $userInstitution = reset(explode(':', $user->username, 2));
             if (!$institution || $institution != $userInstitution) {
                 $institution = $userInstitution;
-                
+
                 if (!isset($datasourceConfig[$institution])) {
                     foreach ($datasourceConfig as $code => $values) {
                         if (isset($values['institution']) && strcasecmp($values['institution'], $institution) == 0) {
@@ -121,32 +123,11 @@ class DueDateReminders
                         }
                     }
                 }
-                if (!isset($datasourceConfig[$institution])) {
-                    $institution = 'default';
+
+                if (!$configArray = $this->readInstitutionConfig($institution)) {
+                    continue;
                 }
-                
-                if (isset($datasourceConfig[$institution]['mainView'])) {
-                    // Read institution's configuration
-                    $this->msg("Switching to configuration of '$institution'");
-                    $configPath = "$mainDir/" . $datasourceConfig[$institution]['mainView'] . '/conf';
-                    $configArray = readConfig($configPath);
-                } else {
-                    // Use default configuration
-                    $this->msg("Switching to default configuration");
-                    $configArray = $mainConfig;
-                }
-                
-                // Setup url if necessary
-                if (preg_match('/^https?:\/\/localhost/', $configArray['Site']['url'])) {
-                    if ($domainModelBase) {
-                        $parts = explode('/', $datasourceConfig[$institution]['mainView']);
-                        if (end($parts) == 'default') {
-                            array_pop($parts);
-                        }
-                        $configArray['Site']['url'] = 'http://' . implode('.', array_reverse($parts)) . ".$domainModelBase";
-                    }
-                }
-                
+
                 // Start Interface
                 $interface = new UInterface($siteLocal);
                 $validLanguages = array_keys($configArray['Languages']);
@@ -249,21 +230,12 @@ class DueDateReminders
             }
         }
         
+        $this->reportErrors();
         $this->msg('Due date reminders execution completed');
     }
 
-    /**
-     * Output a message with a timestamp
-     * 
-     * @param string $msg Message
-     * 
-     * @return void
-     */
-    protected function msg($msg)
-    {
-        echo date('Y-m-d H:i:s') . ' [' . getmypid() . "] $msg\n"; 
-    }
 }
 
-$alerts = new DueDateReminders();
-$alerts->sendReminders(isset($argv[1]) ? $argv[1] : '..', isset($argv[2]) ? $argv[2] : false);
+$alerts = new DueDateReminders( isset($argv[1]) ? $argv[1] : '..', 
+                                isset($argv[2]) ? $argv[2] : false);
+$alerts->send();

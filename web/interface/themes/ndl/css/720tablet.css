@@ -308,6 +308,10 @@
         padding-left:5px;
         padding-right:5px;
     }
+    .myResearchMenu.ui-tabs .ui-tabs-nav li a {
+        padding-left:8px;
+        padding-right:8px;
+    }
     .favoritesList {
         width:470px;
     }

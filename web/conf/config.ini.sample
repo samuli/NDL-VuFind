@@ -25,6 +25,9 @@ path            = /vufind
 ; URL and local are optional; VuFind will attempt to auto-detect if omitted:
 ;url             = http://server/vufind
 local           = /usr/local/vufind/web
+urlSchema       = http://{institution}.finna.fi/{view}
+defaultPath     = default
+
 email           = finna-posti@helsinki.fi 
 title           = Finna
 theme           = institution
@@ -794,9 +797,10 @@ presenter_roles[] = "joht."
 ; Arranger roles that are displayed separately from other authors in component parts
 arranger_roles[] = "sov."
 
-; EAD record link templates (Smarty format)
-ead_document_order_link_template = "https://testavapaingest.narc.fi/astiaUi/palvelut/kdk_checkout.php?id={$coreIdentifier|escape:'url'}"
-ead_usage_permission_request_link_template = "https://testavapaingest.narc.fi/astiaUi/palvelut/kdk_askpermission.php?id={$coreIdentifier|escape:'url'}"
+; Datasource specific EAD record link templates (Smarty format)
+ead_external_link_template[narc] = "http://www.narc.fi:8080/VakkaWWW/Selaus.action?kuvailuTaso=AM&avain={$coreOriginationId|regex_replace:'/^.*?\-/':''|escape}"
+ead_document_order_link_template[narc] = "https://testavapaingest.narc.fi/astiaUi/palvelut/kdk_checkout.php?id={$coreIdentifier|escape:'url'}"
+ead_usage_permission_request_link_template[narc] = "https://testavapaingest.narc.fi/astiaUi/palvelut/kdk_askpermission.php?id={$coreIdentifier|escape:'url'}"
 
 ; The following two sections control the Alphabetic Browse module.
 [AlphaBrowse]
