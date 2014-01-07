@@ -101,21 +101,16 @@
         {assign var="dateRange" value="Date Range"}
         <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
         <dt><span class="yearLabel">{translate text=$cluster.label}</span>
-          {if $cluster.label === 'Main Year'}<span class="timelineview">open timeline</span>
-            {include file=$sideRecommendations.DateRangeVisAjax}
+          {if (($cluster.label === 'Main Year') || ($cluster.label === 'Published'))}<span class="timelineview">open timeline</span>
+            {*include file=$sideRecommendations.DateRangeVisAjax*}
+            {include file=Search/Recommend/DateRangeVisAjax.tpl}
           {/if}
         </dt>
         {if (($cluster.label === 'Main Year') || ($cluster.label === 'Published'))}
           <dd class="mainYearFormContainer1">
-          {if $module == "PCI"}
-            <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearFormPCI">
-              <input id="mainYearFromPCI" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">-
-              <input id="mainYearToPCI" type="text" value="{if $visFacets.search_sdaterange_mv.1 != "9999"}{$visFacets.search_sdaterange_mv.1}{/if}">
-          {else}
-            <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm">
+            <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm{if $module == "PCI"}PCI{/if}">
               <input id="mainYearFrom" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">-
               <input id="mainYearTo" type="text" value="{if $visFacets.search_sdaterange_mv.1 != "9999"}{$visFacets.search_sdaterange_mv.1}{/if}">
-          {/if}
               <input type="submit" value="{translate text='Search'}">
             </form>
           </dd>

@@ -8,7 +8,11 @@
         <!--[if IE]>{js filename="flot/excanvas.min.js"}<![endif]--> 
         {js filename="flot/jquery.flot.js"}
         {js filename="flot/jquery.flot.selection.js"}
-        {js filename="daterange_vis.js"}
+        {if $module == "PCI"}
+          {js filename="daterange_visPCI.js"}
+        {else}
+          {js filename="daterange_vis.js"}
+        {/if}
 
         {foreach from=$visFacets item=facetRange key=facetField}
           <div id="sidePubDateVis" class="{if $facetRange.label == "adv_search_year"}span-10{if $sidebarOnLeft} last{/if}{/if}">
@@ -25,7 +29,6 @@
         <script type="text/javascript">
           //<![CDATA[
           {literal} 
-          
           // Prepare the visualizer
           function loadVisNow(action) { 
             $('.dateVis').addClass('loading');
@@ -59,7 +62,12 @@
 
                 // Create the string of date params
                 {/literal}
-                visNavigation = 'filterField=search_sdaterange_mv&facetField=main_date_str&sdaterange[]={$filterField}&{$filterField}from='+padZeros(visDateStart)+'&{$filterField}to='+padZeros(visDateEnd)+'&{$searchParamsWithoutFilter|escape:'javascript'}';
+                {if $module == "PCI"}
+                  visNavigation = localStorage.getItem('lookFor') + '&filter[]=creationdate%3A"['+padZeros(visDateStart)+' TO '+padZeros(visDateEnd)+']"&{$searchParamsWithoutFilter|escape:'javascript'}';
+                  localStorage.removeItem('lookFor');
+                {else}
+                  visNavigation = 'filterField=search_sdaterange_mv&facetField=main_date_str&sdaterange[]={$filterField}&{$filterField}from='+padZeros(visDateStart)+'&{$filterField}to='+padZeros(visDateEnd)+'&{$searchParamsWithoutFilter|escape:'javascript'}';
+                {/if}
                 {literal}
               }
             } else {
@@ -76,7 +84,6 @@
         </script>
         </div>
     </div>
-
 {/if}
 
 <!-- END of: Search/Recommend/DateRangeVisAjax.tpl -->
