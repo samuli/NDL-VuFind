@@ -52,6 +52,7 @@
     {css media="screen, projection" filename="grid.css"}
     {css media="screen" filename="ui.dynatree.css"}
     {css media="screen" filename="datatables.css"}
+    {css media="screen, projection" filename="hopscotch-0.1.2.css"}
     
     {*  Set of css files based loosely on
         Less Framework 4 http://lessframework.com by Joni Korpi
@@ -62,7 +63,7 @@
     
     {css media="screen, projection" filename="icons.css"}
     {css media="screen, projection" filename="home.css"}
-    
+
     {css media="screen, projection" filename="breadcrumbs.css"}
     {css media="screen, projection" filename="footer.css"}
     {css media="screen, projection" filename="default_custom.css"}
@@ -145,6 +146,8 @@
     {* Load QRCodes *}
     {js filename="qrcode.js"} 
 
+    {* Load Hopscotch help plugin *}
+    {js filename="hopscotch-0.1.2.js"} 
     
     {* Load ndl theme functions *}
     {js filename="ndl.js"}

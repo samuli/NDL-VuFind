@@ -159,6 +159,10 @@ class Search extends Base
         $_SESSION['lastSearchURL'] = $this->searchObject->renderSearchUrl();
         // Save the display query too, so we can use it e.g. in the breadcrumbs
         $_SESSION['lastSearchDisplayQuery'] = $displayQuery;
+
+        // Initialize visFacets for PCI Published Timeline
+        $visFacets = array('search_sdaterange_mv' => array(0 => "", 1 => "", 'label' => "Other"));
+        $interface->assign('visFacets', $visFacets);
         
         $interface->display('layout.tpl');
     }

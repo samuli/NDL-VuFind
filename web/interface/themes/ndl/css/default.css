@@ -1061,62 +1061,6 @@ body > .ui-widget .button {
     margin-top:15px;
     color:#fff;
 }
-/* Search context help layer */
-.searchContextHelp {
-    position: absolute;
-    display: none;
-    z-index: 9;
-    width: 460px;
-    padding: 20px;
-    margin-top: 6px;
-    background: #ffffff;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    border: 1px solid #999999;
-    -webkit-box-shadow: 0 3px 4px #dddddd;
-    -moz-box-shadow: 0 3px 4px #dddddd;
-    box-shadow: 0 3px 10px #cccccc;
-
-    behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
-}
-.searchContextHelp p {
-    margin: 0 0 1em 0;
-}
-.searchContextHelp p.last {
-    margin: 0;
-}
-/* triangles */
-.searchContextHelp:before {
-    content: ' ';  
-    position: absolute;  
-    width: 0;  
-    height: 0;  
-    left: 99px;  
-    top: -21px;  
-    border: 25px solid;
-    border-width: 0 21px 21px;
-    border-color: #999999 transparent;  
-}
-.searchContextHelp:after {
-    content: ' ';  
-    position: absolute;  
-    width: 0;  
-    height: 0;  
-    left: 100px;  
-    top: -20px;  
-    border: 25px solid;
-    border-width: 0 20px 20px;
-    border-color: #ffffff transparent;  
-}
-.hideSearchHelp {
-    float: right;
-    margin: -10px -10px 0 0.5em;
-}
-.hideSearchHelp a {
-    float: right;
-    padding: 5px 5px 1em 1em;
-}
 
 #searchForm_searchButton {
     background: url("../images/search_buttons.png") no-repeat scroll -31px 0 transparent;
@@ -1187,6 +1131,7 @@ label.invalid {
     color:#EA5200;
     padding-bottom:2px;
     margin-left: 5px;
+    display:block;
 }
 
 label.invalid:before {
@@ -2824,7 +2769,7 @@ ul.recordSet .addToFavLink a {
     background:#b3e3e9;
 }
 .myResearchMenu {
-    background:#e6e6e6;
+    background:#9fddce;
 }
 .resultViewOptions {
     height:75px;
@@ -2902,13 +2847,14 @@ ul.recordSet .addToFavLink a {
     background: #b2e3ea;
 }
 .module-Search h2.account,
-.myresearchHeader,
 .module-Cart h2 {
     background: #b2e3ea;
 }
-
+.myresearchHeader {
+    background: #b1e9dc;
+}
 .resultTerms .content {
-    overflow:auto;
+    word-wrap:break-word;
 }
 .searchTerms {
     float: left;
@@ -4728,13 +4674,13 @@ p.citationText {
 }
 
 .myResearchMenu {
+    height: 40px;
+    margin-bottom: 1em;
     margin-top: 0;
     padding: 0;
-    padding-top: 40px;
-    margin-bottom: 1em;
 }
 .myResearchMenu .ui-state-default {
-    background-color: #808080;
+    background-color: transparent;
     font-weight: bold;
 }
 .myResearchMenu .ui-state-default a {
@@ -4742,12 +4688,63 @@ p.citationText {
 }
 .myResearchMenu .ui-tabs-selected {
     background-color: #fff;
+    border-left:none !important;
+}
+.myResearchMenu .ui-tabs-selected + li {
+    border-left:none !important;
 }
 .myResearchMenu .ui-tabs-selected a {
     color: #808080;
 }
+.myResearchMenu ul.ui-tabs-nav > li {
+    border-radius:0 !important;
+    border-left:2px solid #B1E9DC;
+    padding:0 !important;
+    top:0 !important;
+}
+.myResearchMenu ul.ui-tabs-nav > li:first-child {
+    border-left:0;
+}
+.myResearchMenu ul.ui-tabs-nav > li:last-child {
+    border-right:2px solid #B1E9DC;
+}
+.myResearchMenu ul.ui-tabs-nav {
+    float:left;
+    clear:both;
+}
+.myResearchMenu ul.ui-tabs-nav > li a {
+    color:#444;
+    font-size:14px;
+    font-weight:normal;
+}
+.myResearchMenu ul.ui-tabs-nav > li,
+.myResearchMenu ul.ui-tabs-nav > li a {
+    height:40px;
+    padding-top:0;
+    line-height:41px; /* 40px makes bold text misaligned vertically */
+    margin-right:0;
+    margin-left:0;
+    padding-bottom:0;
+}
+.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected {
+    border-right:none;
+}
+.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected a {
+    font-weight:bold;
+}
 .myResearch .noContentMessage {
     margin-top: 0em;
+}
+
+.myresearchHeader form {
+    display:none;
+}
+
+.myresearchHeader .usericon {
+    display: block;
+    float: left;
+    margin-right: 8px;
+    margin-top: -4px;
 }
 .module-MyResearch .backLink {
     padding: 1.5em 0;
@@ -4757,10 +4754,17 @@ p.citationText {
 .module-MyResearch form fieldset {
     width: 98%;
     max-width: 500px;
+    margin-bottom:0.6em;
 }
 .module-Cart form input[type="submit"],
 .module-MyResearch form input[type="submit"] {
     margin: 15px 0;
+}
+
+#loginForm #login_target,
+.module-MyResearch #login_target {
+    margin-top: 12px;
+    padding: 5px 6px;
 }
 
 /* Browse Lists */
@@ -5324,106 +5328,6 @@ table.summHoldings .statusColumn {
     width: 20%;
 }
 
-/*****************contextHelp*******************/
-
-table#contextHelp td, table#contextHelp tr {
-    padding: 0;
-}
-
-table#contextHelp {
-    z-index: 1;
-    display: none;
-    position: absolute;
-    border-spacing: 0;
-    border-collapse: collapse;
-    max-width: 400px;
-    top: 0;
-}
-table#contextHelp tr.top td, table#contextHelp tr.bottom td {
-    background-image: url(../images/contextHelp.png);
-    background-repeat: repeat-x;
-    height: 9px;
-}
-table#contextHelp tr.top td.left {
-    background-position: 0 0;
-    width: 4px;
-}
-table#contextHelp tr.top td.center {
-    background-position: 0 100%;
-}
-table#contextHelp tr.top td.right {
-    background-position: -4px 0;
-    width: 4px;
-}
-table#contextHelp tr.bottom td.left {
-    background-position: -12px 0;
-    width: 4px;
-}
-table#contextHelp tr.bottom td.center {
-    background-position: 0 -9px;
-}
-table#contextHelp tr.bottom td.right {
-    background-position: -8px 0;
-    width: 4px;
-}
-table#contextHelp tr.middle td{
-    background: #ededed;
-}
-table#contextHelp td.body {
-    padding: 12px 10px;
-    background: #ededed;
-}
-table#contextHelp td.body h2 {
-    margin-bottom: 5px;
-    color: #2D4687;
-}
-table#contextHelp a {
-    color: #04778E;
-    /*border-bottom: solid 1px #ACD4DB;*/
-    text-decoration: underline;
-}
-table#contextHelp a:hover {
-    color: #024A59;
-    /*border-color: #82A1A5;*/
-}
-table#contextHelp div.arrow {
-    height: 6px;
-    background-image: url(../images/contextHelp-arrow.png);
-    background-repeat: no-repeat;
-    margin: 0 15px;
-}
-table#contextHelp div.arrow.down {
-    background-position: 0 -6px;
-    margin-top: 3px;
-}
-table#contextHelp div.arrow.up {
-    background-position: 0 0;
-    margin-bottom: 3px;
-}
-table#contextHelp p {
-    text-align: left;
-}
-table#contextHelp p.separator {
-    background: url(../images/dashed-line-grey.gif) 0 top repeat-x scroll;
-    margin-top:15px;
-    padding-top:15px;
-}
-div#closeContextHelp {
-    float: right;
-    width: 16px;
-    height: 16px;
-    margin-top: -6px;
-    margin-right:-4px;
-    background: url(../images/cross-stack.png) 0 0;
-    cursor: pointer;
-}
-div#closeContextHelp:hover {
-    background-position: 0 -16px;
-}
-div#closeContextHelp:active {
-    background-position: 0 -32px;
-}
-
 
 /*** QRCode ***/
 
@@ -5496,11 +5400,11 @@ div#closeContextHelp:active {
     padding: 1px 6px;
 }
 
-#hierarchyTree li li li {
+#hierarchyTree li.item {
     display:inline;
 }
 
-#hierarchyTree li li li a {
+#hierarchyTree li.item a {
     display:inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -5508,12 +5412,12 @@ div#closeContextHelp:active {
     width: 35%;
 }
 
-#hierarchyTree li li li.openPath a {
+#hierarchyTree li.item.openPath a {
     width:35%;
     margin: 2px 0 2px 8px;
 }
 
-#hierarchyTree li li li.moreLeaves a {
+#hierarchyTree li.moreLeaves a {
     border: 1px solid #4CC8D6;
     border-radius: 3px;
     clear: both;
@@ -5524,7 +5428,7 @@ div#closeContextHelp:active {
     width: auto;
 }
 
-#hierarchyTree li li li.moreLeaves {
+#hierarchyTree li.moreLeaves {
     display:block;
 }
 
@@ -6041,3 +5945,45 @@ top:10px;
     min-width: 160px;
     word-wrap: break-word;
 }
+
+/** Hopscotch context-help  **/
+
+#startTourBtn {
+    margin-top:4px;
+}
+div.hopscotch-bubble {
+    max-width: none;
+}
+.hopscotch-content ul li {
+    margin-bottom: 1em;
+}
+.hopscotch-content ul li:last-child {
+    margin-bottom: 0em;
+}
+
+.showHelp {
+    background: url("../images/icons16-24px-04.png") repeat scroll -399px -3px;
+    cursor: pointer;
+    display: inline-block;
+    height: 35px;
+    float:right;
+    text-indent: -99999px;
+    width: 35px;
+}
+.sidegroup .showHelp {
+    margin-top: 18px;
+}
+.advSearchHeader .showHelp {
+    position: absolute;
+    right: 0px;
+    top: -4px;
+}
+.myresearchHeader .showHelp {
+    position: absolute;
+    right: -15px;
+    top: -4px;
+}
+.showHelp.visible {
+    display:inline-block;
+}
+

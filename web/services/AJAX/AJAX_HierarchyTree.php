@@ -48,7 +48,7 @@ class AJAX_HierarchyTree extends Action
         parent::__construct();
         // Setup Search Engine Connection
         $this->db = ConnectionManager::connectToIndex();
-        $_SESSION['no_store'] = true; 
+        $_SESSION['no_store'] = true;
     }
 
     /**
@@ -94,6 +94,8 @@ class AJAX_HierarchyTree extends Action
     public function getHierarchyTree($query = '', $returnArray = array(), $level = 0)
     {
         $query = ($query == '') ? $_GET['q'] : $query;
+        $query = str_replace(' ', '+', $query);
+
         if ($results = $this->db->getRecord($query)) {
             
             // If record has no parent, it is the root. 
@@ -111,8 +113,7 @@ class AJAX_HierarchyTree extends Action
             $parent = $results['hierarchy_parent_id'][0];
             $query = 'hierarchy_parent_id:"' . addcslashes($parent, '"') . '"';
 
-            // If result parent != hierarchy top, this is the outermost leaf level
-            $isBranch = ($results['hierarchy_parent_id'][0] == $results['hierarchy_top_id'][0]);
+            $isBranch = $this->hasChildren($results);
 
             if ($search = $this->db->search($query, null, null, 0, 999)) {
 
@@ -143,15 +144,15 @@ class AJAX_HierarchyTree extends Action
         if ($pos != 0) { // If offset set, remove limit
             $getNumber = 9999;
         }
+        $q = urlencode($q);
         $query = 'hierarchy_parent_id:"' . addcslashes($q, '"') . '"';
         $returnArray = array();
         $returnArray[] = array('false', ''); // Results clipped? (default=false, no position)
 
-
         if ($re = $this->db->search($query, null, null, $pos, $getNumber)) {
             if (isset($re['response']['docs'])) {
                 foreach ($re['response']['docs'] as $doc) {
-                    $isBranch = ($doc['hierarchy_parent_id'] == $doc['hierarchy_top_id']);
+                    $isBranch = $this->hasChildren($doc); 
                     $returnArray[] = array($doc['id'], $doc['title'], $isBranch);
                 }
 
@@ -167,6 +168,27 @@ class AJAX_HierarchyTree extends Action
         $jsonString = json_encode($returnArray);
         $this->outputJSON($jsonString);
     }
+
+    /** 
+     * Checks if the document has children (i.e. if it is an archive series or archive fond).
+     *
+     * @param $doc Solr result
+     * @return boolean
+     * @access public
+     */
+    protected function hasChildren($doc) 
+    {
+        $isBranch = false;
+        foreach ($doc['format'] as $format) {
+            // If format is not Archive series or Archive fond, this is the outermost leaf level
+            if (in_array($format, array('1/Document/ArchiveSeries/', '1/Document/ArchiveFonds/'))) {
+                $isBranch = true;
+                break;
+            }
+        }
+        return $isBranch;
+    }
+
 }
 
 ?>

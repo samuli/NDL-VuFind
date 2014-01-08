@@ -107,6 +107,10 @@ ul.documentTypes li {
     visibility: hidden;
 }
 
+#carouselContainer h2 {
+    color:#eee;
+}
+
 .NDLCarousel li {
     float: left;
     background-repeat: no-repeat;

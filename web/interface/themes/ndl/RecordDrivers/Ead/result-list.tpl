@@ -52,12 +52,20 @@
         {if !empty($summOrigination)}
           <span class="hierarchyDesc">{translate text='Archive Origination:'} </span><a href="{$url}/Search/Results?lookfor={$summOrigination|escape:"url"}&amp;type=Author">{$summOrigination|escape}</a>
         {/if}
-        {if $displayFormat != 'Document/ArchiveFonds'} 
-            <span class="hierarchyDesc">{translate text='Archive:'} </span>{foreach from=$summHierarchyTopId name=loop key=topKey item=topId}<a href="{$url}/Collection/{$topId|escape:"url"}">{$summHierarchyTopTitle.$topKey|truncate:180:"..."|escape}</a>{if !$smarty.foreach.loop.last}, {/if}{/foreach}
+        {if $displayFormat != 'Document/ArchiveFonds' && $displayFormat != 'Document/ArchiveCollection'} 
+          {if $isPartOfArchiveSeries}
+            {assign var="topIds" value=$summHierarchyTopId}
+            {assign var="topTitles" value=$summHierarchyTopTitle}
+          {else}
+            {assign var="topIds" value=$summHierarchyParentId}
+            {assign var="topTitles" value=$summHierarchyParentTitle}
+          {/if}
+          <span class="hierarchyDesc">{translate text='Archive:'} </span>{foreach from=$topIds name=loop key=topKey item=topId}<a href="{$url}/Collection/{$topId|escape:"url"}">{$topTitles.$topKey|truncate:180:"..."|escape}</a>{if !$smarty.foreach.loop.last}, {/if}{/foreach}
         {/if}  
-        {if $displayFormat != 'Document/ArchiveFonds' && $displayFormat != 'Document/ArchiveSeries'} 
-           <span class="hierarchyDesc">{translate text='Archive Series:'} </span>{foreach from=$summHierarchyParentId name=loop key=parentKey item=parentId}<a href="{$url}/Record/{$parentId|escape:"url"}">{$summHierarchyParentTitle.$parentKey|truncate:180:"..."|escape}</a>{if !$smarty.foreach.loop.last}, {/if}{/foreach}
-        {/if}  
+        {* Item belongs to a hierarchy with more than 2 levels, i.e. item is part of a series. *}
+        {if $isPartOfArchiveSeries && $displayFormat != 'Document/ArchiveFonds' && $displayFormat != 'Document/ArchiveSeries'} 
+          <span class="hierarchyDesc">{translate text='Archive Series:'} </span>{foreach from=$summHierarchyParentId name=loop key=parentKey item=parentId}<a href="{$url}/Record/{$parentId|escape:"url"}">{$summHierarchyParentTitle.$parentKey|truncate:180:"..."|escape}</a>{if !$smarty.foreach.loop.last}, {/if}{/foreach}
+        {/if}
     </div>
    
     {if !empty($coreOtherLinks)}

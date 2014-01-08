@@ -40,3 +40,13 @@ available = true
 
 [Shibboleth]
 ;login = https://haka.funet.fi/shibboleth/WAYF
+
+[ContextHelp]
+search = "0"
+searchAdvanced = "0"
+searchPCI = "0"
+searchPCIAdvanced = "0"
+searchMetaLib = "0"
+searchMetaLibAdvanced = "0"
+sideFacets = "0"
+myAccount = "0"

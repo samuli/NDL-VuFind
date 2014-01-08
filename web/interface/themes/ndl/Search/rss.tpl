@@ -10,6 +10,10 @@ if(($feed['type'] == "carousel") ||
    ($feed['type'] == "carousel-small") ||
    ($feed['type'] == "carousel-notext")) {
     echo "<div class=\"carousel-direction-" . $feed['direction'] . "\">";
+    if ($feed['title']) {
+        $feedTitle = ($feed['title'] == 'custom') ? translate('feed_title_'.$feed['id']) : $feed['title'];
+        echo "<h2>" . $feedTitle . "</h2>\n";
+   }
     echo "<ul id=\"NDLCarousel-" . $feed['id'] . "\"";
 
     $classes = "";
@@ -53,7 +57,9 @@ if(($feed['type'] == "carousel") ||
                 '{/literal}{$rssFeed.id}',
                 {$rssFeed.itemsPerPage},
                 {$rssFeed.scrolledItems},
-                {$rssFeed.scrollSpeed}{literal});
+                {$rssFeed.scrollSpeed},
+                {$rssFeed.height}
+                {literal});
          });
     </script>
     {/literal}{php}

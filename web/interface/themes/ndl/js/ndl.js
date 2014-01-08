@@ -13,6 +13,7 @@ $(document).ready(function() {
     initCustomEyeCandy();
     initScrollRecord();
     initScrollMenu();
+    initContextHelp();
 });
 
 // Header menu
@@ -181,9 +182,9 @@ function initSidebarFacets() {
     // Keep main year form visible
     moveMainYearForm = function(el) {
         if (!el.hasClass('timeline')) {
-            $('.mainYearForm').appendTo('.mainYearFormContainer1');
+            $('.mainYearForm, .mainYearFormPCI').appendTo('.mainYearFormContainer1');
         } else {
-            $('.mainYearForm').appendTo('.mainYearFormContainer2');
+            $('.mainYearForm, .mainYearFormPCI').appendTo('.mainYearFormContainer2');
         }
     }
     
@@ -226,31 +227,40 @@ function initSidebarFacets() {
     $(".mainYearFormPCI").submit(function(e){
         e.preventDefault();
         // Get dates, build query
-        var from = $('.mainYearFormPCI #mainYearFromPCI').val(),
-            to = $('.mainYearFormPCI #mainYearToPCI').val(),
+        var from = $('.mainYearFormPCI #mainYearFrom').val(),
+            to = $('.mainYearFormPCI #mainYearTo').val(),
             action = $('.mainYearFormPCI').attr('action');
+
+        // Store the values for timeline. See. daterange_visPCI.js
+        localStorage.setItem('PCIfrom', from);
+        localStorage.setItem('PCIto', to);
+ 
         if (action.indexOf("?") < 0) {
             action += '?'; // No other parameters, therefore add ?
         } else {
             action += '&'; // Other parameters found, therefore add &
         }
-        var query = action + 'filter[]=creationdate%3A';
+        // Check if older range exists and remove
+        if (/creationdate/.test(self.location.href)) {
+           var query = action.split("creationdate",1) + 'creationdate%3A';
+        } else {
+            var query = action + 'filter[]=creationdate%3A';
+        }
                 
         // Require numerical values
         if (!isNaN(from) && !isNaN(to)) {
             if (from == '' && to == '') { // both dates empty; use removal url
-                query = action;
-            } else if (from == '') { // only end date set
-                query += '"'+padZeros(to)+'"';
-            } else if (to == '')  { // only start date set
-                query += '"'+padZeros(from)+'"';
+                query = 'Search?'+localStorage.getItem('lookFor');
+            } else if (from == '') { // only end date set, see. daterange_visPCI.js
+                query += '"['+localStorage.getItem('PCIdataMin')+' TO '+padZeros(to)+']"';
+            } else if (to == '')  { // only start date set, see. daterange_visPCI.js
+                query += '"['+padZeros(from)+' TO '+localStorage.getItem('PCIdataMax')+']"';
             } else { // both dates set
-                query += '"['+padZeros(from)+' TO '+padZeros(to)+']'+'"';
+                query += '"['+padZeros(from)+' TO '+padZeros(to)+']"';
             }
-            query += '&view=list&limit=10';
 
             // Perform the new search
-            window.location = query;   
+            window.location = query;
         }
     });
 
@@ -348,5 +358,32 @@ function initCustomEyeCandy() {
     });
    }
  }
+
+
+
+function initContextHelp() {
+    $('.showHelp').each(function() {
+        var id = $(this).attr("id");
+        // id is prepended with 'contextHelp_' to avoid collisions, remove it.
+        var needle = "contextHelp_";
+        if (id.indexOf(needle) === 0) {
+            id = id.substr(needle.length);
+        }
+        $(this).data("contextHelp", id);
+    });
+
+    $('.showHelp').click(function(e) {        
+        var id = $(e.target).data("contextHelp");
+        if (!hopscotch.getCurrTour() || hopscotch.getCurrTour().id != id) {
+            hopscotch.endTour();
+            var success = function (data, textStatus, jqxhr) {
+                if (data.length) {
+                    hopscotch.startTour(eval('contextHelp'));
+                }
+            };
+            $.getScript(path + '/AJAX/JSON?method=getContextHelp&id=' + id, success);
+        }
+    });
+}
 
 

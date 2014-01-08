@@ -89,7 +89,7 @@ class Results extends Action
         }
 
         $interface->assign(
-        	"showContext",
+            'showContext',
             isset($configArray['Content']['showHierarchyTree'])
             ? $configArray['Content']['showHierarchyTree']
             : false

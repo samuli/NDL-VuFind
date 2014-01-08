@@ -1,6 +1,10 @@
 <!-- START of: PCI/searchbox.tpl -->
 
 <div id="searchFormContainer" class="searchform searchformPCI last content">
+{if in_array('searchPCI', $contextHelp)}
+ <span id="contextHelp_searchPCI" class="showHelp">{translate text="Search Tips"}</span>
+{/if}
+
   <form method="get" action="{$path}/PCI/Search" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
 	    <div class="searchFormWrapper">
@@ -19,11 +23,6 @@
 	  {/if}
 	      <a href="{$url}" class="small metalibLink">{translate text="Local Search"}</a>
 	    </div>
-    </div>
-    <div class="searchContextHelp">
-    {if isset($userLang)}
-      {include file="Content/searchboxhelp.$userLang.tpl"}
-    {/if}
     </div>
     
   {* Do we have any checkbox filters? *}

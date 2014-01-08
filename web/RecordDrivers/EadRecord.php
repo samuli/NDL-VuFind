@@ -82,6 +82,8 @@ class EadRecord extends IndexRecord
         global $interface;
         
         $template = parent::getCoreMetadata();
+
+        $interface->assign('coreIsPartOfArchiveSeries', $this->isPartOfArchiveSeries());
         
         $interface->assign('coreYearRange', $this->getYearRange());
         $interface->assign('coreOrigination', $this->getOrigination());
@@ -94,10 +96,26 @@ class EadRecord extends IndexRecord
         
         $interface->assign('coreSubjects', isset($this->fields['topic']) ? $this->fields['topic'] : array());
         $interface->assign('coreGeographicSubjects', isset($this->fields['geographic']) ? $this->fields['geographic'] : array());
+
+        if (isset($this->fields['measurements'])) {
+            $interface->assign('coreMeasurements', $this->fields['measurements']);
+        }
+
         
-        $interface->assign('coreDocumentOrderLinkTemplate', $configArray['Record']['ead_document_order_link_template']);
-        $interface->assign('coreUsagePermissionRequestLinkTemplate', $configArray['Record']['ead_usage_permission_request_link_template']);
-        
+        $datasource = $this->fields['datasource_str_mv'][0];
+        if (isset($configArray['Record']['ead_document_order_link_template'][$datasource])) {
+            $interface->assign('coreDocumentOrderLinkTemplate', $configArray['Record']['ead_document_order_link_template'][$datasource]);
+        }
+        if (isset($configArray['Record']['ead_usage_permission_request_link_template'][$datasource])) {
+            $interface->assign('coreUsagePermissionRequestLinkTemplate', $configArray['Record']['ead_usage_permission_request_link_template'][$datasource]);
+        }
+        if (isset($configArray['Record']['ead_external_link_template'][$datasource])) {
+            $interface->assign('coreExternalLinkTemplate', $configArray['Record']['ead_external_link_template'][$datasource]);
+        }
+
+
+
+
         return 'RecordDrivers/Ead/core.tpl';
     }
     
@@ -121,6 +139,8 @@ class EadRecord extends IndexRecord
         $interface->assign('summOrigination', $this->getOrigination());
         $interface->assign('summOriginationId', $this->getOriginationID());
         $interface->assign('summPhysicalLocation', $this->getPhysicalLocation());
+
+        $interface->assign('isPartOfArchiveSeries', $this->isPartOfArchiveSeries());
         
         return 'RecordDrivers/Ead/result-' . $view . '.tpl';
     }
@@ -142,6 +162,80 @@ class EadRecord extends IndexRecord
         // Send back the template name:
         return 'RecordDrivers/Hierarchy/collection-info.tpl';
     }
+
+    /**
+     * Check if an item is part of an archive series.
+     * 
+     * @return array
+     * @access protected
+     */
+    public function isPartOfArchiveSeries()
+    {
+        return isset($this->fields['hierarchy_parent_id'][0]) 
+            && isset($this->fields['hierarchy_top_id'][0])
+            && $this->fields['hierarchy_parent_id'][0] != $this->fields['hierarchy_top_id'][0]
+            && $this->fields['hierarchy_top_id'] != $this->fields['id'];
+    }
+
+    /**
+     * Return an associative array of image URLs associated with this record (key = URL,
+     * value = description), if available; false otherwise. 
+     *
+     * @param string $size Size of requested images
+     *
+     * @return mixed
+     * @access protected
+     */
+    public function getAllImages($size = 'large')
+    {
+        $urls = array();
+        $url = '';
+        $role = $size == 'large' 
+            ? 'image_reference'
+            : 'image_thumbnail';
+
+        foreach ($this->record->xpath("did/daogrp/daoloc[@role=\"$role\"]") as $node) {
+            $url = (string)$node->attributes()->href;
+            $urls[$url] = '';
+        }
+        return $urls;
+    }
+    
+    /**
+     * Return a URL to a thumbnail preview of the record, if available; false
+     * otherwise.
+     *
+     * @param array $size Size of thumbnail (small, medium or large -- small is
+     * default).
+     *
+     * @return mixed
+     * @access public
+     */
+    public function getThumbnail($size = 'small')
+    {
+        global $configArray;
+        if (isset($this->fields['thumbnail']) && $this->fields['thumbnail']) {
+            return $configArray['Site']['url'] . '/thumbnail.php?id=' .
+                urlencode($this->getUniqueID()) . '&size=' . urlencode($size);
+        }
+        return false;
+    }
+
+    /**
+     * Return the actual URL where a thumbnail can be retrieved, if available; false
+     * otherwise.
+     *
+     * @param array $size Size of thumbnail (small, medium or large -- small is
+     * default).
+     *
+     * @return mixed
+     * @access public
+     */
+    public function getThumbnailURL($size = 'small')
+    {
+        $urls = $this->getAllImages($size);
+        return $urls ? reset(array_keys($urls)) : false;
+    }
         
     /**
     * Return an associative array of URLs associated with this record (key = URL,
@@ -156,15 +250,23 @@ class EadRecord extends IndexRecord
         $url = '';
         foreach ($this->record->xpath('//daoloc') as $node) {
             $url = (string)$node->attributes()->href;
+            if (isset($node->attributes()->role) && $node->attributes()->role == 'image_thumbnail') {
+                continue;
+            }
+
+            $desc = $url;
             if ($node->daodesc) {
                 if ($node->daodesc->p) {
-                    $urls[$url] = (string)$node->daodesc->p;
+                    $desc = (string)$node->daodesc->p;
                 } else {
-                    $urls[$url] = (string)$node->daodesc;
+                    $desc = (string)$node->daodesc;
                 }
             } else {
-                $urls[$url] = $url;
+                if ($p = $node->xpath('parent::*/daodesc/p')) {
+                    $desc = $p[0];
+                }
             }
+            $urls[$url] = $desc;
         }
         
         // Portti links parsed from bibliography
@@ -475,4 +577,20 @@ class EadRecord extends IndexRecord
             ? (string)$this->record->did->unitid->attributes()->{'identifier'}
             : (string)$this->record->did->unitid;
     }
+
+    /**
+     * Get an array of physical descriptions of the item.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getPhysicalDescriptions()
+    {
+        $physDesc = parent::getPhysicalDescriptions();
+        if (isset($this->fields['material'])) {
+            $physDesc = array_merge($physDesc, $this->fields['material']);
+        }
+        return $physDesc;
+    }
+
 }

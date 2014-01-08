@@ -100,8 +100,8 @@ class PubDateVisAjax implements RecommendationInterface
     {
         global $interface;
 
-        // currently only works with Solr SearchObject
-        if (is_a($this->searchObject, 'SearchObject_Solr')) {
+        // currently only works with Solr SearchObject (maybe PCI too)
+        if ((is_a($this->searchObject, 'SearchObject_Solr')) || (is_a($this->searchObject, 'SearchObject_PCI'))) {
             $visFacets = $this->processDateFacets(
                 $this->searchObject->getFilters()
             );

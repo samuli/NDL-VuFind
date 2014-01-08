@@ -11,11 +11,11 @@ $(document).ready(function() {
 
 function initDropdowns() {
     // Hide dropdown when clicking outside
-    $(document).on('click touchstart', function(e) {
+    $(document).on('click', function(e) {
         $(".dropdown").trigger("toggle", [false]);
     });
     
-    $(".dropdown dt a").not(".initDone").on('click touchstart', function(e) {
+    $(".dropdown dt a").not(".initDone").on('click', function(e) {
         $(".dropdown").each(function(ind,o) { 
             var parObj = $(e.target).parent().parent();
             if ($(this).get(0) != parObj.get(0)) {
@@ -30,7 +30,7 @@ function initDropdowns() {
         return false;
     });
 
-    $(".dropdown dd ul li a").not(".initDone").on('click touchstart', function(e) {
+    $(".dropdown dd ul li a").not(".initDone").on('click', function(e) {
         var dropdown = $(this).closest('dl.dropdown');
         if (!dropdown.hasClass("dropdownStatic")) {
             var text = $(this).html();

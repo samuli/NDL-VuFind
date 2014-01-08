@@ -14,6 +14,108 @@ CREATE TABLE `change_tracker` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 --
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `password` varchar(32) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `firstname` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `lastname` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `email` varchar(250) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `cat_username` varchar(50) COLLATE utf8_swedish_ci DEFAULT NULL,
+  `cat_password` varchar(50) COLLATE utf8_swedish_ci DEFAULT NULL,
+  `college` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `major` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `home_library` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `language` varchar(30) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `due_date_notification` int(11) NOT NULL DEFAULT '0',
+  `due_date_reminder` int(11) NOT NULL DEFAULT '0',
+  `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  KEY `user_due_date_reminder_key` (`due_date_reminder`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
+-- Table structure for table `resource`
+--
+
+CREATE TABLE `resource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `record_id` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `title` varchar(200) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `source` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'VuFind',
+  `data` blob,
+  `title_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `author_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `date_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `format_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `record_id` (`record_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+
+--
+-- Table structure for table `user_account`
+--
+
+CREATE TABLE `user_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `account_name` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `description` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `cat_username` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `cat_password` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `home_library` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `saved` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `user_account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
+-- Table structure for table `user_list`
+--
+
+CREATE TABLE `user_list` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(200) COLLATE utf8_swedish_ci NOT NULL,
+  `description` text COLLATE utf8_swedish_ci,
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `public` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `user_list_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
+-- Table structure for table `user_resource`
+--
+
+CREATE TABLE `user_resource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `resource_id` int(11) NOT NULL,
+  `list_id` int(11) DEFAULT NULL,
+  `notes` text COLLATE utf8_swedish_ci,
+  `saved` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `user_id` (`user_id`),
+  KEY `list_id` (`list_id`),
+  CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_resource_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_resource_ibfk_4` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_resource_ibfk_5` FOREIGN KEY (`list_id`) REFERENCES `user_list` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
 -- Table structure for table `comments`
 --
 
@@ -109,45 +211,6 @@ CREATE TABLE `ratings` (
   CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
---
--- Table structure for table `resource`
---
-
-CREATE TABLE `resource` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `record_id` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `title` varchar(200) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `source` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'VuFind',
-  `data` blob,
-  `title_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `author_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `date_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `format_sort` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `record_id` (`record_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
-
---
--- Table structure for table `resource_tags`
---
-
-CREATE TABLE `resource_tags` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `resource_id` int(11) NOT NULL DEFAULT '0',
-  `tag_id` int(11) NOT NULL DEFAULT '0',
-  `list_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `posted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `resource_id` (`resource_id`),
-  KEY `tag_id` (`tag_id`),
-  KEY `list_id` (`list_id`),
-  CONSTRAINT `resource_tags_ibfk_14` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `resource_tags_ibfk_15` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `resource_tags_ibfk_16` FOREIGN KEY (`list_id`) REFERENCES `user_list` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `resource_tags_ibfk_17` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 --
 -- Table structure for table `search`
@@ -196,84 +259,23 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 --
--- Table structure for table `user`
+-- Table structure for table `resource_tags`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `resource_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `password` varchar(32) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `firstname` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `lastname` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `email` varchar(250) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `cat_username` varchar(50) COLLATE utf8_swedish_ci DEFAULT NULL,
-  `cat_password` varchar(50) COLLATE utf8_swedish_ci DEFAULT NULL,
-  `college` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `major` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `home_library` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `language` varchar(30) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `due_date_notification` int(11) NOT NULL DEFAULT '0',
-  `due_date_reminder` int(11) NOT NULL DEFAULT '0',
-  `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  KEY `user_due_date_reminder_key` (`due_date_reminder`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
-
---
--- Table structure for table `user_account`
---
-
-CREATE TABLE `user_account` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `account_name` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `description` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `cat_username` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `cat_password` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `home_library` varchar(100) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `saved` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `user_account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
-
---
--- Table structure for table `user_list`
---
-
-CREATE TABLE `user_list` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `title` varchar(200) COLLATE utf8_swedish_ci NOT NULL,
-  `description` text COLLATE utf8_swedish_ci,
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `public` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `user_list_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
-
---
--- Table structure for table `user_resource`
---
-
-CREATE TABLE `user_resource` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `resource_id` int(11) NOT NULL,
+  `resource_id` int(11) NOT NULL DEFAULT '0',
+  `tag_id` int(11) NOT NULL DEFAULT '0',
   `list_id` int(11) DEFAULT NULL,
-  `notes` text COLLATE utf8_swedish_ci,
-  `saved` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_id` int(11) DEFAULT NULL,
+  `posted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `resource_id` (`resource_id`),
   KEY `user_id` (`user_id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `tag_id` (`tag_id`),
   KEY `list_id` (`list_id`),
-  CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `user_resource_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `user_resource_ibfk_4` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `user_resource_ibfk_5` FOREIGN KEY (`list_id`) REFERENCES `user_list` (`id`) ON DELETE CASCADE
+  CONSTRAINT `resource_tags_ibfk_14` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `resource_tags_ibfk_15` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `resource_tags_ibfk_16` FOREIGN KEY (`list_id`) REFERENCES `user_list` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `resource_tags_ibfk_17` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
