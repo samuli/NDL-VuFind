@@ -6,7 +6,7 @@ var contextHelp = {
     {
       target: '.sidegroup h4',
       title: 'Rajaa hakua',
-      content: '<li>Voit rajata tekemääsi hakua pidemmälle.</li><li>In hoc igitur libro philosophus primo ponit prooemium, demonstrans suam intentionem: secundo prosequitur propositum.</li>',
+      content: '<li>Rajaa hakutulosta tarkemmaksi esimerkiksi <strong>saatavuuden</strong>, <strong>toimialan</strong>, <strong>organisaation</strong> tai <strong>aineistotyypin</strong> mukaan. Rajausvaihtoehdot vaihtelevat hakutyypin (<em>paikallinen haku</em> tai <em>PCI-haku</em>) mukaan.<br><br></li><li>Poista tehtyjä rajauksia napilla <strong>X</strong> tai tee uusi haku. Voit myös säilyttää rajaukset uudessa haussa valitsemalla hakukentän alle ilmestyvä <strong>Säilytä aiemmat rajaukset</strong>.</li>',
       placement: 'top',
       xOffset: -30,
       yOffset: 20,
