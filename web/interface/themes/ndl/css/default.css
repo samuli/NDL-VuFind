@@ -1882,6 +1882,7 @@ ul.recordSet .resultItemLine2{
 .resultImage {
     margin: -126px 0 0 0;
     width: 126px;
+    max-height: 200px;
     position: relative;
     z-index: 2;
 }
