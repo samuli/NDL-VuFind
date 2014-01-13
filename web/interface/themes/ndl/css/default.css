@@ -4072,7 +4072,9 @@ table.datagrid td {
 }
 
 .holdingsHoldingURLs {
+/*
     background:url(../images/icons16-24px.png) -404px -11px no-repeat;
+*/
     padding-left:30px;
     font-weight:bold;
     margin-bottom:10px;
