@@ -145,6 +145,33 @@ class LidoRecord extends IndexRecord
         
         return 'RecordDrivers/Lido/result-' . $view . '.tpl';
     }
+
+    /**
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display a summary of the item suitable for use in
+     * user's favorites list.
+     *
+     * @param object $user      User object owning tag/note metadata.
+     * @param int    $listId    ID of list containing desired tags/notes (or null
+     * to show tags/notes from all user's lists).
+     * @param bool   $allowEdit Should we display edit controls?
+     *
+     * @return string           Name of Smarty template file to display.
+     * @access public
+     */    
+    public function getListEntry($user, $listId = null, $allowEdit = true)
+    {
+        
+        global $interface;
+
+        $res = parent::getListEntry($user, $listId, $allowEdit);
+        $resultDates = $this->getResultDates();
+        if ($resultDates) {
+            $interface->assign('listDate', $resultDates);
+        }
+
+        return $res;
+    }
     
     /**
      * Return an associative array of image URLs associated with this record (key = URL,

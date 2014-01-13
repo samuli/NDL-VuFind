@@ -832,7 +832,9 @@ class IndexRecord implements RecordInterface
         $interface->assign('listTitle', $this->getTitle());
         $interface->assign('listAuthor', $this->getPrimaryAuthor());
         $interface->assign('listThumb', $this->getThumbnail());
-
+        $interface->assign('listBuilding', $this->getBuilding());
+        $interface->assign('listDate', $this->getPublicationDates());
+       
         // Extract user metadata from the database:
         $notes = array();
         $data = $user->getSavedData($id, $listId);

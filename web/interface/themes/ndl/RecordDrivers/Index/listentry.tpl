@@ -9,32 +9,30 @@
   
   {assign var=img_count value=$summImages|@count}
   <div class="coverDiv">
-    <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-    {if $img_count > 0}
-        <div class="resultImage"><a href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index=0&size=large" rel="{$listId|escape:"url"}" onclick="launchFancybox(this); return false;" id="thumbnail_link_{$listId|escape:"url"}"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
-    {else}
-        <div class="resultImage"><img src="{$path}/images/NoCover2.gif" width="62" height="62" alt="{translate text='No Cover Image'}"/></div>
-    {/if}
-
 {* Multiple images *}
 {if $img_count > 1}
     <div class="imagelinks">
 {foreach from=$summImages item=desc name=imgLoop}
-        <a href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="{$listId}">
-      {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+      <a data-dates="{$listDate.0|escape}{if $listDate.1 && $listDate.1 != $listDate.0} - {$listDate.1|escape}{/if}" data-title="{$listTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$listBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$listId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$listAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+          {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
         </a>
 {/foreach}
     </div>
 {/if}
+    <div class="resultNoImage"><p>{translate text='No image'}</p></div>
+    {if $img_count > 1}
+        <div class="resultImage">
+            <a class="title fancybox-trigger" href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$listId|escape:"url"}">
+               <img id="thumbnail_{$listId|escape:"url"}" src="{$path}/thumbnail.php?id={$listId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
+            </a>
+        </div>
+    {elseif $img_count == 1 || $listThumb}
+        <div class="resultImage">
+            <a class="fancybox fancybox.image" href="{$listThumb|escape}&index=0&size=large" rel="gallery" id="thumbnail_link_{$listId|escape:"url"}" data-dates="{$listDate.0|escape}{if $listDate.1 && $listDate.1 != $listDate.0} - {$listDate.1|escape}{/if}" data-title="{$listTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$listBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$listId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$listAuthor}"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a>
+        </div>    
+    {/if}  
   </div>
-  {*
-  <div class="coverDiv">
-    {if $listThumb}
-      <img src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/>
-    {else}
-      <img src="{$path}/bookcover.php" class="summcover" alt="{translate text='No Cover Image'}"/>
-    {/if}
-  </div> *}
+
   <div class="resultColumn2">
       <a href="{$url}/Record/{$listId|escape:"url"}" class="title">{$listTitle|escape}</a><br/>
       {if $listAuthor}
