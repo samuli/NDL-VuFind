@@ -114,6 +114,7 @@
     {if $ratings}
     {js filename="raty/jquery.raty.min.js"}
     {/if}
+    {js filename="jquery.inview.min.js"}
     {* Load custom javascript functions *}
     {js filename="custom.js"}
 

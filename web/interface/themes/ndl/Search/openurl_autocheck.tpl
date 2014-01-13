@@ -1,7 +1,6 @@
 <!-- START of: Search/openurl_autocheck.tpl -->
 
 {if $openUrlAutoCheck}
-{js filename="jquery.inview.min.js"}
 {literal}
 <script type="text/javascript">
 
