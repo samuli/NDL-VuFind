@@ -1858,14 +1858,14 @@ ul.recordSet .resultItemLine2{
 }
 .resultListContainer .resultNoImage {
     border: 4px solid #CFCFCF;
-    display: table;
+    display: block;
     height: 118px;
     position: relative;
     width: 118px;
     z-index: 1;
 }
 .resultNoImage {
-    display: table;
+    display: block;
     border: 1px solid #f0f0f0;
     background-color: #ffffff;
     position: relative;
@@ -3442,7 +3442,7 @@ div[id*="record"].record.recordId {
     margin: 10px 0;
 }
 #resultsCollection div.record, #headingHierarchyCollection div.record {
-    margin: -1em 0 0 .5em;
+    margin: -1em 0 2em 0.5em;
 }
 #resultMain {
     float: left;
@@ -5136,6 +5136,9 @@ tr:nth-child(even) td.gridMouseOver {
 }
 .collectionViewSelection {
     float:right;
+}
+.collectionViewOptions {
+    margin: 5px 0;
 }
 .collectionBrowseResult {
     padding: 0 0.5em 0.5em;

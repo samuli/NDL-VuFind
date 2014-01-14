@@ -10,7 +10,7 @@
   <div class="content"><a href="{$url}/Record/{$collectionID}" class="fullRecordLink">{translate text="Full Record"} &raquo;</a></div>
 </div>
 <div class="content">
-<div id="resultsCollection" class="">
+<div id="resultsCollection" class="resultListContainer">
   <div class="record" id="collection{$id|escape}">
     <div class="collection-toolbar">
       <span class="backSpan">
@@ -76,9 +76,8 @@
         <a href="{$url}/Collection/{$collectionID|urlencode}/CollectionMap{$filters}#tabnav" class="first">{translate text='Map'}</a>
       </li>
     </ul>
-    <div style="clear: both;"></div>
   </div>
-  <div style="clear: both;"></div>
+  <div class="clear"></div>
   <div class="collectionDetails">
     {if $subpage}
       {include file=$subpage}
