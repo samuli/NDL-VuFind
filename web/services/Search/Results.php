@@ -134,6 +134,8 @@ class Results extends Action
         $interface->assign('rssLink',    $searchObject->getRSSUrl());
         $interface->assign('limitList',  $searchObject->getLimitList());
         $interface->assign('searchWithoutFilters', $searchObject->renderSearchUrlWithoutFilters());
+        $interface->assign('searchWithFilters', $searchObject->renderSearchUrl());
+
 
         // We'll need recommendations no matter how many results we found:
         $interface->assign(
@@ -239,6 +241,7 @@ class Results extends Action
         $interface->assign('showSaved',   true);
         $interface->assign('savedSearch', $searchObject->isSavedSearch());
         $interface->assign('searchId',    $searchObject->getSearchId());
+
 
         // Save the URL of this search to the session so we can return to it easily:
         $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
