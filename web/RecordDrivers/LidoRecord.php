@@ -82,7 +82,23 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreSubjectDetails', $this->getSubjectDetails());
         
         if (isset($this->fields['measurements'])) {
-            $interface->assign('coreMeasurements', $this->fields['measurements']);
+            $measurements = $this->fields['measurements'];
+            
+            // Special case: If configured for the datasource, augment 
+            // first displayable measurement field (displayObjectMeasurements) 
+            // with first 'extentMeasurement' field.
+            global $configArray;
+            $confParam = 'lido_augment_display_measurement_with_extent';
+            $datasource = $this->fields['datasource_str_mv'];
+            $datasource = $datasource[0];
+            if (isset($configArray['Record'][$confParam]) &&
+                isset($configArray['Record'][$confParam][$datasource]) &&
+                (boolean)$configArray['Record'][$confParam][$datasource]) {
+                if ($extent = $this->xml->xpath('lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet/objectMeasurements/extentMeasurements')) {
+                    $measurements[0] = "$measurements[0] ($extent[0])";
+                }
+            }
+            $interface->assign('coreMeasurements', $measurements);
         }
         
         $interface->assign('coreEvents', $this->getEvents());
