@@ -401,7 +401,35 @@ class LidoRecord extends IndexRecord
                 }
             }
             $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
-            $materials = isset($node->eventMaterialsTech->displayMaterialsTech) ? (string)$node->eventMaterialsTech->displayMaterialsTech : '';
+            $materials = array();
+            
+            if (isset($node->eventMaterialsTech->displayMaterialsTech)) {
+                // Use displayMaterialTech (default)
+                $materials[] = (string)$node->eventMaterialsTech->displayMaterialsTech;
+            } else if (isset($node->eventMaterialsTech->materialsTech)) {                
+                // display label not defined, build from materialsTech
+                $materials = array();
+                foreach($node->xpath('eventMaterialsTech/materialsTech') as $materialsTech) {
+                    if ($terms = $materialsTech->xpath('termMaterialsTech/term')) {
+                        foreach ($terms as $term) {
+                            $label = null;
+                            $attributes = $term->attributes();
+                            if (isset($attributes->label)) {
+                                // Musketti
+                                $label = $attributes->label;
+                            } else if (isset($materialsTech->extentMaterialsTech)) {
+                                // Siiri
+                                $label = $materialsTech->extentMaterialsTech;
+                            }
+                            if ($label) {
+                                $term = "$label: $term";
+                            }
+                            $materials[] = $term;
+                        }
+                    }
+                }
+            }
+
             $place = isset($node->eventPlace->displayPlace) ? (string)$node->eventPlace->displayPlace : '';
             $places = array();
             if (!$place) {

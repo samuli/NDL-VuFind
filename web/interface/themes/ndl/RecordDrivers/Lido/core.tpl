@@ -222,7 +222,12 @@ End Cover Image *}
         {if $event.name}{$event.name}<br/>{/if}
         {if $event.date}{$event.date|escape}{else}{translate text="(undated)"}{/if} 
         {if !empty($event.method)} <br/> {$event.method|escape}{/if}
-        {if !empty($event.materials)} <br/> {$event.materials|escape}{/if}
+        {if !empty($event.materials)} <br/>
+          {foreach from=$event.materials item=material name=materialsLoop}
+             {$material|escape}
+             {if !$smarty.foreach.materialsLoop.last}<br/>{/if}        
+          {/foreach}
+        {/if}
         {if !empty($event.place)}
         <br/>
             {foreach from=$event.place item=place name=placesLoop}
