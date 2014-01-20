@@ -1,5 +1,4 @@
 <!-- START of: RecordDrivers/Ead/result-list.tpl -->
-
 <div class="result recordId" id="record{$summId|escape}">
 
 <div class="resultColumn1">
@@ -11,30 +10,44 @@
   <input type="hidden" name="idsAll[]" value="{$summId|escape}" />
   {/if}
 </div>
-  {if is_array($summFormats)}
-    {assign var=mainFormat value=$summFormats.0} 
-    {assign var=displayFormat value=$summFormats|@end} 
-  {else}
-    {assign var=mainFormat value=$summFormats} 
-    {assign var=displayFormat value=$summFormats} 
-  {/if}
-{assign var=img_count value=$summImages|@count}
-<div class="coverDiv">
-      <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
-    {if $img_count > 0}
-        <div class="resultImage"><a href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
+
+    {assign var=img_count value=$summImages|@count}
+    <div class="coverDiv">
+
+    {* Multiple images *}
+    {if $img_count > 1}
+      <div class="imagelinks">
+    {foreach from=$summImages item=desc name=imgLoop}
+        <a data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+          {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+        </a>
+    {/foreach}
+      </div>
+    {/if}
+    {if is_array($summFormats)}
+      {assign var=mainFormat value=$summFormats.0} 
+      {assign var=displayFormat value=$summFormats|@end} 
+    {else}
+      {assign var=mainFormat value=$summFormats} 
+      {assign var=displayFormat value=$summFormats} 
+    {/if}
+    {* Cover image *}
+        <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
+    {if $img_count == 1}
+        <div class="resultImage">
+            <a class="title fancybox fancybox.image" data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+                <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
+            </a>
+        </div>
+    {elseif $img_count > 1}
+    <div class="resultImage">
+        <a class="title fancybox-trigger" href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}">
+            <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
+        </a>
+    </div>    
     {/if}
 
-{* Multiple images *}
-{if $img_count > 1}
-  <div class="imagelinks">
-{foreach from=$summImages item=desc name=imgLoop}
-  <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;">
-    {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
-  </a>
-{/foreach}
-  </div>
-{/if}
+  
 </div>
   
 </div>
