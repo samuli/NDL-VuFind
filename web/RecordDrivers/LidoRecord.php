@@ -436,7 +436,9 @@ class LidoRecord extends IndexRecord
                 if (isset($node->eventPlace->place->namePlaceSet)) {
                     $eventPlace = array();
                     foreach ($node->eventPlace->place->namePlaceSet as $namePlaceSet) {
-                        $eventPlace[] = isset($namePlaceSet) ? (string)$namePlaceSet->appellationValue : '';
+                        if (trim((string)$namePlaceSet->appellationValue) != '') {
+                            $eventPlace[] = isset($namePlaceSet) ? trim((string)$namePlaceSet->appellationValue) : '';
+                        }
                     }
                     $places[] = implode(', ', $eventPlace);
                 }
@@ -444,8 +446,10 @@ class LidoRecord extends IndexRecord
                     foreach ($node->eventPlace->place->partOfPlace as $partOfPlace) {
                         $partOfPlaceName = array(); 
                         while (isset($partOfPlace->namePlaceSet)):
-                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? (string)$partOfPlace->namePlaceSet->appellationValue : '';
-                            $partOfPlace = $partOfPlace->partOfPlace;
+                        if (trim((string)$partOfPlace->namePlaceSet->appellationValue) != '') {
+                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? trim((string)$partOfPlace->namePlaceSet->appellationValue) : '';                            
+                        }
+                        $partOfPlace = $partOfPlace->partOfPlace;
                         endwhile;
                         $places[] = implode(', ', $partOfPlaceName);
                     }
@@ -456,7 +460,7 @@ class LidoRecord extends IndexRecord
             $actors = array();
             if (isset($node->eventActor)) {
                 foreach ($node->eventActor as $actor) {
-                    if (isset($actor->actorInRole->actor->nameActorSet->appellationValue)) {
+                    if (isset($actor->actorInRole->actor->nameActorSet->appellationValue) && trim($actor->actorInRole->actor->nameActorSet->appellationValue) != '') {
                         $role = isset($actor->actorInRole->roleActor->term) ? $actor->actorInRole->roleActor->term : '';
                         $actors[] = array('name'  => $actor->actorInRole->actor->nameActorSet->appellationValue, 'role' => $role);
                     }        
