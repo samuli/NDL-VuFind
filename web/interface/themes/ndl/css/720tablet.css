@@ -146,6 +146,12 @@
         color:#FDF07F;
     }
     
+    #carousel .open .pickup-header {
+        height: 45px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    
     #introduction ul {
         clear:both;
     }

@@ -229,10 +229,10 @@ End Cover Image *}
           {/foreach}
         {/if}
         {if !empty($event.place)}
-        <br/>
             {foreach from=$event.place item=place name=placesLoop}
-                {if $smarty.foreach.placesLoop.index > 0}<br/> {/if}
-                {$place|escape}
+                {if !empty($place)} <br/>
+                    {$place|escape}
+                {/if}    
             {/foreach} 
         {/if}           
         {if !empty($event.culture)} <br/> {$event.culture|escape}{/if}
