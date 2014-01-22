@@ -194,7 +194,7 @@ End Cover Image *}
   {if $coreInscriptions}
   <tr valign="top" class="recordInscriptions">
     <th>{translate text='Inscriptions'}: </th>
-    <td>{foreach from=$coreInscriptions item=inscription}{$inscription|escape}<br/>{/foreach}</td>
+    <td><div class="truncateField">{foreach from=$coreInscriptions item=inscription}{$inscription|escape}<br/>{/foreach}</td>
   </tr>
   {/if}
   

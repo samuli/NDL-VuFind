@@ -409,7 +409,7 @@ class LidoRecord extends IndexRecord
             } else if (isset($node->eventMaterialsTech->materialsTech)) {                
                 // display label not defined, build from materialsTech
                 $materials = array();
-                foreach($node->xpath('eventMaterialsTech/materialsTech') as $materialsTech) {
+                foreach ($node->xpath('eventMaterialsTech/materialsTech') as $materialsTech) {
                     if ($terms = $materialsTech->xpath('termMaterialsTech/term')) {
                         foreach ($terms as $term) {
                             $label = null;
@@ -485,8 +485,16 @@ class LidoRecord extends IndexRecord
     {
         $results = array();
         foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/inscriptionsWrap/inscriptions/inscriptionDescription/descriptiveNoteValue") as $node) {
-            $results[] = (string)$node;
-        }
+            $label = null;
+            $attributes = $node->attributes();
+            $label = isset($attributes->label) ? $attributes->label : '';
+            if ($label) {
+                $results[] = $label . ': ' . (string)$node;
+            } else {
+                $results[] = (string)$node;  
+
+            }
+        }    
         return $results;
     }
     
