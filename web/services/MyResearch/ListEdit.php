@@ -112,7 +112,7 @@ class ListEdit extends Action
                         }
                         $url = '../Cart/Home?saveCart=&' . implode('&', $parts);
                     } else {
-                        $url = 'Home';
+                        $url = 'Favorites';
                     }
                     header('Location: ' . $url);
                     die();

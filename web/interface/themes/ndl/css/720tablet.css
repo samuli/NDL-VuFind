@@ -319,10 +319,33 @@
         padding-right:8px;
     }
     .favoritesList {
-        width:470px;
+        width:469px;
     }
     .favoritesList .pagination {
         width: 460px;
+    }
+    
+    .favoritesList .paginationTop {
+        visibility:hidden;
+    }
+    
+    .favoritesList div.bulkActionButtons {
+        height:75px;
+    }
+    
+    .favoritesList div.bulkActionButtons input[name="delete"] {
+        clear:both;
+        margin-top:7px;
+    }
+    .favoritesList div.bulkActionButtons a.checkBoxDeselectAll {
+        float:left;
+        margin-top:7px;
+    }
+    form[name="bulkActionForm"].visible + .resultOptionLimit {
+        top:120px;
+    }
+    form[name="bulkActionForm"].visible .allCheckboxBackground {
+        top:120px;
     }
 
     /* Footer */
