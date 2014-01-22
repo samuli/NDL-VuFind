@@ -78,7 +78,7 @@ class Home extends MyResearch
         } else {
             // No follow-up URL; choose the default:
             $page = isset($configArray['Site']['defaultAccountPage']) ?
-                $configArray['Site']['defaultAccountPage'] : 'Favorites';
+                $configArray['Site']['defaultAccountPage'] : 'Profile';
             $accountStart = $configArray['Site']['url'] . "/MyResearch/". $page;
             header("Location: " . $accountStart);
         }

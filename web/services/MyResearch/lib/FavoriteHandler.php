@@ -235,6 +235,7 @@ class FavoriteHandler
             );
         }
         $interface->assign('sortList', $sortList);
+        $interface->assign('limitList',  $searchObject->getLimitList());
     }
 
     /**

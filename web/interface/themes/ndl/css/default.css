@@ -955,6 +955,14 @@ body > ul.ui-menu.ui-widget li:last-child a:hover {
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
+.dropdown dd ul li:only-child a:hover,
+body > ul.ui-menu.ui-widget li:only-child a:hover {   
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+
+    behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
+}
 .dropdown dd ul li a img {
     color: #444;
     display: none;
@@ -1254,7 +1262,9 @@ div.bulkActionButtons {
     padding: 0.5em 0;
     height: auto;
  }
-
+.favoritesList div.bulkActionButtons {
+    padding: 18px 14px 10px;
+}
 div.bulkActionButtons input, div.bulkActionButtons label, div.bulkActionButtons span {
      margin-right: 10px;
      margin-top: 20px;
@@ -1262,6 +1272,43 @@ div.bulkActionButtons input, div.bulkActionButtons label, div.bulkActionButtons 
 
 div.bulkActionButtons a {
     padding-bottom: 0.2em;
+}
+
+.favoritesList div.bulkActionButtons input.button, 
+.favoritesList div.bulkActionButtons div > a,
+.favoritesList div.bulkActionButtons dl {
+    font-size:1em;
+    padding:8px 14px 8px 14px;
+    line-height:18px;
+    font-weight:400;
+    float:left;
+    margin:0 6px 0 0;
+    text-decoration:none;
+}
+.favoritesList div.bulkActionButtons div > a {
+    float:right;
+    margin:0;
+    background-image:none;
+}
+.favoritesList div.bulkActionButtons dl {
+    padding:0;
+}
+.favoritesList div.bulkActionButtons input[name="delete"] {
+    padding-right:26px;
+}
+.favoritesList div.bulkActionButtons input[name="export"] {
+    padding-right:26px;
+}
+.favoritesList div.bulkActionButtons .dropdown dt a:after {
+    float: right;
+    height: 18px;
+    margin-left: 3px;
+    margin-top: -2px;
+    padding: 0;
+    width: 19px;
+}
+.favoritesList div.bulkActionButtons .dropdown dt a {
+    padding-right:8px;
 }
 /*
 div.bulkActionButtons input.button {
@@ -1481,20 +1528,31 @@ fieldset.publishDateLimit .ui-slider {
 
 #sidebarFavoritesLists, #sidebarRecommend, #sidebarCollection  {
     float: left;
-    margin: 0 30px 40px 0;
+    margin: 0 0 40px 0;
     width: 210px;
 }
 .module-Collection #sidebarCollection {
     float:right;
 }
+#main > .myResearch {
+  overflow-x:hidden;
+}
+#sidebarFavoritesLists .hefty {
+    font-weight:500;
+}
 
 #sidebarFavoritesLists .favoritesCount,
 #sidebarFavoritesLists a.listAdd,
-#sidebarFavoritesLists .selected,
 #sidebarFavoritesLists .listItem a,
 #sidebarFavoritesLists .hefty,
 #sidebarFavoritesLists .button a {
     color: #fff;
+}
+#sidebarFavoritesLists .favoritesCount {
+    font-size:1em
+}
+#sidebarFavoritesLists .selected .favoritesCount {
+    color:#444;
 }
    
 #sidebarFavoritesLists a.listAdd {
@@ -1512,12 +1570,15 @@ fieldset.publishDateLimit .ui-slider {
     margin-top: 40px;
 }
 #sidebarFavoritesLists ul {
+    margin:0;
+    padding:0;
+}
+#sidebarFavoritesLists li {
     margin: 5px 0 0 0;
     padding: 0;
 }
 #sidebarFavoritesLists .listItem,
-#sidebarFavoritesLists .tags,
-#sidebarFavoritesLists .editList {
+#sidebarFavoritesLists .tags {
     background-color: #E6E6E6;
     margin-bottom: 5px;
 }
@@ -1537,21 +1598,66 @@ fieldset.publishDateLimit .ui-slider {
 #sidebarFavoritesLists .tags .button a {
     font-weight: normal;
 }
-#sidebarFavoritesLists a.listAdd,
-#sidebarFavoritesLists .editList a {
+#sidebarFavoritesLists a.listAdd {
     display: block;
     padding: 0.2em 0.2em 0.2em 25px;
 }
-#sidebarFavoritesLists a.listAdd,
-#sidebarFavoritesLists ul li div {
-    padding: 6px 8px;
+#sidebarFavoritesLists .editList a { 
+    padding:0;
+    display:block;
+    float:left;
+    width:18px;
+    height:18px;
+}
+#sidebarFavoritesLists .editList {
+    float:right;
+}
+#sidebarFavoritesLists #listAddForm {
+    position:relative
+}
+#sidebarFavoritesLists a.listAdd {
+    background-color: #FFFFFF;
+    color: #444444;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 4px 8px;
+}
+#sidebarFavoritesLists a#listAdd.hidden {
+    display:none;
+}
+#sidebarFavoritesLists #listAddForm.hidden {
+    display:none;
+}
+#sidebarFavoritesLists input.listAdd {
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    text-indent: -9999px;
+    width: 32px;
+    border:1px solid #ddd;
+    background-color:#fff;
+    border-right:none;
+    cursor:pointer;
+    position:absolute;
+    right:0;
+    top:0;
+}
+
+#sidebarFavoritesLists input[type="text"] {
+    border: 1px solid #DDDDDD;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 8px;
+    width: 161px;
+    height:14px;
+    margin:0;
 }
 #sidebarFavoritesLists .selected,
 #sidebarFavoritesLists .listItem a {
     font-weight: bold;
 }
 #sidebarFavoritesLists .selected {
-    background-color: #00A3B5;
+    background-color: #B0E9DB;
 }
 #sidebarFavoritesLists .listItem {
     background-color: #4D4D4D;
@@ -1561,10 +1667,23 @@ fieldset.publishDateLimit .ui-slider {
   color: #4D4D4D;
 }
 
+#sidebarFavoritesLists ul li > div {
+    padding: 15px 8px;
+}
+
+.myResearch .bulkActionButtons {
+    background: none repeat scroll 0 0 #eeeeee; /*
+    border-bottom: 8px solid #EEEEEE;
+    border-top: 8px solid #EEEEEE;
+    padding: 0;*/
+}
+
 .favoritesList {
-    float: left;
-    width: 670px;
-    position: relative
+    float: right;
+    width: 709px;
+    position: relative;
+    padding-left:30px;
+    border-left:1px solid #ddd;
 }
 .favoritesList h2 {
     margin: auto 0;
@@ -1572,16 +1691,31 @@ fieldset.publishDateLimit .ui-slider {
     margin-bottom: 1em;
 }
 .favoritesList .recordNumbers {
+    font-size: 15px;
+    font-weight: 300;
     position: absolute;
     right: 0;
     top: 0;
 }
+.favoritesList .resultOptions label {
+    font-weight:500;
+}
 .favoritesList .resultPaginationTop {
-    border-top: solid 5px #e6e6e6;
+    border-bottom: 8px solid #eee;
+    border-top: 8px solid #eee;
+    clear: both;
 }
 .favoritesList .pagination {
     padding: 15px 0;
+    font-size:1em;
 }
+
+.favoritesList .paginationTop {
+    float: left;
+    width: 385px;
+    margin-left:150px;
+}
+
 .favoritesList .resultPagination .content {
     width: auto;
 }
@@ -1589,13 +1723,36 @@ fieldset.publishDateLimit .ui-slider {
     top: 10px;
 }
 .favoritesList .resultOptions {
-    margin: 0.4em 0 0 0;
+    margin: 4px 0 2px;
 }
+
+.favoritesList ul.recordSet .result {
+    border-top: 1px solid #EEEEEE;
+    margin-top:18px;
+    padding-top: 18px;
+    margin-bottom:0;
+}
+.favoritesList ul.recordSet .result:first-child {
+    margin-top:0;
+    border-top:0;
+    padding-top:0;
+}
+.favoritesList ul.recordSet {
+    padding-bottom:28px;
+    border-bottom:8px solid #eeeeee;
+}
+
 .favoritesList .bulkActionButtons select {
     max-width: 160px;
 }
 .favoritesList .editItem {
     margin: 0;
+}
+.favoritesList .paginationBottom {
+  width:100%;
+}
+.favoritesList .listentry .editItem {
+  font-size:11px;
 }
 .listentry .summcover, .checkedoutList .summcover, .holdsList .summcover {
     max-width: 62px;
@@ -1612,10 +1769,14 @@ fieldset.publishDateLimit .ui-slider {
     padding: 5px 0 0 5px;
 }
 .allCheckboxBackground {
-    float: left;
-    margin-left: 8px;
-    margin-top: 2px;
+    padding-left: 10px;
+    position: absolute;
+    top: 11px;
+    width: 140px;
 } 
+form.visible .allCheckboxBackground {
+    top:72px;
+}
 
 /* MyResearch/checkedout */
 #resultList.checkedoutList {
@@ -4614,7 +4775,7 @@ p.citationText {
     border-bottom: 1px solid #dddddd;
 }
 .myResearch {
-    padding: 1em 0 1.5em 1em;
+    padding: 1.8em 0 1.5em 1em;
     overflow: auto;
 }
 .myResearch .resultHead {
@@ -4644,16 +4805,80 @@ p.citationText {
     padding: 4px;
 }
 .module-MyResearch h2, .myResearch h2 {
-    font-size: 1.333em;
-    line-height: 1.2em;
-    font-weight: normal;
-    margin-top: 0;
+    font-size: 1.7em;
+    font-weight: 500;
+    margin:0;
+    line-height:1em;
 }
 .myResearch ul.recordSet .resultCheckbox {
-    position: inherit;
     display: inherit;
-    margin: 1em 12px 0 9px;
     float: left;
+    margin: 1em 28px 0 10px;
+    position: inherit;
+}
+.allCheckboxBackground input {
+    margin-right:30px;
+    float:left;
+    margin-top:12px;
+}
+.allCheckboxBackground span {
+    display: block;
+    float: left;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 15px;
+    margin-left: -5px;
+    margin-top: 12px;
+    text-align: center;
+    width: 75px;
+}
+
+#myFavoritesList {
+    position:relative;
+}
+
+.favoritesList form[name="bulkActionForm"] {
+    margin-bottom:0;
+}
+.favoritesList .bulkActionButtons {
+    display:none;
+}
+.favoritesList .bulkActionButtons.visible {
+    display:block;
+}
+.bulkActionButtons.visible + ul.recordSet {
+    border-top: 8px solid #EEEEEE;
+    margin-top: 0;
+    padding-bottom: 28px;
+    padding-top: 25px;
+}
+.favoritesList .result .tool.delete {
+    display:none;
+}
+.favoritesList .result .tool.edit {
+    width:0px;
+    background:none;
+}
+.favoritesList .result .tool.edit:after {
+    font-size:11px;
+}
+.favoritesList .resultOptionLimit {
+    position:absolute;
+    right:0;
+    top:14px;
+    font-size: 11px;
+}
+form[name="bulkActionForm"].visible + .resultOptionLimit {
+    top:77px;
+}
+.favoritesList .resultOptionLimit label {
+    font-weight:500;
+}
+
+.favoritesList .resultNoImage p {
+    display:inline;
+    position:relative;
+    top:18px;
 }
 .myResearch .coverDiv {
     width: 62px;

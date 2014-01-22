@@ -1,5 +1,6 @@
 $(document).ready(function(){
     registerBulkActions();
+    registerFavoritesActions();
 });
 
 function registerBulkActions() {
@@ -54,5 +55,67 @@ function registerBulkActions() {
         var postParams = {origin: 'Favorites', listID: id, deleteList: 'deleteList'};
         getLightbox('Cart', 'Home', '', '', message, 'MyResearch', 'Favorites', '', postParams);
         e.preventDefault();
+    });
+}
+
+function registerFavoritesActions() {
+  
+    // Favorites toolbox toggler functions
+    var favCheckboxes = $('.favoritesList .recordSet input[type="checkbox"]');
+    favCheckboxes.change(function(){
+        checkFavTools();
+    }); 
+    $('.selectAllCheckboxes').change(function() {
+        if ($(this).is(':checked')) {
+            toggleFavTools('show');
+        } else {
+            toggleFavTools('hide');
+        }
+    });
+    $('.checkBoxDeselectAll').click(function(e) {
+        e.preventDefault();
+        $('.selectAllCheckboxes').click();
+        if ($('.selectAllCheckboxes').is(':checked')) {
+            $('.selectAllCheckboxes').click();
+        }
+    });
+    function checkFavTools() {
+        var mode = favCheckboxes.is(':checked') ? 'show' : 'hide';
+        toggleFavTools(mode);
+    }   
+    function toggleFavTools(mode) {
+        var tools = $('.favoritesList .bulkActionButtons, form[name="bulkActionForm"]');
+        if (mode == 'show') {
+            tools.addClass('visible');
+        } else {
+            tools.removeClass('visible');
+        }
+    }
+        
+    checkFavTools();
+    
+    // Add new favorite list functions
+    $('#listAdd').click(function(e){
+        e.preventDefault();
+            toggleListAdd();
+            $('#listAddForm #list_title').focus();
+        
+    });
+        
+    function toggleListAdd() {
+        $('#listAdd').toggleClass('hidden');
+        $('#listAddForm').toggleClass('hidden');
+          
+    }
+    
+    $('html').click(function() {
+        if (!$('#listAddForm').hasClass('hidden')) {
+            toggleListAdd();
+            $('#listAddForm #list_title').val('');
+        }
+    });
+
+    $('#listAdd, #listAddForm').click(function(event){
+        event.stopPropagation();
     });
 }

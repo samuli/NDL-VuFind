@@ -511,6 +511,23 @@
         top: 13px;
     }
     
+    .favoritesList {
+        border: 0 none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    #sidebarFavoritesLists {
+        margin-top: 20px;
+        margin-left: 120px;
+    }
+    #sidebarFavoritesLists #listAddForm.hidden .listAdd {
+        border-right:none;
+    }
+    #sidebarFavoritesLists #listAddForm .listAdd {
+       border-right:1px solid #ddd;
+    }
+    
     /* Login form */
     .loginForm .separator, .loginForm .separatorSmall {
         width:100%;
