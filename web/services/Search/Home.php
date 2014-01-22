@@ -99,6 +99,25 @@ class Home extends Action
             if (in_array("national", $themes)) {
                 $visFacets = array('search_sdaterange_mv' => array(0 => "", 1 => "", 'label' => "Other"));
                 $interface->assign('visFacets', $visFacets);
+                // Cache file for number of records in index
+                $filename = 'interface/cache/recordcount.txt';
+                $weekOld = time() - (60*60*24);
+                $fileTime = filemtime($filename);
+                if ($fileTime && $fileTime > $weekOld) {
+                    $recordCount = file_get_contents($filename);
+                } else {
+                    // Get the number of records from the index
+                    $searchObject = SearchObjectFactory::initSearchObject();
+                    // TODO: HACK: pretend this is a browse to avoid spellcheck and facets
+                    $searchObject->initBrowseScreen();
+                    $searchObject->disableLogging();
+                    $searchObject->setQueryString('*:*');
+                    $result = $searchObject->processSearch();
+                    $searchObject->close();
+                    $recordCount = number_format($result['response']['numFound'], 0, ',', ' ');
+                    file_put_contents($filename, $recordCount);
+                }
+                $interface->assign('indexRecordCount', $recordCount);
             }
         }
         $interface->display('layout.tpl', $cacheId);
