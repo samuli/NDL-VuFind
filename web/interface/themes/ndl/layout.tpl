@@ -1,12 +1,11 @@
 {if $smarty.request.subPage && $subTemplate}
   {include file="$module/$subTemplate"}
 {else}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 {* Do not use HTML comments before DOCTYPE to avoid quirks-mode in IE *} 
 <!-- START of: layout.tpl -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$userLang}" lang="{$userLang}">
+<html lang="{$userLang}">
 
 {* We should hide the top search bar and breadcrumbs in some contexts - TODO, remove xmlrecord.tpl when the actual record.tpl has been taken into use: *}
 {if ($module=="Search" || $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
