@@ -101,9 +101,9 @@ class Home extends Action
                 $interface->assign('visFacets', $visFacets);
                 // Cache file for number of records in index
                 $filename = 'interface/cache/recordcount.txt';
-                $weekOld = time() - (60*60*24);
+                $dayOld = time() - (60*60*24);
                 $fileTime = filemtime($filename);
-                if ($fileTime && $fileTime > $weekOld) {
+                if ($fileTime && $fileTime > $dayOld) {
                     $recordCount = file_get_contents($filename);
                 } else {
                     // Get the number of records from the index
