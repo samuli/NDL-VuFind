@@ -527,7 +527,7 @@ class LidoRecord extends IndexRecord
             $attributes = $node->attributes();
             $label = isset($attributes->label) ? $attributes->label : '';
             if ($label) {
-                $results[] = $label . ': ' . (string)$node;
+                $results[] = (string)$node . ' (' . $label . ')';
             } else {
                 $results[] = (string)$node;  
 
