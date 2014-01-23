@@ -211,6 +211,15 @@ End Cover Image *}
       <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
     </td>
   </tr>
+  
+  {if $coreFormatClassifications}
+  <tr valign="top" class="recordFormatClassifications">
+    <th>{translate text='Other Classification'}: </th>
+    <td><div class="truncateField">
+    {foreach from=$coreFormatClassifications item=classification}{$classification|escape}<br/>{/foreach}
+    </td>
+  </tr>
+  {/if}   
 
   {if is_array($coreEvents)}
     {foreach from=$coreEvents key=eventType item=events}

@@ -80,6 +80,7 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreSubjectDates', $this->getSubjectDates());
         $interface->assign('coreSubjectPlaces', $this->getSubjectPlaces());
         $interface->assign('coreSubjectDetails', $this->getSubjectDetails());
+        $interface->assign('coreFormatClassifications', $this->getFormatClassifications());
         
         if (isset($this->fields['measurements'])) {
             $measurements = $this->fields['measurements'];
@@ -475,6 +476,43 @@ class LidoRecord extends IndexRecord
         return $events;    
     }
 
+    /**
+     * Get an array of format classifications for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getFormatClassifications()
+    {
+        $results = array();
+        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectClassificationWrap") as $node) {
+            if ((string)$node->objectWorkTypeWrap->objectWorkType->term == 'rakennetun ympäristön kohde') {
+                foreach ($node->classificationWrap->classification as $classificationNode) {
+                    $type = null;
+                    $attributes = $classificationNode->attributes();
+                    $type = isset($attributes->type) ? $attributes->type : '';
+                    if ($type) {
+                        $results[] = (string)$classificationNode->term . ' (' . $type . ')';
+                    } else {
+                        $results[] = (string)$classificationNode->term;
+                    }
+                }
+            } else if ((string)$node->objectWorkTypeWrap->objectWorkType->term == 'arkeologinen kohde') {
+                foreach ($node->classificationWrap->classification->term as $classificationNode) {
+                    $label = null;
+                    $attributes = $classificationNode->attributes();
+                    $label = isset($attributes->label) ? $attributes->label : '';
+                    if ($label) {
+                        $results[] = (string)$classificationNode . ' (' . $label . ')';
+                    } else {
+                        $results[] = (string)$classificationNode;
+                    }
+                }                
+            }
+        }     
+        return $results;
+    }
+    
     /**
      * Get an array of inscriptions for the record.
      *
