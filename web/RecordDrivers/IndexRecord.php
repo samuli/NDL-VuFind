@@ -36,6 +36,8 @@ require_once 'services/MyResearch/lib/Tags.php';
 
 require_once 'modules/geshi.php';
 
+require_once 'sys/SearchObject/Solr.php';
+
 /**
  * Index Record Driver
  *
@@ -1349,6 +1351,67 @@ class IndexRecord implements RecordInterface
         }
     }
     
+    /**
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display similar items of the record view page.
+     *
+     * @return string Name of Smarty template file to display.
+     * @access public
+     */
+    public function getSimilarItems()
+    {
+        global $interface;
+
+        $this->db = ConnectionManager::connectToIndex();
+
+        // Get similar records
+        $similar = $this->db->getMoreLikeThis(
+            $this->fields['id'],
+            array('fq' => SearchObject_Solr::getDefaultHiddenFilters())
+        );
+        
+        if (!$similar
+            || !array_key_exists('response', $similar)
+            || !array_key_exists('docs', $similar['response'])
+        ) {
+            PEAR::raiseError(new PEAR_Error('Cannot Load similar items'));
+        }
+        
+        // Loop over similar records, create record drivers for them and
+        // (if available) use the getYearRange method to insert a year range
+        // in the array for every record
+        foreach ($similar['response']['docs'] as &$similarRecordArray) {
+            $similarRecord = $this->db->getRecord($similarRecordArray['id']);
+            if (!$similarRecord) {
+                PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
+            }
+            
+            $similarRecordDriver
+                = RecordDriverFactory::initRecordDriver($similarRecord);
+            
+            if (method_exists($similarRecordDriver, 'getYearRange')
+                && is_callable(array($similarRecordDriver, 'getYearRange'))
+            ) {
+                $similarRecordArray['summYearRange']
+                    = $similarRecordDriver->getYearRange();
+            }
+        }
+
+        // Send the similar items to the template; if there is only one, we need
+        // to force it to be an array or things will not display correctly.
+        if (count($similar['response']['docs']) > 0) {
+            $interface->assign('similarRecords', $similar['response']['docs']);
+        }
+
+        // Find Other Editions
+        $editions = $this->getEditions();
+        if (!PEAR::isError($editions)) {
+            $interface->assign('editions', $editions);
+        }
+        
+        return 'Record/similar-items.tpl';
+    }
+
     /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display the full record information on the Staff

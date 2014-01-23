@@ -304,16 +304,28 @@ class EadRecord extends IndexRecord
                 if ($startYear != '-9999') {
                     $yearRange .= $startYear;
                 }
-                $yearRange .= '-';
-                if ($endYear != '9999') {
-                    $yearRange .= $endYear;
+                // print out a range (xxxx-xxxx) if $endYear != $startYear
+                if ($endYear != $startYear) {
+                    $yearRange .= '-';
+                    if ($endYear != '9999') {
+                        $yearRange .= $endYear;
+                    }
                 }
                 return $yearRange;
             }
             $date = new VuFindDate();
-            return $date->convertToDisplayDate('U', $range[0])
-                . '-' 
-                . $date->convertToDisplayDate('U', $range[1]);
+            
+            $startDateString = $date->convertToDisplayDate('U', $range[0]);
+            $endDateString = $date->convertToDisplayDate('U', $range[1]);
+            
+            $dateString = $startDateString;
+            
+            // print out a range (xxxx-xxxx) if
+            // $startDateString != $endDateString
+            if ($startDateString != $endDateString) {
+                $dateString += '-' . $endDateString;
+            }
+            return $dateString;
         }
         return '';
     }

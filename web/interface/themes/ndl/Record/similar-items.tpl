@@ -17,11 +17,8 @@
       {else}
       <span class="icon format{$similar.format|lower|regex_replace:"/[^a-z]/":""}">
       {/if}*}
-        <a href="{$url}/Record/{$similar.id|escape:"url"}" title="{$similar.title|escape}">{$similar.title|truncate:70:"..."|escape}</a>
-      {*</span>*}
-      <br/>
-      {if $similar.author}{$similar.author|escape}{/if}
-      {if $similar.publishDate} {$similar.publishDate.0|escape}{/if}
+        <a href="{$url}/Record/{$similar.id|escape:"url"}" title="{$similar.title|escape}">{$similar.title|truncate:70:"..."|escape}</a>{if $similar.publishDate}&nbsp;{$similar.publishDate.0|escape}{elseif $similar.summYearRange}&nbsp;{$similar.summYearRange|escape}{/if}
+        {if $similar.author}<div class="author">{$similar.author|escape}</div>{/if}
     </li>
     {/foreach}
     {if $smarty.foreach.similarLoop.total > ($levelOfCollapse - 1) && is_array($editions)}<li class="lesslink"><a href="#" onclick="lessFacets('{$title}'); return false;">{translate text='less'}&hellip;</a></li>{/if}
