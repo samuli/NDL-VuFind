@@ -415,7 +415,7 @@ class LidoRecord extends IndexRecord
                                 $label = $materialsTech->extentMaterialsTech;
                             }
                             if ($label) {
-                                $term = "$label: $term";
+                                $term = "$term ($label)";
                             }
                             $materials[] = $term;
                         }
