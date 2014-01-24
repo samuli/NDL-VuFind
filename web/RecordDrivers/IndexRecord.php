@@ -3352,6 +3352,25 @@ class IndexRecord implements RecordInterface
         header("Location: {$url}");
         die();
     }
+    
+    /**
+     * Does a record come from a source that has given data
+     * source specific configuration set as true?
+     *
+     * @param string $confParam string of configuration parameter name
+     *
+     * @return bool
+     * @access protected
+     */
+    protected function getDataSourceConfigurationValue($confParam)
+    {
+        global $configArray;
+        $datasource = $this->fields['datasource_str_mv'];
+        $datasource = $datasource[0];
+        return (isset($configArray['Record'][$confParam]) 
+            && isset($configArray['Record'][$confParam][$datasource]) 
+            ? $configArray['Record'][$confParam][$datasource] : null);
+    }
 }
 
 ?>

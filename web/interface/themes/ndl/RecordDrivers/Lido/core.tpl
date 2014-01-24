@@ -229,31 +229,29 @@ End Cover Image *}
         <div class="truncateField">
       {foreach from=$events item=event name=eventLoop}
         {if $event.name}{$event.name}<br/>{/if}
-        {if $event.date}{$event.date|escape}{else}{translate text="(undated)"}{/if} 
-        {if !empty($event.method)} <br/> {$event.method|escape}{/if}
-        {if !empty($event.materials)} <br/>
+        {if $event.date}{$event.date|escape}<br/>{else}{if $event.type != 'käyttö' && $event.type != 'näyttely'}{translate text="(undated)"}<br/>{/if}{/if} 
+        {if !empty($event.method)}{$event.method|escape}<br/>{/if}
+        {if !empty($event.materials)}
           {foreach from=$event.materials item=material name=materialsLoop}
-             {$material|escape}
-             {if !$smarty.foreach.materialsLoop.last}<br/>{/if}        
+             {$material|escape}<br/>        
           {/foreach}
         {/if}
         {if !empty($event.place)}
             {foreach from=$event.place item=place name=placesLoop}
-                {if !empty($place)} <br/>
-                    {$place|escape}
+                {if !empty($place)} 
+                    {$place|escape}<br/>
                 {/if}    
             {/foreach} 
         {/if}           
-        {if !empty($event.culture)} <br/> {$event.culture|escape}{/if}
+        {if !empty($event.culture)}{$event.culture|escape}<br/>{/if}
         {if !empty($event.actors)}
         <br/>
 	        {foreach from=$event.actors item=actor name=actorsLoop}
-	          {if $smarty.foreach.actorsLoop.index > 0}<br/> {/if}
-	          {$actor.name|escape}{if !empty($actor.role)} ({$actor.role|escape}){/if}
+	          {$actor.name|escape}{if !empty($actor.role)} ({$actor.role|escape}){/if}<br/>
 	        {/foreach}
         {/if}
-        {if !empty($event.description)}<br/>{$event.description|escape}{/if}
-        {if !$smarty.foreach.eventLoop.last}<br/><br/>{/if}        
+        {if !empty($event.description)}{$event.description|escape}<br/>{/if}
+        {if !$smarty.foreach.eventLoop.last}<br/>{/if}        
       {/foreach}
         </div>
       </td>
