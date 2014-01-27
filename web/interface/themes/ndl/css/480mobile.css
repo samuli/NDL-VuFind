@@ -378,6 +378,10 @@
         padding-top: 7px;
     }
     
+    .mainYearFormContainer1 .mainYearForm .radiobuttonFilter label {
+        width: 400px;
+    }
+
     .narrowList.navmenu.year dt {
         width: 416px !important;
         margin-left: 0 !important;

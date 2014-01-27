@@ -221,11 +221,19 @@
     .timelineview { 
         margin-right:34px;
     }
-    
-    .mainYearForm input[type="text"] {
-        width:31px;
+
+    .yearLabel {
+        margin-right:0;
     }
     
+    .mainYearForm input[type="text"] {
+        width:35px;
+    }
+    
+    .mainYearFormContainer1 .mainYearForm .radiobuttonFilter label {
+        width: 155px;
+    }
+
     .mainYearFormContainer2 {
         margin-right:30px;
     }

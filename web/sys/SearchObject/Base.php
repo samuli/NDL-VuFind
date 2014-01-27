@@ -109,7 +109,9 @@ abstract class SearchObject_Base
     protected $autocompleteStatus = false;
     // Should filter settings be retained across searches by default?
     protected $retainFiltersByDefault = true;
-
+    // Time range query type ('overlap' or 'within')
+    protected $spatialDateRangeFilterType = null;
+    
     // STATS
     protected $initTime = null;
     protected $endTime = null;
@@ -225,9 +227,14 @@ abstract class SearchObject_Base
         // Extract field and value from URL string:
         list($field, $value) = $this->parseFilter($newFilter);
 
-        // Check for duplicates -- if it's not in the array, we can add it
-        if (!$this->hasFilter($newFilter)) {
-            $this->filterList[$field][] = $value;
+        if ($field == 'search_sdaterange_mvtype') {
+            // 'search_sdaterange_mvtype' is transmitted as an url paramete
+            $this->spatialDateRangeFilterType = $value;
+        } else {
+            // Check for duplicates -- if it's not in the array, we can add it
+            if (!$this->hasFilter($newFilter)) {
+                $this->filterList[$field][] = $value;
+            }
         }
     }
 
@@ -822,17 +829,25 @@ abstract class SearchObject_Base
      * @param string $field field to use for filtering.
      * @param string $from  year or date (yyyy-mm-dd) for start of range.
      * @param string $to    year or date (yyyy-mm-dd) for end of range.
+     * @param string $type  'overlap'  = document duration overlaps query durration (default)
+     *                      'within '  = document duration within query durration
      *
      * @return string       filter query.
      * @access protected
      */
-    protected function buildSpatialDateRangeFilter($field, $from, $to)
+    protected function buildSpatialDateRangeFilter($field, $from, $to, $type = 'overlap')
     {
+        $minFrom = -4371587;
+        $maxTo = 2932896;
+
+        $type = in_array($type, array('overlap', 'within')) ? $type : 'overlap';
+        $this->spatialDateRangeFilterType = $type;
+
         $oldTZ = date_default_timezone_get();
         try {
             date_default_timezone_set('UTC');
             if ($from == '' || $from == '*') {
-                $from = -4371587;
+                $from = $minFrom; 
             } else {
                 // Make sure year has four digits
                 if (preg_match('/^(-?)(\d+)(.*)/', $from, $matches)) {
@@ -848,7 +863,7 @@ abstract class SearchObject_Base
                 $from = $fromDate->format('U') / 86400;
             }
             if ($to == '' || $to == '*') {
-                $to = 2932896;
+                $to = $maxTo;
             } else {
                 // Make sure year has four digits
                 if (preg_match('/^(-?)(\d+)(.*)/', $to, $matches)) {
@@ -859,9 +874,10 @@ abstract class SearchObject_Base
                 if (strlen($to) < 10) {
                     $to .= '-12-31';
                 }
+
                 $toDate = new DateTime("{$to}T00:00:00");
                 // Need format instead of getTimestamp for dates before epoch
-                $to = $toDate->format('U') / 86400;
+                $to = $toDate->format('U') / 86400;    // days since epoch 
             }
         } catch (Exception $e) {
             date_default_timezone_set($oldTZ);
@@ -872,11 +888,21 @@ abstract class SearchObject_Base
         if ($from > $to) {
             PEAR::RaiseError(new PEAR_Error("Invalid date range specified."));
         }
-        
+
         // Assume Solr syntax -- this should be overridden in child classes where
         // other indexing methodologies are used.
-         
-        return "{$field}:\"Intersects(-4371587 $from $to 2932896)\"";
+
+        if ($type == 'overlap') {
+            // document duration overlaps query duration
+            // q=fieldX:"Intersects(-∞ start end ∞)"
+            $query = "{$field}:\"Intersects($minFrom $from $to $maxTo)\"";
+        } else if ($type == 'within') {
+            // document duration within query duration
+            // q=fieldX:"Intersects(start -∞ ∞ end)"
+            $query = "{$field}:\"Intersects($from $minFrom $maxTo $to)\"";
+        }
+
+        return $query;
     }
 
     /**
@@ -888,7 +914,7 @@ abstract class SearchObject_Base
      */
     protected function spatialDateRangeFilterToString($filter)
     {
-        $range = VuFindSolrUtils::parseSpatialDateRange($filter);
+        $range = VuFindSolrUtils::parseSpatialDateRange($filter, $this->spatialDateRangeFilterType);
         if ($range === false) {
             return $filter;
         }
@@ -930,6 +956,12 @@ abstract class SearchObject_Base
                 }
             }
         }
+
+        $spatialRangeType = isset($_REQUEST['search_sdaterange_mvtype']) ? $_REQUEST['search_sdaterange_mvtype'] : false;
+        if ($spatialRangeType) {
+            $this->spatialDateRangeFilterType = $spatialRangeType;
+        }
+
         if (isset($_REQUEST['sdaterange'])) {
             $ranges = is_array($_REQUEST['sdaterange']) ?
                 $_REQUEST['sdaterange'] : array($_REQUEST['sdaterange']);
@@ -938,9 +970,9 @@ abstract class SearchObject_Base
                 $dateTo = $_REQUEST["{$range}to"];
 
                 // Build filter only if necessary:
-                if (!empty($range) && ($dateFrom != '' || $dateTo != '')) {
+                if (!empty($range) && ($dateFrom != '' || $dateTo != '')) {         
                     $dateFilter
-                        = $this->buildSpatialDateRangeFilter($range, $dateFrom, $dateTo);
+                        = $this->buildSpatialDateRangeFilter($range, $dateFrom, $dateTo, $spatialRangeType);
                     $this->addFilter($dateFilter);
                 }
             }
@@ -1000,6 +1032,11 @@ abstract class SearchObject_Base
                             urlencode("$field:\"$value\"");
                 }
             }
+        }
+
+        // Spatial date range query type
+        if ($this->spatialDateRangeFilterType) {
+            $params[] = "search_sdaterange_mvtype=$this->spatialDateRangeFilterType";
         }
         
         // Sorting
@@ -1597,6 +1634,17 @@ abstract class SearchObject_Base
     }    
 
     /**
+     * Get type of current spatial data range type (overlap, within)
+     *
+     * @return string type or null if spatial filtering is not active
+     * @access public
+     */
+    public function getSpatialDateRangeFilterType()
+    {
+        return $this->spatialDateRangeFilterType;
+    }
+
+    /**
      * Return an array of data summarising the results of a search.
      *
      * @return array summary of results
@@ -1937,10 +1985,6 @@ abstract class SearchObject_Base
             // Add to search history
             $this->addToHistory();
         }
-
-        //if ($this->debug) {
-        //    echo $this->debugOutput();
-        //}
     }
 
     /**

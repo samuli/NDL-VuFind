@@ -43,8 +43,8 @@
         </form>
       </dd>
     </dl>
-  {/if}
-  {if $sideFacetSet && $recordCount > 0}
+  {/if}    
+    {if $sideFacetSet && $recordCount > 0}
     {foreach from=$sideFacetSet item=cluster key=title}
     {if isset($dateFacets.$title)}
       <form action="" name="{$title|escape}Filter" id="{$title|escape}Filter">
@@ -101,37 +101,60 @@
     {else}
         {assign var="mainYear" value="Main Year"}
         {assign var="dateRange" value="Date Range"}
-        <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} active open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
+
+        <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
         <dt><span class="yearLabel">{translate text=$cluster.label}</span>
-          {if (($cluster.label === 'Main Year') || ($cluster.label === 'Published'))}<span class="timelineview">open timeline</span>
-            {*include file=$sideRecommendations.DateRangeVisAjax*}
-            {include file=Search/Recommend/DateRangeVisAjax.tpl}
-          {/if}
+           {if $cluster.label == 'Main Year' || $cluster.label == 'Published'}<span class="timelineview">open timeline</span>
+              {include file=Search/Recommend/DateRangeVisAjax.tpl}
+           {/if}
         </dt>
-        {if (($cluster.label === 'Main Year') || ($cluster.label === 'Published'))}
-          <dd class="mainYearFormContainer1">
-            <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl}{else}{$fullPath}{/if}" class="mainYearForm{if $module == "PCI"}PCI{/if}">
-              <input id="mainYearFrom" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">-
-              <input id="mainYearTo" type="text" value="{if $visFacets.search_sdaterange_mv.1 != "9999"}{$visFacets.search_sdaterange_mv.1}{/if}">
-              <input type="submit" value="{translate text='Search'}">
-            </form>
-          </dd>
+
+        {if $cluster.label == 'Main Year' || $cluster.label == 'Published'}
+            <dd class="mainYearFormContainer1">
+              {* remove 'search_sdaterange_mvtype' from form action since it gets added in form submit handler (ndl.js) *}
+              <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl|regex_replace:"/search_sdaterange_mvtype=(within|overlap)/":""}{else}{$fullPath}{/if}" class="mainYearForm{if $module == "PCI"}PCI{/if}">
+                <div id="mainYearFields">
+                  <input id="mainYearFrom" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">
+                  <span id="mainYearSeparator">&ndash;</span>
+                  <input id="mainYearTo" type="text" value="{if $visFacets.search_sdaterange_mv.1 != "9999"}{$visFacets.search_sdaterange_mv.1}{/if}">
+                </div>
+                {if $cluster.label == 'Main Year'}
+                <div id="mainYearRanges">
+                  <div class="timelineRange radiobuttonFilter">
+                    <input id="timeline_overlap" type="radio" name="search_sdaterange_mvtype" value="overlap" {if !$search_sdaterange_mvtype || $search_sdaterange_mvtype == 'overlap'} checked="checked"{/if}/>
+                    <label for="timeline_overlap">{translate text='Timeline overlap'}</label>
+                  </div>
+                  <div class="timelineRange radiobuttonFilter">
+                    <input id="timeline_within" type="radio"  name="search_sdaterange_mvtype" value="within" {if $search_sdaterange_mvtype == 'within'} checked="checked"{/if}/>
+                    <label for="timeline_within">{translate text='Timeline within'}</label>
+                  </div>
+                </div>
+                {/if}
+                <div id="mainYearFormSubmit">
+                  <input type="submit" value="{translate text='Update'}">
+                </div>
+              </form>
+            </dd>
         {/if}
-       
-          {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
-          {if $smarty.foreach.narrowLoop.iteration == 6}
-          <dd id="more{$title}"><a href="#" onclick="moreFacets('{$title}'); return false;">{translate text='more'} ...</a></dd>
-        </dl>
-        <dl class="narrowList navmenu offscreen" id="narrowGroupHidden_{$title}">
-          {/if}
-          {if $thisFacet.isApplied}
-            <dd>{$thisFacet.value|escape} <img src="{$path}/images/silk/tick.png" alt="Selected"/></dd>
-          {else}
-            <dd><a href="{$thisFacet.url|escape}">{$thisFacet.value|escape}&nbsp;<span class="facetCount">({$thisFacet.count})</span></a></dd>
-          {/if}
-        {/foreach}
-        {if $smarty.foreach.narrowLoop.total > 5}<dd><a href="#" onclick="lessFacets('{$title}'); return false;">{translate text='less'} ...</a></dd>{/if}
+        {if $cluster.label != 'Main Year'}
+           {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
+              {if $smarty.foreach.narrowLoop.iteration == 6}
+                  <dd id="more{$title}"><a href="#" onclick="moreFacets('{$title}'); return false;">{translate text='more'} ...</a></dd>
+                </dl>
+                <dl class="narrowList navmenu offscreen" id="narrowGroupHidden_{$title}">
+              {/if}
+              {if $thisFacet.isApplied}
+                <dd>{$thisFacet.value|escape} <img src="{$path}/images/silk/tick.png" alt="Selected"/></dd>
+              {else}
+                <dd><a href="{$thisFacet.url|escape}">{$thisFacet.value|escape}&nbsp;<span class="facetCount">({$thisFacet.count})</span></a></dd>
+              {/if}
+          {/foreach}
+          {if $smarty.foreach.narrowLoop.total > 5}<dd><a href="#" onclick="lessFacets('{$title}'); return false;">{translate text='less'} ...</a></dd>{/if}
+        {/if}
+
+                
       </dl>
+      
     {/if}
     {/foreach}
   {/if}
