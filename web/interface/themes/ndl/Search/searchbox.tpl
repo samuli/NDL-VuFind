@@ -8,7 +8,7 @@
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">
-	        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} mainFocus clearable" placeholder='{translate text="Find"}&hellip;' />
+	        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} mainFocus clearable" placeholder="{translate text='Find'}&hellip;" role="textbox" aria-autocomplete="list" aria-haspopup="true" />
 	      </div>
 	        {if $prefilterList}
 	      <div class="styled_select">
