@@ -136,6 +136,9 @@ class Results extends Action
         $interface->assign('searchWithoutFilters', $searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $searchObject->renderSearchUrl());
 
+        if ($spatialDateRangeType = $searchObject->getSpatialDateRangeFilterType()) {
+            $interface->assign('spatialDateRangeType', $spatialDateRangeType);
+        }
 
         // We'll need recommendations no matter how many results we found:
         $interface->assign(

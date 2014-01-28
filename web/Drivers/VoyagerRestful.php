@@ -725,14 +725,16 @@ class VoyagerRestful extends Voyager
         } else {
             $sqlExpressions = array(
                 'rg.GROUP_ID',
-                'rg.GROUP_NAME'
+                'rg.GROUP_NAME',
             );
             
             $sqlFrom = array(
-                "$this->dbName.REQUEST_GROUP rg"
+                "$this->dbName.REQUEST_GROUP rg",
+                "$this->dbName.REQUEST_GROUP_LOCATION rgl"
             );
             
             $sqlWhere = array(
+                'rg.GROUP_ID=rgl.GROUP_ID'
             );
     
             $sqlBind = array(
@@ -2442,7 +2444,7 @@ EOT;
      */
     public function getUBRequestDetails($details)
     {
-    	  $patron = $details['patron'];
+        $patron = $details['patron'];
         if (strstr('.', $patron['id']) === false) {
             return false;
         }
@@ -2596,7 +2598,7 @@ EOT;
      */
     public function getUBPickupLocations($details)
     {
-    		$patron = $details['patron'];
+        $patron = $details['patron'];
         list($source, $patronId) = explode('.', $patron['id'], 2);
         if (!isset($this->config['UBRequestSources'][$source])) {
             return $this->holdError('ub_request_unknown_patron_source');

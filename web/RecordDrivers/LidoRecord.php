@@ -80,27 +80,8 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreSubjectDates', $this->getSubjectDates());
         $interface->assign('coreSubjectPlaces', $this->getSubjectPlaces());
         $interface->assign('coreSubjectDetails', $this->getSubjectDetails());
-        
-        if (isset($this->fields['measurements'])) {
-            $measurements = $this->fields['measurements'];
-            
-            // Special case: If configured for the datasource, augment 
-            // first displayable measurement field (displayObjectMeasurements) 
-            // with first 'extentMeasurement' field.
-            global $configArray;
-            $confParam = 'lido_augment_display_measurement_with_extent';
-            $datasource = $this->fields['datasource_str_mv'];
-            $datasource = $datasource[0];
-            if (isset($configArray['Record'][$confParam]) &&
-                isset($configArray['Record'][$confParam][$datasource]) &&
-                (boolean)$configArray['Record'][$confParam][$datasource]) {
-                if ($extent = $this->xml->xpath('lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet/objectMeasurements/extentMeasurements')) {
-                    $measurements[0] = "$measurements[0] ($extent[0])";
-                }
-            }
-            $interface->assign('coreMeasurements', $measurements);
-        }
-        
+        $interface->assign('coreFormatClassifications', $this->getFormatClassifications());
+        $interface->assign('coreMeasurements', $this->getMeasurements());        
         $interface->assign('coreEvents', $this->getEvents());
         $interface->assign('coreInscriptions', $this->getInscriptions());
         
@@ -400,6 +381,18 @@ class LidoRecord extends IndexRecord
                     }
                 }
             }
+            if ($type == 'valmistus') {
+                $confParam = 'lido_augment_display_date_with_period';
+                if ($this->getDataSourceConfigurationValue($confParam)) {
+                    if ($period = $node->periodName->term) {
+                        if ($date) {
+                            $date = $period . ', ' . $date;
+                        } else {
+                            $date = $period;
+                        }
+                    }
+                }
+            }
             $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
             $materials = array();
             
@@ -422,7 +415,7 @@ class LidoRecord extends IndexRecord
                                 $label = $materialsTech->extentMaterialsTech;
                             }
                             if ($label) {
-                                $term = "$label: $term";
+                                $term = "$term ($label)";
                             }
                             $materials[] = $term;
                         }
@@ -476,6 +469,43 @@ class LidoRecord extends IndexRecord
     }
 
     /**
+     * Get an array of format classifications for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getFormatClassifications()
+    {
+        $results = array();
+        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectClassificationWrap") as $node) {
+            if ((string)$node->objectWorkTypeWrap->objectWorkType->term == 'rakennetun ympäristön kohde') {
+                foreach ($node->classificationWrap->classification as $classificationNode) {
+                    $type = null;
+                    $attributes = $classificationNode->attributes();
+                    $type = isset($attributes->type) ? $attributes->type : '';
+                    if ($type) {
+                        $results[] = (string)$classificationNode->term . ' (' . $type . ')';
+                    } else {
+                        $results[] = (string)$classificationNode->term;
+                    }
+                }
+            } else if ((string)$node->objectWorkTypeWrap->objectWorkType->term == 'arkeologinen kohde') {
+                foreach ($node->classificationWrap->classification->term as $classificationNode) {
+                    $label = null;
+                    $attributes = $classificationNode->attributes();
+                    $label = isset($attributes->label) ? $attributes->label : '';
+                    if ($label) {
+                        $results[] = (string)$classificationNode . ' (' . $label . ')';
+                    } else {
+                        $results[] = (string)$classificationNode;
+                    }
+                }                
+            }
+        }     
+        return $results;
+    }
+    
+    /**
      * Get an array of inscriptions for the record.
      *
      * @return array
@@ -489,7 +519,7 @@ class LidoRecord extends IndexRecord
             $attributes = $node->attributes();
             $label = isset($attributes->label) ? $attributes->label : '';
             if ($label) {
-                $results[] = $label . ': ' . (string)$node;
+                $results[] = (string)$node . ' (' . $label . ')';
             } else {
                 $results[] = (string)$node;  
 
@@ -498,6 +528,27 @@ class LidoRecord extends IndexRecord
         return $results;
     }
     
+    /**
+     * Get measurements and augment them data source specifically if needed.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getMeasurements()
+    {
+        $results = array();
+        if (isset($this->fields['measurements'])) {
+            $results = $this->fields['measurements'];            
+            $confParam = 'lido_augment_display_measurement_with_extent';
+            if ($this->getDataSourceConfigurationValue($confParam)) {
+                if ($extent = $this->xml->xpath('lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet/objectMeasurements/extentMeasurements')) {
+                    $results[0] = "$results[0] ($extent[0])";
+                } 
+            }
+        }
+        return $results;
+    }
+        
     /**
      * Get an array of dates for results list display
      *

@@ -81,7 +81,9 @@
       </div>
     </div>
 
-  {* Load hidden limit preference from Session *}
+  {if $spatialDateRangeType}<input type="hidden" name="search_sdaterange_mvtype" value="{$spatialDateRangeType|escape}" />{/if}
+
+  {* Load hidden limit preference from Session *}  
   {if $lastLimit}<input type="hidden" name="limit" value="{$lastLimit|escape}" />{/if}
   {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 

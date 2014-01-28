@@ -113,8 +113,10 @@ class EadRecord extends IndexRecord
             $interface->assign('coreExternalLinkTemplate', $configArray['Record']['ead_external_link_template'][$datasource]);
         }
 
-
-
+        $unitId = $this->record->xpath("did/unitid");
+        if (count($unitId)) {
+            $interface->assign('coreReferenceCode', (string)$unitId[0]);
+        }
 
         return 'RecordDrivers/Ead/core.tpl';
     }
@@ -295,25 +297,21 @@ class EadRecord extends IndexRecord
             $range[1] *= 86400;
             $startDate = new DateTime("@{$range[0]}");
             $endDate = new DateTime("@{$range[1]}");
-            if ($startDate->format('m') == 1 && $startDate->format('d') == 1 
-                && $endDate->format('m') == 12 && $endDate->format('d') == 31
-            ) {
-                $startYear = $startDate->format('Y');
-                $endYear = $endDate->format('Y');
-                $yearRange = '';
-                if ($startYear != '-9999') {
-                    $yearRange .= $startYear;
-                }
+
+            $startYear = $startDate->format('Y');
+            $endYear = $endDate->format('Y');
+            $yearRange = '';
+            if ($startYear != '-9999') {
+                $yearRange .= $startYear;
+            }
+            // print out a range (xxxx-xxxx) if $endYear != $startYear
+            if ($endYear != $startYear) {
                 $yearRange .= '-';
                 if ($endYear != '9999') {
                     $yearRange .= $endYear;
                 }
-                return $yearRange;
             }
-            $date = new VuFindDate();
-            return $date->convertToDisplayDate('U', $range[0])
-                . '-' 
-                . $date->convertToDisplayDate('U', $range[1]);
+            return $yearRange;
         }
         return '';
     }

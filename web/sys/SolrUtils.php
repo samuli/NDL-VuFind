@@ -153,14 +153,22 @@ class VuFindSolrUtils
      * query is not a range).
      *
      * @param string $query Solr query to parse.
+     * @param string $type query type ('overlap' or 'within')
      *
      * @return array|bool   Array with 'from' and 'to' values extracted from range
      * or false if the provided query is not a range.
      * @access public
      */
-    public static function parseSpatialDateRange($query)
+    public static function parseSpatialDateRange($query, $type = 'overlap')
     {
-        if (!preg_match('/\([\d-]+\s+([\d-]+)\s+([\d-]+)\s+[\d-]+\)/', $query, $matches)) {
+        $regex = false;
+        if ($type == 'overlap') { 
+            $regex = '/\([\d-]+\s+([\d-]+)\s+([\d-]+)\s+[\d-]+\)/';
+        } elseif ($type == 'within') {
+            $regex = '/\(([\d-]+)\s+[\d-]+\s+[\d-]+\s+([\d-]+)\)/';
+        }
+        
+        if (!$regex || !preg_match($regex, $query, $matches)) {
             return false;
         }
         return array('from' => $matches[1] * 86400, 'to' => $matches[2] * 86400);
