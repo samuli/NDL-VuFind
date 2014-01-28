@@ -3132,8 +3132,8 @@ ul.recordSet .addToFavLink a {
 
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
-.dropdown dt a:focus {
-    color: #ffffff;
+#headerMenu .dropdown dt a:focus {
+    color: #fdf07f;
 }
 
 
