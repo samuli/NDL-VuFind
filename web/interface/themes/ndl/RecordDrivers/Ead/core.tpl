@@ -138,6 +138,15 @@
     {/foreach}    
     {/if}
 
+    {if $coreReferenceCode}
+    <tr valign="top" class="recordReferenceCode">
+      <th>{translate text='Reference code'}: </th>
+      <td>
+        {$coreReferenceCode|escape}
+      </td>
+    </tr>
+    {/if}
+
     {if $coreNonPresenterAuthors}
     <tr valign="top" class="recordAuthors">
       <th>{translate text='Authors'}: </th>

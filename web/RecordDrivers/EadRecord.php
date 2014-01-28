@@ -113,8 +113,10 @@ class EadRecord extends IndexRecord
             $interface->assign('coreExternalLinkTemplate', $configArray['Record']['ead_external_link_template'][$datasource]);
         }
 
-
-
+        $unitId = $this->record->xpath("did/unitid");
+        if (count($unitId)) {
+            $interface->assign('coreReferenceCode', (string)$unitId[0]);
+        }
 
         return 'RecordDrivers/Ead/core.tpl';
     }
