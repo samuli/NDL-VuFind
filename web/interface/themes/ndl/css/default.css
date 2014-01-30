@@ -6218,3 +6218,26 @@ div.hopscotch-bubble {
     display:inline-block;
 }
 
+/* jQuery datePick branding */
+.datepick-nav, .datepick-ctrl {
+    background-color: #13B0C2;
+}
+.datepick {
+    border: 1px solid #13B0C2;
+}
+.datepick-month {
+    border: 1px solid #00A3B5;
+}
+.datepick-month-header, .datepick-month-header select, .datepick-month-header input {
+    background-color: #008395;
+}
+.datepick-month th, .datepick-month th a {
+    background-color: #FFFFFF;
+    color: #444444;
+}
+.datepick-month th {
+    border: 1px solid #AAAAAA;
+}
+.datepick-month td .datepick-selected {
+    background-color: #008395;
+}

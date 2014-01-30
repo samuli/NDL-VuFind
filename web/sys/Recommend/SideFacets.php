@@ -45,7 +45,8 @@ class SideFacets implements RecommendationInterface
     protected  $_mainFacets;
     private $_checkboxFacets;
     protected $_hierarchicalFacets = array();
-
+    protected $_hiddenFacets = array();
+    
     /**
      * Constructor
      *
@@ -92,6 +93,13 @@ class SideFacets implements RecommendationInterface
             $this->_defaultFacets = $config['SpecialFacets']['default'];
         } else {
             $this->_defaultFacets = array();
+        }
+
+        // Get a list of facetfields that should not be displayed.
+        if (isset($config['SpecialFacets']['hidden'])) {
+            $this->_hiddenFacets = $config['SpecialFacets']['hidden'];
+        } else {
+            $this->_hiddenFacets = array();
         }
         
         // Checkbox facets:
@@ -160,6 +168,7 @@ class SideFacets implements RecommendationInterface
         );
         $interface->assign('hierarchicalFacets', $this->_hierarchicalFacets);
         $interface->assign('defaultFacets', $this->_defaultFacets);
+        $interface->assign('hiddenFacets', $this->_hiddenFacets);
         
         $interface->assign(
             'sideFacetSet', $this->_searchObject->getFacetList($this->_mainFacets)

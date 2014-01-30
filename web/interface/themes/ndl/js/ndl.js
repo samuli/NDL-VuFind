@@ -14,6 +14,7 @@ $(document).ready(function() {
     initScrollRecord();
     initScrollMenu();
     initContextHelp();
+    initDatePicker();
 });
 
 // Header menu
@@ -386,4 +387,30 @@ function initContextHelp() {
     });
 }
 
+function initDatePicker() {
+    $("a#newItemsFromDate").click(function(event) {
+        event.preventDefault();
+        var dates = $(this).data('solrdate');
+        if (dates==='') {
+            return false;
+        }
+        var baseUrl = $(this).data('urltemplate');
+        var location = baseUrl.replace("xxx", dates);
+        window.location.href = location;
+    });
+     
+    $('#newItemsLimit').datepick(
+        {   
+            maxDate: -1,
+            altField: "#showDate",
+            altFormat: "dd.mm.yyyy",
+            onSelect: function(dates) { 
+                solrDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date(dates));
+                finDate = new SimpleDateFormat("d.M.yyyy").format(new Date(dates));
+                $('a#newItemsFromDate').data('solrdate', solrDate);
+                $('#showDate').text(finDate);
+            }
+        }
+    );
+}
 

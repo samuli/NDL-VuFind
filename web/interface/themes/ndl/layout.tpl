@@ -52,6 +52,8 @@
     {css media="screen" filename="ui.dynatree.css"}
     {css media="screen" filename="datatables.css"}
     {css media="screen, projection" filename="hopscotch-0.1.2.css"}
+    {css media="screen, projection" filename="hopscotch-0.1.2.css"}
+    {css media="screen, projection" filename="jquery.datepick.css"}
     
     {*  Set of css files based loosely on
         Less Framework 4 http://lessframework.com by Joni Korpi
@@ -110,6 +112,14 @@
     {js filename="jquery.clearsearch.js"}
     {js filename="jquery.collapse.js"}
     {js filename="jquery.dynatree-1.2.2-mod.js"}
+    {js filename="jquery.datepick/jquery.datepick.min.js"}
+    {if $userLang == 'en-gb'}
+    {js filename="jquery.datepick/jquery.datepick-en-GB.js"}
+    {elseif $userLang == 'sv'}
+    {js filename="jquery.datepick/jquery.datepick-sv.js"}
+    {else}
+    {js filename="jquery.datepick/jquery.datepick-fi.js"}
+    {/if}
     {if $ratings}
     {js filename="raty/jquery.raty.min.js"}
     {/if}
@@ -148,6 +158,9 @@
 
     {* Load Hopscotch help plugin *}
     {js filename="hopscotch-0.1.2.js"} 
+
+    {* Load Simple Date Format *}
+    {js filename="simpledateformat.js"}
     
     {* Load ndl theme functions *}
     {js filename="ndl.js"}

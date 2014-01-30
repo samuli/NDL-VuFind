@@ -135,7 +135,12 @@
     </div>
     {if !empty($sideFacetSet)}
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-          {include file=$sideRecommendations.SideFacets}
+          {* include file=$sideRecommendations.SideFacets *}
+          {if $sideRecommendations}
+            {foreach from=$sideRecommendations item="recommendations"}
+              {include file=$recommendations}
+            {/foreach}
+          {/if}
         {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}
     </div>
     {/if}
@@ -145,9 +150,7 @@
 {include file="Search/paging.tpl" position="Bottom"}
 {include file="Search/result-search-tools.tpl"}
   {* End Main Listing *}
-  {* Narrow Search Options *}
-  {* End Narrow Search Options *}
-  
+   
 <div class="clear"></div>
 
 {literal}
