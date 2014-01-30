@@ -26,7 +26,7 @@
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 require_once 'Action.php';
-require_once "XML/RSS.php";
+require_once 'XML/RSS.php';
 
 /**
  * Ajax page for rendering HTML from RSS feed
@@ -77,19 +77,30 @@ class AJAX_RenderRSS extends Action
          */
         $rssFeed['id'] = $id;
         $rssFeed['type'] = $feed['type'];
-        $rssFeed['numberOfItems'] = isset($feed['items']) ? $feed['items'] : 0;
-        $rssFeed['itemsPerPage'] = isset($feed['itemsPerPage']) ? $feed['itemsPerPage'] : 4;
-        $rssFeed['scrolledItems'] = isset($feed['scrolledItems']) ? $feed['scrolledItems'] : $rssFeed['itemsPerPage'];
-        $rssFeed['useChannelTitle'] = isset($feed['useChannelTitle']) ? $feed['useChannelTitle'] : false;
-        $rssFeed['direction'] = isset($feed['direction']) ? $feed['direction'] : 'left';
-        $rssFeed['height'] = (!isset($feed['height']) || $feed['height'] == 0) ? false : $feed['height'];
-        $rssFeed['dateFormat'] = isset($feed['dateFormat']) ? $feed['dateFormat'] : "j.n.";
-        $rssFeed['images'] = isset($feed['images']) ? $feed['images'] : false;
-        $rssFeed['moreLink'] = isset($feed['moreLink']) ? $feed['moreLink'] : true;
-        $rssFeed['title'] = isset($feed['title']) ? $feed['title'] : false;
-        $rssFeed['height'] = isset($feed['height']) ? str_replace('px', '', $rssFeed['height']) : 0;
+        $rssFeed['numberOfItems'] = isset($feed['items']) ?
+            $feed['items'] : 0;
+        $rssFeed['itemsPerPage'] = isset($feed['itemsPerPage']) ?
+            $feed['itemsPerPage'] : 4;
+        $rssFeed['scrolledItems'] = isset($feed['scrolledItems']) ? 
+            $feed['scrolledItems'] : $rssFeed['itemsPerPage'];
+        $rssFeed['useChannelTitle'] = isset($feed['useChannelTitle']) ? 
+            $feed['useChannelTitle'] : false;
+        $rssFeed['direction'] = isset($feed['direction']) ?
+            $feed['direction'] : 'left';
+        $rssFeed['height'] = (!isset($feed['height']) || 
+            $feed['height'] == 0) ? false : $feed['height'];
+        $rssFeed['dateFormat'] = isset($feed['dateFormat']) ?
+            $feed['dateFormat'] : "j.n.";
+        $rssFeed['images'] = isset($feed['images']) ?
+            $feed['images'] : false;
+        $rssFeed['moreLink'] = isset($feed['moreLink']) ?
+            $feed['moreLink'] : true;
+        $rssFeed['title'] = isset($feed['title']) ?
+            $feed['title'] : false;
+        $rssFeed['height'] = isset($feed['height']) ?
+            str_replace('px', '', $rssFeed['height']) : 0;
 
-        if(strlen(trim($rssFeed['dateFormat'])) == 0) {
+        if (strlen(trim($rssFeed['dateFormat'])) == 0) {
             $rssFeed['date'] = false;
         } else {
             $rssFeed['date'] = true;
@@ -100,46 +111,49 @@ class AJAX_RenderRSS extends Action
          * for url[*]; if that fails we set the url as false
          */
         $language = $interface->get_template_vars('userLang');
-        if($language) {
+        if ($language) {
             $rssFeed['url'] = isset($feed['url'][$language]) ?
                    $feed['url'][$language] : false;
         }
-        if(!$rssFeed['url']) {
+        if (!$rssFeed['url']) {
             $rssFeed['url'] = isset($feed['url']['*']) ?
                    $feed['url']['*'] : false;
         }
-        if(!$rssFeed['url']) {
+        if (!$rssFeed['url']) {
             $rssFeed['url'] = false;
         }
 
-        if($rssFeed['url']) {
+        if ($rssFeed['url']) {
             $rss =& new XML_RSS($rssFeed['url']);
             $rss->parse();
 
             $channelInfo = $rss->getChannelInfo();
-            $rssFeed['channelURL'] = $channelInfo['link'];
+            $rssFeed['channelURL'] 
+                = isset($channelInfo['link']) ? $channelInfo['link'] : null;
 
             if ($rssFeed['numberOfItems']>0) {
-                $rssFeed['items'] = array_slice($rss->getItems(), 0, $rssFeed['numberOfItems']);
+                $rssFeed['items'] 
+                    = array_slice($rss->getItems(), 0, $rssFeed['numberOfItems']);
             } else {
                 $rssFeed['items'] = $rss->getItems();
             }
             
             if (trim($feed['title']) == 'rss') {
-                $rssFeed['title'] = isset($rss->channel['title']) ? $rss->channel['title'] : false;
+                $rssFeed['title'] 
+                    = isset($rss->channel['title']) ? $rss->channel['title'] : false;
             }
             
             
 
             /* process the raw data in the array before passing it on to the
              * template */
-            foreach($rssFeed['items'] as &$item) {
-                /* to find the item image, first we look for enclosure elements in the
-                 * feed item... */
-                if(array_key_exists("enclosures", $item)) {
-                    if(count($item['enclosures']) > 0) {
-                        foreach($item['enclosures'] as $enclosure) {
-                            if(is_int(stripos($enclosure['type'], "image"))) {
+            foreach ($rssFeed['items'] as &$item) {
+                /* to find the item image, first we look for 
+                enclosure elements in the  feed item... */
+                if (array_key_exists("enclosures", $item)) {
+                    if (count($item['enclosures']) > 0) {
+                        foreach ($item['enclosures'] as $enclosure) {
+                            if (is_int(stripos($enclosure['type'], "image"))) {
                                 $item['imageUrl'] = $enclosure['url'];
                                 break;
                             }
@@ -148,8 +162,9 @@ class AJAX_RenderRSS extends Action
                 }
                 /* ...and if that fails, we try to extract the image url from the
                  * content:encoded element... */
-                if(!array_key_exists("imageUrl", $item) &&
-                   array_key_exists('content:encoded', $item)) {
+                if (!array_key_exists("imageUrl", $item) 
+                    && array_key_exists('content:encoded', $item)
+                ) {
                     // let's load the HTML
                     $dom = new DOMDocument;
                     $dom->loadHTML($item['content:encoded']);
@@ -160,20 +175,21 @@ class AJAX_RenderRSS extends Action
                      */
                     $anchors = $dom->getElementsByTagName('a');
                     foreach ($anchors as $anchor) {
-                        foreach($anchor->childNodes as $anchorChild) {
+                        foreach ($anchor->childNodes as $anchorChild) {
                             $imageChild = false;
-                            if($anchorChild->nodeName == "img") {
+                            if ($anchorChild->nodeName == "img") {
                                 $imageChild = true;
                                 break;
                             }
                         }
-                        if($imageChild) {
+                        if ($imageChild) {
                             $href = $anchor->getAttribute('href');
-                            if($href) {
-                                if((substr($href, -4) == '.jpg') ||
-                                   (substr($href, -4) == '.gif') ||
-                                   (substr($href, -4) == '.png') ||
-                                   (substr($href, -5) == '.jpeg')) {
+                            if ($href) {
+                                if ((substr($href, -4) == '.jpg') 
+                                    || (substr($href, -4) == '.gif')
+                                    || (substr($href, -4) == '.png')
+                                    || (substr($href, -5) == '.jpeg')
+                                ) {
                                     $item['imageUrl'] = $href;
                                     break;
                                 }
@@ -185,36 +201,42 @@ class AJAX_RenderRSS extends Action
                      * if there are no <a> elements with <img> children, let's
                      * settle for an <img> element with no <a> parent
                      */
-                if(!array_key_exists("imageUrl", $item)) {
+                    if (!array_key_exists("imageUrl", $item)) {
                         $images = $dom->getElementsByTagName('img');
-                        if($images &&
-                           $images->item(0) &&
-                           $images->item(0)->getAttribute('src')) {
-                            $item['imageUrl'] = $images->item(0)->getAttribute('src');
+                        if ($images 
+                            && $images->item(0) 
+                            && $images->item(0)->getAttribute('src')
+                        ) {
+                            $item['imageUrl'] 
+                                = $images->item(0)->getAttribute('src');
                         }
                     }
                 }
                 /* ...and if that fails, we try to extract the image url from the
                  * description element */
-                if(!array_key_exists("imageUrl", $item) &&
-                   array_key_exists('description', $item)) {
+                if (!array_key_exists("imageUrl", $item) 
+                    && array_key_exists('description', $item)
+                ) {
                     preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
-                    if($matches) {
-                    $item['imageUrl'] = $matches[1];
+                    if ($matches) {
+                        $item['imageUrl'] = $matches[1];
+                    }
                 }
-                }
-                
 
                 /* remove all HTML tags */
-                $item['description'] = strip_tags($item['description']);
+                if (array_key_exists('description', $item)) {
+                    $item['description'] = strip_tags($item['description']);
+                }
                 
                 /* process and format the date */
-                if(array_key_exists("dc:date", $item)) {
-                    $dateTime = DateTime::createFromFormat(DATE_ISO8601, $item['dc:date']);
-                } elseif(array_key_exists("pubdate", $item)) {
-                    $dateTime = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
+                if (array_key_exists("dc:date", $item)) {
+                    $dateTime 
+                        = DateTime::createFromFormat(DATE_ISO8601, $item['dc:date']);
+                } elseif (array_key_exists("pubdate", $item)) {
+                    $dateTime 
+                        = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
                 }
-                $item['date'] = FALSE;
+                $item['date'] = false;
                 if (isset($dateTime) && $dateTime) {
                     $item['date'] = $dateTime->format($rssFeed['dateFormat']);
                 }

@@ -14,8 +14,8 @@
     {if $holdingsOpenURL}
       {include file="Search/openurl.tpl" openUrl=$holdingsOpenURL}
     {/if}
-  {/if}
     </ul>
+  {/if}
   </div>
   <div class="holdingsHeaderLinks">
     {if $id|substr:0:7 == 'helmet.'}

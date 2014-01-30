@@ -115,8 +115,16 @@
     top: 253px;
 }
 #carousel .slide .pickup-header {
+    font-weight: bold;
+    height: 45px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    line-height:1.3em;
+}
+#carousel .open .pickup-header {
+    overflow:visible;
     height:60px;
-    font-weight:bold;
+    margin:0;
 }
 .pickup-header-small {
     font-size: 0.846em;

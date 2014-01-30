@@ -119,7 +119,7 @@ class DateRangeVisAjax extends PubDateVisAjax
         $from = $to = '';
         if (isset($filters[$this->filterField])) {
             foreach ($filters[$this->filterField] as $filter) {
-                if ($range = VuFindSolrUtils::parseSpatialDateRange($filter)) {
+                if ($range = VuFindSolrUtils::parseSpatialDateRange($filter, $this->searchObject->getSpatialDateRangeFilterType())) {
                     $startDate = new DateTime("@{$range['from']}");
                     $endDate = new DateTime("@{$range['to']}");
                     $from = $startDate->format('Y');

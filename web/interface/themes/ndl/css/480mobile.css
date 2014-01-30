@@ -145,7 +145,7 @@
         clear: left;
         float: right;
         margin-right: 10px;
-        left: 229px;
+        left: 242px;
         top: 54px;
     }
     .keepdFilters > input {
@@ -378,6 +378,10 @@
         padding-top: 7px;
     }
     
+    .mainYearFormContainer1 .mainYearForm .radiobuttonFilter label {
+        width: 400px;
+    }
+
     .narrowList.navmenu.year dt {
         width: 416px !important;
         margin-left: 0 !important;
@@ -509,6 +513,23 @@
         position: absolute;
         right: -35px;
         top: 13px;
+    }
+    
+    .favoritesList {
+        border: 0 none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+    #sidebarFavoritesLists {
+        margin-top: 20px;
+        margin-left: 120px;
+    }
+    #sidebarFavoritesLists #listAddForm.hidden .listAdd {
+        border-right:none;
+    }
+    #sidebarFavoritesLists #listAddForm .listAdd {
+       border-right:1px solid #ddd;
     }
     
     /* Login form */

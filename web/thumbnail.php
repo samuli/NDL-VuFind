@@ -112,6 +112,7 @@ function fetchFromRecord($id, $size, $index = null)
         return true;
     } else {
         // Fetch from url
+        $url = null;
         $db = ConnectionManager::connectToIndex();
         if (!($record = $db->getRecord($id))) {
             return false;

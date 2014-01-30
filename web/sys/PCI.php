@@ -156,7 +156,7 @@ class PCI
             return unserialize($resource->data);
         } else {
             $id = preg_replace('/^pci\./', '', $id);
-            $params = array(array('group' => array(array('lookfor' => $id, 'field' => 'rid'))));
+            $params = array(array('group' => array(array('lookfor' => addcslashes($id, '()\\'), 'field' => 'rid'))));
             $result = $this->query($params);
             return $result['response']['docs'][0];
         }
@@ -217,12 +217,12 @@ EOF;
             if (isset($params['group'])) {
                 // Process each search group
                 foreach ($params['group'] as $group) {
-                    $queryTerms .= sprintf($queryTermXml, $group['field'], 'contains', htmlspecialchars($group['lookfor'], ENT_COMPAT, 'UTF-8'));
+                    $queryTerms .= sprintf($queryTermXml, $group['field'], 'contains', htmlspecialchars(addcslashes($group['lookfor'], '()\\'), ENT_COMPAT, 'UTF-8'));
                 }
             }
             // Basic Search
             if (isset($params['lookfor']) && $params['lookfor'] != '') {
-                $queryTerms .= sprintf($queryTermXml, 'any', 'contains', htmlspecialchars($params['lookfor'], ENT_COMPAT, 'UTF-8'));
+                $queryTerms .= sprintf($queryTermXml, 'any', 'contains', htmlspecialchars(addcslashes($params['lookfor'], '()\\'), ENT_COMPAT, 'UTF-8'));
             }
         }
 

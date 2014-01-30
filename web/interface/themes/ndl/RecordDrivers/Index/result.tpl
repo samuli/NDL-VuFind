@@ -128,10 +128,10 @@
       {if $summDedupData}
       
         {if $summDedupData|@count gt 1} 
-        <select class="dedupform">
+        <select class="dedupform" role="listbox" aria-haspopup="true">
         {foreach from=$summDedupData key=source item=dedupData name=loop}
         {if $dedupData}
-        <option value="{$dedupData.id|escape:"url"}" class="dedupDataId {$source} {$dedupData.id|escape:"url"}">{translate text=$source prefix='source_'}</option>
+        <option value="{$dedupData.id|escape:"url"}" class="dedupDataId {$source} {$dedupData.id|escape:"url"}" role="option">{translate text=$source prefix='source_'}</option>
         {/if}
         {/foreach}
         </select>

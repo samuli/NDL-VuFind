@@ -6,7 +6,7 @@ $(document).ready(function(){
     registerAjaxCommentRecord();
 
     // bind click action to edit comment link
-    $('a.editRecordComment').live('click', function(e){
+    $(document).on('click','a.editRecordComment', function(e){
         e.preventDefault();
         $('#formContainer').show();
         var id = this.id.substr('recordCommentEdit'.length);
@@ -29,14 +29,15 @@ $(document).ready(function(){
     });
     
     // attach click event to the report inappropriate link
-    $('a.inappropriateRecordComment').unbind('click').live('click', function(e) {
+    $('a.inappropriateRecordComment').unbind('click');
+    $(document).on('click','a.inappropriateRecordComment', function(e) {
         e.preventDefault();
         var id = $('input[name="recordId"]').val();
         var $dialog = getPageInLightbox(this.href+'&lightbox=1', this.title, 'Record', '', id);
     });
     
     // bind click action to reset comment link
-    $(':reset').live('click', function(e){
+    $(document).on('click',':reset', function(e){
         $('input#commentId').val(0);
         $('div.comment').css('font-style', 'normal');
     });
@@ -89,7 +90,7 @@ $(document).ready(function(){
         var $dialog = getLightbox('Record', 'AddTag', id, null, this.title, 'Record', 'AddTag', id);
         e.preventDefault();
     });
-    $('a.deleteRecordComment').live('click', function(e) {
+    $(document).on('click','a.deleteRecordComment', function(e) {
         var commentId = this.id.substr('recordComment'.length);
         var recordId = $('input[name="recordId"]').val();
         deleteRecordComment(recordId, commentId);
@@ -313,7 +314,7 @@ function setUpHoldRequestForm(recordId) {
 }
 
 function registerAjaxCommentRecord() {
-    $('form[name="commentRecord"]').live('submit', function(){
+    $(document).on('submit','form[name="commentRecord"]', function() {
         if (!$(this).valid()) { return false; }
         var form = this;
         var id = form.recordId.value;

@@ -625,10 +625,39 @@ label.invalid:before {
 #sidebarFavoritesLists .delete {
     background-position: 1px -166px
 }
-#sidebarFavoritesLists #listAdd {
-    background-image: url(../images/icons16-24px-02_white.png);
-    background-position: 188px -48px;
+#sidebarFavoritesLists .listAdd {
+    background-image: url(../images/icons16-24px-02_black.png);
+    background-position: 186px -49px;
 }
+#sidebarFavoritesLists input.listAdd {
+    background-image: url("../images/icons16-24px-02_black.png");
+    background-position: 7px -50px;
+}
+.favoritesList div.bulkActionButtons input.button, 
+.favoritesList div.bulkActionButtons div > a,
+.favoritesList div.bulkActionButtons dl {
+    background-image: url(../images/icons16-24px-02_white.png);
+}
+
+.favoritesList div.bulkActionButtons .dropdown dt a:after {
+    background-image: url("../images/icons16-24px-02_white.png");
+    background-position: 2px -56px;
+}
+
+.favoritesList div.bulkActionButtons input[name="email"] {
+    background-image:none;
+}
+.favoritesList div.bulkActionButtons input[name="delete"] {
+    background-position: right -1384px;
+}
+.favoritesList div.bulkActionButtons input[name="export"] {
+    background-position: right -1660px; 
+}
+.favoritesList div.bulkActionButtons a.button {
+  background-image:none;
+}
+
+
 
 /* Main: Advanced Search */
 

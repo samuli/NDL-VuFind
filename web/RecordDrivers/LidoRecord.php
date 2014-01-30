@@ -80,11 +80,8 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreSubjectDates', $this->getSubjectDates());
         $interface->assign('coreSubjectPlaces', $this->getSubjectPlaces());
         $interface->assign('coreSubjectDetails', $this->getSubjectDetails());
-        
-        if (isset($this->fields['measurements'])) {
-            $interface->assign('coreMeasurements', $this->fields['measurements']);
-        }
-        
+        $interface->assign('coreFormatClassifications', $this->getFormatClassifications());
+        $interface->assign('coreMeasurements', $this->getMeasurements());        
         $interface->assign('coreEvents', $this->getEvents());
         $interface->assign('coreInscriptions', $this->getInscriptions());
         
@@ -144,6 +141,33 @@ class LidoRecord extends IndexRecord
         }
         
         return 'RecordDrivers/Lido/result-' . $view . '.tpl';
+    }
+
+    /**
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display a summary of the item suitable for use in
+     * user's favorites list.
+     *
+     * @param object $user      User object owning tag/note metadata.
+     * @param int    $listId    ID of list containing desired tags/notes (or null
+     * to show tags/notes from all user's lists).
+     * @param bool   $allowEdit Should we display edit controls?
+     *
+     * @return string           Name of Smarty template file to display.
+     * @access public
+     */    
+    public function getListEntry($user, $listId = null, $allowEdit = true)
+    {
+        
+        global $interface;
+
+        $res = parent::getListEntry($user, $listId, $allowEdit);
+        $resultDates = $this->getResultDates();
+        if ($resultDates) {
+            $interface->assign('listDate', $resultDates);
+        }
+
+        return $res;
     }
     
     /**
@@ -357,15 +381,57 @@ class LidoRecord extends IndexRecord
                     }
                 }
             }
+            if ($type == 'valmistus') {
+                $confParam = 'lido_augment_display_date_with_period';
+                if ($this->getDataSourceConfigurationValue($confParam)) {
+                    if ($period = $node->periodName->term) {
+                        if ($date) {
+                            $date = $period . ', ' . $date;
+                        } else {
+                            $date = $period;
+                        }
+                    }
+                }
+            }
             $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
-            $materials = isset($node->eventMaterialsTech->displayMaterialsTech) ? (string)$node->eventMaterialsTech->displayMaterialsTech : '';
+            $materials = array();
+            
+            if (isset($node->eventMaterialsTech->displayMaterialsTech)) {
+                // Use displayMaterialTech (default)
+                $materials[] = (string)$node->eventMaterialsTech->displayMaterialsTech;
+            } else if (isset($node->eventMaterialsTech->materialsTech)) {                
+                // display label not defined, build from materialsTech
+                $materials = array();
+                foreach ($node->xpath('eventMaterialsTech/materialsTech') as $materialsTech) {
+                    if ($terms = $materialsTech->xpath('termMaterialsTech/term')) {
+                        foreach ($terms as $term) {
+                            $label = null;
+                            $attributes = $term->attributes();
+                            if (isset($attributes->label)) {
+                                // Musketti
+                                $label = $attributes->label;
+                            } else if (isset($materialsTech->extentMaterialsTech)) {
+                                // Siiri
+                                $label = $materialsTech->extentMaterialsTech;
+                            }
+                            if ($label) {
+                                $term = "$term ($label)";
+                            }
+                            $materials[] = $term;
+                        }
+                    }
+                }
+            }
+
             $place = isset($node->eventPlace->displayPlace) ? (string)$node->eventPlace->displayPlace : '';
             $places = array();
             if (!$place) {
                 if (isset($node->eventPlace->place->namePlaceSet)) {
                     $eventPlace = array();
                     foreach ($node->eventPlace->place->namePlaceSet as $namePlaceSet) {
-                        $eventPlace[] = isset($namePlaceSet) ? (string)$namePlaceSet->appellationValue : '';
+                        if (trim((string)$namePlaceSet->appellationValue) != '') {
+                            $eventPlace[] = isset($namePlaceSet) ? trim((string)$namePlaceSet->appellationValue) : '';
+                        }
                     }
                     $places[] = implode(', ', $eventPlace);
                 }
@@ -373,8 +439,10 @@ class LidoRecord extends IndexRecord
                     foreach ($node->eventPlace->place->partOfPlace as $partOfPlace) {
                         $partOfPlaceName = array(); 
                         while (isset($partOfPlace->namePlaceSet)):
-                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? (string)$partOfPlace->namePlaceSet->appellationValue : '';
-                            $partOfPlace = $partOfPlace->partOfPlace;
+                        if (trim((string)$partOfPlace->namePlaceSet->appellationValue) != '') {
+                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? trim((string)$partOfPlace->namePlaceSet->appellationValue) : '';                            
+                        }
+                        $partOfPlace = $partOfPlace->partOfPlace;
                         endwhile;
                         $places[] = implode(', ', $partOfPlaceName);
                     }
@@ -385,7 +453,7 @@ class LidoRecord extends IndexRecord
             $actors = array();
             if (isset($node->eventActor)) {
                 foreach ($node->eventActor as $actor) {
-                    if (isset($actor->actorInRole->actor->nameActorSet->appellationValue)) {
+                    if (isset($actor->actorInRole->actor->nameActorSet->appellationValue) && trim($actor->actorInRole->actor->nameActorSet->appellationValue) != '') {
                         $role = isset($actor->actorInRole->roleActor->term) ? $actor->actorInRole->roleActor->term : '';
                         $actors[] = array('name'  => $actor->actorInRole->actor->nameActorSet->appellationValue, 'role' => $role);
                     }        
@@ -401,6 +469,43 @@ class LidoRecord extends IndexRecord
     }
 
     /**
+     * Get an array of format classifications for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getFormatClassifications()
+    {
+        $results = array();
+        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectClassificationWrap") as $node) {
+            if ((string)$node->objectWorkTypeWrap->objectWorkType->term == 'rakennetun ympäristön kohde') {
+                foreach ($node->classificationWrap->classification as $classificationNode) {
+                    $type = null;
+                    $attributes = $classificationNode->attributes();
+                    $type = isset($attributes->type) ? $attributes->type : '';
+                    if ($type) {
+                        $results[] = (string)$classificationNode->term . ' (' . $type . ')';
+                    } else {
+                        $results[] = (string)$classificationNode->term;
+                    }
+                }
+            } else if ((string)$node->objectWorkTypeWrap->objectWorkType->term == 'arkeologinen kohde') {
+                foreach ($node->classificationWrap->classification->term as $classificationNode) {
+                    $label = null;
+                    $attributes = $classificationNode->attributes();
+                    $label = isset($attributes->label) ? $attributes->label : '';
+                    if ($label) {
+                        $results[] = (string)$classificationNode . ' (' . $label . ')';
+                    } else {
+                        $results[] = (string)$classificationNode;
+                    }
+                }                
+            }
+        }     
+        return $results;
+    }
+    
+    /**
      * Get an array of inscriptions for the record.
      *
      * @return array
@@ -410,11 +515,40 @@ class LidoRecord extends IndexRecord
     {
         $results = array();
         foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/inscriptionsWrap/inscriptions/inscriptionDescription/descriptiveNoteValue") as $node) {
-            $results[] = (string)$node;
-        }
+            $label = null;
+            $attributes = $node->attributes();
+            $label = isset($attributes->label) ? $attributes->label : '';
+            if ($label) {
+                $results[] = (string)$node . ' (' . $label . ')';
+            } else {
+                $results[] = (string)$node;  
+
+            }
+        }    
         return $results;
     }
     
+    /**
+     * Get measurements and augment them data source specifically if needed.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getMeasurements()
+    {
+        $results = array();
+        if (isset($this->fields['measurements'])) {
+            $results = $this->fields['measurements'];            
+            $confParam = 'lido_augment_display_measurement_with_extent';
+            if ($this->getDataSourceConfigurationValue($confParam)) {
+                if ($extent = $this->xml->xpath('lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet/objectMeasurements/extentMeasurements')) {
+                    $results[0] = "$results[0] ($extent[0])";
+                } 
+            }
+        }
+        return $results;
+    }
+        
     /**
      * Get an array of dates for results list display
      *

@@ -802,6 +802,13 @@ ead_external_link_template[narc] = "http://www.narc.fi:8080/VakkaWWW/Selaus.acti
 ead_document_order_link_template[narc] = "https://testavapaingest.narc.fi/astiaUi/palvelut/kdk_checkout.php?id={$coreIdentifier|escape:'url'}"
 ead_usage_permission_request_link_template[narc] = "https://testavapaingest.narc.fi/astiaUi/palvelut/kdk_askpermission.php?id={$coreIdentifier|escape:'url'}"
 
+; Datasource specific LIDO record options:
+;
+; Augment first displayable measurement field (displayObjectMeasurements) with first 'extentMeasurement' field.
+lido_augment_display_measurement_with_extent[siiri] = true
+lido_augment_display_date_with_period[siiri] = true
+
+
 ; The following two sections control the Alphabetic Browse module.
 [AlphaBrowse]
 ; This setting controls how many headings are displayed on each page of results:

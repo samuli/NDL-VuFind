@@ -8,8 +8,7 @@
       {include file=$recommendations}
     {/foreach}
   {/if}
-
-  <span id="collectionItemsHeader">{translate text='Items'}</span>
+  <div class="collectionViewOptions">
   <form class="collectionSortSelector" action="{$path}/Search/SortResults" method="post">
       <label for="sort_options_1">{translate text='Sort'}</label>
       <select id="sort_options_1" name="sort" class="jumpMenu">
@@ -19,17 +18,16 @@
       </select>
       <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
   </form>
-  {if $viewList|@count gt 1}
-    <div class="collectionViewSelection">
+ {if $viewList|@count gt 1}
+    <div class="collectionViewSelection viewButtons">
       {foreach from=$viewList item=viewData key=viewLabel}
-        {if !$viewData.selected}<a href="{$url|escape}/Collection/{$id}/CollectionList?page={$page}&view={$viewData.desc|lower}#tabnav" title="{translate text='Switch view to'} {translate text=$viewData.desc}" >{/if}
-        <img src="{$path}/images/view_{$viewData.viewType}.png" {if $viewData.selected}title="{translate text=$viewData.desc} {translate text='view already selected'}"{/if}/>
-        {if !$viewData.selected}</a>{/if}
+        <a href="{$viewData.viewUrl|escape}" class="view-{$viewData.viewType} {if $viewData.selected}active{/if}" title="{translate text='Switch view to'} {translate text=$viewData.desc}"></a>
       {/foreach}
-    </div>    
-  {/if}
+    </div>
+ {/if}
+ </div>
   <div class="clearer"></div>
-{/if}
+{/if} 
 {if $recordSet}
   {include file= $searchPage }
 {else}

@@ -267,8 +267,10 @@ class MultiBackend implements DriverInterface
         $driver = $this->getDriver($source);
         if ($driver) {
             $patron = $driver->patronLogin($this->getLocalId($username), $password);
-            $patron = $this->addIdPrefixes($patron, $source);
-            $_SESSION['logins'][$username] = serialize($patron);
+            if (!PEAR::isError($patron)) {
+                $patron = $this->addIdPrefixes($patron, $source);
+                $_SESSION['logins'][$username] = serialize($patron);
+            }
             return $patron;
         }
         return new PEAR_Error('No suitable backend driver found');

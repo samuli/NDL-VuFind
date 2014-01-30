@@ -28,13 +28,13 @@ function initCarousel() {
     function slideOver() {
         pickupHeight = $(this).children('.pickup-content').height();
         imgHeight = $(this).children('img').height();
-        $(this).children('.pickup-content').stop().animate({top:imgHeight-pickupHeight +1}, 300);
+        $(this).children('.pickup-content').stop().animate({top:imgHeight-pickupHeight +1}, 300).addClass('open');
         if ($(this).index() == 0) $('#carousel h2.ribbon').stop()
             .animate({height:0,padding:'0 7px',opacity:0}, 400);
     }
 
     function slideOut() {
-        $(this).children('.pickup-content').stop().delay(100).animate({top:topPosition}, 300);
+        $(this).children('.pickup-content').stop().delay(100).animate({top:topPosition}, 300, function() {$(this).removeClass('open');});
         if ($(this).index() == 0) $('#carousel h2.ribbon').stop().delay(100)
             .animate({height:ribbonH,padding:'5px 7px',opacity:1}, 100);
     }

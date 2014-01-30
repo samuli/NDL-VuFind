@@ -54,9 +54,9 @@
       {if $dualResultsEnabled && $searchType != 'advanced'}
       </div>
       <div class="headerRight">
-        <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
-        <a class="button buttonFinna buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="Books etc."}</a>
-        <a class="button buttonFinna" href="{$searchWithoutFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
+        <a class="button buttonFinna" href="{$searchWithFilters|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}&dualResults=1">{translate text="All Results"}</a>
+        <a class="button buttonFinna buttonSelected" href="{$searchWithFilters|escape}&dualResults=0">{translate text="Books etc."}</a>
+        <a class="button buttonFinna" href="{$searchWithoutFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}&dualResults=0">{translate text="Articles, e-Books etc."}</a>
       </div>
       {/if}
     </div> {* content *}

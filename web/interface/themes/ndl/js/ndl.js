@@ -204,7 +204,8 @@ function initSidebarFacets() {
         } else {
             action += '&'; // Other parameters found, therefore add &
         }
-        var query = action + 'sdaterange[]=search_sdaterange_mv&';
+        var type = $('.mainYearForm input[name=search_sdaterange_mvtype]:checked').val()
+        var query = action + 'sdaterange[]=search_sdaterange_mv&search_sdaterange_mvtype=' + type + '&';
                 
         // Require numerical values
         if (!isNaN(from) && !isNaN(to)) {

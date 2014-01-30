@@ -146,6 +146,12 @@
         color:#FDF07F;
     }
     
+    #carousel .open .pickup-header {
+        height: 45px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    
     #introduction ul {
         clear:both;
     }
@@ -215,11 +221,19 @@
     .timelineview { 
         margin-right:34px;
     }
-    
-    .mainYearForm input[type="text"] {
-        width:31px;
+
+    .yearLabel {
+        margin-right:0;
     }
     
+    .mainYearForm input[type="text"] {
+        width:35px;
+    }
+    
+    .mainYearFormContainer1 .mainYearForm .radiobuttonFilter label {
+        width: 155px;
+    }
+
     .mainYearFormContainer2 {
         margin-right:30px;
     }
@@ -313,10 +327,33 @@
         padding-right:8px;
     }
     .favoritesList {
-        width:470px;
+        width:469px;
     }
     .favoritesList .pagination {
         width: 460px;
+    }
+    
+    .favoritesList .paginationTop {
+        visibility:hidden;
+    }
+    
+    .favoritesList div.bulkActionButtons {
+        height:75px;
+    }
+    
+    .favoritesList div.bulkActionButtons input[name="delete"] {
+        clear:both;
+        margin-top:7px;
+    }
+    .favoritesList div.bulkActionButtons a.checkBoxDeselectAll {
+        float:left;
+        margin-top:7px;
+    }
+    form[name="bulkActionForm"].visible + .resultOptionLimit {
+        top:120px;
+    }
+    form[name="bulkActionForm"].visible .allCheckboxBackground {
+        top:120px;
     }
 
     /* Footer */
@@ -351,7 +388,7 @@
 
     
     .keepFilters {
-        left: 228px;
+        left: 242px;
     }
     .ui-autocomplete {
         width: 457px !important;

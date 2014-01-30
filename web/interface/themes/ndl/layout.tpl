@@ -1,12 +1,11 @@
 {if $smarty.request.subPage && $subTemplate}
   {include file="$module/$subTemplate"}
 {else}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 {* Do not use HTML comments before DOCTYPE to avoid quirks-mode in IE *} 
 <!-- START of: layout.tpl -->
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{$userLang}" lang="{$userLang}">
+<html lang="{$userLang}">
 
 {* We should hide the top search bar and breadcrumbs in some contexts - TODO, remove xmlrecord.tpl when the actual record.tpl has been taken into use: *}
 {if ($module=="Search" || $module=="Summon" || $module=="PCI" || $module=="WorldCat" || $module=="Authority" || $module=="MetaLib") && $pageTemplate=="home.tpl" || $pageTemplate=="xmlrecord.tpl"}
@@ -261,17 +260,17 @@
       </div>
       -->
 
-      <div id="nav" class="nav" role="navigation">
+      <div id="nav" class="nav">
         <div class="content">
-          <ul id="headerMenu" role="menubar">
+          <ul id="headerMenu" role="navigation" aria-label="{translate text='Main Navigation'}">
             {include file="header-menu.$userLang.tpl"}
           </ul>
           <div class="lang">
             {if is_array($allLangs) && count($allLangs) > 1}
-            <ul>
+            <ul role="list">
               {foreach from=$allLangs key=langCode item=langName}
                 {if $userLang != $langCode}
-                  <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
+                  <li role="option"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
                     {translate text=$langName}</a>
                   </li>
                 {/if}

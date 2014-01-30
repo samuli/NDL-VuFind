@@ -114,6 +114,11 @@ class PubDateVisAjax implements RecommendationInterface
             $interface->assign(
                 'searchParams', $this->searchObject->renderSearchUrlParams()
             );
+
+
+            if ($type = $this->searchObject->getSpatialDateRangeFilterType()) {
+                $interface->assign('search_sdaterange_mvtype', $type);
+            }
         }
     }
 

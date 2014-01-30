@@ -151,11 +151,11 @@ function createDropdowns(){
                              '<span class="value">' + selected.val() + 
                              '</span></a></dt>');
         
-        $("#"+target).append('<dd><ul></ul></dd>');
+        $("#"+target).append('<dd><ul id="owned_'+idName+'" role="menu" tabindex="0" aria-haspopup="true"></ul></dd>');
         
         options.each(function(){
             if ($(this).text()) {
-                $("#"+target+" dd ul").append('<li><a href="#" class="big">' + 
+                $("#"+target+" dd ul").append('<li role="menuitem" tabindex="-1"><a href="#" class="big">' + 
                                               $(this).text() + '<span class="value">' + 
                                               $(this).val() + '</span></a></li>');
             } else {

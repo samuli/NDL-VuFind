@@ -91,6 +91,7 @@ class SearchObject_SolrCollection extends SearchObject_Solr
             $this->setCollectionField();
         }
         $this->addFilter($this->_collectionField . ":" . $this->collectionID);
+        $this->addHiddenFilter('!id:' . $this->collectionID);
 
         // Sorting - defaults to off with unlimited facets, so let's
         // be explicit here for simplicity.

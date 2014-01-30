@@ -8,7 +8,7 @@
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">
-	        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} mainFocus clearable" placeholder='{translate text="Find"}&hellip;' />
+	        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} mainFocus clearable" placeholder="{translate text='Find'}&hellip;" role="textbox" aria-autocomplete="list" aria-haspopup="true" />
 	      </div>
 	        {if $prefilterList}
 	      <div class="styled_select">
@@ -52,14 +52,12 @@
     {foreach from=$filterList item=data key=field name=filterLoop}
       {foreach from=$data item=value}
         <input id="applied_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$value.field|escape}:&quot;{$value.value|escape}&quot;" />
-        <label for="applied_filter_{$smarty.foreach.filterLoop.iteration}">{$value.field|escape}:&quot;{$value.value|escape}&quot;</label>
       {/foreach}
     {/foreach}
 
     {foreach from=$checkboxFilters item=current name=filterLoop}
       {if $current.selected}
         <input id="applied_checkbox_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$current.filter|escape}" />
-        <label for="applied_checkbox_filter_{$smarty.foreach.filterLoop.iteration}">{$current.filter|escape}</label>
       {/if}
     {/foreach}
       </div>
@@ -83,7 +81,9 @@
       </div>
     </div>
 
-  {* Load hidden limit preference from Session *}
+  {if $spatialDateRangeType}<input type="hidden" name="search_sdaterange_mvtype" value="{$spatialDateRangeType|escape}" />{/if}
+
+  {* Load hidden limit preference from Session *}  
   {if $lastLimit}<input type="hidden" name="limit" value="{$lastLimit|escape}" />{/if}
   {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 

@@ -71,24 +71,6 @@ class AJAX_SimilarItems extends Action
         }
         $this->recordDriver = RecordDriverFactory::initRecordDriver($record);
         
-        // Get similar records
-        $similar = $this->db->getMoreLikeThis(
-            $_REQUEST['id'],
-            array('fq' => SearchObject_Solr::getDefaultHiddenFilters())
-        );
-
-        // Send the similar items to the template; if there is only one, we need
-        // to force it to be an array or things will not display correctly.
-        if (count($similar['response']['docs']) > 0) {
-            $interface->assign('similarRecords', $similar['response']['docs']);
-        }
-
-        // Find Other Editions
-        $editions = $this->recordDriver->getEditions();
-        if (!PEAR::isError($editions)) {
-            $interface->assign('editions', $editions);
-        }
-        
-        $interface->display('Record/similar-items.tpl');
+        $interface->display($this->recordDriver->getSimilarItems());
     }
 }
