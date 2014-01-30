@@ -3,6 +3,10 @@
 #logo {
 }
 
+#home-timeline .mainYearForm input[type=submit] {
+    float: none;
+}
+
 /*** Header: Blurb */
 
 #blurb {
