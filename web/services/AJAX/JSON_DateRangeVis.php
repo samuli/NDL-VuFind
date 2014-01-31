@@ -175,7 +175,8 @@ class JSON_DateRangeVis extends JSON
         $from = $to = '';
         if (isset($filters[$this->filterField])) {
             foreach ($filters[$this->filterField] as $filter) {
-                if ($range = VuFindSolrUtils::parseSpatialDateRange($filter)) {
+                $type = $this->searchObject->getSpatialDateRangeFilterType();
+                if ($range = VuFindSolrUtils::parseSpatialDateRange($filter, $type)) {
                     $startDate = new DateTime("@{$range['from']}");
                     $endDate = new DateTime("@{$range['to']}");
                     $from = $startDate->format('Y');

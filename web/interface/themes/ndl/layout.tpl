@@ -273,17 +273,17 @@
       </div>
       -->
 
-      <div id="nav" class="nav" role="navigation">
+      <div id="nav" class="nav">
         <div class="content">
-          <ul id="headerMenu" role="menubar">
+          <ul id="headerMenu" role="navigation" aria-label="{translate text='Main Navigation'}">
             {include file="header-menu.$userLang.tpl"}
           </ul>
           <div class="lang">
             {if is_array($allLangs) && count($allLangs) > 1}
-            <ul>
+            <ul role="list">
               {foreach from=$allLangs key=langCode item=langName}
                 {if $userLang != $langCode}
-                  <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
+                  <li role="option"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
                     {translate text=$langName}</a>
                   </li>
                 {/if}

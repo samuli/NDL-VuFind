@@ -22,7 +22,7 @@
   </div>
   </div>
 
-  <div class="ui-tabs ui-widget myResearchMenu">
+  <div class="ui-tabs ui-widget myResearchMenu" role="navigation" aria-label="{translate text='Your Account Navigation'}">
     <div class="content">
       <div class="grid_24">
       <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix">

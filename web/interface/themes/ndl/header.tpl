@@ -8,7 +8,7 @@
 {include file="homelogo.tpl" assign=logoUrl}
 
   <div class="grid_24 drop">
-    <a id="logo" href="{$url}" title="{translate text="Home"}">
+    <a id="logo" href="{$url}" title="{translate text='Home'}">
       {image src=$logoUrl}
     </a>
   </div>
@@ -18,7 +18,7 @@
 <div id="headerBottom" class="grid_24">
   {if $showBreadcrumbs}
   <div class="content">
-      <div class="breadcrumbs">
+      <div class="breadcrumbs" role="navigation" aria-label="{translate text='Breadcrumbs'}">
         <div class="breadcrumbinner">
           <a href="{$url}">{translate text="Home page"}</a><span></span>
           {if $module}{include file="$module/breadcrumbs.tpl"}{/if}
