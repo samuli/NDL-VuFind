@@ -306,7 +306,8 @@ ul.documentTypes li {
     display:block;
 }
 #popularSearches li span:first-child {
-    background: url("../images/icons16-24px-04.png") no-repeat scroll -483px -5px transparent;
+    background: #00A3B5;
+    border-radius: 31px;
     color: #FFFFFF;
     display: block;
     float: left;
