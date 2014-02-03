@@ -2785,6 +2785,11 @@ ul.recordSet .addToFavLink a {
 .openurl_more img {
     display:none;
 }
+.openurl_more_full {
+    display: block;
+    padding-left: 24px;
+    margin: 5px 0;
+}
 .checkedout:before, .checkedoutLoc:before {
     content: "";
     display: inline-block;
