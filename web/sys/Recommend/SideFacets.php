@@ -174,6 +174,7 @@ class SideFacets implements RecommendationInterface
             'sideFacetSet', $this->_searchObject->getFacetList($this->_mainFacets)
         );
         $interface->assign('sideFacetLabel', 'Narrow Search');
+        $this->processNewItemsFacet($filterList);
     }
 
     /**
@@ -218,6 +219,39 @@ class SideFacets implements RecommendationInterface
             $result[$current] = array($from, $to);
         }
         return $result;
+    }
+    
+    protected function processNewItemsFacet($filterList) {
+        global $interface;
+        $newItemsValues = array('[NOW-1YEAR TO NOW]', 
+            '[NOW-6MONTHS TO NOW]',
+            '[NOW-3MONTHS TO NOW]',
+            '[NOW-1MONTHS TO NOW]',
+            '[NOW-7DAYS TO NOW]',
+            '[xxx TO NOW]'
+            
+        );
+
+        // Only one of the latest items recommendations can be in use at the same time
+        foreach ($filterList as $filters) {
+            foreach ($filters as $filter) {
+                if ($filter['field'] === 'first_indexed') {
+                    $this->_searchObject->removeFilter('first_indexed:' . $filter['value']);
+                }                
+            }
+        }
+
+        $newItemsLinks = array();
+        
+        foreach ($newItemsValues as $value) {
+            $link = $this->_searchObject->renderLinkWithFilter("first_indexed:$value");
+            $newItemsLinks[] = array(
+                'label' => translate(array('text' => $value, 'prefix' => 'facet_')),
+                'url' => $link
+            );
+        }
+        
+        $interface->assign(compact('newItemsLinks'));
     }
 }
 

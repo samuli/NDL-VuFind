@@ -135,7 +135,6 @@
     </div>
     {if !empty($sideFacetSet)}
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-          {* include file=$sideRecommendations.SideFacets *}
           {if $sideRecommendations}
             {foreach from=$sideRecommendations item="recommendations"}
               {include file=$recommendations}
