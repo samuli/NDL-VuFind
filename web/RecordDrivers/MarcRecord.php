@@ -1505,7 +1505,8 @@ class MarcRecord extends IndexRecord
         if ($field) {
             $data = $field->getData();
             $year = substr($data, 11, 4);
-            if (is_numeric($year) && $year != 0) {
+            $type = substr($data, 6, 1);
+            if (is_numeric($year) && $year != 0 && $type != 'e') {
                 return $year;
             } 
         }
