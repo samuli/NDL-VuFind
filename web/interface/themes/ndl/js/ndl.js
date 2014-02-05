@@ -15,6 +15,7 @@ $(document).ready(function() {
     initScrollMenu();
     initContextHelp();
     initDatePicker();
+    initStartingFrom();
 });
 
 // Header menu
@@ -415,3 +416,12 @@ function initDatePicker() {
     );
 }
 
+// Add clickable starting from in New in Finna function
+function initStartingFrom() {
+    $("a.startinglink").click(function() {
+     
+        $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {
+        	//animation complete.
+        });
+    });
+}

@@ -496,6 +496,11 @@ span.dynatree-expander:hover {
     background-position: -6px -10px;
 }
 
+#newItemsFromDate.searchButton {
+        background-image: url(../images/icons16-24px-02_white.png);
+        background-position: 7px -943px;
+    }
+
 /* Main: Single record view */
 
 .resultLinks .button, .resultLinks .button span {

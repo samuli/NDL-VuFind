@@ -161,6 +161,13 @@
         
     }
     
+	/* datepicker in New in Finna facet */
+	
+	#newItemsLimit {
+		font-size:85%;
+		font-weight:normal;
+	}
+	
     /* Search results: header */
     
     .dateVisClear a {
