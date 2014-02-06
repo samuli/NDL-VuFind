@@ -165,13 +165,24 @@ class VuFindSolrUtils
         if ($type == 'overlap') { 
             $regex = '/\([\d-]+\s+([\d-]+)\s+([\d-]+)\s+[\d-]+\)/';
         } elseif ($type == 'within') {
-            $regex = '/\(([\d-]+)\s+[\d-]+\s+[\d-]+\s+([\d-]+)\)/';
+            $regex = '/\(([\d-]+\.?[\d]+)\s+[\d-]+\s+[\d-]+\s+([\d-]+\.?[\d]+)\)/';
         }
         
         if (!$regex || !preg_match($regex, $query, $matches)) {
             return false;
         }
-        return array('from' => $matches[1] * 86400, 'to' => $matches[2] * 86400);
+
+        $from = $matches[1];
+        $to = $matches[2];
+
+        if ($type == 'within') {
+            // Adjust time range end points to match original search query 
+            // (see SearchObject/Base::buildSpatialDateRangeFilter)
+            $from += 0.5;
+            $to -= 0.5;
+        }
+
+        return array('from' => $from * 86400, 'to' => $to * 86400);
     }
 }
 
