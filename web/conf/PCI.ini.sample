@@ -20,17 +20,17 @@ ftext         = "Full Text"
 abstract      = Abstract
 
 [Advanced_Searches]
-any           = "All Fields"
-title         = Title
-creator       = Author
-desc          = Description
-sub           = Subject
-rtype         = "Resource Type"
-cdate         = "Creation Date"
+any           = adv_search_all
+title         = adv_search_title
+creator       = adv_search_author
+desc          = adv_search_desc
+sub           = adv_search_subject
+rtype         = adv_search_type
+cdate         = adv_search_date
 isbn          = ISBN
 issn          = ISSN
-ftext         = "Full Text"
-abstract      = Abstract
+ftext         = adv_search_ftext
+abstract      = adv_search_abstract
 
 [Sorting]
 default = sort_relevance
@@ -39,14 +39,14 @@ scdate = sort_year
 screator = sort_author
 
 [Facets]
-tlevel          = Availability
-topic           = Topic
-pfilter         = TypeOfPublication
-creator         = Author
-lang            = Language
-creationdate    = Published
-jtitle          = Journal
-domain          = Domain
+tlevel          = facet_pci_tlevel
+topic           = facet_pci_topic
+pfilter         = facet_pci_pfilter
+creator         = facet_pci_creator
+lang            = facet_pci_lang
+creationdate    = facet_pci_creationdate
+jtitle          = facet_pci_jtitle
+domain          = facet_pci_domain
 
 [Facet_Settings]
 ; Any facets named in the list below will have their values run through the 

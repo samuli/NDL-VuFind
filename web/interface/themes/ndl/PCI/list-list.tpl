@@ -54,24 +54,42 @@
         <div class="resultItemFormat"><span class="iconlabel format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""} format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$record.format prefix='format_PCI_'}</span>
         </div>
         <div class="resultItemLine2">
-        {if !empty($record.author)}
+        {if !empty($record.author.0)}
             {translate text='by'}:
         {foreach from=$record.author item=author name="loop"}
             <a href="{$url}/PCI/Search?type=Author&amp;lookfor={$author|unhighlight|trim|escape:"url"}">{$author|trim|highlight}</a>{if !$smarty.foreach.loop.last}, {/if} 
         {/foreach}
         {/if}
+        {if !empty($record.publicationDate)}{translate text='Publication Date'}: {$record.publicationDate|escape}{/if}
         </div>
         <div class="resultItemLine3">
-        {foreach from=$record.url item=recordLink}
-            <a target="_blank" href="{$recordLink|proxify|escape}">{$recordLink|escape:"html"|truncate:60:"...":true:true}</a><br />
-        {/foreach}
+        {if !empty($record.publicationTitle)}{translate text='Published in'}: {$record.publicationTitle|escape}{/if}
         </div>
+        {if $record.url || $record.openUrl}
         <div class="resultItemLine4">
-        {if $record.openUrl}
-          <br>
-          {include file="Search/openurl.tpl" openUrl=$record.openUrl}
-        {/if}
+            {if $record.url || $record.fulltext != 'no_fulltext'}
+                {if $record.url|@count > 2}
+                <p class="resultContentToggle"><a href="#" class="toggleHeader">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></a></p>
+                {else}
+                <p class="resultContentToggle">{translate text='available_online'}<img src="{path filename="images/down.png"}" width="11" height="6" /></p>
+                {/if}    
+            <div class="resultContentList">
+            <ul>
+                {foreach from=$record.url item=recordLink}
+                <li><a target="_blank" href="{$recordLink|proxify|escape}">{$recordLink|escape:"html"|truncate:60:"...":true:true}</a><br />
+                {/foreach}
+            </ul>
+                {if $record.openUrl}
+                {include file="Search/openurl.tpl" openUrl=$record.openUrl}
+                {/if}  
+            </div>
+            {else}
+                {if $record.openUrl}
+                {include file="Search/openurl.tpl" openUrl=$record.openUrl}
+                {/if}              
+            {/if}  
         </div>
+        {/if}    
     
         {* Display the lists that this record is saved to *}
         <div class="savedLists info hide" id="savedLists{$id|escape}">

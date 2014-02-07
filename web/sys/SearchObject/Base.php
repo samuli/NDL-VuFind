@@ -334,7 +334,7 @@ abstract class SearchObject_Base
                     }
 
                     // Convert date display format from [YYYY TO YYYY] to YYYY - YYYY
-                    if ($field == 'main_date_str') {
+                    if ($field == 'main_date_str' || $field == 'creationdate') {
                         $display = preg_replace('/\[([0-9]+)( TO )([0-9]+)\]/', "$1 - $3", $display);
                     } else if (strstr($field, 'location_geo')) {
                         // Prevent displaying of coordinates in the geographical filter
