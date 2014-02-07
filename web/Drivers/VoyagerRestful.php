@@ -85,6 +85,9 @@ class VoyagerRestful extends Voyager
         $this->defaultPickUpLocation
             = (isset($this->config['Holds']['defaultPickUpLocation']))
             ? $this->config['Holds']['defaultPickUpLocation'] : false;
+        if ($this->defaultPickUpLocation == '0') {
+            $this->defaultPickUpLocation = false;
+        }
         $this->holdCheckLimit
             = isset($this->config['Holds']['holdCheckLimit'])
             ? $this->config['Holds']['holdCheckLimit'] : "15";

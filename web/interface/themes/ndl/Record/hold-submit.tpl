@@ -65,6 +65,9 @@
           {if count($pickup) > 1}
             <strong>{translate text="pick_up_location"}:</strong><br/>
             <select name="gatheredDetails[pickUpLocation]">
+            {if $defaultPickUpLocation === false}
+            <option value="" selected="selected">{translate text='hold_select_pickup_location'}</option>
+            {/if}
             {foreach from=$pickup item=lib name=loop}
               <option value="{$lib.locationID|escape}" {if $selected == $lib.locationID}selected="selected"{/if}>{$lib.locationDisplay|escape}</option>
             {/foreach}
