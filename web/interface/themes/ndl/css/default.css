@@ -6343,4 +6343,18 @@ border: none;
 	text-decoration:none !important;
 }
 
+.startingfrom {
+    height:30px;
+    line-height:28px;
+}
+.startingfrom a.startinglink {
+    display:inline-block;
+    cursor:pointer;
+}
+.startingfrom a.startinglink.clicked {
+    color:#000;
+}
 
+span#showDate {
+    padding-right: 5px;
+}

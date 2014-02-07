@@ -27,7 +27,7 @@
           {/if}
           {if $hasSolrDate}        
             {assign var=solrdate value=$filter.display|replace:'TO NOW':''|replace:'[':''|replace:']':''}
-      <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$solrdate|date_format:"%e.%-m.%Y"} -</span></a></li>
+      <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$solrdate|date_format:"%e.%-m.%Y"}—</span></a></li>
             {assign var=hasSolrDate value=0}    
           {else}
         <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{if $filter.field != 'building'}{translate text=$field}: {/if}{$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
@@ -108,7 +108,9 @@
             <span class="facet_loading hide"></span>
         </div>
       {elseif $title=='first_indexed'}
-        {include file="Search/Recommend/NewItemsInIndex.tpl"}
+        {assign var="first_indexed" value="New Items in Index"}
+        {if !empty($filterList.$first_indexed)}{assign var="opened" value=true}{else}{assign var="opened" value=false}{/if}
+        {include file="Search/Recommend/NewItemsInIndex.tpl" opened=$opened}
       {else}
           {assign var="mainYear" value="Main Year"}
           {assign var="dateRange" value="Date Range"}

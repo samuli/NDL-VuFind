@@ -265,16 +265,3 @@ button.datepick-cmd {
 .datepick-month td .datepick-selected {
     background-color: #008395;
 }
-
-
-.startingfrom {
-	height:30px;
-	line-height:28px;
-}
-.startingfrom a.startinglink {
-	display:inline-block;
-	cursor:pointer;
-}
-.startingfrom a.startinglink.clicked {
-	color:#000;
-}

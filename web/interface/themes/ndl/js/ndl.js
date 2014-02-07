@@ -14,8 +14,6 @@ $(document).ready(function() {
     initScrollRecord();
     initScrollMenu();
     initContextHelp();
-    initDatePicker();
-    initStartingFrom();
 });
 
 // Header menu
@@ -389,7 +387,7 @@ function initContextHelp() {
     });
 }
 
-function initDatePicker() {
+function initDatePicker(selectedNewItemsDate) {
     $("a#newItemsFromDate").click(function(event) {
         event.preventDefault();
         var dates = $(this).data('solrdate');
@@ -400,7 +398,7 @@ function initDatePicker() {
         var location = baseUrl.replace("xxx", dates);
         window.location.href = location;
     });
-     
+    
     $('#newItemsLimit').datepick(
         {   
             maxDate: -1,
@@ -414,14 +412,17 @@ function initDatePicker() {
             }
         }
     );
-}
-
-// Add clickable starting from in New in Finna function
-function initStartingFrom() {
+    
+    if (selectedNewItemsDate !== '') {
+        $('a#newItemsFromDate').data('solrdate', selectedNewItemsDate);
+        dateObj = new Date(selectedNewItemsDate);
+        finDate = new SimpleDateFormat("d.M.yyyy").format(dateObj);
+        $('#showDate').text(finDate);
+        $("#newItemsFromDate,#newItemsLimit").show();
+        $('#newItemsLimit').datepick( "setDate", finDate);
+    }
+    
     $("a.startinglink").click(function() {
-     
-        $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {
-        	//animation complete.
-        });
+        $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {});
     });
 }
