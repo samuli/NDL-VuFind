@@ -877,7 +877,7 @@ abstract class SearchObject_Base
 
                 $toDate = new DateTime("{$to}T00:00:00");
                 // Need format instead of getTimestamp for dates before epoch
-                $to = $toDate->format('U') / 86400;    // days since epoch 
+                $to = $toDate->format('U') / 86400;    // days since epoch
             }
         } catch (Exception $e) {
             date_default_timezone_set($oldTZ);
@@ -899,6 +899,10 @@ abstract class SearchObject_Base
         } else if ($type == 'within') {
             // document duration within query duration
             // q=fieldX:"Intersects(start -∞ ∞ end)"
+            
+            // Enlarge query range to match records with exactly the same time range as the original query 
+            $from -= 0.5;
+            $to += 0.5;
             $query = "{$field}:\"Intersects($from $minFrom $maxTo $to)\"";
         }
 

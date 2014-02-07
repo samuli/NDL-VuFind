@@ -45,7 +45,8 @@ class SideFacets implements RecommendationInterface
     protected  $_mainFacets;
     private $_checkboxFacets;
     protected $_hierarchicalFacets = array();
-
+    protected $_hiddenFacets = array();
+    
     /**
      * Constructor
      *
@@ -92,6 +93,13 @@ class SideFacets implements RecommendationInterface
             $this->_defaultFacets = $config['SpecialFacets']['default'];
         } else {
             $this->_defaultFacets = array();
+        }
+
+        // Get a list of facetfields that should not be displayed.
+        if (isset($config['SpecialFacets']['hidden'])) {
+            $this->_hiddenFacets = $config['SpecialFacets']['hidden'];
+        } else {
+            $this->_hiddenFacets = array();
         }
         
         // Checkbox facets:
@@ -160,11 +168,13 @@ class SideFacets implements RecommendationInterface
         );
         $interface->assign('hierarchicalFacets', $this->_hierarchicalFacets);
         $interface->assign('defaultFacets', $this->_defaultFacets);
+        $interface->assign('hiddenFacets', $this->_hiddenFacets);
         
         $interface->assign(
             'sideFacetSet', $this->_searchObject->getFacetList($this->_mainFacets)
         );
         $interface->assign('sideFacetLabel', 'Narrow Search');
+        $this->processNewItemsFacet($filterList);
     }
 
     /**
@@ -209,6 +219,45 @@ class SideFacets implements RecommendationInterface
             $result[$current] = array($from, $to);
         }
         return $result;
+    }
+    
+    protected function processNewItemsFacet($filterList) {
+        global $interface;
+        $newItemsValues = array('[NOW-1YEAR TO NOW]', 
+            '[NOW-6MONTHS TO NOW]',
+            '[NOW-3MONTHS TO NOW]',
+            '[NOW-1MONTHS TO NOW]',
+            '[NOW-7DAYS TO NOW]',
+            '[xxx TO NOW]'
+        );
+        $removedValue = false;
+        // Only one of the latest items recommendations can be in use at the same time
+        foreach ($filterList as $filters) {
+            foreach ($filters as $filter) {
+                if ($filter['field'] === 'first_indexed') {
+                    $this->_searchObject->removeFilter('first_indexed:' . $filter['value']);
+                    $removedValue = $filter['value'];
+                }                
+            }
+        }
+        $newItemsLinks = array();
+        foreach ($newItemsValues as $value) {
+            $link = $this->_searchObject->renderLinkWithFilter("first_indexed:$value");
+            $newItemsLinks[] = array(
+                'label' => translate(array('text' => $value, 'prefix' => 'facet_')),
+                'url' => $link
+            );
+        }
+        if ($removedValue) {
+            if(!in_array($removedValue, $newItemsValues)) {
+                $datePart = substr($removedValue, 1, 20);
+                $interface->assign('newItemsDate', $datePart);
+            }
+            
+            // Put the filter back on for ordering purposes.
+            $this->_searchObject->addFilter('first_indexed:' . $removedValue);
+        }
+        $interface->assign(compact('newItemsLinks'));
     }
 }
 

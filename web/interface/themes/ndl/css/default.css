@@ -6326,3 +6326,35 @@ div.hopscotch-bubble {
     display:inline-block;
 }
 
+/* New in Finna Facet */
+
+#newItemsLimit {
+display:none;
+width: 100%;
+margin: 10px 0px;
+padding-right: 0px;
+border: none;
+}
+
+#newItemsFromDate {
+	display:none;
+}
+#newItemsFromDate.searchButton:hover {
+	text-decoration:none !important;
+}
+
+.startingfrom {
+    height:30px;
+    line-height:28px;
+}
+.startingfrom a.startinglink {
+    display:inline-block;
+    cursor:pointer;
+}
+.startingfrom a.startinglink.clicked {
+    color:#000;
+}
+
+span#showDate {
+    padding-right: 5px;
+}

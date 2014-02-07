@@ -387,4 +387,42 @@ function initContextHelp() {
     });
 }
 
-
+function initDatePicker(selectedNewItemsDate) {
+    $("a#newItemsFromDate").click(function(event) {
+        event.preventDefault();
+        var dates = $(this).data('solrdate');
+        if (dates==='') {
+            return false;
+        }
+        var baseUrl = $(this).data('urltemplate');
+        var location = baseUrl.replace("xxx", dates);
+        window.location.href = location;
+    });
+    
+    $('#newItemsLimit').datepick(
+        {   
+            maxDate: -1,
+            altField: "#showDate",
+            altFormat: "dd.mm.yyyy",
+            onSelect: function(dates) { 
+                solrDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date(dates));
+                finDate = new SimpleDateFormat("d.M.yyyy").format(new Date(dates));
+                $('a#newItemsFromDate').data('solrdate', solrDate);
+                $('#showDate').text(finDate);
+            }
+        }
+    );
+    
+    if (selectedNewItemsDate !== '') {
+        $('a#newItemsFromDate').data('solrdate', selectedNewItemsDate);
+        dateObj = new Date(selectedNewItemsDate);
+        finDate = new SimpleDateFormat("d.M.yyyy").format(dateObj);
+        $('#showDate').text(finDate);
+        $("#newItemsFromDate,#newItemsLimit").show();
+        $('#newItemsLimit').datepick( "setDate", finDate);
+    }
+    
+    $("a.startinglink").click(function() {
+        $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {});
+    });
+}
