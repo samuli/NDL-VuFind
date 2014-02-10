@@ -74,11 +74,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 *}
   {if $previousRecord || $nextRecord}
     <div class="resultscroller grid_5 {if $lastsearch|strstr:'join'}push_3{else}push_7{/if}">
-    {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></a>
+    {if $previousRecord}<a href="{$url}/Record/{$previousRecord|escape:'url'}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></a>
     {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></span>{/if}
     {$currentRecordPosition} / {$resultTotal}
     {* #{$currentRecordPosition} {translate text='of'} {$resultTotal} *}
-    {if $nextRecord}<a href="{$url}/Record/{$nextRecord}" class="nextRecord icon"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></a>
+    {if $nextRecord}<a href="{$url}/Record/{$nextRecord|escape:'url'}" class="nextRecord icon"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></a>
     {else}<span class="nextRecord inactive"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></span>{/if}
 	</div>
 	{/if}
