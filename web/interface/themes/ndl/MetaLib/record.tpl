@@ -73,6 +73,13 @@
           </li>
         {/if}
         {* Addthis for social sharing END *}
+      </ul>
+              
+      <div class="clear"></div>
+
+      {* NDLBlankInclude *}
+      {include file='Additions/record-post-toolbar.tpl'}
+      {* /NDLBlankInclude *}
      
       <div class="clear"></div>
     </div>
@@ -219,7 +226,25 @@
   
   {* Add COINS *}  
   <span class="Z3988" title="{$record.openUrl|escape}"></span>
+  
+  {* NDLBlankInclude *}
+  {include file='Additions/record-post-metadata.tpl'}
+  {* /NDLBlankInclude *}
+
   </div>
+  
+  <div id="resultSidebar" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6 prefix_1">
+
+    {* NDLBlankInclude *}
+    {include file='Additions/record-pre-recommendations.tpl'}
+    {* /NDLBlankInclude *}
+
+    {* NDLBlankInclude *}
+    {include file='Additions/record-post-recommendations.tpl'}
+    {* /NDLBlankInclude *}
+
+  </div>
+
 </div>
 
 <div class="clear"></div>

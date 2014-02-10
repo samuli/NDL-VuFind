@@ -10,6 +10,11 @@
       {translate text='You do not have any fines'}
     {else}
     <h2>{translate text='Your Fines'}</h2>
+    
+    {* NDLBlankInclude *}
+    {translate text='fines_instructions'}
+    {* /NDLBlankInclude *}
+    
     <table class="datagrid fines" summary="{translate text='Your Fines'}">
       <tr>
         <th style="width:50%;">{translate text='Title'}</th>

@@ -21,6 +21,11 @@
     <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">
     <div class="profileInfo grid_12 static">
       <h2>{translate text='Your Profile'}</h2>
+      
+      {* NDLBlankInclude *}
+      {translate text='profile_instructions'}
+      {* /NDLBlankInclude *}
+      
       <table class="profileGroup">
       <caption>{translate text='Local Settings'}</caption>
       <tr>

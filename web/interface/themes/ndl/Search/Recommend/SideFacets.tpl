@@ -1,5 +1,9 @@
 <!-- START of: Search/Recommend/SideFacets.tpl -->
 
+{* NDLBlankInclude *}
+{include file='Additions/search-pre-facets.tpl'}
+{* /NDLBlankInclude *}
+
 <div class="sidegroup">
   {if $recordCount > 0 || !empty($filterList) || $checkboxStatus != false}
 <h4>{translate text=$sideFacetLabel}</h4>{/if}
@@ -168,5 +172,9 @@
     {/foreach}
   {/if}
 </div>
+
+{* NDLBlankInclude *}
+{include file='Additions/search-post-facets.tpl'}
+{* /NDLBlankInclude *}
 
 <!-- END of: Search/Recommend/SideFacets.tpl -->

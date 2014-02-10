@@ -28,6 +28,11 @@
       <div class="holdsMessage"><p class="info">{$cancelCallSlipResults.count|escape} {translate text="call_slip_cancel_success_items"}</p></div>
     {/if}
     <h2>{translate text='Holds'}</h2>
+
+    {* NDLBlankInclude *}
+    {translate text='hold_instructions'}
+    {* /NDLBlankInclude *}
+    
   </div>
     {if $cancelForm && $recordList}
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
