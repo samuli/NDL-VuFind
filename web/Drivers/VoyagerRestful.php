@@ -2448,7 +2448,7 @@ EOT;
     public function getUBRequestDetails($details)
     {
         $patron = $details['patron'];
-        if (strstr('.', $patron['id']) === false) {
+        if (strstr($patron['id'], '.') === false) {
             return false;
         }
         list($source, $patronId) = explode('.', $patron['id'], 2);
