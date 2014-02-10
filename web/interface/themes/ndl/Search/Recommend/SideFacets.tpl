@@ -114,14 +114,14 @@
           {assign var="mainYear" value="Main Year"}
           {assign var="dateRange" value="Date Range"}
 
-          <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
+          <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'facet_pci_creationdate'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
           <dt><span class="yearLabel">{translate text=$cluster.label}</span>
-             {if $cluster.label == 'Main Year' || $cluster.label == 'Published'}<span class="timelineview">open timeline</span>
+             {if $cluster.label == 'Main Year' || $cluster.label == 'facet_pci_creationdate'}<span class="timelineview">open timeline</span>
                 {include file=Search/Recommend/DateRangeVisAjax.tpl}
              {/if}
           </dt>
 
-          {if $cluster.label == 'Main Year' || $cluster.label == 'Published'}
+          {if $cluster.label == 'Main Year' || $cluster.label == 'facet_pci_creationdate'}
               <dd class="mainYearFormContainer1">
                 {* remove 'search_sdaterange_mvtype' from form action since it gets added in form submit handler (ndl.js) *}
                 <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl|regex_replace:"/search_sdaterange_mvtype=(within|overlap)/":""}{else}{$fullPath}{/if}" class="mainYearForm{if $module == "PCI"}PCI{/if}">

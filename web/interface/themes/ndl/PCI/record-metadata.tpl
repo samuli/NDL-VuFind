@@ -45,11 +45,18 @@
       <td>{translate text=$record.language prefix='facet_'}</td>
     </tr>
     {/if}
+    
+    {if !empty($record.publicationDate)}
+    <tr valign="top" class="recordDate">
+      <th>{translate text='Publication Date'}: </th>
+      <td>{$record.publicationDate|escape}</td>
+    </tr>
+    {/if}    
 
     {if !empty($record.publicationTitle)}
     <tr valign="top" class="recordPublications">
       <th>{translate text='Published in'}: </th>
-      <td>{$record.publicationTitle}</td>
+      <td>{$record.publicationTitle|escape}</td>
     </tr>
     {/if}
 
@@ -60,7 +67,7 @@
         <div class="truncateField">
         {foreach from=$record.subjectTerms item=subject name=loop}
         <div class="subjectLine">
-            <a title="{$subject|escape}" href="{$url}/PCI/Results?lookfor=%22{$subject|escape:"url"}%22&amp;type=Subject" class="subjectHeading">{$subject|escape}</a>
+            <a title="{$subject|escape}" href="{$url}/PCI/Search?lookfor={$subject|regex_replace:"/[ ]/":"+"|escape:"url"}&amp;type=sub" class="subjectHeading">{$subject|escape}</a>
         </div>
         {/foreach}
         </div>
@@ -89,6 +96,23 @@
       </td>
     </tr>
     {/if}
+    
+    {if !empty($record.source)}
+    <tr valign="top" class="recordSource">
+      <th>{translate text='Source Collection'}: </th>
+      <td>{$record.source|strip_tags|escape}</td>
+    </tr>
+    {/if}
+    
+    {if !empty($record.backlink)}
+    <tr valign="top" class="recordBackLink">
+      <th>{translate text='Backlink'}: </th>
+      <td>        
+        <a href="{$record.backlink|proxify|escape}" target="_blank">{$record.backlink|escape:"html"|truncate:60:"...":true:true}</a><br/>
+      </td>
+    </tr>
+    {/if}        
+    
     {if $toc}
     <tr valign="top" class="recordTOC">
       <th>{translate text='Table of Contents'}: </th>
