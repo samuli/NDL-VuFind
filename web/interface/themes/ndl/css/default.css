@@ -5254,16 +5254,16 @@ ul.recordSet.galleryView .resultNoImage {
 }
 
 .gridTitleBox {
-    background: url(../images/white_90.png) repeat; /* IE fallback */
-    background:rgba(255, 255, 255, .9);
+    
     bottom: 0;
     font-size: 100%;
     padding: 5px 5px 5px;
     text-align: center;
     word-wrap: break-word;
     z-index: 10;
-    min-height:45px;
-    transition: background .05s;
+    height:36px;
+    overflow:hidden;
+    transition: background .1s;
 }
 
 
@@ -5271,23 +5271,31 @@ ul.recordSet.galleryView .resultNoImage {
     position: absolute;
     top: 111px;
     z-index: 100;
-    height:52px;
+    height:53px;
     overflow:hidden;
     border:1px solid transparent;
     border-top:none;
     left:-1px;
     width:157px;
     border-bottom: 5px solid rgba(255, 255, 255, 0.85);
+    background: url(../images/white_90.png) repeat; /* IE fallback */
+    background:rgba(255, 255, 255, .9);
+    overflow:hidden;
+    transition:all 0.1s linear;
 }
 
 li.result.hover .gridContent {
+    background:#fff;
     border:1px solid #ddd;
     border-top:none;
     box-shadow:0 13px 23px -14px rgba(0, 0, 0, 0.65);
+    min-height:55px;
+    
 }
 
 li.result.hover .gridTitleBox { 
     background:#fff;
+    height:auto;
 }
 
 ul.recordSet.galleryView .coverDiv {
