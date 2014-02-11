@@ -512,6 +512,7 @@ span.dynatree-expander:hover {
 .resultLinks .button span {
     background-position: 1px -950px;
 }
+.coverImages .moreLink a:after, .coverImages .lessLink a:after, 
 #addThis .mail, .addthis_button_facebook, .addthis_button_twitter,
 .addthis_button_google_plusone_share,
 .fav, .mail, .export, .export img, .add, .delete,
@@ -549,9 +550,11 @@ span.dynatree-expander:hover {
 .delete {
     background-position: 7px -158px;
 }
+.coverImages .moreLink a:after,
 .citation .moreLink a:after {
     background-position: 2px -2318px;
 }
+.coverImages .lessLink a:after,
 .citation .lessLink a:after {
     background-position: 2px -2270px;
 }
@@ -831,4 +834,5 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .NDLCarouselNavi .next {
     background-position: 0px -984px;
 }
+
 

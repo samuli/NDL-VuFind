@@ -13,9 +13,15 @@
 {if $img_count > 1}
     <div class="imagelinks">
 {foreach from=$summImages item=desc name=imgLoop}
+   {if $smarty.foreach.imgLoop.iteration <= 3}
       <a data-dates="{$listDate.0|escape}{if $listDate.1 && $listDate.1 != $listDate.0} - {$listDate.1|escape}{/if}" data-title="{$listTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$listBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$listId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$listAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
-          {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
-        </a>
+         {if $smarty.foreach.imgLoop.iteration > 2}
+            &hellip;
+         {else}
+            {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+         {/if}
+      </a>
+   {/if}
 {/foreach}
     </div>
 {/if}

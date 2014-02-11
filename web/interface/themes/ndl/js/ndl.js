@@ -14,6 +14,7 @@ $(document).ready(function() {
     initScrollRecord();
     initScrollMenu();
     initContextHelp();
+    initCoverImageTruncateLink();
 });
 
 // Header menu
@@ -425,4 +426,23 @@ function initDatePicker(selectedNewItemsDate) {
     $("a.startinglink").click(function() {
         $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {});
     });
+}
+
+function initCoverImageTruncateLink() {
+    var moreLink = $(".coverImagesMoreLink");
+    var lessLink = $(".coverImagesLessLink");
+    
+    moreLink.click(function(event) {
+        moreLink.hide();
+        lessLink.show();
+        event.preventDefault();
+        $('.coverImageLinks.snippet').removeClass("snippet");
+    });
+    lessLink.click(function(event) {
+        lessLink.hide();
+        moreLink.show();
+        event.preventDefault();
+        $('.coverImageLinks').addClass("snippet");
+    });
+
 }

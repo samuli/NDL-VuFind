@@ -1,4 +1,6 @@
 <!-- START of: Search/list-dual.tpl -->
+{* Fancybox for images *}
+{js filename="init_fancybox.js"}
 
 {js filename="search.js"}
 
