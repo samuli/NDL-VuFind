@@ -67,6 +67,8 @@ class Search extends Base
         $interface->assign('searchIndex', $this->searchObject->getSearchIndex());
         $interface->assign('searchType', $this->searchObject->getSearchType());
         $interface->assign('searchSet', $this->searchObject->getSearchSet());
+
+        $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         
         // Search MetaLib
         $result = $this->searchObject->processSearch(true, true);

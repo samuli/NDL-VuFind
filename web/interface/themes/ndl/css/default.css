@@ -2580,6 +2580,9 @@ dl.defaultFacet dd {
 #main .browseHeader {
     background:#b2e3ea;
 }
+#main .noResultHeader {
+    margin-bottom: 0;
+}
 .newItem .header,
 #main .contentHeader h1,
 #main .browseHeader h1,
@@ -2937,6 +2940,9 @@ ul.recordSet .addToFavLink a {
 }
 .myResearchMenu {
     background:#9fddce;
+}
+.tabNavi {
+    background: #a9d9df;
 }
 .resultViewOptions {
     height:75px;
@@ -3980,6 +3986,52 @@ table.authors th {
 }
 
 
+/* DualTabs split screen & other CSS */
+.resultListContainer {
+	background:white;
+}
+.dualTabs {
+background:#a9d9df;
+margin-bottom: 10px;
+box-shadow:0 7px 15px -13px rgba(139,187,193, 0.85) inset;
+}
+.dualTabs .button {
+	font-size:1.1em;
+	letter-spacing:0.3px;
+	margin:0;
+	padding:0;
+	height:100%;
+	padding:0.9em 1em;
+	width:auto;
+	padding-left:35px;
+	background:url(../../ndl/images/icons16-24px-02_black.png) no-repeat !important;
+	background-position:10px -939px !important;
+}
+.dualTabs .button.adv,  .dualTabs .button.buttonFinna.adv.buttonSelected {
+	background-position:10px -995px !important;
+}
+
+.dualTabs .button.buttonFinna {
+	border-radius:0px;
+	border-left:1px solid #B3E3E9;
+	border-right:1px solid #B3E3E9;
+	margin:0 !important;
+	background:none;
+	color:#464646;
+	display: block;
+    float: left;
+    font-weight:normal;
+}
+.dualTabs .button.buttonFinna.buttonSelected {
+	background:white;
+	color:#464646;
+	font-weight:700;
+	background:url(../../ndl/images/icons16-24px-02_black.png) no-repeat, #ffffff !important;
+	background-position:10px -939px !important;
+	
+}
+
+
 /** Dynamic Tabs **/
 
 #dyntabnav {
@@ -5009,52 +5061,67 @@ form[name="bulkActionForm"].visible + .resultOptionLimit {
     max-width:70%;
 }
 
-.myResearchMenu {
+.myResearchMenu, .tabNavi {
     height: 40px;
     margin-bottom: 1em;
     margin-top: 0;
     padding: 0;
 }
-.myResearchMenu .ui-state-default {
+.myResearchMenu .ui-state-default,
+.tabNavi .ui-state-default {
     background-color: transparent;
     font-weight: bold;
 }
-.myResearchMenu .ui-state-default a {
+.myResearchMenu .ui-state-default a,
+.tabNavi .ui-state-default a {
     color: #fff;
 }
-.myResearchMenu .ui-tabs-selected {
+.myResearchMenu .ui-tabs-selected,
+.tabNavi .ui-tabs-selected {
     background-color: #fff;
     border-left:none !important;
 }
-.myResearchMenu .ui-tabs-selected + li {
+.myResearchMenu .ui-tabs-selected + li,
+.tabNavi .ui-tabs-selected + li {
     border-left:none !important;
 }
-.myResearchMenu .ui-tabs-selected a {
+.myResearchMenu .ui-tabs-selected a,
+.tabNavi .ui-tabs-selected a {
     color: #808080;
 }
-.myResearchMenu ul.ui-tabs-nav > li {
+.myResearchMenu ul.ui-tabs-nav > li,
+.tabNavi ul.ui-tabs-nav > li {
     border-radius:0 !important;
     border-left:2px solid #B1E9DC;
     padding:0 !important;
     top:0 !important;
 }
-.myResearchMenu ul.ui-tabs-nav > li:first-child {
+.myResearchMenu ul.ui-tabs-nav > li:first-child,
+.tabNavi ul.ui-tabs-nav > li:first-child {
     border-left:0;
 }
 .myResearchMenu ul.ui-tabs-nav > li:last-child {
     border-right:2px solid #B1E9DC;
 }
-.myResearchMenu ul.ui-tabs-nav {
+.tabNavi ul.ui-tabs-nav > li:last-child {
+    border-right:2px solid #b3e3e9;
+    border-left:2px solid #b3e3e9;
+}
+.myResearchMenu ul.ui-tabs-nav,
+.tabNavi ul.ui-tabs-nav {
     float:left;
     clear:both;
 }
-.myResearchMenu ul.ui-tabs-nav > li a {
+.myResearchMenu ul.ui-tabs-nav > li a,
+.tabNavi ul.ui-tabs-nav > li a {
     color:#444;
     font-size:14px;
     font-weight:normal;
 }
 .myResearchMenu ul.ui-tabs-nav > li,
-.myResearchMenu ul.ui-tabs-nav > li a {
+.myResearchMenu ul.ui-tabs-nav > li a,
+.tabNavi ul.ui-tabs-nav > li,
+.tabNavi ul.ui-tabs-nav > li a {
     height:40px;
     padding-top:0;
     line-height:41px; /* 40px makes bold text misaligned vertically */
@@ -5062,10 +5129,15 @@ form[name="bulkActionForm"].visible + .resultOptionLimit {
     margin-left:0;
     padding-bottom:0;
 }
-.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected {
+.tabNavi ul.ui-tabs-nav > li a {
+    padding-left: 35px;
+}
+.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected,
+.tabNavi ul.ui-tabs-nav > li.ui-tabs-selected {
     border-right:none;
 }
-.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected a {
+.myResearchMenu ul.ui-tabs-nav > li.ui-tabs-selected a,
+.tabNavi ul.ui-tabs-nav > li.ui-tabs-selected a {
     font-weight:bold;
 }
 .myResearch .noContentMessage {
