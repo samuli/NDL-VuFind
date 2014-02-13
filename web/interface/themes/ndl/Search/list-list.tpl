@@ -43,7 +43,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   </div>
 {/if}
 
-  <ul class="recordSet">
+  <ul class="recordSet listView">
   {foreach from=$recordSet item=record name="recordLoop"}
     <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
       <span class="recordNumber">{$recordStart+$smarty.foreach.recordLoop.iteration-1}</span>

@@ -229,20 +229,18 @@ class SideFacets implements RecommendationInterface
             '[NOW-1MONTHS TO NOW]',
             '[NOW-7DAYS TO NOW]',
             '[xxx TO NOW]'
-            
         );
-
+        $removedValue = false;
         // Only one of the latest items recommendations can be in use at the same time
         foreach ($filterList as $filters) {
             foreach ($filters as $filter) {
                 if ($filter['field'] === 'first_indexed') {
                     $this->_searchObject->removeFilter('first_indexed:' . $filter['value']);
+                    $removedValue = $filter['value'];
                 }                
             }
         }
-
         $newItemsLinks = array();
-        
         foreach ($newItemsValues as $value) {
             $link = $this->_searchObject->renderLinkWithFilter("first_indexed:$value");
             $newItemsLinks[] = array(
@@ -250,7 +248,15 @@ class SideFacets implements RecommendationInterface
                 'url' => $link
             );
         }
-        
+        if ($removedValue) {
+            if(!in_array($removedValue, $newItemsValues)) {
+                $datePart = substr($removedValue, 1, 20);
+                $interface->assign('newItemsDate', $datePart);
+            }
+            
+            // Put the filter back on for ordering purposes.
+            $this->_searchObject->addFilter('first_indexed:' . $removedValue);
+        }
         $interface->assign(compact('newItemsLinks'));
     }
 }

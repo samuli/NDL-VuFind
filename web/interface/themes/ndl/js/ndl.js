@@ -14,8 +14,7 @@ $(document).ready(function() {
     initScrollRecord();
     initScrollMenu();
     initContextHelp();
-    initDatePicker();
-    initStartingFrom();
+    initCoverImageTruncateLink();
 });
 
 // Header menu
@@ -389,7 +388,7 @@ function initContextHelp() {
     });
 }
 
-function initDatePicker() {
+function initDatePicker(selectedNewItemsDate) {
     $("a#newItemsFromDate").click(function(event) {
         event.preventDefault();
         var dates = $(this).data('solrdate');
@@ -400,7 +399,7 @@ function initDatePicker() {
         var location = baseUrl.replace("xxx", dates);
         window.location.href = location;
     });
-     
+    
     $('#newItemsLimit').datepick(
         {   
             maxDate: -1,
@@ -414,14 +413,36 @@ function initDatePicker() {
             }
         }
     );
+    
+    if (selectedNewItemsDate !== '') {
+        $('a#newItemsFromDate').data('solrdate', selectedNewItemsDate);
+        dateObj = new Date(selectedNewItemsDate);
+        finDate = new SimpleDateFormat("d.M.yyyy").format(dateObj);
+        $('#showDate').text(finDate);
+        $("#newItemsFromDate,#newItemsLimit").show();
+        $('#newItemsLimit').datepick( "setDate", finDate);
+    }
+    
+    $("a.startinglink").click(function() {
+        $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {});
+    });
 }
 
-// Add clickable starting from in New in Finna function
-function initStartingFrom() {
-    $("a.startinglink").click(function() {
-     
-        $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {
-        	//animation complete.
-        });
+function initCoverImageTruncateLink() {
+    var moreLink = $(".coverImagesMoreLink");
+    var lessLink = $(".coverImagesLessLink");
+    
+    moreLink.click(function(event) {
+        moreLink.hide();
+        lessLink.show();
+        event.preventDefault();
+        $('.coverImageLinks.snippet').removeClass("snippet");
     });
+    lessLink.click(function(event) {
+        lessLink.hide();
+        moreLink.show();
+        event.preventDefault();
+        $('.coverImageLinks').addClass("snippet");
+    });
+
 }

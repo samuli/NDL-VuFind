@@ -1,8 +1,11 @@
 <!-- START of: Search/Recommend/SideFacets.tpl -->
 
+{* NDLBlankInclude *}
+{include file='Additions/search-pre-facets.tpl'}
+{* /NDLBlankInclude *}
+
 <div class="sidegroup">
   {if $recordCount > 0 || !empty($filterList) || $checkboxStatus != false}
-  {if in_array('sideFacets', $contextHelp)}<span id="contextHelp_sideFacets" class="showHelp">{translate text="Search Tips"}</span>{/if}
 <h4>{translate text=$sideFacetLabel}</h4>{/if}
   {if isset($checkboxFilters) && count($checkboxFilters) > 0}
       {foreach from=$checkboxFilters item=current}
@@ -27,7 +30,7 @@
           {/if}
           {if $hasSolrDate}        
             {assign var=solrdate value=$filter.display|replace:'TO NOW':''|replace:'[':''|replace:']':''}
-      <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$solrdate|date_format:"%e.%-m.%Y"} -</span></a></li>
+      <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$solrdate|date_format:"%e.%-m.%Y"}—</span></a></li>
             {assign var=hasSolrDate value=0}    
           {else}
         <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{if $filter.field != 'building'}{translate text=$field}: {/if}{$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
@@ -108,19 +111,21 @@
             <span class="facet_loading hide"></span>
         </div>
       {elseif $title=='first_indexed'}
-        {include file="Search/Recommend/NewItemsInIndex.tpl"}
+        {assign var="first_indexed" value="New Items in Index"}
+        {if !empty($filterList.$first_indexed)}{assign var="opened" value=true}{else}{assign var="opened" value=false}{/if}
+        {include file="Search/Recommend/NewItemsInIndex.tpl" opened=$opened}
       {else}
           {assign var="mainYear" value="Main Year"}
           {assign var="dateRange" value="Date Range"}
 
-          <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'Published'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
+          <dl class="narrowList navmenu{if (($cluster.label ==='Main Year') || ($cluster.label === 'facet_pci_creationdate'))} year{if !empty($visFacets.search_sdaterange_mv[0]) || $filterList.$mainYear} open collapsed{/if}{/if}{if (is_array($defaultFacets) && in_array($title, $defaultFacets))} open collapsed defaultFacet{/if}">
           <dt><span class="yearLabel">{translate text=$cluster.label}</span>
-             {if $cluster.label == 'Main Year' || $cluster.label == 'Published'}<span class="timelineview">open timeline</span>
+             {if $cluster.label == 'Main Year' || $cluster.label == 'facet_pci_creationdate'}<span class="timelineview">open timeline</span>
                 {include file=Search/Recommend/DateRangeVisAjax.tpl}
              {/if}
           </dt>
 
-          {if $cluster.label == 'Main Year' || $cluster.label == 'Published'}
+          {if $cluster.label == 'Main Year' || $cluster.label == 'facet_pci_creationdate'}
               <dd class="mainYearFormContainer1">
                 {* remove 'search_sdaterange_mvtype' from form action since it gets added in form submit handler (ndl.js) *}
                 <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl|regex_replace:"/search_sdaterange_mvtype=(within|overlap)/":""}{else}{$fullPath}{/if}" class="mainYearForm{if $module == "PCI"}PCI{/if}">
@@ -167,5 +172,9 @@
     {/foreach}
   {/if}
 </div>
+
+{* NDLBlankInclude *}
+{include file='Additions/search-post-facets.tpl'}
+{* /NDLBlankInclude *}
 
 <!-- END of: Search/Recommend/SideFacets.tpl -->

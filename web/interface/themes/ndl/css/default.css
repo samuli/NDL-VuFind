@@ -1217,6 +1217,9 @@ div.truncateField {
 #recordMetadata .citation .lessLink {
     background-color:#fff;
 }
+
+.coverImages .moreLink a:after,
+.coverImages .lessLink a:after,
 #recordMetadata .citation .moreLink a:after,
 #recordMetadata .citation .lessLink a:after {
     content: "";
@@ -1226,6 +1229,7 @@ div.truncateField {
     top: 1px;
     width: 20px;
 }
+
 .recordSummary.truncateField .moreLink,
 .recordSummary.truncateField .lessLink {
     display: block;
@@ -1235,6 +1239,7 @@ div.truncateField {
     background-repeat: repeat-x;
     background-image: url("../images/ruler-horizontal.png");
 }
+
 .recordSummary.truncateField .moreLink a,
 .recordSummary.truncateField .lessLink a {
     display: block;
@@ -1246,6 +1251,7 @@ div.truncateField {
 .recordSummary.truncateField .lessLink a {
     background-image: url("../images/datevis_handle_close.png");
 }
+
 .recordSummary.truncateField .moreLink a {
     background-image: url("../images/datevis_handle_open.png");
 }
@@ -2033,6 +2039,7 @@ ul.recordSet .resultItemLine2{
     z-index: 1;
     width: 124px;
     height: 124px;
+
 }
 .resultNoImage p {
     display: table-cell;
@@ -2055,11 +2062,19 @@ ul.recordSet .resultItemLine2{
     margin:0 10px 0 0;
 }
 .result .imagelinks {
-    background-color: #ffffff;
-    position: relative;
+    position:absolute;
+    left:0px;
     z-index: 3;
     min-height: 20px;
-    padding: 4px 0 0 0;
+    padding: 0 0 0 5px;
+}
+.collectionDetails .recordSet.listView .result .imagelinks {
+    padding: 0;
+}
+
+.result.listView .imagelinks {
+    top: none;
+    
 }
 .result .imagelinks a {
     float:left;
@@ -2285,9 +2300,14 @@ ul.recordSet .resolver {
     width: 310px;
 }
 #dualResults .title {
-	  font-size: 1.23em;
+	font-size: 1.23em;
     line-height: 1.1em;
 }
+
+#dualResults .imagelinks .title {
+    font-size: 12px;
+}
+
 #dualResults .resultOptions a {
     font-weight: bold;
 }
@@ -3766,12 +3786,46 @@ div.recordsubcontent {
 div.recordsubcontent .call-slip-form form > p  {
     margin: 0 0 0.8em;
 }
-#thumbnail_link{
+#thumbnail_link {
     float: left;
     position: relative;
     margin: 0 1em 1em 0;
     overflow:hidden;
 }
+.record .coverImages #thumbnail_link {
+    width: 150px;
+}
+
+div.coverImageLinks.snippet {
+    height: 73px;
+    overflow: hidden;
+}
+
+div.coverImagesMoreLink {
+    margin-top: 3px;
+    margin-bottom: 15px;
+    z-index: 10000;
+    position: relative;
+    overflow: auto;
+}
+
+div.coverImagesLessLink {
+    margin-top: 3px;
+    margin-bottom: 15px;
+}
+
+div.coverImagesMoreLink a {
+    float: left;
+}
+div.coverImagesMoreLink span {
+    float: right;
+    margin-right: 7px;
+}
+div.coverImagesLessLink {
+    display: none;
+    clear: both;
+}
+
 .coverImageLinks span {
     position: absolute;
     width: 32px;
@@ -5326,16 +5380,16 @@ ul.recordSet.galleryView .resultNoImage {
 }
 
 .gridTitleBox {
-    background: url(../images/white_90.png) repeat; /* IE fallback */
-    background:rgba(255, 255, 255, .9);
+    
     bottom: 0;
     font-size: 100%;
     padding: 5px 5px 5px;
     text-align: center;
     word-wrap: break-word;
     z-index: 10;
-    min-height:45px;
-    transition: background .05s;
+    height:36px;
+    overflow:hidden;
+    transition: background .1s;
 }
 
 
@@ -5343,23 +5397,31 @@ ul.recordSet.galleryView .resultNoImage {
     position: absolute;
     top: 111px;
     z-index: 100;
-    height:52px;
+    height:53px;
     overflow:hidden;
     border:1px solid transparent;
     border-top:none;
     left:-1px;
     width:157px;
     border-bottom: 5px solid rgba(255, 255, 255, 0.85);
+    background: url(../images/white_90.png) repeat; /* IE fallback */
+    background:rgba(255, 255, 255, .9);
+    overflow:hidden;
+    transition:all 0.1s linear;
 }
 
 li.result.hover .gridContent {
+    background:#fff;
     border:1px solid #ddd;
     border-top:none;
     box-shadow:0 13px 23px -14px rgba(0, 0, 0, 0.65);
+    min-height:55px;
+    
 }
 
 li.result.hover .gridTitleBox { 
     background:#fff;
+    height:auto;
 }
 
 ul.recordSet.galleryView .coverDiv {
@@ -5385,6 +5447,14 @@ ul.recordSet.galleryView .resultNoImage {
     left:18px;
 }
 
+ul.recordSet.listView .result .imagelinks {
+    position: absolute;
+    top: none;
+}
+#myFavoritesList .imagelinks {
+    left: 53px;
+}
+
 ul.recordSet.galleryView .result .imagelinks {
     position:absolute;
     left:0px;
@@ -5393,6 +5463,8 @@ ul.recordSet.galleryView .result .imagelinks {
     background:none;
     padding:0;
 }
+#myFavoritesList .imagelinks a,
+.listView .result .imagelinks a,
 .galleryView .result .imagelinks a {
     background:#fff;
     background: url(../images/white_90.png) repeat;
@@ -6415,4 +6487,18 @@ border: none;
 	text-decoration:none !important;
 }
 
+.startingfrom {
+    height:30px;
+    line-height:28px;
+}
+.startingfrom a.startinglink {
+    display:inline-block;
+    cursor:pointer;
+}
+.startingfrom a.startinglink.clicked {
+    color:#000;
+}
 
+span#showDate {
+    padding-right: 5px;
+}
