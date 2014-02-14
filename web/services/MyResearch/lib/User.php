@@ -73,6 +73,8 @@ class User extends DB_DataObject
     ###END_AUTOCODE
     // @codingStandardsIgnoreEnd
 
+    public $connectedAccounts = false;
+
     /**
      * Sleep method for serialization.
      *
@@ -490,6 +492,50 @@ class User extends DB_DataObject
         }
         return true;
     }
+    
+    /**
+     * Changes the last name of a user
+     *
+     * @param string $lastName The new last name
+     *
+     * @return boolean True on success
+     * @access public
+     */
+    public function changeLastname($lastname)
+    {
+        $this->lastname = $lastname;
+        $this->update();
+        
+        // Update Session
+
+        if ($session_info = UserAccount::isLoggedIn()) {
+            $session_info->lastname = $lastname;
+            UserAccount::updateSession($session_info);
+        }
+        return true;
+    }
+    
+    /**
+     * Changes the first name of a user
+     *
+     * @param string $firstName The new first name
+     *
+     * @return boolean True on success
+     * @access public
+     */
+    public function changeFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+        $this->update();
+        
+        // Update Session
+
+        if ($session_info = UserAccount::isLoggedIn()) {
+            $session_info->firstname = $firstname;
+            UserAccount::updateSession($session_info);
+        }
+        return true;
+    }
 
     /**
      * Changes the language of a user
@@ -607,6 +653,44 @@ class User extends DB_DataObject
             }
         }
         return $users;
+    }
+    
+    /**
+     * Get an array of accounts that are associated with a given library card
+     *
+     * @param string Catalog username
+     *
+     * @return array       Matching accounts`
+     * @access public
+     */
+    public function getAssociatedAccounts($cat_username, $institution)
+    {
+        // Find accounts:
+        $sql = 'SELECT DISTINCT "user"."username" FROM "user" INNER JOIN "user_account" '.
+            'ON "user_account"."user_id" = "user"."id" WHERE "user"."id" IN '.
+            '(SELECT "user_id" FROM "user_account" WHERE "cat_username"='. "'" .
+            $this->escape($cat_username). "'" .') ';
+        $u = new User();
+        $u->query($sql);
+        $accounts = array();
+        if ($u->N) {
+            while ($u->fetch()) {
+                if ($u->username) {
+
+                    // Explode institution:username
+                    $usernameArray = explode(':', $u->username);
+                    if (isset($usernameArray[1]) && $usernameArray[0] != '') {
+
+                        // Only get accounts of this institution
+                        if ($usernameArray[0] == $institution) {
+                            $accounts[] = $usernameArray[1];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $accounts;
     }
     
 }

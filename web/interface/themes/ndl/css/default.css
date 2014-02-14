@@ -575,6 +575,35 @@ div.sidegroup {
     margin: 0 .5em .5em .5em
 }
 
+#connectedLoginOptions ul {
+    padding: 6px 0 6px 20px;
+}
+
+#connectedLoginOptions ul li {
+    list-style:disc;
+}
+
+#connectedLoginOptions .connected {
+    padding-top:3px;
+}
+
+#connectedLoginOptions .note {
+    margin-bottom: 12px;
+    margin-top: -6px;
+}
+
+#connectedLoginOptions .infoBox {
+    margin-top: -1px;
+    padding-left: 30px;
+    width: 480px;
+    background-image: url("../images/icons16-24px-02_black.png");
+    background-position: 6px 2px;
+}
+
+#connectedLoginOptions .connectedButtons {
+    margin-bottom:8px;
+}
+
 .feedbackButton {
     background: #00A3B5;
     border-radius: 0 0 0 10px;
@@ -1801,22 +1830,27 @@ form.visible .allCheckboxBackground {
 
 table.profileGroup {
     margin: 1em 0 1em 0;
-    border-left: solid 1px #e6e6e6;
-    border-right: solid 1px #e6e6e6;
+    border: solid 1px #e6e6e6;
+    border-top:none;
 }
 
-table.profileGroup td,
+form table.profileGroup input[type="text"] {
+  width:50%;
+  margin:0;
+}
+
+table.profileGroup th, table.profileGroup td {
+  padding:6px 10px;
+}
 table.profileGroup th {
-    border-bottom: solid 1px #e6e6e6;
+  width:30%;
 }
-
 .profileInfo select#home_library {
     width: 210px;
     padding: 2px;
 }
 .profileInfo .button {
-    margin: 1em 0 0 0;
-    float: right;
+
 }
 .finesList table.fines td, .myResearch .savedHistory td, .myResearch .sessionHistory td, .accountList td {    
     border-bottom: 1px solid #e6e6e6;
@@ -4427,6 +4461,13 @@ table.datagrid {
 table.profileGroup caption,
 table.datagrid caption {
     padding-left: 10px;
+}
+
+table.profileGroup caption {
+    background: none repeat scroll 0 0 #00A3B5;
+    color: #FFFFFF;
+    font-size: 20px;
+    padding: 8px;
 }
 
 table.datagrid th {

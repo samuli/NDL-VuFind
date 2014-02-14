@@ -161,7 +161,8 @@ function lightboxDocumentReady() {
 }
 
 function registerAjaxLogin() {
-    $('#modalDialog form[name="loginForm"]').unbind('submit').submit(function(){
+    $('form[name="loginForm"]').unbind('submit').submit(function(e){
+        e.preventDefault();
         if (!$(this).valid()) { return false; }
         var form = this;
         $.ajax({
@@ -188,7 +189,33 @@ function registerAjaxLogin() {
                         dataType: 'json',
                         data: {ajax_username:username, ajax_password:password},
                         success: function(response) {
-                            if (response.status == 'OK') {
+
+                            if (response.status == 'CONNECTED') {
+
+                              // Logout while waiting response
+                              $.ajax({url: path + '/AJAX/JSON?method=logout',datatype:'json'});
+
+                              // Append modal dialog html to document
+                              $('body').append(response.data[0]); 
+                              $template = $('body').find('#connectedLoginOptions');
+                              var accounts = response.data[1];
+                              for (var i=0;i<accounts.length;i++) {
+                                $template.find('ul.connectedAccounts').append('<li>'+accounts[i]+'</li>');
+                              }
+                              
+                              $template.dialog({
+                                  modal: true,
+                                  autoOpen: false,
+                                  closeOnEscape: true,
+                                  title: $('#connectedLoginOptions .connectedAccountsHead').text(),
+                                  width: 719,
+                                  close: function () {
+                                      $(this).remove();
+                                    }
+                              }).dialog('open').show();
+
+                            }
+                            else if (response.status == 'OK') {
                                 // Hide "log in" options and show "log out" options:
                                 $('#loginOptions').hide();
                                 $('#logoutOptions').show();
@@ -209,8 +236,13 @@ function registerAjaxLogin() {
                                 // if there is a followup action, then it should be processed
                                 __dialogHandle.processFollowup = true;
 
-                                // and we close the dialog
-                                hideLightbox();
+                                // and we close all dialogs
+                                $('.ui-dialog-titlebar-close').click();
+
+                                // If this is not a lightbox, refresh the page
+                                if ($(form).closest('#modalDialog').length == 0) {
+                                    location.reload();
+                                }
                             } else {
                                 displayFormError($(form), response.data);
                             }
@@ -221,8 +253,22 @@ function registerAjaxLogin() {
                 }
             }
         });
-        return false;
     });
+    
+    $(document).on('click', '.connectedButtons .existingAccount', function() {
+        $('#loginForm #login_username, #loginForm #login_password').val('').text('');
+        $('#loginForm #login_username').focus();
+        $('body').find('#connectedLoginOptions').dialog('close');
+    });
+
+    $(document).on('click', '.connectedButtons .newAccount', function() {
+        $('#loginForm').submit();
+    });
+
+    $(document).on('click', '.connectedButtons .noAccount', function() {
+        $('.ui-dialog-titlebar-close').click();
+    });
+
 }
 
 function updateLoginStatus() {
