@@ -56,7 +56,7 @@ defaultRecordTab= Holdings
 ; Hide the holdings tab if no holdings are available from the ILS
 hideHoldingsTabWhenEmpty = true
 ; This page will show by default when a user accesses the MyResearch module:
-defaultAccountPage = Favorites
+defaultAccountPage = Profile
 ; Allow access to the Admin module? (Potentially dangerous, since it allows editing
 ; of configuration files and deleting of records).
 admin_enabled = false

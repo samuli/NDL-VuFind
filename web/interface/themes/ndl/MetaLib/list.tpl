@@ -34,6 +34,10 @@
       {/if}
     </div> {* content *}
   </div> {* resultTerms *}
+
+  {* tabNavi *}
+  {include file="Search/tabnavi.tpl"}
+
   <div class="resultViewOptions">
     <div class="content">
       <div class="resultNumbers">

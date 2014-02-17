@@ -105,14 +105,21 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         <div class="clear"></div>
         {assign var=img_count value=$coreImages|@count}
         {if $img_count > 1}
-          <div class="coverImageLinks">
+
+        <div class="coverImageLinks{if $img_count > 6} snippet{/if}">
         {foreach from=$coreImages item=desc name=imgLoop}
             <a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-linktext="{translate text='To the record'}" data-author="{$coreAuthor}"  href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
-              {*if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if
-              <img src="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small" />
-              *}
             </a>
           {/foreach}
+          </div>
+        {/if}
+        {if $img_count > 6}
+          <div class="moreLink coverImagesMoreLink">
+            <a href="#">{translate text="more"}</a>
+            <span>({$img_count})</span>
+          </div>
+          <div class="lessLink coverImagesLessLink">
+            <a href="#">{translate text="less"}</a>
           </div>
         {/if}
         

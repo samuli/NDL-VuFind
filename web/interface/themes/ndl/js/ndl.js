@@ -14,13 +14,16 @@ $(document).ready(function() {
     initScrollRecord();
     initScrollMenu();
     initContextHelp();
+    initCoverImageTruncateLink();
 });
 
 // Header menu
 function initHeaderMenu() {
     // Catalog account -dropdown action is handled by the surrounding <form>
     // Persona logout is handled in persona.js
-    $("#headerMenu .dropdown").not(".catalogAccount").on("menuClick", function(e,url) {
+    
+    // NB! Live binding for dropdowns loaded with ajax
+    $('#headerMenu').on('menuClick', '.dropdown:not(.catalogAccount)', function(e,url) {
         if (url && url != "") { 
             document.location = url;
         }
@@ -425,4 +428,23 @@ function initDatePicker(selectedNewItemsDate) {
     $("a.startinglink").click(function() {
         $("#newItemsFromDate,#newItemsLimit").slideToggle(50, function() {});
     });
+}
+
+function initCoverImageTruncateLink() {
+    var moreLink = $(".coverImagesMoreLink");
+    var lessLink = $(".coverImagesLessLink");
+    
+    moreLink.click(function(event) {
+        moreLink.hide();
+        lessLink.show();
+        event.preventDefault();
+        $('.coverImageLinks.snippet').removeClass("snippet");
+    });
+    lessLink.click(function(event) {
+        lessLink.hide();
+        moreLink.show();
+        event.preventDefault();
+        $('.coverImageLinks').addClass("snippet");
+    });
+
 }

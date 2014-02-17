@@ -1,4 +1,6 @@
 <!-- START of: Search/list-dual.tpl -->
+{* Fancybox for images *}
+{js filename="init_fancybox.js"}
 
 {js filename="search.js"}
 
@@ -29,14 +31,39 @@
 	      <div class="clear"></div>
 	      {/if}
       </div>
+{* Replaced by tabbed navigation
       <div class="headerRight">
         <a class="button buttonFinna buttonSelected" href="{$searchWithFilters|escape}">{translate text="All Results"}</a>
         <a class="button buttonFinna" href="{$more}">{translate text="Books etc."}</a>
         <a class="button buttonFinna" href="{$pci_more}">{translate text="Articles, e-Books etc."}</a>
       </div>
+*}
     </div> {* content *}
   </div> {* resultTerms *}
 </div> {* resultHeader *}
+
+  {* tabNavi *}
+  {include file="Search/tabnavi.tpl"}
+{*
+<div class="ui-tabs ui-widget dualResultsMenu" role="navigation" aria-label="{translate text='Your Account Navigation'}">
+  <div class="content">
+    <div class="grid_24">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix">
+      <li class="active ui-state-default ui-corner-top{if $module=='Search' && $pageTemplate=='list-dual.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="allResultsTab" href="{$smarty.server.REQUEST_URI|escape}">{translate text="All Results"}</a></li>
+      <li class="active ui-state-default ui-corner-top{if $module=='Search' && $pageTemplate=='list.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="booksTab" href="{$more}">{translate text="Books etc."}</a></li>
+      <li class="active ui-state-default ui-corner-top{if $module=='PCI' && $pageTemplate=='list.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="articlesTab" href="{$pci_more}">{translate text="Articles, e-Books etc."}</a></li>
+    {if $metalibEnabled && $lookfor ==''}
+      <li class="active ui-state-default ui-corner-top{if $module=='MetaLib' && $pageTemplate=='list.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTab" href="{$path}/MetaLib/Home">{translate text="MetaLib Search"}</a></li>
+    {/if}
+    {if $metalibEnabled && $lookfor !=''}
+      <li class="active ui-state-default ui-corner-top{if $module=='MetaLib' && $pageTemplate=='list.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor}&set=uusimaa&submit=Hae&retainFilters=0">{translate text="MetaLib Search"}</a></li>
+    {/if}
+    </ul>
+  </div>
+  </div>
+</div>
+*}
+
 
 {* Main Listing *}
 <div id="dualResults" class="resultListContainer">
