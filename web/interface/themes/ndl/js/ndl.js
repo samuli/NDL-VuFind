@@ -386,6 +386,20 @@ function initContextHelp() {
             $.getScript(path + '/AJAX/JSON?method=getContextHelp&id=' + id, success);
         }
     });
+
+    var state = hopscotch.getState();
+    if (state) {
+        // tour in progress, load data and resume
+        var parts = state.split(":");
+        var id = parts[0];
+        var page = parts[1];
+        var success = function (data, textStatus, jqxhr) {
+            if (data.length) {
+                hopscotch.startTour(eval('contextHelp'));
+            }
+        };
+        $.getScript(path + '/AJAX/JSON?method=getContextHelp&id=' + id, success);
+    }
 }
 
 function initDatePicker(selectedNewItemsDate) {
@@ -446,3 +460,4 @@ function initCoverImageTruncateLink() {
     });
 
 }
+
