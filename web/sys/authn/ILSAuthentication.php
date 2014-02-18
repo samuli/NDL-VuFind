@@ -104,18 +104,10 @@ class ILSAuthentication implements Authentication
         // Check to see if we already have an account for this user:
         $user = new User();
         $user->authMethod = 'ILS';
-        $institution = isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '';
-        $user->username =  $institution . $info[$usernameField];
+        $user->username = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $info[$usernameField];
         if ($user->find(true)) {
             $insert = false;
         } else {
-
-            // If there is no account, check for associated accounts
-            $accounts = $user->getAssociatedAccounts($user->cat_username,
-                $institution);
-            if (!empty($accounts)) {
-                $user->connectedAccounts = $accounts;
-            }
             $insert = true;
         }
 

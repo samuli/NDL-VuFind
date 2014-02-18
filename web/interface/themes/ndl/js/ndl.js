@@ -21,9 +21,7 @@ $(document).ready(function() {
 function initHeaderMenu() {
     // Catalog account -dropdown action is handled by the surrounding <form>
     // Persona logout is handled in persona.js
-    
-    // NB! Live binding for dropdowns loaded with ajax
-    $('#headerMenu').on('menuClick', '.dropdown:not(.catalogAccount)', function(e,url) {
+    $("#headerMenu .dropdown").not(".catalogAccount").on("menuClick", function(e,url) {
         if (url && url != "") { 
             document.location = url;
         }
