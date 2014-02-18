@@ -5450,6 +5450,8 @@ ul.recordSet.galleryView .resultNoImage {
 ul.recordSet.listView .result .imagelinks {
     position: absolute;
     top: none;
+    left: auto;
+    padding: 0;
 }
 #myFavoritesList .imagelinks {
     left: 53px;
@@ -6502,3 +6504,4 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
