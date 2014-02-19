@@ -334,7 +334,7 @@ abstract class SearchObject_Base
                     }
 
                     // Convert date display format from [YYYY TO YYYY] to YYYY - YYYY
-                    if ($field == 'main_date_str') {
+                    if ($field == 'main_date_str' || $field == 'creationdate') {
                         $display = preg_replace('/\[([0-9]+)( TO )([0-9]+)\]/', "$1 - $3", $display);
                     } else if (strstr($field, 'location_geo')) {
                         // Prevent displaying of coordinates in the geographical filter
@@ -877,7 +877,7 @@ abstract class SearchObject_Base
 
                 $toDate = new DateTime("{$to}T00:00:00");
                 // Need format instead of getTimestamp for dates before epoch
-                $to = $toDate->format('U') / 86400;    // days since epoch 
+                $to = $toDate->format('U') / 86400;    // days since epoch
             }
         } catch (Exception $e) {
             date_default_timezone_set($oldTZ);
@@ -899,6 +899,10 @@ abstract class SearchObject_Base
         } else if ($type == 'within') {
             // document duration within query duration
             // q=fieldX:"Intersects(start -∞ ∞ end)"
+            
+            // Enlarge query range to match records with exactly the same time range as the original query 
+            $from -= 0.5;
+            $to += 0.5;
             $query = "{$field}:\"Intersects($from $minFrom $maxTo $to)\"";
         }
 

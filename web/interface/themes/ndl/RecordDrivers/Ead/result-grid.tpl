@@ -1,11 +1,17 @@
 <div id="record{$summId|escape}" class="gridRecordBox recordId" >
   {assign var=img_count value=$summImages|@count}
   {if $img_count > 1}
-    <div class="imagelinks">
+    <div class="imagelinks">      
     {foreach from=$summImages item=desc name=imgLoop}
-      <a href="{$url}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title"  onclick="launchFancybox(this); return false;" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" />      {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
-      {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+      {if $smarty.foreach.imgLoop.iteration <= 5}
+        <a data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+         {if $smarty.foreach.imgLoop.iteration > 4}
+            &hellip;
+         {else}
+            {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+         {/if}
       </a>
+      {/if}
     {/foreach}
     </div>
   {/if}

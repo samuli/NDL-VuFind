@@ -34,6 +34,12 @@
       {/if}
     </div> {* content *}
   </div> {* resultTerms *}
+
+  {* tabNavi *}
+  {if $searchType != 'MetaLibAdvanced'}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
+
   <div class="resultViewOptions">
     <div class="content">
       <div class="resultNumbers">

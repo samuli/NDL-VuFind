@@ -360,7 +360,7 @@ class LidoRecord extends IndexRecord
             $name = isset($node->eventName->appellationValue) ? (string)$node->eventName->appellationValue : '';
             $type = isset($node->eventType->term) ? mb_strtolower((string)$node->eventType->term) : '';
             $date = isset($node->eventDate->displayDate) ? (string)$node->eventDate->displayDate : '';
-            if (!$date && isset($node->eventDate->date)) {
+            if (!$date && isset($node->eventDate->date) && !empty($node->eventDate->date)) {
                 $startDate = (string)$node->eventDate->date->earliestDate;
                 $endDate = (string)$node->eventDate->date->latestDate;
                 if (strlen($startDate) == 4 && strlen($endDate) == 4) {

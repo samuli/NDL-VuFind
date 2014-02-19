@@ -166,6 +166,13 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       </form>
       </div>
       {/if}
+            
+      <div class="clear"></div>
+
+      {* NDLBlankInclude *}
+      {include file='Additions/record-post-toolbar.tpl'}
+      {* /NDLBlankInclude *}
+
       <div class="clear"></div>
     </div>
       <div class="clear"></div>
@@ -176,15 +183,30 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
    </div>
    <div class="grid_12 prefix_1">
      {include file="PCI/record-metadata.tpl"}  
+     
+    {* NDLBlankInclude *}
+    {include file='Additions/record-post-metadata.tpl'}
+    {* /NDLBlankInclude *}
+
    </div>
    
   <div id="resultSidebar" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6 prefix_1">
+
+    {* NDLBlankInclude *}
+    {include file='Additions/record-pre-recommendations.tpl'}
+    {* /NDLBlankInclude *}
+
      {* Add COINS *}
      <span class="Z3988" title="{$openURL|escape}"></span>
      
       {if $bXEnabled}
       {include file="Record/bx.tpl"}
     {/if}
+
+    {* NDLBlankInclude *}
+    {include file='Additions/record-post-recommendations.tpl'}
+    {* /NDLBlankInclude *}
+
   </div>
   </div>
   </div>

@@ -1,32 +1,37 @@
 <!-- START of: PCI/advanced.tpl -->
+
 <div id="advancedSearchWrapper">
 <form method="get" action="{$url}/PCI/Search" id="advSearchForm" name="searchForm" class="search">
-  <div class="{*span-10*}">
-    <div class="advSearchHeader">
-      <div class="content">
+  <div class="advSearchHeader">
+    <div class="content">
+      <div class="grid_24">
         <h1>{translate text='pci_advanced_search_description'}</h1>{if in_array('searchPCIAdvanced', $contextHelp)}<span id="contextHelp_searchPCIAdvanced" class="showHelp">{translate text="Search Tips"}</span>{/if}        
       </div>
-     </div>
-      <div class="content">
-        <div class="advSearchContent">
-          <div class="advSearchSection first grid_24">
-          {if $editErr}
-          {assign var=error value="advSearchError_$editErr"}
-            <div class="error">{translate text=$error}</div>
+    </div>
+  </div>
+  {* tabNavi *}
+  {include file="Search/tabnavi.tpl"}
+  <div class="content">
+
+    <div class="advSearchContent">
+      <div class="advSearchSection first grid_24">
+      {if $editErr}
+      {assign var=error value="advSearchError_$editErr"}
+        <div class="error">{translate text=$error}</div>
+      {/if}
+        <input type="hidden" name="join" value="AND" />
+        {* An empty div. This is the target for the javascript that builds this screen *}
+        <div id="searchHolder" class="clearfix">
+          {* fallback to a fixed set of search groups/fields if JavaScript is turned off *}
+          <noscript>
+          {if $searchDetails}
+            {assign var=numGroups value=$searchDetails|@count}
           {/if}
-          <input type="hidden" name="join" value="AND" />
-          {* An empty div. This is the target for the javascript that builds this screen *}
-          <div id="searchHolder" class="{*span-10*} last">
-            {* fallback to a fixed set of search groups/fields if JavaScript is turned off *}
-            <noscript>
-            {if $searchDetails}
-              {assign var=numGroups value=$searchDetails|@count}
-            {/if}
-            {if $numGroups < 3}{assign var=numGroups value=3}{/if}
-            {section name=groups loop=$numGroups}
-              {assign var=groupIndex value=$smarty.section.groups.index}
-              <div class="group group{$groupIndex%2}" id="group{$groupIndex}">
-                <div class="searchRelated">
+          {if $numGroups < 3}{assign var=numGroups value=3}{/if}
+          {section name=groups loop=$numGroups}
+            {assign var=groupIndex value=$smarty.section.groups.index}
+            <div class="group group{$groupIndex%2}" id="group{$groupIndex}">
+              <div class="searchRelated">
                 <div class="groupSearchDetails">
                   <div class="join">
                     <label for="search_bool{$groupIndex}">{translate text="search_match"}:</label>
@@ -35,50 +40,50 @@
                       <option value="OR"{if $searchDetails and $searchDetails.$groupIndex.group.0.bool == 'OR'} selected="selected"{/if}>{translate text="search_OR"}</option>
                       <option value="NOT"{if $searchDetails and $searchDetails.$groupIndex.group.0.bool == 'NOT'} selected="selected"{/if}>{translate text="search_NOT"}</option>
                     </select>
+                  </div> {* joun *}
+                </div> {* groupSearchDetails *}
+              </div> {* searchRelated *}
+              <div class="groupSearchHolder" id="group{$groupIndex}SearchHolder">
+              {if $searchDetails}
+                {assign var=numRows value=$searchDetails.$groupIndex.group|@count}
+              {/if}
+              {if $numRows < 3}{assign var=numRows value=3}{/if}
+              {section name=rows loop=$numRows}
+                {assign var=rowIndex value=$smarty.section.rows.index}
+                {if $searchDetails}{assign var=currRow value=$searchDetails.$groupIndex.group.$rowIndex}{/if}
+                <div class="advRow{if $rowIndex == $numGroups - 1} last{/if}">
+                  <div class="label">
+                    <label for="search_lookfor{$groupIndex}_{$rowIndex}">{translate text="adv_search_label"}:</label>&nbsp;
                   </div>
-                </div>
-                <div class="groupSearchHolder" id="group{$groupIndex}SearchHolder">
-                {if $searchDetails}
-                  {assign var=numRows value=$searchDetails.$groupIndex.group|@count}
-                {/if}
-                {if $numRows < 3}{assign var=numRows value=3}{/if}
-                {section name=rows loop=$numRows}
-                  {assign var=rowIndex value=$smarty.section.rows.index}
-                  {if $searchDetails}{assign var=currRow value=$searchDetails.$groupIndex.group.$rowIndex}{/if}
-                  <div class="advRow{if $rowIndex == $numGroups - 1} last{/if}">
-                    <div class="label">
-                      <label for="search_lookfor{$groupIndex}_{$rowIndex}">{translate text="adv_search_label"}:</label>&nbsp;
-                    </div>
-                    <div class="terms">
-                      <input id="search_lookfor{$groupIndex}_{$rowIndex}" type="text" value="{if $currRow}{$currRow.lookfor|escape}{/if}" size="50" name="lookfor{$groupIndex}[]"/>
-                    </div>
-                    <div class="field">
-                      <label for="search_type{$groupIndex}_{$rowIndex}">{translate text="in"}</label>
-                      <select id="search_type{$groupIndex}_{$rowIndex}" name="type{$groupIndex}[]">
-                      {foreach from=$advSearchTypes item=searchDesc key=searchVal}
-                        <option value="{$searchVal}"{if $currRow and $currRow.field == $searchVal} selected="selected"{/if}>{translate text=$searchDesc}</option>
-                      {/foreach}
-                      </select>
-                    </div>
-                    <span class="clearer"></span>
+                  <div class="terms">
+                    <input id="search_lookfor{$groupIndex}_{$rowIndex}" type="text" value="{if $currRow}{$currRow.lookfor|escape}{/if}" size="50" name="lookfor{$groupIndex}[]"/>
                   </div>
-                {/section}
-                </div>
-              </div>
-             </div>
-            {/section}
-            </noscript>
-          </div>
-          <div class="clear"></div>
-          <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-</div>
+                  <div class="field">
+                    <label for="search_type{$groupIndex}_{$rowIndex}">{translate text="in"}</label>
+                    <select id="search_type{$groupIndex}_{$rowIndex}" name="type{$groupIndex}[]">
+                    {foreach from=$advSearchTypes item=searchDesc key=searchVal}
+                      <option value="{$searchVal}"{if $currRow and $currRow.field == $searchVal} selected="selected"{/if}>{translate text=$searchDesc}</option>
+                    {/foreach}
+                    </select>
+                  </div> {* field *}
+                  <span class="clearer"></span>
+                </div> {* advRow *}
+              {/section}
+              </div> {* groupSearchHolder *}
+            </div> {* group groupIndex *}
+          {/section}
+          </noscript>
+        </div> {* searchHolder *}
+      </div> {* advSearchSection *}
+      <div class="clear"></div>
+      <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
+    </div> {* advSearchContent *}
 
-  <div class="clear"></div>
+  </div> {* content *}
+</form>
+</div> {* advancedSearchWrapper *}
+
+<div class="clear"></div>
 <br />
 <br />
 {literal}
@@ -164,6 +169,5 @@
   $("#addGroupLink").removeClass("offscreen");
 //]]>
 </script>
-</div>
 
 <!-- END of: Search/advanced.tpl -->

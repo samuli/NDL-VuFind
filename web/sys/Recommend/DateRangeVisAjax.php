@@ -102,7 +102,9 @@ class DateRangeVisAjax extends PubDateVisAjax
      */
     public function getTemplate()
     {
-        return 'Search/Recommend/DateRangeVisAjax.tpl';
+        // This module is implemented inside SideFacets so let's not display the template here at all.
+        return '';
+        // return 'Search/Recommend/DateRangeVisAjax.tpl';
     }
     
     /**

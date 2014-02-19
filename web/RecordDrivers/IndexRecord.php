@@ -255,7 +255,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreDissertationNote', $this->getDissertationNote());        
         $interface->assign('coreBuilding', $this->getBuilding());
         $interface->assign('coreAuthor', $this->getPrimaryAuthor());
-                
+
         // Only display OpenURL link if the option is turned on and we have
         // an ISSN.  We may eventually want to make this rule more flexible,
         // but for now the ISSN restriction is designed to be consistent with
@@ -330,6 +330,8 @@ class IndexRecord implements RecordInterface
 
         $interface->assign('coreMergedRecordData', $this->getMergedRecordData());
 
+        // Datasource for this record has patron functions
+        $interface->assign('patronFunctions', $this->hasPatronFunctions());
 
         // Send back the template name:
         return 'RecordDrivers/Index/core.tpl';
@@ -3371,6 +3373,16 @@ class IndexRecord implements RecordInterface
             && isset($configArray['Record'][$confParam][$datasource]) 
             ? $configArray['Record'][$confParam][$datasource] : null);
     }
-}
 
+    /**
+     * Check if an datasource has patron functions in order to show or hide the patron login
+     *
+     * @return bool
+     * @access public
+     */   
+    protected function hasPatronFunctions()
+    {
+        return false;
+    }
+}
 ?>

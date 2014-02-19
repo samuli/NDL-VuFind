@@ -1697,6 +1697,8 @@ class Solr implements IndexEngine
             $datasourceConfig = getExtraConfigArray('datasources');
             $sourcePriority = array_flip(explode(',', $this->_recordSources));
             $buildingPriority = $this->_mergeBuildingPriority;
+            $prefRecFromCookie = (is_array($buildingPriority) && 
+                empty($buildingPriority)) ? true : false;
             array_unshift($buildingPriority, '');
             $buildingPriority = array_flip($buildingPriority);
             $idList = array();
@@ -1736,11 +1738,14 @@ class Solr implements IndexEngine
                         $dedupData[$source] = array('id' => $localId, 'priority' => isset($localPriority) ? $localPriority : 99999);
                     }
 
-                    // If preferred record source is chosen and available,
-                    // change the value of dedupId
-                    if ($prefRec = $this->_preferredRecordSource) {
-                        $dedupId = isset($dedupData[$prefRec]['id']) 
-                            ? $dedupData[$prefRec]['id'] : $dedupId;
+                    // If preferred record source is chosen and available
+                    // and no building priority is set, change the value
+                    // of dedupId
+                    if ($prefRecFromCookie) {
+                        if ($prefRec = $this->_preferredRecordSource) {
+                            $dedupId = isset($dedupData[$prefRec]['id']) 
+                                ? $dedupData[$prefRec]['id'] : $dedupId;
+                        }
                     }
                     
                     $doc['dedup_id'] = $dedupId;

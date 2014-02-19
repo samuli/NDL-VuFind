@@ -74,11 +74,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 *}
   {if $previousRecord || $nextRecord}
     <div class="resultscroller grid_5 {if $lastsearch|strstr:'join'}push_3{else}push_7{/if}">
-    {if $previousRecord}<a href="{$url}/Record/{$previousRecord}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></a>
+    {if $previousRecord}<a href="{$url}/Record/{$previousRecord|escape:'url'}" class="prevRecord icon"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></a>
     {else}<span class="prevRecord inactive"><span class="resultNav">&laquo;&nbsp;{translate text="Previous Record"}</span></span>{/if}
     {$currentRecordPosition} / {$resultTotal}
     {* #{$currentRecordPosition} {translate text='of'} {$resultTotal} *}
-    {if $nextRecord}<a href="{$url}/Record/{$nextRecord}" class="nextRecord icon"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></a>
+    {if $nextRecord}<a href="{$url}/Record/{$nextRecord|escape:'url'}" class="nextRecord icon"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></a>
     {else}<span class="nextRecord inactive"><span class="resultNav">{translate text="Next Record"}&nbsp;&raquo;</span></span>{/if}
 	</div>
 	{/if}
@@ -105,14 +105,21 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         <div class="clear"></div>
         {assign var=img_count value=$coreImages|@count}
         {if $img_count > 1}
-          <div class="coverImageLinks">
+
+        <div class="coverImageLinks{if $img_count > 6} snippet{/if}">
         {foreach from=$coreImages item=desc name=imgLoop}
             <a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-linktext="{translate text='To the record'}" data-author="{$coreAuthor}"  href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
-              {*if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if
-              <img src="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small" />
-              *}
             </a>
           {/foreach}
+          </div>
+        {/if}
+        {if $img_count > 6}
+          <div class="moreLink coverImagesMoreLink">
+            <a href="#">{translate text="more"}</a>
+            <span>({$img_count})</span>
+          </div>
+          <div class="lessLink coverImagesLessLink">
+            <a href="#">{translate text="less"}</a>
           </div>
         {/if}
         
@@ -214,6 +221,13 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       </form>
       </div>
       {/if}
+      
+      <div class="clear"></div>
+
+      {* NDLBlankInclude *}
+      {include file='Additions/record-post-toolbar.tpl'}
+      {* /NDLBlankInclude *}
+
       <div class="clear"></div>
     </div>
       <div class="clear"></div>
@@ -223,17 +237,32 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       </div> *}
       
   </div>
-   <div class="grid_12 prefix_1">
-   {include file=$coreMetadata}
+  <div class="grid_12 prefix_1">
+    {include file=$coreMetadata}
+
+    {* NDLBlankInclude *}
+    {include file='Additions/record-post-metadata.tpl'}
+    {* /NDLBlankInclude *}
+
   </div>
   
    
   <div id="resultSidebar" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6 prefix_1">
+
+    {* NDLBlankInclude *}
+    {include file='Additions/record-pre-recommendations.tpl'}
+    {* /NDLBlankInclude *}
+
     <div class="similarItems" id="similarItems{$id}"><div class="sidegroup">{image src="ajax_loading.gif" width="16" height="16" alt="Loading data..."}</div></div>
     
     {if $bXEnabled}
       {include file="Record/bx.tpl"}
     {/if}
+
+    {* NDLBlankInclude *}
+    {include file='Additions/record-post-recommendations.tpl'}
+    {* /NDLBlankInclude *}
+
   </div>
   </div>
   </div>

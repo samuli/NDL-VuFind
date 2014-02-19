@@ -23,18 +23,21 @@
         <a href="http://haku.helmet.fi/iii/encore/record/C|R{$id|substr:7|escape}" target="_blank">{translate text='Holdings details from'} HelMet</a><br/>
       </span>
     {/if}
-    {assign var="ublink" value=false}
-    {foreach from=$holdings item=holding}
-      {if !$ublink}
-        {foreach from=$holding item=row}
-          {if !$ublink && $row.UBRequestLink}
-            <a class="UBRequestPlace checkUBRequest" href="{$row.UBRequestLink|escape}"><span>{translate text="ub_request_check"}</span></a>
-            {assign var="ublink" value=true}
-          {/if}
-        {/foreach}
-      {/if}
-    {/foreach}
+    {if $patronFunctions}
+      {assign var="ublink" value=false}
+      {foreach from=$holdings item=holding}
+        {if !$ublink}
+          {foreach from=$holding item=row}
+            {if !$ublink && $row.UBRequestLink}
+              <a class="UBRequestPlace checkUBRequest" href="{$row.UBRequestLink|escape}"><span>{translate text="ub_request_check"}</span></a>
+              {assign var="ublink" value=true}
+            {/if}
+          {/foreach}
+        {/if}
+      {/foreach}
+    {/if}
   </div>
+  {if $patronFunctions}
   <div class="holdingsPlaceHold">
     {if !$hideLogin && $offlineMode != "ils-offline"}
       {if ($driverMode  && !empty($holdings)) || $titleDriverMode}
@@ -53,6 +56,7 @@
         {translate text="hold_error_blocked"}
     {/if}
   </div>
+  {/if}
 </div>
 
 <div class="holdingsContainerHeader">
@@ -200,31 +204,32 @@
               {elseif $row.use_unknown_message}
                 <span class="unknown">{translate text="status_unknown_message"}</span>
               {else}
+                {if $patronFunctions}
+                  {if $row.availability}
+                    {assign var=availCount value=$availCount+1}
+                    {* Begin Available Items (Holds) *}
+                    <span class="available">{translate text="Available"}</span>
+                    {if $row.link}
+                      <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Place a Hold"}{else}{translate text="Check Hold"}{/if}</span></a>
+                    {/if}
+                    {if $row.callSlipLink}
+                      <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="call_slip_place_text"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
+                    {/if}
 
-                {if $row.availability}
-                  {assign var=availCount value=$availCount+1}
-                  {* Begin Available Items (Holds) *}
-                  <span class="available">{translate text="Available"}</span>
-                  {if $row.link}
-                    <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Place a Hold"}{else}{translate text="Check Hold"}{/if}</span></a>
-                  {/if}
-                  {if $row.callSlipLink}
-                    <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="call_slip_place_text"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
-                  {/if}
-
-                {else}
-                {* Begin Unavailable Items (Recalls) *}
-                  <span class="checkedout">{translate text=$row.status prefix='status_'}</span>
-                  {if $row.returnDate} <span class="statusExtra"><span class="returnDate">{$row.returnDate|escape}</span></span>
-                  {/if}
-                  {if $row.duedate}
-                    <span class="statusExtra">{translate text="Due"}: <span class="returnDate">{$row.duedate|escape}</span></span>
-                  {/if}
-                  {if $row.requests_placed > 0}
-                    <span>{translate text="Requests"}: {$row.requests_placed|escape}</span>
-                  {/if}
-                  {if $row.link}
-                    <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Recall This"}{else}{translate text="Check Recall"}{/if}</span></a>
+                  {else}
+                  {* Begin Unavailable Items (Recalls) *}
+                    <span class="checkedout">{translate text=$row.status prefix='status_'}</span>
+                    {if $row.returnDate} <span class="statusExtra"><span class="returnDate">{$row.returnDate|escape}</span></span>
+                    {/if}
+                    {if $row.duedate}
+                      <span class="statusExtra">{translate text="Due"}: <span class="returnDate">{$row.duedate|escape}</span></span>
+                    {/if}
+                    {if $row.requests_placed > 0}
+                      <span>{translate text="Requests"}: {$row.requests_placed|escape}</span>
+                    {/if}
+                    {if $row.link}
+                      <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Recall This"}{else}{translate text="Check Recall"}{/if}</span></a>
+                    {/if}
                   {/if}
                 {/if}
               {/if}

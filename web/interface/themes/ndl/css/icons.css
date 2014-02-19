@@ -496,6 +496,11 @@ span.dynatree-expander:hover {
     background-position: -6px -10px;
 }
 
+#newItemsFromDate.searchButton {
+        background-image: url(../images/icons16-24px-02_white.png);
+        background-position: 7px -943px;
+    }
+
 /* Main: Single record view */
 
 .resultLinks .button, .resultLinks .button span {
@@ -507,10 +512,12 @@ span.dynatree-expander:hover {
 .resultLinks .button span {
     background-position: 1px -950px;
 }
+.coverImages .moreLink a:after, .coverImages .lessLink a:after, 
 #addThis .mail, .addthis_button_facebook, .addthis_button_twitter,
 .addthis_button_google_plusone_share,
 .fav, .mail, .export, .export img, .add, .delete,
-.citation .moreLink a:after, .citation .lessLink a:after {
+.citation .moreLink a:after, .citation .lessLink a:after,
+.openurl_more_full {
     background-image: url(../images/icons16-24px-02_turquoise.png);
 }
 #addThis .mail {
@@ -543,11 +550,16 @@ span.dynatree-expander:hover {
 .delete {
     background-position: 7px -158px;
 }
+.coverImages .moreLink a:after,
 .citation .moreLink a:after {
     background-position: 2px -2318px;
 }
+.coverImages .lessLink a:after,
 .citation .lessLink a:after {
     background-position: 2px -2270px;
+}
+.openurl_more_full {
+    background-position: 2px -838px;
 }
 .savedHistory .delete, .accountList .delete, .accountList .edit {
     background-image: url(../images/icons16-24px-02_black.png);
@@ -568,7 +580,9 @@ label.invalid:before {
 #holdingstab, #componentstab, #commentstab, #reviewstab, #excerpttab,
 #hierarchytab, #maptab, #detailstab,
 #tabnav .collectionContent,
-#tabnav .collectionHierarchy {
+#tabnav .collectionHierarchy,
+#allResultsTab, #booksTab, #articlesTab, #metalibTab,
+#booksTabAdvanced, #articlesTabAdvanced, #metalibTabAdvanced {
     background-image: url(../images/icons16-24px-02_black.png);
 }
 #holdingstab {
@@ -601,6 +615,13 @@ label.invalid:before {
 #tabnav .collectionHierarchy {
     background-position: 7px -1493px;
 }
+#allResultsTab, #booksTab, #articlesTab, #metalibTab {
+    background-position: 10px -939px;
+}
+#booksTabAdvanced, #articlesTabAdvanced, #metalibTabAdvanced {
+    background-position: 9px -994px;
+}
+
 
 /* Main: Myresearch */
 
@@ -822,4 +843,5 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .NDLCarouselNavi .next {
     background-position: 0px -984px;
 }
+
 

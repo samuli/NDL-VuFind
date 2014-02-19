@@ -191,10 +191,9 @@ EOE;
             foreach ($values as $value) {
                 if ($key == 'creationdate') {
                     // Do we have a single value or range
-                    if (strpos($value,'TO') !== false) {
+                    if (strpos($value, 'TO') !== false) {
                         $value = $value;
-                    }
-                    else {
+                    } else {
                         $value = "[$value TO $value]";
                     }
                 }
@@ -361,7 +360,8 @@ EOD;
         global $configArray;
         $primoRecord = $item->children('http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib');
         $links = array();
-        foreach ((array) $primoRecord->PrimoNMBib->record->links as $val) {
+        $backlink = '';        
+        foreach ((array) $primoRecord->PrimoNMBib->record->links->linktorsrc as $val) {
             $linkString = (string)$val;
             $ini = strripos($linkString, '$$U');
             if ($ini === false) {
@@ -374,6 +374,18 @@ EOD;
             }
         }
         
+        // Back links sometimes contain non-valid XML and thus cannot 
+        // be treated like source links
+        $backlinkString = (string)$primoRecord->PrimoNMBib->record->links->backlink;
+        $ini = strripos($backlinkString, '$$U');
+        if ($ini !== false) {
+            $ini +=3;
+            $backlinkArray = explode('$$', substr($backlinkString, $ini));
+            if ($backlinkArray[0]) {
+                $backlink = $backlinkArray[0];
+            }
+        }
+                
         $openurl = '';
         if (isset($configArray['OpenURL']['url']) && $configArray['OpenURL']['url']) {
             // Parse the OpenURL and extract parameters
@@ -388,6 +400,8 @@ EOD;
                 }
             }
         }
+        
+        $fulltext = (string)$primoRecord->PrimoNMBib->record->delivery->fulltext;
         
         $title = $this->hiLite((string)$primoRecord->PrimoNMBib->record->display->title);
         
@@ -405,6 +419,8 @@ EOD;
             'publicationTitle' => (string)$primoRecord->PrimoNMBib->record->display->ispartof,
             'openUrl' => !empty($openurl) ? $openurl : null,
             'url' => $links,
+            'backlink' => $backlink,
+            'fulltext' => $fulltext,
             'fullrecord' => $item->asXML(),
             'id' => 'pci.' . (string)$primoRecord->PrimoNMBib->record->search->recordid,
             'format' => (string)$primoRecord->PrimoNMBib->record->display->type,

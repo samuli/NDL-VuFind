@@ -5,6 +5,11 @@
 <div class="grid_24">
 {if not $submitted}
 {if $errorMsg}<p class="error">{$errorMsg}</p>{/if}
+
+{* NDLBlankInclude *}
+{translate text='feedback_instructions'}
+{* /NDLBlankInclude *}
+
 <form id="feedbackForm" action="" method="post">
     <label for="category">{translate text="Subject"}:</label>
     <select name="category" id="category">

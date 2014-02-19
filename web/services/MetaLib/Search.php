@@ -67,90 +67,97 @@ class Search extends Base
         $interface->assign('searchIndex', $this->searchObject->getSearchIndex());
         $interface->assign('searchType', $this->searchObject->getSearchType());
         $interface->assign('searchSet', $this->searchObject->getSearchSet());
+
+        $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         
         // Search MetaLib
-        $result = $this->searchObject->processSearch(true, true);
-
-        // Whether RSI is enabled
-        if (isset($configArray['OpenURL']['use_rsi']) && $configArray['OpenURL']['use_rsi']) {
-            $interface->assign('rsi', true);
-        }
-        // Whether embedded openurl autocheck is enabled
-        if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
-            $interface->assign('openUrlAutoCheck', true);
-        }
+        if (!empty($displayQuery)) {
+            $result = $this->searchObject->processSearch(true, true);
         
-        // We'll need recommendations no matter how many results we found:
-        $interface->assign('qtime', round($this->searchObject->getQuerySpeed(), 2));
-        $interface->assign(
-            'spellingSuggestions', $this->searchObject->getSpellingSuggestions()
-        );
-        $interface->assign(
-            'topRecommendations',
-            $this->searchObject->getRecommendationsTemplates('top')
-        );
-        $interface->assign(
-            'sideRecommendations',
-            $this->searchObject->getRecommendationsTemplates('side')
-        );
-        $interface->assign('disallowedDatabases', $result['disallowedDatabases']);
-        $interface->assign('failedDatabases', $result['failedDatabases']);
-        
-        if ($result['recordCount'] > 0) {
-            // If the "jumpto" parameter is set, jump to the specified result index:
-            $this->_processJumpto($result);
-
-            $summary = $this->searchObject->getResultSummary();
-            $page = $summary['page'];
-            $interface->assign('recordCount', $summary['resultTotal']);
-            $interface->assign('recordStart', $summary['startRecord']);
-            $interface->assign('recordEnd',   $summary['endRecord']);
-            $interface->assign('recordSet', $result['documents']);
-            $interface->assign('sortList',   $this->searchObject->getSortList());
-
-            // If our result set is larger than the number of records that
-            // MetaLib will let us page through, we should cut off the number
-            // before passing it to our paging mechanism:
-            $config = getExtraConfigArray('MetaLib');
-            $pageLimit = isset($config['General']['result_limit']) ?
-                $config['General']['result_limit'] : 2000;
-            $totalPagerItems = $summary['resultTotal'] < $pageLimit ?
-                $summary['resultTotal'] : $pageLimit;
-
-            // Process Paging
-            $link = $this->searchObject->renderLinkPageTemplate();
-            $options = array('totalItems' => $totalPagerItems,
-                             'fileName'   => $link,
-                             'perPage'    => $summary['perPage']);
-            $pager = new VuFindPager($options);
-            $interface->assign('pageLinks', $pager->getLinks());
-
-            // Display Listing of Results
-            $interface->setTemplate('list.tpl');
-            $interface->assign('subpage', 'MetaLib/list-list.tpl');
-        } else {
-            $interface->assign('recordCount', 0);
-            // Was the empty result set due to an error?
-            $error = $this->searchObject->getIndexError();
-            if ($error !== false) {
-                // If it's a parse error or the user specified an invalid field, we
-                // should display an appropriate message:
-                if (stristr($error, 'user.entered.query.is.malformed')
-                    || stristr($error, 'unknown.field')
-                ) {
-                    $interface->assign('parseError', true);
-                } else {
-                    // Unexpected error -- let's treat this as a fatal condition.
-                    PEAR::raiseError(
-                        new PEAR_Error(
-                            'Unable to process query<br />MetaLib Returned: ' . $error
-                        )
-                    );
-                }
+            // Whether RSI is enabled
+            if (isset($configArray['OpenURL']['use_rsi']) && $configArray['OpenURL']['use_rsi']) {
+                $interface->assign('rsi', true);
             }
+            // Whether embedded openurl autocheck is enabled
+            if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
+                $interface->assign('openUrlAutoCheck', true);
+            }
+        
+            // We'll need recommendations no matter how many results we found:
+            $interface->assign('qtime', round($this->searchObject->getQuerySpeed(), 2));
+            $interface->assign(
+                'spellingSuggestions', $this->searchObject->getSpellingSuggestions()
+            );
+            $interface->assign(
+                'topRecommendations',
+                $this->searchObject->getRecommendationsTemplates('top')
+            );
+            $interface->assign(
+                'sideRecommendations',
+                $this->searchObject->getRecommendationsTemplates('side')
+            );
+            $interface->assign('disallowedDatabases', $result['disallowedDatabases']);
+            $interface->assign('failedDatabases', $result['failedDatabases']);
+        
+            if ($result['recordCount'] > 0) {
+                // If the "jumpto" parameter is set, jump to the specified result index:
+                $this->_processJumpto($result);
+
+                $summary = $this->searchObject->getResultSummary();
+                $page = $summary['page'];
+                $interface->assign('recordCount', $summary['resultTotal']);
+                $interface->assign('recordStart', $summary['startRecord']);
+                $interface->assign('recordEnd',   $summary['endRecord']);
+                $interface->assign('recordSet', $result['documents']);
+                $interface->assign('sortList',   $this->searchObject->getSortList());
+
+                // If our result set is larger than the number of records that
+                // MetaLib will let us page through, we should cut off the number
+                // before passing it to our paging mechanism:
+                $config = getExtraConfigArray('MetaLib');
+                $pageLimit = isset($config['General']['result_limit']) ?
+                    $config['General']['result_limit'] : 2000;
+                $totalPagerItems = $summary['resultTotal'] < $pageLimit ?
+                    $summary['resultTotal'] : $pageLimit;
+
+                // Process Paging
+                $link = $this->searchObject->renderLinkPageTemplate();
+                $options = array('totalItems' => $totalPagerItems,
+                                 'fileName'   => $link,
+                                 'perPage'    => $summary['perPage']);
+                $pager = new VuFindPager($options);
+                $interface->assign('pageLinks', $pager->getLinks());
+
+                // Display Listing of Results
+                $interface->setTemplate('list.tpl');
+                $interface->assign('subpage', 'MetaLib/list-list.tpl');
+            } else {
+                $interface->assign('recordCount', 0);
+                // Was the empty result set due to an error?
+                $error = $this->searchObject->getIndexError();
+                if ($error !== false) {
+                    // If it's a parse error or the user specified an invalid field, we
+                    // should display an appropriate message:
+                    if (stristr($error, 'user.entered.query.is.malformed')
+                        || stristr($error, 'unknown.field')
+                    ) {
+                        $interface->assign('parseError', true);
+                    } else {
+                        // Unexpected error -- let's treat this as a fatal condition.
+                        PEAR::raiseError(
+                            new PEAR_Error(
+                                'Unable to process query<br />MetaLib Returned: ' . $error
+                            )
+                        );
+                    }
+                }    
+                $interface->setTemplate('list-none.tpl');
+            }
+        } else {
+            $result = false;
+            $interface->assign('noQuery', true);
             $interface->setTemplate('list-none.tpl');
         }
-
         // 'Finish' the search... complete timers and log search history.
         $this->searchObject->close();
         $interface->assign('time', round($this->searchObject->getTotalSpeed(), 2));

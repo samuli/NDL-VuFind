@@ -32,8 +32,7 @@
     </div>
   {/if}
   <div class="openurls">
-    <a class="openurl_more" href="{$path}/AJAX/SFXMenu.php?action=SFXMenu&openurl={$openUrl|escape:"url"}">{translate text="More options"} <span class="more_img"><img src="{path filename="images/down.png"}" width="11" height="6"/></span><span class="less_img hide"><img src="{path filename="images/up.png"}" width="11" height="6"/></span></a>
-    <a class="openurl_more_full hide" href="{$openUrlBase|escape}?{$openUrl|escape}" target="_blank">{translate text="Open in a New Window"}</a>
+    <a class="openurl_more_full" href="{$openUrlBase|escape}?{$openUrl|escape}" target="_blank">{translate text="More options"} ({translate text="Open in a New Window"})</a>
     {if !empty($services)}
       <ul>
         {foreach from=$services item=link}

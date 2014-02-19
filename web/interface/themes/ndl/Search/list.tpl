@@ -53,11 +53,13 @@
       {/if}
       {if $dualResultsEnabled && $searchType != 'advanced'}
       </div>
+{* Replaced by tabbed navigation
       <div class="headerRight">
         <a class="button buttonFinna" href="{$searchWithFilters|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}&dualResults=1">{translate text="All Results"}</a>
         <a class="button buttonFinna buttonSelected" href="{$searchWithFilters|escape}&dualResults=0">{translate text="Books etc."}</a>
         <a class="button buttonFinna" href="{$searchWithoutFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}&dualResults=0">{translate text="Articles, e-Books etc."}</a>
       </div>
+*}
       {/if}
     </div> {* content *}
   </div> {* resultTerms *}
@@ -74,6 +76,13 @@
       </div>
     </div>
   </div>
+
+  {* tabNavi *}
+
+  {if ($metalibEnabled || $pciEnabled) && $searchType != 'advanced'}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
+
 <div class="resultViewOptions">
     <div class="content">
       <div class="resultNumbers">
@@ -135,7 +144,11 @@
     </div>
     {if !empty($sideFacetSet)}
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-          {include file=$sideRecommendations.SideFacets}
+          {if $sideRecommendations}
+            {foreach from=$sideRecommendations item="recommendations"}
+              {include file=$recommendations}
+            {/foreach}
+          {/if}
         {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}
     </div>
     {/if}
@@ -145,9 +158,7 @@
 {include file="Search/paging.tpl" position="Bottom"}
 {include file="Search/result-search-tools.tpl"}
   {* End Main Listing *}
-  {* Narrow Search Options *}
-  {* End Narrow Search Options *}
-  
+   
 <div class="clear"></div>
 
 {literal}

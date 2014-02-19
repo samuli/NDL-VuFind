@@ -3,10 +3,16 @@
   {if $img_count > 1}
     <div class="imagelinks">
     {foreach from=$summImages item=desc name=imgLoop}
-        <a data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
-          {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+      {if $smarty.foreach.imgLoop.iteration <= 5}
+      <a data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+         {if $smarty.foreach.imgLoop.iteration > 4}
+            &hellip;
+         {else}
+            {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+         {/if}
         </a>
-    {/foreach}
+       {/if}
+     {/foreach}
     </div>
   {/if}
   <div class="addToFavLink">

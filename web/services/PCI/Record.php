@@ -90,6 +90,7 @@ class Record extends Base
     public function launch()
     {
         global $interface;
+        global $configArray;
 
         // Assign the ID of the last search so the user can return to it.
         $interface->assign(
@@ -100,6 +101,11 @@ class Record extends Base
             'lastsearchdisplayquery',
             isset($_SESSION['lastSearchDisplayQuery']) ? $_SESSION['lastSearchDisplayQuery'] : false
         );
+        
+        // Whether embedded openurl autocheck is enabled
+        if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
+            $interface->assign('openUrlAutoCheck', true);
+        }
         
         // Display Page
         $interface->setTemplate('record.tpl');

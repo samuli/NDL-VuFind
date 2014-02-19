@@ -9,6 +9,8 @@
       </div>
     </div>
   </div>
+  {* tabNavi *}
+  {include file="Search/tabnavi.tpl"}
   <div class="content">
     <div class="advSearchContent">
       {if $editErr}
@@ -17,6 +19,11 @@
       {/if}
       {* An empty div. This is the target for the javascript that builds this screen *}
       <div class="grid_24">
+
+        {* NDLBlankInclude *}
+        {translate text='adv_search_instructions'}
+        {* /NDLBlankInclude *}
+    
         <h3 class="advTitle">{translate text="adv_search_terms"}</h3>
       </div>
       <div class="grid_24">
