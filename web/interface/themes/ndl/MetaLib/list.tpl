@@ -36,7 +36,9 @@
   </div> {* resultTerms *}
 
   {* tabNavi *}
-  {include file="Search/tabnavi.tpl"}
+  {if $searchType != 'MetaLibAdvanced'}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
 
   <div class="resultViewOptions">
     <div class="content">

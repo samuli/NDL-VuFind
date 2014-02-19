@@ -3,7 +3,9 @@
 <div class="{if $sidebarOnLeft}last {/if}no-hits">
   <div class="contentHeader noResultHeader"><div class="content"><h1>{translate text='nohit_heading'}</h1></div></div>
   {* tabNavi *}
-  {include file="Search/tabnavi.tpl"}
+  {if $searchType != 'advanced'}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
   <div class="content">
     <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if} grid_17">
       <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>

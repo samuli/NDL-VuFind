@@ -19,10 +19,14 @@
 	          {/foreach}
 	        </select>
 	      </div>
-	       <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
-	     </div>
-	   </div>
-    
+	      <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
+	    </div>
+	  </div>
+{*
+    <div class="advancedLinkWrapper{if !$dualResultsEnabled} noDual{/if}{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+      <a href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
+    </div>
+*}    
       {* Do we have any checkbox filters? *}
       {assign var="hasCheckboxFilters" value="0"}
       {if isset($checkboxFilters) && count($checkboxFilters) > 0}
@@ -52,11 +56,15 @@
       
 	    <div class="searchFormOuterWrapper">
 	      <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
-          <a href="{$path}/MetaLib/Advanced" class="small  advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
+{*
+          <a href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
+*}
+{* Advanced PCI and Advanced Local Search commented out for now
 	      {if $pciEnabled && !$dualResultsEnabled}
 	          <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
 	      {/if}
-        <a href="{$url}" class="small metalibLink">{translate text="Local Search"}</a>
+          <a href="{$url}" class="small metalibLink">{translate text="Local Search"}</a>
+*}
 	      </div>
 	    </div>
       
