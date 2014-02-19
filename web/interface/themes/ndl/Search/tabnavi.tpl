@@ -43,7 +43,7 @@
           {else}
           <a id="allResultsTab" href="{$searchWithFilters|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}&dualResults=1">
           {/if}
-          {translate text="All Results"}</a>
+          {translate text="Local and Primo"}</a>
         </li>
         {/if}
         
@@ -54,7 +54,7 @@
           {else}
           <a id="booksTab" href="{$more|replace:"&dualResults=0":""}{$searchWithFilters|escape|replace:"/PCI/Search":"/Search/Results"|replace:"prefilter=":"prefiltered="}{if $dualResultsEnabled}&dualResults=0{/if}">
           {/if}
-          {translate text="Books etc."}</a>
+          {translate text="Local Records"}</a>
         </li>
 
         {* Tab: PCI *}
@@ -65,7 +65,7 @@
           {else}
           <a id="articlesTab" href="{$pci_more|replace:"&dualResults=0":""}{$searchWithFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"/Search/DualResults":"/PCI/Search"|replace:"prefilter=":"prefiltered="}{if $dualResultsEnabled}&dualResults=0{/if}">
           {/if}
-          {translate text="Articles, e-Books etc."}</a>
+          Primo Central</a>
         </li>
         {/if}
 
@@ -77,7 +77,7 @@
           {else}
           <a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor}&set=uusimaa&submit=Hae&retainFilters=0">
           {/if}
-          {translate text="MetaLib Search"}</a></li>
+          {translate text="MetaLib Searches"}</a></li>
         {/if}
 
       {/if}

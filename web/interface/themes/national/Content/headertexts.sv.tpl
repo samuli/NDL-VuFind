@@ -8,14 +8,14 @@
            Belägenhet: Museovirasto</p> 
         <a href="{$url}/Record/musketti.M012%3AHK19710729%3A3">Till posten »</a>
     </div>
-    <div>
+   <!-- <div>
         <p class="headerInfoLight">Information om bildet:</p>
         <p class="headerInfoTitle">V-VI 5-7 [Maarianhamina] (1870-1919)</p>
         <p>Records creator: Maanmittaushallitus<br/>
            Belägenhet: Kansallisarkisto</p>
         <a href="{$url}/Record/narc.VAKKA-276241.KA_VAKKA-1813866.KA">Till posten »</a>
     </div>
-     <div>
+     <div> -->
         <p class="headerInfoLight">Information om bildet:</p>
         <p class="headerInfoTitle">Annegatan en kall vintermorgon</p>
         <p>Författar: Wright, Magnus Von<br/>
