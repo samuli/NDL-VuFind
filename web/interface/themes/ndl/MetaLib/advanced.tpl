@@ -2,24 +2,27 @@
 
 <div id="advancedSearchWrapper">
 <form method="get" action="{$url}/MetaLib/Search" id="advSearchForm" name="searchForm" class="search">
-  <input name="join" type="hidden" value="AND">
+  <input name="join" type="hidden" value="AND" />
   <div class="advSearchHeader">
     <div class="content">
       <h1>{translate text='Advanced Search'}</h1>{if in_array('searchMetaLibAdvanced', $contextHelp)}<span id="contextHelp_searchMetaLibAdvanced" class="showHelp">{translate text="Search Tips"}</span>{/if}
     </div>
-   </div>
-    <div class="content">
-      <div class="advSearchContent">
+  </div> {* advSearchHeader *}
+  {* tabNavi *}
+  {include file="Search/tabnavi.tpl"}
+
+  <div class="content">
+    <div class="advSearchContent">
       <div class="advSearchSection first grid_24">
       {if $editErr}
       {assign var=error value="advSearchError_$editErr"}
         <div class="error">{translate text=$error}</div>
       {/if}
 
-      <div id="searchHolder">
+        <div id="searchHolder" class="clearfix">
         {assign var=numGroups value=1}
         {section name=groups loop=$numGroups}
-          {assign var=groupIndex value=$smarty.section.groups.index}
+        {assign var=groupIndex value=$smarty.section.groups.index}
           <div class="group group{$groupIndex%2}" id="group{$groupIndex}">
             <div class="groupSearchDetails">
               <div class="join">
@@ -60,24 +63,24 @@
             </div>
           </div>
         {/section}
-      </div>
+        </div> {* searchHolder *}
 
-      <br/><br/>
+        <div class="searchForm_setWrapper">
+          <label for="searchForm_set" class="offscreen">{translate text="Search In"}</label>
+          <select id="searchForm_set" name="set">
+          {foreach from=$metalibSearchSets item=searchDesc key=searchVal}
+            <option value="{$searchVal}"{if $searchSet == $searchVal} selected="selected"{/if}>{translate text=$searchDesc}</option>
+          {/foreach}
+          </select>
+          <div class="clear"></div>
+          <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}" />
+        </div>
+      </div> {* advSearchSection *}
+    </div> {* advSearchContent *}
 
-      <label for="searchForm_set" class="offscreen">{translate text="Search In"}</label>
-      <select id="searchForm_set" name="set">
-      {foreach from=$metalibSearchSets item=searchDesc key=searchVal}
-        <option value="{$searchVal}"{if $searchSet == $searchVal} selected="selected"{/if}>{translate text=$searchDesc}</option>
-      {/foreach}
-      </select>
-      <div class="clear"></div>
-      <input type="submit" class="button buttonFinna searchButton right" name="submit" value="{translate text="Find"}"/>
-    </div>
-    </div>
-    {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
-  </div>
-    
+  {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
+  </div> {* content *}
   <div class="clear"></div>
 </form>
-</div>
+</div> {* advancedSearchWrapper *}
 <!-- START of: MetaLib/advanced.tpl -->

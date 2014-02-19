@@ -1088,6 +1088,14 @@ body > .ui-widget .button {
 	  float: right;
 	  margin-top: 0.5em;
 }
+/*
+.advancedLinkWrapper.noDual {
+    margin-top: 0;
+	  position: absolute;
+	  left: 68%;
+	  top: 11px;	
+}
+*/
 .advancedLinkWrapper a {
     display: inline-block;
 	  color: #FFFFFF;
@@ -4936,6 +4944,10 @@ p.citationText {
     clear:both;
 }
 
+.module-PCI #searchHolder, .module-MetaLib #searchHolder {
+    padding: 15px;
+}
+
 .advSearchSection {
     background: #F5F5F5;
     border: 1px solid #E4E4E4;
@@ -4950,6 +4962,13 @@ p.citationText {
     box-shadow: 0 13px 32px -40px #000000;
     behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
 }
+div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
+    padding: 0;
+}
+.searchForm_setWrapper {
+    padding: 0 15px;
+}
+
 .group .searchRelated {
     position: relative;
 }
@@ -5450,6 +5469,8 @@ ul.recordSet.galleryView .resultNoImage {
 ul.recordSet.listView .result .imagelinks {
     position: absolute;
     top: none;
+    left: auto;
+    padding: 0;
 }
 #myFavoritesList .imagelinks {
     left: 53px;
@@ -6502,3 +6523,4 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+

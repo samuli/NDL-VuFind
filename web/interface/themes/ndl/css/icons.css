@@ -581,7 +581,8 @@ label.invalid:before {
 #hierarchytab, #maptab, #detailstab,
 #tabnav .collectionContent,
 #tabnav .collectionHierarchy,
-#allResultsTab, #booksTab, #articlesTab, #metalibTab {
+#allResultsTab, #booksTab, #articlesTab, #metalibTab,
+#booksTabAdvanced, #articlesTabAdvanced, #metalibTabAdvanced {
     background-image: url(../images/icons16-24px-02_black.png);
 }
 #holdingstab {
@@ -617,6 +618,10 @@ label.invalid:before {
 #allResultsTab, #booksTab, #articlesTab, #metalibTab {
     background-position: 10px -939px;
 }
+#booksTabAdvanced, #articlesTabAdvanced, #metalibTabAdvanced {
+    background-position: 9px -994px;
+}
+
 
 /* Main: Myresearch */
 

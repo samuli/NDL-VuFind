@@ -67,7 +67,9 @@
   </div>
 
   {* tabNavi *}
-  {include file="Search/tabnavi.tpl"}
+  {if $searchType != 'PCIAdvanced'}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
 
   <div class="resultViewOptions">
     <div class="content">

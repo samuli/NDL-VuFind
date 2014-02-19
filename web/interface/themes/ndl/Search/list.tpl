@@ -78,7 +78,8 @@
   </div>
 
   {* tabNavi *}
-  {if $metalibEnabled || $pciEnabled }
+
+  {if ($metalibEnabled || $pciEnabled) && $searchType != 'advanced'}
     {include file="Search/tabnavi.tpl"}
   {/if}
 

@@ -9,6 +9,8 @@
       </div>
     </div>
   </div>
+  {* tabNavi *}
+  {include file="Search/tabnavi.tpl"}
   <div class="content">
     <div class="advSearchContent">
       {if $editErr}

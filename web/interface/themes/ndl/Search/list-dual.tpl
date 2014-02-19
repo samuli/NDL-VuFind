@@ -7,6 +7,13 @@
 <div id="dualResultsHeader" class="resultHeader">
   <div class="resultTerms">
     <div class="content">
+      {if $searchType == 'advanced'}
+      <div class="advancedOptions grid_24">
+        <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a> |
+        <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a> |
+        <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
+      </div>
+      {/if}
       <div class="headerLeft">
 	      <h2 class="searchTerms grid_12">
 	      {if $lookfor == ''}{translate text="history_empty_search"}
@@ -43,7 +50,9 @@
 </div> {* resultHeader *}
 
   {* tabNavi *}
-  {include file="Search/tabnavi.tpl"}
+  {if $searchType != 'advanced'}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
 {*
 <div class="ui-tabs ui-widget dualResultsMenu" role="navigation" aria-label="{translate text='Your Account Navigation'}">
   <div class="content">

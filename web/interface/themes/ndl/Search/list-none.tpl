@@ -3,7 +3,7 @@
 <div class="{if $sidebarOnLeft}last {/if}no-hits">
   <div class="contentHeader noResultHeader"><div class="content"><h1>{if $searchType == 'advanced'}{translate text='Advanced Search'}{else}{translate text='Search'}{/if}: {translate text='nohit_heading'}</h1></div></div>
   {* tabNavi *}
-  {if $metalibEnabled || $pciEnabled }
+  {if ($metalibEnabled || $pciEnabled) && $searchType != 'advanced' }
     {include file="Search/tabnavi.tpl"}
   {/if}
   <div class="content">

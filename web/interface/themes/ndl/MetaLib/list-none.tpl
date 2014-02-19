@@ -3,7 +3,9 @@
 <div class="{if $sidebarOnLeft}last {/if}no-hits">
   <div class="contentHeader noResultHeader"><div class="content"><h1>{translate text='nohit_heading'}</h1></div></div>
   {* tabNavi *}
-  {include file="Search/tabnavi.tpl"}
+  {if $searchType != 'advanced'}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
   <div class="content">
   {if $noQuery}
     <p class="error">{translate text='metalib_no_query'}</p>
