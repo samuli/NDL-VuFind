@@ -7,7 +7,7 @@
         <p>Sijainti: Museovirasto</p>
         <a href="{$url}/Record/musketti.M012%3AHK19710729%3A3">Aineistotietoon »</a>
     </div>
-  <div>
+<!--  <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Finlaysonin vuodevaatteita tuotekuvassa</p>
         <p>Kuvaaja: Matti Selänne<br />
@@ -20,14 +20,14 @@
         <p>Arkistonmuodostaja: Maanmittaushallitus<br/>
            Sijainti: Kansallisarkisto</p>
         <a href="{$url}/Record/narc.VAKKA-276241.KA_VAKKA-1813866.KA">Aineistotietoon »</a>
-    </div>
+    </div> -->
     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Annankatu kylmänä talviaamuna</p>
         <p>Tekijä: Magnus von Wright<br/>
            Sijainti: Ateneumin taidemuseo</p>
         <a href="{$url}/Record/muusa.urn%3Auuid%3AF86CA2D0-2AB1-41FB-850B-4C81AA9C8C23">Aineistotietoon »</a>
-    </div>
+    </div> 
     <!-- <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Luonnos värikuvaan Ritari ja kuningaskäärme</p>

@@ -7,7 +7,7 @@
            Location: Museovirasto</p> 
          <a href="{$url}/Record/musketti.M012%3AHK19710729%3A3">To the record »</a>
     </div>
-    <div>
+  <!--  <div>
         <p class="headerInfoLight">Information about the picture:</p>
         <p class="headerInfoTitle">Finlaysonin vuodevaatteita tuotekuvassa</p>
         <p>Photographer: Matti Selänne<br />
@@ -20,7 +20,7 @@
         <p>Records creator: Maanmittaushallitus<br/>
            Location: Kansallisarkisto</p>
         <a href="{$url}/Record/narc.VAKKA-276241.KA_VAKKA-1813866.KA">To the record »</a>
-    </div>
+    </div> -->
     <div>
         <p class="headerInfoLight">Information about the picture:</p>
         <p class="headerInfoTitle">Annankatu on a Cold Winter Morning</p>
