@@ -1,5 +1,4 @@
 <!-- START of: MyResearch/login.tpl -->
-{js filename="rc4.js"}
 
 {if $offlineMode == "ils-offline"}
   <div class="sysInfo">
@@ -31,14 +30,6 @@
   <div class="loginAction">
     <h3>{$loginNumber}. {translate text='login_title_local'}</h3>
     <form method="post" action="{$url}/MyResearch/Home" name="loginForm" id="loginForm">
-      {if $loginTargets}
-        <select id="login_target" name="login_target">
-        {foreach from=$loginTargets item=target}
-          <option value="{$target}"{if $target == $defaultLoginTarget} selected="selected"{/if}>{translate text=$target prefix='source_'}</option>
-        {/foreach}
-        </select>
-        <br class="clear"/>
-      {/if}
       <label for="login_username">{translate text='Username'}</label>
       <br class="clear"/>
       <input id="login_username" type="text" name="username" value="{$username|escape}" class="{jquery_validation required='This field is required'}"/>
@@ -47,7 +38,16 @@
       <br class="clear"/>
       <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
       <br class="clear"/>
-      <input class="button buttonFinna" type="submit" name="loginSubmit" value="{translate text='Login'}"/>
+    {if $loginTargets}
+      <select id="login_target" name="login_target" class="{jquery_validation required='Please choose a library'}">
+        <option value="">{translate text="Choose library"}</option>
+      {foreach from=$loginTargets item=target}
+        <option value="{$target}"{if $target == $defaultLoginTarget} selected="selected"{/if}>{translate text=$target prefix='source_'}</option>
+      {/foreach}
+      </select>
+      <br class="clear"/>
+    {/if}
+      <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Login'}"/>
       {if $followup}<input type="hidden" name="followup" value="{$followup}"/>{/if}
       {if $followupModule}<input type="hidden" name="followupModule" value="{$followupModule}"/>{/if}
       {if $followupAction}<input type="hidden" name="followupAction" value="{$followupAction}"/>{/if}
@@ -134,9 +134,4 @@
 </div>
 {/if}
 
-{literal}
-<script type="text/javascript">
-  registerAjaxLogin();
-</script>
-{/literal}
 <!-- END of: MyResearch/login.tpl -->

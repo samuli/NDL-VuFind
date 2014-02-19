@@ -44,7 +44,6 @@ class JSON extends Action
     const STATUS_OK = 'OK';                  // good
     const STATUS_ERROR = 'ERROR';            // bad
     const STATUS_NEED_AUTH = 'NEED_AUTH';    // must login first
-    const STATUS_CONNECTED = 'CONNECTED';    // connected accounts found
 
     /**
      * Constructor.
@@ -127,24 +126,7 @@ class JSON extends Action
         if (PEAR::isError($user)) {
             return $this->output(translate($user->getMessage()), JSON::STATUS_ERROR);
         }
-
-        if ($user->connectedAccounts) {
-          return $this->output($user->connectedAccounts, JSON::STATUS_CONNECTED);
-        }
         
-        return $this->output(true, JSON::STATUS_OK);
-    }
-
-    public function logout()
-    {
-        if (!isset($_SESSION)) {
-            session_start();
-        }
-
-        session_unset();
-        session_regenerate_id(true);
-
-
         return $this->output(true, JSON::STATUS_OK);
     }
 
