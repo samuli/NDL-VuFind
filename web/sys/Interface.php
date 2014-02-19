@@ -457,7 +457,7 @@ class UInterface extends Smarty
                         ? $configArray['Site']['defaultLoggedInModule'] : 'MyResearch';
                     $myRes .= '/Home';
                 } else if ($module == 'MyResearch' && $action == 'SaveSearch') {
-                    $myRes = $module . '/' . $action . '?save=' . $_GET['save'];                    
+                    $myRes = $module . '/' . $action . '?save=' . $_GET['save'];
                 } else {
                     $myRes = $module . '/' . $action;
                 }
@@ -472,10 +472,17 @@ class UInterface extends Smarty
                             && isset($_REQUEST['followupId'])
                             && $_REQUEST['followupAction'] == 'Save'
                         ) {
-                            $myRes = $_REQUEST['followupModule'] 
-                                . '/' . $_REQUEST['followupId'] 
-                                . '/' . $_REQUEST['followupAction']
-                                . '?submit';
+                            if ($_REQUEST['followupModule'] != 'PCI') {
+                                $myRes = $_REQUEST['followupModule']
+                                    . '/' . $_REQUEST['followupId'] 
+                                    . '/' . $_REQUEST['followupAction']
+                                    . '?submit';
+                            } else {
+                                $myRes = $_REQUEST['followupModule'] 
+                                    . '/' . $_REQUEST['followupAction']   
+                                    . '?submit'   
+                                    . '&id=' . $_REQUEST['followupId'];
+                            }                            
                         }                        
                     } else {
                         $myRes .= '/Home';

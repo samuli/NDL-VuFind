@@ -798,6 +798,27 @@ class MarcRecord extends IndexRecord
         // Show holdings tab by default
         return true;
     }
+    
+    /**
+     * Check if an datasource has patron functions in order to show or hide the patron login
+     *
+     * @return bool
+     * @access public
+     */   
+    public function hasPatronFunctions()
+    {
+        global $configArray;
+        $details = $this->getInstitutionDetails();
+        $datasource = $details['datasource'];
+        $datasourceConfig = getExtraConfigArray('datasources');
+        if (isset($datasourceConfig[$datasource]['disablePatronFunctions']) 
+            && $datasourceConfig[$datasource]['disablePatronFunctions'])
+        {
+            return false;
+        }
+        return true;
+    }
+    
 
     /**
      * Get Status/Holdings Information from the Marc Record (support method used by
