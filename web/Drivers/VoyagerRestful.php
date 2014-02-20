@@ -160,7 +160,7 @@ class VoyagerRestful extends Voyager
     /**
      * Support method for VuFind Hold Logic. Takes an item type id
      * and determines whether or not an item is borrowable based on the
-     * non_borrowable settings in configuration file
+     * borrowable and non_borrowable settings in configuration file
      *
      * @param string $itemTypeID The item type id to analyze.
      *
@@ -169,15 +169,20 @@ class VoyagerRestful extends Voyager
      */
     protected function isBorrowable($itemTypeID)
     {
-        $is_borrowable = true;
+        if (isset($this->config['Holds']['borrowable'])) {
+            $borrow = explode(":", $this->config['Holds']['borrowable']);
+            if (!in_array($itemTypeID, $borrow)) {
+                return false;
+            }
+        }
         if (isset($this->config['Holds']['non_borrowable'])) {
             $non_borrow = explode(":", $this->config['Holds']['non_borrowable']);
             if (in_array($itemTypeID, $non_borrow)) {
-                $is_borrowable = false;
+                return false;
             }
         }
 
-        return $is_borrowable;
+        return true;
     }
 
     /**
