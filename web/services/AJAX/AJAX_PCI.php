@@ -134,7 +134,7 @@ class AJAX_PCI extends Action
                 $summary['resultTotal'] : $pageLimit;
 
             // Display Listing of Results
-            $interface->assign('more', $searchObject->renderSearchUrl() . '&dualResults=0');
+            $interface->assign('more', $searchObject->renderSearchUrl());
         }
 
         // 'Finish' the search... complete timers and log search history.

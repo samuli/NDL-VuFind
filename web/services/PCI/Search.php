@@ -66,7 +66,6 @@ class Search extends Base
         $interface->assign('searchType', $this->searchObject->getSearchType());
         
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
-        $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
         // Search PCI
         $result = $this->searchObject->processSearch(false, true);
