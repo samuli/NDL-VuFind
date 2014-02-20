@@ -2210,11 +2210,28 @@ EOT;
         $patron = $details['patron'];
         $level = isset($details['level']) && !empty($details['level'])
             ? $details['level'] : 'copy';
+        $pickUpLocation = !empty($details['pickUpLocation'])
+            ? $details['pickUpLocation'] : false;
         $itemId = isset($details['item_id']) ? $details['item_id'] : false;
         $mfhdId = isset($details['mfhd_id']) ? $details['mfhd_id'] : false;
         $comment = $details['comment'];
         $bibId = $details['id'];
 
+        // Make Sure Pick Up Library is Valid
+        if ($pickUpLocation !== false) {
+            $pickUpValid = false;
+            $pickUpLibs = $this->getPickUpLocations($patron, $holdDetails);
+            foreach ($pickUpLibs as $location) {
+                if ($location['locationID'] == $pickUpLocation) {
+                    $pickUpValid = true;
+                }
+            }
+            if (!$pickUpValid) {
+                // Invalid Pick Up Point
+                return $this->holdError("call_slip_invalid_pickup");
+            }
+        }
+        
         // Attempt Request
         $hierarchy = array();
 
@@ -2243,13 +2260,21 @@ EOT;
                 'dbkey' => $this->ws_dbKey,
                 'mfhdId' => $mfhdId 
             );
+            if ($pickUpLocation !== false) {
+                $xml['call-slip-title-parameters']['pickup-location'] 
+                    = $pickUpLocation;
+            }
         } else {
             $xml['call-slip-parameters'] = array(
                 'comment' => $comment,
                 'dbkey' => $this->ws_dbKey,
             );
+            if ($pickUpLocation !== false) {
+                $xml['call-slip-parameters']['pickup-location']
+                    = $pickUpLocation;
+            }
         }
-        
+
         // Generate XML
         $requestXML = $this->buildBasicXML($xml);
 

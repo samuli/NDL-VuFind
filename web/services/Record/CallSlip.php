@@ -119,6 +119,13 @@ class CallSlip extends Record
 
                     $interface->assign('gatheredDetails', $this->gatheredDetails);
 
+                    // Get List of PickUp Libraries
+                    $libs = $this->catalog->getPickUpLocations(
+                        $patron, $this->gatheredDetails
+                    );
+                    $interface->assign('pickup', $libs);
+                    $interface->assign('home_library', $user->home_library);
+                    
                     $extraFields = isset($this->checkCallSlips['extraFields'])
                         ? explode(":", $this->checkCallSlips['extraFields'])
                             : array();
