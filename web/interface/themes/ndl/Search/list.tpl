@@ -55,15 +55,15 @@
       </div>
 {* Replaced by tabbed navigation
       <div class="headerRight">
-        <a class="button buttonFinna" href="{$searchWithFilters|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}&dualResults=1">{translate text="All Results"}</a>
-        <a class="button buttonFinna buttonSelected" href="{$searchWithFilters|escape}&dualResults=0">{translate text="Books etc."}</a>
-        <a class="button buttonFinna" href="{$searchWithoutFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}&dualResults=0">{translate text="Articles, e-Books etc."}</a>
+        <a class="button buttonFinna" href="{$smarty.server.REQUEST_URI|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">{translate text="All Results"}</a>
+        <a class="button buttonFinna buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="Books etc."}</a>
+        <a class="button buttonFinna" href="{$searchWithoutFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">{translate text="Articles, e-Books etc."}</a>
       </div>
 *}
       {/if}
     </div> {* content *}
   </div> {* resultTerms *}
-  
+
   <div class="resultRecommendations">
     <div class="content">
       <div class="grid_24">
@@ -110,8 +110,8 @@
             <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
           </form>
         </div>
-          
-        <div class="resultOptionLimit"> 
+
+        <div class="resultOptionLimit">
           {if $limitList|@count gt 1}
             <form action="{$path}/Search/LimitResults" method="post">
               <label for="limit">{translate text='Results per page'}</label>
@@ -154,11 +154,11 @@
     {/if}
   </div>
 </div>
-          
+
 {include file="Search/paging.tpl" position="Bottom"}
 {include file="Search/result-search-tools.tpl"}
   {* End Main Listing *}
-   
+
 <div class="clear"></div>
 
 {literal}
