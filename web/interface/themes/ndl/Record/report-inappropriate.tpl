@@ -24,6 +24,6 @@
     $(function() {
         registerAjaxInappropriateComment();
     });
-</script
+</script>
 {/literal}
 <!-- END of: Feedback/reportinappropriate.tpl -->
