@@ -37,33 +37,33 @@
         {if $dualResultsEnabled && $searchType != 'advanced'} {* Check not in advanced results *}
         <li class="active ui-state-default ui-corner-top{if $module=='Search' && $pageTemplate=='list-dual.tpl'} ui-tabs-selected ui-state-active{/if}">
           {if $module=="MetaLib"}
-          <a id="allResultsTab" href="{$searchWithoutFilters|escape|replace:"/MetaLib/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}&dualResults=1">
+          <a id="allResultsTab" href="{$searchWithoutFilters|escape|replace:"/MetaLib/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="}">
           {elseif $module=="PCI"}
-          <a id="allResultsTab" href="{$searchWithFilters|escape|replace:"/PCI/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}&dualResults=1">
+          <a id="allResultsTab" href="{$searchWithFilters|escape|replace:"/PCI/Search":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}">
           {else}
-          <a id="allResultsTab" href="{$searchWithFilters|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}&dualResults=1">
+          <a id="allResultsTab" href="{$searchWithFilters|escape|replace:"/Search/Results":"/Search/DualResults"|replace:"prefilter=":"prefiltered="|replace:"view=grid":"view=list"|regex_replace:"/(&amp;)?limit=[0-9]*/":""}">
           {/if}
           {translate text="Local and Primo"}</a>
         </li>
         {/if}
-        
+
         {* Tab: Solr *}
         <li class="active ui-state-default ui-corner-top{if $module=='Search' && $pageTemplate!='list-dual.tpl'} ui-tabs-selected ui-state-active{/if}">
           {if $module=="MetaLib"}
-          <a id="booksTab" href="{$searchWithoutFilters|escape|replace:"/MetaLib/Search":"/Search/Results"}{if $dualResultsEnabled}&dualResults=0{/if}">
+          <a id="booksTab" href="{$searchWithoutFilters|escape|replace:"/MetaLib/Search":"/Search/Results"}">
           {else}
-          <a id="booksTab" href="{$more|replace:"&dualResults=0":""}{$searchWithFilters|escape|replace:"/PCI/Search":"/Search/Results"|replace:"prefilter=":"prefiltered="}{if $dualResultsEnabled}&dualResults=0{/if}">
+          <a id="booksTab" href="{$more}{$searchWithFilters|escape|replace:"/PCI/Search":"/Search/Results"|replace:"prefilter=":"prefiltered="}">
           {/if}
           {translate text="Local Records"}</a>
         </li>
 
         {* Tab: PCI *}
         {if $pciEnabled && $searchType != 'advanced'}
-        <li class="active ui-state-default ui-corner-top{if $module=='PCI' && $pageTemplate!='list-dual.tpl'} ui-tabs-selected ui-state-active{/if}"> 
+        <li class="active ui-state-default ui-corner-top{if $module=='PCI' && $pageTemplate!='list-dual.tpl'} ui-tabs-selected ui-state-active{/if}">
           {if $module=="MetaLib"}
-          <a id="articlesTab" href="{$searchWithoutFilters|escape|replace:"/MetaLib/Search":"/PCI/Search"|replace:"prefilter=":"prefiltered="}{if $dualResultsEnabled}&dualResults=0{/if}">
+          <a id="articlesTab" href="{$searchWithoutFilters|escape|replace:"/MetaLib/Search":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">
           {else}
-          <a id="articlesTab" href="{$pci_more|replace:"&dualResults=0":""}{$searchWithFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"/Search/DualResults":"/PCI/Search"|replace:"prefilter=":"prefiltered="}{if $dualResultsEnabled}&dualResults=0{/if}">
+          <a id="articlesTab" href="{$pci_more}{$searchWithFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"/Search/DualResults":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">
           {/if}
           Primo Central</a>
         </li>
@@ -81,7 +81,7 @@
         {/if}
 
       {/if}
-      
+
       </ul>
     </div>
   </div>

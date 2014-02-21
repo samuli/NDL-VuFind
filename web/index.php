@@ -158,31 +158,8 @@ if ($module == 'Content' && !is_readable("services/$module/$action.php")) {
     $action = 'Home';
 }
 
-// If 'dualResults' -variable is defined in the URL, store the value to a session variable, 
-// remove from the URL and redirect
-if ($module == 'Search' && isset($_GET['dualResults'])) {
-    $_SESSION['dualResults'] = (int)$_GET['dualResults'] == 1;
-    $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
-    $paramsNew = array();
-    foreach($params as $param) {
-        $var = explode('=', $param);
-        if (trim($var[0]) != 'dualResults') {
-            $paramsNew[] = $param;        
-        }
-    }
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $url = "{$configArray['Site']['url']}/{$module}/{$action}?" . implode('&', array_unique($paramsNew));
-    header("Location: $url");
-    return;    
-}
-
-$dualResultsEnabled = isset($configArray['Site']['dualResultsEnabled']) && $configArray['Site']['dualResultsEnabled'];
-$getActionFromSession = 
-    $dualResultsEnabled &&
-    ($module == 'Search' && in_array($action, array('Results', 'DualResults')));
-
 // Process prefilter redirection
-if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
+if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI')) 
     && isset($_REQUEST['prefilter'])
 ) {
     $prefilters = getExtraConfigArray('prefilters');
@@ -190,7 +167,7 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
         $prefilter = $prefilters[$_REQUEST['prefilter']];
         if (($prefilter && $_REQUEST['prefilter'] != '-') 
             || $prefilter['module'] != $module || $prefilter['action'] != $action
-            ) {
+        ) {
             $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
             foreach ($params as &$paramValue) {
                 $paramValue = preg_replace('/^prefilter=/', 'prefiltered=', $paramValue);
@@ -212,34 +189,11 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
                 $url = '../' . $prefilter['module'] . '/';
             }
             $url .= $prefilter['action'] . '?' . implode('&', array_unique($params));
-
-            if ($getActionFromSession) {
-                if ($_REQUEST['prefilter'] != '-' || !isset($_SESSION['dualResults'])) {
-                    // update stored value of 'dualResults' with prefilter action 
-                    $_SESSION['dualResults'] = (int)($prefilter['action'] === 'DualResults');
-                }
-            }
-
             header("Location: $url");
             return;
         }
     }
 }
- 
-if ($getActionFromSession && isset($_SESSION['dualResults'])) {
-    $sessionAction = $_SESSION['dualResults'] == 1 ? 'DualResults' : 'Results';
-    
-    if ($sessionAction != $action) {
-        // override default prefilter results action with session value
-        
-        $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
-        $url = $sessionAction . '?' . implode('&', array_unique($params));
-
-        header("Location: $url");
-        return;
-    }
-}
-                                                        
 
 // Process Authentication
 $shibbolethEnabled = isset($configArray['Authentication']['shibboleth']) && $configArray['Authentication']['shibboleth'];
