@@ -57,9 +57,6 @@
     
     #searchFormHeader #searchFormContainer {
         padding: 10px 0;
-    }
-/*
-    #searchFormHeader #searchFormContainer.noDual {
         margin-bottom: 3em;
     }
 
@@ -67,12 +64,16 @@
     	  margin-top: 0.5em;
 	    top: 62px;
     }
-    .advancedLinkWrapper.noDual {
+    .advancedLinkWrapper.dual {
+	    top: 56px;
+      left: 70%;
+    }
+    .advancedLinkWrapper.no-dual {
     	  margin-top: 0;
       left: 31%;
 	    top: 62px;
     }
-*/
+
     #headerTop .grid_8 {
         width: 260px;
     }

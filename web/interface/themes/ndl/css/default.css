@@ -1088,14 +1088,20 @@ body > .ui-widget .button {
 	  float: right;
 	  margin-top: 0.5em;
 }
-/*
-.advancedLinkWrapper.noDual {
+
+.advancedLinkWrapper.dual {
+	  position: absolute;
+	  left: 68%;
+	  top: 5px;
+}
+
+.advancedLinkWrapper.no-dual {
     margin-top: 0;
 	  position: absolute;
 	  left: 68%;
 	  top: 11px;	
 }
-*/
+
 .advancedLinkWrapper a {
     display: inline-block;
 	  color: #FFFFFF;

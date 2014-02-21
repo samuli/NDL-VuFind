@@ -22,11 +22,11 @@
 	      <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
 	    </div>
 	  </div>
-{*
-    <div class="advancedLinkWrapper{if !$dualResultsEnabled} noDual{/if}{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+
+    <div class="advancedLinkWrapper {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
       <a href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
     </div>
-*}    
+    
       {* Do we have any checkbox filters? *}
       {assign var="hasCheckboxFilters" value="0"}
       {if isset($checkboxFilters) && count($checkboxFilters) > 0}

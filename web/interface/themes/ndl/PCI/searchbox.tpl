@@ -15,16 +15,16 @@
 	      <div class="clear"></div>
 	    </div>
 	  </div>
-{*
-    <div class="advancedLinkWrapper{if $dualResultsEnabled} noDual{/if}{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+
+    <div class="advancedLinkWrapper {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
 	    <a href="{$path}/PCI/Advanced" class="small advancedLink">{translate text="Advanced PCI Search"}</a>
     </div>
-*}
+
     <div class="searchFormOuterWrapper">
 	    <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
-
+{*
 	      <a href="{$path}/PCI/Advanced" class="small advancedLink">{translate text="Advanced PCI Search"}</a>
-
+*}
 {* Advanced MetaLib and Advanced Local Search commented out for now
 	  {if $metalibEnabled}
 	      <a href="{$path}/MetaLib/Home" class="small metalibLink">{translate text="MetaLib Search"}</a>

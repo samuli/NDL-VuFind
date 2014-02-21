@@ -24,11 +24,11 @@
 	      <div class="clear"></div>
 	    </div>
     </div>
-{*
-    <div class="advancedLinkWrapper{if !$dualResultsEnabled} noDual{/if}{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+
+    <div class="advancedLinkWrapper {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
       <a href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
     </div>
-*}
+
     
   {* Do we have any checkbox filters? *}
   {assign var="hasCheckboxFilters" value="0"}
@@ -72,7 +72,9 @@
 
     <div class="searchFormOuterWrapper">
       <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+{*
         <a href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
+*}
       {if $pciEnabled}
         {if $dualResultsEnabled}
 {* Advanced PCI and Advanced MetaLib commented out for now
