@@ -48,7 +48,7 @@ Other features that require the handling of user information (e.g., browsing bor
 Finna accounts created using a library card or a Mozilla Persona or Haka username are separate from each other even if they have the same numerical identifier.
 </p>
 <p>
-A personal data file description has been prepared for handling user information: <a href="{$url}/Content/register_details">Register details</a>
+A personal data file description has been prepared for handling user information: <a href="{/literal}{$url}{literal}/Content/register_details">Register details</a>
 </p>
 <br/>
 <h3>Terms and conditions</h3>
