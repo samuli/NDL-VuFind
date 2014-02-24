@@ -46,7 +46,7 @@ Muissa käyttäjän tietoja käsittelevissä toiminnoissa, kuten lainojen, varau
 Kirjastokortti-, Mozilla Persona- ja Haka-tunnuksia käyttäen luodut Finna-tilit ovat toisistaan erillisiä, vaikka niihin sisältyisi sama yksilöivä tunniste.
 </p>
 <p>
-Käyttäjätietojen käsittelystä on laadittu rekisteriseloste: <a href="{$url}/Content/register_details">Rekisteriseloste</a>
+Käyttäjätietojen käsittelystä on laadittu rekisteriseloste: <a href="{/literal}{$url}{literal}/Content/register_details">Rekisteriseloste</a>
 </p>
 <br/>
 <h3>Käyttöehdot</h3>
