@@ -1117,6 +1117,13 @@ body > .ui-widget .button {
 	  margin-left: 20px;
 }
 
+.advancedLinkWrapper a.show480mobile {
+    display: none;
+}
+.advancedLinkWrapper.hide480mobile {
+    display: inherit;
+}
+
 .keepFilters {
     display: none;
     clear: none;

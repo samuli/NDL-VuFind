@@ -68,10 +68,17 @@
 	    top: 56px;
       left: 70%;
     }
+/*
     .advancedLinkWrapper.no-dual {
-    	  margin-top: 0;
-      left: 31%;
-	    top: 62px;
+      display: none;
+    }
+*/
+    .advancedLinkWrapper a.show480mobile {
+        display: inline-block;
+    }
+
+    .advancedLinkWrapper.hide480mobile {
+        display: none;
     }
 
     #headerTop .grid_8 {
