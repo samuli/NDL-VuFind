@@ -31,7 +31,7 @@
 	      <div class="correction grid_24">
 	        {translate text="spell_suggest"}:
 	        {foreach from=$spellingSuggestions item=details key=term name=termLoop}
-	          <span class="correctionTerms">{foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|replace:"/Search/Results":"/Search/DualResults"|escape}">{$word|escape}</a>{if $data.expand_url} <a class="expandSearch" title="{translate text="spell_expand_alt"}" {* alt="{translate text="spell_expand_alt"}" NOT VALID ATTRIBUTE *} href="{$data.expand_url|replace:"/Search/":"/Resource/"|escape}"></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}
+	          <span class="correctionTerms">{foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|replace:"/Search/Results":"/Search/DualResults"|escape}">{$word|escape}</a>{if $data.expand_url} <a class="expandSearch" title="{translate text="spell_expand_alt"}" {* alt="{translate text="spell_expand_alt"}" NOT VALID ATTRIBUTE *} href="{$data.expand_url|replace:"/Search/Results":"/Search/DualResults"|escape}"></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}
 	          </span>
 	        {/foreach}
 	      </div>
@@ -40,7 +40,7 @@
       </div>
 {* Replaced by tabbed navigation
       <div class="headerRight">
-        <a class="button buttonFinna buttonSelected" href="{$searchWithFilters|escape}">{translate text="All Results"}</a>
+        <a class="button buttonFinna buttonSelected" href="{$smarty.server.REQUEST_URI|escape}">{translate text="All Results"}</a>
         <a class="button buttonFinna" href="{$more}">{translate text="Books etc."}</a>
         <a class="button buttonFinna" href="{$pci_more}">{translate text="Articles, e-Books etc."}</a>
       </div>

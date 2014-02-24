@@ -158,31 +158,30 @@ if ($module == 'Content' && !is_readable("services/$module/$action.php")) {
     $action = 'Home';
 }
 
-// If 'dualResults' -variable is defined in the URL, store the value to a session variable, 
-// remove from the URL and redirect
-if ($module == 'Search' && isset($_GET['dualResults'])) {
-    $_SESSION['dualResults'] = (int)$_GET['dualResults'] == 1;
-    $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
-    $paramsNew = array();
-    foreach($params as $param) {
-        $var = explode('=', $param);
-        if (trim($var[0]) != 'dualResults') {
-            $paramsNew[] = $param;        
+// If default prefilter is in use, remember result type (split, local, PCI) 
+// by resolving module & action from HTTP referer.
+$overridePrefilter = false;
+
+if (in_array($module, array('Search', 'PCI'))
+    && ((isset($_REQUEST['prefilter']) && $_REQUEST['prefilter'] == '-'))
+) {
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $parts = parse_url($_SERVER['HTTP_REFERER']);
+        $pathParts = explode('/', $parts['path']);
+        
+        $refAction = array_pop($pathParts);
+        $refModule = array_pop($pathParts);   
+
+        if (in_array($refModule, array('Search', 'PCI')) 
+            && in_array($refAction, array('Results', 'DualResults', 'Search'))
+        ) {
+            $overridePrefilter = true;
         }
-    }
-    $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $url = "{$configArray['Site']['url']}/{$module}/{$action}?" . implode('&', array_unique($paramsNew));
-    header("Location: $url");
-    return;    
+    } 
 }
 
-$dualResultsEnabled = isset($configArray['Site']['dualResultsEnabled']) && $configArray['Site']['dualResultsEnabled'];
-$getActionFromSession = 
-    $dualResultsEnabled &&
-    ($module == 'Search' && in_array($action, array('Results', 'DualResults')));
-
 // Process prefilter redirection
-if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
+if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI')) 
     && isset($_REQUEST['prefilter'])
 ) {
     $prefilters = getExtraConfigArray('prefilters');
@@ -190,7 +189,8 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
         $prefilter = $prefilters[$_REQUEST['prefilter']];
         if (($prefilter && $_REQUEST['prefilter'] != '-') 
             || $prefilter['module'] != $module || $prefilter['action'] != $action
-            ) {
+            || $overridePrefilter
+        ) {
             $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
             foreach ($params as &$paramValue) {
                 $paramValue = preg_replace('/^prefilter=/', 'prefiltered=', $paramValue);
@@ -207,39 +207,24 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
                     $params[] = "$key=" . urlencode($value);
                 }
             }
+            
             $url = '';
-            if ($prefilter['module'] != $module) {
-                $url = '../' . $prefilter['module'] . '/';
-            }
-            $url .= $prefilter['action'] . '?' . implode('&', array_unique($params));
-
-            if ($getActionFromSession) {
-                if ($_REQUEST['prefilter'] != '-' || !isset($_SESSION['dualResults'])) {
-                    // update stored value of 'dualResults' with prefilter action 
-                    $_SESSION['dualResults'] = (int)($prefilter['action'] === 'DualResults');
+            if ($overridePrefilter) {
+                // Remember result type
+                $url = "../$refModule/$refAction";                
+            } else {
+                if ($prefilter['module'] != $module) {
+                    $url = '../' . $prefilter['module'] . '/';
                 }
+                $url .= $prefilter['action'];
             }
+            $url .= '?' . implode('&', array_unique($params));
 
             header("Location: $url");
             return;
         }
     }
 }
- 
-if ($getActionFromSession && isset($_SESSION['dualResults'])) {
-    $sessionAction = $_SESSION['dualResults'] == 1 ? 'DualResults' : 'Results';
-    
-    if ($sessionAction != $action) {
-        // override default prefilter results action with session value
-        
-        $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
-        $url = $sessionAction . '?' . implode('&', array_unique($params));
-
-        header("Location: $url");
-        return;
-    }
-}
-                                                        
 
 // Process Authentication
 $shibbolethEnabled = isset($configArray['Authentication']['shibboleth']) && $configArray['Authentication']['shibboleth'];

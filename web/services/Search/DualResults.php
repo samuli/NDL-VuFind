@@ -110,8 +110,8 @@ class DualResults extends Action
         
         // Setup Display
         $interface->assign('sitepath', $configArray['Site']['path']);
-        $interface->assign('more', $searchObject->renderSearchUrl() . '&dualResults=0');
-        $interface->assign('pci_more', str_replace('/Search/Results', '/PCI/Search', $searchObject->renderSearchUrl()) . '&dualResults=0');
+        $interface->assign('more', $searchObject->renderSearchUrl());
+        $interface->assign('pci_more', str_replace('/Search/Results', '/PCI/Search', $searchObject->renderSearchUrl()));
         
         if ($searchObject->getResultTotal() > 0) {
             // Assign interface variables

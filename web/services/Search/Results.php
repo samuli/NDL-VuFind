@@ -74,7 +74,7 @@ class Results extends Action
                 $searchObject->addFacetPrefix(array($facet => '0/'));
             }
         }
-                
+
         // Build RSS Feed for Results (if requested)
         if ($searchObject->getView() == 'rss') {
             // Throw the XML to screen
@@ -128,7 +128,7 @@ class Results extends Action
         $interface->assign('searchType', $searchObject->getSearchType());
         // Will assign null for an advanced search
         $interface->assign('searchIndex', $searchObject->getSearchIndex());
-        
+
         $interface->assign('sortList',   $searchObject->getSortList());
         $interface->assign('viewList',   $searchObject->getViewList());
         $interface->assign('rssLink',    $searchObject->getRSSUrl());
@@ -150,7 +150,7 @@ class Results extends Action
         $interface->assign(
             'orFilters', $searchObject->getOrFilters()
         );
-        
+
         // Whether RSI is enabled
         if (isset($configArray['OpenURL']['use_rsi']) && $configArray['OpenURL']['use_rsi']) {
             $interface->assign('rsi', true);
@@ -160,7 +160,7 @@ class Results extends Action
         if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
             $interface->assign('openUrlAutoCheck', true);
         }
-        
+
         // If no record found
         if ($searchObject->getResultTotal() < 1) {
             $interface->setTemplate('list-none.tpl');
@@ -245,7 +245,6 @@ class Results extends Action
         $interface->assign('savedSearch', $searchObject->isSavedSearch());
         $interface->assign('searchId',    $searchObject->getSearchId());
 
-
         // Save the URL of this search to the session so we can return to it easily:
         $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
         // Save the display query too, so we can use it e.g. in the breadcrumbs
@@ -253,7 +252,7 @@ class Results extends Action
         // Also save the search ID and type so user can edit the advanced search
         $_SESSION['lastSearchID'] =  $searchObject->getSearchID();
         $_SESSION['searchType'] = $searchObject->getSearchType();
-        
+
         // initialize the search result scroller for this search
         $scroller = new ResultScroller();
         $scroller->init($searchObject, $result);
