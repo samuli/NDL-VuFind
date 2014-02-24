@@ -51,7 +51,7 @@ Finnakonton som skapas med bibliotekskorts-, Mozilla Persona- och Haka-koder är
 Det finns en registerbeskrivning för hanteringen av användaruppgifter: 
 </p>
 <p>
-Det finns en registerbeskrivning för hanteringen av användaruppgifter: <a href="{$url}/Content/register_details">Registerbeskrivning</a>
+Det finns en registerbeskrivning för hanteringen av användaruppgifter: <a href="{/literal}{$url}{literal}/Content/register_details">Registerbeskrivning</a>
 </p>
 <br/>
 <h3>Användarvillkor</h3>
