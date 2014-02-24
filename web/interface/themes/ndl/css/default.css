@@ -701,10 +701,6 @@ div.sidegroup {
     top: 6px;
 }
 
-.module-MetaLib .searchbox .overLabelWrapper {
-    left:120px;
-}
-
 #searchFormLabel {
     color: #999999;
     cursor:text;
@@ -726,9 +722,6 @@ div.sidegroup {
 .searchformPCI #searchForm_input {
     width: 510px;
 }
-.searchformMetaLib #searchForm_input {
-    width: 235px;
-}
 a.clear_input {
 	  margin-right: -30px;
     text-indent:-9999px;
@@ -746,12 +739,6 @@ a.clear_input:hover {
     right: 82px;
 }
 
-.module-MetaLib .searchbox .searchFormWrapper {
-    background:url(../images/nelli-logo.png) no-repeat 7px 5px #FFFFFF;
-}
-.module-MetaLib .searchbox #searchForm_input {
-    background:transparent;
-}
 /*** Header info button ***/
 
 .headerInfoBox {
