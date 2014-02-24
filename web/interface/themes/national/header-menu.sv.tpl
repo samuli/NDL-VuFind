@@ -2,26 +2,6 @@
 
 <li class="menuHome"><a href="{$path}/" role="menuitem"><span>{translate text='Home page'}</span></a></li>
 
-<li class="menuAbout menuAbout_{$userLang}">
-  <dl class="dropdown dropdownStatic stylingDone">
-    <dt><a href="#">{translate text='navigation_about'}</a></dt>
-    <dd>
-      <ul class="subNav" role="menu">
-        <li><a class="big" href="#">
-          <span>{translate text="About Finna"}</span>
-          <span>{translate text="about_finna_desc"}</span>
-          <span class="value">{$path}/Content/about</span></a>
-        </li>
-        <li><a class="big" href="#">
-          <span>{translate text="Organisations"}</span>
-          <span>{translate text="organisations_desc"}</span>
-          <span class="value">{$path}/Content/Organisations</span></a>
-        </li>
-      </ul>
-    </dd>
-  </dl>
-</li>
-
 <li class="menuSearch menuSearch_{$userLang}">
   <dl class="dropdown dropdownStatic stylingDone">
     <dt><a href="#">{translate text='navigation_search'}</a></dt>
@@ -63,6 +43,10 @@
     </dd>
   </dl>
 </li>
+
+<li class="menuAbout menuAbout_{$userLang}"><a href="{$path}/Content/Organisations" role="menuitem">{translate text="Organisations"}</a></li>
+
+<li class="menuAbout menuAbout_{$userLang}"><a href="{$path}/Content/about" role="menuitem"><span>{translate text="About Finna"}</span></a></li>
 
 <li class="menuHelp menuHelp_{$userLang}"><a href="{$path}/Content/searchhelp" role="menuitem"><span>{translate text='navigation_search_tips'}</span></a></li>
 

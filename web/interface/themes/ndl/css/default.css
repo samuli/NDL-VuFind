@@ -364,15 +364,14 @@ div.sidegroup {
     left:0;
     padding-top:25px;
 }
-
+#headerMenu > li {
+    position:relative;
+    height: 20px;
+}
 .menuLogin, .menuLibCard {
     padding-left: 17px;
     border-left: 2px solid #fff;
     height: 20px;
-}
-
-#headerMenu > li {
-    position:relative;
 }
 
 #headerMenu ul.subNav {
