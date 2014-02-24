@@ -974,10 +974,10 @@ class MultiBackend implements DriverInterface
         if (isset($this->config[$source])) {
             // Try a local version first
             $driver = $this->config[$source]['driver'] . "Local_$source";
-            if (!is_readable("Drivers/{$driver}.php")) {
+            if (!is_readable(realpath("Drivers/{$driver}.php"))) {
                 $driver = $this->config[$source]['driver'] . "Local";
             }
-            if (!is_readable("Drivers/{$driver}.php")) {
+            if (!is_readable(realpath("Drivers/{$driver}.php"))) {
                 $driver = $this->config[$source]['driver'];
             }
             try {
