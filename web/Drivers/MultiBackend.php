@@ -965,6 +965,8 @@ class MultiBackend implements DriverInterface
      */
     protected function getDriver($source)
     {
+        global $configArray;
+        
         $source = strtolower($source);
         
         if (isset($this->driverCache[$source])) {
@@ -974,14 +976,17 @@ class MultiBackend implements DriverInterface
         if (isset($this->config[$source])) {
             // Try a local version first
             $driver = $this->config[$source]['driver'] . "Local_$source";
-            if (!is_readable(realpath("Drivers/{$driver}.php"))) {
+            $path = "{$configArray['Site']['local']}/Drivers/{$driver}.php";
+            if (!is_readable($path)) {
                 $driver = $this->config[$source]['driver'] . "Local";
+                $path = "{$configArray['Site']['local']}/Drivers/{$driver}.php";
             }
-            if (!is_readable(realpath("Drivers/{$driver}.php"))) {
+            if (!is_readable($path)) {
                 $driver = $this->config[$source]['driver'];
+                $path = "{$configArray['Site']['local']}/Drivers/{$driver}.php";
             }
             try {
-                include_once "{$driver}.php";
+                include_once $path;
                 $driver = new $driver($this->config[$source]['driver'] . "_{$source}.ini");
                 $this->driverCache[$source] = $driver;
                 return $driver;
