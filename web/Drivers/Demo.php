@@ -43,7 +43,7 @@ require_once 'Interface.php';
 class Demo implements DriverInterface
 {
     // Used when getting random bib ids from solr
-    private $_db;
+    private $_db = null;
     private $_totalRecords;
 
     /**
@@ -119,6 +119,9 @@ class Demo implements DriverInterface
      */
     private function _prepSolr()
     {
+        if (isset($this->_db)) {
+            return;
+        }
         // Create or solr connection
         $this->_db = ConnectionManager::connectToIndex();
 
@@ -135,9 +138,11 @@ class Demo implements DriverInterface
      */
     private function _getRandomBibId()
     {
-        // Let's keep away from both ends of the index
+        // Let's keep away from both ends of the index, but only take any of the
+        // first 500 000 records to avoid slow Solr queries.
+        $position = rand()%(min(array(500000, $this->_totalRecords-1)));
         $result = $this->_db->search(
-            '*:*', null, null, rand()%($this->_totalRecords-1), 1
+            '*:*', null, null, $position, 1
         );
         return $result['response']['docs'][0]['id'];
     }
@@ -401,15 +406,32 @@ class Demo implements DriverInterface
 
             $holdList = array();
             for ($i = 0; $i < $holds; $i++) {
-                $holdList[] = array(
-                    "id"       => $this->_getRandomBibId(),
-                    "location" => $this->_getFakeLoc(false),
-                    "expire"   => date("j-M-y", strtotime("now + 30 days")),
-                    "create"   =>
-                        date("j-M-y", strtotime("now - ".(rand()%10)." days")),
-                    "reqnum"   => sprintf("%06d", $i),
-                    "item_id" => $i
-                );
+                if ($i == 2 || rand()%5 == 1) {
+                    // Mimic an ILL hold
+                    $holdList[] = array(
+                        "id"       => "ill_hold_$i",
+                        "location" => $this->_getFakeLoc(false),
+                        "expire"   => date("j-M-y", strtotime("now + 30 days")),
+                        "create"   =>
+                            date("j-M-y", strtotime("now - ".(rand()%10)." days")),
+                        "reqnum"   => sprintf("%06d", $i),
+                        "item_id"  => $i,
+                        "title"    => "ILL Hold Title $i",
+                        'institution_id' => 'ill_institution',
+                        'institution_name' => 'ILL Library',
+                        'institution_dbkey' => 'ill_institution'
+                    );
+                } else {    
+                    $holdList[] = array(
+                        "id"       => $this->_getRandomBibId(),
+                        "location" => $this->_getFakeLoc(false),
+                        "expire"   => date("j-M-y", strtotime("now + 30 days")),
+                        "create"   =>
+                            date("j-M-y", strtotime("now - ".(rand()%10)." days")),
+                        "reqnum"   => sprintf("%06d", $i),
+                        "item_id" => $i
+                    );
+                }
                 $pos = rand()%5;
                 if ($pos > 1) {
                     $holdList[$i]['position'] = $pos;
@@ -447,21 +469,44 @@ class Demo implements DriverInterface
             $list = array();
             $dateFormat = new VuFindDate();
             for ($i = 0; $i < $callslips; $i++) {
-                $list[] = array(
-                    "id"       => $this->_getRandomBibId(),
-                    "type"     => 'C',
-                    "location" => $this->_getFakeLoc(false),
-                    "expired"   => date("j-M-y", strtotime("now + 30 days")),
-                    "created"   =>
-                        date("j-M-y", strtotime("now - ".(rand()%10)." days")),
-                    "reqnum"   => sprintf("%06d", $i),
-                    "item_id" => $i,
-                    "reqnum" => $i,
-                    "volume" => '',
-                    "processed" => (rand(1, 3) == 3)
-                      ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
-                      : ''
-                );
+                if ($i == 2 || rand()%5 == 1) {
+                    // Mimic an ILL call slip
+                    $list[] = array(
+                        "id"       => "ill_call_slip_$i",
+                        "type"     => 'C',
+                        "location" => $this->_getFakeLoc(false),
+                        "expired"   => date("j-M-y", strtotime("now + 30 days")),
+                        "created"   =>
+                            date("j-M-y", strtotime("now - ".(rand()%10)." days")),
+                        "reqnum"   => sprintf("%06d", $i),
+                        "item_id" => $i,
+                        "reqnum" => $i,
+                        "volume" => '',
+                        "processed" => (rand(1, 3) == 3)
+                          ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
+                          : '',
+                        "title"    => "ILL Call Slip Title $i",
+                        'institution_id' => 'ill_institution',
+                        'institution_name' => 'ILL Library',
+                        'institution_dbkey' => 'ill_institution'
+                    );
+                } else {
+                    $list[] = array(
+                        "id"       => $this->_getRandomBibId(),
+                        "type"     => 'C',
+                        "location" => $this->_getFakeLoc(false),
+                        "expired"   => date("j-M-y", strtotime("now + 30 days")),
+                        "created"   =>
+                            date("j-M-y", strtotime("now - ".(rand()%10)." days")),
+                        "reqnum"   => sprintf("%06d", $i),
+                        "item_id" => $i,
+                        "reqnum" => $i,
+                        "volume" => '',
+                        "processed" => (rand(1, 3) == 3)
+                          ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
+                          : ''
+                    );
+                }
                 $pos = rand()%5;
                 if ($pos > 1) {
                     $list[$i]['position'] = $pos;
@@ -469,7 +514,7 @@ class Demo implements DriverInterface
                     $list[$i]['available'] = true;
                 }
             }
-            $_SESSION['demoData']['callslips'] = $holdList;
+            $_SESSION['demoData']['callslips'] = $list;
         }
         return $_SESSION['demoData']['callslips'];
     }
@@ -523,17 +568,34 @@ class Demo implements DriverInterface
                 $renewalLimit = rand(3, 10);
                 $renewalCount = rand(0, $renewalLimit);
                 
-                $transList[] = array(
-                    'duedate' => $due_date,
-                    'barcode' => sprintf("%08d", rand()%50000),
-                    'renew'   => $renew,
-                    'request' => $req,
-                    "id"      => $this->_getRandomBibId(),
-                    'item_id' => $i,
-                    'renewable' => $renewalCount < $renewalLimit,
-                    'renewalCount' => $renewalCount,
-                    'renewalLimit' => $renewalLimit
-                );
+                if ($i == 2 || rand()%5 == 1) {
+                    // Mimic an ILL loan    
+                    $transList[] = array(
+                        'duedate' => $due_date,
+                        'barcode' => sprintf("%08d", rand()%50000),
+                        'renew'   => $renew,
+                        'request' => $req,
+                        'id'      => "ill_institution_$i",
+                        'item_id' => $i,
+                        'renewable' => $renewalCount < $renewalLimit,
+                        'title'   => "ILL Loan Title $i",
+                        'institution_id' => 'ill_institution',
+                        'institution_name' => 'ILL Library',
+                        'institution_dbkey' => 'ill_institution'
+                    );
+                } else {
+                    $transList[] = array(
+                        'duedate' => $due_date,
+                        'barcode' => sprintf("%08d", rand()%50000),
+                        'renew'   => $renew,
+                        'request' => $req,
+                        "id"      => $this->_getRandomBibId(),
+                        'item_id' => $i,
+                        'renewable' => $renewalCount < $renewalLimit,
+                        'renewalCount' => $renewalCount,
+                        'renewalLimit' => $renewalLimit
+                    );
+                }
             }
             $_SESSION['demoData']['transactions'] = $transList;
         }
