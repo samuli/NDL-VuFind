@@ -547,10 +547,15 @@ class Demo implements DriverInterface
                 // When is it due? +/- up to 15 days
                 $due_relative = rand()%30 - 15;
                 // Due date
+                $dueStatus = false;
                 if ($due_relative >= 0) {
                     $due_date = date("j-M-y", strtotime("now +$due_relative days"));
+                    if ($due_relative == 0) {
+                        $dueStatus = 'due';
+                    }
                 } else {
                     $due_date = date("j-M-y", strtotime("now $due_relative days"));
+                    $dueStatus = 'overdue';
                 }
 
                 // Times renewed    : 0,0,0,0,0,1,2,3,4,5
@@ -572,6 +577,7 @@ class Demo implements DriverInterface
                     // Mimic an ILL loan    
                     $transList[] = array(
                         'duedate' => $due_date,
+                        'dueStatus' => $dueStatus,
                         'barcode' => sprintf("%08d", rand()%50000),
                         'renew'   => $renew,
                         'request' => $req,
@@ -586,6 +592,7 @@ class Demo implements DriverInterface
                 } else {
                     $transList[] = array(
                         'duedate' => $due_date,
+                        'dueStatus' => $dueStatus,
                         'barcode' => sprintf("%08d", rand()%50000),
                         'renew'   => $renew,
                         'request' => $req,
