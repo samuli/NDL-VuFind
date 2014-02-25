@@ -356,7 +356,7 @@ div.sidegroup {
 }
 #headerMenu {
     padding:0;
-    margin: 10px 0 0 5px/*40px 0 0*/;
+    margin: 10px 0 2px 5px;
 }
 #headerMenu ul {
     display:none;
