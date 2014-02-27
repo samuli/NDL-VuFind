@@ -4,14 +4,14 @@
 <div class="resultHeader">
   <div class="resultTerms">
     <div class="content">
-      {if $searchType == 'MetaLibAdvanced'}
+      {*if $searchType == 'MetaLibAdvanced'}
       <div class="advancedOptions grid_24">
         <a href="{$path}/MetaLib/Advanced?edit={$searchId}&set={$searchSet|escape}" class="small">{translate text="Edit this Advanced Search"}</a> |
         <a href="{$path}/MetaLib/Advanced?set={$searchSet|escape}" class="small">{translate text="Start a new Advanced Search"}</a> |
         <a href="{$path}/MetaLib/Home?set={$searchSet|escape}" class="small">{translate text="Start a new Basic Search"}</a>
       </div>
-      {/if}
-      <h3 class="searchTerms grid_24">
+      {/if*}
+      <h3 class="searchTerms grid_18">
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
         {if $searchType == 'MetaLib'}{$lookfor|escape:"html"}
@@ -30,6 +30,20 @@
           <span class="correctionTerms">{foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a class="expandSearch" title="{translate text="spell_expand_alt"}" {* alt="{translate text="spell_expand_alt"}" NOT VALID ATTRIBUTE *} href="{$data.expand_url|escape}"></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}
           </span>
         {/foreach}
+      </div>
+      {/if}
+
+      {if $searchType == 'MetaLibAdvanced'}
+      <div class="advancedOptions grid_6">
+        <p class="advancedEdit">
+          <a href="{$path}/MetaLib/Advanced?edit={$searchId}&set={$searchSet|escape}"{* class="small"*}>{translate text="Edit this Advanced MetaLib Search"}</a>
+        </p>
+        <p class="advancedNewSearch">
+          <a href="{$path}/MetaLib/Advanced?set={$searchSet|escape}"{* class="small"*}>{translate text="Start a new Advanced MetaLib Search"}</a>
+        </p>
+        <p class="advancedBasic">
+          <a href="{$path}/MetaLib/Home?set={$searchSet|escape}"{* class="small"*}>{translate text="Start a new Basic MetaLib Search"}</a>
+        </p>
       </div>
       {/if}
     </div> {* content *}

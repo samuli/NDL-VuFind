@@ -4,18 +4,18 @@
 <div class="resultHeader">
   <div class="resultTerms">
     <div class="content">
-      {if $searchType == 'advanced'}
+      {* if $searchType == 'advanced'}
       <div class="advancedOptions grid_24">
         <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a> |
         <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a> |
         <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
       </div>
-      {/if}
+      {/if *}
       {if $dualResultsEnabled && $searchType != 'advanced'}
       <div class="headerLeft">
         <h2 class="searchTerms grid_12">
       {else}
-      <h2 class="searchTerms grid_24">
+      <h2 class="searchTerms grid_18">
       {/if}
       {if $isEmptySearch}
         {if $searchType == 'advanced'}
@@ -42,7 +42,7 @@
       {if $dualResultsEnabled && $searchType != 'advanced'}
       <div class="correction grid_12">
       {else}
-      <div class="correction grid_24">
+      <div class="correction grid_18">
       {/if}
         {translate text="spell_suggest"}:
         {foreach from=$spellingSuggestions item=details key=term name=termLoop}
@@ -61,6 +61,21 @@
       </div>
 *}
       {/if}
+
+      {if $searchType == 'advanced'}
+      <div class="advancedOptions grid_6">
+        <p class="advancedEdit">
+          <a href="{$path}/Search/Advanced?edit={$searchId}">{translate text="Edit this Advanced Search"}</a>
+        </p>
+        <p class="advancedNewSearch">
+          <a href="{$path}/Search/Advanced">{translate text="Start a new Advanced Search"}</a>
+        </p>
+        <p class="advancedBasic">
+          <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
+        </p>
+      </div>
+      {/if}
+
     </div> {* content *}
   </div> {* resultTerms *}
 
