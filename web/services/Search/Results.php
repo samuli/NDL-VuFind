@@ -182,6 +182,7 @@ class Results extends Action
                 // If it's a parse error or the user specified an invalid field, we
                 // should display an appropriate message:
                 if (stristr($error, 'org.apache.lucene.queryParser.ParseException')
+                    || stristr($error, 'org.apache.solr.search.SyntaxError')
                     || preg_match('/^undefined field/', $error)
                 ) {
                     $interface->assign('parseError', true);
