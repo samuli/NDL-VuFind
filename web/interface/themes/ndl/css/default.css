@@ -356,7 +356,7 @@ div.sidegroup {
 }
 #headerMenu {
     padding:0;
-    margin: 10px 0 0 5px/*40px 0 0*/;
+    margin: 10px 0 2px 5px;
 }
 #headerMenu ul {
     display:none;
@@ -364,15 +364,14 @@ div.sidegroup {
     left:0;
     padding-top:25px;
 }
-
+#headerMenu > li {
+    position:relative;
+    height: 20px;
+}
 .menuLogin, .menuLibCard {
     padding-left: 17px;
     border-left: 2px solid #fff;
     height: 20px;
-}
-
-#headerMenu > li {
-    position:relative;
 }
 
 #headerMenu ul.subNav {
@@ -701,10 +700,6 @@ div.sidegroup {
     top: 6px;
 }
 
-.module-MetaLib .searchbox .overLabelWrapper {
-    left:120px;
-}
-
 #searchFormLabel {
     color: #999999;
     cursor:text;
@@ -726,9 +721,6 @@ div.sidegroup {
 .searchformPCI #searchForm_input {
     width: 510px;
 }
-.searchformMetaLib #searchForm_input {
-    width: 235px;
-}
 a.clear_input {
 	  margin-right: -30px;
     text-indent:-9999px;
@@ -746,12 +738,6 @@ a.clear_input:hover {
     right: 82px;
 }
 
-.module-MetaLib .searchbox .searchFormWrapper {
-    background:url(../images/nelli-logo.png) no-repeat 7px 5px #FFFFFF;
-}
-.module-MetaLib .searchbox #searchForm_input {
-    background:transparent;
-}
 /*** Header info button ***/
 
 .headerInfoBox {
@@ -1115,6 +1101,13 @@ body > .ui-widget .button {
 }
 .advancedLinkWrapper a.metalibLink, .advancedLinkWrapper a.PCILink {
 	  margin-left: 20px;
+}
+
+.advancedLinkWrapper a.show480mobile {
+    display: none;
+}
+.advancedLinkWrapper.hide480mobile {
+    display: inherit;
 }
 
 .keepFilters {

@@ -376,5 +376,12 @@ End Cover Image *}
 {* End Main Details *}
 
 </div>
+<div class="span-4 last">
+
+  {* Display the lists that this record is saved to *}
+  <div class="savedLists info hide" id="savedLists{$id|escape:'javascript'}">
+    <strong>{translate text="Saved in"}:</strong>
+  </div>
+</div>  
 
 <!-- END of: RecordDrivers/Lido/core.tpl -->

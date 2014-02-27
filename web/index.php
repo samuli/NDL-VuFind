@@ -158,6 +158,28 @@ if ($module == 'Content' && !is_readable("services/$module/$action.php")) {
     $action = 'Home';
 }
 
+// If default prefilter is in use, remember result type (split, local, PCI) 
+// by resolving module & action from HTTP referer.
+$overridePrefilter = false;
+
+if (in_array($module, array('Search', 'PCI'))
+    && ((isset($_REQUEST['prefilter']) && $_REQUEST['prefilter'] == '-'))
+) {
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $parts = parse_url($_SERVER['HTTP_REFERER']);
+        $pathParts = explode('/', $parts['path']);
+        
+        $refAction = array_pop($pathParts);
+        $refModule = array_pop($pathParts);   
+
+        if (in_array($refModule, array('Search', 'PCI')) 
+            && in_array($refAction, array('Results', 'DualResults', 'Search'))
+        ) {
+            $overridePrefilter = true;
+        }
+    } 
+}
+
 // Process prefilter redirection
 if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI')) 
     && isset($_REQUEST['prefilter'])
@@ -167,6 +189,7 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
         $prefilter = $prefilters[$_REQUEST['prefilter']];
         if (($prefilter && $_REQUEST['prefilter'] != '-') 
             || $prefilter['module'] != $module || $prefilter['action'] != $action
+            || $overridePrefilter
         ) {
             $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
             foreach ($params as &$paramValue) {
@@ -184,11 +207,19 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
                     $params[] = "$key=" . urlencode($value);
                 }
             }
+            
             $url = '';
-            if ($prefilter['module'] != $module) {
-                $url = '../' . $prefilter['module'] . '/';
+            if ($overridePrefilter) {
+                // Remember result type
+                $url = "../$refModule/$refAction";                
+            } else {
+                if ($prefilter['module'] != $module) {
+                    $url = '../' . $prefilter['module'] . '/';
+                }
+                $url .= $prefilter['action'];
             }
-            $url .= $prefilter['action'] . '?' . implode('&', array_unique($params));
+            $url .= '?' . implode('&', array_unique($params));
+
             header("Location: $url");
             return;
         }
