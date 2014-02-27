@@ -82,7 +82,7 @@
 	  </div>
 	  <div class="rightColumn" id="deferredResults">
 	    <div class="resulthead">
-	      <h3><a href="{$pci_more|escape}">{translate text="Articles, e-Books etc."}</a></h3>
+	      <h3><a href="{$pci_more|escape}">{translate text="Primo Central"}</a></h3>
 	      <i>{translate text="pci_results_description"}</i><br/><br/>
 	      <script type="text/javascript">
 	        document.write('<p class="iframe_loading"> {translate text="Loading"}...</p>');
