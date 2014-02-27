@@ -5029,10 +5029,10 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     margin: 10px 0 15px;
 }
 /* Radio buttons */
-input[type="radio"] {
+#searchForm_set input[type="radio"] {
     display: none;
 }
-input[type="radio"] + label span {
+#searchForm_set input[type="radio"] + label span {
     display: inline-block;
     width: 20px;
     height: 20px;
