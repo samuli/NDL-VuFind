@@ -75,7 +75,7 @@
           {if $lookfor ==''}
           <a id="metalibTab" href="{$path}/MetaLib/Home">
           {else}
-          <a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor}&set=uusimaa&submit=Hae&retainFilters=0">
+          <a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor|escape:"url"}&set=uusimaa&submit=Hae&retainFilters=0">
           {/if}
           {translate text="MetaLib Searches"}</a></li>
         {/if}
