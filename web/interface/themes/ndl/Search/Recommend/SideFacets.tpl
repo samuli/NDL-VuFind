@@ -7,8 +7,9 @@
 <div class="sidegroup">
   {if $recordCount > 0 || !empty($filterList) || $checkboxStatus != false}
 <h4>{translate text=$sideFacetLabel}</h4>{/if}
-  {if isset($checkboxFilters) && count($checkboxFilters) > 0}
-      {foreach from=$checkboxFilters item=current}
+  {if isset($checkboxFiltersFacetNavi) && count($checkboxFilters) > 0}
+      {* Checkbox filters *}
+      {foreach from=$checkboxFiltersFacetNavi item=current}
         <div class="checkboxFilter{if $recordCount < 1 && !$current.selected && !$current.alwaysVisible} hide{/if}">
               <input type="checkbox" name="filter[]" value="{$current.filter|escape}"
                 {if $current.selected}checked="checked"{/if} id="{$current.desc|replace:' ':''|escape}"
@@ -18,6 +19,7 @@
       {/foreach}
   {/if}
   {if $filterList}
+    {* Active filters *}
     <ul class="filters">
     {foreach from=$filterList item=filters key=field}
       {foreach from=$filters item=filter}
@@ -33,7 +35,7 @@
       <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$solrdate|date_format:"%e.%-m.%Y"}—</span></a></li>
             {assign var=hasSolrDate value=0}    
           {else}
-        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{if $filter.field != 'building'}{translate text=$field}: {/if}{$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
+        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{if $filter.field != 'building' && !isset($filter.hideField)}{translate text=$field}: {/if}{$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
           {/if}
         {/if}
       {/foreach}
@@ -153,6 +155,23 @@
               </dd>
           {/if}
           {if $cluster.label != 'Main Year'}
+              {* Checkbox filters that are displayed inside a facet section *}
+              {assign var=cluster_label value=$cluster.label}
+              {if isset($checkboxFiltersSection.$cluster_label)}
+              {foreach from=$checkboxFiltersSection.$cluster_label item=current}
+              <dd>
+                <div class="checkboxFilter{if $recordCount < 1 && !$current.selected && !$current.alwaysVisible} hide{/if}">
+                  <input type="checkbox" name="filter[]" value="{$current.filter|escape}"
+                         {if $current.selected}checked="checked"{/if} id="{$current.desc|replace:' ':''|escape}"
+                         onclick="document.location.href='{$current.toggleUrl|escape}';" />
+                  <label for="{$current.desc|replace:' ':''|escape}">{translate text=$current.desc}</label>
+                  {if $current.selected}<img src="{$path}/images/silk/tick.png" alt="Selected"/>{/if}
+                </div>
+              </dd>
+              {/foreach}
+              {/if}
+              
+              
              {foreach from=$cluster.list item=thisFacet name="narrowLoop"}
                 {if $smarty.foreach.narrowLoop.iteration == 6}
                     <dd id="more{$title}"><a href="#" onclick="moreFacets('{$title}'); return false;">{translate text='more'} ...</a></dd>

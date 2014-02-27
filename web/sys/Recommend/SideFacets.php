@@ -44,6 +44,7 @@ class SideFacets implements RecommendationInterface
     private $_dateFacets = array();
     protected  $_mainFacets;
     private $_checkboxFacets;
+    private $_checkboxFacetsSection;
     protected $_hierarchicalFacets = array();
     protected $_hiddenFacets = array();
     
@@ -103,10 +104,31 @@ class SideFacets implements RecommendationInterface
         }
         
         // Checkbox facets:
-        $this->_checkboxFacets
+        $checkboxFacets
             = ($checkboxSection && isset($config[$checkboxSection]))
             ? $config[$checkboxSection] : array();
-            
+
+        $this->_checkboxFacets = array();
+        foreach ($checkboxFacets as $key => $val) {
+            $this->_checkboxFacets[$key] = array('desc' => $val, 'data' => array());
+        }
+
+        // Checkbox facets inside facet sections
+        foreach ($this->_mainFacets as $key => $val) {
+            $section = "$checkboxSection:$key";
+            if (isset($config[$section])) {
+                $data = $config[$section];
+                 $this->_checkboxFacetsSection[$val] = $data;
+                
+                foreach ($data as $filter => $translationKey) {
+                    $sectionKey = array_pop(array_keys($filter));
+                    // Store facet section id as 'parent'
+                    $this->_checkboxFacets[$filter] 
+                        = array('desc' => $translationKey, 'data' => array('parent' => $key));
+                }
+            }
+        }
+
         //collection keyword filter
         $this->_collectionKeywordFilter
             = isset($config['Collection_Keyword']['search']) ? $config['Collection_Keyword']['search'] : false;
@@ -129,8 +151,10 @@ class SideFacets implements RecommendationInterface
         foreach ($this->_mainFacets as $name => $desc) {
             $this->_searchObject->addFacet($name, $desc);
         }
-        foreach ($this->_checkboxFacets as $name => $desc) {
-            $this->_searchObject->addCheckboxFacet($name, $desc);
+        foreach ($this->_checkboxFacets as $name => $data) {
+            $desc = $data['desc'];
+            $data = $data['data'];
+            $this->_searchObject->addCheckboxFacet($name, $desc, $data);
         }
     }
 
@@ -147,19 +171,74 @@ class SideFacets implements RecommendationInterface
     public function process()
     {
         global $interface;
-        $interface->assign(
-            'checkboxFilters', $this->_searchObject->getCheckboxFacets()
-        );
-        $interface->assign(
-            'checkboxStatus', $this->_searchObject->getCheckboxFacetStatus()
-        );
-        $filterList = $this->_searchObject->getFilterList(true);        
-        $interface->assign(compact('filterList'));
+
+        // All checkbox filters
+        $checkboxFilters = $this->_searchObject->getCheckboxFacets();
+        $checkboxStatus = $this->_searchObject->getCheckboxFacetStatus();
+
+        // Checkbox filters displayed inside facet sections        
+        $checkboxFiltersSection = array();
+
+        // Checkbox filters displayed at the beginning of side navi
+        $checkboxFiltersFacetNavi = array();
+
+        // Divide checkbox filters into two groups (regular & inside facet section):
+        foreach ($checkboxFilters as $key => $data) {
+            $match = false;
+            foreach ($this->_checkboxFacetsSection as $secKey => $secFilters) {
+                foreach ($secFilters as $filter => $translationCode) {
+                    if ($data['filter'] == $filter) {
+                        // This goes inside a facet section
+                        $checkboxFiltersSection[$secKey][$filter] = $data;
+                        $match = true;                        
+                    }
+                }
+                if ($match) {
+                    continue;
+                }
+            }
+            // No match found: this is a regular checkbox filter, 
+            // and is not displayed inside a facet section.
+            if (!$match) {
+                $checkboxFiltersFacetNavi[$key] = $data;                
+            }
+        }
+
+
+        $interface->assign('checkboxFilters', $checkboxFilters);
+        $interface->assign('checkboxStatus', $checkboxStatus);
+        $interface->assign('checkboxFiltersFacetNavi', $checkboxFiltersFacetNavi);
+        $interface->assign('checkboxFiltersSection', $checkboxFiltersSection);
+
+
+        $filterList = $this->_searchObject->getFilterList(true);
+
         // facet categories that have selections
         $activeFacets = array();
         foreach ($filterList as $filter) {
             $activeFacets[] = $filter[0]['field'];
         }
+
+        // Checkbox filters inside facet sections (unlike regular checkbox filters) 
+        // are also displayed as active filters, and therefore need to be added to 'filterList'.
+        $filterListWithCheckbox = $this->_searchObject->getFilterList(false);
+        foreach ($filterListWithCheckbox as $key => $filters) {
+            foreach ($filters as $filterData) {
+                $filter = $filterData['field'] . ':' . $filterData['value'];
+                
+                foreach ($checkboxFiltersSection as $sectionKey => $sectionFilters) {
+                    foreach ($sectionFilters as $sectionFilter => $translationCode) {
+                        if ($filter == $sectionFilter) {
+                            // Hide field name
+                            $filterData['hideField'] = true;
+                            $filterList[$filterData['field']][] = $filterData;
+                        }
+                    }
+                }
+            }
+        }
+
+        $interface->assign(compact('filterList'));
         $interface->assign(compact('activeFacets'));
 
         $interface->assign(

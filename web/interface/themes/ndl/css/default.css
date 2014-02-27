@@ -2370,6 +2370,10 @@ div.sidegroup h4 {
     font-weight: normal;
     margin-left: 40px;
 }
+#sidebarFacets dl.navmenu .checkboxFilter {
+    left: -11px;
+    padding: 10px 7px 8px;
+}
 .sidegroup dl.collapsible dt {
     background: url("../images/datevis_handle_open.png") no-repeat scroll 107% 50% #4C4C4C;
 }
@@ -6522,4 +6526,5 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
 
