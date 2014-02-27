@@ -3,7 +3,7 @@
     <div class="content">
       <div class="grid_24">
         <div class="error fatalError">
-        <p class="errorMsg">{translate text=$error->getMessage()}</p>
+        <p class="errorMsg">{$error->getMessage()|translate|escape}</p>
         {if $debug}
           <p class="errorStmt">{$error->getDebugInfo()}</p>
         {/if}

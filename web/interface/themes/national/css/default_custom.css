@@ -35,6 +35,19 @@ a, .ui-widget-content a {
 #header .lang li {
     border-color: #eee;
 }
+@media only screen and (max-width: 1020px) {
+	.menuLogin {
+        border-left: 0 none;
+        clear: both;
+        margin-top: 13px;
+        padding-left: 0;
+    }
+}
+@media only screen and (max-width: 730px) {
+    #headerMenu {
+		max-width: 350px;
+    }
+}
 #headerMenu ul li span {
     color: #444;
 }

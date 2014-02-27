@@ -216,12 +216,12 @@ EOF;
             if (isset($params['group'])) {
                 // Process each search group
                 foreach ($params['group'] as $group) {
-                    $queryTerms .= sprintf($queryTermXml, $group['field'], 'contains', htmlspecialchars(addcslashes($group['lookfor'], '()\\'), ENT_COMPAT, 'UTF-8'));
+                    $queryTerms .= sprintf($queryTermXml, $group['field'], 'contains', $this->u8ncr(htmlspecialchars(addcslashes($group['lookfor'], '()\\'), ENT_COMPAT, 'UTF-8')));
                 }
             }
             // Basic Search
             if (isset($params['lookfor']) && $params['lookfor'] != '') {
-                $queryTerms .= sprintf($queryTermXml, 'any', 'contains', htmlspecialchars(addcslashes($params['lookfor'], '()\\'), ENT_COMPAT, 'UTF-8'));
+                $queryTerms .= sprintf($queryTermXml, 'any', 'contains', $this->u8ncr(htmlspecialchars(addcslashes($params['lookfor'], '()\\'), ENT_COMPAT, 'UTF-8')));
             }
         }
 
@@ -447,5 +447,20 @@ EOD;
     {
         return preg_replace('/<span class="searchword">(.*?)<\/span>/', '{{{{START_HILITE}}}}$1{{{{END_HILITE}}}}', $str); 
     }
-    
+
+    /**
+     * Primo may have trouble interpreting wide UTF-8 characters,
+     * so encode them with numeric character references.
+     *
+     * @param string $str UTF-8 string
+     *
+     * @return string encoded string
+     * @access protected 
+     */
+    protected function u8ncr($str)
+    {
+        return mb_encode_numericentity(
+                $str, array(0x0080,0xffff,0,0xffff), "UTF-8"
+            );
+    }
 }

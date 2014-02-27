@@ -1573,17 +1573,16 @@ abstract class SearchObject_Base
      *
      * @param string $filter [field]:[value] pair to associate with checkbox
      * @param string $desc   Description to associate with the checkbox
+     * @param array  $data   Custom data fields to associate with the checkbox
      *
      * @return void
      * @access public
      */
-    public function addCheckboxFacet($filter, $desc)
+    public function addCheckboxFacet($filter, $desc, $data = null)
     {
-        // Extract the facet field name from the filter, then add the
-        // relevant information to the array.
-        list($fieldName) = explode(':', $filter);
-        $this->checkboxFacets[$fieldName]
-            = array('desc' => $desc, 'filter' => $filter);
+        // Add the relevant information to the array.
+        $this->checkboxFacets[]
+            = array('desc' => $desc, 'filter' => $filter, 'data' => $data);
     }
 
     /**
