@@ -65,7 +65,7 @@
       <li class="active ui-state-default ui-corner-top{if $module=='MetaLib' && $pageTemplate=='list.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTab" href="{$path}/MetaLib/Home">{translate text="MetaLib Search"}</a></li>
     {/if}
     {if $metalibEnabled && $lookfor !=''}
-      <li class="active ui-state-default ui-corner-top{if $module=='MetaLib' && $pageTemplate=='list.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor}&set=uusimaa&submit=Hae&retainFilters=0">{translate text="MetaLib Search"}</a></li>
+      <li class="active ui-state-default ui-corner-top{if $module=='MetaLib' && $pageTemplate=='list.tpl'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor|escape:"url"}&set=uusimaa&submit=Hae&retainFilters=0">{translate text="MetaLib Search"}</a></li>
     {/if}
     </ul>
   </div>
@@ -82,7 +82,7 @@
 	  </div>
 	  <div class="rightColumn" id="deferredResults">
 	    <div class="resulthead">
-	      <h3><a href="{$pci_more|escape}">{translate text="Articles, e-Books etc."}</a></h3>
+	      <h3><a href="{$pci_more|escape}">{translate text="Primo Central"}</a></h3>
 	      <i>{translate text="pci_results_description"}</i><br/><br/>
 	      <script type="text/javascript">
 	        document.write('<p class="iframe_loading"> {translate text="Loading"}...</p>');

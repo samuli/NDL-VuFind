@@ -4,7 +4,7 @@
 <div class="resultHeader">
   <div class="resultTerms">
     <div class="content">
-      {if $searchType == 'PCIAdvanced'}
+      {* if $searchType == 'PCIAdvanced'}
       <div class="advancedOptions grid_24">
         <a href="{$path}/PCI/Advanced?edit={$searchId}">{translate text="Edit this Advanced PCI Search"}</a> |
         <a href="{$path}/PCI/Advanced">{translate text="Start a new Advanced PCI Search"}</a> |
@@ -14,12 +14,12 @@
         <a href="{$path}/PCI/Home">{translate text="Start a new Basic PCI Search"}</a>
         {/if}
       </div>
-      {/if}
+      {/if *}
       {if $dualResultsEnabled && $searchType != 'PCIAdvanced'}
       <div class="headerLeft">
         <h3 class="searchTerms grid_12">
       {else}
-      <h3 class="searchTerms grid_24">
+      <h3 class="searchTerms grid_18">
       {/if}
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
@@ -51,6 +51,26 @@
       </div>
 *}
       {/if}
+
+      {if $searchType == 'PCIAdvanced'}
+      <div class="advancedOptions grid_6">
+        <p class="advancedEdit">
+          <a href="{$path}/PCI/Advanced?edit={$searchId}">{translate text="Edit this Advanced PCI Search"}</a>
+        </p>
+        <p class="advancedNewSearch">
+          <a href="{$path}/PCI/Advanced">{translate text="Start a new Advanced PCI Search"}</a>
+        </p>
+        <p class="advancedBasic">
+        {if $dualResultsEnabled}
+          <a href="{$path}/">{translate text="Start a new Basic Search"}</a>
+        {else}
+          <a href="{$path}/PCI/Home">{translate text="Start a new Basic PCI Search"}</a>
+        {/if}
+        </p>
+      </div>
+      {/if}
+
+
     </div> {* content *}
   </div> {* resultTerms *}
   <div class="resultRecommendations">

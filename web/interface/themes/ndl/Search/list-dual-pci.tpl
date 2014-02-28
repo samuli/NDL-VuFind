@@ -8,7 +8,7 @@
 {include file="Search/openurl_autocheck.tpl"}
 
 <div class="resultHeader">
-  <h3>{if $recordCount}<a href="{$more|escape}">{translate text="Articles, e-Books etc."}</a>{else}{translate text="Articles, e-Books etc."}{/if}</h3>
+  <h3>{if $recordCount}<a href="{$more|escape}">{translate text="Primo Central"}</a>{else}{translate text="Primo Central"}{/if}</h3>
   <i>{translate text="pci_results_description"}</i><br/><br/>
   {if $recordCount}
   <div class="resultViewOptions clearfix">

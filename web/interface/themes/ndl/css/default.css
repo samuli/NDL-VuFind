@@ -2210,8 +2210,15 @@ ul.recordSet .resolver {
 }
 
 .advancedOptions {
+/*
 	margin-bottom:5px;
 	color:#008596;
+*/
+  float: right;
+}
+.advancedOptions p {
+		padding-left: 25px;
+		color: black;
 }
 
 .recommendation {
@@ -2369,6 +2376,10 @@ div.sidegroup h4 {
     display: block;
     font-weight: normal;
     margin-left: 40px;
+}
+#sidebarFacets dl.navmenu .checkboxFilter {
+    left: -11px;
+    padding: 10px 7px 8px;
 }
 .sidegroup dl.collapsible dt {
     background: url("../images/datevis_handle_open.png") no-repeat scroll 107% 50% #4C4C4C;
@@ -3060,7 +3071,11 @@ ul.recordSet .addToFavLink a {
     float: left;
     display: block;
     font-size: 1.777em;
+/*
     margin: 0 30px 0 5px;
+*/
+    margin-top: 0;
+    margin-left: 5px;
 }
 
 .correction {
@@ -4923,8 +4938,9 @@ p.citationText {
     margin-bottom:20px;
     position:relative;
 }
-
-
+.module-MetaLib .advSearchSection .group {
+    margin-bottom: 15px;
+}
 .group0 .groupSearchDetails {
 }
 .group1 .groupSearchDetails {
@@ -4946,6 +4962,9 @@ p.citationText {
 .module-PCI #searchHolder, .module-MetaLib #searchHolder {
     padding: 15px;
 }
+.module-MetaLib #searchHolder {
+    padding-bottom: 0;
+}
 
 .advSearchSection {
     background: #F5F5F5;
@@ -4966,6 +4985,9 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 }
 .searchForm_setWrapper {
     padding: 0 15px;
+}
+.module-MetaLib .searchForm_setWrapper {
+    padding: 0 20px;
 }
 
 .group .searchRelated {
@@ -4997,10 +5019,28 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     top: 3px;
 }
 .advTitle {
-	margin-top:5px;
-	margin-bottom:3px;
-	margin-left:5px;
+	  margin-top:5px;
+	  margin-bottom:3px;
+	  margin-left:5px;
 }
+
+
+#searchForm_set {
+    margin: 10px 0 15px;
+}
+/* Radio buttons */
+#searchForm_set input[type="radio"] {
+    display: none;
+}
+#searchForm_set input[type="radio"] + label span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
 /* Profile / MyResearch */
 
 .headerMyResearch {
@@ -6522,4 +6562,5 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
 

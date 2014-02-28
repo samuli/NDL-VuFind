@@ -68,7 +68,7 @@ class Comments extends DB_DataObject
      */
     public function getComments($recordId)
     {
-        $recordId = mysql_real_escape_string($recordId);        
+        $recordId = $this->escape($recordId);        
         $sql = "SELECT comments.*, user.firstname || user.lastname as fullname, " .
                "user.email " .
                "FROM comments " . 
@@ -105,7 +105,7 @@ class Comments extends DB_DataObject
      */
     public function getAverageRating($recordId)
     {
-        $recordId = mysql_real_escape_string($recordId);        
+        $recordId = $this->escape($recordId);        
         $sql = "SELECT AVG(comments.rating) as average, " .
                "COUNT(comments.id) as numberOfRatings " .
                "FROM comments " . 
@@ -128,7 +128,7 @@ class Comments extends DB_DataObject
      */
     public function getCommentCount($recordId)
     {
-        $recordId = mysql_real_escape_string($recordId);        
+        $recordId = $this->escape($recordId);        
         $sql = "SELECT count(comments_record.id) as numberOfComments " .
                 "FROM comments_record " . 
                 "JOIN comments ON comments.id = comments_record.comment_id " . 

@@ -18,7 +18,7 @@
         {* Tab: PCI Advanced *}
         {if $pciEnabled}
         <li class="active ui-state-default ui-corner-top{if $module=='PCI' && $pageTemplate!='list-dual.tpl'} ui-tabs-selected ui-state-active{/if}">
-          <a id="articlesTabAdvanced" href="{$path}/PCI/Advanced">Primo Central</a>
+          <a id="articlesTabAdvanced" href="{$path}/PCI/Advanced">{translate text="Primo Central"}</a>
         {/if}
 
         {* Tab: MetaLib Advanced *}
@@ -65,7 +65,7 @@
           {else}
           <a id="articlesTab" href="{$pci_more}{$searchWithFilters|escape|replace:"/Search/Results":"/PCI/Search"|replace:"/Search/DualResults":"/PCI/Search"|replace:"prefilter=":"prefiltered="}">
           {/if}
-          Primo Central</a>
+          {translate text="Primo Central"}</a>
         </li>
         {/if}
 
@@ -75,7 +75,7 @@
           {if $lookfor ==''}
           <a id="metalibTab" href="{$path}/MetaLib/Home">
           {else}
-          <a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor}&set=uusimaa&submit=Hae&retainFilters=0">
+          <a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor|escape:"url"}&set=uusimaa&submit=Hae&retainFilters=0">
           {/if}
           {translate text="MetaLib Searches"}</a></li>
         {/if}
