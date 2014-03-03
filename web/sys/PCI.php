@@ -198,7 +198,7 @@ EOE;
                     }
                 }
                 $facetKey = 'facet_' . $key;
-                $filterTerms .= sprintf($facetXml, htmlspecialchars($facetKey, ENT_COMPAT, 'UTF-8'), htmlspecialchars($value, ENT_COMPAT, 'UTF-8'));
+                $filterTerms .= sprintf($facetXml, htmlspecialchars($facetKey, ENT_COMPAT, 'UTF-8'), $this->u8ncr(htmlspecialchars($value, ENT_COMPAT, 'UTF-8')));
             }
         }        
 

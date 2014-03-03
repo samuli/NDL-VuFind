@@ -6437,7 +6437,7 @@ div#starRating {
     position: relative;
     top: 3px;
 }
-a.inappropriate {
+a.inappropriate, span.inappropriate {
     position: relative;
     float: right;
     clear: both;

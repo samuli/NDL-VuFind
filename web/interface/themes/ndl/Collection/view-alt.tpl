@@ -7,7 +7,7 @@
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub={$addThis|escape:"url"}"></script>
 {/if}
 <div id="collectionHeader">
-  <div class="content"><a href="{$url}/Record/{$collectionID}">&laquo; {translate text="Full Record"}</a></div>
+  <div class="content"><h2>{translate text="hierarchy_tree"}</h2></div>
 </div>
 <div class="content">
   <div id="headingHierarchyCollection" class="{*span-13*}">
@@ -57,8 +57,7 @@
         {/if}
         <h1>{$collShortTitle|escape}</h1>
         <p>{$collSummary|escape}</p>
-        <a id="moreInfoToggle" href="#" class="button buttonFinna" style="display:none">{translate text="Show/hide more info."}</a>
-        {include file=$info}
+        <p><a href="{$url}/Record/{$collectionID}">{translate text="Collection Details"}</a></p>
       </div>
       <div style="clear: left;"></div>
       <span class="Z3988" title="{$openURL|escape}"></span>
