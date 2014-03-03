@@ -14,8 +14,11 @@
       </div>
     </div>
     <div id="comment{$comment->id}" class="comment">{$comment->comment|escape:"html"}</div><br>
-    {if not $comment->id|in_array:$reported}
+    {if not $comment->id|in_array:$reported && $comment->user_id != $user->id}
     <a href="{$url}/Record/{$id|escape:"url"}/UserComments?inappropriate={$comment->id}" title="{translate text="Report inappropriate"}" id="inappropriateComment{$comment->id|escape}" class="inappropriate tool inappropriateRecordComment">{translate text='Report inappropriate'}</a>
+    {/if}
+    {if $comment->id|in_array:$reported} 
+    <span class="inappropriate tool inappropriateRecordComment">{translate text='Reported inappropriate'}</span>
     {/if}
   </li>
 
