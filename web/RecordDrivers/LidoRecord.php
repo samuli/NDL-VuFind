@@ -548,6 +548,27 @@ class LidoRecord extends IndexRecord
         }
         return $results;
     }
+    
+    /**
+     * Get all authors apart from presenters
+     *
+     * @return array
+     */
+    protected function getNonPresenterAuthors()
+    {
+        $authors = array();
+        foreach ($this->xml->xpath('/lidoWrap/lido/descriptiveMetadata/eventWrap/eventSet/event') as $node) {
+            if (isset($node->eventActor) && $node->eventType->term == 'valmistus') {
+                foreach ($node->eventActor as $actor) {
+                    if (isset($actor->actorInRole->actor->nameActorSet->appellationValue) && trim($actor->actorInRole->actor->nameActorSet->appellationValue) != '') {
+                        $role = isset($actor->actorInRole->roleActor->term) ? $actor->actorInRole->roleActor->term : '';
+                        $authors[] = array('name'  => $actor->actorInRole->actor->nameActorSet->appellationValue, 'role' => $role);
+                    }
+                }
+            }
+        }    
+        return $authors;
+    }
         
     /**
      * Get an array of dates for results list display
