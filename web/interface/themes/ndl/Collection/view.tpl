@@ -9,7 +9,7 @@
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub={$addThis|escape:"url"}"></script>
 {/if}
 <div id="collectionHeader">
-  <div class="content"><a href="{$url}/Record/{$collectionID}" class="fullRecordLink">{translate text="Full Record"} &raquo;</a></div>
+  <div class="content"><h2>{translate text="Collection Items"}</h2></div>
 </div>
 <div class="content">
 <div id="resultsCollection" class="resultListContainer">
@@ -62,8 +62,9 @@
     </div>
     <div style="clear: left;"></div>
     <span class="Z3988" title="{$openURL|escape}"></span>
+    <p><a href="{$url}/Record/{$collectionID}">{translate text="Collection Details"}</a></p>
   </div>
-
+	
   <div id="tabnav" >
     <ul>
       <li class="icon collectionContent{if $tab == 'Home' || $tab == '' || $tab == 'list'} active{/if}">
