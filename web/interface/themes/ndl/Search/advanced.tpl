@@ -10,7 +10,9 @@
     </div>
   </div>
   {* tabNavi *}
-  {include file="Search/tabnavi.tpl"}
+  {if $metalibEnabled || $pciEnabled}
+    {include file="Search/tabnavi.tpl"}
+  {/if}
   <div class="content">
     <div class="advSearchContent">
       {if $editErr}
