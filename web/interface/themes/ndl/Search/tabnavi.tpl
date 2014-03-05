@@ -9,7 +9,6 @@
       {if strpos($smarty.server.REQUEST_URI, "Advanced") !== false}
         {* Advanced Search with possible PCI/MetaLib alternatives *}
 
-{* FIXME: Links probably wrong wrong wrong... *}
         {* Tab: Solr Advanced*}
         <li class="active ui-state-default ui-corner-top{if $module=='Search'} ui-tabs-selected ui-state-active{/if}">
           <a id="booksTabAdvanced" href="{$path}/Search/Advanced">{translate text="Local Records"}</a>
@@ -26,9 +25,8 @@
         <li class="active ui-state-default ui-corner-top{if $module=='MetaLib'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTabAdvanced" href="{$path}/MetaLib/Advanced">{translate text="MetaLib Searches"}</a></li>
         {/if}
         {if $metalibEnabled && $lookfor !=''}
-        <li class="active ui-state-default ui-corner-top{if $module=='MetaLib'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTabAdvanced" href="{$path}/MetaLib/Advanced?lookfor={$lookfor}&set=uusimaa&submit=Hae&retainFilters=0">{translate text="MetaLib Searches"}</a></li>
+        <li class="active ui-state-default ui-corner-top{if $module=='MetaLib'} ui-tabs-selected ui-state-active{/if}"><a id="metalibTabAdvanced" href="{$path}/MetaLib/Advanced?lookfor={$lookfor|escape:"url"}&retainFilters=0">{translate text="MetaLib Searches"}</a></li>
         {/if}
-{* /FIXME *}
 
       {else}
         {* Basic Search with possible PCI/MetaLib alternatives *}
@@ -75,7 +73,7 @@
           {if $lookfor ==''}
           <a id="metalibTab" href="{$path}/MetaLib/Home">
           {else}
-          <a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor|escape:"url"}&set=uusimaa&submit=Hae&retainFilters=0">
+          <a id="metalibTab" href="{$path}/MetaLib/Search?lookfor={$lookfor|escape:"url"}&retainFilters=0">
           {/if}
           {translate text="MetaLib Searches"}</a></li>
         {/if}
