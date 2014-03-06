@@ -135,6 +135,8 @@ class AJAX_PCI extends Action
 
             // Display Listing of Results
             $interface->assign('more', $searchObject->renderSearchUrl());
+        } else if ($searchObject->isEmptySearch()) {
+            $interface->assign('noQuery', true);
         }
 
         // 'Finish' the search... complete timers and log search history.

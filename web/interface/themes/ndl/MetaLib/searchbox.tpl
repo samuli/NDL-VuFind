@@ -53,6 +53,25 @@
           </div>
         </div>
       {/if}
+
+     {* filters for other search types *}
+     {if $filterListOthers}
+      <div class="offscreen">
+        {* include input for retainFilters -option if not already included above *}
+        {if !$filterList && !$checkboxFilters}
+          <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/> <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
+        {/if}
+
+        {assign var="cnt" value=1} 
+        {foreach from=$filterListOthers item=fields key=type name=typeLoop}
+          {foreach from=$fields key=field item=filters name=filterLoop}
+             {foreach from=$filters item=filter name=itemLoop}
+                <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$type}[]" value="{$field|escape}:&quot;{$filter|escape}&quot;" />
+             {/foreach}
+           {/foreach}
+        {/foreach}
+      </div>
+     {/if}
       
 	    <div class="searchFormOuterWrapper">
 	      <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">

@@ -65,8 +65,7 @@
   </div>
   </div>
   <script type="text/javascript">
-    var url = path + "/AJAX/AJAX_PCI?method=pci&lookfor=" +
-        "{$lookfor|escape:"url"|escape:"javascript"}";
+    var url = "{$searchWithFilters|escape:"javascript"|replace:"/Search/Results":"/AJAX/AJAX_PCI"}&method=pci";
     $("#deferredResults").load(url, {literal}function(responseText, textStatus) {
         if (textStatus == 'error') {
             $("#deferredResults .iframe_loading").text("Failed to load results").removeClass('iframe_loading');

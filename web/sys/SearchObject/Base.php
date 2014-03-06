@@ -57,6 +57,23 @@ abstract class SearchObject_Base
     // Filters
     protected $filterList = array();
     protected $orFilters = array();
+
+    // Filters from other search types
+    protected $filterListOthers = array();
+    protected $orFiltersOthers = array();
+
+    // List of URL parameter names used to transmit active filters for all search types
+    protected static $urlFilterTypes = array('local' => array('filter', 'orfilter'),
+                                             'pci' => array('filterpci'),
+                                             'metalib' => array()
+                                             );
+    // URL parameter type
+    const URL_FILTER_TYPE = 'local';
+
+    // URL parameter names
+    protected $filterUrlParam = null;
+    protected $orFilterUrlParam = null;
+
     // Page number
     protected $page = 1;
     // Result limit
@@ -138,7 +155,17 @@ abstract class SearchObject_Base
 
         // Set the $limitOptions
         $limitOptions = array($this->defaultLimit);
+
+        // URL parameters used by filters
+        $params = static::$urlFilterTypes[static::URL_FILTER_TYPE];
+        if (isset($params[0])) {
+            $this->filterUrlParam = $params[0];
+        }
+        if (isset($params[1])) {
+            $this->orFilterUrlParam = $params[1];
+        }
     }
+    
 
     /**
      * Parse apart the field and value from a URL filter string.
@@ -370,6 +397,28 @@ abstract class SearchObject_Base
             }
         }
         return $list;
+    }
+
+    /**
+     * Return list of filters from other search types.
+     *
+     * @return array            filters 
+     * @access public
+     */
+    public function getFilterListOthers()
+    {
+        return $this->filterListOthers;
+    }
+
+    /**
+     * Return names of URL parameters used to transfer filters
+     *
+     * @return array           URL parameter names 
+     * @access public
+     */
+    public function getFilterUrlParams()
+    {
+        return static::$urlFilterTypes[static::URL_FILTER_TYPE];
     }
 
     /**
@@ -992,18 +1041,39 @@ abstract class SearchObject_Base
     protected function initFilters()
     {
         // Handle standard filters:
-        if (isset($_REQUEST['filter'])) {
-            if (is_array($_REQUEST['filter'])) {
-                foreach ($_REQUEST['filter'] as $filter) {
-                    $this->addFilter($filter);
+        if ($this->filterUrlParam) {
+            if (isset($_REQUEST[$this->filterUrlParam])) {
+                $param = $_REQUEST[$this->filterUrlParam];
+                if (is_array($param)) {
+                    foreach ($param as $filter) {
+                        $this->addFilter($filter);
+                    }
+                } else {
+                    $this->addFilter($param);
                 }
-            } else {
-                $this->addFilter($_REQUEST['filter']);
             }
         }
 
         // Handle date range filters:
         $this->initDateFilters();
+
+        // Handle filters from other search types
+        foreach (self::$urlFilterTypes as $type => $params) {
+            if ($type != static::URL_FILTER_TYPE) {
+                foreach ($params as $param) {
+                    if (isset($_REQUEST[$param])) {
+                        if (is_array($_REQUEST[$param])) {
+                            foreach ($_REQUEST[$param] as $filter) {
+                                list($field, $value) = $this->parseFilter($filter);
+                                $this->filterListOthers[$param][$field][] = $value;
+                            }
+                        } else {
+                            $this->filterListOthers[$param][$field] = $value;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -1019,22 +1089,32 @@ abstract class SearchObject_Base
         $params = $this->getSearchParams();
         
         // Add any filters
-        if (count($this->filterList) > 0) {
+        if (count($this->filterList) > 0 && $this->filterUrlParam) {
             foreach ($this->filterList as $field => $filter) {
                 foreach ($filter as $value) {
-                    $params[] = urlencode("filter[]") . '=' .
+                    $params[] = urlencode("{$this->filterUrlParam}[]") . '=' .
                         urlencode("$field:\"$value\"");
                 }
             }
         }
 
         // Add OR filters
-        if (count($this->orFilters) > 0) {
+        if (count($this->orFilters) > 0 && $this->orFilterUrlParam) {
             foreach ($this->orFilters as $field => $filter) {
                 foreach ($filter as $value) {
-                    $params[] = urlencode("orfilter[]") . '=' .
+                    $params[] = urlencode("{$this->orFilterUrlParam}[]") . '=' .
                             urlencode("$field:\"$value\"");
                 }
+            }
+        }
+
+        // Add filters from other search types
+        foreach ($this->filterListOthers as $type => $filters) {
+            foreach ($filters as $field => $filters) {
+                foreach ($filters as $filter) {
+                    $params[] = urlencode("{$type}[]") . '=' .
+                        urlencode("$field:$filter");
+                }             
             }
         }
 
@@ -1077,18 +1157,37 @@ abstract class SearchObject_Base
     /**
      * Build a url for the current search without filters
      *
+     * @param  array  $discardSearchParams  list of parameters to discard from the URL. 
+     *
      * @return string URL of a search
      * @access public
      */
-    public function renderSearchUrlWithoutFilters()
+    public function renderSearchUrlWithoutFilters($discardSearchParams = array())
     {
         // Get the base URL and initialize the parameters attached to it:
         $url = $this->getBaseUrl();
         $params = $this->getSearchParams();
-        
+
+        $res = array();
+        foreach ($params as $param) {
+            $temp = explode('=', $param);                
+            $field = trim($temp[0]);
+
+            $discard = false;
+            foreach($discardSearchParams as $discardParam) {                
+                if ($field == trim($discardParam)) {
+                    $discard = true;
+                    continue 1;
+                }
+            }
+            if (!$discard) {
+                $res[] = $param;
+            }
+        }
+
         // Join parameters with an escaped ampersand,
         //   add to the base url and return
-        return $url . join("&", $params);
+        return $url . join("&", $res);
     }
 
     /**
