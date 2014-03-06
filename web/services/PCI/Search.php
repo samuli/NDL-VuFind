@@ -94,7 +94,8 @@ class Search extends Base
         $interface->assign(
             'searchParams', $this->searchObject->renderSearchUrlParams()
         );
-        
+
+
         if ($result['recordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
             $this->_processJumpto($result);
@@ -143,6 +144,12 @@ class Search extends Base
                     );
                 }
             }
+            
+            if (empty($displayQuery)) {
+                $interface->assign('noQuery', true);                
+            }
+
+            $interface->assign('removeAllFilters', $this->searchObject->renderSearchUrlWithoutFilters(array('prefiltered')));
             $interface->setTemplate('list-none.tpl');
         }
 

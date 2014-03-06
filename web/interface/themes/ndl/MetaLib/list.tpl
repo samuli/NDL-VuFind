@@ -14,7 +14,7 @@
       <h3 class="searchTerms grid_18">
       {if $lookfor == ''}{translate text="history_empty_search"}
       {else}
-        {if $searchType == 'MetaLib'}{$lookfor|escape:"html"}
+        {if $searchType == 'MetaLib'}{translate text="Search"}: {$lookfor|escape:"html"}
         {elseif $searchType == 'MetaLibAdvanced'}{translate text="Your search terms"} : "{$lookfor|escape:"html"}
         {elseif ($searchType == 'MetaLibAdvanced') || ($searchType != 'MetaLibAdvanced' && $orFilters)}
           {foreach from=$orFilters item=values key=filter}

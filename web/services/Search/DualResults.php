@@ -111,6 +111,8 @@ class DualResults extends Action
         // Setup Display
         $interface->assign('sitepath', $configArray['Site']['path']);
         $interface->assign('more', $searchObject->renderSearchUrl());
+        $interface->assign('searchWithFilters', $searchObject->renderSearchUrl());
+        
         $interface->assign('pci_more', str_replace('/Search/Results', '/PCI/Search', $searchObject->renderSearchUrl()));
         
         if ($searchObject->getResultTotal() > 0) {
@@ -157,8 +159,8 @@ class DualResults extends Action
         $interface->display('layout.tpl');
 
         // Save the URL of this search to the session so we can return to it easily:
-        $_SESSION['lastSearchURL'] = $configArray['Site']['url'] . 
-            '/Search/DualResults?lookfor=' . urlencode($_GET['lookfor']);
+        $_SESSION['lastSearchURL'] = str_replace('/Search/Results', '/Search/DualResults', $searchObject->renderSearchUrl());
+        
         // Save the display query too, so we can use it e.g. in the breadcrumbs
         $_SESSION['lastSearchDisplayQuery'] = $searchObject->displayQuery();
     }

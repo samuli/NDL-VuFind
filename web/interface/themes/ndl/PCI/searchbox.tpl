@@ -50,7 +50,7 @@
     {/foreach}
   {/if}
 
-  {if ($filterList || $hasCheckboxFilters) && !$disableKeepFilterControl}
+  {if ($filterList || $hasCheckboxFilters || $filterListOthers) && !$disableKeepFilterControl}
     <div class="keepFilters">
       <div class="checkboxFilter">
        <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/>
@@ -58,17 +58,30 @@
       </div>
 
       <div class="offscreen">
+
+    {assign var="cnt" value=1} 
     {foreach from=$filterList item=data key=field name=filterLoop}
       {foreach from=$data item=value}
-        <input id="applied_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$value.field|escape}:&quot;{$value.value|escape}&quot;" />
+        <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$filterUrlParam}[]" value="{$value.field|escape}:&quot;{$value.value|escape}&quot;" />
       {/foreach}
     {/foreach}
 
     {foreach from=$checkboxFilters item=current name=filterLoop}
       {if $current.selected}
-        <input id="applied_checkbox_filter_{$smarty.foreach.filterLoop.iteration}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="filter[]" value="{$current.filter|escape}" />
+        <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$filterUrlParam}[]" value="{$current.filter|escape}" />
       {/if}
     {/foreach}
+
+    {* filters for other search types *}
+    {foreach from=$filterListOthers item=fields key=type name=typeLoop}
+       {foreach from=$fields key=field item=filters name=filterLoop}
+          {foreach from=$filters item=filter name=itemLoop}
+              <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$type}[]" value="{$field|escape}:&quot;{$filter|escape}&quot;" />
+          {/foreach}
+      {/foreach}
+    {/foreach}
+
+
       </div>
 
     </div>

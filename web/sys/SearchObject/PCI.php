@@ -46,6 +46,8 @@ class SearchObject_PCI extends SearchObject_Base
     protected $indexResult; // PCI Search Response;
     protected $PCI; // PCI API
 
+    const URL_FILTER_TYPE = 'pci';
+
     /**
      * Constructor. Initialise details about the server
      *
@@ -88,6 +90,9 @@ class SearchObject_PCI extends SearchObject_Base
         
         // Connect to PCI
         $this->PCI = new PCI();
+
+
+
     }
 
     /**

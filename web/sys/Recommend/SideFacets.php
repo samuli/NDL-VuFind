@@ -121,7 +121,10 @@ class SideFacets implements RecommendationInterface
                  $this->_checkboxFacetsSection[$val] = $data;
                 
                 foreach ($data as $filter => $translationKey) {
-                    $sectionKey = array_pop(array_keys($filter));
+                    $sectionKey = is_array($filter)
+                        ? array_pop(array_keys($filter)) 
+                        : $filter;
+
                     // Store facet section id as 'parent'
                     $this->_checkboxFacets[$filter] 
                         = array('desc' => $translationKey, 'data' => array('parent' => $key));
@@ -182,19 +185,21 @@ class SideFacets implements RecommendationInterface
         // Checkbox filters displayed at the beginning of side navi
         $checkboxFiltersFacetNavi = array();
 
-        // Divide checkbox filters into two groups (regular & inside facet section):
+        // Divide checkbox filters into two groups (regular & inside facet section):        
         foreach ($checkboxFilters as $key => $data) {
             $match = false;
-            foreach ($this->_checkboxFacetsSection as $secKey => $secFilters) {
-                foreach ($secFilters as $filter => $translationCode) {
-                    if ($data['filter'] == $filter) {
-                        // This goes inside a facet section
-                        $checkboxFiltersSection[$secKey][$filter] = $data;
-                        $match = true;                        
+            if ($this->_checkboxFacetsSection) {
+                foreach ($this->_checkboxFacetsSection as $secKey => $secFilters) {
+                    foreach ($secFilters as $filter => $translationCode) {
+                        if ($data['filter'] == $filter) {
+                            // This goes inside a facet section
+                            $checkboxFiltersSection[$secKey][$filter] = $data;
+                            $match = true;                        
+                        }
                     }
-                }
-                if ($match) {
-                    continue;
+                    if ($match) {
+                        continue;
+                    }
                 }
             }
             // No match found: this is a regular checkbox filter, 
@@ -212,6 +217,7 @@ class SideFacets implements RecommendationInterface
 
 
         $filterList = $this->_searchObject->getFilterList(true);
+        $filterListOthers = $this->_searchObject->getFilterListOthers();
 
         // facet categories that have selections
         $activeFacets = array();
@@ -239,6 +245,10 @@ class SideFacets implements RecommendationInterface
         }
 
         $interface->assign(compact('filterList'));
+        $interface->assign(compact('filterListOthers'));
+
+        $filterUrlParams = $this->_searchObject->getfilterUrlParams();
+        $interface->assign('filterUrlParam', $filterUrlParams[0]);
         $interface->assign(compact('activeFacets'));
 
         $interface->assign(
