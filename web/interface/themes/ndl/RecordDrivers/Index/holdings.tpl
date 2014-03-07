@@ -23,26 +23,29 @@
         <a href="http://haku.helmet.fi/iii/encore/record/C|R{$id|substr:7|escape}" target="_blank">{translate text='Holdings details from'} HelMet</a><br/>
       </span>
     {/if}
-    {if $patronFunctions}
-      {assign var="ublink" value=false}
+    
+  </div>
+  {if $patronFunctions}
+      
+  <div class="holdingsPlaceHold">
+  {assign var="ublink" value=false}
       {foreach from=$holdings item=holding}
         {if !$ublink}
           {foreach from=$holding item=row}
             {if !$ublink && $row.UBRequestLink}
-              <a class="UBRequestPlace checkUBRequest" href="{$row.UBRequestLink|escape}"><span>{translate text="ub_request_check"}</span></a>
+              <a class="UBRequestPlace checkUBRequest button buttonFinna" href="{$row.UBRequestLink|escape}"><span>{translate text="ub_request_check"}</span></a>
               {assign var="ublink" value=true}
             {/if}
           {/foreach}
         {/if}
       {/foreach}
-    {/if}
-  </div>
-  {if $patronFunctions}
-  <div class="holdingsPlaceHold">
     {if !$hideLogin && $offlineMode != "ils-offline"}
       {if ($driverMode  && !empty($holdings)) || $titleDriverMode}
         {if $showLoginMsg || $showTitleLoginMsg}
-            <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id}">{translate text="Login"}</a> {translate text="hold_login"}
+            <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id|escape}">{translate text="Login"}</a> {translate text="hold_login"}
+        {/if}
+        {if count($catalogAccounts) > 1}
+    	    {include file="MyResearch/select-card.tpl"}
         {/if}
         {if $user && !$user->cat_username}
             <a class="button buttonFinna" href="{$path}/MyResearch/Profile">{translate text="Add an account to place holds"}</a>
@@ -51,6 +54,9 @@
     {/if}
     {if $holdingTitleHold && $holdingTitleHold != 'block'}
         <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
+    {/if}
+    {if $catalogAccounts && !$ublink && !$holdingTitleHold && $holdingTitleHold != 'block'}
+        <span>{translate text="title_cant_place_hold"}</span>
     {/if}
     {if $holdingTitleHold == 'block'}
         {translate text="hold_error_blocked"}

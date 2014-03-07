@@ -4,6 +4,11 @@
 
 <div class="myResearch checkedoutList{if $sidebarOnLeft} last{/if}">
   <div class="content">
+    {if empty($catalogAccounts)}
+    	<p class="noContentMessage">{translate text='You do not have any library cards'}</p>
+   			 <a class="button buttonFinna" type="button" href="{$url}/MyResearch/Accounts?add=1" />{translate text='Link Library Card'}...</a>
+    {/if}
+    {if !empty($catalogAccounts)}
   <div class="grid_24">
   <div class="resultHead">
   {if $errorMsg || $infoMsg}
@@ -13,7 +18,11 @@
     </div>
   {/if}
   {if $user->cat_username}
-    <h2>{translate text='Your Checked Out Items'}</h2>
+    <h2>{translate text='Your Checked Out Items'}:      
+    {foreach from=$catalogAccounts item=account}
+        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+     {/foreach} 
+            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
     {if $blocks}
       {foreach from=$blocks item=block}
         <p class="info">{translate text=$block}</p>
@@ -21,77 +30,60 @@
     {/if}
   </div>
     {if $transList}
-
+    <table>
       {if $renewForm}
     <form name="renewals" action="{$url}/MyResearch/CheckedOut" method="post" id="renewals">
+
       
-    <div class="bulkActionButtons">
-        <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div>
-        <div class="floatright">
+    <tr class="bulkActionButtons">
+    	<th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"}</h3>
+        <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div> -->       
+         <span style="float:right;vertical-align:middle">
           <input type="submit" class="button buttonFinna renew" name="renewSelected" value="{translate text="renew_selected"}" />
           <input type="submit" class="button buttonFinna renewAll" name="renewAll" value="{translate text='renew_all'}" />
-        </div>
-        <div class="clear"></div>
-    </div>       
+         </span>
+        </th>
+       </tr>      
       {/if}
 
       {if $errorMsg}
-      <p class="error">{translate text=$errorMsg}</p>
+      <tr><th colspan="3"><p class="error">{translate text=$errorMsg}</p></th></tr>
       {/if}
-    <div class="clear"></div>
   
-
-    <ul class="recordSet">
+    
+    <tr class="recordSet">
     {foreach from=$transList item=resource name="recordLoop"}
-      <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
+      <tr class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
+      <th class="myCheckbox">
+      
+
       {if $renewForm}
-        <div class="resultCheckbox">
-        {if $resource.ils_details.renewable && isset($resource.ils_details.renew_details)}
-            <label for="checkbox_{$resource.id|regex_replace:'/[^a-z0-9]/':''|escape}" class="offscreen">{translate text="Select"} 
+      <div class="checkboxFilter">
+        <span class="resultCheckbox">
+         {if $resource.ils_details.renewable && isset($resource.ils_details.renew_details)}
+           
+            <input type="checkbox" name="renewSelectedIDS[]" value="{$resource.ils_details.renew_details|escape}" class="checkbox" id="checkbox_{$resource.ils_details.renew_details|regex_replace:'/[^a-z0-9]/':''|escape}" />
+             <label for="checkbox_{$resource.ils_details.renew_details|regex_replace:'/[^a-z0-9]/':''|escape}">{translate text="Select"} 
+             
             {if !empty($resource.id)} 
               {$resource.title|escape}
             {else}
               {translate text='Title not available'}
             {/if}</label>
-            <input type="checkbox" name="renewSelectedIDS[]" value="{$resource.ils_details.renew_details}" class="checkbox" id="checkbox_{$resource.id|regex_replace:'/[^a-z0-9]/':''|escape}" />
-            <input type="hidden" name="renewAllIDS[]" value="{$resource.ils_details.renew_details}" />
-        {/if}
-        </div>
+            <input type="hidden" name="renewAllIDS[]" value="{$resource.ils_details.renew_details|escape}" />
+         {/if}
+        </span>
+       </div>
       {/if}
-        <div id="record{$resource.id|escape}">
+      </th>
+        <td id="record{$resource.id|escape}">
         	{assign var=summImages value=$resource.summImages}
         	{assign var=summThumb value=$resource.summThumb}        	
         	{assign var=summId value=$resource.id}        	
 			{assign var=img_count value=$summImages|@count}
-			<div class="coverDiv">
-			  <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-				{if $img_count > 0}
-					<div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:'url'}"><img id="thumbnail_{$summId|escape:'url'}" src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
-				{else}
-					<div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:'url'}"><img src="{$path}/images/NoCover2.gif" width="62" height="62" alt="{translate text='No Cover Image'}"/></a></div>
-				{/if}
 			
-			{* Multiple images *}
-			{if $img_count > 1}
-			  <div class="imagelinks">
-			{foreach from=$summImages item=desc name=imgLoop}
-				<a href="{$path}/thumbnail.php?id={$summId|escape:'url'}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:'url'}').src='{$path}/thumbnail.php?id={$summId|escape:'url'}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:'url'}').href='{$path}/thumbnail.php?id={$summId|escape:'url'}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;">
-				  {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
-				</a>
-			{/foreach}
-			  </div>
-			{/if}
-			</div>
-         {*
-          <div class="coverDiv">
-            {if $resource.isbn}
-              <img src="{$path}/bookcover.php?isn={$resource.isbn|@formatISBN}&amp;size=small" class="summcover" alt="{translate text='Cover Image'}"/>
-            {else}
-              <img src="{$path}/bookcover.php" class="summcover" alt="{translate text='No Cover Image'}"/>
-            {/if}
-          </div>
-          *}
-          <div class="resultColumn2">
+         
+          
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
               <a href="{$url}/Record/{$resource.id|escape:'url'}" class="title">{$resource.title|escape}</a>
@@ -133,14 +125,12 @@
               <strong>{translate text='Year of Publication'}:</strong> {$resource.ils_details.publication_year|escape}
               <br />
             {/if}
-        </div>
-        <div class="dueDate floatright">
+        </td>
+        <td class="dueDate floatright">
           <div class="checkedoutSource">
             {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
             {if $resource.ils_details.institution_name}
               <span>{translate text=$resource.ils_details.institution_name prefix='library_'}</span>
-            {else}
-              <span>{translate text=$source prefix='source_'}</span>
             {/if}
           </div>
             {if !empty($resource.ils_details.renewalCount)}
@@ -176,17 +166,17 @@
               <a href="{$resource.ils_details.renew_link|escape}">{translate text='renew_item'}</a>
             {/if}
 
-          </div> <!-- class="dueDate" -->
+          </td> <!-- class="dueDate" -->
           <div class="clear"></div>
-        </div> <!-- record{$resource.id|escape} -->
-      </li>
+        </tr> <!-- record{$resource.id|escape} -->
     {/foreach}
-    </ul>
+    </table>
       {if $renewForm}
         </form>
       {/if}
     {else}
       <div class="noContentMessage">{translate text='You do not have any items checked out'}.</div>
+    {/if}
     {/if}
   {else}
     {include file="MyResearch/catalog-login.tpl"}

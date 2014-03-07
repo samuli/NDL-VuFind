@@ -73,7 +73,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
                 {/if}
                 <input type="submit" class="button buttonFinna" name="email" value="{translate text='Email this'}" title="{translate text='Email this'}"/>
                 {if is_array($exportOptions) && count($exportOptions) > 0}
-                  <input type="submit" class="button buttonFinna" name="export" value="{translate text='export_selected'}..." title="{translate text='export_selected'}"/>
+                  <input type="submit" class="button buttonFinna" name="export" value="{translate text=export_selected}..." title="{translate text='export_selected'}"/>
                 {/if}
                 {if $listList}
                   <dl class="dropdown dropdownStatic stylingDone copy_to_list ">
@@ -97,6 +97,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
                   </select>
                 {/if}  
                 {if $listEditAllowed}
+                  
                   <input id="delete_list_items_{if $list}{$list->id|escape}{/if}" type="submit" class="button buttonFinna" name="delete" value="{translate text='delete_selected'}" title="{translate text='delete_selected'}"/>
                 {/if}
                 <a href="#" class="button buttonFinna checkBoxDeselectAll">{translate text="Reset"}</a>
@@ -111,8 +112,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
               {/php}
             {/if} 
             {include file="Search/paging.tpl" position="Top"}
-            <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" />
-              <span>{translate text="adv_search_select_all"}</span>
+            <div class="checkboxFilter favorites">
+             <div class="allCheckboxBackground">
+              <input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" />
+              <label for="addFormCheckboxSelectAll">{translate text="adv_search_select_all"}</label>
+             </div>
             </div>
             <ul class="recordSet">
               {foreach from=$resourceList item=resource name="recordLoop"}

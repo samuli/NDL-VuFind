@@ -27,9 +27,8 @@
       {* /NDLBlankInclude *}
       
       <table class="profileGroup">
-      <caption>{translate text='Local Settings'}</caption>
       <tr>
-        <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td>
+        <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{translate text="notif_email"}</span></td>
       </tr>
       <tr>
         <th>{translate text='due_date_reminder'}</th>
@@ -41,110 +40,130 @@
             <option value="3" {if $dueDateReminder == 3}selected="selected"{/if}>{translate text='due_date_reminder_three_days'}</option> 
           </select>
         </td>
-      {if $showHomeLibForm}
-      </tr>
+        {if count($catalogAccounts) > 1}
+          <td class="notif"><span class="userGuider">{translate text="notif_duedate"}</span></td>
+		{else}
+        	<td></td>
+        {/if}
       <tr>
-        <th><label for="home_library">{translate text="Preferred Library"}</label></th>
+        <th><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
+        <td><td>
+      </tr>
+    </table>
+    </form>
+    <div class="clear"></div>
+    <!-- this is the -->
+    {if $catalogAccounts}
+
+    <div class="clear"></div>
+    {/if}
+
+    {if $user->cat_username}
+    <h2>{translate text="Library Card Settings"}: 	
+    	     {foreach from=$catalogAccounts item=account}
+        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+     {/foreach} 
+            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
+    </h2>
+    <table class="profileGroup">
+      {if $showHomeLibForm}   
+      <tr>
+        <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">
+        <th><label for="home_library">{translate text="Preferred pick up location"}</label></th>
         {if count($pickup) > 1}
           {if $profile.home_library != ""}
             {assign var='selected' value=$profile.home_library}
           {else}
             {assign var='selected' value=$defaultPickUpLocation}
           {/if}
-            <td><select id="home_library" name="home_library">
+        <td>
+         <select id="home_library" name="home_library">
           {foreach from=$pickup item=lib name=loop}
             <option value="{$lib.locationID|escape}" {if $selected == $lib.locationID}selected="selected"{/if}>{$lib.locationDisplay|escape}</option>
           {/foreach}
-        </select></td>
-        {else}
-          {$pickup.0.locationDisplay}
-        {/if}
-        </tr>
-      {/if}
-    </table>
-        <input class="button buttonFinna" type="submit" value="{translate text='Save'}" />
-    </form>
-    <div class="clear"></div>
-    
-    {if $user->cat_username}
-    <table class="profileGroup">
-      <caption>{translate text='library_personal_details'}</caption>
-
-      <tr>
-        <th>{translate text='Source of information'}</th>
-        <td>{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-        {translate text=$source prefix='source_'}</td>
+         </select>
+        </td>
       </tr>
+        <tr>
+        	<th colspan="3"><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
+        </tr>
+        {else}
+          <td>{$pickup.0.locationDisplay}</td>
+          <td></td>
+        {/if}
+        </form>
+      </tr>
+      {/if}
+    { if $changePassword }
+      <form method="post" action="{$url}/MyResearch/Profile" id="password_form">      
+        <tr><td colspan="3"><h3>{translate text='change_password_title'}</h3></td></tr>
+        <tr>
+	        <th>{translate text='change_password_old_password'}:</th>
+	        <td><input type="password" id="oldPassword" name="oldPassword" value=""></input></td>
+            <td><span class="userGuider">{translate text='change_password_instructions'}</span></td>
+        </tr>
+        <tr>
+	        <th>{translate text='change_password_new_password'}:</th>
+	        <td><input type="password" id="newPassword" name="newPassword" value=""></input></td>
+            <td></td>
+        </tr>
+        <tr>
+	        <th>{translate text='change_password_new_password_again'}:</th>
+	        <td><input type="password" id="newPassword2" name="newPassword2" value=""></input></td>
+            <td></td>
+        </tr>
+	  <tr>
+      	<th><input class="button buttonFinna left" type="submit" value="{translate text='change_password_submit'}" /></th>
+        <td colspan="2"></td>
+      </tr>
+      </form>
+      { /if }
+      <tr><th colspan="2"><h3>{translate text='library_personal_details'}</h3></th></tr>
+
+
       
       <tr>
-        <th>{translate text='First Name'}</th><td>{if $profile.firstname}{$profile.firstname|escape}{else}-{/if}</td>
+        <th>{translate text='First Name'}</th><td>{if $profile.firstname}{$profile.firstname|escape}{else}-{/if}</td><td></td>
       </tr>
 
       <tr>
-        <th>{translate text='Last Name'}</th><td>{if $profile.lastname}{$profile.lastname|escape}{else}-{/if}</td>
+        <th>{translate text='Last Name'}</th><td>{if $profile.lastname}{$profile.lastname|escape}{else}-{/if}</td><td></td>
       </tr>
 
       <tr>
-        <th>{translate text='Address'} 1</th><td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td>
+        <th>{translate text='Address'} 1</th><td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td><td></td>
       </tr>
 
       <tr>
-        <th>{translate text='Address'} 2</th><td>{if $profile.address2}{$profile.address2|escape}{else}-{/if}</td>
+        <th>{translate text='Address'} 2</th><td>{if $profile.address2}{$profile.address2|escape}{else}-{/if}</td><td></td>
       </tr>
 
       <tr>
-        <th>{translate text='Zip'}</th><td>{if $profile.zip}{$profile.zip|escape}{else}-{/if}</td>
+        <th>{translate text='Zip'}</th><td>{if $profile.zip}{$profile.zip|escape}{else}-{/if}</td><td></td>
       </tr>
     
       <tr>
-        <th>{translate text='Phone Number'}</th><td>{if $profile.phone}{$profile.phone|escape}{else}-{/if}</td>
+        <th>{translate text='Phone Number'}</th><td>{if $profile.phone}{$profile.phone|escape}{else}-{/if}</td><td></td>
       </tr>
 
       <tr>
-        <th>{translate text='Email'}</th><td>{if $profile.email}{$profile.email|escape}{else}-{/if}</td>
+        <th>{translate text='Email'}</th><td>{if $profile.email}{$profile.email|escape}{else}-{/if}</td><td></td>
       </tr>
     
       <tr>
-        <th>{translate text='Group'}</th><td>{$profile.group|escape}</td>
+        <th>{translate text='Group'}</th><td>{$profile.group|escape}</td><td></td>
       </tr>
     
       <tr>
       {foreach from=$profile.blocks item=block name=loop}
         {if $smarty.foreach.loop.first}
           <th>{translate text='Borrowing Blocks'}</th>
-        {else}
-          <th>&nbsp;</th>
+
         {/if}
-        <td>{$block|escape}</td>
+        <td class="blockInfo">{$block|escape}</td>
       {/foreach}
       </tr>
     </table>
-      
-      {if $changePassword}
-      <br class="clear"/>
-      <form method="post" action="{$url}/MyResearch/Profile" id="password_form">      
-      <table class="profileGroup">
-        <caption>{translate text='change_password_title'}</caption>
-        <tr>
-          <th colspan="2">{translate text='change_password_instructions'}</th>
-        </tr>
-        <tr>
-	        <th>{translate text='change_password_old_password'}:</th>
-	        <td><input type="password" id="oldPassword" name="oldPassword" value=""></input></td>
-        </tr>
-        <tr>
-	        <th>{translate text='change_password_new_password'}:</th>
-	        <td><input type="password" id="newPassword" name="newPassword" value=""></input></td>
-        </tr>
-        <tr>
-	        <th>{translate text='change_password_new_password_again'}:</th>
-	        <td><input type="password" id="newPassword2" name="newPassword2" value=""></input></td>
-        </tr>
-      </table>
-      <input class="button buttonFinna" type="submit" value="{translate text='change_password_submit'}" />
-      </form>
-      {/if}
-      
       {else}
         {include file="MyResearch/catalog-login.tpl"}
       {/if}

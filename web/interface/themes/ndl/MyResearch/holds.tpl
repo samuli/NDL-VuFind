@@ -4,6 +4,10 @@
 
 <div class="myResearch holdsList{if $sidebarOnLeft} last{/if}">
   <div class="content">
+      {if empty($catalogAccounts)}
+    	<p class="noContentMessage">{translate text='You do not have any library cards'}</p>
+   			 <a class="button buttonFinna" type="button" href="{$url}/MyResearch/Accounts?add=1" />{translate text='Link Library Card'}...</a>
+      {/if}
   <div class="grid_24">
   {if $user->cat_username}
   <div class="resultHead">
@@ -27,7 +31,10 @@
     {if $cancelCallSlipResults.count > 0}
       <div class="holdsMessage"><p class="info">{$cancelCallSlipResults.count|escape} {translate text="call_slip_cancel_success_items"}</p></div>
     {/if}
-    <h2>{translate text='Holds'}</h2>
+    <h2>{translate text='Holds'}:      {foreach from=$catalogAccounts item=account}
+        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+     {/foreach} 
+            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
 
     {* NDLBlankInclude *}
     {translate text='hold_instructions'}
@@ -35,54 +42,47 @@
     
   </div>
     {if $cancelForm && $recordList}
+    
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
-    <div class="bulkActionButtons">
-        <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div>
-        <div class="floatright">
+  <table>
+    <tr class="bulkActionButtons"><th><h3>{translate text="Holds"}</h3></th>
+        <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div> -->
+        <th class="alignRight"  colspan="2">
           <input type="submit" class="button buttonFinna holdCancel" name="cancelSelected" value="{translate text="hold_cancel_selected"}" onclick="return confirm('{translate text="confirm_hold_cancel_selected_text}')" />
           <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAll" value="{translate text='hold_cancel_all'}" onclick="return confirm('{translate text="confirm_hold_cancel_all_text}')" />
-        </div>
-        <div class="clear"></div>
-      </div>
+        </th>
+      </tr>
     {/if}
 
-    <div class="clear"></div>
 
     {if is_array($recordList)}
-    <ul class="recordSet">
+    <tr class="recordSet">
     {foreach from=$recordList item=resource name="recordLoop"}
-      <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
+      <tr class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
+       <th class="myCheckbox">
         {if $cancelForm && $resource.ils_details.cancel_details}
-          <div class="resultCheckbox">
-          <input type="hidden" name="cancelAllIDS[]" value="{$resource.ils_details.cancel_details|escape}" />
-          <input type="checkbox" name="cancelSelectedIDS[]" value="{$resource.ils_details.cancel_details|escape}" class="checkbox" />
-          </div>
+        <div class="checkboxFilter">
+          <span class="resultCheckbox">
+             
+          	<input type="checkbox" name="cancelSelectedIDS[]" value="{$resource.ils_details.cancel_details|escape}" class="checkbox" id="{$resource.ils_details.cancel_details|escape}"/>
+            <label for="{$resource.ils_details.cancel_details|escape}">{translate text="Select"} 
+            {if !empty($resource.id)} 
+              {$resource.title|escape}
+            {else}
+              {translate text='Title not available'}
+            {/if}
+            </label>         
+    		<input type="hidden" name="cancelAllIDS[]" value="{$resource.ils_details.cancel_details|escape}" />
+          </span>
+         </div>
         {/if}
-        <div id="record{$resource.id|escape}">
+       </th>
+        <td id="record{$resource.id|escape}">
         	{assign var=summImages value=$resource.summImages}
         	{assign var=summThumb value=$resource.summThumb}        	
         	{assign var=summId value=$resource.id}        	
 			{assign var=img_count value=$summImages|@count}
-			<div class="coverDiv">
-			  <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-				{if $summThumb}
-					<div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img id="thumbnail_{$summId|escape:"url"}" src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
-				{else}
-					<div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img src="{$path}/images/NoCover2.gif" width="62" height="62" alt="{translate text='No Cover Image'}"/></a></div>
-				{/if}
-			
-			{* Multiple images *}
-			{if $img_count > 1}
-			  <div class="imagelinks">
-			{foreach from=$summImages item=desc name=imgLoop}
-				<a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;">
-				  {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
-				</a>
-			{/foreach}
-			  </div>
-			{/if}
-			</div>
-          <div class="resultColumn2">
+		
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
               <a href="{$url}/Record/{$resource.id|escape:"url"}" class="title">{$resource.title|escape}</a>
@@ -124,8 +124,8 @@
             {if $resource.ils_details.publication_year}
               <strong>{translate text='Year of Publication'}:</strong> {$resource.ils_details.publication_year|escape}<br />
             {/if}
-            </div>
-            <div class="dueDate">
+            </td>
+            <td class="dueDate floatright">
               {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
               {translate text=$source prefix='source_'},
             {* Depending on the ILS driver, the "location" value may be a string or an ID; figure out the best value to display... *}
@@ -174,12 +174,11 @@
               <p><a href="{$resource.ils_details.cancel_link|escape}">{translate text='hold_cancel'}</a></p>
             {/if}
 
-          </div>
+          </td> <!-- class="dueDate" -->
           <div class="clear"></div>
-        </div>
-      </li>
+        </tr>
     {/foreach}
-    </ul>
+    </table>
     {if $cancelForm}
     </form>
     {/if}
@@ -190,64 +189,51 @@
     <div style="clear:both;padding-top: 2em;"></div>
 
   {* Call Slips *}
-  <h2 class="myResearchTitle">{translate text='Call Slips'}</h2>
+  <h2>{translate text='Call Slips'}:      {foreach from=$catalogAccounts item=account}
+        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+     {/foreach} 
+            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
+    </h2>
     {if is_array($callSlipList)}
   <form name="cancelCallSlipForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelCallSlip">
-
-    <div class="bulkActionButtons">
-        <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div>
-        <div class="floatright">
+  <table>
+    <tr class="bulkActionButtons"><th><h3>{translate text="Call Slips"}</h3></th>
+        <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div> -->
+        <th class="alignRight"  colspan="2">
           <input type="submit" class="button buttonFinna holdCancel" name="cancelSelectedCallSlips" value="{translate text="call_slip_cancel_selected"}" onclick="return confirm('{translate text="confirm_call_slip_cancel_selected_text}')" />
           <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAllCallSlips" value="{translate text='call_slip_cancel_all'}" onclick="return confirm('{translate text="confirm_call_slip_cancel_all_text}')" />
-        </div>
-        <div class="clear"></div>
-      </div>
+        </th>
+      </tr>
 
-    <div class="clear"></div>
 
-    <ul class="recordSet">
+
+    <tr class="recordSet">
     {foreach from=$callSlipList item=resource name="recordLoop"}
-      <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
+      <tr class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
+       <th class="myCheckbox">
         {if $resource.ils_details.cancel_details}
-          <div class="resultCheckbox">
+        <div class="checkboxFilter">
+          <span class="resultCheckbox">
+          <input type="checkbox" name="cancelSelectedCallSlipIDS[]" value="{$resource.ils_details.cancel_details|escape}" class="checkbox" id="{$resource.ils_details.cancel_details|escape}"/>
+          <label for="{$resource.ils_details.cancel_details|escape}">{translate text="Select"} 
+            {if !empty($resource.id)} 
+              {$resource.title|escape}
+            {else}
+              {translate text='Title not available'}
+            {/if}
+          </label>
           <input type="hidden" name="cancelAllCallSlipIDS[]" value="{$resource.ils_details.cancel_details|escape}" />
-          <input type="checkbox" name="cancelSelectedCallSlipIDS[]" value="{$resource.ils_details.cancel_details|escape}" class="checkbox" />
-          </div>
+          </span>
+        </div>
         {/if}
-        <div id="record{$resource.id|escape}">
+        </th>
+        <td id="record{$resource.id|escape}">
           {assign var=summImages value=$resource.summImages}
           {assign var=summThumb value=$resource.summThumb}  
           {assign var=summId value=$resource.id}          
       {assign var=img_count value=$summImages|@count}
-      <div class="coverDiv">
-        <div class="resultNoImage"><p>{translate text='No image'}</p></div>
-        {if $summThumb}
-          <div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img id="thumbnail_{$summId|escape:"url"}" src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a></div>
-        {else}
-          <div class="resultImage"><a href="{$url}/Record/{$resource.id|escape:"url"}"><img src="{$path}/images/NoCover2.gif" width="62" height="62" /></a></div>
-        {/if}
-      
-      {* Multiple images *}
-      {if $img_count > 1}
-        <div class="imagelinks">
-      {foreach from=$summImages item=desc name=imgLoop}
-        <a href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;">
-          {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
-        </a>
-      {/foreach}
-        </div>
-      {/if}
-      </div>
-          {*
-          <div class="coverDiv">
-            {if $resource.isbn.0}
-              <img src="{$path}/bookcover.php?isn={$resource.isbn.0|@formatISBN}&amp;size=small" class="summcover" alt="{translate text='Cover Image'}"/>
-            {else}
-              <img src="{$path}/bookcover.php" class="summcover" alt="{translate text='No Cover Image'}"/>
-            {/if}
-          </div>
-          *}
-          <div class="resultColumn2">
+     
+
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
               <a href="{$url}/Record/{$resource.id|escape:"url"}" class="title">{$resource.title|escape}</a>
@@ -291,8 +277,8 @@
             {if $resource.ils_details.publication_year}
               <strong>{translate text='Year of Publication'}:</strong> {$resource.ils_details.publication_year|escape}<br />
             {/if}
-            </div>
-            <div class="dueDate">
+            </td>
+            <td class="dueDate floatright">
               {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
               {if $resource.ils_details.institution_name}
                 {translate text=$resource.ils_details.institution_name prefix='library_'}
@@ -338,12 +324,10 @@
               <span class="cancelled"><strong>{translate text="call_slip_cancelled"}:</strong> {$resource.ils_details.cancelled}</span>
             {/if}
 
-          </div>
-          <div class="clear"></div>
-        </div>
-      </li>
+          </td> <!-- class="duedate" -->
+        </tr>
     {/foreach}
-    </ul>
+    </table>
     </form>
     {else}
       <div class="noContentMessage">{translate text='You do not have any requests placed'}.</div>

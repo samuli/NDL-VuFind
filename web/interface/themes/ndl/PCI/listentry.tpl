@@ -1,10 +1,11 @@
 <!-- START of: PCI/listentry.tpl -->
       <div class="listentry recordId" id="record{$record.id|escape}">
+       <div class="checkboxFilter">
         <div class="resultCheckbox">
-        <label for="checkbox_{$record.id|regex_replace:'/[^a-z0-9]/':''|escape}" class="offscreen">{translate text="Select this record"}</label>
-        <input id="checkbox_{$record.id|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="ids[]" value="{$record.id|escape}" class="checkbox_ui"/>
+        <input id="checkbox_{$record.id|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="ids[]" value="{$record.id|escape}" class="checkbox_ui"/> <label for="checkbox_{$record.id|regex_replace:'/[^a-z0-9]/':''|escape}">{translate text="Select"}: {$record.title|escape}</label>
         <input type="hidden" name="idsAll[]" value="{$record.id|escape}" />
         </div>
+       </div>
         <div class="coverDiv">
           <div class="resultNoImage"><p>{translate text='No image'}</p></div>
         </div>
