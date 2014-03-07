@@ -20,12 +20,10 @@
   
     <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">
     <div class="profileInfo grid_12 static">
-      <h2>{translate text='Your Profile'}</h2>
-      
       {* NDLBlankInclude *}
-      {translate text='profile_instructions'}
+      		<p class="noContentMessage">{translate text='profile_instructions'}</p>
       {* /NDLBlankInclude *}
-      
+      <h2>{translate text='Your Profile'}</h2>
       <table class="profileGroup">
       <tr>
         <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{translate text="notif_email"}</span></td>
