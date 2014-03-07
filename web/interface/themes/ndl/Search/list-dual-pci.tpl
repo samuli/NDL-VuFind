@@ -25,7 +25,11 @@
   {else}
     <div class="resultViewOptions noResultHeader clearfix">
       <div class="resultNumbers">
-        {translate text="nohit_heading"}
+        {if $noQuery}
+           {translate text="pci_no_query"}
+        {else}
+           {translate text="nohit_heading"}
+        {/if}
       </div>
     </div>
   {/if}

@@ -22,7 +22,7 @@
 {/if}
   <label class="displayBlock" for="account_name">{translate text="Library Card Name"}</label>
   <input id="account_name" type="text" name="account_name" value="{$account_name|escape}" size="50" 
-    class="mainFocus"/>
+    class="mainFocus" />
     <label class="displayBlock" for="username">{translate text='Username'}</label>
     <input id="username" type="text" name="username" value="{$cat_username|escape}" class="{jquery_validation required='This field is required'}"/>
     <label class="displayBlock" for="password">{translate text='Password'}</label>

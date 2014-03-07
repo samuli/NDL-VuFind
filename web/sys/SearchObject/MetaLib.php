@@ -52,6 +52,8 @@ class SearchObject_MetaLib extends SearchObject_Base
 
     protected $searchSets = array();
     protected $set = '';
+
+    const URL_FILTER_TYPE = 'metalib';
     
     /**
      * Constructor. Initialise some details about the server

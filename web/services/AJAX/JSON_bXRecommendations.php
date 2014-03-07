@@ -68,6 +68,14 @@ class JSON_bXRecommendations extends JSON
                 return;
             }
             $openUrl = $record['openUrl'];
+        } elseif (strncmp($id, 'pci.', 4) == 0) {
+            include_once 'sys/PCI.php';
+            $pci = new PCI();
+            if (!($record = $pci->getRecord($id))) {
+                $this->output('Record does not exist', JSON::STATUS_ERROR);
+                return;
+            }
+            $openUrl = $record['openUrl'];
         } else {
             $searchObject = SearchObjectFactory::initSearchObject();
             if (!($record = $searchObject->getIndexEngine()->getRecord($id))) {

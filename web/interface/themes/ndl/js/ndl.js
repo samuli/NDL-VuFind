@@ -359,6 +359,18 @@ function initCustomEyeCandy() {
        }
     });
    }
+   if (document.querySelectorAll('#myFavoritesList .bulkActionButtons').length >= 1) {
+   	 $(window).on('scroll', function () {
+        elementOffset2 = $('.resultOptions').offset().top,
+        distance2      = (elementOffset2 - $(document).scrollTop());
+        if (distance2 < 0) {
+         $('.bulkActionButtons').addClass('fixed');
+       }
+ 	   if (distance2 > 0) {
+         $('.bulkActionButtons').removeClass('fixed');
+       }
+   	 });
+   }
  }
 
 

@@ -60,6 +60,12 @@ class Record extends Base
         // Call parent constructor
         parent::__construct();
 
+        // Set bX flag
+        $interface->assign(
+            'bXEnabled', isset($configArray['bX']['token'])
+            ? true : false
+        );
+
         // Fetch Record
         $pci = new SearchObject_PCI();
         $record = $pci->getRecord($_REQUEST['id']);

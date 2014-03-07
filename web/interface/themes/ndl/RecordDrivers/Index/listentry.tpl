@@ -1,11 +1,13 @@
 <!-- START of: RecordDrivers/Index/listentry.tpl -->
 
 <div class="listentry recordId" id="record{$listId|escape}">
+ <div class="checkboxFilter">
   <div class="resultCheckbox">
-    <label for="checkbox_{$listId|regex_replace:'/[^a-z0-9]/':''|escape}" class="offscreen">{translate text="Select"}: {$listTitle|escape}</label>
-    <input id="checkbox_{$listId|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="ids[]" value="{$listId|escape}" class="checkbox_ui"/>
+    <input id="checkbox_{$listId|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="ids[]" value="{$listId|escape}" class="checkbox_ui checkbox"/>
+    <label for="checkbox_{$listId|regex_replace:'/[^a-z0-9]/':''|escape}" >{translate text="Select"}: {$listTitle|escape}</label>
     <input type="hidden" name="idsAll[]" value="{$listId|escape}" />
   </div>
+ </div>
   
   {assign var=img_count value=$summImages|@count}
   <div class="coverDiv">

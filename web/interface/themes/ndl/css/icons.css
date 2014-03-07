@@ -659,6 +659,11 @@ input[type="radio"]:checked + label span {
     background-position: 9px -994px;
 }
 
+#metalibTab.tabLoader {
+    background-image: url(../images/ajax-loader.gif);
+    background-position:10px center !important;
+    background-size:18px 18px;
+}
 
 /* Main: Myresearch */
 
@@ -880,5 +885,7 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .NDLCarouselNavi .next {
     background-position: 0px -984px;
 }
+
+
 
 
