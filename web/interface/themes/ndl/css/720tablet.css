@@ -274,12 +274,21 @@
 
     /** DualResults - Two Column Results */
     #dualResults .resultViewOptions {
-        font-size: 0.846em;
+        font-size: .846em;
+    }
+    #dualResults .toggleHeader {
+        font-size: .9em;
     }
     #dualResults .leftColumn {
         width: 332px;
     }
     #dualResults .rightColumn {
+        width: 332px;
+    }
+    #dualResults .dualListHeader .rightColumn {
+        width: 196px;
+    }
+    #dualResults .dualListHeader .resultContentList .rightColumn {
         width: 332px;
     }
     #dualResults .resultColumn1 {

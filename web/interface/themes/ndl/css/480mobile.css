@@ -452,6 +452,12 @@
     #dualResults .rightColumn {
         width: 210px;
     }
+    #dualResults .dualListHeader .rightColumn {
+        width: 74px;
+    }
+    #dualResults .dualListHeader .resultContentList .rightColumn {
+        width: 210px;
+    }
     #dualResults .resultColumn2 {
         width: 180px;
     }

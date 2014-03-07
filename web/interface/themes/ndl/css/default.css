@@ -2271,25 +2271,75 @@ ul.recordSet .resolver {
 	  width: 453px;
 	  border-right: 6px solid #e6e6e6;
 	  padding: 0 18px 0 6px;
-	  margin: 24px 0 24px 0;
+	  margin: 0 0 24px 0;
 }
 #dualResults .rightColumn {
     float: left;
     width: 453px;
     padding: 0 6px 0 18px;
     border-left: 6px solid #e6e6e6;
-    margin: 24px 0 24px -6px;
+    margin: 0 0 24px -6px;
+}
+#dualResults .dualListHeader .leftColumn {
+    border: none;
+    margin-top: 24px;
+    margin-bottom: 0;
+    padding-right: 24px;
+}
+#dualResults .dualListHeader .rightColumn {
+    border: none;
+    margin-top: 24px;
+    margin-bottom: 0;
+    padding-left: 24px;
+    width: 317px;
+}
+#dualResults .dualListHeader .resultContentToggle {
+    float: right;
+    margin: 24px 0 0;
+    text-align: right;
+    max-width: 136px;
+}
+#dualResults .dualListHeader .resultContentToggle .toggleHeader {
+    padding-right: 22px;
+}
+#dualResults .dualListHeader .resultContentToggle.lowerToggle {
+    margin: 0;
+}
+#dualResults .dualListHeader .resultContentList {
+    float: left;
+    margin-top: 5px;
+    width: 100%;
+}
+#dualResults .dualListHeader .resultContentList p {
+    margin-bottom: 1em;
+}
+#dualResults .dualListHeader .resultContentList .leftColumn {
+    margin-top: 0;
+    margin-bottom: 1px;
+}
+#dualResults .dualListHeader .resultContentList .rightColumn {
+    margin-top: 0;
+    margin-bottom: .1em;
+    width: 453px;
+}
+#dualResults .dualRuler {
+    background-color: #00A3B5;
+    height: 2px;
 }
 #dualResults .resultViewOptions {
 	  height: auto;
-	  padding: 12px 4px 12px 4px;
+	  padding: 12px 0;
+}
+#dualResults .resultViewOptions.resultListTop {
+    padding-top: 0;
 }
 #dualResults .resultNumbers {
     line-height: 1em;
+    margin: 0;
 }
 #dualResults .resultOptions {
 	  height: auto;
-	  margin: 0.15em 6px;
+	  margin: 0.15em 0;
 	  line-height: 1em;
 }
 #dualResults .noResultHeader {
