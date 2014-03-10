@@ -54,7 +54,7 @@
           <div class="pickup-header"><span>Hvitträsk – a monument of Finnish romantic nationalism</span></div>
           <div class="pickup-text">
             Hvitträsk, located in Kirkkonummi in Southern Finland, was designed by the Finnish architects Gesellius, Lindgren and Saarinen, and constructed between 1901 and 1903. This Gesamtkunstwerk is considered one of the foremost examples of the Finnish art nouveau movement. The interiors and furnishings of Hvitträsk were digitised in the international Partage Plus project. 
-            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&view=grid&limit=100"'|escape:'html'}">To the search result »</a>
+            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&view=grid&limit=100"'|escape:'html'}">To the search result »</a>
           </div>
         </div>
       </li>
