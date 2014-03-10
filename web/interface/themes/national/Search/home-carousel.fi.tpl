@@ -57,7 +57,7 @@
           <div class="pickup-header"><span>Kansallisromanttinen Hvitträsk (rakennettu 1901–1903)</span></div>
           <div class="pickup-text">
             Kirkkonummella sijaitsevan Hvitträskin suunnittelivat arkkitehdit Gesellius, Lindgren ja Saarinen. Suomalaisen art nouveau –tyylin keskeisenä kokonaistaideteoksena pidettävän Hvitträskin esineistö ja sisustukset digitoitiin osana kansainvälistä Partage Plus -projektia. 
-            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F"&filter%5B%5D=geographic_facet%3A"Kirkkonummi%2C+Hvitträsk"&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&view=grid&limit=100"'|escape:'html'}">Hakutulokseen »</a>
+            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&view=grid&limit=100"'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
