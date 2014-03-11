@@ -116,6 +116,9 @@ class AJAX_PCI extends Action
         $interface->assign('spellingSuggestions', $searchObject->getSpellingSuggestions());
         $interface->assign('lookfor', $searchObject->displayQuery());
 
+        // Display Listing of Results
+        $interface->assign('more', $searchObject->renderSearchUrl());
+
         if ($result['recordCount'] > 0) {
             $summary = $searchObject->getResultSummary();
             $page = $summary['page'];
@@ -133,11 +136,10 @@ class AJAX_PCI extends Action
             $totalPagerItems = $summary['resultTotal'] < $pageLimit ?
                 $summary['resultTotal'] : $pageLimit;
 
-            // Display Listing of Results
-            $interface->assign('more', $searchObject->renderSearchUrl());
         } else if ($searchObject->isEmptySearch()) {
             $interface->assign('noQuery', true);
         }
+
 
         // 'Finish' the search... complete timers and log search history.
         $searchObject->close();

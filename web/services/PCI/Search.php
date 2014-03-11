@@ -68,6 +68,10 @@ class Search extends Base
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
+        if ($spatialDateRangeType = $this->searchObject->getSpatialDateRangeFilterType()) {
+            $interface->assign('spatialDateRangeType', $spatialDateRangeType);
+        }
+
         // Search PCI
         $result = $this->searchObject->processSearch(false, true);
         

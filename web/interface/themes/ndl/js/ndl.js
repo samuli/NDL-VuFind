@@ -246,7 +246,7 @@ function initSidebarFacets() {
         if (/creationdate/.test(self.location.href)) {
            var query = action.split("creationdate",1) + 'creationdate%3A';
         } else {
-            var query = action + 'filter[]=creationdate%3A';
+            var query = action + 'filterpci[]=creationdate%3A';
         }
                 
         // Require numerical values
@@ -472,4 +472,5 @@ function initCoverImageTruncateLink() {
     });
 
 }
+
 

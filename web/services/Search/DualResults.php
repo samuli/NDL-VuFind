@@ -112,6 +112,10 @@ class DualResults extends Action
         $interface->assign('sitepath', $configArray['Site']['path']);
         $interface->assign('more', $searchObject->renderSearchUrl());
         $interface->assign('searchWithFilters', $searchObject->renderSearchUrl());
+
+        if ($spatialDateRangeType = $searchObject->getSpatialDateRangeFilterType()) {
+            $interface->assign('spatialDateRangeType', $spatialDateRangeType);
+        }
         
         $interface->assign('pci_more', str_replace('/Search/Results', '/PCI/Search', $searchObject->renderSearchUrl()));
         

@@ -2528,7 +2528,7 @@ ul.recordSet .resolver {
 }
 #dualResults .resultViewOptions {
 	  height: auto;
-	  padding: 12px 0;
+	  padding: 10px;
 }
 #dualResults .resultViewOptions.resultListTop {
     padding-top: 0;
@@ -2574,6 +2574,15 @@ ul.recordSet .resolver {
 
 #dualResults .resultOptions a {
     font-weight: bold;
+}
+#dualResults ul.recordSet {
+    margin-top: 10px;
+}
+
+#dualResults .localFiltersNote {
+    background-color: #edf3f6;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 /** Side facets */
@@ -6884,5 +6893,6 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
 
 

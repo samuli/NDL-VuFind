@@ -255,7 +255,7 @@ abstract class SearchObject_Base
         list($field, $value) = $this->parseFilter($newFilter);
 
         if ($field == 'search_sdaterange_mvtype') {
-            // 'search_sdaterange_mvtype' is transmitted as an url paramete
+            // 'search_sdaterange_mvtype' is transmitted as an url parameter
             $this->spatialDateRangeFilterType = $value;
         } else {
             // Check for duplicates -- if it's not in the array, we can add it
@@ -1113,7 +1113,7 @@ abstract class SearchObject_Base
             foreach ($filters as $field => $filters) {
                 foreach ($filters as $filter) {
                     $params[] = urlencode("{$type}[]") . '=' .
-                        urlencode("$field:$filter");
+                        urlencode("$field:\"$filter\"");
                 }             
             }
         }

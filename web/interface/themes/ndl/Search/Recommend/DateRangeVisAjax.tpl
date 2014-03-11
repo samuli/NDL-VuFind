@@ -63,7 +63,7 @@
                 // Create the string of date params
                 {/literal}
                 {if $module == "PCI"}
-                  visNavigation = localStorage.getItem('lookFor') + '&filter[]=creationdate%3A"['+padZeros(visDateStart)+' TO '+padZeros(visDateEnd)+']"&{$searchParamsWithoutFilter|escape:'javascript'}';
+                  visNavigation = localStorage.getItem('lookFor') + '&filterpci[]=creationdate%3A"['+padZeros(visDateStart)+' TO '+padZeros(visDateEnd)+']"&{$searchParamsWithoutFilter|escape:'javascript'}';
                   localStorage.removeItem('lookFor');
                 {else}
                   visNavigation = 'filterField=search_sdaterange_mv&facetField=main_date_str&sdaterange[]={$filterField}&{$filterField}from='+padZeros(visDateStart)+'&{$filterField}to='+padZeros(visDateEnd)+'&{$searchParamsWithoutFilter|escape:'javascript'}';

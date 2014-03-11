@@ -30,16 +30,6 @@
     </div>
 
     
-  {* Do we have any checkbox filters? *}
-  {assign var="hasCheckboxFilters" value="0"}
-  {if isset($checkboxFilters) && count($checkboxFilters) > 0}
-    {foreach from=$checkboxFilters item=current}
-      {if $current.selected}
-        {assign var="hasCheckboxFilters" value="1"}
-      {/if}
-    {/foreach}
-  {/if}
-
   {if $shards}
     <br />
     {foreach from=$shards key=shard item=isSelected}
@@ -47,7 +37,7 @@
     {/foreach}
   {/if}
 
-  {if ($filterList || $hasCheckboxFilters || $filterListOthers) && !$disableKeepFilterControl}
+  {if ($filterList || $activeCheckboxFilters || $filterListOthers) && !$disableKeepFilterControl}
     <div class="keepFilters">
       <div class="checkboxFilter">
         <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters" />

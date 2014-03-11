@@ -27,16 +27,7 @@
       <a href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
     </div>
     
-      {* Do we have any checkbox filters? *}
-      {assign var="hasCheckboxFilters" value="0"}
-      {if isset($checkboxFilters) && count($checkboxFilters) > 0}
-        {foreach from=$checkboxFilters item=current}
-          {if $current.selected}
-            {assign var="hasCheckboxFilters" value="1"}
-          {/if}
-        {/foreach}
-      {/if}
-      {if $filterList || $hasCheckboxFilters}
+      {if $filterList || $activeCheckboxFilters}
         <div class="keepFilters">
           <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/> <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
           <div class="offscreen">
@@ -85,7 +76,9 @@
 
 	      </div>
 	    </div>
-      
+
+      {if $spatialDateRangeType}<input type="hidden" name="search_sdaterange_mvtype" value="{$spatialDateRangeType|escape}" />{/if}
+
       {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
     </form>
 {/if}
