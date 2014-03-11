@@ -3,6 +3,10 @@
 {include file="MyResearch/menu.tpl"}
 <div class="myResearch finesList{if $sidebarOnLeft} last{/if}">
   <div class="content">
+        
+    {* NDLBlankInclude *}
+    <div class="noContentMessage">{translate text='fines_instructions'}</div>
+    {* /NDLBlankInclude *}
     {if empty($catalogAccounts)}
     	<p class="noContentMessage">{translate text='You do not have any library cards'}</p>
    			 <a class="button buttonFinna" type="button" href="{$url}/MyResearch/Accounts?add=1" />{translate text='Link Library Card'}...</a>
@@ -20,10 +24,7 @@
       <p class="noContentMessage">{translate text='You do not have any fines'}</p>
      {else}
     
-    
-    {* NDLBlankInclude *}
-    {translate text='fines_instructions'}
-    {* /NDLBlankInclude *}
+
     
     <table class="datagrid fines" summary="{translate text='Your Fines'}">
       <tr>
