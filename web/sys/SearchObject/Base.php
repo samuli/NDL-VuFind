@@ -525,8 +525,13 @@ abstract class SearchObject_Base
         switch ($this->searchType) {
         // Advanced search
         case $this->advancedSearchType:
-            $params[] = "join=" . urlencode($this->searchTerms[0]['join']);
+            if (isset($this->searchTerms[0]['join'])) {
+                $params[] = "join=" . urlencode($this->searchTerms[0]['join']);
+            }
             for ($i = 0; $i < count($this->searchTerms); $i++) {
+                if (!isset($this->searchTerms[$i]['group'])) {
+                    continue;
+                }
                 $params[] = urlencode("bool{$i}[]") . "=" .
                     urlencode($this->searchTerms[$i]['group'][0]['bool']);
                 for ($j = 0; $j < count($this->searchTerms[$i]['group']); $j++) {
@@ -670,7 +675,7 @@ abstract class SearchObject_Base
                 // Add the completed group to the list
                 $this->searchTerms[] = array(
                     'group' => $group,
-                    'join'  => $_REQUEST['join']
+                    'join'  => isset($_REQUEST['join']) ? $_REQUEST['join'] : 'AND' 
                 );
             }
 
@@ -2628,6 +2633,9 @@ abstract class SearchObject_Base
         $excludes = array();
 
         foreach ($this->searchTerms as $search) {
+            if (!isset($search['group'])) {
+                continue;
+            }
             $thisGroup = array();
             // Process each search group
             foreach ($search['group'] as $group) {
@@ -2645,7 +2653,11 @@ abstract class SearchObject_Base
 
         // Base 'advanced' query
         $output = "(" .
-            join(") " . $this->searchTerms[0]['join'] . " (", $groups) .
+            join(") " . 
+            (isset($this->searchTerms[0]['join']) 
+                ? $this->searchTerms[0]['join'] 
+                : 'AND') .
+            " (", $groups) .
             ")";
 
         // Concatenate exclusion after that
@@ -2684,6 +2696,9 @@ abstract class SearchObject_Base
         // Advanced search?
         if ($this->searchType == $this->advancedSearchType) {
             foreach ($this->searchTerms as $group) {
+                if (!isset($group['group'])) {
+                    continue;
+                }
                 foreach ($group['group'] as $item) {
                     if ($item['lookfor'] !== '') {
                         return false;
