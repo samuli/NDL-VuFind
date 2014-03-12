@@ -21,7 +21,7 @@
      {if $showLocalFiltersNote}<div class="localFiltersNote"><a href="{$more|escape}">{translate text="local_filters_note"}</a></div>{/if}
   {else}
      {if $showLocalFiltersNote}<div class="localFiltersNote"><a href="{$more|escape}">{translate text="local_filters_note"}</a></div>{/if}
-     <div class="resultViewOptions noResultHeader clearfix">
+     <div class="resultViewOptions clearfix {if $noQuery}emptySearchNote{else}noResultHeader{/if}">
       <div class="resultNumbers">
         {if $noQuery}
            {translate text="pci_no_query"}
