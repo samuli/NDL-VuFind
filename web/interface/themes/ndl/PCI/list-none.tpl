@@ -7,12 +7,14 @@
     {include file="Search/tabnavi.tpl"}
   {/if}
   <div class="content">
-    <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if} grid_17">
+    <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if}{if $noQuery} emptySearchNote{/if} grid_17">
       {if $noQuery}
-          <p class="error">{translate text='pci_no_query'}</p>
+          <p class="notice">{translate text='pci_no_query'}</p>
       {else}
           <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
       {/if}
+    </div>
+    <div class="grid_17">
     {if !empty($filterList) || $checkboxStatus != false} 
       <p><a id="searchWithoutPrefilter" href="{$removeAllFilters}"><strong>{translate text='Search without the prefilter'}</strong></a></p>
     {/if}

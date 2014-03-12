@@ -1193,6 +1193,8 @@ div.dialogLoading {
 .no-hits #sidePubDateVis {
     display: none;
 }
+
+.no-hits .notice,
 .no-hits .error {
     background:none;
     border:none;
@@ -2528,7 +2530,7 @@ ul.recordSet .resolver {
 }
 #dualResults .resultViewOptions {
 	  height: auto;
-	  padding: 12px 0;
+	  padding: 10px;
 }
 #dualResults .resultViewOptions.resultListTop {
     padding-top: 0;
@@ -2574,6 +2576,18 @@ ul.recordSet .resolver {
 
 #dualResults .resultOptions a {
     font-weight: bold;
+}
+#dualResults ul.recordSet {
+    margin-top: 10px;
+}
+
+.module-MetaLib .emptySearchNote,
+.module-PCI .emptySearchNote,
+#dualResults .emptySearchNote,
+#dualResults .localFiltersNote {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 /** Side facets */
@@ -5264,6 +5278,12 @@ p.citationText {
 .module-PCI #searchHolder, .module-MetaLib #searchHolder {
     padding: 15px;
 }
+
+.module-MetaLib .no-hits .notice,
+.module-PCI .no-hits .notice {
+    margin-bottom: 0;   
+}
+
 .module-MetaLib #searchHolder {
     padding-bottom: 0;
 }
@@ -6884,5 +6904,6 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
 
 

@@ -18,8 +18,10 @@
       {if $recordCount}<a href="{$more|escape}">{translate text="More"} &raquo;</a>{/if}
     </div>
   </div>
+     {if $showLocalFiltersNote}<div class="localFiltersNote"><a href="{$more|escape}">{translate text="local_filters_note"}</a></div>{/if}
   {else}
-    <div class="resultViewOptions noResultHeader clearfix">
+     {if $showLocalFiltersNote}<div class="localFiltersNote"><a href="{$more|escape}">{translate text="local_filters_note"}</a></div>{/if}
+     <div class="resultViewOptions clearfix {if $noQuery}emptySearchNote{else}noResultHeader{/if}">
       <div class="resultNumbers">
         {if $noQuery}
            {translate text="pci_no_query"}

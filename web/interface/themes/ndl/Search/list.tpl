@@ -161,7 +161,9 @@
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
           {if $sideRecommendations}
             {foreach from=$sideRecommendations item="recommendations"}
-              {include file=$recommendations}
+              {if $recommendations}
+                {include file=$recommendations}
+              {/if}
             {/foreach}
           {/if}
         {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}

@@ -4,6 +4,10 @@
 
 <div class="myResearch holdsList{if $sidebarOnLeft} last{/if}">
   <div class="content">
+      {* NDLBlankInclude *}
+    <div class="noContentMessage">{translate text='hold_instructions'}</div>
+    {* /NDLBlankInclude *}
+    
       {if empty($catalogAccounts)}
     	<p class="noContentMessage">{translate text='You do not have any library cards'}</p>
    			 <a class="button buttonFinna" type="button" href="{$url}/MyResearch/Accounts?add=1" />{translate text='Link Library Card'}...</a>
@@ -36,9 +40,7 @@
      {/foreach} 
             {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
 
-    {* NDLBlankInclude *}
-    {translate text='hold_instructions'}
-    {* /NDLBlankInclude *}
+
     
   </div>
     {if $cancelForm && $recordList}

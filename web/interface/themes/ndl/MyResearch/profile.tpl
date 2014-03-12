@@ -28,6 +28,7 @@
       <tr>
         <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{translate text="notif_email"}</span></td>
       </tr>
+      {if $libraryCard}
       <tr>
         <th>{translate text='due_date_reminder'}</th>
         <td>
@@ -43,10 +44,13 @@
 		{else}
         	<td></td>
         {/if}
+      </tr>
+      {/if} <!-- end of duedate line -->
       <tr>
         <th><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
         <td><td>
       </tr>
+      
     </table>
     </form>
     <div class="clear"></div>

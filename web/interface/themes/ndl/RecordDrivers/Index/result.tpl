@@ -149,8 +149,8 @@
       {/if}
       <div id="callnumAndLocation{$summId|escape}">
       {if $summAjaxStatus}
-        {* <strong class="hideIfDetailed{$summId|escape}">{translate text='Call Number'}:</strong> <span class="ajax_availability hide" id="callnumber{$summId|escape}"> </span><br class="hideIfDetailed{$summId|escape}"/> 
-        <strong>{translate text='Located'}:</strong> *} <span class="ajax_availability hide" id="location{$summId|escape}"> </span>
+        {* <strong class="hideIfDetailed{$summId|escape}">{translate text='Call Number'}:</strong> <span class="ajax_availability hide" id="callnumber{$summId|escape}">{translate text="Fetching Holdings"}</span><br class="hideIfDetailed{$summId|escape}"/> 
+        <strong>{translate text='Located'}:</strong> *} <span class="ajax_availability hide" id="location{$summId|escape}">{translate text="Fetching Holdings"}</span>
         <div class="hide" id="locationDetails{$summId|escape}"></div>
       {elseif !empty($summCallNo)}
         {translate text='Call Number'}: {$summCallNo|escape}

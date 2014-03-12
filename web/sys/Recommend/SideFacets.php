@@ -209,7 +209,6 @@ class SideFacets implements RecommendationInterface
             }
         }
 
-
         $interface->assign('checkboxFilters', $checkboxFilters);
         $interface->assign('checkboxStatus', $checkboxStatus);
         $interface->assign('checkboxFiltersFacetNavi', $checkboxFiltersFacetNavi);
@@ -243,6 +242,21 @@ class SideFacets implements RecommendationInterface
                 }
             }
         }
+
+        $showLocalFiltersNote = count($filterList) > 0;
+
+        // Check if there are active checkbox filters 
+        foreach ($checkboxFilters as $filter) {
+            if ($filter['selected']) {
+                $interface->assign('activeCheckboxFilters', true);
+                $showLocalFiltersNote = true;
+                break;
+            }
+        }
+        
+        // Display notification of active local filters (facet or checkbox)
+        $interface->assign('showLocalFiltersNote', $showLocalFiltersNote);
+
 
         $interface->assign(compact('filterList'));
         $interface->assign(compact('filterListOthers'));
