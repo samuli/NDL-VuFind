@@ -1,1 +1,1 @@
-<h2><div class="blurbLine">De crudelitate et pietate et</div><div class="blurbLine">an sit melius amari quam timeri</div><div class="blurbLine">vel et contra</div></h2>
+{translate text = "homepage_header_slogan"}
