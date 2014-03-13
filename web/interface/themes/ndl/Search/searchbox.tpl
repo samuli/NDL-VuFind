@@ -78,14 +78,6 @@
       <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
 
         <a href="{$path}/Search/Advanced" class="small advancedLink show480mobile">{translate text="Advanced Search"}</a>
-      {if !$dualResultsEnabled}
-        {if $pciEnabled}
-	        <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
-        {/if}
-        {if $metalibEnabled}
-            <a href="{$path}/MetaLib/Home" class="small metalibLink">{translate text="MetaLib Search"}</a>
-        {/if}
-      {/if}
       </div>
     </div>
 
