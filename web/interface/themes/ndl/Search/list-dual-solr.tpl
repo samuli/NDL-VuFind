@@ -12,9 +12,19 @@
 	    {if $recordCount}<a href="{$more|escape}">{translate text="More"} &raquo;</a>{/if}
 	  </div>
 	</div>
-    {if $showLocalFiltersNote}<div class="localFiltersNote"><a href="{$more|escape}">{translate text="local_filters_note"}</a></div>{/if}
+     {if $showLocalFiltersNote}
+     <div class="localFiltersNote">
+       <a href="{$searchWithoutLocalFilters|escape}" title="{translate text="Remove Filters"}"><span class="roundButton deleteButtonSmall" /></a>
+       <a href="{$more|escape}">{translate text="local_filters_note"}</a>
+     </div>
+     {/if}
   {else}
-    {if $showLocalFiltersNote}<div class="localFiltersNote"><a href="{$more|escape}">{translate text="local_filters_note"}</a></div>{/if}
+     {if $showLocalFiltersNote}
+     <div class="localFiltersNote">
+       <a href="{$searchWithoutLocalFilters|escape}" title="{translate text="Remove Filters"}"><span class="roundButton deleteButtonSmall" /></a>
+       <a href="{$more|escape}">{translate text="local_filters_note"}</a>
+     </div>
+     {/if}
     <div class="resultViewOptions noResultHeader clearfix">
     <div class="resultNumbers">
       {translate text="nohit_heading"}

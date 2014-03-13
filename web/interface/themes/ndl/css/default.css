@@ -2590,6 +2590,11 @@ ul.recordSet .resolver {
     margin-bottom: 10px;
 }
 
+#dualResults .deleteButtonSmall {
+    float: right;
+    margin-top: -3px;
+}
+
 /** Side facets */
 
 .sidegroup ul,
