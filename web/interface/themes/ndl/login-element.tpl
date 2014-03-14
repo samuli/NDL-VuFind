@@ -32,22 +32,6 @@
       </ul>
     </dd>
   </dl>
-
-    {if $catalogAccounts}
-</li>
-<li class="menuLibCard menuLibCard_{$userLang}"">
-  <span>{translate text="Select Library Card"} :
-  </span>
-  <form id="catalogAccountForm" method="post" action="" style="float:right;">
-    <select id="catalogAccount" name="catalogAccount" title="{translate text="Selected Library Card"}" class="jumpMenu" aria-label="{translate text='Select Library Card'}">
-      {foreach from=$catalogAccounts item=account}
-      <option value="{$account.id|escape}"{if $account.cat_username == $currentCatalogAccount} selected="selected"{/if}>{$account.account_name|truncate:15:'...':true:false|escape}</option>
-      {/foreach}
-      <option value="new">{translate text="Add"}...</option>
-    </select>
-    <noscript><input type="submit" value="{translate text="Set"}" /></noscript>
-  </form>
-    {/if}
 </li>
   
   {else}

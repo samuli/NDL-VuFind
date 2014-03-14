@@ -1084,31 +1084,35 @@ abstract class SearchObject_Base
     /**
      * Build a url for the current search
      *
+     * @param boolean $includeLocalFilters True if local filters should be included in the URL
+     *
      * @return string URL of a search
      * @access public
      */
-    public function renderSearchUrl()
+    public function renderSearchUrl($includeLocalFilters = true)
     {
         // Get the base URL and initialize the parameters attached to it:
         $url = $this->getBaseUrl();
         $params = $this->getSearchParams();
         
-        // Add any filters
-        if (count($this->filterList) > 0 && $this->filterUrlParam) {
-            foreach ($this->filterList as $field => $filter) {
-                foreach ($filter as $value) {
-                    $params[] = urlencode("{$this->filterUrlParam}[]") . '=' .
-                        urlencode("$field:\"$value\"");
+        if ($includeLocalFilters) {
+            // Add any filters
+            if (count($this->filterList) > 0 && $this->filterUrlParam) {
+                foreach ($this->filterList as $field => $filter) {
+                    foreach ($filter as $value) {
+                        $params[] = urlencode("{$this->filterUrlParam}[]") . '=' .
+                            urlencode("$field:\"$value\"");
+                    }
                 }
             }
-        }
 
-        // Add OR filters
-        if (count($this->orFilters) > 0 && $this->orFilterUrlParam) {
-            foreach ($this->orFilters as $field => $filter) {
-                foreach ($filter as $value) {
-                    $params[] = urlencode("{$this->orFilterUrlParam}[]") . '=' .
+            // Add OR filters
+            if (count($this->orFilters) > 0 && $this->orFilterUrlParam) {
+                foreach ($this->orFilters as $field => $filter) {
+                    foreach ($filter as $value) {
+                        $params[] = urlencode("{$this->orFilterUrlParam}[]") . '=' .
                             urlencode("$field:\"$value\"");
+                    }
                 }
             }
         }
@@ -1153,7 +1157,7 @@ abstract class SearchObject_Base
         if ($this->limit != null) {
             $params[] = "limit=" . urlencode($this->limit);
         }
-
+        
         // Join all parameters with an escaped ampersand,
         //   add to the base url and return
         return $url . join("&", $params);

@@ -1565,7 +1565,10 @@ fieldset.publishDateLimit .ui-slider {
 	background:none;	
 	color:rgb(70,70,70);
 	margin-bottom: 20px;
+	font-weight: 500;
+	font-size: 1.6em;
 }
+
 .myresearchHeader #selectCard > li{
 		float:left;
 }
@@ -1642,7 +1645,8 @@ fieldset.publishDateLimit .ui-slider {
 	text-align:right !important;	
 }
 .myResearch .noContentMessage {
-	padding:10px;	
+	padding:10px;
+	padding-top:0;	
 }
 .checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
 	margin:0;	
@@ -2589,6 +2593,11 @@ ul.recordSet .resolver {
     background-color: #f2f2f2;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+#dualResults .deleteButtonSmall {
+    float: right;
+    margin-top: -3px;
 }
 
 /** Side facets */
@@ -5400,10 +5409,10 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     padding: 4px;
 }
 .module-MyResearch h2, .myResearch h2 {
-    font-size: 1.7em;
-    font-weight: 500;
+    font-size: 1.4em;
     margin:0;
     line-height:1em;
+	/* box-shadow: 0px 10px 20px 0px rgba(1,1,1,0.05) inset; */
 }
 .myResearch ul.recordSet .resultCheckbox {
     display: inherit;
@@ -5626,7 +5635,8 @@ padding-right: 10px !important;
 
 #loginForm #login_target,
 .module-MyResearch #login_target {
-    margin-top: 12px;
+    margin-top: 3px;
+	margin-bottom:8px;
     padding: 5px 6px;
 }
 

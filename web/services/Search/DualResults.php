@@ -113,6 +113,10 @@ class DualResults extends Action
         $interface->assign('more', $searchObject->renderSearchUrl());
         $interface->assign('searchWithFilters', $searchObject->renderSearchUrl());
 
+        $searchWithoutLocalFilters = $searchObject->renderSearchUrl(false);
+        $searchWithoutLocalFilters = str_replace('/Search/Results', '/Search/DualResults', $searchWithoutLocalFilters);
+        $interface->assign('searchWithoutLocalFilters', $searchWithoutLocalFilters);
+
         if ($spatialDateRangeType = $searchObject->getSpatialDateRangeFilterType()) {
             $interface->assign('spatialDateRangeType', $spatialDateRangeType);
         }
