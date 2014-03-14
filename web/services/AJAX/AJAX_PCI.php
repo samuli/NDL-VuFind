@@ -116,7 +116,14 @@ class AJAX_PCI extends Action
         $interface->assign('spellingSuggestions', $searchObject->getSpellingSuggestions());
         $interface->assign('lookfor', $searchObject->displayQuery());
 
+        $interface->assign('more', $searchObject->renderSearchUrl());
+        
+        $searchWithoutLocalFilters = $searchObject->renderSearchUrl(false);        
+        $searchWithoutLocalFilters = str_replace('/PCI/Search', '/Search/DualResults', $searchWithoutLocalFilters);
+        $interface->assign('searchWithoutLocalFilters', $searchWithoutLocalFilters);
+
         if ($result['recordCount'] > 0) {
+            // Display Listing of Results
             $summary = $searchObject->getResultSummary();
             $page = $summary['page'];
             $interface->assign('recordCount', $summary['resultTotal']);
@@ -133,9 +140,10 @@ class AJAX_PCI extends Action
             $totalPagerItems = $summary['resultTotal'] < $pageLimit ?
                 $summary['resultTotal'] : $pageLimit;
 
-            // Display Listing of Results
-            $interface->assign('more', $searchObject->renderSearchUrl());
+        } else if ($searchObject->isEmptySearch()) {
+            $interface->assign('noQuery', true);
         }
+
 
         // 'Finish' the search... complete timers and log search history.
         $searchObject->close();

@@ -101,10 +101,10 @@
     {if $libraryCard || $sessionInitiator}
   <div class="separator{$lbSmall}"><span class="text">{translate text="login_separator"}</span></div>
     {/if}
-
+  {assign var=followupParams value="#"|explode:$followupAction} 
   <div class="loginAction">
     <h3>{$loginNumber}. {translate text="login_title_email"}</h3>
-    <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"html"}/{$followupAction}?submit"><span>{translate text="Mozilla Persona"}</span></a>
+    <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"html"}/{$followupParams.0}?submit#{$followupParams.1}"><span>{translate text="Mozilla Persona"}</span></a>
 {if $lightbox}
     <script type="text/javascript">
     {literal}

@@ -19,7 +19,7 @@
     background-position:-3px -2327px;
 }
 .menuHome > a span {
-    background-position: -1px -335px;
+    background-position: -1px -334px;
     height: 10px;
 }
 .menuHome > a:hover span {
@@ -239,22 +239,22 @@ a.clear_input {
 
 
 /* Grid view & List view */
-.viewButtons .view-list {
+.viewButtons .view-list,
+.viewButtons .view-grid,
+.viewButtons .view-list.active, .viewButtons .view-list:hover,
+.viewButtons .view-grid.active, .viewButtons .view-grid:hover {
     background:url("../images/icons16-24px-04.png") no-repeat;
+}
+.viewButtons .view-list {
     background-position: -111px -4px;
 }
-
 .viewButtons .view-grid {
-    background:url("../images/icons16-24px-04.png") no-repeat;
     background-position: -219px -4px;
 }
-
 .viewButtons .view-list.active, .viewButtons .view-list:hover {
-    background:url("../images/icons16-24px-04.png") no-repeat;
     background-position: -166px -4px;
 }
 .viewButtons .view-grid.active, .viewButtons .view-grid:hover {
-    background:url("../images/icons16-24px-04.png") no-repeat;
     background-position: -272px -4px;
 }
 
@@ -290,8 +290,17 @@ a.clear_input {
 }
 .holdPlace, .UBRequestPlace {
     background-image: url(../images/icons16-24px-02_turquoise.png);
-    background-position: 11px -2371px; 
+    background-position: 11px -2371px;
 }
+
+#dualResults .dualListHeader #panelToggle {
+    background-image: url("../images/icons16-24px-02_turquoise.png");
+    background-position: 108% -2320px;
+}
+#dualResults .dualListHeader #panelToggle.panelToggleLower {
+    background-position: 108% -2271px;
+}
+
 
 /* Main: Search results */
 
@@ -577,6 +586,32 @@ label.invalid:before {
     background-image: url(../images/icons16-24px-02_red.png);
     background-position: 1px 0px;
 }
+
+/* Advanced Search */
+.advancedOptions p {
+		background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
+}
+.advancedOptions .advancedEdit {
+	background-position: 0 -2104px;
+}
+.advancedOptions .advancedNewSearch {
+	background-position: 0 -1003px;
+}
+.advancedOptions .advancedBasic {
+	background-position: 0 -947px;
+}
+
+/* Radio Buttons */
+input[type="radio"] + label span {
+    background:url("../images/icons16-24px-04.png") no-repeat;
+    background-position: -529px -11px;
+}
+input[type="radio"]:checked + label span {
+    background-position: -491px -11px;
+}
+
+/* Tabs */
+
 #holdingstab, #componentstab, #commentstab, #reviewstab, #excerpttab,
 #hierarchytab, #maptab, #detailstab,
 #tabnav .collectionContent,
@@ -622,6 +657,11 @@ label.invalid:before {
     background-position: 9px -994px;
 }
 
+#metalibTab.tabLoader {
+    background-image: url(../images/ajax-loader.gif);
+    background-position:10px center !important;
+    background-size:18px 18px;
+}
 
 /* Main: Myresearch */
 
@@ -751,7 +791,7 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 
 .usericon {
 	display:inline-block;
-	background: url(../images/icons16-24px-04.png)no-repeat;
+	background: url(../images/icons16-24px-04.png) no-repeat;
 	background-position: -445px -5px;
 	width:30px;
 	height:31px;
@@ -843,5 +883,7 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .NDLCarouselNavi .next {
     background-position: 0px -984px;
 }
+
+
 
 

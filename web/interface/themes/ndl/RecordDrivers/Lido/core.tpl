@@ -131,7 +131,7 @@ End Cover Image *}
     <td>
       <div class="truncateField">
     {foreach from=$coreNonPresenterAuthors item=field name=loop}
-        <a href="{$url}/Search/Results?lookfor={$field.name|escape:"url"}&amp;type=Author">{$field.name|escape}{if $field.role}, {$field.role|escape}{/if}</a>{if !$smarty.foreach.loop.last} ; {/if}
+        <a href="{$url}/Search/Results?lookfor={$field.name|escape:"url"}&amp;type=Author">{$field.name|escape}{if $field.role} ({$field.role|escape}){/if}</a>{if !$smarty.foreach.loop.last} ; {/if}
     {/foreach}
       </div>
     </td>
@@ -376,5 +376,12 @@ End Cover Image *}
 {* End Main Details *}
 
 </div>
+<div class="span-4 last">
+
+  {* Display the lists that this record is saved to *}
+  <div class="savedLists info hide" id="savedLists{$id|escape:'javascript'}">
+    <strong>{translate text="Saved in"}:</strong>
+  </div>
+</div>  
 
 <!-- END of: RecordDrivers/Lido/core.tpl -->

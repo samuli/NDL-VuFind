@@ -34,7 +34,7 @@
             <th width="20%">{translate text="history_limits"}</th>
             <th width="10%" style="text-align:right">{translate text="history_results"}</th>
             <th width="20%">{translate text="history_schedule"}</th>
-            <th width="5%">{translate text="history_delete"}</th>
+            <th width="5%" class="alignMiddle">{translate text="history_delete"}</th>
           </tr>
           {foreach item=info from=$saved name=historyLoop}
           {if ($smarty.foreach.historyLoop.iteration % 2) == 0}
@@ -57,22 +57,29 @@
               </select>
               {/if}
             </td>
-            <td><a href="{$path}/MyResearch/SaveSearch?delete={$info.searchId|escape:"url"}&amp;mode=history" class="delete">{translate text="history_delete_link"}</a></td>
+            <td><a href="{$path}/MyResearch/SaveSearch?delete={$info.searchId|escape:"url"}&amp;mode=history" class="delete"></a></td>
           </tr>
           {/foreach}
         </table>
       {/if}
-
+      {if $user && !$saved}
+      	<h2>{translate text="history_saved_searches"}</h2>
+        <table>
+        	<tr>
+            	<td><p class="noContentMessage">{translate text="You do not have any saved searches"}</p></td>
+            </tr>
+        </table>
+      {/if}
       {if $links}
-          {if $user}<h2>{translate text="history_recent_searches"}</h2>{/if}
+          <h2>{translate text="history_recent_searches"}</h2>
           <table class="datagrid sessionHistory" width="100%">
           <tr>
             <th width="15%">{translate text="history_time"}</th>
             <th width="30%">{translate text="history_search"}</th>
             <th width="20%">{translate text="history_limits"}</th>
-            <th width="10%" style="text-align:right">{translate text="history_results"}</th>
+            <th width="10%" class="alignRight">{translate text="history_results"}</th>
             <th width="20%"> </th>
-            <th width="5%">{translate text='Actions'}</th>
+            <th width="5%" class="alignRight">{translate text='Save'}</th>
           </tr>
           {foreach item=info from=$links name=historyLoop}
           {if ($smarty.foreach.historyLoop.iteration % 2) == 0}
@@ -87,7 +94,7 @@
             {/foreach}{/foreach}</td>
             <td style="text-align:right">{$info.hits}</td>
             <td> </td>
-            <td><a href="{$path}/MyResearch/SaveSearch?save={$info.searchId|escape:"url"}&amp;mode=history" class="add">{translate text="history_save_link"}</a></td>
+            <td class="alignMiddle"><a href="{$path}/MyResearch/SaveSearch?save={$info.searchId|escape:"url"}&amp;mode=history" class="add"></a></td>
           </tr>
           {/foreach}
         </table>

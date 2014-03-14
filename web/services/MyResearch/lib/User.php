@@ -525,6 +525,13 @@ class User extends DB_DataObject
     {
         $this->due_date_reminder = $interval;
         $this->update();
+
+        // Update Session
+
+        if ($session_info = UserAccount::isLoggedIn()) {
+            $session_info->due_date_reminder = $interval;
+            UserAccount::updateSession($session_info);
+        }
         return true;
     }
     

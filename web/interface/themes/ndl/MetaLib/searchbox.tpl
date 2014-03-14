@@ -22,21 +22,12 @@
 	      <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
 	    </div>
 	  </div>
-{*
-    <div class="advancedLinkWrapper{if !$dualResultsEnabled} noDual{/if}{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+
+    <div class="advancedLinkWrapper hide480mobile {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
       <a href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
     </div>
-*}    
-      {* Do we have any checkbox filters? *}
-      {assign var="hasCheckboxFilters" value="0"}
-      {if isset($checkboxFilters) && count($checkboxFilters) > 0}
-        {foreach from=$checkboxFilters item=current}
-          {if $current.selected}
-            {assign var="hasCheckboxFilters" value="1"}
-          {/if}
-        {/foreach}
-      {/if}
-      {if $filterList || $hasCheckboxFilters}
+    
+      {if $filterList || $activeCheckboxFilters}
         <div class="keepFilters">
           <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/> <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
           <div class="offscreen">
@@ -53,21 +44,34 @@
           </div>
         </div>
       {/if}
+
+     {* filters for other search types *}
+     {if $filterListOthers}
+      <div class="offscreen">
+        {* include input for retainFilters -option if not already included above *}
+        {if !$filterList && !$checkboxFilters}
+          <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/> <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
+        {/if}
+
+        {assign var="cnt" value=1} 
+        {foreach from=$filterListOthers item=fields key=type name=typeLoop}
+          {foreach from=$fields key=field item=filters name=filterLoop}
+             {foreach from=$filters item=filter name=itemLoop}
+                <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$type}[]" value="{$field|escape}:&quot;{$filter|escape}&quot;" />
+             {/foreach}
+           {/foreach}
+        {/foreach}
+      </div>
+     {/if}
       
 	    <div class="searchFormOuterWrapper">
 	      <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
-{*
-          <a href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
-*}
-{* Advanced PCI and Advanced Local Search commented out for now
-	      {if $pciEnabled && !$dualResultsEnabled}
-	          <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
-	      {/if}
-          <a href="{$url}" class="small metalibLink">{translate text="Local Search"}</a>
-*}
+          <a href="{$path}/MetaLib/Advanced" class="small advancedLink show480mobile">{translate text="Advanced Nelli Metasearch"}</a>
 	      </div>
 	    </div>
-      
+
+      {if $spatialDateRangeType}<input type="hidden" name="search_sdaterange_mvtype" value="{$spatialDateRangeType|escape}" />{/if}
+
       {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
     </form>
 {/if}

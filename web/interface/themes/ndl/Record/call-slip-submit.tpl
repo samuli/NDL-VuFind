@@ -40,6 +40,32 @@
         </div>
       </div>
       {/if}
+      
+      {if in_array("pickUpLocation", $extraFields)}
+        {if $gatheredDetails.pickUpLocation !=""}
+          {assign var='selected' value=$gatheredDetails.pickUpLocation}
+        {elseif $home_library != ""}
+          {assign var='selected' value=$home_library}
+        {else}
+          {assign var='selected' value=$defaultPickUpLocation}
+        {/if}
+        <div>
+        {if count($pickup) > 1}
+          <strong>{translate text="pick_up_location"}:</strong><br/>
+          <select name="gatheredDetails[pickUpLocation]">
+          {if $defaultPickUpLocation === false}
+          <option value="" selected="selected">{translate text='hold_select_pickup_location'}</option>
+          {/if}
+          {foreach from=$pickup item=lib name=loop}
+            <option value="{$lib.locationID|escape}" {if $selected == $lib.locationID}selected="selected"{/if}>{$lib.locationDisplay|escape}</option>
+          {/foreach}
+          </select>
+        {else}
+          <input type="hidden" name="gatheredDetails[pickUpLocation]" value="{$defaultPickUpLocation|escape}" />
+        {/if}
+        </div>
+      {/if}
+      
       {if in_array("comments", $extraFields)}
       <div>
         <strong>{translate text="call_slip_comments"}:</strong><br/>

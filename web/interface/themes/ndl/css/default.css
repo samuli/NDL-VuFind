@@ -356,7 +356,7 @@ div.sidegroup {
 }
 #headerMenu {
     padding:0;
-    margin: 10px 0 0 5px/*40px 0 0*/;
+    margin: 10px 0 2px 5px;
 }
 #headerMenu ul {
     display:none;
@@ -364,15 +364,14 @@ div.sidegroup {
     left:0;
     padding-top:25px;
 }
-
+#headerMenu > li {
+    position:relative;
+    height: 20px;
+}
 .menuLogin, .menuLibCard {
     padding-left: 17px;
     border-left: 2px solid #fff;
     height: 20px;
-}
-
-#headerMenu > li {
-    position:relative;
 }
 
 #headerMenu ul.subNav {
@@ -701,10 +700,6 @@ div.sidegroup {
     top: 6px;
 }
 
-.module-MetaLib .searchbox .overLabelWrapper {
-    left:120px;
-}
-
 #searchFormLabel {
     color: #999999;
     cursor:text;
@@ -726,9 +721,6 @@ div.sidegroup {
 .searchformPCI #searchForm_input {
     width: 510px;
 }
-.searchformMetaLib #searchForm_input {
-    width: 235px;
-}
 a.clear_input {
 	  margin-right: -30px;
     text-indent:-9999px;
@@ -746,12 +738,6 @@ a.clear_input:hover {
     right: 82px;
 }
 
-.module-MetaLib .searchbox .searchFormWrapper {
-    background:url(../images/nelli-logo.png) no-repeat 7px 5px #FFFFFF;
-}
-.module-MetaLib .searchbox #searchForm_input {
-    background:transparent;
-}
 /*** Header info button ***/
 
 .headerInfoBox {
@@ -1088,14 +1074,20 @@ body > .ui-widget .button {
 	  float: right;
 	  margin-top: 0.5em;
 }
-/*
-.advancedLinkWrapper.noDual {
+
+.advancedLinkWrapper.dual {
+	  position: absolute;
+	  left: 68%;
+	  top: 5px;
+}
+
+.advancedLinkWrapper.no-dual {
     margin-top: 0;
 	  position: absolute;
 	  left: 68%;
 	  top: 11px;	
 }
-*/
+
 .advancedLinkWrapper a {
     display: inline-block;
 	  color: #FFFFFF;
@@ -1109,6 +1101,13 @@ body > .ui-widget .button {
 }
 .advancedLinkWrapper a.metalibLink, .advancedLinkWrapper a.PCILink {
 	  margin-left: 20px;
+}
+
+.advancedLinkWrapper a.show480mobile {
+    display: none;
+}
+.advancedLinkWrapper.hide480mobile {
+    display: inherit;
 }
 
 .keepFilters {
@@ -1125,6 +1124,7 @@ body > .ui-widget .button {
     left: 402px;
     width: 206px;
     height: 18px;
+	z-index:10000;
 }
 .keepFilters input {
     margin-top: .15em;
@@ -1194,6 +1194,8 @@ div.dialogLoading {
 .no-hits #sidePubDateVis {
     display: none;
 }
+
+.no-hits .notice,
 .no-hits .error {
     background:none;
     border:none;
@@ -1276,6 +1278,9 @@ div.bulkActionButtons {
     padding: 0.5em 0;
     height: auto;
  }
+ .myResearch .bulkActionButtons {
+	background:none;	
+}
 .favoritesList div.bulkActionButtons {
     padding: 18px 14px 10px;
 }
@@ -1358,7 +1363,7 @@ div.bulkActionButtons select {
 }
 
 #renewals .buttonFinna {
-    padding:7px;
+    padding:0px;
     font-size:0.9em;
 }
 .holdsList div.bulkActionButtons {
@@ -1538,7 +1543,115 @@ fieldset.publishDateLimit .ui-slider {
 	margin-top: 0;
 }
 
+/*** MyResearch styling for library cards ***/
+
+.myResearch .menuLibCard, .myResearch .selectText {
+
+	height:45px;
+	line-height:30px;
+	padding-left:5px;
+}
+
+.myResearch.checkedoutList .resultColumn2 {
+	padding:0;
+	margin:0;
+	max-width:auto;
+	width:auto;
+	vertical-align:middle;
+}
+
+
 /*** MyResearch ***/
+.myResearch .myResearchTitle {
+	background:none;	
+	color:rgb(70,70,70);
+	margin-bottom: 20px;
+	font-weight: 500;
+	font-size: 1.6em;
+}
+
+.myresearchHeader #selectCard > li{
+		float:left;
+}
+.myresearchHeader #selectCard .selectText {
+		line-height:2.5em;
+}
+.myresearchHeader #selectCard .menuLibCard {
+	border:none;
+	padding-left:5px;
+	height:auto;
+	width:auto;	
+}
+.myresearchHeader .dropdown dt a {
+	background:white;
+	color:#333;	
+}
+.myresearchHeader .dropdown a, .menuLibCard .dropdown dd a {
+	white-space:nowrap;	
+}
+.myresearchHeader .dropdown a:hover {
+	color:#333;	
+}
+.myresearchHeader .dropdown dt a:after {
+	background-image: url(../images/icons16-24px-02_black.png);
+	background-position: 7px -2324px;
+}
+.dropdown.catalogAccount dt a:after {
+	float:none;	
+}
+.myresearchHeader h1, .myresearchHeader #selectCard{
+	display:inline-block;
+	vertical-align: top;
+}
+.myresearchHeader #selectCard {
+	margin-left:20px;	
+}
+.myresearchHeader .show {
+	display:inline-block;	
+	
+}
+.myCheckbox {
+	text-align:left;
+	min-width:40px;
+	width:40px;
+}
+
+.right {
+	text-align:right;	
+}
+.alignMiddle {
+	text-align:center !important;
+}
+
+.left {
+	text-align:left;	
+}
+.notif {
+	line-height:15px;	
+}
+.userGuider {
+	padding-left:20px;
+	padding-top:1px;
+	margin-left:5px;	
+	background-image: url(../images/icons16-24px-02_turquoise.png);
+	background-position:-1px 0;	
+}
+
+/** fix odd background in edit favoritelist record **/
+.module-Cart #footer h2 {
+	background:none;	
+}
+
+.myResearch .alignRight {
+	text-align:right !important;	
+}
+.myResearch .noContentMessage {
+	padding:10px;
+	padding-top:0;	
+}
+.checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
+	margin:0;	
+}
 
 #sidebarFavoritesLists, #sidebarRecommend, #sidebarCollection  {
     float: left;
@@ -1684,12 +1797,8 @@ fieldset.publishDateLimit .ui-slider {
 #sidebarFavoritesLists ul li > div {
     padding: 15px 8px;
 }
-
-.myResearch .bulkActionButtons {
-    background: none repeat scroll 0 0 #eeeeee; /*
-    border-bottom: 8px solid #EEEEEE;
-    border-top: 8px solid #EEEEEE;
-    padding: 0;*/
+#sidebarFavoritesLists, .myResearch .myResearchTitle {
+	word-break:break-word;	
 }
 
 .favoritesList {
@@ -1709,7 +1818,7 @@ fieldset.publishDateLimit .ui-slider {
     font-weight: 300;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 12px;
 }
 .favoritesList .resultOptions label {
     font-weight:500;
@@ -1743,7 +1852,6 @@ fieldset.publishDateLimit .ui-slider {
 .favoritesList ul.recordSet .result {
     border-top: 1px solid #EEEEEE;
     margin-top:18px;
-    padding-top: 18px;
     margin-bottom:0;
 }
 .favoritesList ul.recordSet .result:first-child {
@@ -1754,6 +1862,7 @@ fieldset.publishDateLimit .ui-slider {
 .favoritesList ul.recordSet {
     padding-bottom:28px;
     border-bottom:8px solid #eeeeee;
+	margin:0;
 }
 
 .favoritesList .bulkActionButtons select {
@@ -1791,6 +1900,44 @@ fieldset.publishDateLimit .ui-slider {
 form.visible .allCheckboxBackground {
     top:72px;
 }
+.checkboxFilter.favorites {
+	position:static;
+	margin:0;	
+}
+.myResearch .myResearchTitle {
+	margin-bottom:10px;	
+}
+.myResearch .checkboxFilter.favorites label {
+	text-indent:-20px;
+	width:auto;
+	margin-top: 8px;
+	font-weight:300;
+}
+.myResearch .listentry .checkboxFilter .resultCheckbox {
+	margin-left:-10px;	
+	margin-top:27px;
+}
+.allCheckboxBackground {
+padding-left: 10px;
+position: absolute;
+top: 14px;
+margin-left: -10px;
+width: 140px;
+}
+.myResearch form.visible .allCheckboxBackground, form[name="bulkActionForm"].visible + .resultOptionLimit {
+	top:14px;	
+}
+.allCheckboxBackground input {
+	margin-right:10px;	
+}
+.favoritesList .bulkActionButtons.visible {
+display: block;
+background: #eee;
+position: absolute;
+width: 681px;
+margin-top: -54px;
+}
+
 
 /* MyResearch/checkedout */
 #resultList.checkedoutList {
@@ -1800,27 +1947,88 @@ form.visible .allCheckboxBackground {
     margin: 1em 0 1em 0;
     box-shadow: 0 9px 33px -35px black;
 }
+.myResearch.checkedoutList .bulkActionButtons td, .myResearch.checkedoutList .bulkActionButtons th {
+	border-bottom:solid 1px #e6e6e6;
+}
 .checkedoutList .iconlabel, .holdsList .iconlabel {
     line-height: 2.4em;
 }
 .profileInfo {
     line-height: 1.8em;
 }
-
-table.profileGroup {
-    margin: 1em 0 1em 0;
-    border-left: solid 1px #e6e6e6;
-    border-right: solid 1px #e6e6e6;
+.myResearch table {
+margin: 0;
+margin-bottom: 40px;
+border-left: solid 1px #e6e6e6;
+border-right: solid 1px #e6e6e6;
+border-bottom: solid 1px #e6e6e6;
+padding: 0px 2px;
+box-shadow: 0px 10px 15px -13px grey !important;
+clear:both;
+}
+.myResearch table.profileGroup {
+	border-left: solid 1px #e6e6e6;
+	border-right: solid 1px #e6e6e6;
+	border-bottom: solid 1px #e6e6e6;
+	padding:0px 2px;
+	padding-bottom:5px;
+	padding-top:10px;
 }
 
-table.profileGroup td,
-table.profileGroup th {
-    border-bottom: solid 1px #e6e6e6;
+.myResearch table.profileGroup td,.myResearch table.profileGroup th {
+	border:none;	
+}
+
+.myResearch table.profileGroup th {
+	width:25%;	
+}
+.myResearch.checkedoutList table,.myResearch.holdsList table, .myResearch.finesList table{
+	padding:0px 10px;	
+}
+.myResearch.checkedoutList table th, .myResearch.checkedoutList table td, .myResearch.holdsList table th, .myResearch.holdsList table td,.myResearch.finesList td, .myResearch.finesList th {
+	border-top:solid 1px #e6e6e6;
+	padding:10px 0px;
+}
+.myResearch.finesList table {
+	padding:10px;	
+}
+.myResearch.finesList td, .myResearch.finesList th {
+	padding-top:10px;
+	padding-bottom:10px;
+	padding:10px;	
+}
+.checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
+	margin-top:0;	
+}
+.myResearch .librarycardSettings th, .myResearch .fines th, .myResearch .savedHistory th, .myResearch .sessionHistory th {
+	background:none;
+	padding-bottom:15px;
+	padding-top:10px;
+	font-size:1.1em;
+	font-weight:500;
+}	
+.myResearch .fines tr:nth-child(2) td {
+	border:none;	
+}
+.myResearch .accountList td {
+	border:none;
+	padding-bottom:12px;
+}
+.myResearch select, .myResearch input[type="text"] {
+	padding:5px 5px;
+	margin:5px 0px;
+	max-width:200px;
+}
+.myResearch .profileGroup input[type="text"] {
+	width:200px;	
 }
 
 .profileInfo select#home_library {
     width: 210px;
     padding: 2px;
+}
+.profileInfo.grid_12.static {
+	width:100%;	
 }
 .profileInfo .button {
     margin: 1em 0 0 0;
@@ -1828,8 +2036,8 @@ table.profileGroup th {
 }
 .finesList table.fines td, .myResearch .savedHistory td, .myResearch .sessionHistory td, .accountList td {    
     border-bottom: 1px solid #e6e6e6;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
+    padding-top: 0.9em;
+    padding-bottom: 0.9em;
 }
 .finesList table tr td:first-child {
     padding-left: 29px;
@@ -1841,9 +2049,7 @@ table.profileGroup th {
     border-bottom: 1px solid #cccccc;
 }
 .myResearch .savedHistory, .myResearch .sessionHistory {
-    margin-top: 1em;
     margin-bottom: 2.4em;
-    border-bottom: 1px solid #cccccc;
     box-shadow: 0 9px 33px -35px black;
 }
 .myResearch .sessionHistory {
@@ -2211,8 +2417,15 @@ ul.recordSet .resolver {
 }
 
 .advancedOptions {
+/*
 	margin-bottom:5px;
 	color:#008596;
+*/
+  float: right;
+}
+.advancedOptions p {
+		padding-left: 25px;
+		color: black;
 }
 
 .recommendation {
@@ -2265,25 +2478,76 @@ ul.recordSet .resolver {
 	  width: 453px;
 	  border-right: 6px solid #e6e6e6;
 	  padding: 0 18px 0 6px;
-	  margin: 24px 0 24px 0;
+	  margin: 0 0 24px 0;
 }
 #dualResults .rightColumn {
     float: left;
     width: 453px;
     padding: 0 6px 0 18px;
     border-left: 6px solid #e6e6e6;
-    margin: 24px 0 24px -6px;
+    margin: 0 0 24px -6px;
+}
+#dualResults .dualListHeader .leftColumn {
+    border: none;
+    margin-top: 24px;
+    margin-bottom: 0;
+    padding-right: 24px;
+}
+#dualResults .dualListHeader .rightColumn {
+    border: none;
+    margin-top: 24px;
+    margin-bottom: 0;
+    padding-left: 24px;
+    width: 317px;
+}
+#dualResults .dualListHeader .panelToggleWrapper {
+    float: right;
+    margin: 24px 0 0;
+    text-align: right;
+    max-width: 136px;
+}
+#dualResults .dualListHeader #dualListHeaderPanel .panelToggleWrapper {
+    margin: 0;
+}
+#dualResults .dualListHeader #panelToggle {
+    padding-right: 22px;
+}
+#dualResults .dualListHeader #dualListHeaderPanel {
+    display: block;
+    float: left;
+    margin: 5px 0 1em;
+    width: 100%;
+}
+#dualResults .dualListHeader #dualListHeaderPanel p {
+    margin-bottom: 1em;
+}
+#dualResults .dualListHeader #dualListHeaderPanel .leftColumn {
+    margin-top: 0;
+    margin-bottom: 1px;
+}
+#dualResults .dualListHeader #dualListHeaderPanel .rightColumn {
+    margin-top: 0;
+    margin-bottom: .1em;
+    width: 453px;
+}
+#dualResults .dualRuler {
+    background-color: #00A3B5;
+    height: 2px;
 }
 #dualResults .resultViewOptions {
 	  height: auto;
-	  padding: 12px 4px 12px 4px;
+	  padding: 10px 0;
+}
+#dualResults .resultViewOptions.resultListTop {
+    padding-top: 0;
 }
 #dualResults .resultNumbers {
     line-height: 1em;
+    margin: 0;
 }
 #dualResults .resultOptions {
 	  height: auto;
-	  margin: 0.15em 6px;
+	  margin: 0.15em 0;
 	  line-height: 1em;
 }
 #dualResults .noResultHeader {
@@ -2318,6 +2582,23 @@ ul.recordSet .resolver {
 
 #dualResults .resultOptions a {
     font-weight: bold;
+}
+#dualResults ul.recordSet {
+    margin-top: 20px;
+}
+
+.module-MetaLib .emptySearchNote,
+.module-PCI .emptySearchNote,
+#dualResults .emptySearchNote,
+#dualResults .localFiltersNote {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#dualResults .deleteButtonSmall {
+    float: right;
+    margin-top: -3px;
 }
 
 /** Side facets */
@@ -2370,6 +2651,10 @@ div.sidegroup h4 {
     display: block;
     font-weight: normal;
     margin-left: 40px;
+}
+#sidebarFacets dl.navmenu .checkboxFilter {
+    left: -11px;
+    padding: 10px 7px 8px;
 }
 .sidegroup dl.collapsible dt {
     background: url("../images/datevis_handle_open.png") no-repeat scroll 107% 50% #4C4C4C;
@@ -3039,6 +3324,23 @@ ul.recordSet .addToFavLink a {
 .module-Collection #collectionHeader {
     padding: 22px 0 22px;
 }
+.myResearch .checkboxFilter label {
+	 text-indent:-10000px;	
+	 width:0px;
+}
+
+.myResearch h2 {
+	background:#00a3ad;
+	padding:12px 10px;
+	font-weight:500;
+	font-size:1.5em;
+	color:#fff;
+	letter-spacing:0.3px;	
+}
+.myResearch h3 {
+	margin-bottom:0px;	
+}
+
 .module-Search h2.account,
 .module-Cart h2,
 .resultLinks,
@@ -3061,7 +3363,11 @@ ul.recordSet .addToFavLink a {
     float: left;
     display: block;
     font-size: 1.777em;
+/*
     margin: 0 30px 0 5px;
+*/
+    margin-top: 0;
+    margin-left: 5px;
 }
 
 .correction {
@@ -4485,6 +4791,41 @@ table.datagrid td {
     float:right;
     margin: 10px 0;
 }
+/*** Holdings styles ***/
+.holdingsPlaceHold {
+		vertical-align:middle;
+		line-height:2.5em;
+}
+.holdingsPlaceHold .button {
+		padding:10px 12px;
+}
+	
+.holdingsPlaceHold #selectCard { 
+	float:left;
+}
+.holdingsPlaceHold .selectText {
+	display:inline-block;
+	vertical-align:middle;
+	float:left;
+}
+.holdingsPlaceHold .menuLibCard {
+	float:left;
+	padding-left:7px;
+}
+.holdingsPlaceHold .menuLibCard dd a {
+	color:#464646 !important;
+}
+.UBRequestPlace {
+	color:#fff !important;	
+	margin:0px 5px;
+	float:right;
+}
+.UBRequestPlace:before {
+	width:0px;
+	content:'';
+	height:0px;
+	padding:0;
+}
 
 
 #dyntabnav .holdingsContainerHeader .menuHolder,
@@ -4924,8 +5265,9 @@ p.citationText {
     margin-bottom:20px;
     position:relative;
 }
-
-
+.module-MetaLib .advSearchSection .group {
+    margin-bottom: 15px;
+}
 .group0 .groupSearchDetails {
 }
 .group1 .groupSearchDetails {
@@ -4948,6 +5290,15 @@ p.citationText {
     padding: 15px;
 }
 
+.module-MetaLib .no-hits .notice,
+.module-PCI .no-hits .notice {
+    margin-bottom: 0;   
+}
+
+.module-MetaLib #searchHolder {
+    padding-bottom: 0;
+}
+
 .advSearchSection {
     background: #F5F5F5;
     border: 1px solid #E4E4E4;
@@ -4967,6 +5318,9 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 }
 .searchForm_setWrapper {
     padding: 0 15px;
+}
+.module-MetaLib .searchForm_setWrapper {
+    padding: 0 20px;
 }
 
 .group .searchRelated {
@@ -4998,10 +5352,28 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     top: 3px;
 }
 .advTitle {
-	margin-top:5px;
-	margin-bottom:3px;
-	margin-left:5px;
+	  margin-top:5px;
+	  margin-bottom:3px;
+	  margin-left:5px;
 }
+
+
+#searchForm_set {
+    margin: 10px 0 15px;
+}
+/* Radio buttons */
+#searchForm_set input[type="radio"] {
+    display: none;
+}
+#searchForm_set input[type="radio"] + label span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
 /* Profile / MyResearch */
 
 .headerMyResearch {
@@ -5038,10 +5410,10 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     padding: 4px;
 }
 .module-MyResearch h2, .myResearch h2 {
-    font-size: 1.7em;
-    font-weight: 500;
+    font-size: 1.4em;
     margin:0;
     line-height:1em;
+	/* box-shadow: 0px 10px 20px 0px rgba(1,1,1,0.05) inset; */
 }
 .myResearch ul.recordSet .resultCheckbox {
     display: inherit;
@@ -5101,9 +5473,6 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     top:14px;
     font-size: 11px;
 }
-form[name="bulkActionForm"].visible + .resultOptionLimit {
-    top:77px;
-}
 .favoritesList .resultOptionLimit label {
     font-weight:500;
 }
@@ -5113,6 +5482,25 @@ form[name="bulkActionForm"].visible + .resultOptionLimit {
     position:relative;
     top:18px;
 }
+.favoritesList .bulkActionButtons.visible {
+	display: block;
+	background: #eee;
+}
+.favoritesList .bulkActionButtons.visible.fixed {
+	position:fixed;
+	top:0;
+	margin:0;
+	z-index:100000;	
+	box-shadow: 0px 19px 15px -13px grey;
+	padding-bottom:20px;
+	z-index: 100000;
+	background: rgba(77,77,77,0.95);
+	
+}
+.favoritesList div.bulkActionButtons input[name="export"] {
+padding-right: 20px;
+}
+
 .myResearch .coverDiv {
     width: 62px;
     margin-right: 12px;
@@ -5124,14 +5512,20 @@ form[name="bulkActionForm"].visible + .resultOptionLimit {
     margin: 0 0 0 130px;
     width: 284px;
 }
+.myResearch .dueDate.floatright {
+text-align: right;
+padding-right: 10px !important;
+}
 
 .myResearch.holdsList .resultColumn2,
 .myResearch.holdsList .dueDate,
 .myResearch.checkedoutList .resultColumn2,
 .myResearch.checkedoutList .dueDate,
-.myResearch .favoritesList .resultColumn2,
 .myResearch .favoritesList .dueDate {
     max-width:70%;
+}
+.myResearch .favoritesList .resultColumn2 {
+	max-width:60%;
 }
 
 .myResearchMenu, .tabNavi {
@@ -5233,8 +5627,6 @@ form[name="bulkActionForm"].visible + .resultOptionLimit {
 .module-MyResearch form input[type=text],
 .module-MyResearch form textarea,
 .module-MyResearch form fieldset {
-    width: 98%;
-    max-width: 500px;
     margin-bottom:0.6em;
 }
 .module-Cart form input[type="submit"],
@@ -5244,7 +5636,8 @@ form[name="bulkActionForm"].visible + .resultOptionLimit {
 
 #loginForm #login_target,
 .module-MyResearch #login_target {
-    margin-top: 12px;
+    margin-top: 3px;
+	margin-bottom:8px;
     padding: 5px 6px;
 }
 
@@ -6398,7 +6791,7 @@ div#starRating {
     position: relative;
     top: 3px;
 }
-a.inappropriate {
+a.inappropriate, span.inappropriate {
     position: relative;
     float: right;
     clear: both;
@@ -6523,4 +6916,6 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
+
 

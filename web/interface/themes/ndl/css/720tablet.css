@@ -80,6 +80,9 @@
         border-left:0;
         margin-top:13px;
     }
+	#selectCard .menuLibCard  {
+		margin-top:0px;	
+	}
     
     #headerMenu {
         width:550px;
@@ -274,12 +277,22 @@
 
     /** DualResults - Two Column Results */
     #dualResults .resultViewOptions {
-        font-size: 0.846em;
+        font-size: .846em;
+    }
+    #dualResults .toggleHeader,
+    #dualResults #panelToggle {
+        font-size: .9em;
     }
     #dualResults .leftColumn {
         width: 332px;
     }
     #dualResults .rightColumn {
+        width: 332px;
+    }
+    #dualResults .dualListHeader .rightColumn {
+        width: 196px;
+    }
+    #dualResults .dualListHeader #dualListHeaderPanel .rightColumn {
         width: 332px;
     }
     #dualResults .resultColumn1 {
@@ -289,6 +302,9 @@
 		    width: 300px;
 		    margin-left: 0;
 		}
+    #dualResults ul.recordSet {
+        margin-top: 10px;
+    }
 
     /* Record */
     
@@ -362,6 +378,20 @@
     form[name="bulkActionForm"].visible .allCheckboxBackground {
         top:120px;
     }
+	.favoritesList .bulkActionButtons.visible {
+		display: block;
+		background: #eee;
+		position: static;
+		width: auto;
+		margin-top: 0;
+	}
+	.myResearch .profileGroup .notif {
+		text-align:right;
+		font-size:0.9em;	
+	}
+	.module-MyResearch h2, .myResearch h2 {
+		line-height: auto;
+	}
 
     /* Footer */
     

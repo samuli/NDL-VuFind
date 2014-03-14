@@ -7,18 +7,16 @@
     {include file="Search/tabnavi.tpl"}
   {/if}
   <div class="content">
-    <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if} grid_17">
-      <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
-
+    <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if}{if $noQuery} emptySearchNote{/if} grid_17">
+      {if $noQuery}
+          <p class="notice">{translate text='pci_no_query'}</p>
+      {else}
+          <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
+      {/if}
+    </div>
+    <div class="grid_17">
     {if !empty($filterList) || $checkboxStatus != false} 
-      {php}
-        // Generate link to a non-prefiltered search
-        parse_str($this->get_template_vars('searchParams'), $paramsArray);
-        unset($paramsArray['orfilter'], $paramsArray['prefiltered'], $paramsArray['filter']);
-        $url = $this->get_template_vars('url') . '/PCI/Search?';
-        $this->assign('searchWithoutPrefilter', $url . http_build_query($paramsArray));
-      {/php}
-      <p><a id="searchWithoutPrefilter" href="{$searchWithoutPrefilter}"><strong>{translate text='Search without the prefilter'}</strong></a></p>
+      <p><a id="searchWithoutPrefilter" href="{$removeAllFilters}"><strong>{translate text='Search without the prefilter'}</strong></a></p>
     {/if}
   
     {if $parseError}

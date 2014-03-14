@@ -58,6 +58,13 @@ class AJAX_PopularSearches extends Action
     public function launch()
     {
         global $interface, $configArray;
+        
+        if (!isset($configArray['Piwik']['site_id'])
+            || !isset($configArray['Piwik']['token_auth'])
+        ) {
+            exit;    
+        }
+        
         $options = array(
             'module'       => 'API',
             'format'       => 'json',

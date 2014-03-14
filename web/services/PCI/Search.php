@@ -68,6 +68,10 @@ class Search extends Base
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
+        if ($spatialDateRangeType = $this->searchObject->getSpatialDateRangeFilterType()) {
+            $interface->assign('spatialDateRangeType', $spatialDateRangeType);
+        }
+
         // Search PCI
         $result = $this->searchObject->processSearch(false, true);
         
@@ -94,7 +98,8 @@ class Search extends Base
         $interface->assign(
             'searchParams', $this->searchObject->renderSearchUrlParams()
         );
-        
+
+
         if ($result['recordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
             $this->_processJumpto($result);
@@ -143,6 +148,12 @@ class Search extends Base
                     );
                 }
             }
+            
+            if (empty($displayQuery)) {
+                $interface->assign('noQuery', true);                
+            }
+
+            $interface->assign('removeAllFilters', $this->searchObject->renderSearchUrlWithoutFilters(array('prefiltered')));
             $interface->setTemplate('list-none.tpl');
         }
 

@@ -98,8 +98,9 @@
       <div class="resultItemLine4">
       </div>
 
-   <div class="savedLists info hide" id="savedLists{$summId|escape}">
-      <ul id="lists{$summId|escape}"></ul>
+    {* Display the lists that this record is saved to *}
+    <div class="savedLists info hide" id="savedLists{$summId|escape}">
+      <strong>{translate text="Saved in"}:</strong>
     </div>
     {if $showPreviews}
       {if (!empty($summLCCN) || !empty($summISBN) || !empty($summOCLC))}

@@ -165,6 +165,7 @@ class Results extends Action
         if ($searchObject->getResultTotal() < 1) {
             $interface->setTemplate('list-none.tpl');
             $interface->assign('recordCount', 0);
+            $interface->assign('removeAllFilters', $searchObject->renderSearchUrlWithoutFilters(array('prefiltered')));
 
             // Set up special "no results" recommendations:
             $interface->assign(

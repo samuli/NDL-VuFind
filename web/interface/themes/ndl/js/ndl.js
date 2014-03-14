@@ -246,7 +246,7 @@ function initSidebarFacets() {
         if (/creationdate/.test(self.location.href)) {
            var query = action.split("creationdate",1) + 'creationdate%3A';
         } else {
-            var query = action + 'filter[]=creationdate%3A';
+            var query = action + 'filterpci[]=creationdate%3A';
         }
                 
         // Require numerical values
@@ -359,6 +359,18 @@ function initCustomEyeCandy() {
        }
     });
    }
+   if (document.querySelectorAll('#myFavoritesList .bulkActionButtons').length >= 1) {
+   	 $(window).on('scroll', function () {
+        elementOffset2 = $('.resultOptions').offset().top,
+        distance2      = (elementOffset2 - $(document).scrollTop());
+        if (distance2 < 0) {
+         $('.bulkActionButtons').addClass('fixed');
+       }
+ 	   if (distance2 > 0) {
+         $('.bulkActionButtons').removeClass('fixed');
+       }
+   	 });
+   }
  }
 
 
@@ -460,4 +472,5 @@ function initCoverImageTruncateLink() {
     });
 
 }
+
 

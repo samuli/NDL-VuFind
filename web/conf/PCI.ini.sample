@@ -39,7 +39,6 @@ scdate = sort_year
 screator = sort_author
 
 [Facets]
-tlevel          = facet_pci_tlevel
 topic           = facet_pci_topic
 pfilter         = facet_pci_pfilter
 creator         = facet_pci_creator
@@ -60,3 +59,10 @@ translated_facets[] = pfilter
 ; Prefix to be used in facet translation to avoid mixing facet strings with other
 ; translated content
 facet_translation_prefix = "facet_"
+
+
+[CheckboxFacets]
+tlevel:online_resources = "facet_online_resources"
+
+[CheckboxFacets:pfilter]
+tlevel:peer_reviewed = "facet_peer_reviewed"

@@ -69,7 +69,15 @@ class Search extends Base
         $interface->assign('searchSet', $this->searchObject->getSearchSet());
 
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
-        
+        $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
+
+        if ($spatialDateRangeType = $this->searchObject->getSpatialDateRangeFilterType()) {
+            $interface->assign('spatialDateRangeType', $spatialDateRangeType);
+        }
+
+        $filterListOthers = $this->searchObject->getFilterListOthers();
+        $interface->assign(compact('filterListOthers'));
+
         // Search MetaLib
         if (!empty($displayQuery)) {
             $result = $this->searchObject->processSearch(true, true);
