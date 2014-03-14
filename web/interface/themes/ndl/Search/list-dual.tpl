@@ -50,28 +50,25 @@
 {* Main Listing *}
 <div id="dualResults" class="resultListContainer">
   <div class="content">
-
-
-<div class="dualListHeader">
-  <div class="leftColumn">
-    <h3>{if $recordCount}<a href="{$more|escape}">{translate text="Local Records"}</a>{else}{translate text="Local Records"}{/if}</h3>
-  </div>
-  <div class="rightColumn">
-    <h3>{if $recordCount}<a href="{$pci_more|escape}">{translate text="Primo Central"}</a>{else}{translate text="Primo Central"}{/if}</h3>
-  </div>
-  <p class="resultContentToggle upperToggle"><a href="#" class="toggleHeader">{translate text="More Information"}</a></p>
-  <div class="resultContentList">
-    <div class="leftColumn">
-      {translate text="dualresults_solr_desc"}
+    <div class="dualListHeader">
+      <div class="leftColumn">
+        <h3>{if $recordCount}<a href="{$more|escape}">{translate text="Local Records"}</a>{else}{translate text="Local Records"}{/if}</h3>
+      </div>
+      <div class="rightColumn">
+        <h3>{if $recordCount}<a href="{$pci_more|escape}">{translate text="Primo Central"}</a>{else}{translate text="Primo Central"}{/if}</h3>
+      </div>
+      <p class="panelToggleWrapper"><a  href="#" id="panelToggle" class="panelToggleUpper">{translate text="More Information"}</a></p>
+      <div id="dualListHeaderPanel" style="display:none;">
+        <div class="leftColumn">
+          {translate text="dualresults_solr_desc"}
+        </div>
+        <div class="rightColumn">
+          {translate text="dualresults_primo_desc"}
+        </div>
+        <p class="panelToggleWrapper"><a href="#" id="panelToggle" class="panelToggleLower">{translate text="More Information"}</a></p>
+      </div>
+      <hr class="dualRuler">
     </div>
-    <div class="rightColumn">
-      {translate text="dualresults_primo_desc"}
-    </div>
-    <p class="resultContentToggle lowerToggle"><a href="#" class="toggleHeader">{translate text="More Information"}</a></p>
-  </div>
-  <hr class="dualRuler">
-</div>
-
 
 	  <div class="leftColumn">
 	    {include file="Search/list-dual-solr.tpl"}
@@ -89,7 +86,6 @@
 
   <hr class="dualRuler">
 
-
   </div>
   <script type="text/javascript">
     var url = "{$searchWithFilters|escape:"javascript"|replace:"/Search/Results":"/AJAX/AJAX_PCI"}&method=pci";
@@ -101,7 +97,20 @@
   </script>
 
   <script type="text/javascript">
-{literal}
+  {literal}
+
+    $(document).ready(function(){
+      $("#panelToggle.panelToggleUpper").click(function(){
+        $("#dualListHeaderPanel").slideToggle("fast");
+        $('.dualListHeader .panelToggleUpper').hide();
+      });
+      $("#panelToggle.panelToggleLower").click(function(){
+        $("#dualListHeaderPanel").slideToggle("fast");
+        $('.dualListHeader .panelToggleUpper').delay(150).show(0);
+      });
+    });
+
+/* Remove - START */
     $('.dualListHeader a.toggleHeader').click(function() {
         $('.dualListHeader .resultContentToggle.upperToggle').hide();
     });
@@ -110,7 +119,8 @@
         $('.dualListHeader .resultContentToggle.upperToggle a.toggleHeader').trigger('click');
         $('.dualListHeader .resultContentToggle.upperToggle').delay(100).show(0);
     });
-{/literal}
+/* Remove - END */
+  {/literal}
   </script>
 </div>
 

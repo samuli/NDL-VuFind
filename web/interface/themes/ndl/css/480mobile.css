@@ -455,7 +455,7 @@
     #dualResults .dualListHeader .rightColumn {
         width: 74px;
     }
-    #dualResults .dualListHeader .resultContentList .rightColumn {
+    #dualResults .dualListHeader #dualListHeaderPanel .rightColumn {
         width: 210px;
     }
     #dualResults .resultColumn2 {

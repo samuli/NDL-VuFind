@@ -279,7 +279,8 @@
     #dualResults .resultViewOptions {
         font-size: .846em;
     }
-    #dualResults .toggleHeader {
+    #dualResults .toggleHeader,
+    #dualResults #panelToggle {
         font-size: .9em;
     }
     #dualResults .leftColumn {
@@ -291,7 +292,7 @@
     #dualResults .dualListHeader .rightColumn {
         width: 196px;
     }
-    #dualResults .dualListHeader .resultContentList .rightColumn {
+    #dualResults .dualListHeader #dualListHeaderPanel .rightColumn {
         width: 332px;
     }
     #dualResults .resultColumn1 {
@@ -301,6 +302,9 @@
 		    width: 300px;
 		    margin-left: 0;
 		}
+    #dualResults ul.recordSet {
+        margin-top: 10px;
+    }
 
     /* Record */
     
