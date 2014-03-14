@@ -1124,6 +1124,7 @@ body > .ui-widget .button {
     left: 402px;
     width: 206px;
     height: 18px;
+	z-index:10000;
 }
 .keepFilters input {
     margin-top: .15em;
