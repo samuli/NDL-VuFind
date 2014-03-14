@@ -13,22 +13,21 @@
   <p class="backLink"><a href="{$path}/MyResearch/Accounts">&laquo;{translate text="Back to Your Account"}</a></p>
 {if $errorMsg}
   <div class="messages">
-    {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
+   <div class="error">
+    {if $errorMsg === 'Invalid Patron Login'}{translate text="Login Failed Info"}
+    {else}
+     {$errorMsg|translate}     
+    {/if} 
+   </div>
   </div>
 {/if}
 <form method="post" name="editAccountForm" action="{$url}/MyResearch/Accounts" id="editAccountForm">
 {if $id}
   <input type="hidden" name="id" value="{$id|escape}" />
 {/if}
-  <label class="displayBlock" for="account_name">{translate text="Library Card Name"}</label>
-  <input id="account_name" type="text" name="account_name" value="{$account_name|escape}" size="50" 
-    class="mainFocus" />
-    <label class="displayBlock" for="username">{translate text='Username'}</label>
-    <input id="username" type="text" name="username" value="{$cat_username|escape}" class="{jquery_validation required='This field is required'}"/>
-    <label class="displayBlock" for="password">{translate text='Password'}</label>
-    <input id="password" type="password" name="password" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
+{if $loginTargets}
     <br class="clear"/>
-  {if $loginTargets}
+  	<label class="displayBlock" for="login_target">{translate text="Choose library"}</label>
     <select id="login_target" name="login_target" class="{jquery_validation required='Please choose a library'}">
       <option value="">{translate text="Choose library"}</option>
     {foreach from=$loginTargets item=target}
@@ -37,7 +36,15 @@
     </select>
     <br class="clear"/>
   {/if}
-  <input class="button buttonFinna" type="submit" name="submit" value="{translate text="Save"}"/>
+  <label class="displayBlock" for="account_name">{translate text="Library Card Name"}</label>
+  <input id="account_name" type="text" name="account_name" value="{$account_name|escape}" size="50" 
+    class="mainFocus" placeholder="{translate text ='librarycard_placeholder'}"/>
+    <label class="displayBlock" for="username">{translate text='Username'}</label>
+    <input id="username" type="text" name="username" value="{$cat_username|escape}" class="{jquery_validation required='This field is required'}"/>
+    <label class="displayBlock" for="password">{translate text='Password'}</label>
+    <input id="password" type="password" name="password" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
+    <br class="clear"/>
+  <input class="button buttonFinna" type="submit" name="submit" {if $id}value="{translate text="Update"}"{else}value="{translate text="Save"}"{/if}/>
 </form>
 <script type="text/javascript">
   {literal}
