@@ -102,23 +102,14 @@
       $("#panelToggle.panelToggleUpper").click(function(){
         $("#dualListHeaderPanel").slideToggle("fast");
         $('.dualListHeader .panelToggleUpper').hide();
+		return false;
       });
       $("#panelToggle.panelToggleLower").click(function(){
         $("#dualListHeaderPanel").slideToggle("fast");
         $('.dualListHeader .panelToggleUpper').delay(150).show(0);
+		return false;
       });
     });
-
-/* Remove - START */
-    $('.dualListHeader a.toggleHeader').click(function() {
-        $('.dualListHeader .resultContentToggle.upperToggle').hide();
-    });
-    $('.dualListHeader .resultContentToggle.lowerToggle .toggleHeader').click(function() {
-        $('.dualListHeader .resultContentToggle.upperToggle').show;
-        $('.dualListHeader .resultContentToggle.upperToggle a.toggleHeader').trigger('click');
-        $('.dualListHeader .resultContentToggle.upperToggle').delay(100).show(0);
-    });
-/* Remove - END */
   {/literal}
   </script>
 </div>
