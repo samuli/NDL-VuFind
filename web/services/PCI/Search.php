@@ -99,7 +99,10 @@ class Search extends Base
             'searchParams', $this->searchObject->renderSearchUrlParams()
         );
 
-
+        if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('Primo Central')) {
+            $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);
+        }
+        
         if ($result['recordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
             $this->_processJumpto($result);

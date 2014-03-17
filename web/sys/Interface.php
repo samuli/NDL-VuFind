@@ -545,6 +545,42 @@ class UInterface extends Smarty
             }
         }
     }
+
+    /**
+     * Returns an info message of the active prefilter customized 
+     * for the given search type. The message is displayed in the UI by 
+     * search services that do not support prefilters (PCI/MetaLib).
+     * 
+     * @param string $searchType Name of search type, needs to match a
+     * translation key.
+     * 
+     * @return string Messaga, or null if no prefilter is active
+     * or the active prefilter has no filters defined.
+     */
+    public function getGlobalFiltersNotification($searchType)
+    {
+        if (isset($_REQUEST['prefiltered'])) {
+            $code = $_REQUEST['prefiltered'];
+            if ($code != '-') {
+                $prefilters = getExtraConfigArray('prefilters');
+                if (!isset($prefilters[$code])) {
+                    return null;
+                }
+                $prefilter = $prefilters[$code];
+                if (!isset($prefilter['filter']) || count($prefilter['filter']) == 0) {
+                    // No warning if prefilter has no filters
+                    return null;
+                }
+
+                $prefilterStr = '<strong>' . translate($code) . '</strong>';
+                $showGlobalFiltersNote = translate('global_filters_note');
+                $showGlobalFiltersNote = str_replace('{0}', translate($searchType), $showGlobalFiltersNote);
+                $showGlobalFiltersNote = str_replace('{1}', $prefilterStr, $showGlobalFiltersNote);                
+                return $showGlobalFiltersNote;
+            }
+        }
+        return null;
+    }
     
     /**
      * Check if a .local.tpl version of a template exists and return it if it does

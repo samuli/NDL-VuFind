@@ -9,8 +9,19 @@
     <div class="searchFormOuterWrapper">
 	    <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">
-	        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" autocomplete="off" class="last mainFocus clearable" placeholder='{translate text="Find"}&hellip;' />
+	        <input id="searchForm_input" type="text" name="lookfor" size="22" value="{$lookfor|escape}" autocomplete="off" class="last mainFocus clearable" placeholder='{translate text="Find"}&hellip;' role="textbox" />
 	      </div>
+
+          {if $prefilterList}
+	      <div class="styled_select">
+	        <select id="searchForm_filter" class="searchForm_styled" name="prefilter">
+            {foreach from=$prefilterList item=searchDesc key=searchVal}    
+	           <option value="{$searchVal|escape}"{if $searchVal == $activePrefilter || ($activePrefilter == null && $searchVal == "-") } selected="selected"{/if}>{$searchDesc|translate}</option>
+	        {/foreach}
+	       </select>
+	     </div>
+         {/if}
+
 	      <input id="searchForm_searchButton" type="submit" name="SearchForm_submit" value="{translate text="Find"}"/>
 	      <div class="clear"></div>
 	    </div>

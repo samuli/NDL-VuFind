@@ -146,6 +146,9 @@
 <div class="resultListContainer">
   <div class="content">
   <div id="resultList" class="{if ($sidebarOnLeft && !empty($sideFacetSet))}sidebarOnLeft last{/if} grid_17">
+  {if $showGlobalFiltersNote}
+     <div class="globalFiltersNote">{$showGlobalFiltersNote}</div>
+  {/if}
 
   {if $subpage}
     {include file=$subpage}

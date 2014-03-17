@@ -71,6 +71,10 @@ class Search extends Base
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
+        if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('MetaLib Searches')) {
+            $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);
+        }
+
         if ($spatialDateRangeType = $this->searchObject->getSpatialDateRangeFilterType()) {
             $interface->assign('spatialDateRangeType', $spatialDateRangeType);
         }

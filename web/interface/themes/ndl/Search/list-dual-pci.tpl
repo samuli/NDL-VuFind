@@ -18,6 +18,9 @@
       {if $recordCount}<a href="{$more|escape}">{translate text="More"} &raquo;</a>{/if}
     </div>
   </div>
+    {if $showGlobalFiltersNote}
+     <div class="localFiltersNote">{$showGlobalFiltersNote}</div>
+    {/if}
      {if $showLocalFiltersNote}
      <div class="localFiltersNote">
        <a href="{$searchWithoutLocalFilters|escape}" title="{translate text="Remove Filters"}"><span class="roundButton deleteButtonSmall"></span></a>
@@ -25,6 +28,10 @@
      </div>
      {/if}
   {else}
+    {if $showGlobalFiltersNote}
+     <div class="globalFiltersNote">{$showGlobalFiltersNote}</div>
+    {/if}
+
      {if $showLocalFiltersNote}
      <div class="localFiltersNote">
         <a href="{$searchWithoutLocalFilters|escape}" title="{translate text="Remove Filters"}"><span class="roundButton deleteButtonSmall"></span></a>

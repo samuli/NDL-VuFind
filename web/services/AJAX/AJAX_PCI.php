@@ -117,6 +117,11 @@ class AJAX_PCI extends Action
         $interface->assign('lookfor', $searchObject->displayQuery());
 
         $interface->assign('more', $searchObject->renderSearchUrl());
+
+
+        if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('Primo Central')) {
+            $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);
+        }
         
         $searchWithoutLocalFilters = $searchObject->renderSearchUrl(false);        
         $searchWithoutLocalFilters = str_replace('/PCI/Search', '/Search/DualResults', $searchWithoutLocalFilters);

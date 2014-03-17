@@ -172,10 +172,16 @@ if (in_array($module, array('Search', 'PCI'))
         $refAction = array_pop($pathParts);
         $refModule = array_pop($pathParts);   
 
-        if (in_array($refModule, array('Search', 'PCI')) 
-            && in_array($refAction, array('Results', 'DualResults', 'Search'))
+        if (in_array($refModule, array('Search', 'PCI', 'MetaLib')) 
+            && in_array($refAction, array('Results', 'DualResults', 'Search', 'Home'))
         ) {
-            $overridePrefilter = true;
+            $overridePrefilter = true;            
+            if (in_array($refModule, array('PCI', 'MetaLib'))
+                && $refAction == 'Home'
+            ) {
+                // When arriving from PCI/MetaLib homepage, preserve Module and redirect to search results.
+                $refAction = 'Search';
+            }
         }
     } 
 }
