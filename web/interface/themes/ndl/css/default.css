@@ -1647,7 +1647,6 @@ fieldset.publishDateLimit .ui-slider {
 }
 .myResearch .noContentMessage {
 	padding:10px;
-	padding-top:0;	
 }
 .checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
 	margin:0;	
