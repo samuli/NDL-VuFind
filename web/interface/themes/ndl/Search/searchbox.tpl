@@ -1,9 +1,9 @@
 <!-- START of: Search/searchbox.tpl -->
 <div id="searchFormContainer" class="searchform last content">
-{if in_array('search', $contextHelp)}
- <span id="contextHelp_search" class="showHelp">{translate text="Search Tips"}</span>
-{/if}
 {if $searchType != 'advanced'}
+  {if in_array('search', $contextHelp)}
+  <span id="contextHelp_search" class="showHelp">{translate text="Search Tips"}</span>
+  {/if}
   <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
