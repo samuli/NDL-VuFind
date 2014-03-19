@@ -162,7 +162,7 @@ if ($module == 'Content' && !is_readable("services/$module/$action.php")) {
 // by resolving module & action from HTTP referer.
 $overridePrefilter = false;
 
-if (in_array($module, array('Search', 'PCI'))
+if (in_array($module, array('Search', 'PCI', 'MetaLib'))
     && ((isset($_REQUEST['prefilter']) && $_REQUEST['prefilter'] == '-'))
 ) {
     if (isset($_SERVER['HTTP_REFERER'])) {
