@@ -354,7 +354,7 @@ End Cover Image *}
   </tr>
   {/foreach}
   {/if}
-
+  {* tag are disabled for now
   <tr valign="top" class="recordTags">
     <th>{translate text='Tags'}: </th>
     <td>
@@ -372,6 +372,7 @@ End Cover Image *}
       </div>
     </td>
   </tr>
+  *}
 </table>
 {* End Main Details *}
 
