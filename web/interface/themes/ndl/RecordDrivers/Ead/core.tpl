@@ -432,7 +432,7 @@
       </td>
     </tr>
     {/if}
-    
+    {* tags are disabled for now
     <tr valign="top" class="recordTags">
       <th>{translate text='Tags'}: </th>
       <td>
@@ -450,6 +450,7 @@
         </div>
       </td>
     </tr>
+    *}
   </table>
   {* End Main Details *}
 </div>

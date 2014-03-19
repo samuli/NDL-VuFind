@@ -8,8 +8,6 @@
   </div>
 
   <div class="content">
-
-  <p class="backLink"><a href="{$path}/MyResearch/Favorites">&laquo;{translate text="Back to Your Account"}</a></p>
   <form method="post" name="editForm" action="">
   {if empty($savedData)}
     <p>
@@ -21,15 +19,19 @@
     </p>
   {else}
     {foreach from=$savedData item="current"}
-      <strong>{translate text='List'}: {$current.listTitle|escape:"html"}</strong>
+      <h3><strong>{translate text='List'}: {$current.listTitle|escape:"html"}</strong></h3>
       <input type="hidden" name="lists[]" value="{$current.listId}"/>
+      {* tags are disabled for now
       <label class="displayBlock" for="edit_tags{$current.listId}">{translate text='Tags'}:</label>
+     
       <input id="edit_tags{$current.listId}" type="text" name="tags{$current.listId}" value="{$current.tags|escape:"html"}" size="50"/>
+      *}
       <label class="displayBlock" for="edit_notes{$current.listId}">{translate text='Notes'}:</label>
       <textarea id="edit_notes{$current.listId}" class="displayBlock" name="notes{$current.listId}" rows="3" cols="50">{$current.notes|escape:"html"}</textarea>
       <br/>
     {/foreach}
     <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Save'}"/>
+    <a href="{$path}/MyResearch/Favorites/MyList" class="button buttonFinna" onclick="history.go(-1);return false;">{translate text="Reset"}</a>
   {/if}
   </form>
   </div>

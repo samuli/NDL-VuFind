@@ -46,6 +46,7 @@
       {if $listAuthor}
         {translate text='by'}: <a href="{$url}/Search/Results?lookfor={$listAuthor|escape:"url"}&amp;type=Author">{$listAuthor|escape}</a><br/>
       {/if}
+      {* tags are disabled for now
       {if $listTags}
         <strong>{translate text='Your Tags'}:</strong>
         {foreach from=$listTags item=tag name=tagLoop}
@@ -53,6 +54,7 @@
         {/foreach}
         <br/>
       {/if}
+      *}
       {if $listNotes}
         <strong>{translate text='Notes'}:</strong>
         {if count($listNotes) > 1}<br/>{/if}
