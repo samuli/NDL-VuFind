@@ -390,7 +390,13 @@ EOD;
         if (isset($configArray['OpenURL']['url']) && $configArray['OpenURL']['url']) {
             // Parse the OpenURL and extract parameters
             $link = $item->xpath('.//sear:LINKS/sear:openurl');
-            if ($link) {
+            if (!$link) {
+                $link = $item->xpath('.//sear:GETIT/@GetIt2');
+                if (!$link || $link[0] == "") {
+                    $link = $item->xpath('.//sear:GETIT/@GetIt1');
+                }
+            }
+            if ($link && strpos($link[0], 'url_ver=Z39.88-2004') !== false) {
                 $params = explode('&', substr($link[0], strpos($link[0], '?') + 1));
                 $openurl = 'rfr_id=' . urlencode($configArray['OpenURL']['rfr_id']);
                 foreach ($params as $param) {
