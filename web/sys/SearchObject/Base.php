@@ -557,6 +557,10 @@ abstract class SearchObject_Base
             $params[] = "prefiltered=" . $_REQUEST['prefiltered'];
         }
         
+        if (isset($_REQUEST['set'])) {
+            $params[] = "set=" . $_REQUEST['set'];
+        }
+        
         return $params;
     }
 

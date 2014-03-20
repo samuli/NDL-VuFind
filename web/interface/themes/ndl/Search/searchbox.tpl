@@ -66,11 +66,7 @@
           {/foreach}
       {/foreach}
     {/foreach}
-
-
-
       </div>
-
     </div>
   {/if}
 

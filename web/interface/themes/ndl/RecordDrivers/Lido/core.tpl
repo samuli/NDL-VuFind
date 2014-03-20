@@ -354,14 +354,7 @@ End Cover Image *}
   </tr>
   {/foreach}
   {/if}
-
-  {if !empty($coreWebResource)}
-  <tr valign="top" class="webResource">
-    <th>{translate text='available_online'}: </th>
-    <td><a href="{$coreWebResource|escape}">{$coreWebResource|escape}</a></td>
-  </tr>
-  {/if}
-
+  {* tag are disabled for now
   <tr valign="top" class="recordTags">
     <th>{translate text='Tags'}: </th>
     <td>
@@ -379,6 +372,7 @@ End Cover Image *}
       </div>
     </td>
   </tr>
+  *}
 </table>
 {* End Main Details *}
 
