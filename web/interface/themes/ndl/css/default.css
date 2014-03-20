@@ -4211,6 +4211,9 @@ div.coverImagesLessLink {
     margin: 0 0 5px 0;
     padding: 6px 0;
 }
+.webResource {
+    word-wrap: break-word;    
+}
 #recordMetadata .recordHierarchyLinks {
     margin: -6px 0 12px 0;
 }

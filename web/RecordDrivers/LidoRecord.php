@@ -84,6 +84,7 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreMeasurements', $this->getMeasurements());        
         $interface->assign('coreEvents', $this->getEvents());
         $interface->assign('coreInscriptions', $this->getInscriptions());
+        $interface->assign('coreWebResource', $this->getWebResource());
         
         $interface->assign('coreIdentifier', $this->getIdentifier());
         
@@ -528,6 +529,18 @@ class LidoRecord extends IndexRecord
         return $results;
     }
     
+    /**
+     * Get the web resource link from the record.
+     *
+     * @return mixed
+     * @access protected
+     */
+    protected function getWebResource()
+    {
+        $url = $this->xml->xpath("lido/descriptiveMetadata/objectRelationWrap/relatedWorksWrap/relatedWorkSet/relatedWork/object/objectWebResource");
+        return isset($url[0]) ? $url[0] : false;
+    }
+
     /**
      * Get measurements and augment them data source specifically if needed.
      *
