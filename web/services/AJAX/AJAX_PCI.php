@@ -30,6 +30,8 @@
  */
 
 require_once 'Action.php';
+require_once 'services/MyResearch/Login.php';
+require_once 'services/MyResearch/lib/User.php';
 
 /**
  * Home Action for Resource
@@ -126,6 +128,10 @@ class AJAX_PCI extends Action
         $searchWithoutLocalFilters = $searchObject->renderSearchUrl(false);        
         $searchWithoutLocalFilters = str_replace('/PCI/Search', '/Search/DualResults', $searchWithoutLocalFilters);
         $interface->assign('searchWithoutLocalFilters', $searchWithoutLocalFilters);
+        
+        // We want to guide the user to login for access to licensed material
+        $interface->assign('methodsAvailable', Login::getActiveAuthorizationMethods());
+        $interface->assign('userAuthorized', UserAccount::isAuthorized());
 
         if ($result['recordCount'] > 0) {
             // Display Listing of Results

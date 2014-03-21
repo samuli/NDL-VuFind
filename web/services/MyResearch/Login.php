@@ -161,6 +161,42 @@ class Login extends Action
             $interface->assign('lightbox', true);
         }
     }
+    
+    /**
+    * Return all authorization methods in use
+    *
+    * @return array
+    */
+    static public function getActiveAuthorizationMethods()
+    {
+        global $configArray;
+        
+        $setAuthorizationMethods = array();
+        if (isset($configArray['Authorization']['authentication_methods'])) {
+            $setAuthorizationMethods = $configArray['Authorization']['authentication_methods'];
+        }
+
+        $setActiveMethods = array();
+        if (isset($configArray['Authentication']['mozillaPersona'])
+            && $configArray['Authentication']['mozillaPersona']
+            && in_array('MozillaPersona', $setAuthorizationMethods)
+        ) {
+            $setActiveMethods[] = 'MozillaPersona';
+        }
+        if (($configArray['Authentication']['libraryCard']
+            || (!isset($configArray['Authentication']['libraryCard'])))
+            && in_array('ILS', $setAuthorizationMethods)
+        ) {
+            $setActiveMethods[] = 'ILS';
+        }
+        if (isset($configArray['Authentication']['shibboleth'])
+            && $configArray['Authentication']['shibboleth']
+            && in_array('Shibboleth', $setAuthorizationMethods)
+        ) {
+            $setActiveMethods[] = 'Shibboleth';
+        }
+        return $setActiveMethods;
+    }    
 }
 
 ?>

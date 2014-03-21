@@ -393,6 +393,17 @@
 		line-height: auto;
 	}
 
+    /*** Login ***/
+    .loginForm .grid_7, .loginForm .grid_14 {
+        width: 90% !important;
+    }
+    .loginForm .description {
+        margin-top:20px;
+    }
+    .loginForm .personaLogin {
+        margin-top: 20px;
+    }
+
     /* Footer */
     
     #footer {

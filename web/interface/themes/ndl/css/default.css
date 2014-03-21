@@ -1976,83 +1976,135 @@ clear:both;
 .myResearch .sessionHistory {
     margin-bottom: 1em;
 }
+.myResearch .title {
+	font-size:1.2em;    
+}
+
+/***   Login information    ***/
+
 .loginForm h3 {
-    font-size: 1em;
-    font-weight: bold;
+	background: #b0e9db;
+	text-align: center;
+	width: 100%;
+	padding: 5px 10px;
+	margin-top: 20px;
+	font-weight: 400;
+	background: none;
+	border-bottom: 1px solid #d3d3d3;
 }
 .main .loginForm {
-    padding-bottom:20px;
-    overflow:auto;
+	padding-bottom:20px;
+	overflow:auto;
 }
 .loginForm label {
-    font-size: 1em;
-    font-weight: normal;
+	font-size: 1em;
+	font-weight: normal;
+}
+.loginForm label.invalid {
+	color: #EA5200;
+	padding-bottom: 2px;
+	margin-left: 16%;
+	display: block;
+	text-align: left;
 }
 .loginForm .button {
-    margin: 1.5em 0;
-    float: right;
+	margin: 1.5em 0;
 }
 .loginForm .description {
-    padding: 1em;
-    background-color: #f3f3f3;
-    margin-top: 12px; 
+	padding: 1em;
+	background-color: #f3f3f3;
+	margin-top: 12px; 
 }
 .loginForm .descriptionTitle {
-    font-weight: bold;
+	font-weight: bold;
+}
+.loginForm .description {
+	font-size:1.1em;
+	font-weight:300;
+	padding: 2em 2em;
+	background-color: #edf3f6;
+	margin-top: -12px;
+	margin-right: -20px;
 }
 .loginForm .separator, .loginForm .separatorSmall {
-    clear: left;
-    float: left;
-    margin: 18px 0;
-    padding: 0;
-    border-top: 1px solid #dddddd;
-    background: none;
-    height: 1px;
-    width: 592px;
+	clear: left;
+	float: left;
+	margin: 18px 0;
+	padding: 0;
+	border-top: 1px solid #dddddd;
+	background: none;
+	height: 1px;
+	width: 592px;
 }
 .loginForm .separatorSmall {
-    width: 544px;
+	width: 544px;
 }
 .loginForm .separator .text, .loginForm .separatorSmall .text {
-    position: relative;
-    left: 4em;
-    top: -0.75em;
-    padding: 0 1em 0 1em;
-    background-color: #ffffff;
+	position: relative;
+	left: 4em;
+	top: -0.75em;
+	padding: 0 1em 0 1em;
+	background-color: #ffffff;
 }
 .loginForm .loginAction, .loginForm .loginTitle {
-    clear: left;
-    float: left;
-    width: 240px;
-    margin-right: 56px;
-    margin-left:5px;
 }
 .loginForm .loginTitle {
-    margin-bottom: 1em;
+	margin-bottom: 1em;
 }
-.loginInfo {
-    margin-bottom:15px;
+.loginForm .loginInfo {
+	margin-bottom:0px;
 }
 .loginTitle {
-    font-weight: bold;
-    font-size: 1.230em;
+	font-weight: bold;
+	font-size: 1.230em;
 }
-.loginForm .loginDescription {
-    float: left;
-    width: 296px;
-    margin-right: 12px;
-    margin-bottom: 1em;
+.libraryLogin, .libraryLogin .button, .shibLogin, .personaLogin {
+	text-align:center;  
+}
+.shibLogin {
+	margin-top:10px; 
+}
+.personaLogin {
+	margin-top:50px;    
+}
+.libraryLogin input[type="password"],.libraryLogin input[type="text"], .libraryLogin select {
+	width:80%;
+	max-width: 200px;
+}
+.loginForm .shibText h3 {
+	background: #edf3f6;
+	color: #464646;
+	font-weight: 300;
+	font-size: 1.23em;
+	text-align: center;
+	padding: 10px;
+	border:none;    
 }
 .loginForm .loginDescriptionSmall {
-    float: left;
-    width: 248px;
-    margin-right: 12px;
-    font-size: .846em;
 }
-.loginForm input[type='text'], .loginForm input[type='password'], .loginForm select {
-    width: 100%;
-    -moz-box-sizing: border-box;
+.loginForm .alreadyLogged {
+	font-size:1.23em;
+	color:#666;
+	margin-top:20px;
+	font-weight:bold;
 }
+.loginForm form input[type="submit"] {
+	margin: 15px 0;
+	margin-top:30px !important;
+}
+#modalDialog #errormessage {
+	margin-bottom:0px !important;   
+}
+#modalDialog .loginInfo, #modalDialog .grid_7, #modalDialog .grid_14 {
+	margin-left:0px;    
+}
+
+/*** Login Notification for PCI and MetaLib ***/
+.loginNotification p {
+	background: #edf3f6;
+	padding: 10px 15px;
+	margin-bottom: 20px; 
+} 
 
 /*** Result List ***/
 .resultHeader .headerLeft {
@@ -2901,10 +2953,12 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 20px;
 }
 .persona-login {
-    background-image:url(../images/persona-logo.png);
-    background-repeat:no-repeat;
-    background-position: left;
-    padding:.5em .5em .5em 22px;
+	background-image: url(../images/persona-logo.jpg);
+	background-repeat: no-repeat;
+	background-position: left;
+	padding: 25px 60px;
+	font-size: 1.23EM;
+	margin-left: 30PX;
 }
 .persona-login-loading {
     background-image: url(../images/ajax_loading.gif);

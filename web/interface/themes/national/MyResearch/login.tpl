@@ -25,27 +25,6 @@
    <p class="loginInfo">{translate text="Login information"}</p>
   </div>
   <div class="clear"></div>
-
-  {if $sessionInitiator}
-    {assign var=loginNumber value=$loginNumber+1}
-  <div class="loginAction">
-    <h3 class="grid_14">{$loginNumber}. {translate text="login_title_shibboleth"}</h3>
-  </div>
-  <div class="clear"></div>
-  <div class="shibLogin grid_7">
-        <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
-  </div>
-  <div class="grid_7">
-    <div class="loginDescription{$lbSmall}">
-    <div class="description {if !$libraryCard}hide{/if}">
-      {translate text='login_desc_connectcard_html'}
-    </div>
-  </div>
-  </div>
-  <div class="clear"></div>
-  <div class="shibText grid_14"><h3>{translate text='login_shibboleth_notification'}</h3></div>
-  {/if}
-  <div class="clear"></div>
   
   {if $libraryCard && $authMethod != 'Shibboleth'}
     {assign var=loginNumber value=$loginNumber+1}
@@ -106,6 +85,26 @@
  </div>
   {/if}
   <div class="clear"></div>
+  
+   {if $sessionInitiator}
+    {assign var=loginNumber value=$loginNumber+1}
+  <div class="loginAction">
+    <h3 class="grid_14">{$loginNumber}. {translate text="login_title_shibboleth"}</h3>
+  </div>
+  <div class="clear"></div>
+  <div class="shibLogin grid_7">
+        <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
+  </div>
+  <div class="grid_7">
+    <div class="loginDescription{$lbSmall}">
+    <div class="description {if !$libraryCard}hide{/if}">
+      {translate text='login_desc_connectcard_html'}
+    </div>
+  </div>
+  </div>
+  {/if}
+  <div class="clear"></div>
+  
   {if $mozillaPersona}
     {assign var=loginNumber value=$loginNumber+1}
     {if $libraryCard || $sessionInitiator}
