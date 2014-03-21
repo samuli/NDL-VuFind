@@ -6,7 +6,7 @@
 </div>
 <div class="content">
   <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-    {include file="Metalib/search-sets.tpl"}
+    {include file="MetaLib/search-sets.tpl"}
   </div>
   <div id="metalibDescription" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_16 prefix_1">
     <p>{image src="nelli-logo.png"}Nelli-portaali (National Electronic Library Interface) on kansallinen kirjastojen tiedonhakujärjestelmä. Se on käytettävissä yliopisto- ja ammattikorkeakoulukirjastoissa sekä yleisissä kirjastoissa.</p> 

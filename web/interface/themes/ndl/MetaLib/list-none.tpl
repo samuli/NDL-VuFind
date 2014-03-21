@@ -17,7 +17,7 @@
     <p class="error">{translate text='nohit_parse_error'}</p>
   {/if}
   <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-18 sidebarOnLeft{else}last{/if} grid_6">
-    {include file="Metalib/search-sets.tpl"}
+    {include file="MetaLib/search-sets.tpl"}
   </div>
 
   {if $spellingSuggestions}

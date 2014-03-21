@@ -83,7 +83,7 @@
       {/if}
     </div>
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-      {include file="Metalib/search-sets.tpl"}
+      {include file="MetaLib/search-sets.tpl"}
     </div>
   </div>
 </div>
