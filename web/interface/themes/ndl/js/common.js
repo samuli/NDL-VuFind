@@ -164,6 +164,11 @@ $(document).ready(function(){
         if (opt) {
             var retainFilters = opt.is(":checked") ? 1 : 0;
             $(this).append('<input type="hidden" name="retainFilters" value="' + retainFilters + '" />');            
+
+            if (!retainFilters) {
+                // Reset timerange query type
+                $(this).find('input[name="search_sdaterange_mvtype"]').remove();
+            }
         }
     });
 });
@@ -608,3 +613,4 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed, fixed
 
 
 }
+
