@@ -153,7 +153,7 @@
       </td>
     </tr>
 
-    {if !empty($corePublications)}
+    {if !empty($corePublications) && is_array($corePublications) && !empty($corePublications.0)}
     <tr valign="top" class="recordPublications">
       <th>{translate text='Published'}: </th>
       <td>
