@@ -360,6 +360,7 @@ abstract class SearchObject_Base
                         $display = translate(array('prefix' => $translationPrefix, 'text' => $display));
                     }
 
+                    $removeDaterangeType = false;
                     // Convert date display format from [YYYY TO YYYY] to YYYY - YYYY
                     if ($field == 'main_date_str' || $field == 'creationdate') {
                         $display = preg_replace('/\[([0-9]+)( TO )([0-9]+)\]/', "$1 - $3", $display);
@@ -370,6 +371,7 @@ abstract class SearchObject_Base
                         // Pretty display of date ranges
                         $display = $this->spatialDateRangeFilterToString($display);
                         $facetLabel = 'Date Range'; 
+                        $removeDaterangeType = true;
                     } else if ($field == 'building') {
                         // Translate building format and build hierarchy
                         $buildings = explode('/', rtrim($value, '/'));
@@ -385,7 +387,15 @@ abstract class SearchObject_Base
                             }
                         }
                     }
-                    
+
+                    // Stash current date range query type...
+                    $tmp = $this->spatialDateRangeFilterType;
+                    if ($removeDaterangeType) {
+                        // ...and set it temporary to null, so that the 
+                        // type doesn't get included in the removal url.           
+                        $this->spatialDateRangeFilterType = null;                        
+                    }
+
                     $list[$facetLabel][] = array(
                         'value'      => $value,     // raw value for use with Solr
                         'display'    => $display,   // version to display to user
@@ -393,6 +403,9 @@ abstract class SearchObject_Base
                         'removalUrl' =>
                             $this->renderLinkWithoutFilter("$field:$value")
                     );
+
+                    // Restore stashed date range query type
+                    $this->spatialDateRangeFilterType = $tmp;
                 }
             }
         }

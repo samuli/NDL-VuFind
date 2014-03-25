@@ -363,6 +363,10 @@
     
     /* Search results: sidebar */
     
+    .sidegroup ul.dynatree-container {
+        padding: 0 10px 8px;
+    }
+
     #sidebarFacets.grid_6 {
         width:470px;
     }

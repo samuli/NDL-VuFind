@@ -3308,12 +3308,18 @@ ul.recordSet .addToFavLink a {
 }
 
 h3.metalibSearchSets {
-    background: #00a3b5;
-    display: block;
-    font-size: 1.777em;
-    color: #fff;
-    padding: 26px 12px 26px 26px;
-    line-height:30px;
+	background: #00a3b5;
+	display: block;
+	font-size: 1.777em;
+	color: #fff;
+	padding: 20px 12px 20px 15px;
+	line-height: 30px;
+	margin-top: 25px;
+}
+#searchSets label {
+font-weight: 500;
+margin: 0em 5px;
+line-height: 25px;
 }
 
 div#metalibDescription p img {
@@ -5271,7 +5277,7 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 #searchSets input[type="radio"] + label span {
     display: inline-block;
     height: 20px;
-    margin: -1px 4px 0 10px;
+    margin: -4px 4px 0 10px;
     padding-left: 30px;
     vertical-align: middle;
     cursor: pointer;
