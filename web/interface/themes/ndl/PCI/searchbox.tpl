@@ -39,7 +39,6 @@
         {/if}     
           <a href="{$path}/PCI/Advanced" class="small advancedLink show480mobile">{translate text="Advanced PCI Search"}</a>
         </div>
-      </div>
     </div>
     
   {if $shards}
@@ -52,19 +51,18 @@
   {if ($filterList || $activeCheckboxFilters || $filterListOthers) && !$disableKeepFilterControl}
     <div class="keepFilters">
       <div class="checkboxFilter">
-       <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/>
+        <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters" />
         <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
-      </div>
-
+      </div>     
       <div class="offscreen">
 
-    {assign var="cnt" value=1} 
-    {foreach from=$filterList item=data key=field name=filterLoop}
-      {foreach from=$data item=value}
+     {assign var="cnt" value=1} 
+     {foreach from=$filterList item=data key=field name=filterLoop}
+        {foreach from=$data item=value}
         <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$filterUrlParam}[]" value="{$value.field|escape}:&quot;{$value.value|escape}&quot;" />
-      {/foreach}
-    {/foreach}
-
+        {/foreach}
+     {/foreach}
+        
     {foreach from=$checkboxFilters item=current name=filterLoop}
       {if $current.selected}
         <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$filterUrlParam}[]" value="{$current.filter|escape}" />
