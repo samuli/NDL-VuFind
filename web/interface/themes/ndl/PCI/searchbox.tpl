@@ -39,7 +39,6 @@
         {/if}     
           <a href="{$path}/PCI/Advanced" class="small advancedLink show480mobile">{translate text="Advanced PCI Search"}</a>
         </div>
-      </div>
     </div>
     
   {if $shards}
@@ -52,19 +51,18 @@
   {if ($filterList || $activeCheckboxFilters || $filterListOthers) && !$disableKeepFilterControl}
     <div class="keepFilters">
       <div class="checkboxFilter">
-       <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/>
+        <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters" />
         <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
-      </div>
-
+      </div>     
       <div class="offscreen">
 
-    {assign var="cnt" value=1} 
-    {foreach from=$filterList item=data key=field name=filterLoop}
-      {foreach from=$data item=value}
+     {assign var="cnt" value=1} 
+     {foreach from=$filterList item=data key=field name=filterLoop}
+        {foreach from=$data item=value}
         <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$filterUrlParam}[]" value="{$value.field|escape}:&quot;{$value.value|escape}&quot;" />
-      {/foreach}
-    {/foreach}
-
+        {/foreach}
+     {/foreach}
+        
     {foreach from=$checkboxFilters item=current name=filterLoop}
       {if $current.selected}
         <input id="applied_filter_{$cnt++}" type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} name="{$filterUrlParam}[]" value="{$current.filter|escape}" />
@@ -89,6 +87,10 @@
   {if $lastLimit}<input type="hidden" name="limit" value="{$lastLimit|escape}" />{/if}
   {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 
+  {* Set followup module & action if search is started from record page *} 
+  {if $followupSearchModule}<input type="hidden" name="followupSearchModule" value="{$followupSearchModule|escape}" />{/if}
+  {if $followupSearchAction}<input type="hidden" name="followupSearchAction" value="{$followupSearchAction|escape}" />{/if}
+    
   </form>
 </div>
 

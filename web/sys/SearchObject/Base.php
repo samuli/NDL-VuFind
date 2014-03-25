@@ -2527,11 +2527,12 @@ abstract class SearchObject_Base
 
     /**
      * Initialize the recommendations module based on current searchTerms.
+     * Note: this method needs to be public since it is called also from Record services.
      *
      * @return void
-     * @access protected
+     * @access public
      */
-    protected function initRecommendations()
+    public function initRecommendations()
     {
         // If no settings were found, quit now:
         $settings = $this->getRecommendationSettings();
