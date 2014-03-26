@@ -55,7 +55,7 @@
     {if $holdingTitleHold && $holdingTitleHold != 'block'}
         <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
     {/if}
-    {if $catalogAccounts && !$ublink && !$holdingTitleHold && $holdingTitleHold != 'block'}
+    {if $catalogAccounts && !$ublink && !$holdingTitleHold}
         <span>{translate text="title_cant_place_hold"}</span>
     {/if}
     {if $holdingTitleHold == 'block'}
