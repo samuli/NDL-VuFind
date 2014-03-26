@@ -183,8 +183,8 @@ class Login extends Action
         ) {
             $setActiveMethods[] = 'MozillaPersona';
         }
-        if (($configArray['Authentication']['libraryCard']
-            || (!isset($configArray['Authentication']['libraryCard'])))
+        if ((!isset($configArray['Authentication']['libraryCard']) 
+            || $configArray['Authentication']['libraryCard'])
             && in_array('ILS', $setAuthorizationMethods)
         ) {
             $setActiveMethods[] = 'ILS';
