@@ -74,8 +74,8 @@ function getExtraConfigArray($name)
         $localOverride = @parse_ini_file($filename, true);
         if ($localOverride) {
             foreach ($localOverride as $section => $settings) {
-                if ($name == 'searches' && $section == 'General') {
-                    // Don't override whole General section of searches.ini
+                if (in_array($name, array('searches', 'PCI', 'MetaLib')) && $section == 'General') {
+                    // Don't override whole General section of searches.ini, PCI.ini or MetaLib.ini
                     $extraConfigs[$name][$section] = iniMerge($extraConfigs[$name][$section], $settings);
                 } else {
                     $extraConfigs[$name][$section] = $settings;
