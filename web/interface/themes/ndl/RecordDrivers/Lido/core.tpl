@@ -221,6 +221,17 @@ End Cover Image *}
   </tr>
   {/if}   
 
+  {if !empty($coreLocalIdentifiers)}
+  <tr valign="top" class="localIdentifiers">
+    <th>{translate text='Other ID'}: </th>
+    <td>
+      {foreach from=$coreLocalIdentifiers item=localIdentification}
+        {$localIdentification|escape}<br/>
+      {/foreach}
+    </td>
+  </tr>
+  {/if}
+
   {if is_array($coreEvents)}
     {foreach from=$coreEvents key=eventType item=events}
   <tr valign="top" class="recordEvents">

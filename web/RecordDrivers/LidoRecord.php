@@ -85,6 +85,7 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreEvents', $this->getEvents());
         $interface->assign('coreInscriptions', $this->getInscriptions());
         $interface->assign('coreWebResource', $this->getWebResource());
+        $interface->assign('coreLocalIdentifiers', $this->getLocalIdentifiers());
         
         $interface->assign('coreIdentifier', $this->getIdentifier());
         
@@ -524,6 +525,27 @@ class LidoRecord extends IndexRecord
             } else {
                 $results[] = (string)$node;  
 
+            }
+        }    
+        return $results;
+    }
+
+    /**
+     * Get an array of local identifiers for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getLocalIdentifiers()
+    {
+        $results = array();
+        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/repositoryWrap/repositorySet/workID") as $node) { 
+            $type = null;
+            $attributes = $node->attributes();
+            $type = isset($attributes->type) ? $attributes->type : '';
+            // sometimes type exists with empty value or space(s)
+            if (($type) && trim((string)$node) != '') {
+                $results[] = (string)$node . ' (' . $type . ')';
             }
         }    
         return $results;
