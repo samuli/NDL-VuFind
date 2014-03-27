@@ -90,6 +90,10 @@
   {if $lastLimit}<input type="hidden" name="limit" value="{$lastLimit|escape}" />{/if}
   {if $lastSort}<input type="hidden" name="sort" value="{$lastSort|escape}" />{/if}
 
+  {* Set followup module & action if search is started from record page *} 
+  {if $followupSearchModule}<input type="hidden" name="followupSearchModule" value="{$followupSearchModule|escape}" />{/if}
+  {if $followupSearchAction}<input type="hidden" name="followupSearchAction" value="{$followupSearchAction|escape}" />{/if}
+  
   </form>
 {/if}
 

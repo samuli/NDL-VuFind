@@ -53,7 +53,7 @@
             {/if}
           </td>
           <td>{$record.checkout|escape}</td>
-          <td>{$record.duedate|escape}{if $record.checkedOut} <span class="highlight">{translate text="fined_work_still_on_loan"}</span>{/if}</td>
+          <td>{$record.duedate|escape}</td>
           <td class="fine">{translate text=$record.fine|escape prefix="status_"}</td>
           {* <td>{$record.amount/100.00|safe_money_format|escape}</td> *}
           <td style="text-align:right;">{$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}</td>

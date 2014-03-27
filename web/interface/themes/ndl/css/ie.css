@@ -11,3 +11,6 @@
 
     behavior: url(/interface/themes/national/js/css3pie/PIE.htc);
 }
+.checkboxFilter {
+    margin-bottom: 1px;
+}

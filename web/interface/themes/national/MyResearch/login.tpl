@@ -25,27 +25,6 @@
    <p class="loginInfo">{translate text="Login information"}</p>
   </div>
   <div class="clear"></div>
-
-  {if $sessionInitiator}
-    {assign var=loginNumber value=$loginNumber+1}
-  <div class="loginAction">
-    <h3 class="grid_14">{$loginNumber}. {translate text="login_title_shibboleth"}</h3>
-  </div>
-  <div class="clear"></div>
-  <div class="shibLogin grid_7">
-        <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
-  </div>
-  <div class="grid_7">
-    <div class="loginDescription{$lbSmall}">
-    <div class="description {if !$libraryCard}hide{/if}">
-      {translate text='login_desc_connectcard_html'}
-    </div>
-  </div>
-  </div>
-  <div class="clear"></div>
-  <div class="shibText grid_14"><h3>{translate text='login_shibboleth_notification'}</h3></div>
-  {/if}
-  <div class="clear"></div>
   
   {if $libraryCard && $authMethod != 'Shibboleth'}
     {assign var=loginNumber value=$loginNumber+1}
@@ -106,6 +85,26 @@
  </div>
   {/if}
   <div class="clear"></div>
+  
+   {if $sessionInitiator}
+    {assign var=loginNumber value=$loginNumber+1}
+  <div class="loginAction">
+    <h3 class="grid_14">{$loginNumber}. {translate text="login_title_shibboleth"}</h3>
+  </div>
+  <div class="clear"></div>
+  <div class="shibLogin grid_7">
+        <a href="{$sessionInitiator}">{image src='haka_landscape_medium.gif'}</a>
+  </div>
+  <div class="grid_7">
+    <div class="loginDescription{$lbSmall}">
+    <div class="description {if !$libraryCard}hide{/if}">
+      {translate text='login_desc_connectcard_html'}
+    </div>
+  </div>
+  </div>
+  {/if}
+  <div class="clear"></div>
+  
   {if $mozillaPersona}
     {assign var=loginNumber value=$loginNumber+1}
     {if $libraryCard || $sessionInitiator}
@@ -114,11 +113,7 @@
   <div class="loginAction">
     <h3 class="grid_14">{$loginNumber}. {translate text="login_title_email"}</h3><div class="clear"></div>
      <div class="personaLogin grid_7">
-     {if $followupModule == 'PCI' || $followupModule == 'MetaLib'}
-         <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$followupAction}?id={$recordId|escape:"html"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
-     {else}
-    	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"html"}/{$followupParams.0}?submit#{$followupParams.1}"><span>{translate text="Mozilla Persona"}</span></a>
-     {/if}	
+    	<a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"html"}/{$followupParams.0}?submit#{$followupParams.1}"><span>{translate text="Mozilla Persona"}</span></a>
 {if $lightbox}
     <script type="text/javascript">
     {literal}

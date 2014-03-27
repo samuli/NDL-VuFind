@@ -33,12 +33,10 @@ body {
     max-height: 600px;
     height:100%;
     overflow: hidden;
-    z-index:3;
 }
 #page-wrapper {
     position:relative;
     width:100%;
-    z-index:4;
 }
 
 .ui-tabs-nav {
@@ -67,14 +65,12 @@ body {
 #main {
     background:#fff;
     position:relative;
-    z-index:2;
 }
 #main.main-home {
     padding:0;
 }
 #main > .menu div[class*="grid"] {
     position:absolute;
-    z-index:10;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 only screen and (moz--min-device-pixel-ratio: 1.5),
@@ -233,7 +229,7 @@ div.lang {
     line-height: 1em;
 }
 div.lang ul {
-    margin: 0/*5px*/ .4em 0;
+    margin: 0 .4em 0;
 }
 div.lang li, div.lang a {
     float: left;
@@ -379,22 +375,11 @@ div.sidegroup {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-/*
-    display: none;
-*/
     padding: 0px;
     position: absolute; 
-
     top: 5px;
     left:-10px;
-/*
-    left: 54px;
-*/
-/*
-    min-width: 153px;
-*/
     list-style: none;
-    z-index: 204 !important;
     -moz-box-shadow: 0px 8px 12px #777;
     -webkit-box-shadow: 0px 8px 12px #777;
     box-shadow: 0px 8px 12px rgba(0,0,0,.5);
@@ -419,24 +404,10 @@ div.sidegroup {
 }
 
 #headerMenu ul.subNav li {
-/*
-    float: left;
-    width: 25%;
-*/
     clear: both;
     margin: 0 0 0 0;
     padding: 0 0 0 0;
-/*
-    border-left: 2px solid #fff;
-*/
 }
-
-
-/*
-#headerMenu ul.subNav li:hover {
-    background-color: #dddddd;
-}
-*/
 
 #headerMenu ul.subNav li, #headerMenu ul.subNav li:hover,
 #headerMenu ul.subNav li span, #headerMenu ul.subNav li span:hover {
@@ -449,23 +420,6 @@ div.sidegroup {
     padding: 0 0 5px;
 }
 
-/*
-#headerMenu ul.subNav li
- {
-    color:#444;
-    padding: 7px 10px;
-    display: block;
-    cursor:pointer;
-    width:220px;
-    text-decoration:none;
-    border-top:1px solid #dadada;
-    font-size:1em;
-    border-bottom-right-radius:0;
-    border-bottom-left-radius:0;
-    border-top-left-radius:0;
-    border-top-right-radius:0;
-}
-*/
 #headerMenu ul.subNav li:hover
  { 
     background-color: #e6e6e6; 
@@ -706,7 +660,6 @@ div.sidegroup {
     text-indent: -10000em;
     position: absolute;
     top: 5px;
-    z-index: 1;
 }
 
 #searchForm_input {
@@ -887,7 +840,6 @@ body > ul.ui-autocomplete {
     max-height:none;
 }
 .dropdown dd ul:hover {
-    /*border: 1px solid #999999;*/
 } 
 .dropdown span.value {
     display: none;
@@ -1326,18 +1278,6 @@ div.bulkActionButtons a {
 .favoritesList div.bulkActionButtons .dropdown dt a {
     padding-right:8px;
 }
-/*
-div.bulkActionButtons input.button {
-    background-color:transparent;
-    background-position: 2px center;
-    text-decoration: underline;
-    border:0 none;
-    cursor:pointer;
-    padding:0 0 0 23px;
-    vertical-align: top;
-    color: #06C;
-}
-*/
 div.bulkActionButtons input.button {
     padding: 7px;
     margin: 2px;
@@ -1511,30 +1451,15 @@ fieldset.publishDateLimit .ui-slider {
     padding-bottom: .6em;
     padding-left: 10px;
     width: 950px;
-/*
-    margin: 0;
-    padding: 0 0 0.5em 0;
-*/
 }
 
 #sidebarFacets {
     float: right;
     margin-top: 25px;
-/*
-    width: 210px;
-*/
 }
 #sidebarFacets.sidebarOnLeft {
     float: left;
 }
-/*#sidebarFacets.sidebarOnLeft .sidegroup {
-    margin-left: 0;
-    border-left: none;
-    border-right: 2px solid #dddddd;
-    padding-left: 0;
-    padding-right: 20px;
-    margin-left: 0;
-}*/
 
 .no-hits #sidebarFacets, .module-MetaLib #sidebarFacets {
     margin-top: 0;
@@ -2051,83 +1976,135 @@ clear:both;
 .myResearch .sessionHistory {
     margin-bottom: 1em;
 }
+.myResearch .title {
+	font-size:1.2em;    
+}
+
+/***   Login information    ***/
+
 .loginForm h3 {
-    font-size: 1em;
-    font-weight: bold;
+	background: #b0e9db;
+	text-align: center;
+	width: 100%;
+	padding: 5px 10px;
+	margin-top: 20px;
+	font-weight: 400;
+	background: none;
+	border-bottom: 1px solid #d3d3d3;
 }
 .main .loginForm {
-    padding-bottom:20px;
-    overflow:auto;
+	padding-bottom:20px;
+	overflow:auto;
 }
 .loginForm label {
-    font-size: 1em;
-    font-weight: normal;
+	font-size: 1em;
+	font-weight: normal;
+}
+.loginForm label.invalid {
+	color: #EA5200;
+	padding-bottom: 2px;
+	margin-left: 16%;
+	display: block;
+	text-align: left;
 }
 .loginForm .button {
-    margin: 1.5em 0;
-    float: right;
+	margin: 1.5em 0;
 }
 .loginForm .description {
-    padding: 1em;
-    background-color: #f3f3f3;
-    margin-top: 12px; 
+	padding: 1em;
+	background-color: #f3f3f3;
+	margin-top: 12px; 
 }
 .loginForm .descriptionTitle {
-    font-weight: bold;
+	font-weight: bold;
+}
+.loginForm .description {
+	font-size:1.1em;
+	font-weight:300;
+	padding: 2em 2em;
+	background-color: #edf3f6;
+	margin-top: -12px;
+	margin-right: -20px;
 }
 .loginForm .separator, .loginForm .separatorSmall {
-    clear: left;
-    float: left;
-    margin: 18px 0;
-    padding: 0;
-    border-top: 1px solid #dddddd;
-    background: none;
-    height: 1px;
-    width: 592px;
+	clear: left;
+	float: left;
+	margin: 18px 0;
+	padding: 0;
+	border-top: 1px solid #dddddd;
+	background: none;
+	height: 1px;
+	width: 592px;
 }
 .loginForm .separatorSmall {
-    width: 544px;
+	width: 544px;
 }
 .loginForm .separator .text, .loginForm .separatorSmall .text {
-    position: relative;
-    left: 4em;
-    top: -0.75em;
-    padding: 0 1em 0 1em;
-    background-color: #ffffff;
+	position: relative;
+	left: 4em;
+	top: -0.75em;
+	padding: 0 1em 0 1em;
+	background-color: #ffffff;
 }
 .loginForm .loginAction, .loginForm .loginTitle {
-    clear: left;
-    float: left;
-    width: 240px;
-    margin-right: 56px;
-    margin-left:5px;
 }
 .loginForm .loginTitle {
-    margin-bottom: 1em;
+	margin-bottom: 1em;
 }
-.loginInfo {
-    margin-bottom:15px;
+.loginForm .loginInfo {
+	margin-bottom:0px;
 }
 .loginTitle {
-    font-weight: bold;
-    font-size: 1.230em;
+	font-weight: bold;
+	font-size: 1.230em;
 }
-.loginForm .loginDescription {
-    float: left;
-    width: 296px;
-    margin-right: 12px;
-    margin-bottom: 1em;
+.libraryLogin, .libraryLogin .button, .shibLogin, .personaLogin {
+	text-align:center;  
+}
+.shibLogin {
+	margin-top:10px; 
+}
+.personaLogin {
+	margin-top:50px;    
+}
+.libraryLogin input[type="password"],.libraryLogin input[type="text"], .libraryLogin select {
+	width:80%;
+	max-width: 200px;
+}
+.loginForm .shibText h3 {
+	background: #edf3f6;
+	color: #464646;
+	font-weight: 300;
+	font-size: 1.23em;
+	text-align: center;
+	padding: 10px;
+	border:none;    
 }
 .loginForm .loginDescriptionSmall {
-    float: left;
-    width: 248px;
-    margin-right: 12px;
-    font-size: .846em;
 }
-.loginForm input[type='text'], .loginForm input[type='password'], .loginForm select {
-    width: 100%;
-    -moz-box-sizing: border-box;
+.loginForm .alreadyLogged {
+	font-size:1.23em;
+	color:#666;
+	margin-top:20px;
+	font-weight:bold;
 }
+.loginForm form input[type="submit"] {
+	margin: 15px 0;
+	margin-top:30px !important;
+}
+#modalDialog #errormessage {
+	margin-bottom:0px !important;   
+}
+#modalDialog .loginInfo, #modalDialog .grid_7, #modalDialog .grid_14 {
+	margin-left:0px;    
+}
+
+/*** Login Notification for PCI and MetaLib ***/
+.loginNotification p {
+	background: #edf3f6;
+	padding: 10px 15px;
+	margin-bottom: 20px; 
+} 
 
 /*** Result List ***/
 .resultHeader .headerLeft {
@@ -2167,30 +2144,8 @@ ul.recordSet {
 ul.recordSet li.result {
     margin-bottom: 30px;
 }
-
-ul.recordSet li.result:hover {
-  /*  background: url("../images/highlight_bg.png") repeat-x #f3f3f3;   */
-}
-
-ul.recordSet li.alt {
-    /* background-color: #f3f3f3; */
-}
-ul.recordSet input.checkbox_ui {
-    /* display: none; */
-    /*
-    width: 30px;
-    float: left;
-    margin: 0 6px 6px -30px;
-    */
-}
 ul.recordSet .recordNumber {
     display: none;
-    /*
-    width:30px;
-    float: left;
-    font-weight: bold;
-    margin-right: 0.2em; 
-    */
 }
 ul.recordSet .addToFavLink {
     width: auto;
@@ -2217,8 +2172,6 @@ ul.recordSet .resultCheckbox {
     display:none;
 }
 ul.recordSet .coverDiv {
-    /* min-height:136px; */
-    /* border:1px solid #ddd; */
     text-align:center;
     overflow:hidden;
 }
@@ -2413,10 +2366,6 @@ ul.recordSet .resolver {
 }
 
 .advancedOptions {
-/*
-    margin-bottom:5px;
-    color:#008596;
-*/
   float: right;
 }
 .advancedOptions p {
@@ -2456,15 +2405,7 @@ ul.recordSet .resolver {
     border:1px solid #ccc;
     padding:9px 12px;
 }
-/*
-.resultRecommendations .authorbio img.nationalBiographyCover {
-    border:1px solid #c3c2c2;
-    padding:1px;
-    margin-right:30px;
-}
 
-
-*/
 /** DualResults - Two Column Results */
 #dualResults h3 {
       margin-top: 0;
@@ -2748,7 +2689,6 @@ dl.narrowList a {
 
 .navmenu dd {
     list-style-type: none;
-    /* border-bottom: 1px solid #e3e3e3; */
     margin:0;
 }
 
@@ -2882,11 +2822,6 @@ dl.defaultFacet dd {
     list-style-type: disc;
     margin-left:1em;
 }
-.record .content {
-    /* padding-top:40px;
-       commented this out because it breaks a few things and I don't know where
-       it should be applied */
-}
 .newItem .header,
 #main .contentHeader,
 #main .browseHeader {
@@ -3018,10 +2953,12 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 20px;
 }
 .persona-login {
-    background-image:url(../images/persona-logo.png);
-    background-repeat:no-repeat;
-    background-position: left;
-    padding:.5em .5em .5em 22px;
+	background-image: url(../images/persona-logo.jpg);
+	background-repeat: no-repeat;
+	background-position: left;
+	padding: 25px 60px;
+	font-size: 1.23EM;
+	margin-left: 30PX;
 }
 .persona-login-loading {
     background-image: url(../images/ajax_loading.gif);
@@ -3038,13 +2975,6 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 20px;
     margin-right:1em;
 }
-/*.edit {
-    background-image:url(../images/silk/edit.png);
-    background-repeat:no-repeat;
-    background-position: left;
-    padding:.5em 0 .5em 18px;
-    margin-right:.7em;
-}*/
 .save {
     background-image:url(../images/silk/disk-black.png);
     background-repeat:no-repeat;
@@ -3075,7 +3005,6 @@ ul.recordSet .addToFavLink a {
     background-repeat:no-repeat;
     background-position: left;
     padding:.5em .5em .5em 20px;
-    /*margin-left:1em;*/
 }
 .add {
     padding:.5em .5em .5em 30px;
@@ -3249,6 +3178,13 @@ ul.recordSet .addToFavLink a {
 .myResearch .icon {
     padding: 2px 2px 1px 20px;
 }
+.myResearch .smallNotification {
+	color: #CCC;
+	font-size: 0.9em;
+	text-align: left;
+	font-weight:400;
+	line-height:1.1em;
+}
 
 /***** Results page blocks ****/
 
@@ -3367,20 +3303,23 @@ ul.recordSet .addToFavLink a {
     float: left;
     display: block;
     font-size: 1.777em;
-/*
-    margin: 0 30px 0 5px;
-*/
     margin-top: 0;
     margin-left: 5px;
 }
 
 h3.metalibSearchSets {
-    background: #00a3b5;
-    display: block;
-    font-size: 1.777em;
-    color: #fff;
-    padding: 26px 12px 26px 26px;
-    line-height:30px;
+	background: #00a3b5;
+	display: block;
+	font-size: 1.777em;
+	color: #fff;
+	padding: 20px 12px 20px 15px;
+	line-height: 30px;
+	margin-top: 25px;
+}
+#searchSets label {
+font-weight: 500;
+margin: 0em 5px;
+line-height: 25px;
 }
 
 div#metalibDescription p img {
@@ -4097,21 +4036,7 @@ div[id*="record"].record.recordId {
 }
 #recordMetadata tr, .citation tr {
 }
-/*
-#recordMetadata tr:hover {
-    background: url("../images/highlight_bg.png") repeat-x #f3f3f3;  
 
-    border: 1px solid #f4f4f4;
-    padding: 12px 1px 12px 0;
-
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-
-
-    behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
-}
-*/
 .recordTitle {
     margin-top:0;
 }
@@ -4183,9 +4108,6 @@ div.coverImagesLessLink {
     border-radius: 0 0 11px 11px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
-.coverImageLinks span {
-    /* display: none; */
-}
 .coverImageLinks a:hover span {
     background-position: 400px 32px;
 }
@@ -4193,7 +4115,6 @@ div.coverImagesLessLink {
     border: 1px solid #ddd;
 }
 .coverImages {
-    /* text-align:center; */
     overflow: auto;
 }
 .coverImages img#thumbnail {
@@ -4333,9 +4254,6 @@ table.authors th {
     float: left;
     display: block;
     padding: .4em .5em;
-/*
-    padding:18px 10px 10px 5px;
-*/
     text-decoration:none;
 }
 /* Commented Backslash Hack
@@ -4347,10 +4265,6 @@ table.authors th {
 }
 #tabnav .active a {
     color: #212121;
-/*
-    background:url(../images/subnavTab_right.jpg) no-repeat right top;
-    padding:18px 10px 12px 0px;
-*/
 }
 
 #tabnav li,
@@ -4662,42 +4576,11 @@ h5.recordTabHeader {
     width: 15px;
 }
 
-
-
-/*
-.toolbar ul li a:hover{
-    background-color:#f9f9f9;
-}
-*/
-/*
-.toolbar ul.menu {
-    display:block;
-    margin-top: 0;
-    border-right: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
-    position:absolute;
-    background:white;
-    height:auto;
-    padding: 0;
-}
-.toolbar ul.menu li {
-    border-bottom: 1px solid #cccccc;
-    padding:5px;
-    clear: left;
-    display:block;
-    width:100px;
-    text-align: left;
-    background:white;
-    margin: 0px;
-}
 */
 /*********** Next / prev *************************/
 
 .backToResults, .resultscroller {
     height: 2em;
-/*
-    padding-top: .6em;
-*/
 }
 .backToResults {
     float: left;
@@ -4775,26 +4658,14 @@ table.datagrid caption {
 table.datagrid th {
     background-color: #e6e6e6;
     text-align: left;
-    /*border-left: 1px solid #FFFFFF;
-    border-right: 1px solid #FFFFFF;*/
     padding: 5px 15px 4px 10px;
 }
-/*
-table.datagrid th a {
-    color: #336699;
-}
-*/
+
 table.datagrid td {
-    /*border-left: 1px solid #FFFFFF;
-    border-right: 1px solid #FFFFFF;*/
     padding: 5px 10px 5px 10px;
 }
-
 .holdingsHoldingURLs {
-/*
-    background:url(../images/icons16-24px.png) -404px -11px no-repeat;
-*/
-    padding-left:30px;
+	padding-left:30px;
     font-weight:bold;
     margin-bottom:10px;
 }
@@ -4983,7 +4854,7 @@ table.holdingsContainerHolding .locationLink a {
     display: inline-block;
     float: right;
     padding-right:22px;
-    background:url(../images/icons16-24px-04.png) -443px -12px /*center right*/ no-repeat;
+    background:url(../images/icons16-24px-04.png) -443px -12px no-repeat;
 }
 
 table.holdingsContainerHolding td,
@@ -5406,7 +5277,7 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 #searchSets input[type="radio"] + label span {
     display: inline-block;
     height: 20px;
-    margin: -1px 4px 0 10px;
+    margin: -4px 4px 0 10px;
     padding-left: 30px;
     vertical-align: middle;
     cursor: pointer;
@@ -5429,16 +5300,6 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     padding: 1.8em 0 1.5em 1em;
     overflow: auto;
 }
-.myResearch .resultHead {
-/*
-    width: 716px;
-    border-bottom: 1px solid #dddddd;
-    padding: 0 12px 0.2em 0;
-*/
-/*
-    padding:.4em 0 0 .8em;
-*/
-}
 .myResearch .resultHead h3 {
     display: block;
     text-align: left;
@@ -5459,7 +5320,6 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     font-size: 1.4em;
     margin:0;
     line-height:1em;
-    /* box-shadow: 0px 10px 20px 0px rgba(1,1,1,0.05) inset; */
 }
 .myResearch ul.recordSet .resultCheckbox {
     display: inherit;
@@ -5535,8 +5395,7 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 .favoritesList .bulkActionButtons.visible.fixed {
     position:fixed;
     top:0;
-    margin:0;
-    z-index:100000;    
+    margin:0;  
     box-shadow: 0px 19px 15px -13px grey;
     padding-bottom:20px;
     z-index: 100000;
@@ -5691,8 +5550,6 @@ padding-right: 10px !important;
 .browseNav {
     background-color: #F2F2F2;
     border-radius: 3px 3px 3px 3px;
-    /* max-height: 300px; */
-    /* width: 215px; */
     overflow:auto;
     box-shadow: 0 3px 10px -8px black;
     margin-bottom:5px;
@@ -5717,13 +5574,9 @@ padding-right: 10px !important;
     border:1px solid white;
 }
 .browseNav li {
-    /* width: 100%; */
     display:block;
     float:left;
 }
-/* .browseNav li:first-child a {
-    border-top:none;
-} */
 .browseNav a {
     background: none repeat scroll 0 0 #F2F2F2;
 
@@ -6001,11 +5854,6 @@ tr:nth-child(even) td.gridMouseOver {
     padding: .5em 0 1em;
     border-top: 3px solid #B3E3E9;
     margin-top: -3px;
-/*
-    border-top: 2px solid #eeeeee;
-    margin-top: -2px;
-    margin-bottom: 20px;
-*/
 }
 .collectionDetailsTree {
     border: 3px solid #B3E3E9;
@@ -6018,9 +5866,6 @@ tr:nth-child(even) td.gridMouseOver {
     float: right;
 }    
 .collectionDetails li.result {
-/*
-    background-color: #EEEEEE;
-*/
     margin-bottom: 0px;
 }
 .collectionDetails li.result.alt {
@@ -6030,9 +5875,6 @@ tr:nth-child(even) td.gridMouseOver {
 
 }
 .collectionDetails .pagination span {
-/*
-    border: 1px solid #EEEEEE;
-*/
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -6042,28 +5884,12 @@ tr:nth-child(even) td.gridMouseOver {
     padding: 7px 0;
     text-align: center;
 }
-/*
-.collectionDetails .paginationTop:hover {
-    padding: 6px 0 7px;
-}
-*/
 .collectionDetails .paginationTop span {
-/*
-    border: 1px solid #EEEEEE;
-*/
     padding-left: 4px;
     padding-right: 4px;
     margin-left: 3px;
 }
-/*
-.collectionDetails .paginationTop a:hover {
-    border: 1px solid #EEEEEE;
-}
-*/
 .collectionDetails .paginationTop a {
-/*
-    border: 1px solid #FFF;
-*/
     padding-left: 4px;
     padding-right: 4px;
     margin-left: 3px;
@@ -6719,7 +6545,6 @@ span.mapMarker  {
 
 /* Feedback form styles */
 form#feedbackForm {
-    overflow:auto;
     margin-bottom:30px;
 }
 form#feedbackForm input, form#feedbackForm textarea, form#feedbackForm select { 
