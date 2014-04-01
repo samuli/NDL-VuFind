@@ -1980,6 +1980,22 @@ clear:both;
 	font-size:1.2em;    
 }
 
+.myResearch #deleteAccount {
+    float: right;
+}
+
+#deleteAccountNote {
+    display: none;
+}
+
+#deleteAccountButton {
+    padding-left: 30px;
+    background-image: url("../images/icons16-24px-02_white.png");
+    background-position: 6px -161px;
+    background-repeat: no-repeat;
+    
+}
+
 /***   Login information    ***/
 
 .loginForm h3 {
@@ -6786,6 +6802,7 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
 
 
 

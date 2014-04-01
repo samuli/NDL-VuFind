@@ -62,7 +62,7 @@ if (empty($expired)) {
 while (!empty($expired)) {
     $count = count($expired);
     foreach ($expired as $oldUser) {
-        $oldUser->delete();
+        $oldUser->anonymizeAccount();
     }
     echo date('Y-m-d H:i:s') . " {$count} expired users deleted.\n";
     $expired = $user->getExpiredUsers($daysOld);
