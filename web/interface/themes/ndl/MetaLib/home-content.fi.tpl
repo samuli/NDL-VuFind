@@ -9,8 +9,7 @@
     {include file="MetaLib/search-sets.tpl"}
   </div>
   <div id="metalibDescription" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_16 prefix_1">
-    <p>{image src="nelli-logo.png"}Nelli-portaali (National Electronic Library Interface) on kansallinen kirjastojen tiedonhakujärjestelmä. Se on käytettävissä yliopisto- ja ammattikorkeakoulukirjastoissa sekä yleisissä kirjastoissa.</p> 
-    <p>Portaalin ylläpidosta ja koulutuksesta vastaa Kansalliskirjaston Kirjastoverkkopalvelujen Nelli-toimisto.</p>
+    <p>{image src="nelli-logo.png"}Nelli on kirjastojen käytössä olevien tietokantojen monihakupalvelu.</p> 
   </div>
 </div>
     

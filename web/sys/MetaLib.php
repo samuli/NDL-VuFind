@@ -301,16 +301,24 @@ class MetaLib
             PEAR::raiseError(new PEAR_Error('Search terms are required'));
         }
         
+        $successes = array();
         $failed = array();
         $disallowed = array();
         $irdArray = array();
+        $irdInfoArray = array();
         $authorized = UserAccount::isAuthorized();
-        foreach (explode(',', $irdList) as $ird) {
+        $irdListArray = explode(',', $irdList);
+        
+        foreach ($irdListArray as $ird) {
             $irdInfo = $this->getIRDInfo($ird);
-            if (strcasecmp($irdInfo['access'], 'guest') != 0 && !$authorized) {
-                $disallowed[] = $irdInfo['name'];
+            if (PEAR::isError($irdInfo)) {
+                error_log('MetaLib cannot get info for ird: ' . $ird);
+                $failed[] = $ird;
+            } else if (strcasecmp($irdInfo['access'], 'guest') != 0 && !$authorized) {
+                $disallowed[] = $irdInfo;
             } else {
                 $irdArray[] = $ird;
+                $irdInfoArray[$irdInfo['name']] = $irdInfo;
             }
         }
         
@@ -319,6 +327,7 @@ class MetaLib
                 'recordCount' => 0,
                 'failedDatabases' => $failed,
                 'disallowedDatabases' => $disallowed,
+                'successDatabases' => $successes
             );
         }
         
@@ -359,6 +368,7 @@ class MetaLib
             $databases = $_SESSION['MetaLibFindResponse']['databases'];
             $totalRecords = $_SESSION['MetaLibFindResponse']['totalRecords'];
             $failed = $_SESSION['MetaLibFindResponse']['failed'];
+            $successes = $_SESSION['MetaLibFindResponse']['successes'];
         } else {
             $options['session_id'] = $sessionId;
             $options['wait_flag'] = 'Y';
@@ -371,13 +381,14 @@ class MetaLib
             $databases = array();
             $totalRecords = 0;
             foreach ($findResults->find_response->base_info as $baseInfo) {
+                $databaseName = (string)$baseInfo->full_name;
+                $databaseInfo = isset($irdInfoArray[$databaseName]) ? $irdInfoArray[$databaseName] : (string)$baseInfo->full_name;
                 if ($baseInfo->find_status != 'DONE') {
                     error_log(
                         'MetaLib search in ' . $baseInfo->base_001 . ' (' . $baseInfo->full_name . ') failed: '
                         . $baseInfo->find_error_text
                     );
-                    $failed[] = (string)$baseInfo->full_name;
-                    continue;
+                    $failed[] = $databaseInfo;
                 }
                 $count = ltrim((string)$baseInfo->no_of_documents, ' 0');
                 if ($count === '') {
@@ -390,12 +401,15 @@ class MetaLib
                     'set' => (string)$baseInfo->set_number,
                     'records' => array()
                 );
+                $successes[] = $databaseInfo;
             }
             $_SESSION['MetaLibFindResponse']['requestId'] = $findRequestId;
             $_SESSION['MetaLibFindResponse']['databases'] = $databases;
             $_SESSION['MetaLibFindResponse']['totalRecords'] = $totalRecords;
             $_SESSION['MetaLibFindResponse']['failed'] = $failed;
             $_SESSION['MetaLibFindResponse']['disallowed'] = $disallowed;
+            $_SESSION['MetaLibFindResponse']['successes'] = $successes;
+
         }
 
         $documents = array();
@@ -531,7 +545,8 @@ class MetaLib
             'recordCount' => $totalRecords,
             'documents' => $documents,
             'failedDatabases' => $failed,
-            'disallowedDatabases' => $disallowed
+            'disallowedDatabases' => $disallowed,
+            'successDatabases' => $successes
         );
         $this->putCachedResults($queryId, $results);
         return $results;
@@ -561,8 +576,9 @@ class MetaLib
             'source_full_info_flag' => 'Y'
         );
         $result = $this->callXServer('source_locate_request', $params);
+                    
         if (PEAR::isError($result)) {
-            PEAR::raiseError($result);
+            return $result;
         }
 
         $info = array();
@@ -572,6 +588,7 @@ class MetaLib
         $info['access'] = $this->getSingleValue($record, 'AF3a');
         $info['proxy'] = $this->getSingleValue($record, 'PXYa');
         $info['searchable'] = $this->getSingleValue($record, 'TARa') && $this->getSingleValue($record, 'TARf') == 'Y';
+        $info['url'] = $this->getUrl($record);
         $this->putCachedResults($queryId, $info);
         return $info;
     }
@@ -882,6 +899,30 @@ class MetaLib
         if ($values) {
             return $values[0];
         }
+        return '';
+    }
+    
+    /**
+     * Return URL for the local search interface from MARC field 856
+     * 
+     * @param simpleXMLElement $xml       MARC Record
+     * @return string
+     * @access protected
+     */
+    protected function getUrl($xml)
+    {
+        $values = array();
+        $xpath = "./m:datafield[@tag='856' and @ind2='1']";
+        $res = $xml->xpath($xpath);
+        foreach ($res as $datafield) {
+            $strings = array();
+            foreach ($datafield->subfield as $subfield) {
+                if (strstr('u', (string)$subfield['code'])) {
+                    return (string)$subfield;
+                }
+            }
+        }
+
         return '';
     }
 

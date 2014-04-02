@@ -28,10 +28,13 @@
 require_once 'DB/DataObject.php';
 require_once 'DB/DataObject/Cast.php';
 
+require_once 'Due_date_reminder.php';
+require_once 'User_account.php';
 require_once 'User_resource.php';
 require_once 'User_list.php';
 require_once 'Resource.php';
 require_once 'Resource_tags.php';
+require_once 'Search.php';
 require_once 'Tags.php';
 
 /**
@@ -591,7 +594,89 @@ class User extends DB_DataObject
         }
         return $accounts;
     }
-    
+
+    /**
+     * Anonymize user account by updating username to a random string 
+     * and setting other user object fields (besides id) to their default values.
+     * User comments are preserved. Catalog accounts, due date reminders, 
+     * saved searches and lists are deleted.
+     * 
+     * @return boolean True on success
+     */
+    public function anonymizeAccount()
+    {
+        $conn = $this->getDatabaseConnection();
+        $res = $conn->query("START TRANSACTION");
+        
+        try {
+            // Delete catalog accounts
+            $account = new User_account();
+            $account->user_id = $this->id;
+            if ($account->find(false)) {
+                while ($account->fetch()) {
+                    $account->delete();
+                }
+            }
+
+            // Delete due date reminders
+            $reminder = new Due_date_reminder();
+            $reminder->user_id = $this->id;
+            if ($reminder->find(false)) {
+                while ($reminder->fetch()) {
+                    $reminder->delete();
+                }
+            }
+        
+            // Delete lists (linked user_resource objects cascade)
+            $list = new User_list();
+            $list->user_id = $this->id;
+            if ($list->find(false)) {
+                while ($list->fetch()) {
+                    $list->delete();
+                }
+            }
+
+            // Delete saved searches
+            $search = new SearchEntry();
+            $search->user_id = $this->id;
+            if ($search->find(false)) {
+                while ($search->fetch()) {
+                    $search->delete();
+                }
+            }
+
+
+            // Anonymize user object
+            $this->username = 'deleted:' . uniqid();
+            $this->password = '';
+            $this->firstname = '';
+            $this->lastname = '';
+            $this->email = '';
+
+            $this->cat_username = 'null';
+            $this->cat_password = 'null';
+
+            $this->college = '';
+            $this->major = '';
+            $this->home_library = '';
+            $this->language = '';
+
+            $this->due_date_notification = 0;
+            $this->due_date_reminder = 0;
+     
+            $this->update();
+        } catch (Exception $e) {
+            $conn->query("ROLLBACK"); 
+            throw $e;
+
+            return false;
+        }
+        
+        $conn->query("COMMIT"); 
+
+        return true;
+    }
+
     /**
      * Get an array of User objects representing expired users.
      *
@@ -602,8 +687,9 @@ class User extends DB_DataObject
      */
     public function getExpiredUsers($daysOld = 365)
     {
-        // Find expired users:
+        // Find expired users that have not been deleted:
         $sql = 'SELECT * FROM "user" WHERE datediff(now(), last_login)>' . $daysOld .
+            ' AND username NOT LIKE \'deleted:%\'' .
             ' LIMIT 0,10000';
         $u = new User();
         $u->query($sql);

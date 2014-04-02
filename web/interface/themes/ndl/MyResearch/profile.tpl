@@ -50,10 +50,15 @@
         <th><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
         <td><td>
       </tr>
-      
+      <tr>
+        <th colspan="3"><div id="deleteAccount"><button class="button buttonFinna">{translate text="delete_account_title"}</button></div></th>
+      </tr>
     </table>
     </form>
     <div class="clear"></div>
+
+    
+    
     <!-- this is the -->
     {if $catalogAccounts}
 
@@ -175,6 +180,14 @@
 <div class="clear"></div>
 
 <script>
+   {literal}
+   $("#deleteAccount button").unbind().click(function(e) {
+      var url = path + '/AJAX/JSON_DeleteUser?method=init';
+      var dialog = getPageInLightbox(url, "{/literal}{translate text="delete_account_title"}{literal}");
+      e.preventDefault();
+  });
+  {/literal}
+  
   {literal}
   $(document).ready(function() {
     $("#profile_form").validate();     

@@ -111,6 +111,7 @@ class Search extends Base
             );
             $interface->assign('disallowedDatabases', $result['disallowedDatabases']);
             $interface->assign('failedDatabases', $result['failedDatabases']);
+            $interface->assign('successDatabases', $result['successDatabases']);
             
             // We want to guide the user to login for access to licensed material
             $interface->assign('methodsAvailable', Login::getActiveAuthorizationMethods());
