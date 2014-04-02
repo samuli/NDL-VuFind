@@ -11,6 +11,11 @@
 {include file="Search/openurl_autocheck.tpl"}
 {js filename="check_save_statuses.js"}
 <ul class="recordSet">
+  {if !$userAuthorized && $methodsAvailable}
+   <div class="loginNotification">
+   <p>{translate text="authorize_user_notification"}</p>
+   </div>
+  {/if}
 {foreach from=$recordSet item=record name="recordLoop"}
 {assign var="id" value=$record.id}
   <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">

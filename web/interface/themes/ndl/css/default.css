@@ -12,7 +12,7 @@ NOTE! Layout information is outdated.
 */
 
 html,body {
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -33,12 +33,10 @@ body {
     max-height: 600px;
     height:100%;
     overflow: hidden;
-    z-index:3;
 }
 #page-wrapper {
     position:relative;
     width:100%;
-    z-index:4;
 }
 
 .ui-tabs-nav {
@@ -67,14 +65,12 @@ body {
 #main {
     background:#fff;
     position:relative;
-    z-index:2;
 }
 #main.main-home {
     padding:0;
 }
 #main > .menu div[class*="grid"] {
     position:absolute;
-    z-index:10;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
 only screen and (moz--min-device-pixel-ratio: 1.5),
@@ -233,7 +229,7 @@ div.lang {
     line-height: 1em;
 }
 div.lang ul {
-    margin: 0/*5px*/ .4em 0;
+    margin: 0 .4em 0;
 }
 div.lang li, div.lang a {
     float: left;
@@ -379,22 +375,11 @@ div.sidegroup {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
-/*
-    display: none;
-*/
     padding: 0px;
     position: absolute; 
-
     top: 5px;
     left:-10px;
-/*
-    left: 54px;
-*/
-/*
-    min-width: 153px;
-*/
     list-style: none;
-    z-index: 204 !important;
     -moz-box-shadow: 0px 8px 12px #777;
     -webkit-box-shadow: 0px 8px 12px #777;
     box-shadow: 0px 8px 12px rgba(0,0,0,.5);
@@ -419,24 +404,10 @@ div.sidegroup {
 }
 
 #headerMenu ul.subNav li {
-/*
-    float: left;
-    width: 25%;
-*/
     clear: both;
     margin: 0 0 0 0;
     padding: 0 0 0 0;
-/*
-    border-left: 2px solid #fff;
-*/
 }
-
-
-/*
-#headerMenu ul.subNav li:hover {
-    background-color: #dddddd;
-}
-*/
 
 #headerMenu ul.subNav li, #headerMenu ul.subNav li:hover,
 #headerMenu ul.subNav li span, #headerMenu ul.subNav li span:hover {
@@ -449,23 +420,6 @@ div.sidegroup {
     padding: 0 0 5px;
 }
 
-/*
-#headerMenu ul.subNav li
- {
-    color:#444;
-    padding: 7px 10px;
-    display: block;
-    cursor:pointer;
-    width:220px;
-    text-decoration:none;
-    border-top:1px solid #dadada;
-    font-size:1em;
-    border-bottom-right-radius:0;
-    border-bottom-left-radius:0;
-    border-top-left-radius:0;
-    border-top-right-radius:0;
-}
-*/
 #headerMenu ul.subNav li:hover
  { 
     background-color: #e6e6e6; 
@@ -663,7 +617,7 @@ div.sidegroup {
 }
 
 .menuHome {
-	height:20px;
+    height:20px;
 }
 
 /* hide home page text */
@@ -678,7 +632,7 @@ div.sidegroup {
 }
 
 .searchFormOuterWrapper {
-	  width: 630px;
+      width: 630px;
 }
 .searchFormWrapper {
     background: url("../images/search_buttons.png") no-repeat scroll 530px 5px #FFFFFF;
@@ -706,7 +660,6 @@ div.sidegroup {
     text-indent: -10000em;
     position: absolute;
     top: 5px;
-    z-index: 1;
 }
 
 #searchForm_input {
@@ -718,11 +671,8 @@ div.sidegroup {
     background:#fff;
     box-shadow: none;
 }
-.searchformPCI #searchForm_input {
-    width: 510px;
-}
 a.clear_input {
-	  margin-right: -30px;
+    margin-right: -30px;
     text-indent:-9999px;
     height: 16px;
     width: 30px;
@@ -890,7 +840,6 @@ body > ul.ui-autocomplete {
     max-height:none;
 }
 .dropdown dd ul:hover {
-    /*border: 1px solid #999999;*/
 } 
 .dropdown span.value {
     display: none;
@@ -1071,26 +1020,26 @@ body > .ui-widget .button {
 
 .advancedLinkWrapper {
     clear: both;
-	  float: right;
-	  margin-top: 0.5em;
+      float: right;
+      margin-top: 0.5em;
 }
 
 .advancedLinkWrapper.dual {
-	  position: absolute;
-	  left: 68%;
-	  top: 5px;
+      position: absolute;
+      left: 68%;
+      top: 5px;
 }
 
 .advancedLinkWrapper.no-dual {
     margin-top: 0;
-	  position: absolute;
-	  left: 68%;
-	  top: 11px;	
+      position: absolute;
+      left: 68%;
+      top: 11px;    
 }
 
 .advancedLinkWrapper a {
     display: inline-block;
-	  color: #FFFFFF;
+      color: #FFFFFF;
     font-size: 0.923em;
     font-weight: bold;
     height: 24px;
@@ -1100,7 +1049,7 @@ body > .ui-widget .button {
     padding-left: 35px;
 }
 .advancedLinkWrapper a.metalibLink, .advancedLinkWrapper a.PCILink {
-	  margin-left: 20px;
+      margin-left: 20px;
 }
 
 .advancedLinkWrapper a.show480mobile {
@@ -1124,7 +1073,7 @@ body > .ui-widget .button {
     left: 402px;
     width: 206px;
     height: 18px;
-	z-index:10000;
+    z-index:10000;
 }
 .keepFilters input {
     margin-top: .15em;
@@ -1279,7 +1228,7 @@ div.bulkActionButtons {
     height: auto;
  }
  .myResearch .bulkActionButtons {
-	background:none;	
+    background:none;    
 }
 .favoritesList div.bulkActionButtons {
     padding: 18px 14px 10px;
@@ -1329,18 +1278,6 @@ div.bulkActionButtons a {
 .favoritesList div.bulkActionButtons .dropdown dt a {
     padding-right:8px;
 }
-/*
-div.bulkActionButtons input.button {
-    background-color:transparent;
-    background-position: 2px center;
-    text-decoration: underline;
-    border:0 none;
-    cursor:pointer;
-    padding:0 0 0 23px;
-    vertical-align: top;
-    color: #06C;
-}
-*/
 div.bulkActionButtons input.button {
     padding: 7px;
     margin: 2px;
@@ -1514,143 +1451,127 @@ fieldset.publishDateLimit .ui-slider {
     padding-bottom: .6em;
     padding-left: 10px;
     width: 950px;
-/*
-    margin: 0;
-    padding: 0 0 0.5em 0;
-*/
 }
 
 #sidebarFacets {
     float: right;
     margin-top: 25px;
-/*
-    width: 210px;
-*/
 }
 #sidebarFacets.sidebarOnLeft {
     float: left;
 }
-/*#sidebarFacets.sidebarOnLeft .sidegroup {
-    margin-left: 0;
-    border-left: none;
-    border-right: 2px solid #dddddd;
-    padding-left: 0;
-    padding-right: 20px;
-    margin-left: 0;
-}*/
 
-.no-hits #sidebarFacets {
-	margin-top: 0;
+.no-hits #sidebarFacets, .module-MetaLib #sidebarFacets {
+    margin-top: 0;
 }
 
 /*** MyResearch styling for library cards ***/
 
 .myResearch .menuLibCard, .myResearch .selectText {
 
-	height:45px;
-	line-height:30px;
-	padding-left:5px;
+    height:45px;
+    line-height:30px;
+    padding-left:5px;
 }
 
 .myResearch.checkedoutList .resultColumn2 {
-	padding:0;
-	margin:0;
-	max-width:auto;
-	width:auto;
-	vertical-align:middle;
+    padding:0;
+    margin:0;
+    max-width:auto;
+    width:auto;
+    vertical-align:middle;
 }
 
 
 /*** MyResearch ***/
 .myResearch .myResearchTitle {
-	background:none;	
-	color:rgb(70,70,70);
-	margin-bottom: 20px;
-	font-weight: 500;
-	font-size: 1.6em;
+    background:none;    
+    color:rgb(70,70,70);
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 1.6em;
 }
 
 .myresearchHeader #selectCard > li{
-		float:left;
+        float:left;
 }
 .myresearchHeader #selectCard .selectText {
-		line-height:2.5em;
+        line-height:2.5em;
 }
 .myresearchHeader #selectCard .menuLibCard {
-	border:none;
-	padding-left:5px;
-	height:auto;
-	width:auto;	
+    border:none;
+    padding-left:5px;
+    height:auto;
+    width:auto;    
 }
 .myresearchHeader .dropdown dt a {
-	background:white;
-	color:#333;	
+    background:white;
+    color:#333;    
 }
 .myresearchHeader .dropdown a, .menuLibCard .dropdown dd a {
-	white-space:nowrap;	
+    white-space:nowrap;    
 }
 .myresearchHeader .dropdown a:hover {
-	color:#333;	
+    color:#333;    
 }
 .myresearchHeader .dropdown dt a:after {
-	background-image: url(../images/icons16-24px-02_black.png);
-	background-position: 7px -2324px;
+    background-image: url(../images/icons16-24px-02_black.png);
+    background-position: 7px -2324px;
 }
 .dropdown.catalogAccount dt a:after {
-	float:none;	
+    float:none;    
 }
 .myresearchHeader h1, .myresearchHeader #selectCard{
-	display:inline-block;
-	vertical-align: top;
+    display:inline-block;
+    vertical-align: top;
 }
 .myresearchHeader #selectCard {
-	margin-left:20px;	
+    margin-left:20px;    
 }
 .myresearchHeader .show {
-	display:inline-block;	
-	
+    display:inline-block;    
+    
 }
 .myCheckbox {
-	text-align:left;
-	min-width:40px;
-	width:40px;
+    text-align:left;
+    min-width:40px;
+    width:40px;
 }
 
 .right {
-	text-align:right;	
+    text-align:right;    
 }
 .alignMiddle {
-	text-align:center !important;
+    text-align:center !important;
 }
 
 .left {
-	text-align:left;	
+    text-align:left;    
 }
 .notif {
-	line-height:15px;	
+    line-height:15px;    
 }
 .userGuider {
-	padding-left:20px;
-	padding-top:1px;
-	margin-left:5px;	
-	background-image: url(../images/icons16-24px-02_turquoise.png);
-	background-position:-1px 0;	
+    padding-left:20px;
+    padding-top:1px;
+    margin-left:5px;    
+    background-image: url(../images/icons16-24px-02_turquoise.png);
+    background-position:-1px 0;    
 }
 
 /** fix odd background in edit favoritelist record **/
 .module-Cart #footer h2 {
-	background:none;	
+    background:none;    
 }
 
 .myResearch .alignRight {
-	text-align:right !important;	
+    text-align:right !important;    
 }
 .myResearch .noContentMessage {
-	padding:10px;
-	padding-top:0;	
+    padding:10px;
 }
 .checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
-	margin:0;	
+    margin:0;    
 }
 
 #sidebarFavoritesLists, #sidebarRecommend, #sidebarCollection  {
@@ -1798,7 +1719,7 @@ fieldset.publishDateLimit .ui-slider {
     padding: 15px 8px;
 }
 #sidebarFavoritesLists, .myResearch .myResearchTitle {
-	word-break:break-word;	
+    word-break:break-word;    
 }
 
 .favoritesList {
@@ -1862,7 +1783,7 @@ fieldset.publishDateLimit .ui-slider {
 .favoritesList ul.recordSet {
     padding-bottom:28px;
     border-bottom:8px solid #eeeeee;
-	margin:0;
+    margin:0;
 }
 
 .favoritesList .bulkActionButtons select {
@@ -1901,21 +1822,21 @@ form.visible .allCheckboxBackground {
     top:72px;
 }
 .checkboxFilter.favorites {
-	position:static;
-	margin:0;	
+    position:static;
+    margin:0;    
 }
 .myResearch .myResearchTitle {
-	margin-bottom:10px;	
+    margin-bottom:10px;    
 }
 .myResearch .checkboxFilter.favorites label {
-	text-indent:-20px;
-	width:auto;
-	margin-top: 8px;
-	font-weight:300;
+    text-indent:-20px;
+    width:auto;
+    margin-top: 8px;
+    font-weight:300;
 }
 .myResearch .listentry .checkboxFilter .resultCheckbox {
-	margin-left:-10px;	
-	margin-top:27px;
+    margin-left:-10px;    
+    margin-top:27px;
 }
 .allCheckboxBackground {
 padding-left: 10px;
@@ -1925,10 +1846,10 @@ margin-left: -10px;
 width: 140px;
 }
 .myResearch form.visible .allCheckboxBackground, form[name="bulkActionForm"].visible + .resultOptionLimit {
-	top:14px;	
+    top:14px;    
 }
 .allCheckboxBackground input {
-	margin-right:10px;	
+    margin-right:10px;    
 }
 .favoritesList .bulkActionButtons.visible {
 display: block;
@@ -1948,7 +1869,7 @@ margin-top: -54px;
     box-shadow: 0 9px 33px -35px black;
 }
 .myResearch.checkedoutList .bulkActionButtons td, .myResearch.checkedoutList .bulkActionButtons th {
-	border-bottom:solid 1px #e6e6e6;
+    border-bottom:solid 1px #e6e6e6;
 }
 .checkedoutList .iconlabel, .holdsList .iconlabel {
     line-height: 2.4em;
@@ -1967,60 +1888,60 @@ box-shadow: 0px 10px 15px -13px grey !important;
 clear:both;
 }
 .myResearch table.profileGroup {
-	border-left: solid 1px #e6e6e6;
-	border-right: solid 1px #e6e6e6;
-	border-bottom: solid 1px #e6e6e6;
-	padding:0px 2px;
-	padding-bottom:5px;
-	padding-top:10px;
+    border-left: solid 1px #e6e6e6;
+    border-right: solid 1px #e6e6e6;
+    border-bottom: solid 1px #e6e6e6;
+    padding:0px 2px;
+    padding-bottom:5px;
+    padding-top:10px;
 }
 
 .myResearch table.profileGroup td,.myResearch table.profileGroup th {
-	border:none;	
+    border:none;    
 }
 
 .myResearch table.profileGroup th {
-	width:25%;	
+    width:25%;    
 }
 .myResearch.checkedoutList table,.myResearch.holdsList table, .myResearch.finesList table{
-	padding:0px 10px;	
+    padding:0px 10px;    
 }
 .myResearch.checkedoutList table th, .myResearch.checkedoutList table td, .myResearch.holdsList table th, .myResearch.holdsList table td,.myResearch.finesList td, .myResearch.finesList th {
-	border-top:solid 1px #e6e6e6;
-	padding:10px 0px;
+    border-top:solid 1px #e6e6e6;
+    padding:10px 0px;
 }
 .myResearch.finesList table {
-	padding:10px;	
+    padding:10px;    
 }
 .myResearch.finesList td, .myResearch.finesList th {
-	padding-top:10px;
-	padding-bottom:10px;
-	padding:10px;	
+    padding-top:10px;
+    padding-bottom:10px;
+    padding:10px;    
 }
 .checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
-	margin-top:0;	
+    margin-top:0;    
 }
 .myResearch .librarycardSettings th, .myResearch .fines th, .myResearch .savedHistory th, .myResearch .sessionHistory th {
-	background:none;
-	padding-bottom:15px;
-	padding-top:10px;
-	font-size:1.1em;
-	font-weight:500;
-}	
+    background:none;
+    padding-bottom:15px;
+    padding-top:10px;
+    font-size:1.1em;
+    font-weight:500;
+}    
 .myResearch .fines tr:nth-child(2) td {
-	border:none;	
+    border:none;    
 }
 .myResearch .accountList td {
-	border:none;
-	padding-bottom:12px;
+    border:none;
+    padding-bottom:12px;
 }
 .myResearch select, .myResearch input[type="text"] {
-	padding:5px 5px;
-	margin:5px 0px;
-	max-width:200px;
+    padding:5px 5px;
+    margin:5px 0px;
+    max-width:200px;
 }
 .myResearch .profileGroup input[type="text"] {
-	width:200px;	
+    width:200px;    
 }
 
 .profileInfo select#home_library {
@@ -2028,7 +1949,7 @@ clear:both;
     padding: 2px;
 }
 .profileInfo.grid_12.static {
-	width:100%;	
+    width:100%;    
 }
 .profileInfo .button {
     margin: 1em 0 0 0;
@@ -2055,9 +1976,37 @@ clear:both;
 .myResearch .sessionHistory {
     margin-bottom: 1em;
 }
+.myResearch .title {
+    font-size:1.2em;    
+}
+
+.myResearch #deleteAccount {
+    float: right;
+}
+
+#deleteAccountNote {
+    display: none;
+}
+
+#deleteAccountButton {
+    padding-left: 30px;
+    background-image: url("../images/icons16-24px-02_white.png");
+    background-position: 6px -161px;
+    background-repeat: no-repeat;
+    
+}
+
+/***   Login information    ***/
+
 .loginForm h3 {
-    font-size: 1em;
-    font-weight: bold;
+    background: #b0e9db;
+    text-align: center;
+    width: 100%;
+    padding: 5px 10px;
+    margin-top: 20px;
+    font-weight: 400;
+    background: none;
+    border-bottom: 1px solid #d3d3d3;
 }
 .main .loginForm {
     padding-bottom:20px;
@@ -2067,9 +2016,15 @@ clear:both;
     font-size: 1em;
     font-weight: normal;
 }
+.loginForm label.invalid {
+    color: #EA5200;
+    padding-bottom: 2px;
+    margin-left: 16%;
+    display: block;
+    text-align: left;
+}
 .loginForm .button {
     margin: 1.5em 0;
-    float: right;
 }
 .loginForm .description {
     padding: 1em;
@@ -2078,6 +2033,14 @@ clear:both;
 }
 .loginForm .descriptionTitle {
     font-weight: bold;
+}
+.loginForm .description {
+    font-size:1.1em;
+    font-weight:300;
+    padding: 2em 2em;
+    background-color: #edf3f6;
+    margin-top: -12px;
+    margin-right: -20px;
 }
 .loginForm .separator, .loginForm .separatorSmall {
     clear: left;
@@ -2100,38 +2063,64 @@ clear:both;
     background-color: #ffffff;
 }
 .loginForm .loginAction, .loginForm .loginTitle {
-    clear: left;
-    float: left;
-    width: 240px;
-    margin-right: 56px;
-    margin-left:5px;
 }
 .loginForm .loginTitle {
     margin-bottom: 1em;
 }
-.loginInfo {
-	margin-bottom:15px;
+.loginForm .loginInfo {
+    margin-bottom:0px;
 }
 .loginTitle {
     font-weight: bold;
     font-size: 1.230em;
 }
-.loginForm .loginDescription {
-    float: left;
-    width: 296px;
-    margin-right: 12px;
-    margin-bottom: 1em;
+.libraryLogin, .libraryLogin .button, .shibLogin, .personaLogin {
+    text-align:center;  
+}
+.shibLogin {
+    margin-top:10px; 
+}
+.personaLogin {
+    margin-top:50px;    
+}
+.libraryLogin input[type="password"],.libraryLogin input[type="text"], .libraryLogin select {
+    width:80%;
+    max-width: 200px;
+}
+.loginForm .shibText h3 {
+    background: #edf3f6;
+    color: #464646;
+    font-weight: 300;
+    font-size: 1.23em;
+    text-align: center;
+    padding: 10px;
+    border:none;    
 }
 .loginForm .loginDescriptionSmall {
-    float: left;
-    width: 248px;
-    margin-right: 12px;
-    font-size: .846em;
 }
-.loginForm input[type='text'], .loginForm input[type='password'], .loginForm select {
-    width: 100%;
-    -moz-box-sizing: border-box;
+.loginForm .alreadyLogged {
+    font-size:1.23em;
+    color:#666;
+    margin-top:20px;
+    font-weight:bold;
 }
+.loginForm form input[type="submit"] {
+    margin: 15px 0;
+    margin-top:30px !important;
+}
+#modalDialog #errormessage {
+    margin-bottom:0px !important;   
+}
+#modalDialog .loginInfo, #modalDialog .grid_7, #modalDialog .grid_14 {
+    margin-left:0px;    
+}
+
+/*** Login Notification for PCI and MetaLib ***/
+.loginNotification p {
+    background: #edf3f6;
+    padding: 10px 15px;
+    margin-bottom: 20px; 
+} 
 
 /*** Result List ***/
 .resultHeader .headerLeft {
@@ -2143,7 +2132,7 @@ clear:both;
     margin: 0 5px 0;
 }
 .resultHeader .button {
-	  padding: 10px 12px 10px 12px;
+      padding: 10px 12px 10px 12px;
 }
 
 .resultListContainer {
@@ -2171,30 +2160,8 @@ ul.recordSet {
 ul.recordSet li.result {
     margin-bottom: 30px;
 }
-
-ul.recordSet li.result:hover {
-  /*  background: url("../images/highlight_bg.png") repeat-x #f3f3f3;   */
-}
-
-ul.recordSet li.alt {
-    /* background-color: #f3f3f3; */
-}
-ul.recordSet input.checkbox_ui {
-    /* display: none; */
-    /*
-    width: 30px;
-    float: left;
-    margin: 0 6px 6px -30px;
-    */
-}
 ul.recordSet .recordNumber {
     display: none;
-    /*
-    width:30px;
-    float: left;
-    font-weight: bold;
-    margin-right: 0.2em; 
-    */
 }
 ul.recordSet .addToFavLink {
     width: auto;
@@ -2221,8 +2188,6 @@ ul.recordSet .resultCheckbox {
     display:none;
 }
 ul.recordSet .coverDiv {
-    /* min-height:136px; */
-    /* border:1px solid #ddd; */
     text-align:center;
     overflow:hidden;
 }
@@ -2417,15 +2382,11 @@ ul.recordSet .resolver {
 }
 
 .advancedOptions {
-/*
-	margin-bottom:5px;
-	color:#008596;
-*/
   float: right;
 }
 .advancedOptions p {
-		padding-left: 25px;
-		color: black;
+        padding-left: 25px;
+        color: black;
 }
 
 .recommendation {
@@ -2460,25 +2421,17 @@ ul.recordSet .resolver {
     border:1px solid #ccc;
     padding:9px 12px;
 }
-/*
-.resultRecommendations .authorbio img.nationalBiographyCover {
-    border:1px solid #c3c2c2;
-    padding:1px;
-    margin-right:30px;
-}
 
-
-*/
 /** DualResults - Two Column Results */
 #dualResults h3 {
-	  margin-top: 0;
+      margin-top: 0;
 }
 #dualResults .leftColumn {
     float: left;
-	  width: 453px;
-	  border-right: 6px solid #e6e6e6;
-	  padding: 0 18px 0 6px;
-	  margin: 0 0 24px 0;
+      width: 453px;
+      border-right: 6px solid #e6e6e6;
+      padding: 0 18px 0 6px;
+      margin: 0 0 24px 0;
 }
 #dualResults .rightColumn {
     float: left;
@@ -2535,8 +2488,8 @@ ul.recordSet .resolver {
     height: 2px;
 }
 #dualResults .resultViewOptions {
-	  height: auto;
-	  padding: 10px 0;
+      height: auto;
+      padding: 10px 0;
 }
 #dualResults .resultViewOptions.resultListTop {
     padding-top: 0;
@@ -2546,33 +2499,34 @@ ul.recordSet .resolver {
     margin: 0;
 }
 #dualResults .resultOptions {
-	  height: auto;
-	  margin: 0.15em 0;
-	  line-height: 1em;
+      height: auto;
+      margin: 0.15em 0;
+      line-height: 1em;
 }
 #dualResults .noResultHeader {
     background: none repeat scroll 0 0 #F3EC7A;
+    padding:10px 10px;
 }
 #dualResults .resultColumn1 {
     width: 100px;
 }
 #dualResults .resultNoImage {
-	  width: 92px;
+      width: 92px;
     height: 92px;
     background-position: -22px -747px;
 }
 #dualResults .resultImage {
     margin: -100px 0 0;
-	  width: 100px;
+      width: 100px;
 }
 #dualResults .summcover {
-	  max-width: 100px;
+      max-width: 100px;
 }
 #dualResults .resultColumn2 {
     width: 310px;
 }
 #dualResults .title {
-	font-size: 1.23em;
+    font-size: 1.23em;
     line-height: 1.1em;
 }
 
@@ -2591,7 +2545,7 @@ ul.recordSet .resolver {
 .module-PCI .emptySearchNote,
 #dualResults .emptySearchNote,
 #dualResults .localFiltersNote {
-    background-color: #f2f2f2;
+    background-color: #edf3f6;
     padding: 10px;
     margin-bottom: 10px;
 }
@@ -2599,6 +2553,13 @@ ul.recordSet .resolver {
 #dualResults .deleteButtonSmall {
     float: right;
     margin-top: -3px;
+}
+
+.globalFiltersNote {
+    background-color: #edf3f6;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 25px;
 }
 
 /** Side facets */
@@ -2744,7 +2705,6 @@ dl.narrowList a {
 
 .navmenu dd {
     list-style-type: none;
-    /* border-bottom: 1px solid #e3e3e3; */
     margin:0;
 }
 
@@ -2878,11 +2838,6 @@ dl.defaultFacet dd {
     list-style-type: disc;
     margin-left:1em;
 }
-.record .content {
-    /* padding-top:40px;
-       commented this out because it breaks a few things and I don't know where
-       it should be applied */
-}
 .newItem .header,
 #main .contentHeader,
 #main .browseHeader {
@@ -3014,10 +2969,12 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 20px;
 }
 .persona-login {
-    background-image:url(../images/persona-logo.png);
-    background-repeat:no-repeat;
+    background-image: url(../images/persona-logo.jpg);
+    background-repeat: no-repeat;
     background-position: left;
-    padding:.5em .5em .5em 22px;
+    padding: 25px 60px;
+    font-size: 1.23EM;
+    margin-left: 30PX;
 }
 .persona-login-loading {
     background-image: url(../images/ajax_loading.gif);
@@ -3034,13 +2991,6 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 20px;
     margin-right:1em;
 }
-/*.edit {
-    background-image:url(../images/silk/edit.png);
-    background-repeat:no-repeat;
-    background-position: left;
-    padding:.5em 0 .5em 18px;
-    margin-right:.7em;
-}*/
 .save {
     background-image:url(../images/silk/disk-black.png);
     background-repeat:no-repeat;
@@ -3071,7 +3021,6 @@ ul.recordSet .addToFavLink a {
     background-repeat:no-repeat;
     background-position: left;
     padding:.5em .5em .5em 20px;
-    /*margin-left:1em;*/
 }
 .add {
     padding:.5em .5em .5em 30px;
@@ -3189,7 +3138,7 @@ ul.recordSet .addToFavLink a {
     padding-left:18px;
 }
 .rsi {
-	  clear: both;
+      clear: both;
 }
 .peerReviewed {
     background-image:url(../images/silk/user_green.png);
@@ -3197,7 +3146,7 @@ ul.recordSet .addToFavLink a {
     padding-left:18px
 }
 .fulltextAvailable {
-	  display: none;
+      display: none;
 }
 
 
@@ -3222,7 +3171,7 @@ ul.recordSet .addToFavLink a {
     margin-right: 2px;
 }
 .fixposition {
-	display: inline-block;
+    display: inline-block;
     height: 21px;
     padding-right: 10px;
     width: 20px;
@@ -3230,20 +3179,27 @@ ul.recordSet .addToFavLink a {
 }
 
 .fixline {
-	display: inline-block;
+    display: inline-block;
     position: relative;
     top: -3px;
 }
 .privacyTable {
-		margin:1.5em 0;
+        margin:1.5em 0;
 }
 .privacyTable td {
-	border-bottom:1px solid #e4e4e4;
-	padding-left:0;
+    border-bottom:1px solid #e4e4e4;
+    padding-left:0;
 }
 
 .myResearch .icon {
     padding: 2px 2px 1px 20px;
+}
+.myResearch .smallNotification {
+    color: #CCC;
+    font-size: 0.9em;
+    text-align: left;
+    font-weight:400;
+    line-height:1.1em;
 }
 
 /***** Results page blocks ****/
@@ -3325,20 +3281,20 @@ ul.recordSet .addToFavLink a {
     padding: 22px 0 22px;
 }
 .myResearch .checkboxFilter label {
-	 text-indent:-10000px;	
-	 width:0px;
+     text-indent:-10000px;    
+     width:0px;
 }
 
 .myResearch h2 {
-	background:#00a3ad;
-	padding:12px 10px;
-	font-weight:500;
-	font-size:1.5em;
-	color:#fff;
-	letter-spacing:0.3px;	
+    background:#00a3ad;
+    padding:12px 10px;
+    font-weight:500;
+    font-size:1.5em;
+    color:#fff;
+    letter-spacing:0.3px;    
 }
 .myResearch h3 {
-	margin-bottom:0px;	
+    margin-bottom:0px;    
 }
 
 .module-Search h2.account,
@@ -3363,11 +3319,44 @@ ul.recordSet .addToFavLink a {
     float: left;
     display: block;
     font-size: 1.777em;
-/*
-    margin: 0 30px 0 5px;
-*/
     margin-top: 0;
     margin-left: 5px;
+}
+
+h3.metalibSearchSets {
+    background: #00a3b5;
+    display: block;
+    font-size: 1.777em;
+    color: #fff;
+    padding: 20px 12px 20px 15px;
+    line-height: 30px;
+    margin-top: 25px;
+}
+
+#searchSets label {
+    font-weight: 500;
+    margin: 0em 5px;
+    line-height: 25px;
+}
+
+div#metalibDescription p img {
+    padding: 0px 20px 20px 0px;
+    float: left;
+}
+
+div#metalibDescription {
+    margin-top: 1.4em;
+}
+
+div#databaseStatuses {
+    padding: 10px;
+}
+
+div#databaseStatuses div {
+    margin-top: 10px;
+}
+div.searchDescription p {
+    padding-bottom: 1em;
 }
 
 .correction {
@@ -3636,13 +3625,13 @@ div.dateVisHandle.visible {
 
 .narrowList.navmenu.year dt {
     z-index:1000;
-	position:relative;
-	width: 176px;
+    position:relative;
+    width: 176px;
 }
 .narrowList.navmenu.year.collapsible.timeline.open.collapsed dt{
-	width:950px;
-	z-index:1000;
-	position:relative;
+    width:950px;
+    z-index:1000;
+    position:relative;
     padding-bottom:15px;
 }
 
@@ -4071,28 +4060,14 @@ div[id*="record"].record.recordId {
 }
 #recordMetadata tr, .citation tr {
 }
-/*
-#recordMetadata tr:hover {
-    background: url("../images/highlight_bg.png") repeat-x #f3f3f3;  
 
-    border: 1px solid #f4f4f4;
-    padding: 12px 1px 12px 0;
-
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
-
-
-    behavior: url(/interface/themes/ndl/js/css3pie/PIE.php);
-}
-*/
 .recordTitle {
     margin-top:0;
 }
 .recordAltTitlesHeading {
-	  margin-top: -0.8em;
-	  margin-bottom: 1em;
-	  color: #666666;
+      margin-top: -0.8em;
+      margin-bottom: 1em;
+      color: #666666;
 }
 div.recordsubcontent {
     padding-bottom:20px;
@@ -4157,9 +4132,6 @@ div.coverImagesLessLink {
     border-radius: 0 0 11px 11px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
-.coverImageLinks span {
-    /* display: none; */
-}
 .coverImageLinks a:hover span {
     background-position: 400px 32px;
 }
@@ -4167,7 +4139,6 @@ div.coverImagesLessLink {
     border: 1px solid #ddd;
 }
 .coverImages {
-    /* text-align:center; */
     overflow: auto;
 }
 .coverImages img#thumbnail {
@@ -4206,6 +4177,9 @@ div.coverImagesLessLink {
 .recordLinks {
     margin: 0 0 5px 0;
     padding: 6px 0;
+}
+.webResource {
+    word-wrap: break-word;    
 }
 #recordMetadata .recordHierarchyLinks {
     margin: -6px 0 12px 0;
@@ -4304,9 +4278,6 @@ table.authors th {
     float: left;
     display: block;
     padding: .4em .5em;
-/*
-    padding:18px 10px 10px 5px;
-*/
     text-decoration:none;
 }
 /* Commented Backslash Hack
@@ -4318,10 +4289,6 @@ table.authors th {
 }
 #tabnav .active a {
     color: #212121;
-/*
-    background:url(../images/subnavTab_right.jpg) no-repeat right top;
-    padding:18px 10px 12px 0px;
-*/
 }
 
 #tabnav li,
@@ -4356,7 +4323,7 @@ table.authors th {
 
 /* DualTabs split screen & other CSS */
 .resultListContainer {
-	background:white;
+    background:white;
 }
 .dualTabs {
 background:#a9d9df;
@@ -4364,39 +4331,39 @@ margin-bottom: 10px;
 box-shadow:0 7px 15px -13px rgba(139,187,193, 0.85) inset;
 }
 .dualTabs .button {
-	font-size:1.1em;
-	letter-spacing:0.3px;
-	margin:0;
-	padding:0;
-	height:100%;
-	padding:0.9em 1em;
-	width:auto;
-	padding-left:35px;
-	background:url(../../ndl/images/icons16-24px-02_black.png) no-repeat !important;
-	background-position:10px -939px !important;
+    font-size:1.1em;
+    letter-spacing:0.3px;
+    margin:0;
+    padding:0;
+    height:100%;
+    padding:0.9em 1em;
+    width:auto;
+    padding-left:35px;
+    background:url(../../ndl/images/icons16-24px-02_black.png) no-repeat !important;
+    background-position:10px -939px !important;
 }
 .dualTabs .button.adv,  .dualTabs .button.buttonFinna.adv.buttonSelected {
-	background-position:10px -995px !important;
+    background-position:10px -995px !important;
 }
 
 .dualTabs .button.buttonFinna {
-	border-radius:0px;
-	border-left:1px solid #B3E3E9;
-	border-right:1px solid #B3E3E9;
-	margin:0 !important;
-	background:none;
-	color:#464646;
-	display: block;
+    border-radius:0px;
+    border-left:1px solid #B3E3E9;
+    border-right:1px solid #B3E3E9;
+    margin:0 !important;
+    background:none;
+    color:#464646;
+    display: block;
     float: left;
     font-weight:normal;
 }
 .dualTabs .button.buttonFinna.buttonSelected {
-	background:white;
-	color:#464646;
-	font-weight:700;
-	background:url(../../ndl/images/icons16-24px-02_black.png) no-repeat, #ffffff !important;
-	background-position:10px -939px !important;
-	
+    background:white;
+    color:#464646;
+    font-weight:700;
+    background:url(../../ndl/images/icons16-24px-02_black.png) no-repeat, #ffffff !important;
+    background-position:10px -939px !important;
+    
 }
 
 
@@ -4633,42 +4600,10 @@ h5.recordTabHeader {
     width: 15px;
 }
 
-
-
-/*
-.toolbar ul li a:hover{
-    background-color:#f9f9f9;
-}
-*/
-/*
-.toolbar ul.menu {
-    display:block;
-    margin-top: 0;
-    border-right: 1px solid #cccccc;
-    border-left: 1px solid #cccccc;
-    position:absolute;
-    background:white;
-    height:auto;
-    padding: 0;
-}
-.toolbar ul.menu li {
-    border-bottom: 1px solid #cccccc;
-    padding:5px;
-    clear: left;
-    display:block;
-    width:100px;
-    text-align: left;
-    background:white;
-    margin: 0px;
-}
-*/
-/*********** Next / prev *************************/
+/************* Next / prev *************************/
 
 .backToResults, .resultscroller {
     height: 2em;
-/*
-    padding-top: .6em;
-*/
 }
 .backToResults {
     float: left;
@@ -4746,25 +4681,13 @@ table.datagrid caption {
 table.datagrid th {
     background-color: #e6e6e6;
     text-align: left;
-    /*border-left: 1px solid #FFFFFF;
-    border-right: 1px solid #FFFFFF;*/
     padding: 5px 15px 4px 10px;
 }
-/*
-table.datagrid th a {
-    color: #336699;
-}
-*/
+
 table.datagrid td {
-    /*border-left: 1px solid #FFFFFF;
-    border-right: 1px solid #FFFFFF;*/
     padding: 5px 10px 5px 10px;
 }
-
 .holdingsHoldingURLs {
-/*
-    background:url(../images/icons16-24px.png) -404px -11px no-repeat;
-*/
     padding-left:30px;
     font-weight:bold;
     margin-bottom:10px;
@@ -4782,9 +4705,9 @@ table.datagrid td {
 }
 
 .holdingsOnline li{
-	color:#00a3b5;
-	list-style-type:disc;
-	margin-left:15px;
+    color:#00a3b5;
+    list-style-type:disc;
+    margin-left:15px;
 }
 
 .holdingsPlaceHold {
@@ -4793,38 +4716,38 @@ table.datagrid td {
 }
 /*** Holdings styles ***/
 .holdingsPlaceHold {
-		vertical-align:middle;
-		line-height:2.5em;
+        vertical-align:middle;
+        line-height:2.5em;
 }
 .holdingsPlaceHold .button {
-		padding:10px 12px;
+        padding:10px 12px;
 }
-	
+    
 .holdingsPlaceHold #selectCard { 
-	float:left;
+    float:left;
 }
 .holdingsPlaceHold .selectText {
-	display:inline-block;
-	vertical-align:middle;
-	float:left;
+    display:inline-block;
+    vertical-align:middle;
+    float:left;
 }
 .holdingsPlaceHold .menuLibCard {
-	float:left;
-	padding-left:7px;
+    float:left;
+    padding-left:7px;
 }
 .holdingsPlaceHold .menuLibCard dd a {
-	color:#464646 !important;
+    color:#464646 !important;
 }
 .UBRequestPlace {
-	color:#fff !important;	
-	margin:0px 5px;
-	float:right;
+    color:#fff !important;    
+    margin:0px 5px;
+    float:right;
 }
 .UBRequestPlace:before {
-	width:0px;
-	content:'';
-	height:0px;
-	padding:0;
+    width:0px;
+    content:'';
+    height:0px;
+    padding:0;
 }
 
 
@@ -4954,7 +4877,7 @@ table.holdingsContainerHolding .locationLink a {
     display: inline-block;
     float: right;
     padding-right:22px;
-    background:url(../images/icons16-24px-04.png) -443px -12px /*center right*/ no-repeat;
+    background:url(../images/icons16-24px-04.png) -443px -12px no-repeat;
 }
 
 table.holdingsContainerHolding td,
@@ -5060,7 +4983,7 @@ ul.commentList li {
 }
 
 #emptyListItem {
-	padding:1em;
+    padding:1em;
 }
 #inappropriateForm label {
     display: block;
@@ -5072,7 +4995,7 @@ ul.commentList li {
     margin-top: 1em;
 }
 .ratingCount {
-	color: #757575;
+    color: #757575;
 }
 #averageRating {
     float: left;
@@ -5082,7 +5005,7 @@ ul.commentList li {
 }
 
 ul.commentList li div.posted {
-	border-bottom:2px solid #FFFFFF;
+    border-bottom:2px solid #FFFFFF;
     color: #666666;
     display: inline-block;
     height: 30px;
@@ -5161,12 +5084,12 @@ p.citationText {
     position:relative;
 }
 .advSearchSection:after {
-	content: ".";
-	display: block;
-	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
 }
 .groupSearchHolder {
     width: 65%;
@@ -5352,9 +5275,9 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     top: 3px;
 }
 .advTitle {
-	  margin-top:5px;
-	  margin-bottom:3px;
-	  margin-left:5px;
+      margin-top:5px;
+      margin-bottom:3px;
+      margin-left:5px;
 }
 
 
@@ -5362,7 +5285,7 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     margin: 10px 0 15px;
 }
 /* Radio buttons */
-#searchForm_set input[type="radio"] {
+#searchForm_set input[type="radio"], #searchSets input[type="radio"] {
     display: none;
 }
 #searchForm_set input[type="radio"] + label span {
@@ -5374,6 +5297,23 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     cursor: pointer;
 }
 
+#searchSets input[type="radio"] + label span {
+    display: inline-block;
+    height: 20px;
+    margin: -4px 4px 0 10px;
+    padding-left: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+#searchSets label {
+    cursor: pointer;
+}
+
+#searchSets br {
+    margin-bottom: 0.5em;
+}
+
 /* Profile / MyResearch */
 
 .headerMyResearch {
@@ -5382,16 +5322,6 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 .myResearch {
     padding: 1.8em 0 1.5em 1em;
     overflow: auto;
-}
-.myResearch .resultHead {
-/*
-    width: 716px;
-    border-bottom: 1px solid #dddddd;
-    padding: 0 12px 0.2em 0;
-*/
-/*
-    padding:.4em 0 0 .8em;
-*/
 }
 .myResearch .resultHead h3 {
     display: block;
@@ -5413,7 +5343,6 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     font-size: 1.4em;
     margin:0;
     line-height:1em;
-	/* box-shadow: 0px 10px 20px 0px rgba(1,1,1,0.05) inset; */
 }
 .myResearch ul.recordSet .resultCheckbox {
     display: inherit;
@@ -5483,19 +5412,18 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     top:18px;
 }
 .favoritesList .bulkActionButtons.visible {
-	display: block;
-	background: #eee;
+    display: block;
+    background: #eee;
 }
 .favoritesList .bulkActionButtons.visible.fixed {
-	position:fixed;
-	top:0;
-	margin:0;
-	z-index:100000;	
-	box-shadow: 0px 19px 15px -13px grey;
-	padding-bottom:20px;
-	z-index: 100000;
-	background: rgba(77,77,77,0.95);
-	
+    position:fixed;
+    top:0;
+    margin:0;  
+    box-shadow: 0px 19px 15px -13px grey;
+    padding-bottom:20px;
+    z-index: 100000;
+    background: rgba(77,77,77,0.95);
+    
 }
 .favoritesList div.bulkActionButtons input[name="export"] {
 padding-right: 20px;
@@ -5525,7 +5453,7 @@ padding-right: 10px !important;
     max-width:70%;
 }
 .myResearch .favoritesList .resultColumn2 {
-	max-width:60%;
+    max-width:60%;
 }
 
 .myResearchMenu, .tabNavi {
@@ -5637,7 +5565,7 @@ padding-right: 10px !important;
 #loginForm #login_target,
 .module-MyResearch #login_target {
     margin-top: 3px;
-	margin-bottom:8px;
+    margin-bottom:8px;
     padding: 5px 6px;
 }
 
@@ -5645,8 +5573,6 @@ padding-right: 10px !important;
 .browseNav {
     background-color: #F2F2F2;
     border-radius: 3px 3px 3px 3px;
-    /* max-height: 300px; */
-    /* width: 215px; */
     overflow:auto;
     box-shadow: 0 3px 10px -8px black;
     margin-bottom:5px;
@@ -5671,13 +5597,9 @@ padding-right: 10px !important;
     border:1px solid white;
 }
 .browseNav li {
-    /* width: 100%; */
     display:block;
     float:left;
 }
-/* .browseNav li:first-child a {
-    border-top:none;
-} */
 .browseNav a {
     background: none repeat scroll 0 0 #F2F2F2;
 
@@ -5702,7 +5624,7 @@ padding-right: 10px !important;
     color: #FFFFFF;
 }
 .browseNav a.viewRecords {
-	border:none;
+    border:none;
     font-size:.9em;
     float:right;
     background:transparent;
@@ -5714,16 +5636,16 @@ padding-right: 10px !important;
     color:#555;
 }
 #list2container {
-	margin-bottom:20px;
+    margin-bottom:20px;
 }
 
 #list3container li, #list4container li {
-	float:none;
-	clear:both;
-	
+    float:none;
+    clear:both;
+    
 }
 #list3container, #list4container {
-	max-height:500px;
+    max-height:500px;
 }
 
 /** Google search **/
@@ -5955,11 +5877,6 @@ tr:nth-child(even) td.gridMouseOver {
     padding: .5em 0 1em;
     border-top: 3px solid #B3E3E9;
     margin-top: -3px;
-/*
-    border-top: 2px solid #eeeeee;
-    margin-top: -2px;
-    margin-bottom: 20px;
-*/
 }
 .collectionDetailsTree {
     border: 3px solid #B3E3E9;
@@ -5972,9 +5889,6 @@ tr:nth-child(even) td.gridMouseOver {
     float: right;
 }    
 .collectionDetails li.result {
-/*
-    background-color: #EEEEEE;
-*/
     margin-bottom: 0px;
 }
 .collectionDetails li.result.alt {
@@ -5984,9 +5898,6 @@ tr:nth-child(even) td.gridMouseOver {
 
 }
 .collectionDetails .pagination span {
-/*
-    border: 1px solid #EEEEEE;
-*/
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -5996,28 +5907,12 @@ tr:nth-child(even) td.gridMouseOver {
     padding: 7px 0;
     text-align: center;
 }
-/*
-.collectionDetails .paginationTop:hover {
-    padding: 6px 0 7px;
-}
-*/
 .collectionDetails .paginationTop span {
-/*
-    border: 1px solid #EEEEEE;
-*/
     padding-left: 4px;
     padding-right: 4px;
     margin-left: 3px;
 }
-/*
-.collectionDetails .paginationTop a:hover {
-    border: 1px solid #EEEEEE;
-}
-*/
 .collectionDetails .paginationTop a {
-/*
-    border: 1px solid #FFF;
-*/
     padding-left: 4px;
     padding-right: 4px;
     margin-left: 3px;
@@ -6091,10 +5986,10 @@ tr:nth-child(even) td.gridMouseOver {
     text-decoration: none;
 }
 .collectionID #moreInfoToggle {
-	top: 7px;	
+    top: 7px;    
 }
 .collectionID #collectionInfo {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 /* toolbar was changed to collection-toolbar in Collection/view.tpl & Collection/view-alt.tpl */
@@ -6640,7 +6535,7 @@ span.mapMarker  {
 }
 .buttonSelected:hover {
     color: #333333;
-	  text-decoration: none;
+      text-decoration: none;
 }
 .buttonFinna.buttonSelected:hover {
     color: #333333;
@@ -6673,7 +6568,6 @@ span.mapMarker  {
 
 /* Feedback form styles */
 form#feedbackForm {
-    overflow:auto;
     margin-bottom:30px;
 }
 form#feedbackForm input, form#feedbackForm textarea, form#feedbackForm select { 
@@ -6786,7 +6680,7 @@ div.starRatingReadOnly {
 }
 
 div#starRating {
-	display:inline;
+    display:inline;
     display: inline-block;
     position: relative;
     top: 3px;
@@ -6820,7 +6714,7 @@ top:10px;
 }
                                           
 .fancyLink {
-	text-align:right;
+    text-align:right;
 }
 
 .fancyLink a {
@@ -6895,10 +6789,10 @@ border: none;
 }
 
 #newItemsFromDate {
-	display:none;
+    display:none;
 }
 #newItemsFromDate.searchButton:hover {
-	text-decoration:none !important;
+    text-decoration:none !important;
 }
 
 .startingfrom {
@@ -6916,6 +6810,7 @@ border: none;
 span#showDate {
     padding-right: 5px;
 }
+
 
 
 

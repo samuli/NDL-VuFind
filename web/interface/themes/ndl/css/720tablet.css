@@ -196,7 +196,12 @@
         
     /* Search results: sidebar */
     
+    .sidegroup ul.dynatree-container {
+        padding: 0 10px 8px 6px;
+    }
+
     span.dynatree-node .facetTitle {
+        display:inline;
         max-width:110px;
     }
     
@@ -392,6 +397,17 @@
 	.module-MyResearch h2, .myResearch h2 {
 		line-height: auto;
 	}
+
+    /*** Login ***/
+    .loginForm .grid_7, .loginForm .grid_14 {
+        width: 90% !important;
+    }
+    .loginForm .description {
+        margin-top:20px;
+    }
+    .loginForm .personaLogin {
+        margin-top: 20px;
+    }
 
     /* Footer */
     

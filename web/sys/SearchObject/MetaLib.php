@@ -355,19 +355,6 @@ class SearchObject_MetaLib extends SearchObject_Base
         return isset($this->indexResult['recommendationLists']['database']) ?
             $this->indexResult['recommendationLists']['database'] : false;
     }
-
-    /**
-     * Build a url for the current search
-     *
-     * @return string URL of a search
-     * @access public
-     */
-    public function renderSearchUrl()
-    {
-        $result = parent::renderSearchUrl();
-        $result .= '&set=' . urlencode($this->set);
-        return $result;
-    }
     
     /**
      * Generate a URL for a basic MetaLib "all fields" search for a specific query.

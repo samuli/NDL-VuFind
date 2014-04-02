@@ -357,9 +357,16 @@
         margin-left: 15px;
     }
     
+    .dedupform {
+        max-width:180px;
+    }
     
     /* Search results: sidebar */
     
+    .sidegroup ul.dynatree-container {
+        padding: 0 10px 8px;
+    }
+
     #sidebarFacets.grid_6 {
         width:470px;
     }
@@ -701,6 +708,21 @@
     table.holdingsContainerHolding .checkedout,
     table.holdingsContainerHolding .available {
         display: inline-block;
+    }
+
+    /*** Login ***/
+    .loginForm .grid_7, .loginForm .grid_14 {
+        width: 90% !important;
+    }
+    .loginForm .description {
+        margin-top:20px;
+        padding:10px;
+    }
+    .loginForm .personaLogin {
+        margin-top: 20px;
+    }
+    .loginForm h3 {
+        margin-top:10px;    
     }
 
     /* Footer */

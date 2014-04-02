@@ -45,7 +45,7 @@ CREATE TABLE `user` (
 
 CREATE TABLE `resource` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `record_id` varchar(60) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `record_id` varchar(2048) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
   `title` varchar(200) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
   `source` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'VuFind',
   `data` blob,

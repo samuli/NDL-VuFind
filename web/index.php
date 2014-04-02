@@ -159,25 +159,42 @@ if ($module == 'Content' && !is_readable("services/$module/$action.php")) {
 }
 
 // If default prefilter is in use, remember result type (split, local, PCI) 
-// by resolving module & action from HTTP referer.
+// by resolving module & action in the following order: 
+//   1. URL parameters (followupSearchModule & followupSearchAction): (search started from record page)
+//   2. HTTP referer
 $overridePrefilter = false;
 
-if (in_array($module, array('Search', 'PCI'))
+if (in_array($module, array('Search', 'PCI', 'MetaLib'))
     && ((isset($_REQUEST['prefilter']) && $_REQUEST['prefilter'] == '-'))
 ) {
-    if (isset($_SERVER['HTTP_REFERER'])) {
+    $refAction = null;
+    $refModule = null;
+
+    if (isset($_REQUEST['followupSearchModule']) && isset($_REQUEST['followupSearchAction'])) {
+        $refAction = $_REQUEST['followupSearchAction'];
+        $refModule = $_REQUEST['followupSearchModule'];
+    } elseif (isset($_SERVER['HTTP_REFERER'])) {
         $parts = parse_url($_SERVER['HTTP_REFERER']);
         $pathParts = explode('/', $parts['path']);
         
         $refAction = array_pop($pathParts);
         $refModule = array_pop($pathParts);   
-
-        if (in_array($refModule, array('Search', 'PCI')) 
-            && in_array($refAction, array('Results', 'DualResults', 'Search'))
+    }
+    
+    if ($refModule && $refAction) {
+        if (in_array($refModule, array('Search', 'PCI', 'MetaLib')) 
+            && in_array($refAction, array('Results', 'DualResults', 'Search', 'Home'))
         ) {
-            $overridePrefilter = true;
+            $overridePrefilter = true;            
+            if (in_array($refModule, array('PCI', 'MetaLib'))
+                && $refAction == 'Home'
+            ) {
+                // When arriving from PCI/MetaLib homepage, preserve Module and redirect to search results.
+                $refAction = 'Search';
+            }
         }
-    } 
+    }
+
 }
 
 // Process prefilter redirection
@@ -192,6 +209,16 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
             || $overridePrefilter
         ) {
             $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
+            
+            // Remove followupSearchModule/followupSearchAction URL parameters
+            foreach ($params as $key => $param) {
+                if (stripos($param, 'followupSearchModule=') === 0
+                    || stripos($param, 'followupSearchAction=') === 0
+                ) {
+                    unset($params[$key]);
+                }
+            }
+
             foreach ($params as &$paramValue) {
                 $paramValue = preg_replace('/^prefilter=/', 'prefiltered=', $paramValue);
             }

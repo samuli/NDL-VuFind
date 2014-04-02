@@ -72,21 +72,20 @@
 {* Main Listing *}
 <div class="resultListContainer">
   <div class="content">
-    <div id="resultList" class="{if ($sidebarOnLeft && !empty($sideFacetSet))}sidebarOnLeft last{/if} grid_17">
+    <div id="resultList" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_17">
+      {if $showGlobalFiltersNote}
+      <div class="globalFiltersNote">{$showGlobalFiltersNote}</div>
+      {/if}
       {if $subpage}
         {include file=$subpage}
       {else}
         {$pageContent}
       {/if}
     </div>
-    {if !empty($sideFacetSet)}
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
-        {foreach from=$sideRecommendations item="recommendations"}
-          {include file=$recommendations}
-        {/foreach}
-        {if $recordCount > 0}<h4 class="jumpToFacets">{translate text=$sideFacetLabel}</h4>{/if}
+      {include file="MetaLib/search-sets.tpl"}
+      {include file="MetaLib/database-statuses.tpl"}
     </div>
-    {/if}
   </div>
 </div>
           

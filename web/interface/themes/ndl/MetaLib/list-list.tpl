@@ -7,6 +7,11 @@
 
 <form method="post" name="addForm" action="{$url}/Cart/Home">
   <ul class="recordSet">
+  {if !$userAuthorized && $methodsAvailable}
+   <div class="loginNotification">
+   <p>{translate text="authorize_user_notification"}</p>
+   </div>
+  {/if}
   {foreach from=$recordSet item=record name="recordLoop"}
     <li class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
       <span class="recordNumber">{$recordStart+$smarty.foreach.recordLoop.iteration-1}</span>

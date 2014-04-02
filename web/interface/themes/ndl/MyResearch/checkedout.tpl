@@ -43,7 +43,11 @@
           <input type="submit" class="button buttonFinna renewAll" name="renewAll" value="{translate text='renew_all'}" />
          </span>
         </th>
-       </tr>      
+       </tr> 
+      {else}
+      <tr class="bulkActionButtons">
+      <th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"}</h3>
+      </tr>
       {/if}
 
       {if $errorMsg}
@@ -71,9 +75,13 @@
               {translate text='Title not available'}
             {/if}</label>
             <input type="hidden" name="renewAllIDS[]" value="{$resource.ils_details.renew_details|escape}" />
+         {else}
+      	 <p class="smallNotification">{translate text="Cannot renew"}<p>
          {/if}
         </span>
        </div>
+      {else}
+      <p class="smallNotification">{translate text="Cannot renew"}<p>
       {/if}
       </th>
         <td id="record{$resource.id|escape}">

@@ -45,15 +45,15 @@ class UInterface extends Smarty
 
     /**
      * Constructor
-     * 
-     * @param string $local Local directory for cache and compile  
+     *
+     * @param string $local Local directory for cache and compile
      *
      * @access public
      */
     public function UInterface($local = '')
     {
         global $configArray;
-        
+
         if (!$local) {
             $local = $configArray['Site']['local'];
         }
@@ -130,7 +130,7 @@ class UInterface extends Smarty
             'autocomplete',
             is_object($searchObject) ? $searchObject->getAutocompleteStatus() : false
         );
-        
+
         $this->assign('retainFiltersByDefault', $searchObject->getRetainFilterByDefaultSetting());
 
         if (isset($configArray['Site']['showBookBag'])) {
@@ -189,23 +189,23 @@ class UInterface extends Smarty
         } else {
             $this->assign('libraryCard', true);
         }
-        
+
         $this->assign(
             'sidebarOnLeft',
             !isset($configArray['Site']['sidebarOnLeft'])
             ? false : $configArray['Site']['sidebarOnLeft']
         );
-        
+
         $piwikUrl = isset($configArray['Piwik']['url']) ? $configArray['Piwik']['url'] : false;
         if ($piwikUrl && isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
             $piwikUrl = preg_replace('/^http:/', 'https:', $piwikUrl);
         }
         $this->assign('piwikUrl', $piwikUrl);
-         
+
         $this->assign(
-            'piwikSiteId', 
+            'piwikSiteId',
             !isset($configArray['Piwik']['site_id'])
-            ? false : $configArray['Piwik']['site_id'] 
+            ? false : $configArray['Piwik']['site_id']
         );
 
         // Create prefilter list
@@ -220,7 +220,7 @@ class UInterface extends Smarty
         if (isset($_REQUEST['prefiltered'])) {
             $this->assign('activePrefilter', $_REQUEST['prefiltered']);
         }
-        
+
         $metalib = getExtraConfigArray('MetaLib');
         if (!empty($metalib)) {
             $this->assign('metalibEnabled', isset($metalib['General']['enabled']) ? $metalib['General']['enabled'] : true);
@@ -230,7 +230,7 @@ class UInterface extends Smarty
         if (!empty($pci)) {
             $this->assign('pciEnabled', isset($pci['General']['enabled']) ? $pci['General']['enabled'] : true);
         }
-        
+
         $rssFeeds = getExtraConfigArray('rss');
         if (isset($rssFeeds)) {
             $this->assign('rssFeeds', $rssFeeds);
@@ -241,13 +241,13 @@ class UInterface extends Smarty
         $hideLogin = isset($configArray['Authentication']['hideLogin'])
             ? $configArray['Authentication']['hideLogin'] : false;
         $this->assign("hideLogin", $hideLogin ? true : $catalog->loginIsHidden());
-        
+
         if (isset($configArray['Site']['development']) && $configArray['Site']['development']) {
-            $this->assign('developmentSite', true);    
+            $this->assign('developmentSite', true);
         }
 
         if (isset($configArray['Site']['dualResultsEnabled']) && $configArray['Site']['dualResultsEnabled']) {
-            $this->assign('dualResultsEnabled', true);    
+            $this->assign('dualResultsEnabled', true);
         }
 
         // Resolve enabled context-help ids
@@ -356,7 +356,7 @@ class UInterface extends Smarty
         $this->assign('action', $action);
         // Don't pass a PEAR error to interface
         $this->assign('user', PEAR::isError($user) ? null : $user);
-        
+
         // Load the last limit from the request or session for initializing default
         // in search box:
         if (isset($_REQUEST['limit'])) {
@@ -426,13 +426,13 @@ class UInterface extends Smarty
         if (isset($_REQUEST['retainFilters'])) {
             $retainFilters = $_REQUEST['retainFilters'] === '1';
         } elseif (isset($_SESSION['retainFilters'])) {
-            $retainFilters = $_SESSION['retainFilters'] === 1;   
+            $retainFilters = $_SESSION['retainFilters'] === 1;
         }
         if (!is_null($retainFilters)) {
             $_SESSION['retainFilters'] = (int)$retainFilters;
             $this->assign('retainFiltersByDefault', $retainFilters);
         }
-         
+
         // Assign national theme header image
         $images = 4; // Number of available header images
 
@@ -440,7 +440,7 @@ class UInterface extends Smarty
         $_SESSION['bgNumber'] = $bgNumber;
 
         $this->assign('bgNumber', $bgNumber);
-        
+
         // Moved to here from constructor
         if (isset($configArray['Authentication']['shibboleth']) && $configArray['Authentication']['shibboleth']) {
             if (!isset($configArray['Shibboleth']['login'])) {
@@ -465,7 +465,7 @@ class UInterface extends Smarty
                 if (isset($_REQUEST['followupModule'])) {
                     $myRes = $_REQUEST['followupModule'];
                     if (isset($_REQUEST['followupAction'])) {
-                        $myRes .= '/' . $_REQUEST['followupAction']; 
+                        $myRes .= '/' . urlencode($_REQUEST['followupAction']);
                         // Hack to allow quickadd to favorites after Shibboleth login
                         if (isset($configArray['Site']['quickAddToFavorites'])
                             && $configArray['Site']['quickAddToFavorites']
@@ -473,17 +473,17 @@ class UInterface extends Smarty
                             && $_REQUEST['followupAction'] == 'Save'
                         ) {
                             if ($_REQUEST['followupModule'] != 'PCI') {
-                                $myRes = $_REQUEST['followupModule']
-                                    . '/' . $_REQUEST['followupId'] 
-                                    . '/' . $_REQUEST['followupAction']
+                                $myRes = urlencode($_REQUEST['followupModule'])
+                                    . '/' . urlencode($_REQUEST['followupId'])
+                                    . '/' . urlencode($_REQUEST['followupAction'])
                                     . '?submit';
                             } else {
-                                $myRes = $_REQUEST['followupModule'] 
-                                    . '/' . $_REQUEST['followupAction']   
-                                    . '?submit'   
-                                    . '&id=' . $_REQUEST['followupId'];
-                            }                            
-                        }                        
+                                $myRes = urlencode($_REQUEST['followupModule'])
+                                    . '/' . urlencode($_REQUEST['followupAction'])
+                                    . '?submit'
+                                    . '&id=' . urlencode($_REQUEST['followupId']);
+                            }
+                        }
                     } else {
                         $myRes .= '/Home';
                     }
@@ -545,19 +545,55 @@ class UInterface extends Smarty
             }
         }
     }
-    
+
+    /**
+     * Returns an info message of the active prefilter customized
+     * for the given search type. The message is displayed in the UI by
+     * search services that do not support prefilters (PCI/MetaLib).
+     *
+     * @param string $searchType Name of search type, needs to match a
+     * translation key.
+     *
+     * @return string Messaga, or null if no prefilter is active
+     * or the active prefilter has no filters defined.
+     */
+    public function getGlobalFiltersNotification($searchType)
+    {
+        if (isset($_REQUEST['prefiltered'])) {
+            $code = $_REQUEST['prefiltered'];
+            if ($code != '-') {
+                $prefilters = getExtraConfigArray('prefilters');
+                if (!isset($prefilters[$code])) {
+                    return null;
+                }
+                $prefilter = $prefilters[$code];
+                if (!isset($prefilter['filter']) || count($prefilter['filter']) == 0) {
+                    // No warning if prefilter has no filters
+                    return null;
+                }
+
+                $prefilterStr = '<strong>' . translate($code) . '</strong>';
+                $showGlobalFiltersNote = translate('global_filters_note');
+                $showGlobalFiltersNote = str_replace('{0}', translate($searchType), $showGlobalFiltersNote);
+                $showGlobalFiltersNote = str_replace('{1}', $prefilterStr, $showGlobalFiltersNote);
+                return $showGlobalFiltersNote;
+            }
+        }
+        return null;
+    }
+
     /**
      * Check if a .local.tpl version of a template exists and return it if it does
-     * 
+     *
      * @param string $tpl      Template file name
      * @param bool   $inModule Whether to look in the $module directory
-     * 
+     *
      * @return string Template file name (local if found, otherwise original)
      */
     protected function getLocalOverride($tpl, $inModule)
     {
         global $module;
-        
+
         $localTpl = preg_replace('/(.*)\./', '\\1.local.', $tpl);
         foreach (is_array($this->template_dir) ? $this->template_dir : array($this->template_dir) as $templateDir) {
             if ($inModule) {
@@ -567,19 +603,19 @@ class UInterface extends Smarty
                 $fullPath = $templateDir . DIRECTORY_SEPARATOR . $localTpl;
             }
             if (file_exists($fullPath)) {
-                return $localTpl;            
+                return $localTpl;
             }
         }
         return $tpl;
     }
-        
+
     // @codingStandardsIgnoreStart
 
     /**
      * Convert theme file name to an absolute path
-     * 
+     *
      * @param string $resource_name File name
-     * 
+     *
      * @return string Absolute path
      */
     protected function convertToAbsolutePath($resource_name)
@@ -600,7 +636,7 @@ class UInterface extends Smarty
         }
         return $resource_name;
     }
-    
+
     /**
      * called for included templates
      *
@@ -619,7 +655,7 @@ class UInterface extends Smarty
         }
         return parent::_smarty_include($params);
     }
-    
+
     /**
      * executes & returns or displays the template results
      *
@@ -634,10 +670,10 @@ class UInterface extends Smarty
 
         // Change resource_name to absolute path so that Smarty caching must take into account the theme directory
         $resource_name = $this->convertToAbsolutePath($resource_name);
-        
+
         return parent::fetch($resource_name, $cache_id, $compile_id, $display);
     }
-    
+
     /**
      * fetch the template info. Gets timestamp, and source
      * if get_source is true
@@ -670,7 +706,7 @@ class UInterface extends Smarty
         return $retval;
     }
     // @codingStandardsIgnoreEnd
-    
+
 }
 
 /**

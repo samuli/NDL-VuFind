@@ -221,6 +221,17 @@ End Cover Image *}
   </tr>
   {/if}   
 
+  {if !empty($coreLocalIdentifiers)}
+  <tr valign="top" class="localIdentifiers">
+    <th>{translate text='Other ID'}: </th>
+    <td>
+      {foreach from=$coreLocalIdentifiers item=localIdentification}
+        {$localIdentification|escape}<br/>
+      {/foreach}
+    </td>
+  </tr>
+  {/if}
+
   {if is_array($coreEvents)}
     {foreach from=$coreEvents key=eventType item=events}
   <tr valign="top" class="recordEvents">
@@ -355,6 +366,14 @@ End Cover Image *}
   {/foreach}
   {/if}
 
+  {if !empty($coreWebResource)}
+  <tr valign="top" class="webResource">
+    <th>{translate text='available_online'}: </th>
+    <td><a href="{$coreWebResource|escape}">{$coreWebResource|escape}</a></td>
+  </tr>
+  {/if}
+
+  {* tag are disabled for now
   <tr valign="top" class="recordTags">
     <th>{translate text='Tags'}: </th>
     <td>
@@ -372,6 +391,7 @@ End Cover Image *}
       </div>
     </td>
   </tr>
+  *}
 </table>
 {* End Main Details *}
 

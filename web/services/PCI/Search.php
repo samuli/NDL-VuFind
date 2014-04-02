@@ -27,6 +27,8 @@
  */
 require_once 'Base.php';
 require_once 'sys/Pager.php';
+require_once 'services/MyResearch/Login.php';
+require_once 'services/MyResearch/lib/User.php';
 
 /**
  * Search action for PCI module
@@ -98,8 +100,15 @@ class Search extends Base
         $interface->assign(
             'searchParams', $this->searchObject->renderSearchUrlParams()
         );
+        
+        // We want to guide the user to login for access to licensed material
+        $interface->assign('methodsAvailable', Login::getActiveAuthorizationMethods());
+        $interface->assign('userAuthorized', UserAccount::isAuthorized());
 
-
+        if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('Primo Central')) {
+            $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);
+        }
+        
         if ($result['recordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
             $this->_processJumpto($result);

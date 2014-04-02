@@ -27,6 +27,13 @@
                 }
                 var listItem = $('<li/>');
                 listItem.append(span);
+                if (item.authors) {
+                    $.each(item.authors, function(key, value) {
+                        if (key != "author") {
+                        listItem.append( '<br/>' + value);
+                        }
+                    });
+                }
                 if (item.date) {
                     listItem.append(' (' + item.date + ')');
                 }

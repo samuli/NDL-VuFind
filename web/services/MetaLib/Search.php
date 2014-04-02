@@ -28,8 +28,9 @@
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 require_once 'Base.php';
-
 require_once 'sys/Pager.php';
+require_once 'services/MyResearch/Login.php';
+require_once 'services/MyResearch/lib/User.php';
 
 /**
  * Search action for MetaLib module
@@ -71,6 +72,10 @@ class Search extends Base
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
+        if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('MetaLib Searches')) {
+            $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);
+        }
+
         if ($spatialDateRangeType = $this->searchObject->getSpatialDateRangeFilterType()) {
             $interface->assign('spatialDateRangeType', $spatialDateRangeType);
         }
@@ -106,6 +111,11 @@ class Search extends Base
             );
             $interface->assign('disallowedDatabases', $result['disallowedDatabases']);
             $interface->assign('failedDatabases', $result['failedDatabases']);
+            $interface->assign('successDatabases', $result['successDatabases']);
+            
+            // We want to guide the user to login for access to licensed material
+            $interface->assign('methodsAvailable', Login::getActiveAuthorizationMethods());
+            $interface->assign('userAuthorized', UserAccount::isAuthorized());
         
             if ($result['recordCount'] > 0) {
                 // If the "jumpto" parameter is set, jump to the specified result index:

@@ -247,10 +247,53 @@ class Record extends Action
         $interface->assign('resultTotal', $scrollData['resultTotal']);
 
         // Retrieve User Search History
-        $interface->assign(
-            'lastsearch',
-            isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false
-        );
+        $lastsearch = isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false;
+        $interface->assign('lastsearch', $lastsearch);
+        
+        if ($lastsearch) {
+            // Retrieve active filters and assign them to searchbox template.
+            // Since SearchObjects use $_REQUEST to init filters, we stash the current $_REQUEST 
+            // and fill it temporarily with URL parameters from last search.
+
+            $query = parse_url($lastsearch, PHP_URL_QUERY);
+            parse_str($query, $vars);
+            $oldReq = $_REQUEST;
+
+            $_REQUEST = $vars;
+
+            $searchObject = SearchObjectFactory::initSearchObject();
+            $searchObject->init();
+            // This is needed for facet labels
+            $searchObject->initRecommendations();
+                        
+            $filterList = $searchObject->getFilterList();
+            $filterListOthers = $searchObject->getFilterListOthers();
+            $checkboxFilters = $searchObject->getCheckboxFacets();
+            $filterUrlParams = $searchObject->getfilterUrlParams();
+
+            if (isset($vars['lookfor'])) {
+                $interface->assign('lookfor', $vars['lookfor']);
+            }
+            $interface->assign('filterUrlParam', $filterUrlParams[0]);
+            $interface->assign(compact('filterList'));
+            $interface->assign(compact('filterListOthers'));
+            $interface->assign('checkboxFilters', $checkboxFilters);
+
+            if (isset($_SERVER['HTTP_REFERER'])) {
+                // Set followup module & action for next search
+                $parts = parse_url($_SERVER['HTTP_REFERER']);
+                $pathParts = explode('/', $parts['path']);
+                
+                $refAction = array_pop($pathParts);
+                $refModule = array_pop($pathParts);   
+                
+                $interface->assign('followupSearchModule', $refModule);
+                $interface->assign('followupSearchAction', $refAction);
+            }
+
+            $_REQUEST = $oldReq;
+        }
+
         $interface->assign(
             'lastsearchdisplayquery',
             isset($_SESSION['lastSearchDisplayQuery']) ? $_SESSION['lastSearchDisplayQuery'] : false
