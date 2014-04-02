@@ -144,82 +144,83 @@ class AxiellWebServices implements DriverInterface
 
     public function getHolding($id, $patron = false)
     {
-    	$localId = $id;
-    	$p = strpos($localId, '.');
-    	$year = '';
-    	$edition = '';
-    	
-    	if ($p > 0) {
-    		$localId = substr($localId, $p + 1);
-    	}
-    	$p = strpos($localId, '_');
-    	if ($p > 0) {
-    		$localId = substr($localId, $p + 1);
-    	}
-    	$client = new SoapClient($this->catalogue_wsdl, $this->soapOptions);
-    	try {
-    		global $interface;
-    		$language = $interface->getLanguage();
-    		if (!in_array($language, array('en', 'sv', 'fi'))) {
-    			$language = 'en';
-    		}
-    
-    		$this->debugLog("Catalogue record detail request for '$id':");
-    
-    		$result = $client->GetHoldings(array('getHoldingsRequest' => array('arenaMember' => $this->arenaMember, 'id' => $localId, 'language' => $language)));
-    		if ($result->getHoldingsResponse->status->type != 'ok') {
-    			$this->debugLog("GetHoldings request failed for '$id'");
-    			$this->debugLog("Request: " . $client->__getLastRequest());
-    			$this->debugLog("Response: " . $client->__getLastResponse());
-    			return new PEAR_Error('catalog_error_technical');
-    		}
-    
-    		$this->debugLog("Request: " . $client->__getLastRequest());
-    		$this->debugLog("Response: " . $client->__getLastResponse());
-    
-    		$vfHoldings = array();
-    		    		
-    		if (!isset($result->getHoldingsResponse->catalogueRecord->compositeHolding)) {
-    			return $vfHoldings;
-    		}
-   		
-    		$holdings = is_object($result->getHoldingsResponse->catalogueRecord->compositeHolding) ?
-    			array($result->getHoldingsResponse->catalogueRecord->compositeHolding) :
-    			$result->getHoldingsResponse->catalogueRecord->compositeHolding;
+        $localId = $id;
 
-    		$copy = 0;
-    		
-    		if ($holdings[0]->type == 'year') {
-    			
-    			foreach ($holdings as $holding) {
-    				
-    				$year = $holding->value;
-    				$holdingsEditions = is_object($holding->compositeHolding) ? 
-    					array($holding->compositeHolding) : 
-    					$holding->compositeHolding;
-    				
-    				foreach ($holdingsEditions as $holdingsEdition) {
-    					$edition = $holdingsEdition->value;
-    					$holdingsOrganisations = is_object($holdingsEdition->compositeHolding) ? 
-    						array($holdingsEdition->compositeHolding) : 
-    						$holdingsEdition->compositeHolding;
-    				
-    					foreach ($holdingsOrganisations as $holdingsOrganisation) {
-    						$this->parseHoldings($holdingsOrganisations, $id, $copy, $vfHoldings, $year, $edition);
-    					}
-    				}	
-    			}
-    		} else {
-    			$this->parseHoldings($holdings, $id, $copy, $vfHoldings, '', '');
-    		}
-    		
-    		return empty($vfHoldings) ? false : $vfHoldings;
-    	} catch (Exception $e) {
-    		$this->debugLog($e->getMessage());
-    		$this->debugLog("Request: " . $client->__getLastRequest());
-    		$this->debugLog("Response: " . $client->__getLastResponse());
-    		return new PEAR_Error('catalog_error_technical');;
-    	}
+        $p = strpos($localId, '.');
+        $year = '';
+        $edition = '';
+
+        if ($p > 0) {
+            $localId = substr($localId, $p + 1);
+        }
+        $p = strpos($localId, '_');
+        if ($p > 0) {
+            $localId = substr($localId, $p + 1);
+        }
+        $client = new SoapClient($this->catalogue_wsdl, $this->soapOptions);
+        try {
+            global $interface;
+            $language = $interface->getLanguage();
+            if (!in_array($language, array('en', 'sv', 'fi'))) {
+                $language = 'en';
+            }
+    
+            $this->debugLog("Catalogue record detail request for '$id':");
+    
+            $result = $client->GetHoldings(array('GetHoldingsRequest' => array('arenaMember' => $this->arenaMember, 'id' => $localId, 'language' => $language)));
+            
+            if ($result->GetHoldingResult->status->type != 'ok') {
+                $this->debugLog("GetHoldings request failed for '$id'");
+                $this->debugLog("Request: " . $client->__getLastRequest());
+                $this->debugLog("Response: " . $client->__getLastResponse());
+                return new PEAR_Error('catalog_error_technical');
+            }
+    
+            $this->debugLog("Request: " . $client->__getLastRequest());
+            $this->debugLog("Response: " . $client->__getLastResponse());
+    
+            $vfHoldings = array();
+
+            if (!isset($result->GetHoldingResult->catalogueRecord->compositeHolding)) {
+                return $vfHoldings;
+            }
+
+            $holdings = is_object($result->GetHoldingResult->catalogueRecord->compositeHolding) ?
+                array($result->GetHoldingResult->catalogueRecord->compositeHolding) :
+                $result->GetHoldingResult->catalogueRecord->compositeHolding;
+            
+            $copy = 0;
+
+            if ($holdings[0]->type == 'year') {
+
+                foreach ($holdings as $holding) {
+
+                    $year = $holding->value;
+                    $holdingsEditions = is_object($holding->compositeHolding) ? 
+                        array($holding->compositeHolding) : 
+                        $holding->compositeHolding;
+
+                    foreach ($holdingsEditions as $holdingsEdition) {
+                        $edition = $holdingsEdition->value;
+                        $holdingsOrganisations = is_object($holdingsEdition->compositeHolding) ? 
+                            array($holdingsEdition->compositeHolding) : 
+                            $holdingsEdition->compositeHolding;
+                        foreach ($holdingsOrganisations as $holdingsOrganisation) {
+                            $this->parseHoldings($holdingsOrganisations, $id, $copy, $vfHoldings, $year, $edition);
+                        }
+                    }	
+                }
+            } else {
+                $this->parseHoldings($holdings, $id, $copy, $vfHoldings, '', '');
+            }
+
+            return empty($vfHoldings) ? false : $vfHoldings;
+        } catch (Exception $e) {
+            $this->debugLog($e->getMessage());
+            $this->debugLog("Request: " . $client->__getLastRequest());
+            $this->debugLog("Response: " . $client->__getLastResponse());
+            return new PEAR_Error('catalog_error_technical');;
+        }
     }
     
     /**
@@ -227,28 +228,26 @@ class AxiellWebServices implements DriverInterface
      * 
      * @param array     $organisationHoldings Organisation holdings 
      * @param string    $id                   The record id to retrieve the holdings
-     * @param reference &$copy			  	  Counter
-     * @param reference &$vfHoldings	 	  Reference
-     * @param string 	$year				  Publication year of the magazine
-     * @param string 	$edition			  Edition of the magazine
+     * @param reference &$copy                Counter
+     * @param reference &$vfHoldings          Reference
+     * @param string    $year                 Publication year of the magazine
+     * @param string    $edition              Edition of the magazine
      *
      * @return null
      * @access protected
      */ 
     protected  function parseHoldings($organisationHoldings, $id, &$copy, &$vfHoldings, $year, $edition) 
     {
-    	foreach ($organisationHoldings as $organisation) {
-    		 
-    		$organisationName = $organisation->value;
-    		$reservationStatus = ($organisation->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
-    		$noOfReservations = isset($organisation->nofReservations) ? $organisation->nofReservations : '';
-    		 
-    		$holdingsBranch = is_object($organisation->compositeHolding) ? array($organisation->compositeHolding) : $organisation->compositeHolding;
-    		 
-    		foreach ($holdingsBranch as $branch) {
-    			
-  			  	// TODO: mfhd_id
-    			$vfHolding = array(   					
+        foreach ($organisationHoldings as $organisation) {
+            $organisationName = $organisation->value;
+            $reservationStatus = ($organisation->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
+            $noOfReservations = isset($organisation->nofReservations) ? $organisation->nofReservations : '';
+            $holdingsBranch = is_object($organisation->compositeHolding) ? array($organisation->compositeHolding) : $organisation->compositeHolding;
+
+            foreach ($holdingsBranch as $branch) {
+
+                // TODO: mfhd_id
+                $vfHolding = array(   					
                         'id'                => $id,
                         'mfhd_id'           => '635670',
                         'item_id'           => $id,
@@ -265,55 +264,54 @@ class AxiellWebServices implements DriverInterface
                         'is_holdable'       => true,
                         'addLink'           => false,
                         'summary'           => $edition
-    			);
+                );
     
-    			$vfHolding['id'] = $id;
-    			$vfHolding['location'] = $organisationName;
-    			$vfHolding['location'] .= ', '. $branch->value . ' ' . $branch->holdings->holding->department . ' ' . $edition;
-    			$vfHolding['location'] .=  isset($branch->holdings->holding->location) ? ', ' . $branch->holdings->holding->location : ''; 
-    			$vfHolding['number'] = isset($branch->holdings->holding->nofTotal) ? $branch->holdings->holding->nofTotal : '';
-    			$vfHolding['callnumber'] = isset($branch->holdings->holding->shelfMark) ? $branch->holdings->holding->shelfMark : '';
-    			$vfHolding['status'] = isset($branch->holdings->holding->status) ? $branch->holdings->holding->status : '';
-    			
-    			$available = null;
-    			$status = $branch->status;
-    			switch ($branch->status) {
-    			case 'availableForLoan':
-    				$available = true;
-    				$status = 'Available';
-    				break;
-    			case 'onLoan':
-   					$available = false;
-   					$status = 'Charged';
-   					break;
-   				case 'nonAvailableForLoan':
-   					if ($holding->nofReference == 0) {
-    					$available = false;
-    					$status = 'Not Available For Loan';
-    				}
-    				break;
-   				case 'overdueLoan':
-   					$available = false;
-   					break;
-   				case 'ordered':
-   					$available = false;
-   					break;
-   				case 'returnedToday':
-    				$available = true;
-    				break;
-    			default:
-    				$this->debugLog('Unhandled status ' + $branch->status + " for $id");
-    			}
+                $vfHolding['id'] = $id;
+                $vfHolding['location'] = $organisationName;
+                $vfHolding['location'] .= ', '. $branch->value . ' ' . $branch->holdings->holding->department . ' ' . $edition;
+                $vfHolding['location'] .=  isset($branch->holdings->holding->location) ? ', ' . $branch->holdings->holding->location : ''; 
+                $vfHolding['number'] = isset($branch->holdings->holding->nofTotal) ? $branch->holdings->holding->nofTotal : '';
+                $vfHolding['callnumber'] = isset($branch->holdings->holding->shelfMark) ? $branch->holdings->holding->shelfMark : '';
+                $vfHolding['status'] = isset($branch->holdings->holding->status) ? $branch->holdings->holding->status : '';
+
+                $available = null;
+                $status = $branch->status;
+                switch ($branch->status) {
+                case 'availableForLoan':
+                    $available = true;
+                    $status = 'Available';
+                    break;
+                case 'onLoan':
+                    $available = false;
+                    $status = 'Charged';
+                    break;
+                case 'nonAvailableForLoan':
+                    if ($holding->nofReference == 0) {
+                        $available = false;
+                        $status = 'Not Available For Loan';
+                    }
+                    break;
+                case 'overdueLoan':
+                    $available = false;
+                    break;
+                case 'ordered':
+                    $available = false;
+                    break;
+                case 'returnedToday':
+                    $available = true;
+                    break;
+                default:
+                    $this->debugLog('Unhandled status ' + $branch->status + " for $id");
+                }
     
-    			$vfHolding['number'] = $copy++;
-    			$vfHolding['status'] = $status;
-    			$vfHolding['availability'] = $available;
-    			$vfHolding['reserve'] = 'N';
-    			$vfHolding['is_holdable'] = $reservationStatus;
-    			$vfHoldings[] = $vfHolding;
-    		}
-    		 
-    	}
+                $vfHolding['number'] = $copy++;
+                $vfHolding['status'] = $status;
+                $vfHolding['availability'] = $available;
+                $vfHolding['reserve'] = 'N';
+                $vfHolding['is_holdable'] = $reservationStatus;
+                $vfHoldings[] = $vfHolding;
+            } 
+        }
     }
 
     /**
@@ -414,8 +412,8 @@ class AxiellWebServices implements DriverInterface
             
             $this->debugLog("Patron login for '$username':");
             
-            $result = $client->getPatronInformation(array('patronInformationRequest' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'patronId' => $patronId)));
-            if ($result->patronInformationResponse->status->type != 'ok') {
+            $result = $client->getPatronInformation(array('patronInformationParam' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'patronId' => $patronId)));
+            if ($result->patronInformationResult->status->type != 'ok') {
                 $this->debugLog("Patron information request failed for '$username'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
                 $this->debugLog("Response: " . $client->__getLastResponse());
@@ -425,7 +423,7 @@ class AxiellWebServices implements DriverInterface
             $this->debugLog("Request: " . $client->__getLastRequest());
             $this->debugLog("Response: " . $client->__getLastResponse());
             
-            $info = $result->patronInformationResponse->patronInformation;
+            $info = $result->patronInformationResult->patronInformation;
             
             $user = array();
             $user['id'] = $username;
@@ -491,7 +489,8 @@ class AxiellWebServices implements DriverInterface
             
             $this->debugLog("Loans request for '{$user['cat_username']}':");
             
-            $result = $client->getLoans(array('loansRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en')));
+            $result = $client->GetLoans(array('loansRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en')));
+            
             if ($result->loansResponse->status->type != 'ok') {
                 $this->debugLog("Loans request failed for '" . $user['cat_username'] . "'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
@@ -527,13 +526,13 @@ class AxiellWebServices implements DriverInterface
             // Sort the Loans
             $date = array();
             foreach ($transList as $key => $row) {
-            	$date[$key] = $row['duedate'];
+                $date[$key] = $row['duedate'];
             }
             array_multisort($date, SORT_ASC, $transList);
 
             // Convert Axiell format to display date format
-            foreach ($transList as &$row) {  	
-            	$row['duedate'] = $this->formatDate($row['duedate']);
+            foreach ($transList as &$row) {
+                $row['duedate'] = $this->formatDate($row['duedate']);
             }
 
             return $transList;
@@ -661,9 +660,10 @@ class AxiellWebServices implements DriverInterface
             foreach ($debts as $debt) {
                 $fine = array();
                 $fine['amount'] = $debt->debtAmount * 100;
+                $fine['amount'] = $debt->debtAmountFormatted;
                 $fine['checkout'] = '';
                 $fine['fine'] = $debt->debtType . ' - ' . $debt->debtNote;
-                $fine['balance'] = $debt->debtAmount * 100;
+                $fine['balance'] = $debt->debtAmountFormatted *100;
                 // Convert Axiell format to display date format
                 $fine['createdate'] = $this->formatDate($debt->debtDate);
                 $fine['duedate'] = $this->formatDate($debt->debtDate); 
@@ -671,9 +671,12 @@ class AxiellWebServices implements DriverInterface
                 $finesList[] = $fine;
             }
             return $finesList;
+           
 
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
+            $this->debugLog("Request: " . $client->__getLastRequest());
+            $this->debugLog("Response: " . $client->__getLastResponse());
             return new PEAR_Error('catalog_error_technical');
         }
     }
@@ -700,8 +703,8 @@ class AxiellWebServices implements DriverInterface
             
             $this->debugLog("Holds request for '{$user['cat_username']}':");
             
-            $result = $client->getReservations(array('reservationsRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en')));
-            if ($result->reservationsResponse->status->type != 'ok') {
+            $result = $client->getReservations(array('getReservationsParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en')));
+            if ($result->getReservationsResult->status->type != 'ok') {
                 $this->debugLog("Reservations request failed for '" . $user['cat_username'] . "'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
                 $this->debugLog("Response: " . $client->__getLastResponse());
@@ -712,9 +715,9 @@ class AxiellWebServices implements DriverInterface
             $this->debugLog("Reservations Response: " . $client->__getLastResponse());
                         
             $holdsList = array();
-            if (!isset($result->reservationsResponse->reservations->reservation))
+            if (!isset($result->getReservationsResult->reservations->reservation))
                 return $holdsList;
-            $reservations = is_object($result->reservationsResponse->reservations->reservation) ? array($result->reservationsResponse->reservations->reservation) : $result->reservationsResponse->reservations->reservation;
+            $reservations = is_object($result->getReservationsResult->reservations->reservation) ? array($result->getReservationsResult->reservations->reservation) : $result->getReservationsResult->reservations->reservation;
 
             foreach ($reservations as $reservation) {
                 $hold = array();
@@ -742,6 +745,8 @@ class AxiellWebServices implements DriverInterface
 
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
+            $this->debugLog("Reservations Request: " . $client->__getLastRequest());
+            $this->debugLog("Reservations Response: " . $client->__getLastResponse());
             return new PEAR_Error('catalog_error_technical');
         }
     }
@@ -897,10 +902,10 @@ class AxiellWebServices implements DriverInterface
     {
         $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
         try {
-        	$patronId = $this->getPatronId($cancelDetails['patron']['cat_username'], $cancelDetails['patron']['cat_password']);
-        	if (!$patronId) {
-        		return new PEAR_Error('authentication_error_technical');
-        	}
+            $patronId = $this->getPatronId($cancelDetails['patron']['cat_username'], $cancelDetails['patron']['cat_password']);
+            if (!$patronId) {
+                return new PEAR_Error('authentication_error_technical');
+            }
             $succeeded = 0;
             $results = array();
             foreach ($cancelDetails['details'] as $details) {
@@ -995,9 +1000,9 @@ class AxiellWebServices implements DriverInterface
         try {
             $this->debugLog("Get patron id: Authenticate patron request for '$username':");
             
-            $result = $client->authenticatePatron(array('authenticatePatronRequest' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'user' => $username, 'password' => $password)));
+            $result = $client->authenticatePatron(array('authenticatePatronParam' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'user' => $username, 'password' => $password)));
             
-            if ($result->authenticatePatronResponse->status->type != 'ok') {
+            if ($result->authenticatePatronResult->status->type != 'ok') {
                 $this->debugLog("Authenticate patron request failed for '$username'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
                 $this->debugLog("Response: " . $client->__getLastResponse());
@@ -1005,8 +1010,9 @@ class AxiellWebServices implements DriverInterface
             }
             $this->debugLog("Request: " . $client->__getLastRequest());
             $this->debugLog("Response: " . $client->__getLastResponse());
+            
 
-            return $result->authenticatePatronResponse->patronId;
+            return $result->authenticatePatronResult->patronId;
         
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());

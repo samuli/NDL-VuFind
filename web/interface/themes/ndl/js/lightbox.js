@@ -157,6 +157,7 @@ function lightboxDocumentReady() {
     registerAjaxBulkExport();
     registerAjaxBulkDelete();
     registerAjaxRequestForm();
+    registerDeleteAccountForm();
     $('.ui-dialog .mainFocus').focus();
 }
 
@@ -693,4 +694,41 @@ function registerAjaxRequestForm() {
         });
         return false;
     });
+}
+
+function registerDeleteAccountForm() {
+    $('#modalDialog form[name="deleteAccount"]').unbind('submit').submit(function(e){
+        e.preventDefault();
+        var url = path + '/AJAX/JSON_DeleteUser?method=delete';
+        var token = $(this).find("input[id='token']").val();
+
+        $.getJSON(url, {token: token}, function(res) {
+            if (res.status == 'OK') {
+                if (res.data.success) {
+                    $('#modalDialog form[name="deleteAccount"]').hide();
+                    $('#deleteAccountNote').show();
+
+                    var timeoutID = window.setTimeout(function() {
+                        if ($("#personaLogout").length) {
+                            navigator.id.logout(); 
+                            personaLogout();             
+                        } else {
+                            window.location = path + "/MyResearch/Logout";
+                        }
+                        
+                    }, 2000);
+                } else {
+                    $('#modalDialog').empty().html(res.data.msg);
+                }
+            } else {
+                $('#modalDialog').empty().html(res.data.msg);
+            }
+        });
+        
+    });
+
+    $('#modalDialog form[name="deleteAccount"] input[type="reset"]').on('click', function(){
+        $dialog.dialog('close');
+    });
+
 }
