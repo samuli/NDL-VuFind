@@ -65,7 +65,6 @@
         {if $cancelForm && $resource.ils_details.cancel_details}
         <div class="checkboxFilter">
           <span class="resultCheckbox">
-             
           	<input type="checkbox" name="cancelSelectedIDS[]" value="{$resource.ils_details.cancel_details|escape}" class="checkbox" id="{$resource.ils_details.cancel_details|escape}"/>
             <label for="{$resource.ils_details.cancel_details|escape}">{translate text="Select"} 
             {if !empty($resource.id)} 
@@ -75,6 +74,8 @@
             {/if}
             </label>         
     		<input type="hidden" name="cancelAllIDS[]" value="{$resource.ils_details.cancel_details|escape}" />
+            {else}
+      	 	<p class="smallNotification">{translate text="Cannot cancel"}<p>
           </span>
          </div>
         {/if}
@@ -225,6 +226,8 @@
             {/if}
           </label>
           <input type="hidden" name="cancelAllCallSlipIDS[]" value="{$resource.ils_details.cancel_details|escape}" />
+          {else}
+      	 	<p class="smallNotification">{translate text="Cannot cancel"}<p>
           </span>
         </div>
         {/if}

@@ -3184,6 +3184,7 @@ ul.recordSet .addToFavLink a {
 	text-align: left;
 	font-weight:400;
 	line-height:1.1em;
+	max-width:50px;
 }
 
 /***** Results page blocks ****/
