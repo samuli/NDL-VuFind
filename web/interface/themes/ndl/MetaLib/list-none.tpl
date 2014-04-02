@@ -9,16 +9,22 @@
   <div class="content">
     <div id="resultList" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_17">
     {if $noQuery}
+    <div class="metalibError">
       <p class="error">{translate text='metalib_no_query'}</p>
+    </div>
     {else}
+      <div class="metalibError">
       <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
       <strong>{translate text='You can'}:</strong>
         <p>- {translate text='Try to search with another phrase'}</p>
         <p>- {translate text='Try with a different search set'}</p>
+       </div>
     {/if}
   
     {if $parseError}
-      <p class="error">{translate text='nohit_parse_error'}</p>
+      <div class="metalibError">
+      	<p class="error">{translate text='nohit_parse_error'}</p>
+      </div>
     {/if}
   </div>
   <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-18 sidebarOnLeft{else}last{/if} grid_6">

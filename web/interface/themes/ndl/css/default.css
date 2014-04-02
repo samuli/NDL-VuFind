@@ -3200,6 +3200,7 @@ ul.recordSet .addToFavLink a {
     text-align: left;
     font-weight:400;
     line-height:1.1em;
+	max-width:50px;
 }
 
 /***** Results page blocks ****/
@@ -3357,6 +3358,9 @@ div#databaseStatuses div {
 }
 div.searchDescription p {
     padding-bottom: 1em;
+}
+div.metalibError {
+	margin-top:25px;	
 }
 
 .correction {
