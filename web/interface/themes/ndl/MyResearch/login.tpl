@@ -115,9 +115,9 @@
     <h3 class="grid_14">{$loginNumber}. {translate text="login_title_email"}</h3><div class="clear"></div>
      <div class="personaLogin grid_7">
      {if $followupModule == 'PCI' || $followupModule == 'MetaLib'}
-         <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$followupAction}?id={$recordId|escape:"html"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
+         <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$followupAction}?id={$recordId|escape:"url"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
      {else}
-    	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"html"}/{$followupParams.0}?submit#{$followupParams.1}"><span>{translate text="Mozilla Persona"}</span></a>
+    	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"url"}/{$followupParams.0}?submit#{$followupParams.1}"><span>{translate text="Mozilla Persona"}</span></a>
      {/if}	
 {if $lightbox}
     <script type="text/javascript">
