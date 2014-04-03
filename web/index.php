@@ -185,12 +185,16 @@ if (in_array($module, array('Search', 'PCI', 'MetaLib'))
         if (in_array($refModule, array('Search', 'PCI', 'MetaLib')) 
             && in_array($refAction, array('Results', 'DualResults', 'Search', 'Home'))
         ) {
-            $overridePrefilter = true;            
-            if (in_array($refModule, array('PCI', 'MetaLib'))
-                && $refAction == 'Home'
-            ) {
-                // When arriving from PCI/MetaLib homepage, preserve Module and redirect to search results.
-                $refAction = 'Search';
+            $overridePrefilter = true;           
+            if ($refAction == 'Home') {
+                // When arriving from search homepages, preserve Module and redirect to search results.                
+                if ($refModule == 'Search') {
+                    // local search
+                    $refAction = 'Results';
+                } else {
+                    // PCI, MetaLib
+                    $refAction = 'Search';
+                }
             }
         }
     }
