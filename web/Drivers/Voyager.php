@@ -48,7 +48,7 @@ class Voyager implements DriverInterface
     protected $statusRankings = false;        // used by pickStatus() method
     protected $dateFormat;
     protected $logFile = '';
-    
+
     /**
      * Constructor
      *
@@ -75,7 +75,7 @@ class Voyager implements DriverInterface
         if (isset($this->config['Debug']['log'])) {
             $this->logFile = $this->config['Debug']['log'];
         }
-        
+
         // Based on the configuration file, use either "SID" or "SERVICE_NAME"
         // to connect (correct value varies depending on Voyager's Oracle setup):
         $connectType = isset($this->config['Catalog']['connect_with_sid']) &&
@@ -162,7 +162,7 @@ class Voyager implements DriverInterface
                 $this->statusRankings[$row['ITEM_STATUS_DESC']]
                     = $row['ITEM_STATUS_TYPE'];
             }
-            
+
             if (isset($this->config['StatusRankings']) && $this->config['StatusRankings']) {
                 $this->statusRankings = array_merge($this->statusRankings, $this->config['StatusRankings']);
             }
@@ -219,6 +219,28 @@ class Voyager implements DriverInterface
     }
 
     /**
+     * Helper function that returns SQL for getting a sort sequence for a location
+     *
+     * @param string $locationColumn Column in the full where clause containing
+     * the column id
+     *
+     * @return string
+     */
+    protected function getItemSortSequenceSQL($locationColumn)
+    {
+        if (!isset($this->config['Holdings']['useSortGroups'])
+            || $this->config['Holdings']['useSortGroups']
+        ) {
+            return "(SELECT SORT_GROUP_LOCATION.SEQUENCE_NUMBER " .
+                "FROM $this->dbName.SORT_GROUP, $this->dbName.SORT_GROUP_LOCATION " .
+                "WHERE SORT_GROUP.SORT_GROUP_DEFAULT = 'Y' " .
+                "AND SORT_GROUP_LOCATION.SORT_GROUP_ID = SORT_GROUP.SORT_GROUP_ID " .
+                "AND SORT_GROUP_LOCATION.LOCATION_ID = $locationColumn) SORT_SEQ";
+        }
+        return "0 as SORT_SEQ";
+    }
+
+    /**
      * Protected support method for getStatus -- get components required for standard
      * status lookup SQL.
      *
@@ -236,7 +258,8 @@ class Voyager implements DriverInterface
             "NVL(LOCATION.LOCATION_DISPLAY_NAME, " .
                 "LOCATION.LOCATION_NAME) as location",
             "MFHD_MASTER.DISPLAY_CALL_NO as callnumber",
-            "ITEM.TEMP_ITEM_TYPE_ID", "ITEM.ITEM_TYPE_ID"
+            "ITEM.TEMP_ITEM_TYPE_ID", "ITEM.ITEM_TYPE_ID",
+            $this->getItemSortSequenceSQL('ITEM.PERM_LOCATION'),
         );
 
         // From
@@ -291,7 +314,8 @@ class Voyager implements DriverInterface
                                 "NVL(LOCATION.LOCATION_DISPLAY_NAME, " .
                                     "LOCATION.LOCATION_NAME) as location",
                                 "MFHD_MASTER.DISPLAY_CALL_NO as callnumber",
-                                "0 AS TEMP_LOCATION"
+                                "0 AS TEMP_LOCATION",
+                                $this->getItemSortSequenceSQL('LOCATION.LOCATION_ID'),
                                );
 
         // From
@@ -303,7 +327,8 @@ class Voyager implements DriverInterface
         $sqlWhere = array("BIB_MFHD.BIB_ID = :id",
                           "LOCATION.LOCATION_ID = MFHD_MASTER.LOCATION_ID",
                           "MFHD_MASTER.MFHD_ID = BIB_MFHD.MFHD_ID",
-                          "MFHD_MASTER.SUPPRESS_IN_OPAC='N'"
+                          "MFHD_MASTER.SUPPRESS_IN_OPAC='N'",
+                          "NOT EXISTS (SELECT MFHD_ID FROM {$this->dbName}.MFHD_ITEM WHERE MFHD_ITEM.MFHD_ID=MFHD_MASTER.MFHD_ID)",
                          );
 
         // Bind
@@ -341,7 +366,8 @@ class Voyager implements DriverInterface
                         ? $this->getLocationName($row['TEMP_LOCATION'])
                         : utf8_encode($row['LOCATION']),
                     'reserve' => $row['ON_RESERVE'],
-                    'callnumber' => $row['CALLNUMBER']
+                    'callnumber' => $row['CALLNUMBER'],
+                    'sort_seq' => $row['SORT_SEQ']
                 );
             } else {
                 if (!in_array(
@@ -380,6 +406,20 @@ class Voyager implements DriverInterface
             $current['availability'] = $availability['available'];
             $status[] = $current;
         }
+
+        if (!isset($this->config['Holdings']['useSortGroups'])
+            || $this->config['Holdings']['useSortGroups']
+        ) {
+            uksort(
+                $holding,
+                function($a, $b) {
+                    return $holding[$a]['sort_seq'] == $holding[$b]['sort_seq']
+                        ? $a - $b
+                        : $holding[$a]['sort_seq'] - $holding[$b]['sort_seq'];
+                }
+            );
+        }
+
         return $status;
     }
 
@@ -409,8 +449,7 @@ class Voyager implements DriverInterface
             $this->buildSqlFromArray($sqlArrayNoItems)
         );
 
-        // Loop through the possible queries and try each in turn -- the first one
-        // that yields results will cause us to break out of the loop.
+        // Loop through the possible queries
         foreach ($possibleQueries as $sql) {
             // Execute SQL
             try {
@@ -426,13 +465,7 @@ class Voyager implements DriverInterface
                 $sqlRows[] = $row;
             }
 
-            $data = $this->getStatusData($sqlRows);
-
-            // If we found data, we can leave the foreach loop -- we don't need to
-            // try any more queries.
-            if (count($data) > 0) {
-                break;
-            }
+            $data = array_merge($data, $this->getStatusData($sqlRows));
         }
         return $this->processStatusData($data);
     }
@@ -484,7 +517,8 @@ class Voyager implements DriverInterface
             "to_char(CIRC_TRANSACTIONS.CURRENT_DUE_DATE, 'MM-DD-YY') as duedate",
             "(SELECT TO_CHAR(MAX(CIRC_TRANS_ARCHIVE.DISCHARGE_DATE), " .
             "'MM-DD-YY HH24:MI') FROM $this->dbName.CIRC_TRANS_ARCHIVE " .
-            "WHERE CIRC_TRANS_ARCHIVE.ITEM_ID = ITEM.ITEM_ID) RETURNDATE"
+            "WHERE CIRC_TRANS_ARCHIVE.ITEM_ID = ITEM.ITEM_ID) RETURNDATE",
+            $this->getItemSortSequenceSQL('ITEM.PERM_LOCATION'),
         );
 
         // From
@@ -553,7 +587,8 @@ class Voyager implements DriverInterface
                                 "null as PERM_LOCATION",
                                 "MFHD_MASTER.DISPLAY_CALL_NO as callnumber",
                                 "MFHD_MASTER.MFHD_ID",
-                                "null as duedate"
+                                "null as duedate",
+                                $this->getItemSortSequenceSQL('LOCATION.LOCATION_ID')
                                );
 
         // From
@@ -567,7 +602,7 @@ class Voyager implements DriverInterface
                           "MFHD_MASTER.MFHD_ID = BIB_MFHD.MFHD_ID",
                           "MFHD_DATA.MFHD_ID = BIB_MFHD.MFHD_ID",
                           "MFHD_MASTER.SUPPRESS_IN_OPAC='N'",
-                          "NOT EXISTS (SELECT MFHD_ID FROM MFHD_ITEM WHERE MFHD_ITEM.MFHD_ID=MFHD_MASTER.MFHD_ID)",
+                          "NOT EXISTS (SELECT MFHD_ID FROM {$this->dbName}.MFHD_ITEM WHERE MFHD_ITEM.MFHD_ID=MFHD_MASTER.MFHD_ID)",
                          );
 
         // Order
@@ -654,7 +689,7 @@ class Voyager implements DriverInterface
                 File_MARC::SOURCE_STRING
             );
             if ($record = $marc->next()) {
-                
+
                 // Get Notes
                 $noteFields = array(
                     '506' => 'au',
@@ -726,7 +761,7 @@ class Voyager implements DriverInterface
                         }
                     }
                 }
-                
+
                 // Get Supplementary material (may be multiple lines)
                 if ($fields = $record->getFields('867')) {
                     foreach ($fields as $field) {
@@ -751,7 +786,7 @@ class Voyager implements DriverInterface
                         }
                     }
                 }
-                
+
                 // Get indexes (may be multiple lines)
                 if ($fields = $record->getFields('868')) {
                     foreach ($fields as $field) {
@@ -831,7 +866,8 @@ class Voyager implements DriverInterface
                 : utf8_encode($sqlRow['LOCATION']),
             'reserve' => $sqlRow['ON_RESERVE'],
             'callnumber' => $sqlRow['CALLNUMBER'],
-            'barcode' => $sqlRow['ITEM_BARCODE']
+            'barcode' => $sqlRow['ITEM_BARCODE'],
+            'sort_seq' => $sqlRow['SORT_SEQ'],
         );
     }
 
@@ -926,6 +962,21 @@ class Voyager implements DriverInterface
                 $i++;
             }
         }
+
+        if (!isset($this->config['Holdings']['useSortGroups'])
+            || $this->config['Holdings']['useSortGroups']
+        ) {
+            usort(
+                $holding,
+                function($a, $b) {
+                    return $a['sort_seq'] == $b['sort_seq']
+                        && isset($a['item_id']) && isset($b['item_id'])
+                        ? $a['item_id'] - $b['item_id']
+                        : $a['sort_seq'] - $b['sort_seq'];
+                }
+            );
+        }
+
         return $holding;
     }
 
@@ -998,7 +1049,7 @@ class Voyager implements DriverInterface
         if (isset($this->config['Catalog']['purchase_history']) && !$this->config['Catalog']['purchase_history']) {
             return array();
         }
-        
+
         $sql = "select LINE_ITEM_COPY_STATUS.MFHD_ID, SERIAL_ISSUES.ENUMCHRON " .
                "from $this->dbName.SERIAL_ISSUES, $this->dbName.COMPONENT, ".
                "$this->dbName.ISSUES_RECEIVED, $this->dbName.SUBSCRIPTION, ".
@@ -1624,7 +1675,7 @@ class Voyager implements DriverInterface
         $sqlOrderBy = array(
             "to_char(CALL_SLIP.DATE_REQUESTED, 'YYYY-MM-DD HH24:MI:SS')"
         );
-        
+
         // Bind
         $sqlBind = array(':id' => $patron['id']);
 
@@ -1671,7 +1722,7 @@ class Voyager implements DriverInterface
                 return $statusDate;
             }
         }
-        
+
         $createDate = translate("Unknown");
         // Convert Voyager Format to display format
         if (!empty($sqlRow['CREATE_DATE'])) {
@@ -1703,7 +1754,7 @@ class Voyager implements DriverInterface
                 ? $sqlRow['TITLE'] : $sqlRow['TITLE_BRIEF']
         );
     }
-    
+
     /**
      * Get Patron Call Slips
      *
@@ -1738,7 +1789,7 @@ class Voyager implements DriverInterface
             return new PEAR_Error($e->getMessage());
         }
     }
-    
+
     /**
      * Get Patron Profile
      *
@@ -2327,12 +2378,12 @@ class Voyager implements DriverInterface
 
         return $list;
     }
-    
+
     /**
      * Write to debug log, if defined
-     * 
+     *
      * @param string $msg Message to write
-     * 
+     *
      * @return void
      */
     protected function debugLog($msg)
@@ -2340,17 +2391,17 @@ class Voyager implements DriverInterface
         if (!$this->logFile) {
             return;
         }
-        $msg = date('Y-m-d H:i:s') . ' [' . getmypid() . "] [{$this->dbName}] $msg\n";        
+        $msg = date('Y-m-d H:i:s') . ' [' . getmypid() . "] [{$this->dbName}] $msg\n";
         file_put_contents($this->logFile, $msg, FILE_APPEND);
     }
-    
+
     /**
      * Log SQL statement
-     * 
+     *
      * @param string $func   Function name or description
      * @param string $sql    The SQL statement
      * @param array  $params SQL bind parameters
-     * 
+     *
      * @return void
      */
     protected function debugLogSQL($func, $sql, $params = null)
