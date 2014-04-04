@@ -2883,6 +2883,7 @@ dl.defaultFacet dd {
     display:block;
     z-index:2;
     width:100%;
+	position: absolute;
 }
 .module-Content .main .menu ul li {
     list-style:none;
@@ -6703,8 +6704,9 @@ div.commentDetails > * {
 }
 
 .module-Content .main .menu .grid_6.fixed {
-position:fixed !important;
-top:10px;
+	position:fixed !important;
+	top:10px;
+	z-index:2;
 }
 
 /** fancybox text styles **/
