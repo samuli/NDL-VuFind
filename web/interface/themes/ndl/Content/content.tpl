@@ -11,7 +11,7 @@
 <div class="sections">
 {foreach from=$sections item=section name=section}
   <div class="contentSection {if $smarty.foreach.section.index is odd}odd{/if}">
-    <div class="content"><div class="grid_17 {if $menu}prefix_7{/if}">{$section}</div>
+    <div class="content"><div class="grid_17 {if $menu}push_7{/if}">{$section}</div>
     </div>
   </div>
 {/foreach}
