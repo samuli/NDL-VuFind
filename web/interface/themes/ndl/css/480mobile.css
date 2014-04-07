@@ -160,9 +160,6 @@
     #searchForm_input {
         width: 195px;
     }
-    .searchformPCI #searchForm_input {
-        width: 350px;
-    }
     .keepFilters {
         clear: left;
         float: right;
