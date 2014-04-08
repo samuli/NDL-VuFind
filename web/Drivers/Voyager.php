@@ -228,8 +228,8 @@ class Voyager implements DriverInterface
      */
     protected function getItemSortSequenceSQL($locationColumn)
     {
-        if (!isset($this->config['Holdings']['useSortGroups'])
-            || $this->config['Holdings']['useSortGroups']
+        if (!isset($this->config['Holdings']['use_sort_groups'])
+            || $this->config['Holdings']['use_sort_groups']
         ) {
             return "(SELECT SORT_GROUP_LOCATION.SEQUENCE_NUMBER " .
                 "FROM $this->dbName.SORT_GROUP, $this->dbName.SORT_GROUP_LOCATION " .
@@ -407,8 +407,8 @@ class Voyager implements DriverInterface
             $status[] = $current;
         }
 
-        if (!isset($this->config['Holdings']['useSortGroups'])
-            || $this->config['Holdings']['useSortGroups']
+        if (!isset($this->config['Holdings']['use_sort_groups'])
+            || $this->config['Holdings']['use_sort_groups']
         ) {
             uksort(
                 $holding,
@@ -963,8 +963,8 @@ class Voyager implements DriverInterface
             }
         }
 
-        if (!isset($this->config['Holdings']['useSortGroups'])
-            || $this->config['Holdings']['useSortGroups']
+        if (!isset($this->config['Holdings']['use_sort_groups'])
+            || $this->config['Holdings']['use_sort_groups']
         ) {
             usort(
                 $holding,
