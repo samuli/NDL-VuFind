@@ -367,7 +367,9 @@ class Voyager implements DriverInterface
                         : utf8_encode($row['LOCATION']),
                     'reserve' => $row['ON_RESERVE'],
                     'callnumber' => $row['CALLNUMBER'],
-                    'sort_seq' => $row['SORT_SEQ']
+                    'sort_seq' => isset($row['SORT_SEQ'])
+                        ? $row['SORT_SEQ']
+                        : PHP_INT_MAX
                 );
             } else {
                 if (!in_array(
@@ -867,7 +869,9 @@ class Voyager implements DriverInterface
             'reserve' => $sqlRow['ON_RESERVE'],
             'callnumber' => $sqlRow['CALLNUMBER'],
             'barcode' => $sqlRow['ITEM_BARCODE'],
-            'sort_seq' => $sqlRow['SORT_SEQ'],
+            'sort_seq' => isset($sqlRow['SORT_SEQ'])
+                ? $sqlRow['SORT_SEQ']
+                : PHP_INT_MAX
         );
     }
 
