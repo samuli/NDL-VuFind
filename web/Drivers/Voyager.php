@@ -411,11 +411,11 @@ class Voyager implements DriverInterface
             || $this->config['Holdings']['use_sort_groups']
         ) {
             uksort(
-                $holding,
+                $status,
                 function($a, $b) {
-                    return $holding[$a]['sort_seq'] == $holding[$b]['sort_seq']
+                    return $status[$a]['sort_seq'] == $status[$b]['sort_seq']
                         ? $a - $b
-                        : $holding[$a]['sort_seq'] - $holding[$b]['sort_seq'];
+                        : $status[$a]['sort_seq'] - $status[$b]['sort_seq'];
                 }
             );
         }
