@@ -25,8 +25,8 @@
 	    </div>
     </div>
 
-    <div class="advancedLinkWrapper hide480mobile {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
-      <a href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
+    <div id="480mobileFirst" class="advancedLinkWrapper {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+      <a id="move480mobile" href="{$path}/Search/Advanced" class="small advancedLink">{translate text="Advanced Search"}</a>
     </div>
 
     
@@ -71,7 +71,7 @@
   {/if}
 
     <div class="searchFormOuterWrapper">
-      <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+      <div id="480mobileSecond" class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
       {if $action == 'Home'}
          {if $pciEnabled}
             <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
@@ -80,7 +80,6 @@
             <a href="{$path}/MetaLib/Home" class="small metalibLink">{translate text="MetaLib Search"}</a>
          {/if}
       {/if}     
-        <a href="{$path}/Search/Advanced" class="small advancedLink show480mobile">{translate text="Advanced Search"}</a>
       </div>
     </div>
 
@@ -98,5 +97,10 @@
 {/if}
 
 </div>
+
+{* Need to move the Advanced search link in narrow screens *}
+<script type="text/javascript">
+    $(window).resize(init480Mobile);     // Check if move is triggered
+</script>
 
 <!-- END of: Search/searchbox.tpl -->

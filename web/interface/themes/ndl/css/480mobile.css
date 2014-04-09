@@ -73,6 +73,10 @@
       display: none;
     }
 */
+    .advancedLink {
+          margin-left: 20px;
+    }
+
     .advancedLinkWrapper a.show480mobile {
         display: inline-block;
     }

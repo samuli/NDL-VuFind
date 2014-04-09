@@ -15,6 +15,7 @@ $(document).ready(function() {
     initScrollMenu();
     initContextHelp();
     initCoverImageTruncateLink();
+    init480Mobile()
 });
 
 // Header menu
@@ -475,4 +476,15 @@ function initCoverImageTruncateLink() {
 
 }
 
+// Move the Advanced Search link in narrow screens
+function init480Mobile() {
+    // Get the dimensions of the viewport
+    var width = $(window).width();
+
+    if (width < 731) {
+        $("#480mobileFirst #move480mobile").appendTo("#480mobileSecond");
+    } else {
+        $("#480mobileSecond #move480mobile").appendTo("#480mobileFirst" );
+    }
+}
 

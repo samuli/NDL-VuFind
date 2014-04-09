@@ -27,8 +27,8 @@
       </div>
     </div>
 
-    <div class="advancedLinkWrapper hide480mobile {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
-      <a href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
+    <div id="480mobileFirst" class="advancedLinkWrapper {if !$dualResultsEnabled}no-{/if}dual{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+      <a id="move480mobile" href="{$path}/MetaLib/Advanced" class="small advancedLink">{translate text="Advanced Nelli Metasearch"}</a>
     </div>
     
      {if ($filterList || $activeCheckboxFilters || $filterListOthers) && !$disableKeepFilterControl}
@@ -67,14 +67,13 @@
      {/if}
       
       <div class="searchFormOuterWrapper">
-        <div class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+        <div id="480mobileSecond" class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
         {if $action == 'Home'}
           <a href="{$path}/Search/Home" class="small PCILink">{translate text="Local Search"}</a>
           {if $pciEnabled}
           <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
           {/if}
-        {/if}     
-          <a href="{$path}/MetaLib/Advanced" class="small advancedLink show480mobile">{translate text="Advanced Nelli Metasearch"}</a>
+        {/if}
         </div>
       </div>
       {if $spatialDateRangeType}<input type="hidden" name="search_sdaterange_mvtype" value="{$spatialDateRangeType|escape}" />{/if}
@@ -88,5 +87,10 @@
   </form>
 {/if}
 </div>
+
+{* Need to move the Advanced search link in narrow screens *}
+<script type="text/javascript">
+    $(window).resize(init480Mobile);     // Check if move is triggered
+</script>
 
 <!-- END of: MetaLib/searchbox.tpl -->
