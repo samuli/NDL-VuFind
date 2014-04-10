@@ -2384,6 +2384,64 @@ class Voyager implements DriverInterface
     }
 
     /**
+     * Check if patron is authorized (e.g. to access licensed electronic material).
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return bool True if patron is authorized, false if not
+     */
+    public function getPatronAuthorizationStatus($patron)
+    {
+        if (!isset($this->config['Authorization']['enabled'])
+            || !$this->config['Authorization']['enabled']
+        ) {
+            // Authorization not enabled
+            return false;
+        }
+
+        if (!empty($this->config['Authorization']['stat_codes'])) {
+            // Check stat codes
+            $expressions = array('PATRON_STAT_CODE.PATRON_STAT_CODE');
+            $from = array(
+                "$this->dbName.PATRON_STAT_CODE",
+                "$this->dbName.PATRON_STATS"
+            );
+            $where = array(
+                'PATRON_STATS.PATRON_ID = :id',
+                'PATRON_STAT_CODE.PATRON_STAT_ID = PATRON_STATS.PATRON_STAT_ID'
+            );
+            $bind = array(':id' => $patron['id']);
+
+            $sql = $this->buildSqlFromArray(
+                array(
+                    'expressions' => $expressions,
+                    'from' => $from,
+                    'where' => $where,
+                    'bind' => $bind
+                )
+            );
+
+            try {
+                $sqlStmt = $this->db->prepare($sql['string']);
+                $this->debugLogSQL(__FUNCTION__, $sql);
+                $sqlStmt->execute($sql['bind']);
+                $statCodes = $sqlStmt->fetchAll(PDO::FETCH_COLUMN, 0);
+                $common = array_intersect(
+                    $statCodes,
+                    explode(':', $this->config['Authorization']['stat_codes'])
+                );
+                if (empty($common)) {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                return new PEAR_Error($e->getMessage());
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Write to debug log, if defined
      *
      * @param string $msg Message to write
