@@ -738,6 +738,34 @@ function translate($params)
 }
 
 /**
+ * Smarty extension function to check if a translation exists.
+ *
+ * @param string|array $params Either array from Smarty or plain string to translate
+ *
+ * @return boolean              translation exists
+ */
+function translationExists($params)
+{
+    global $translator;
+
+    // If no translator exists yet, create one -- this may be necessary if we
+    // encounter a failure before we are able to load the global translator
+    // object.
+    if (!is_object($translator)) {
+        global $configArray;
+
+        $translator = new I18N_Translator(
+            array('lang', 'lang_local'), $configArray['Site']['language'], $configArray['System']['debug']
+        );
+    }
+    if (is_array($params)) {
+        return $translator->translationExists($params['text'], isset($params['prefix']) ? $params['prefix'] : ''); 
+    } else {
+        return $translator->translationExists($params); 
+    }
+}
+
+/**
  * Smarty extension function to generate a character from an integer.
  *
  * @param array $params Parameters passed in by Smarty
