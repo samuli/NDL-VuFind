@@ -5,8 +5,8 @@
   </div>
 </div>
 <div class="content">
-  <div class="grid_6">
-    {image src="primocentral.jpg"}
+  <div class="grid_7">
+    {image src="primocentral.jpg"}<br /><br />
   </div>
   <div id="pciDescription" class="grid_17 last searchDescription">
     <p>Primo Central Index innehåller vetenskapliga artiklar, e-böcker och andra referenser från många olika förlag.</p>

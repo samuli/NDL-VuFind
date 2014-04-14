@@ -283,6 +283,12 @@
     #home-timeline {
         display: none;
     }
+
+    /* PCI Front */
+    #pciDescription {
+        width: 470px;
+    }
+
     
     /* Search results */
     
