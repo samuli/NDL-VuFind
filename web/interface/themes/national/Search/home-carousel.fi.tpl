@@ -10,7 +10,7 @@
           <div class="pickup-header"><span>Kulttuurien museon Alaska-kokoelma</span></div>
           <div class="pickup-text">
             Alaskan aleuttien 1800-luvun alkupuolella käyttämä seremoniallinen päähine. Kulttuurien museon Alaska-kokoelmaan kuuluu noin 500 esinettä, joita ovat keränneet mm. Venäjän Alaskassa kenraalikuvernöörinä toiminut Arvid Adolf Etholén ja pappina toiminut Uno Cygnaeus. Kokoelmaan kuuluu mm. vaatteita, pyyntivälineitä ja pieniä mursunluuveistoksia. 
-            <a href="{$url}/Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22&view=grid&limit=100">Hakutulokseen »</a>
+            <a href="{$url}/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=100">Hakutulokseen »</a>
           </div>
         </div>
       </li>
