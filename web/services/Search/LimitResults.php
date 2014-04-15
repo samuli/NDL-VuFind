@@ -51,8 +51,16 @@ class LimitResults extends Action
      */
     public function launch()
     {
-        if (isset($_REQUEST['limit'])) {
-            header('Location: ' . $_REQUEST['limit']);
+        global $configArray;
+
+        if (!empty($_REQUEST['limit'])) {
+            $url = $_REQUEST['limit'];
+            $urlHost = parse_url($url, PHP_URL_HOST);
+            $ourHost = parse_url($configArray['Site']['url'], PHP_URL_HOST);
+            if (!empty($urlHost) && $urlHost != $ourHost) {
+                die('Invalid URL domain');
+            }
+            header("Location: $url");
             die();
         }
     }
