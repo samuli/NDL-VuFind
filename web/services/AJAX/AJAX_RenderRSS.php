@@ -97,6 +97,8 @@ class AJAX_RenderRSS extends Action
             $feed['moreLink'] : true;
         $rssFeed['title'] = isset($feed['title']) ?
             $feed['title'] : false;
+        $rssFeed['itemTitleTrunc'] = isset($feed['itemTitleTrunc']) ?
+            $feed['itemTitleTrunc'] : 0;
         $rssFeed['height'] = isset($feed['height']) ?
             str_replace('px', '', $rssFeed['height']) : 0;
 
@@ -137,13 +139,23 @@ class AJAX_RenderRSS extends Action
             } else {
                 $rssFeed['items'] = $rss->getItems();
             }
-            
+
             if (trim($feed['title']) == 'rss') {
                 $rssFeed['title'] 
                     = isset($rss->channel['title']) ? $rss->channel['title'] : false;
             }
-            
-            
+
+            // Truncate titles longer than itemTitleTrunc if > 0
+            $truncValue = $rssFeed['itemTitleTrunc'];
+            if ($truncValue > 0) {                
+                foreach ($rssFeed['items'] as &$item) {
+                    $itemTitle = $item['title'];
+                    if (strlen($itemTitle) > $truncValue) {
+                        $item['title'] = trim(mb_substr($itemTitle, 0, $truncValue, 'UTF-8'))."&hellip;";
+                    }
+                }
+            }           
+
 
             /* process the raw data in the array before passing it on to the
              * template */
