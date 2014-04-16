@@ -659,11 +659,10 @@ class AxiellWebServices implements DriverInterface
             
             foreach ($debts as $debt) {
                 $fine = array();
-                $fine['amount'] = $debt->debtAmount * 100;
-                $fine['amount'] = $debt->debtAmountFormatted;
+                $fine['amount'] = str_replace(',', '.', $debt->debtAmountFormatted) * 100;
                 $fine['checkout'] = '';
                 $fine['fine'] = $debt->debtType . ' - ' . $debt->debtNote;
-                $fine['balance'] = $debt->debtAmountFormatted *100;
+                $fine['balance'] = str_replace(',', '.', $debt->debtAmountFormatted) * 100;
                 // Convert Axiell format to display date format
                 $fine['createdate'] = $this->formatDate($debt->debtDate);
                 $fine['duedate'] = $this->formatDate($debt->debtDate); 
