@@ -208,6 +208,9 @@ class ScheduledAlerts extends ReminderTask
                     $records[] = $interface->fetch($record->getSearchResult('email'));
                 }
                 $interface->assign('recordSet', $records);
+                $key = $this->getSecret($user, $s->id);
+                $params = array('id' => $s->id, 'type' => 'alert', 'key' => $key);
+                $unsubscribeUrl = $configArray['Site']['url'] . '/MyResearch/Unsubscribe?' . http_build_query($params);
 
                 $interface->assign(
                     'info', 
@@ -221,7 +224,8 @@ class ScheduledAlerts extends ReminderTask
                         'speed' => round($searchObject->getQuerySpeed(), 2)."s",
                         'schedule' => $s->schedule,
                         'last_executed' => $s->last_executed,
-                        'recordCount' => count($records) 
+                        'recordCount' => count($records),
+                        'unsubscribeUrl' => $unsubscribeUrl
                     )
                 );
                 
@@ -230,6 +234,7 @@ class ScheduledAlerts extends ReminderTask
                 
                 // Load template
                 $message = $interface->fetch('MyResearch/alert-email.tpl');
+                
                 if (strstr($message, 'Warning: Smarty error:')) {
                     $this->msg("Message template processing failed: $message");
                     continue;

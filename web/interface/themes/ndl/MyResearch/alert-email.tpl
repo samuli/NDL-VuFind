@@ -24,4 +24,8 @@
 
 {/foreach}
 
+{translate text="unsubscribe_description"}: 
+{$info.unsubscribeUrl}
+
+
 
