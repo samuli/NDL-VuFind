@@ -9,7 +9,15 @@
     {include file="MetaLib/search-sets.tpl"}
   </div>
   <div id="metalibDescription" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_16 prefix_1">
-    <p>{image src="nelli-logo.png"}Nelli is a metasearch service for libraries.</p> 
+    <div class="grid_16">     
+      {image src="nelli-logo.png"}</br></br> 
+    </div>
+    <div class="grid_16 searchDescription">    
+      <p>Nelli is a metasearch service for libraries.</p>
+      <p>Nelli search provides access to scientific articles, ebooks, and references that are not included in Primo Central Index.</p>
+      <p>Nelli search may require logging in with university credentials.</p>
+      <p>The service is provided using MetaLib by Ex Libris.</p>
+    </div>   
   </div>
 </div>
     

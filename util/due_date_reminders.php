@@ -201,9 +201,14 @@ class DueDateReminders extends ReminderTask
                 
                 $interface->assign('date', $dateFormat->convertToDisplayDate("U", floor(time())));
                 $interface->assign('loans', $remindLoans);
-        
+                $key = $this->getSecret($user, $user->id);
+                $params = array('id' => $user->id, 'type' => 'reminder', 'key' => $key);
+                $unsubscribeUrl = $configArray['Site']['url'] . '/MyResearch/Unsubscribe?' . http_build_query($params);
+                $interface->assign(compact('unsubscribeUrl'));
                 // Load template
                 $message = $interface->fetch('MyResearch/due-date-email.tpl');
+                echo $message;
+                die();
                 if (strstr($message, 'Warning: Smarty error:')) {
                     $this->msg("Message template processing failed: $message");
                     continue;

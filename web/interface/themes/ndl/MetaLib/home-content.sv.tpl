@@ -9,7 +9,15 @@
     {include file="MetaLib/search-sets.tpl"}
   </div>
   <div id="metalibDescription" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_16 prefix_1">
-    <p>{image src="nelli-logo.png"}Nelli är en metasökmaskin för databaser som biblioteken har tillgång till. </p> 
+    <div class="grid_16">     
+      {image src="nelli-logo.png"}</br></br> 
+    </div>
+    <div class="grid_16 searchDescription">  
+      <p>Nelli är en metasökmaskin för databaser i bibliotekens bruk.</p>
+      <p>Med Nelli-sökning kommer man åt sådana artiklar, e-böcker och andra referenser som inte finns i Primo Central Index.</p>
+      <p>Sökning i vissa databaser kan förutsätta inloggning med högskolans användarnamn.</p>
+      <p>Servicen fungerar med programmet MetaLib av ExLibris.</p>
+    </div>   
   </div>
 </div>
     

@@ -30,11 +30,10 @@
     {/if}
   </div>
     {if $transList}
-    <table>
       {if $renewForm}
     <form name="renewals" action="{$url}/MyResearch/CheckedOut" method="post" id="renewals">
 
-      
+    <table>  
     <tr class="bulkActionButtons">
     	<th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"}</h3>
         <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div> -->       
@@ -45,6 +44,7 @@
         </th>
        </tr> 
       {else}
+      <table>
       <tr class="bulkActionButtons">
       <th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"}</h3>
       </tr>
@@ -55,10 +55,9 @@
       {/if}
   
     
-    <tr class="recordSet">
     {foreach from=$transList item=resource name="recordLoop"}
       <tr class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
-      <th class="myCheckbox">
+      <td class="myCheckbox">
       
 
       {if $renewForm}
@@ -83,7 +82,7 @@
       {else}
       <p class="smallNotification">{translate text="Cannot renew"}<p>
       {/if}
-      </th>
+      </td>
         <td id="record{$resource.id|escape}">
         	{assign var=summImages value=$resource.summImages}
         	{assign var=summThumb value=$resource.summThumb}        	
@@ -175,7 +174,6 @@
             {/if}
 
           </td> <!-- class="dueDate" -->
-          <div class="clear"></div>
         </tr> <!-- record{$resource.id|escape} -->
     {/foreach}
     </table>
