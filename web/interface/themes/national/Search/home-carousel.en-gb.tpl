@@ -1,4 +1,4 @@
-<!-- START of: Search/home-carousel.fi.tpl -->
+<!-- START of: Search/home-carousel.en-gb.tpl -->
 
 <h2 class="ribbon">Collection highlights</h2>
 <div class="slides_container">
@@ -10,7 +10,7 @@
           <div class="pickup-header"><span>Alaska Collection of the Museum of Cultures</span></div>
           <div class="pickup-text">
             A ceremonial headdress worn by the Aleut people of Alaska in the early 19th century. The Alaska Collection of the Museum of Cultures consists of some 500 objects collected by Arvid Adolf Etholén, Governor-General of Russian Alaska, clergyman Uno Cygnaeus, and others. The collection includes clothes, hunting and fishing gear, and small sculptures made of walrus bone. 
-            <a href="{$url}/Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22&view=grid&limit=100">To the search result »</a>
+            <a href="{$url}/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=100">To the search result »</a>
           </div>
         </div>
       </li>

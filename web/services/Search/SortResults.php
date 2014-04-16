@@ -51,8 +51,16 @@ class SortResults extends Action
      */
     public function launch()
     {
-        if (isset($_REQUEST['sort'])) {
-            header('Location: ' . $_REQUEST['sort']);
+        global $configArray;
+
+        if (!empty($_REQUEST['sort'])) {
+            $url = $_REQUEST['sort'];
+            $urlHost = parse_url($url, PHP_URL_HOST);
+            $ourHost = parse_url($configArray['Site']['url'], PHP_URL_HOST);
+            if (!empty($urlHost) && $urlHost != $ourHost) {
+                die('Invalid URL domain');
+            }
+            header("Location: $url");
             die();
         }
     }

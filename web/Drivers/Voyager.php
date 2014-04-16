@@ -228,8 +228,8 @@ class Voyager implements DriverInterface
      */
     protected function getItemSortSequenceSQL($locationColumn)
     {
-        if (!isset($this->config['Holdings']['useSortGroups'])
-            || $this->config['Holdings']['useSortGroups']
+        if (!isset($this->config['Holdings']['use_sort_groups'])
+            || $this->config['Holdings']['use_sort_groups']
         ) {
             return "(SELECT SORT_GROUP_LOCATION.SEQUENCE_NUMBER " .
                 "FROM $this->dbName.SORT_GROUP, $this->dbName.SORT_GROUP_LOCATION " .
@@ -367,7 +367,9 @@ class Voyager implements DriverInterface
                         : utf8_encode($row['LOCATION']),
                     'reserve' => $row['ON_RESERVE'],
                     'callnumber' => $row['CALLNUMBER'],
-                    'sort_seq' => $row['SORT_SEQ']
+                    'sort_seq' => isset($row['SORT_SEQ'])
+                        ? $row['SORT_SEQ']
+                        : PHP_INT_MAX
                 );
             } else {
                 if (!in_array(
@@ -407,15 +409,15 @@ class Voyager implements DriverInterface
             $status[] = $current;
         }
 
-        if (!isset($this->config['Holdings']['useSortGroups'])
-            || $this->config['Holdings']['useSortGroups']
+        if (!isset($this->config['Holdings']['use_sort_groups'])
+            || $this->config['Holdings']['use_sort_groups']
         ) {
             uksort(
-                $holding,
+                $status,
                 function($a, $b) {
-                    return $holding[$a]['sort_seq'] == $holding[$b]['sort_seq']
+                    return $status[$a]['sort_seq'] == $status[$b]['sort_seq']
                         ? $a - $b
-                        : $holding[$a]['sort_seq'] - $holding[$b]['sort_seq'];
+                        : $status[$a]['sort_seq'] - $status[$b]['sort_seq'];
                 }
             );
         }
@@ -867,7 +869,9 @@ class Voyager implements DriverInterface
             'reserve' => $sqlRow['ON_RESERVE'],
             'callnumber' => $sqlRow['CALLNUMBER'],
             'barcode' => $sqlRow['ITEM_BARCODE'],
-            'sort_seq' => $sqlRow['SORT_SEQ'],
+            'sort_seq' => isset($sqlRow['SORT_SEQ'])
+                ? $sqlRow['SORT_SEQ']
+                : PHP_INT_MAX
         );
     }
 
@@ -963,8 +967,8 @@ class Voyager implements DriverInterface
             }
         }
 
-        if (!isset($this->config['Holdings']['useSortGroups'])
-            || $this->config['Holdings']['useSortGroups']
+        if (!isset($this->config['Holdings']['use_sort_groups'])
+            || $this->config['Holdings']['use_sort_groups']
         ) {
             usort(
                 $holding,
@@ -2377,6 +2381,64 @@ class Voyager implements DriverInterface
         }
 
         return $list;
+    }
+
+    /**
+     * Check if patron is authorized (e.g. to access licensed electronic material).
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return bool True if patron is authorized, false if not
+     */
+    public function getPatronAuthorizationStatus($patron)
+    {
+        if (!isset($this->config['Authorization']['enabled'])
+            || !$this->config['Authorization']['enabled']
+        ) {
+            // Authorization not enabled
+            return false;
+        }
+
+        if (!empty($this->config['Authorization']['stat_codes'])) {
+            // Check stat codes
+            $expressions = array('PATRON_STAT_CODE.PATRON_STAT_CODE');
+            $from = array(
+                "$this->dbName.PATRON_STAT_CODE",
+                "$this->dbName.PATRON_STATS"
+            );
+            $where = array(
+                'PATRON_STATS.PATRON_ID = :id',
+                'PATRON_STAT_CODE.PATRON_STAT_ID = PATRON_STATS.PATRON_STAT_ID'
+            );
+            $bind = array(':id' => $patron['id']);
+
+            $sql = $this->buildSqlFromArray(
+                array(
+                    'expressions' => $expressions,
+                    'from' => $from,
+                    'where' => $where,
+                    'bind' => $bind
+                )
+            );
+
+            try {
+                $sqlStmt = $this->db->prepare($sql['string']);
+                $this->debugLogSQL(__FUNCTION__, $sql);
+                $sqlStmt->execute($sql['bind']);
+                $statCodes = $sqlStmt->fetchAll(PDO::FETCH_COLUMN, 0);
+                $common = array_intersect(
+                    $statCodes,
+                    explode(':', $this->config['Authorization']['stat_codes'])
+                );
+                if (empty($common)) {
+                    return false;
+                }
+            } catch (PDOException $e) {
+                return new PEAR_Error($e->getMessage());
+            }
+        }
+
+        return true;
     }
 
     /**

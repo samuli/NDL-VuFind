@@ -73,6 +73,10 @@
       display: none;
     }
 */
+    .advancedLink {
+          margin-left: 20px;
+    }
+
     .advancedLinkWrapper a.show480mobile {
         display: inline-block;
     }
@@ -159,9 +163,6 @@
     }
     #searchForm_input {
         width: 195px;
-    }
-    .searchformPCI #searchForm_input {
-        width: 350px;
     }
     .keepFilters {
         clear: left;
@@ -282,6 +283,12 @@
     #home-timeline {
         display: none;
     }
+
+    /* PCI Front */
+    #pciDescription {
+        width: 470px;
+    }
+
     
     /* Search results */
     
@@ -495,6 +502,9 @@
     #resultSidebar {
         display:none;
     }
+	.metalibSearchSets {
+		width:100% !important;	
+	}
     
     /* Myresearch */
     
