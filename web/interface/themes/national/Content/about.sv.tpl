@@ -36,7 +36,7 @@ Nationalbiblioteket ansvarar för utvecklingen och underhållet av Finna, men tj
 
 <h3>Finnas tjänster</h3>
 <p>
-Det här är arkivens, bibliotekens och museernas gemensamma Finnavy. Utöver webbtjänsten kan organisationerna skapa egna Finnavyer. För tillfället finns följande Finnavyer:  <a href="https://jyu.finna.fi/">JYX</a>, <a href="https://museot.finna.fi/">Museernas Finna</a> och Nationalbibliotekets Finna.
+Det här är arkivens, bibliotekens och museernas gemensamma Finnavy. Utöver webbtjänsten kan organisationerna skapa egna Finnavyer. För tillfället finns följande Finnavyer:  <a href="https://jyu.finna.fi/">JYKDOK</a>, <a href="https://museot.finna.fi/">Museernas Finna</a> och Nationalbibliotekets Finna.
 </p>
 
 <h3>Finnas program</h3>
