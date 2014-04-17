@@ -351,11 +351,16 @@ class JSON extends Action
                 if ($data) {
                     // if this item was saved, add it to the list of saved items.
                     foreach ($data as $list) {
+                        if ($list->list_title == 'My Favorites') {
+                            $listTitle = translate($list->list_title);
+                        } else {
+                            $listTitle = $list->list_title;
+                        }
                         $result[] = array(
                             'record_id' => $id,
                             'resource_id' => $list->id,
                             'list_id' => $list->list_id,
-                            'list_title' => $list->list_title
+                            'list_title' => $listTitle
                         );
                     }
                 }

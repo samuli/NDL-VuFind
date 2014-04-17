@@ -179,7 +179,7 @@ class Save extends Action
             $list->id = $_GET['list'];
         } else {
             $list->user_id = $user->id;
-            $list->title = translate("My Favorites");
+            $list->title = "My Favorites";
             if (!$list->find(true)) {
                 $list->insert();
             }
