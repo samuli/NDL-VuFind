@@ -27,6 +27,8 @@
  * @link     http://vufind.org/wiki/developer_manual Wiki
  */
 
+require_once 'util.inc.php';
+require_once 'Crypt/generateHMAC.php';
 
 /**
  * Base class for Reminder tasks
@@ -223,6 +225,22 @@ class ReminderTask
             $this->msg('--------------');
             return $result;
         }
+    }
+    
+    /**
+     * Utility function for generating a token.
+     *
+     * @return string token
+     * @access public
+     */
+    protected function getSecret($user, $id)
+    {
+        $data = array('id' => $id,
+                      'user_id' => $user->id,
+                      'created' => $user->created
+                     );
+        $secret = generateHMAC(array_keys($data), $data);
+        return($secret);
     }
 
 

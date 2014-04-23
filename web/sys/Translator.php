@@ -163,6 +163,20 @@ class I18N_Translator
     }
 
     /**
+     * Check if translation exists for a phrase
+     *
+     * @param string $phrase The phrase to translate
+     * @param string $prefix A translation prefix prepended to the actual phrase
+     *
+     * @return boolean      translation exists
+     * @access public
+     */
+    public function translationExists($phrase, $prefix = '')
+    {
+        return isset($this->words[$prefix . $phrase]);
+    }
+
+    /**
      * Translate the phrase
      *
      * @param string $phrase The phrase to translate

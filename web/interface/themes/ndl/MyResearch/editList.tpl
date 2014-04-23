@@ -21,7 +21,7 @@
 {else}
   <form method="post" name="editListForm" action="">
     <label class="displayBlock" for="list_title">{translate text="List"}:</label>
-    <input id="list_title" type="text" name="title" value="{$list->title|escape:"html"}" size="50" 
+    <input id="list_title" type="text" name="title" value="{if $list->title == 'My Favorites'}{translate text=$list->title}{else}{$list->title|escape:"html"}{/if}" size="50" 
       class="mainFocus {jquery_validation required='This field is required'}"/>
     <fieldset>
       <legend>{translate text="Access"}:</legend> 

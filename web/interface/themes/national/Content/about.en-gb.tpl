@@ -35,7 +35,7 @@ The National Library of Finland bears the main responsibility for developing and
 
 <h3>Finna services</h3>
 <p>
-This is the shared Finna interface of Finnish archives, libraries and museums. Organisations can also create their own Finna interfaces. The following Finna interfaces are currently available: <a href="https://jyu.finna.fi/">JYX</a>, <a href="https://museot.finna.fi/">Museo-Finna</a> and the National Library of Finland.
+This is the shared Finna interface of Finnish archives, libraries and museums. Organisations can also create their own Finna interfaces. The following Finna interfaces are currently available: <a href="https://jyu.finna.fi/">JYKDOK</a>, <a href="https://museot.finna.fi/">Museo-Finna</a> and the National Library of Finland.
 </p>
 
 <h3>Finna software</h3>
