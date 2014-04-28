@@ -85,6 +85,8 @@ institution =
 indexBasedNewItems = true
 ; Whether two-column result list (local and PCI) is enabled (defauls to false)
 ;dualResultsEnabled = true
+; Set the scale of Search by Year in Advanced Search (defaults to 0,900,1800,1910). Can also be used to set 1-3 of the lefmost values eg. setting only the starting year with 1 value.
+;advSearchYearScale = 0,900,1800,1910
 
 ; This section allows you to configure the mechanism used for storing user
 ; sessions.  Available types: FileSession, MemcacheSession, MySQLSession.
