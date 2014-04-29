@@ -370,6 +370,7 @@ lastname = SHIB_cn
 coverimages    = NLF,OpenLibrary
 coverwidth = 126
 coverheight = 126
+covermaxheight = 200
 coverbackground = ffffff
 ; How long cover images are cached locally in minutes. Default is one day
 ;covercachetime = 1440

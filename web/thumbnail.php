@@ -105,7 +105,7 @@ function fetchFromRecord($id, $size, $index = null)
 
     $localFile = 'images/covers/' . $size . '/' . urlencode($id) . (isset($index) ? "_$index" : '') . '.jpg';
     $maxAge = isset($configArray['Content']['covercachetime']) ? $configArray['Content']['covercachetime'] : 1440; 
-    if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
+    if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60 && false) {
         // Load local cache if available
         header('Content-type: image/jpeg');
         echo readfile($localFile);
@@ -259,8 +259,14 @@ function processImageURL($url, $localFile, $size, $cache = true)
         
             $reqWidth = $configArray['Content']['coverwidth'];
             $reqHeight = $configArray['Content']['coverheight'];
-            if ($height > $reqHeight) {
-                $reqHeight = $reqWidth * ($height / $width);
+            $maxHeight = isset($configArray['Content']['covermaxheight']) 
+                ? $configArray['Content']['covermaxheight'] : $configArray['Content']['coverheight'];
+            
+            if ($height > $maxHeight && $height > $width) {
+                $reqHeight = $reqWidth * $height / $width;
+                if ($reqHeight > $maxHeight) {
+                    $reqHeight = $maxHeight;
+                }
             }
             $imageGDResized = imagecreatetruecolor($reqWidth, $reqHeight);
             if ($configArray['Content']['coverbackground']) {
@@ -283,14 +289,22 @@ function processImageURL($url, $localFile, $size, $cache = true)
                     return false;
                 }
             } elseif ($width > $reqWidth || $height > $reqHeight) {
-                $newWidth = $reqWidth;
-                $newHeight = round($newWidth * ($height / $width));
-                $imgX = 0;
-                $imgY = round(($reqHeight - $newHeight) / 2);
-                imagecopyresampled($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $newWidth, $newHeight, $width, $height);
+                if (($width / $height) * $reqHeight < $reqWidth) {
+                    $newHeight = $reqHeight;
+                    $newWidth = round($newHeight * ($width / $height));
+                    $imgY = 0;
+                    $imgX = round(($reqWidth - $newWidth) / 2);
+                    imagecopyresampled($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $newWidth, $newHeight, $width, $height);
+                } else {
+                    $newWidth = $reqWidth;
+                    $newHeight = round($newWidth * ($height / $width));
+                    $imgX = 0;
+                    $imgY = 0;
+                    imagecopyresampled($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $newWidth, $newHeight, $width, $height);                    
+                }
                 if (!@imagejpeg($imageGDResized, $finalFile)) {
                     return false;
-                }
+                }                
             } else {
                 if (!@imagejpeg($imageGD, $finalFile)) {
                     return false;
