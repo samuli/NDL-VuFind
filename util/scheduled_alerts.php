@@ -175,7 +175,7 @@ class ScheduledAlerts extends ReminderTask
             // hidden filters.
             $searchObject = SearchObjectFactory::initSearchObject();
             $searchObject->deminify($minSO);
-            $searchObject->setSort('last_indexed desc');
+            $searchObject->setSort('first_indexed desc');
             $searchTime = time();
             $searchDate = gmdate($iso8601, time());
             $searchObject->setLimit(50);
@@ -189,7 +189,7 @@ class ScheduledAlerts extends ReminderTask
                 $this->msg('No results found for search ' . $s->id);
                 continue;
             }
-            $newestRecordDate = date($iso8601, strtotime($results['response']['docs'][0]['last_indexed']));
+            $newestRecordDate = date($iso8601, strtotime($results['response']['docs'][0]['first_indexed']));
             $lastExecutionDate = $lastTime->format($iso8601);
             if ($newestRecordDate < $lastExecutionDate) {
                 $this->msg('No new results for search ' . $s->id . ": $newestRecordDate < $lastExecutionDate");
@@ -202,7 +202,7 @@ class ScheduledAlerts extends ReminderTask
 
                 $records = array();
                 foreach ($results['response']['docs'] as &$doc) {
-                    $docDate = date($iso8601, strtotime($doc['last_indexed']));
+                    $docDate = date($iso8601, strtotime($doc['first_indexed']));
                     if ($docDate < $lastExecutionDate) {
                         break;
                     }
