@@ -63,31 +63,31 @@ function getExtraConfigArray($name)
     static $extraConfigs = array();
 
     // If the requested settings aren't loaded yet, pull them in:
-    $name = $filename = getExtraConfigArrayFile($name);
-    if (!isset($extraConfigs[$name])) {
+    $filename = getExtraConfigArrayFile($name);
+    if (!isset($extraConfigs[$filename])) {
         // Try to load the .ini file; if loading fails, the file probably doesn't
         // exist, so we can treat it as an empty array.
-        $extraConfigs[$name] = @parse_ini_file($filename, true);
-        if ($extraConfigs[$name] === false) {
-            $extraConfigs[$name] = array();
+        $extraConfigs[$filename] = @parse_ini_file($filename, true);
+        if ($extraConfigs[$filename] === false) {
+            $extraConfigs[$filename] = array();
         }
 
         // Load local overrides
-        $filename = preg_replace('/(.*)\./', '\\1.local.', $filename);
-        $localOverride = @parse_ini_file($filename, true);
+        $localfilename = preg_replace('/(.*)\./', '\\1.local.', $filename);
+        $localOverride = @parse_ini_file($localfilename, true);
         if ($localOverride) {
             foreach ($localOverride as $section => $settings) {
                 if (in_array($name, array('searches', 'PCI', 'MetaLib')) && $section == 'General') {
                     // Don't override whole General section of searches.ini, PCI.ini or MetaLib.ini
-                    $extraConfigs[$name][$section] = iniMerge($extraConfigs[$name][$section], $settings);
+                    $extraConfigs[$filename][$section] = iniMerge($extraConfigs[$filename][$section], $settings);
                 } else {
-                    $extraConfigs[$name][$section] = $settings;
+                    $extraConfigs[$filename][$section] = $settings;
                 }
             }
         }
     }
 
-    return $extraConfigs[$name];
+    return $extraConfigs[$filename];
 }
 
 /**
