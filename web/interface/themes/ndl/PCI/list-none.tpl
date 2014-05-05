@@ -7,11 +7,16 @@
     {include file="Search/tabnavi.tpl"}
   {/if}
   <div class="content">
-    <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if}{if $noQuery} emptySearchNote{/if} grid_17">
+    <div id="resultList" class="{if ($sidebarOnLeft && (!empty($filterList) || $checkboxStatus != false))}sidebarOnLeft last{/if}{if $noQuery} emptySearchNote{/if} grid_24">
       {if $noQuery}
-          <p class="notice">{translate text='pci_no_query'}</p>
+        <p class="notice">{translate text='pci_no_query'}</p>
       {else}
-          <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
+        <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
+      {/if}
+      {if !$userAuthorized && $methodsAvailable}
+        <div class="loginNotification">
+          <p>{translate text="authorize_user_notification"}</p>
+        </div>
       {/if}
     </div>
     <div class="grid_17">
