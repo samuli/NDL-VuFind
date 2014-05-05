@@ -32,14 +32,14 @@ require_once 'Crypt/generateHMAC.php';
 
 /**
  * Base class for Reminder tasks
- *
+ * 
  * @category VuFind
  * @package  Due_Date_Reminders
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
- *
+ * 
  */
 class ReminderTask
 {
@@ -49,18 +49,18 @@ class ReminderTask
 
     protected $mainConfig;
     protected $datasourceConfig;
-
+    
     /**
      * Constructor
      *
-     * @param string $mainDir  The main VuFind directory.
-                               Each web directory must reside
+     * @param string $mainDir  The main VuFind directory. 
+                               Each web directory must reside 
                                under this (default: ..)
      * @param string $errEmail Email address for error reporting.
      *
      * @return void
      */
-    function __construct($mainDir, $errEmail)
+    function __construct($mainDir, $errEmail) 
     {
         $this->mainDir = $mainDir;
         $this->errEmail = $errEmail;
@@ -74,31 +74,31 @@ class ReminderTask
      *
      * @return void
      */
-    protected function send()
+    protected function send() 
     {
     }
 
     /**
-     * Search for institution configuration from the following
+     * Search for institution configuration from the following 
      * locations within <mainDir>:
      *   1. 'mainView' for the given institution in datasource configuration
      *   2. /<institution>/<defaultPath> (specified in config.ini > defaultPath)
      *
-     * If required, ['Site']['url'] is set according to the
+     * If required, ['Site']['url'] is set according to the 
      * url schema for views (specified in config.ini > urlSchema)
      *
      * @param string $institution institution code
      *
      * @return array configuration or false on error
      */
-    protected function readInstitutionConfig($institution)
-    {
-        $defaultDir = isset($this->mainConfig['Site']['defaultPath'])
+    protected function readInstitutionConfig($institution) 
+    {          
+        $defaultDir = isset($this->mainConfig['Site']['defaultPath']) 
             ? $this->mainConfig['Site']['defaultPath']
             : 'default';
-
+        
         if (isset($this->datasourceConfig[$institution]['mainView'])) {
-            $configPath  = "$this->mainDir/"
+            $configPath  = "$this->mainDir/" 
                          . $this->datasourceConfig[$institution]['mainView']
                          . '/conf';
             $msg = "Switching to configuration of '$institution' ($configPath)";
@@ -106,7 +106,7 @@ class ReminderTask
         } else {
             $defaultPath = "$this->mainDir/$institution/$defaultDir";
             $msg = "'mainView' not defined for institution '$institution'."
-                 . " Reading configuration from $defaultPath";
+                 . " Read configuration from $defaultPath";
             $this->msg($msg);
             // assume that view is functional if index.php exists.
             if (is_file("$defaultPath/index.php")) {
@@ -126,28 +126,28 @@ class ReminderTask
         }
 
         // Read institution's configuration
-        $configArray = readConfig($configPath);
-        $siteUrl = isset($configArray['Site']['url'])
-            ? $configArray['Site']['url']
+        $configArray = readConfig($configPath);               
+        $siteUrl = isset($configArray['Site']['url']) 
+            ? $configArray['Site']['url'] 
             : false;
         $buildSiteUrl = false;
 
         if ($siteUrl) {
             if (strlen(trim($siteUrl)) == 0) {
                 $parts = array($institution);
-                $buildSiteUrl = true;
+                $buildSiteUrl = true;                    
             } else {
                 if (preg_match('/^https?:\/\/localhost/', $siteUrl)) {
                     $ds = $this->datasourceConfig;
-                    $parts = isset($ds[$institution]['mainView'])
+                    $parts = isset($ds[$institution]['mainView']) 
                         ? explode('/', $ds[$institution]['mainView'])
                         : array($institution);
-
+                    
                     if (end($parts) == $defaultDir) {
                         array_pop($parts);
                     }
                     $buildSiteUrl = true;
-                }
+                }                    
             }
         } else {
             $parts = array($institution);
@@ -163,29 +163,26 @@ class ReminderTask
             $configArray['Site']['url'] = $siteUrl;
         }
 
-        global $extraConfigDirectory;
-        $extraConfigDirectory = $configPath;
-
         return $configArray;
     }
-
+    
     /**
      * Output a message with a timestamp
-     *
+     * 
      * @param string $msg Message
-     *
+     * 
      * @return void
      */
     protected function msg($msg)
     {
-        echo date('Y-m-d H:i:s') . ' [' . getmypid() . "] $msg\n";
+        echo date('Y-m-d H:i:s') . ' [' . getmypid() . "] $msg\n"; 
     }
 
     /**
      * Collect error message
-     *
+     * 
      * @param string $msg Message
-     *
+     * 
      * @return void
      */
     protected function err($msg)
@@ -194,14 +191,13 @@ class ReminderTask
             $this->errs = array();
         }
         $this->errs[] = $msg;
-        $this->msg($msg);
     }
 
     /**
-     * Send error email if errors were reported.
-     *
+     * Send error email if errors were reported.    
+     * 
      * @return void
-     */
+     */    
     protected function reportErrors()
     {
         if (!$this->errEmail) {
@@ -215,13 +211,13 @@ class ReminderTask
             $subject = 'ReminderTask error <'
                      . gethostname() . '> : ' . get_class($this);
             $msg = implode(PHP_EOL, $this->errs);
-
+            
             $this->msg('--------------');
             $this->msg(count($this->errs) . " errors, report sent to $to:");
             $this->msg($msg);
-
-            $msg = date('Y-m-d H:i:s')
-                 . ' [' . getmypid() . "] " . PHP_EOL . "$msg\n";
+            
+            $msg = date('Y-m-d H:i:s') 
+                 . ' [' . getmypid() . "] " . PHP_EOL . "$msg\n";            
 
             if (!$result = $mailer->send($to, $from, $subject, $msg)) {
                 $this->msg("Failed to send error email to $to");
@@ -230,12 +226,9 @@ class ReminderTask
             return $result;
         }
     }
-
+    
     /**
      * Utility function for generating a token.
-     *
-     * @param object $user User object
-     * @param string $id   ID
      *
      * @return string token
      * @access public
@@ -249,5 +242,6 @@ class ReminderTask
         $secret = generateHMAC(array_keys($data), $data);
         return($secret);
     }
+
 
 }
