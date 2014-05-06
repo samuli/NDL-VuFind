@@ -54,16 +54,6 @@
     {include file="Search/tabnavi.tpl"}
   {/if}
 
-  <div class="resultViewOptions">
-    <div class="content">
-      <div class="resultNumbers">
-        {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
-        <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
-        <span class="resultTotals">{$recordCount}</span>
-         {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
-      </div>
-    </div> {* content *}
-  </div> {* resultViewOptions *}
 
 </div> {* resultHeader *}
 {* End Listing Options *}
@@ -76,11 +66,17 @@
       {if $showGlobalFiltersNote}
       <div class="globalFiltersNote">{$showGlobalFiltersNote}</div>
       {/if}
-      {if $subpage}
-        {include file=$subpage}
-      {else}
-        {$pageContent}
-      {/if}
+
+      
+      <div id="deferredResults">
+        <div class="metalibLoading show">
+          <h4>&nbsp;</h4>
+          <img src="{$path}/interface/themes/ndl/images/nelli-loader.gif">
+          <p class="setNotification">{translate text="metalib_loading_set"|escape} <span><strong>&nbsp;</strong></span></p>
+        </div> 
+        <div id="content"></div>
+      </div>
+
     </div>
     <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
       {include file="MetaLib/search-sets.tpl"}
@@ -89,7 +85,6 @@
   </div>
 </div>
           
-{include file="Search/paging.tpl" position="Bottom"}
 <div class="resultSearchTools">
   <div class="content">
     <div class="searchtools">
@@ -123,11 +118,33 @@
   
 <div class="clear"></div>
 
+{js filename="metalib.js"}
+
 {literal}
   <script type="text/javascript">
+    var trMetalibLoading = '{/literal}{translate text="metalib_loading"|escape}{literal}';
+    var trNoHits = '{/literal}{translate text="nohit_heading"|escape}{literal}';        
+    var trError = '{/literal}{translate text="An error has occurred"}{literal}';
+    var metalibSearchsets = {};
+    {/literal}
+    {if $set}
+        var metalibSet = '{$set}';
+    {else}
+        var metalibSet;
+    {/if}
+    
+    {assign var="cnt" value=0}
+    {foreach from=$metalibSearchSets item=searchDesc key=searchVal name=loop}
+        {if $cnt++ == 0 && !$set}
+           metalibSet = '{$searchVal}';
+        {/if}
+        metalibSearchsets['{$searchVal}'] = '{translate text=$searchDesc|escape}';
+    {/foreach}
+    {literal}
     $(function() {
         initSearchInputListener();
-    });
+        metalibInit({/literal}{$page}{literal});
+      });
   </script>
 {/literal}
 

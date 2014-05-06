@@ -353,6 +353,12 @@
         left:10px;
     }
 
+    .module-MetaLib #deferredResults #content {        
+        min-height: 100px;
+    }
+
+
+
     /* Search results: bottom */
     .advSearchContent, #authorList, #resultsCollection, .pagination, .searchtools {
         float: left;

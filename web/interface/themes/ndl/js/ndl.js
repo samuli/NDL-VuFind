@@ -9,7 +9,6 @@ $(document).ready(function() {
     initDateVis();
     initFeedbackScroll();
     initFixedLimitSearch();
-    initMetaLibLoadingIndicator();
     initCustomEyeCandy();
     initScrollRecord();
     initScrollMenu();
@@ -323,16 +322,6 @@ function padZeros(number, length) {
         str = '0' + str;
     }
     return (negative ? '-' : '') + str;
-}
-
-// Metalib loading indicator
-function initMetaLibLoadingIndicator() {
-    $('.searchformMetaLib #searchForm_searchButton').click(function() {
-        var selectedSet = $('input[name=searchSet]:checked').val();
-        $('input#searchForm_set').val(selectedSet);
-        $('.searchFormWrapper .clear_input').addClass('metaLibLoading');
-        $('#searchForm_input').css('color', '#aaa');
-    });
 }
 
 // Custom jQuery effects

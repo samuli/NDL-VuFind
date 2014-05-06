@@ -190,7 +190,11 @@
     .resultOptionLimit {
         margin-left:15px;
     }
-        
+
+    div.metalibLoading {        
+        width: 530px;
+    }
+
     /* Search results: sidebar */
     
     .sidegroup ul.dynatree-container {

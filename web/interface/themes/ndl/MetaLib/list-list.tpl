@@ -1,3 +1,10 @@
+<div class="resultNumbers">
+  {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
+   <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
+   <span class="resultTotals">{$recordCount}</span>
+   {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
+</div>
+      
 {* check save statuses via AJAX *}
 {js filename="check_save_statuses.js"}
 {js filename="jquery.cookie.js"}
@@ -98,3 +105,5 @@
   {/foreach}
   </ul>
 </form>
+
+{include file="Search/paging.tpl" position="Bottom"}
