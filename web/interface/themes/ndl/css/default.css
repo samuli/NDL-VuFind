@@ -735,7 +735,7 @@ a.clear_input:hover {
     right:0;
 }
 .infoBoxText > * {
-    padding:0 15px;
+    padding: 0 15px;
 }
 .infoBoxText .strong {
     clear:both;
@@ -2044,9 +2044,8 @@ clear:both;
 
 .loginForm h3 {
     background: #b0e9db;
-    text-align: center;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px 20px 5px 0;
     margin-top: 20px;
     font-weight: 400;
     background: none;
@@ -2079,8 +2078,6 @@ clear:both;
     font-weight: bold;
 }
 .loginForm .description {
-    font-size:1.1em;
-    font-weight:300;
     padding: 2em 2em;
     background-color: #edf3f6;
     margin-top: -12px;
@@ -2118,14 +2115,13 @@ clear:both;
     font-weight: bold;
     font-size: 1.230em;
 }
-.libraryLogin, .libraryLogin .button, .shibLogin, .personaLogin {
-    text-align:center;  
-}
 .shibLogin {
-    margin-top:10px; 
+    margin-top:5px; 
 }
 .personaLogin {
-    margin-top:50px;    
+    margin-top: 14px;
+	white-space: nowrap;
+	min-height: 34px;
 }
 .libraryLogin input[type="password"],.libraryLogin input[type="text"], .libraryLogin select {
     width:80%;
@@ -2134,13 +2130,11 @@ clear:both;
 .loginForm .shibText h3 {
     background: #edf3f6;
     color: #464646;
-    font-weight: 300;
-    font-size: 1.23em;
-    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: left;
     padding: 10px;
     border:none;    
-}
-.loginForm .loginDescriptionSmall {
 }
 .loginForm .alreadyLogged {
     font-size:1.23em;
@@ -2150,7 +2144,7 @@ clear:both;
 }
 .loginForm form input[type="submit"] {
     margin: 15px 0;
-    margin-top:30px !important;
+    margin-top:12px !important;
 }
 #modalDialog #errormessage {
     margin-bottom:0px !important;   
@@ -3028,8 +3022,7 @@ ul.recordSet .addToFavLink a {
     background-repeat: no-repeat;
     background-position: left;
     padding: 25px 60px;
-    font-size: 1.23EM;
-    margin-left: 30PX;
+    font-size: 1.23em;
 }
 .persona-login-loading {
     background-image: url(../images/ajax_loading.gif);
