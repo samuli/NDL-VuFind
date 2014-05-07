@@ -353,8 +353,12 @@
         left:10px;
     }
 
+    .module-MetaLib h3.metalibSearchSets {
+        margin-top: 0;
+    }
+
     .module-MetaLib #deferredResults #content {        
-        min-height: 100px;
+        min-height: 200px;
     }
 
 

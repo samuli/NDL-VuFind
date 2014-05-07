@@ -1,7 +1,7 @@
 var metalibPage;
 var metalibInited = false;
 
-function metalibSearch(step, set, saveHistory, scrollToTop) 
+function metalibSearch(step, set, saveHistory) 
 {
     // Remove possible error messages from previous search
     $('#deferredResults #content.error').empty();
@@ -117,10 +117,6 @@ function metalibSearch(step, set, saveHistory, scrollToTop)
         window.history.pushState(state, title, tmp);
     }
    
-    if (scrollToTop === true) {
-        $('html, body').scrollTop($('#searchForm_input').offset().top - 20);
-    }
-
 }
 
 function metalibScrollToRecord()
@@ -142,48 +138,45 @@ function metalibToggleLoading(mode)
         $('.metalibLoading h4').html(txt);
         $('.metalibLoading .setNotification span').html(metalibSearchsets[metalibSet]);
     }
-    
+    var recSet = $('.recordSet');
+    if (recSet.length) {
+        recSet.toggleClass("loading", mode);
+    }
+
     var loader = $('.metalibLoading');
     loader.toggleClass("show", mode);
-    var h = Math.max(100, $('#deferredResults #content').height()-150);
-    loader.height(h);
 }
 
 function metalibInitPagination()
 {
-    function _scrollToTop(obj) {
-        // scroll page to top if event was sent from bottom pagination
-        return obj.parent().parent().hasClass("paginationBottom");
-    }
-
     // Top pagination
     $(".paginationBack a").on("click", function(e) { 
-        metalibSearch(-1, null, true, _scrollToTop($(this))); 
+        metalibSearch(-1, null, true); 
         e.preventDefault(); 
     });
 
     $(".paginationNext a").on("click", function(e) { 
-        metalibSearch( 1, null, true, _scrollToTop($(this))); 
+        metalibSearch( 1, null, true); 
         e.preventDefault(); 
     });
 
     // Bottom pagination
     $(".paginationFirst a").on("click", function(e) { 
         metalibPage = 1; 
-        metalibSearch(null, null, true, _scrollToTop($(this))); 
+        metalibSearch(null, null, true); 
         e.preventDefault(); 
     });
     
     $(".paginationLast a").on("click", function(e) { 
         var page = $(this).html(); 
         metalibPage = parseInt(page.substring(1, page.length-1));
-        metalibSearch(null, null, true, _scrollToTop($(this))); 
+        metalibSearch(null, null, true); 
         e.preventDefault(); 
     });
 
     $(".paginationPages a").on("click", function(e) { 
         metalibPage = parseInt($(this).html()); 
-        metalibSearch(null, null, true, _scrollToTop($(this))); 
+        metalibSearch(null, null, true); 
         e.preventDefault(); 
     });
 }
@@ -191,7 +184,7 @@ function metalibInitPagination()
 function metalibChangeSet(set)
 {
     metalibPage = 1;
-    metalibSearch(null, set, true, false);
+    metalibSearch(null, set, true);
 }
 
 function metalibInit(page)
@@ -201,7 +194,7 @@ function metalibInit(page)
         metalibChangeSet($(this).val()); 
     });
 
-    metalibSearch(null, metalibSet, true, false);
+    metalibSearch(null, metalibSet, true);
     metalibInited = true;
 
     window.onpopstate = function(e){
@@ -210,7 +203,7 @@ function metalibInit(page)
             var set = e.state.set ? e.state.set : null;
             metalibSet = set;
 
-            metalibSearch(null, set, false, true);
+            metalibSearch(null, set, false);
         }
     };
 }
