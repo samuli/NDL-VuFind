@@ -1,3 +1,4 @@
+
 <div class="resultNumbers">
   {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
    <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
@@ -106,4 +107,8 @@
   </ul>
 </form>
 
+{include file="MetaLib/database-statuses.tpl"}
+
+
 {include file="Search/paging.tpl" position="Bottom"}
+
