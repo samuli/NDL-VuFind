@@ -1134,6 +1134,7 @@ div.dialogLoading {
    opacity: 1;
    transition:opacity 0.1s linear;
    height: auto;
+
 }
 
 .module-MetaLib .recordSet.loading {
@@ -1147,11 +1148,12 @@ div.dialogLoading {
 
 div.metalibLoading.show {    
     display: block; 
-   filter: alpha(opacity=100);
-   -moz-opacity:1;
-   -khtml-opacity: 1;
-   opacity: 1;
-   transition:opacity 0.1s linear;
+    filter: alpha(opacity=100);
+    -moz-opacity:1;
+    -khtml-opacity: 1;
+    opacity: 1;
+    transition:opacity 0.1s linear;
+    background: #fff;
 }
 
 div.metalibLoading {
@@ -1190,6 +1192,11 @@ div.metalibLoading {
     padding:0;
     font-size: 1.23em;
 }
+.module-MetaLib .no-hits #content {
+    overflow: hidden;
+}
+
+
 .highlight {
     background: none;
 }
@@ -3380,6 +3387,15 @@ h3.metalibSearchSets {
     padding: 20px 12px 20px 15px;
     line-height: 30px;
     margin-top: 100px;
+}
+
+.module-MetaLib #deferredResults #databaseStatuses {
+    display: none;
+}
+
+.module-MetaLib #databaseStatuses,
+.module-MetaLib #searchSets {
+    margin-bottom: 20px;
 }
 
 .resultListContainer .content.no-hits h3.metalibSearchSets {

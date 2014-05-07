@@ -1,4 +1,4 @@
-    <div id="databaseStatuses">
+    <div id="databaseStatuses" class="databaseStatusHolder">
       {if $successDatabases}
         <div id="databaseSuccess">
            <strong>{translate text='Metalib Databases'}:</strong>

@@ -1,8 +1,10 @@
 var metalibPage;
 var metalibInited = false;
+var metalibLoading = false;
 
 function metalibSearch(step, set, saveHistory) 
 {
+
     // Remove possible error messages from previous search
     $('#deferredResults #content.error').empty();
     $('#deferredResults #content').removeClass("error").removeClass("fatalError");
@@ -11,6 +13,15 @@ function metalibSearch(step, set, saveHistory)
 
     var currentPage = metalibPage;
     var changeSet = set !== null && set != metalibSet;
+
+    // Continue only if search set was changed (whole page is reloaded) 
+    // or previous Ajax load is complete
+    if (!changeSet && metalibLoading) {
+        return;
+    }
+
+    metalibLoading = true;
+
 
     if (step !== null) {
         metalibPage += step;
@@ -76,13 +87,15 @@ function metalibSearch(step, set, saveHistory)
     
     var contentHolder = $('.resultListContainer .content');
     contentHolder.removeClass('no-hits');
+    
     $('#deferredResults #content').load(url, function(response, status, xhr, datatype) {
+        metalibLoading = false;
         // hide search set from loader
         $('.metalibLoading .setNotification').toggle(false);
 
         metalibToggleLoading(false);
         
-        if (status == 'error') {
+        if (status == 'error') {            
             var obj = $(response).find('.fatalError');
             var errMsg;
             if (obj.length) {
@@ -92,12 +105,21 @@ function metalibSearch(step, set, saveHistory)
                 // Use generic error message
                 errMsg = trError;
             }
-            $(this).html(errMsg);
-            $(this).addClass("error").addClass("fatalError");        
+            $(this).html(errMsg).addClass("error").addClass("fatalError");        
         } else {
+
             if ($('ul.recordSet').length) {
                 metalibInitPagination();
                 metalibScrollToRecord();
+                
+                // Cut away database statuses from content area
+                var setStatuses = $(this).find('#databaseStatuses').detach();
+
+                // Remove old database statuses from sidefacets
+                $('#sidebarFacets .databaseStatusHolder').remove();
+
+                // Append new database statuses after sidefacets
+                $('#sidebarFacets').append(setStatuses);
             } else {
                 contentHolder.addClass('no-hits');
                 $('.searchTerms').html(trNoHits);
@@ -184,6 +206,7 @@ function metalibInitPagination()
 function metalibChangeSet(set)
 {
     metalibPage = 1;
+    $('#deferredResults #content').hide();
     metalibSearch(null, set, true);
 }
 
