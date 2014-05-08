@@ -353,6 +353,16 @@
         left:10px;
     }
 
+    .module-MetaLib h3.metalibSearchSets {
+        margin-top: 0;
+    }
+
+    .module-MetaLib #deferredResults #content {        
+        min-height: 200px;
+    }
+
+
+
     /* Search results: bottom */
     .advSearchContent, #authorList, #resultsCollection, .pagination, .searchtools {
         float: left;
@@ -507,6 +517,10 @@
 	}
     
     /* Myresearch */
+
+    .libraryLogin, .libraryLogin .button, .shibLogin, .personaLogin, .loginForm h3 {
+        text-align:center;  
+}
     
     .ui-tabs .ui-tabs-nav li a {
         padding-left:5px;
@@ -725,15 +739,15 @@
         width: 90% !important;
     }
     .loginForm .description {
-        margin-top:20px;
+        margin-top:6px;
         padding:10px;
-    }
-    .loginForm .personaLogin {
-        margin-top: 20px;
     }
     .loginForm h3 {
         margin-top:10px;    
     }
+	.module-Cart form.libraryLogin input[type="submit"], .module-MyResearch form.libraryLogin input[type="submit"] {
+		margin-bottom: 1px;
+	}
 
     /* Footer */
     
