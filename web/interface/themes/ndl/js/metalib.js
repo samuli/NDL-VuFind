@@ -160,15 +160,13 @@ function metalibToggleLoading(mode)
         $('.metalibLoading h4').html(txt);
         $('.metalibLoading .setNotification span').html(metalibSearchsets[metalibSet]);
     }
-    var recSet = $('.recordSet');
-    if (recSet.length) {
-        recSet.toggleClass("loading", mode);
-    }
-
-    var loader = $('.metalibLoading');
+    	var loader = $('.metalibLoading');
     loader.toggleClass("show", mode);
+	    var recSet = $('.recordSet');
+	if (recSet.length) {
+        recSet.toggleClass("loading", mode);
+	}
 }
-
 function metalibInitPagination()
 {
     // Top pagination
