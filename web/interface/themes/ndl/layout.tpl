@@ -42,7 +42,7 @@
 
     {* Load Blueprint CSS framework *}
     {css media="screen, projection" filename="blueprint/screen.css"}
-    {css media="print" filename="blueprint/print.css"}
+
     <!--[if lt IE 8]>{css media="screen, projection" filename="blueprint/ie.css"}<![endif]-->
     {* Adjust some default Blueprint CSS styles *}
     {css media="screen, projection" filename="blueprint/blueprint-adjust.css"}
@@ -76,6 +76,7 @@
     {css media="screen, projection" filename="settings.css"}
     
     {css media="print" filename="print.css"}
+    {css media="print" filename="print_custom.css"}
     {if $dateRangeLimit}
       {css media="screen, projection" filename="jslider/jslider.css"}
     {/if}
