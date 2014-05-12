@@ -436,7 +436,7 @@ class MetaLib
             $iCount = false;
             for ($k = 0; $k < $databaseCount; $k++) {
                 if ($iCount === false || $databases[$k]['count'] < $iCount) {
-                    if ($databases[$k]['cut'] >= $firstRecord) {
+                    if ($databases[$k]['cut'] > $firstRecord) {
                         $i = $k;
                         $iCount = $databases[$k]['count'];
                     }
