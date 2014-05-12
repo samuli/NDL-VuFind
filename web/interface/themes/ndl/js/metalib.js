@@ -229,4 +229,10 @@ function metalibInit(page)
     };
 }
 
-
+function metalibHomeInit()
+{
+    // Handle set change on Metalib/Home
+    $("#searchSets input").on("click", function() { 
+        $("#searchForm #searchForm_set").val($(this).val());
+    });
+}

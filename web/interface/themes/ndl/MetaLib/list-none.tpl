@@ -2,7 +2,6 @@
 
 
   <div class="no-hits content">
-    <div id="resultList" class="{if $sidebarOnLeft}sidebarOnLeft last{/if} grid_17">
     {if $noQuery}
       <div class="metalibError">
         <p class="error">{translate text='metalib_no_query'}</p>
@@ -26,7 +25,6 @@
          <p class="error">{translate text='nohit_parse_error'}</p>
       </div>
     {/if}
-    </div>
 
     {if $spellingSuggestions}
     <div class="correction">{translate text='nohit_spelling'}:<br/>
