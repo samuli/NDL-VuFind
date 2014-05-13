@@ -410,7 +410,7 @@ a.clear_input {
 .resultNoImage.formatvideo, .resultNoImage.formataudiovideo,
 .resultNoImage.formatsound, .resultNoImage.formataudio,
 .resultNoImage.formatother, .resultNoImage.formatreferenceentry,
-.resultNoImage.formatwebsite, .resultNoImage.formatpaikkarakennus {
+.resultNoImage.formatwebsite, .resultNoImage.formatpaikkarakennus, .resultNoImage.formatplace {
     background-image: url(../images/icons48px-03.png);
 }
 .resultNoImage.formatdocument,
@@ -465,6 +465,9 @@ a.clear_input {
 .resultNoImage.formatwebsite,
 .resultNoImage.formatpaikkarakennus {
     background-position: -17px -1632px;
+}
+.resultNoImage.formatplace {
+	background-position: -9px -2013px;	
 }
 
 /* Main: Search tools */
