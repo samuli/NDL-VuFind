@@ -107,19 +107,18 @@ function metalibSearch(step, set, saveHistory)
             }
             $(this).html(errMsg).addClass("error").addClass("fatalError");        
         } else {
+            // Cut away database statuses from content area
+            var setStatuses = $(this).find('#databaseStatuses').detach();
+            
+            // Remove old database statuses from sidefacets
+            $('#sidebarFacets .databaseStatusHolder').remove();
+            
+            // Append new database statuses after sidefacets
+            $('#sidebarFacets').append(setStatuses);
 
             if ($('ul.recordSet').length) {
                 metalibInitPagination();
-                metalibScrollToRecord();
-                
-                // Cut away database statuses from content area
-                var setStatuses = $(this).find('#databaseStatuses').detach();
-
-                // Remove old database statuses from sidefacets
-                $('#sidebarFacets .databaseStatusHolder').remove();
-
-                // Append new database statuses after sidefacets
-                $('#sidebarFacets').append(setStatuses);
+                metalibScrollToRecord();                
             } else {
                 contentHolder.addClass('no-hits');
                 $('.searchTerms').html(trNoHits);

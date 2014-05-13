@@ -48,8 +48,11 @@
   {/if}
 
 
+  {include file="MetaLib/database-statuses.tpl"}
+
     
   </div>
 
+  
 
 <!-- END of: MetaLib/list-none.tpl -->
