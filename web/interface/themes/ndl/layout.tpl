@@ -315,8 +315,10 @@
       </div>
 
     </div> {* End doc *}
-
-    {include file="piwik.tpl"}
+    {* MetaLib search results are tracked in MetaLib/list-list.tpl *}
+    {if !( ($module eq 'MetaLib') && ($action eq 'Search') )}
+       {include file="piwik.tpl"}
+    {/if}    
     {include file="AJAX/keepAlive.tpl"}
   </body>
   {if !$showTopSearchBox}

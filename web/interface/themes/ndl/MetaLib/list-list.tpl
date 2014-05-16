@@ -112,3 +112,4 @@
 
 {include file="Search/paging.tpl" position="Bottom"}
 
+{include file="piwik.tpl"}

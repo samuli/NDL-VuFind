@@ -80,6 +80,7 @@ class AJAX_MetaLib extends Action
 
         $displayQuery = $searchObject->displayQuery();
         $interface->assign('lookfor', $displayQuery);
+        $interface->assign('searchType', $searchObject->getSearchType());
 
         // Search MetaLib
         $template = null;
