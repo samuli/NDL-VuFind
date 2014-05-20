@@ -140,17 +140,17 @@ Voit esirajata haun valitsemalla pudotusvalikosta joko tietyn sektorin (museo, a
   <p>Esimerkki: etsitään tietueita, joissa esiintyy joko "economics Keynes" tai ainoastaan "Keynes":
   </p>
   <pre class="code">"economics Keynes" OR Keynes</pre>
-  <h3 title="NOT">NOT / -</h3>
-  <p><strong>NOT</strong>-operaattori poistaa hakutuloksista tietueet, joissa esiintyy kyselyssä <strong>NOT</strong>-operaattoria seuraava termi.
-  </p>
-  <p>Esimerkki: etsitään tietueita, joissa on termi "economics" mutta ei termiä "Keynes":
-  </p>
-  <pre class="code">economics NOT Keynes</pre>
-  <p>Huomio! NOT-operaattoria ei voi käyttää yksitermisissä kyselyissä.</p>
+  <h3 title="-">Yhdysmerkki (-)</h3>
+  <p>Yhdysmerkki (-) poistaa hakutuloksista tietueet, joissa esiintyy kyselyssä merkkiä seuraava termi.</p>
+  <p>Esimerkki: etsitään tietueita, joissa on termi "economics" mutta ei termiä "Keynes":</p>
+  <pre class="code">economics -Keynes</pre>
+  <p>Huomio! Yhdysmerkkiä ei voi käyttää yksitermisissä kyselyissä.</p>
   <p>Esimerkki: seuraava kysely ei tuota lainkaan tuloksia:</p>
-  <pre class="code">NOT economics</pre>
-  <p><strong>NOT</strong>-operaattorin voi korvata operaattorilla <strong>-</strong>.
-  </p>
+  <pre class="code">-economics</pre>
+  <p>Huomio! Jos jokin hakutermeistä alkaa yhdysmerkillä, saadaan se otettua mukaan kyselyyn käyttämällä kenoviivaa (\).</p>
+  <p>Esimerkki: etsitään kirjaa nimeltä <i>Da Vinci -koodi</i>:<p>
+  <pre class="code">Da Vinci \-koodi</pre>
+  <p>Huomio! <strong>NOT</strong>-operaattoria voidaan käyttää samaan tapaan yhdysmerkin kanssa. <strong>NOT</strong>-operaattori antaa kuitenkin yhdysmerkkiä enemmän hakutuloksia, joissa osassa saattaa esiintyä pois suljettava hakutermi.</p>
   <h3 title="Phrase searches">Fraasihaut</h3>
   <p>Tarkan fraasihaun voi tehdä kirjoittamalla hakusanat lainausmerkkeihin.</p>
   <p>Esimerkki: etsitään vain tietueita, joissa on termi "keskiajan historia", ei esimerkiksi "keskiajan kulttuurihistoria":

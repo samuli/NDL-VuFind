@@ -160,8 +160,8 @@
             <tr>
               <td class="copyTitle">{translate text="Most Recent Received Issues"}: </td>
               <td colspan="4">
-                {foreach from=$row.purchase_history item=row}
-                  {$row.issue|escape}<br>
+                {foreach from=$row.purchase_history item=data}
+                  {$data.issue|escape}<br>
                 {/foreach}
               </td>
             </tr>

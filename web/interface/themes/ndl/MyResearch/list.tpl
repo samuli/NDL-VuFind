@@ -32,7 +32,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
       </div>
       <div class="favoritesList last">
         {if $list && $list->id}
-          <h2 class="myResearchTitle">{$list->title|escape:"html"}</h2>
+          <h2 class="myResearchTitle">{if $list->title == 'My Favorites'}{translate text=$list->title}{else}{$list->title|escape:"html"}{/if}</h2>
         {else}
           <h2>{translate text='Your Favorites'}</h2>  
         {/if}
@@ -155,7 +155,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
             {foreach from=$listList item=listItem}
               <li>
                 {if $list && $listItem->id == $list->id}
-                  <div class="selected">{$listItem->title|escape:"html"}&nbsp;<span class="favoritesCount">({$listItem->cnt})</span>
+                  <div class="selected">{if $listItem->title == 'My Favorites'}{translate text=$listItem->title}{else}{$listItem->title|escape:"html"}{/if}&nbsp;<span class="favoritesCount">({$listItem->cnt})</span>
                     {if $listEditAllowed}
                       <div class="editList">
                         <a class="icon edit" title="{translate text="edit_list"}" href="{$url}/MyResearch/EditList/{$list->id|escape:"url"}"></a>
@@ -164,7 +164,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
                     {/if}
                   </div>
                 {else}
-                  <div class="listItem"><a href="{$url}/MyResearch/MyList/{$listItem->id|escape:"url"}">{$listItem->title|escape:"html"}</a>&nbsp;<span class="favoritesCount">({$listItem->cnt})</span></div>
+                  <div class="listItem"><a href="{$url}/MyResearch/MyList/{$listItem->id|escape:"url"}">{if $listItem->title == 'My Favorites'}{translate text=$listItem->title}{else}{$listItem->title|escape:"html"}{/if}</a>&nbsp;<span class="favoritesCount">({$listItem->cnt})</span></div>
                 {/if}
               </li>
             {/foreach}

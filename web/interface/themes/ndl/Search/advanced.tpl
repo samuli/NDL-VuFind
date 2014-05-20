@@ -250,7 +250,7 @@
     </div>
 </script>
 {/literal}
-{* Step 1: Define our search arrays so they are usuable in the javascript *}
+{* Step 1: Define our search arrays so they are usable in the javascript *}
 <script type="text/javascript">
 //<![CDATA[
     var searchFields = new Array();
@@ -267,6 +267,11 @@
     var deleteSearchGroupString = "{translate text="del_search"}";
     var searchMatch     = "{translate text="search_match"}";
     var searchFormId    = 'advSearchForm';
+    // Year Search start and scale
+    var startDate       = {$advSearchYearScale[0]|escape};
+    var scale1          = {$advSearchYearScale[1]|escape};
+    var scale2          = {$advSearchYearScale[2]|escape};
+    var scale3          = {$advSearchYearScale[3]|escape};
 //]]>
 </script>
 {* Step 2: Call the javascript to make use of the above *}

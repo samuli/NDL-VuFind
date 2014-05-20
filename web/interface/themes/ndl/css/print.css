@@ -1,18 +1,59 @@
 @charset "UTF-8";
 
-#headerRight, .searchbox, .breadcrumbs, .authorbox, .resulthead, #tabnav, .main .span-5, .result .span-4, .searchtools, .toolbar, .footer, .pagination, .offscreen, .checkbox {
-    display: none;
+body { background: white; font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; }
+
+/* to all container elements */
+.content { background: transparent; width: 100%; margin: 0; /* float: none; */ }
+
+/* Remove elements */
+#headerRight, .searchbox, .breadcrumbs, .authorbox, .resulthead, #tabnav, .main .span-5, .result .span-4, .searchtools, .footer, .pagination, .offscreen, .checkbox,
+#nav, #sidebar, #footer, #searchFormHeader, #skip-link, #saveLink, #addThis, #recordFeedback, 
+.breadcrumbinner a:first-child, .resultLinks, .exportMenu, .mailRecord,
+#exportMenu li:first-child, #exportMenu li:first-child + li, #qrcode, #qrcode .small,
+.module-Record #bXRecommendations,
+.module-MetaLib #resultSide, .module-MetaLib #resultSidebar,
+.module-PCI #resultSide, .module-PCI #resultSidebar, .tool.add.tagRecord,
+.module-MetaLib .tabNavi ul li:first-child, .module-MetaLib .tabNavi ul li:first-child + li,
+.module-PCI .tabNavi ul li:first-child, .module-PCI .tabNavi ul li:last-child,
+.module-Search .tabNavi ul li:first-child + li, .module-Search .tabNavi ul li:last-child,
+.resultOptions, .resultTerms, .paginationMove, .openurls, .coverDiv, .savedLists,
+#sidebarFacets, .resultPagination, .resultSearchTools, .moreDataLink, .noAvailabilityInfo {
+    display:none;
 }
 
-.main .span-18 {
-    width: 930px;
-}
+/* URLs will be written out, links show in blue and lightgrey in B&W */
+a:link { font-weight: bold; text-decoration: none; color: #0066cc; }
+/* Links are long and relative locally so enabling this won't be very practical
+a:link:after { content: " (" attr(href) ") "; }
+*/
 
-.result .span-9 {
-    width: 810px;
-    margin-right: 0;
-}
+/* Misc. positioning, mainly list and record views */
+#logo { display: block; text-align: center; }
+.drop { border: 15px solid #eeeeee; border-bottom-width: 70px; height: 0; }
+#headerBottom, { margin-top: 1em; }
+#resultMain { padding-top: 30px; }
+#resultSide { width: 50%; float: left; }
+#resultSide + div { width: 50%; float: left; padding-bottom: 5em; }
+#resultSide + div + div { clear: both; padding-left: 50%; width: 50%; }
 
-a:link:after, a:visited:after {
-    content: "";
-}
+.coverImages { text-align: center; }
+#resultToolbar ul, .similar, #dyntabnav ul, .tabNavi ul, ul.recordSet { list-style-type: none; }
+#resultSide ul, .similar, .tabNavi ul, #dyntabnav ul, ul.recordSet { padding-left: 0; }
+.breadcrumbs, .module-Search .result { margin-top: 1em; }
+.recordSet > .result { margin-bottom: 1em; }
+
+h1.recordTitle, .result.recordId, .result.recordId h4 { margin-top: 0; }
+
+.webResource, pre.xml { word-break: break-all; }
+.webResource th { word-break: normal; }
+.citation { text-align: left; }
+.citation th { padding-right: 2em; }
+
+.recordNumber { font-weight: bold; font-size: 1.5em; }
+
+#recordProvidedBy { margin-top: 5em; text-align: center; }
+#recordProvidedBy div { font-weight: bold; }
+
+/* Comments to their own page for better printing options */
+#dyntabnav { page-break-before: always; }
+

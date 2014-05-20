@@ -132,7 +132,7 @@
         <div class="subjectLine">
           {assign var=subject value=""}
           {foreach from=$field item=subfield name=subloop}
-            {if !$smarty.foreach.subloop.first} &gt; {/if}
+            {if !$smarty.foreach.subloop.first} &#8594; {/if}
             {if $subject}
               {assign var=subject value="$subject $subfield"}
             {else}

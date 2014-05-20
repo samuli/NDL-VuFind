@@ -250,7 +250,7 @@ class Save extends Bulk
             $list->id = $_REQUEST['list'];
         } else {
             $list->user_id = $this->user->id;
-            $list->title = translate("My Favorites");
+            $list->title = "My Favorites";
             $list->insert();
         }
 

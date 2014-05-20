@@ -41,7 +41,7 @@
   {if $summThumb}
       <div class="resultImage">
           <a class="title fancybox fancybox.image" data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" href="{$summThumb|escape}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
-              <img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" />
+              <img src="{$summThumb|escape}" class="summcover" alt="{translate text='Open Cover Image'}" />
           </a>
       </div>
   {/if}

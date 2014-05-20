@@ -32,7 +32,17 @@ $(document).ready(function() {
                                                    +'<div class="fancyAuthorAndDates">'+author+dot+dates+'</div>'
                                                    +'<div class="fancyBuilding">'+building+'</div>';
                                   }    
-                                               
+                                  // for screen readers
+                                  if (window.location.href.toLowerCase().indexOf("&lng=en-gb") > -1) {
+                                      var screenReaderMsg = "Image opened";
+                                  }
+                                  else if (window.location.href.toLowerCase().indexOf("&lng=sv") > -1) {
+                                      var screenReaderMsg = "Bilden öppnas";
+                                  }
+                                  else {
+                                      var screenReaderMsg = "Kuva avattu";
+                                  }
+                                  $('.fancybox-wrap').prepend('<span class="offscreen">'+screenReaderMsg+'</span>');
                               },
                               helpers : {
                                   title: {type: 'inside'}                            

@@ -30,7 +30,7 @@ _paq.push(['setCustomVariable', 2, "RecordData", "{$id|escape:"html"}|{$recordAu
 _paq.push(['setCustomVariable', 3, "RecordInstitution", "{$coreInstitutions.0|escape:"html"}", "page"]);
     {/if}
 _paq.push(['trackPageView']);
-  {elseif (($module eq 'Search' and ($action eq 'Results' or $action eq 'DualResults')) or (($module eq 'MetaLib' or $module eq 'PCI') and $action eq 'Search'))}
+  {elseif (($module eq 'Search' and ($action eq 'Results' or $action eq 'DualResults')) or ($module eq 'AJAX' and $action eq 'AJAX_MetaLib') or ($module eq 'PCI' and $action eq 'Search'))}
     {if $filterList}
 _paq.push(['setCustomVariable', 1, "Facets", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}|{$filter.display|escape:"html"}\t{/foreach}{/foreach}", "page"]);
 _paq.push(['setCustomVariable', 2, "FacetTypes", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}\t{/foreach}{/foreach}", "page"]);

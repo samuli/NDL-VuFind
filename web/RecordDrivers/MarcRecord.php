@@ -1344,7 +1344,7 @@ class MarcRecord extends IndexRecord
             $type = $url->getSubfield('q');
             if ($type) {
                 $type = $type->getData();
-                if ("IMAGE" == $type) {
+                if ("IMAGE" == $type || "image/jpeg" == $type) {
                     $address = $url->getSubfield('u');
                     if ($address) {
                         $address = $address->getData();
@@ -1400,7 +1400,7 @@ class MarcRecord extends IndexRecord
             $type = $url->getSubfield('q');
             if ($type) {
                 $type = $type->getData();
-                if ("IMAGE" == $type) {
+                if ("IMAGE" == $type || "image/jpeg" == $type) {
                     $address = $url->getSubfield('u');
                     if ($address) {
                         return $configArray['Site']['url'] . '/thumbnail.php?id=' .
@@ -1429,7 +1429,7 @@ class MarcRecord extends IndexRecord
             $type = $url->getSubfield('q');
             if ($type) {
                 $type = $type->getData();
-                if ("IMAGE" == $type) {
+                if ("IMAGE" == $type || "image/jpeg" == $type) {
                     $address = $url->getSubfield('u');
                     if ($address) {
                         $address = $address->getData();

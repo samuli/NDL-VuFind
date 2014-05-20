@@ -28,7 +28,7 @@
 
 require_once 'reminder_task.php';
 require_once 'util.inc.php';
-require_once 'RecordDrivers/Factory.php';  
+require_once 'RecordDrivers/Factory.php';
 require_once 'services/MyResearch/lib/Search.php';
 require_once 'services/MyResearch/lib/User.php';
 require_once 'sys/ConfigArray.php';
@@ -40,28 +40,25 @@ require_once 'sys/VuFindDate.php';
 
 /**
  * Scheduled Alerts Sender
- * 
+ *
  * @category VuFind
  * @package  Scheduled_Alerts
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
- * 
+ *
  * Takes two parameters on command line:
- * 
+ *
  * php scheduled_alerts.php [main directory] [email]
- * 
+ *
  *   main directory   The main VuFind directory. Each web directory must reside under this (default: ..)
- *   email            Email address for error reporting 
- * 
+ *   email            Email address for error reporting
+ *
  */
 class ScheduledAlerts extends ReminderTask
 {
     /**
      * Send scheduled alerts
-     *
-     * @param string $mainDir         The main VuFind directory. Each web directory must reside under this (default: ..)
-     * @param string $domainModelBase Main domain name when using subdomains for different web directories.
      *
      * @return void
      */
@@ -70,11 +67,11 @@ class ScheduledAlerts extends ReminderTask
         global $configArray;
         global $interface;
         global $translator;
-        
+
         $iso8601 = 'Y-m-d\TH:i:s\Z';
-        
+
         ini_set('display_errors', true);
-        
+
         $configArray = $mainConfig = readConfig();
         $datasourceConfig = getExtraConfigArray('datasources');
         $siteLocal = $configArray['Site']['local'];
@@ -83,16 +80,16 @@ class ScheduledAlerts extends ReminderTask
         date_default_timezone_set($configArray['Site']['timezone']);
 
         $this->msg('Sending scheduled alerts');
-        
+
         // Setup Local Database Connection
         ConnectionManager::connectToDatabase();
-        
+
         // Initialize Mailer
         $mailer = new VuFindMailer();
-        
+
         // Find all scheduled alerts
         $sql = 'SELECT * FROM "search" WHERE "schedule" > 0 ORDER BY user_id';
-        
+
         $s =  new SearchEntry();
         $s->query($sql);
         $this->msg('Processing ' . $s->N . ' searches');
@@ -104,7 +101,7 @@ class ScheduledAlerts extends ReminderTask
             $lastTime = new DateTime($s->last_executed);
             if ($s->schedule == 1) {
                 // Daily
-                if ($todayTime->format('Y-m-d') == $lastTime->format('Y-m-d')) { 
+                if ($todayTime->format('Y-m-d') == $lastTime->format('Y-m-d')) {
                     $this->msg('Bypassing search ' . $s->id . ': previous execution too recent (daily, ' . $lastTime->format($iso8601) . ')');
                     continue;
                 }
@@ -119,20 +116,20 @@ class ScheduledAlerts extends ReminderTask
                 $this->msg('Search ' . $s->id . ': unknown schedule: ' . $s->schedule);
                 continue;
             }
-            
+
             if ($user === false || $s->user_id != $user->id) {
                 $user = User::staticGet($s->user_id);
             }
-            
+
             if (!$user->email || trim($user->email) == '') {
                 $this->msg('User ' . $user->username . ' does not have an email address, bypassing alert ' . $s->id);
                 continue;
             }
-            
+
             $userInstitution = reset(explode(':', $user->username, 2));
             if (!$institution || $institution != $userInstitution) {
                 $institution = $userInstitution;
-                
+
                 if (!isset($datasourceConfig[$institution])) {
                     foreach ($datasourceConfig as $code => $values) {
                         if (isset($values['institution']) && strcasecmp($values['institution'], $institution) == 0) {
@@ -145,7 +142,7 @@ class ScheduledAlerts extends ReminderTask
                 if (!$configArray = $this->readInstitutionConfig($institution)) {
                     continue;
                 }
-                
+
                 $configArray['Site']['url'] = $s->schedule_base_url;
 
 
@@ -154,26 +151,31 @@ class ScheduledAlerts extends ReminderTask
                 $validLanguages = array_keys($configArray['Languages']);
                 $dateFormat = new VuFindDate();
             }
-            
+
             $language = $user->language;
             if (!in_array($user->language, $validLanguages)) {
                 $language = $configArray['Site']['language'];
             }
-        
+
             $translator = new I18N_Translator(
                 array($configArray['Site']['local'] . '/lang', $configArray['Site']['local'] . '/lang_local'),
                 $language,
                 $configArray['System']['debug']
             );
             $interface->setLanguage($language);
-            
+
             $minSO = unserialize($s->search_object);
+            // Check minified search object type
             $searchObject = SearchObjectFactory::deminify($minSO);
             if (!($searchObject instanceof SearchObject_Solr)) {
                 $this->msg('Search ' . $s->id . ': search object type not supported');
                 continue;
             }
-            $searchObject->setSort('last_indexed desc');
+            // Create a new search object to avoid cached defaults for e.g.
+            // hidden filters.
+            $searchObject = SearchObjectFactory::initSearchObject();
+            $searchObject->deminify($minSO);
+            $searchObject->setSort('first_indexed desc');
             $searchTime = time();
             $searchDate = gmdate($iso8601, time());
             $searchObject->setLimit(50);
@@ -187,20 +189,20 @@ class ScheduledAlerts extends ReminderTask
                 $this->msg('No results found for search ' . $s->id);
                 continue;
             }
-            $newestRecordDate = date($iso8601, strtotime($results['response']['docs'][0]['last_indexed']));
+            $newestRecordDate = date($iso8601, strtotime($results['response']['docs'][0]['first_indexed']));
             $lastExecutionDate = $lastTime->format($iso8601);
-            if ($newestRecordDate < $lastExecutionDate) { 
+            if ($newestRecordDate < $lastExecutionDate) {
                 $this->msg('No new results for search ' . $s->id . ": $newestRecordDate < $lastExecutionDate");
             } else {
                 $this->msg('New results for search ' . $s->id . ": $newestRecordDate >= $lastExecutionDate");
-                
+
                 $interface->assign('summary', $searchObject->getResultSummary());
                 $interface->assign('searchDate', $dateFormat->convertToDisplayDate("U", floor($searchTime)));
                 $interface->assign('lastSearchDate', $dateFormat->convertToDisplayDate("U", floor($lastTime->getTimestamp())));
-        
+
                 $records = array();
                 foreach ($results['response']['docs'] as &$doc) {
-                    $docDate = date($iso8601, strtotime($doc['last_indexed']));
+                    $docDate = date($iso8601, strtotime($doc['first_indexed']));
                     if ($docDate < $lastExecutionDate) {
                         break;
                     }
@@ -213,7 +215,7 @@ class ScheduledAlerts extends ReminderTask
                 $unsubscribeUrl = $configArray['Site']['url'] . '/MyResearch/Unsubscribe?' . http_build_query($params);
 
                 $interface->assign(
-                    'info', 
+                    'info',
                     array(
                         'time' =>  $dateFormat->convertToDisplayDate("U", floor($searchObject->getStartTime())),
                         'url'  => $searchObject->renderSearchUrl(),
@@ -228,13 +230,13 @@ class ScheduledAlerts extends ReminderTask
                         'unsubscribeUrl' => $unsubscribeUrl
                     )
                 );
-                
-                
+
+
                 $searchObject->close();
-                
+
                 // Load template
                 $message = $interface->fetch('MyResearch/alert-email.tpl');
-                
+
                 if (strstr($message, 'Warning: Smarty error:')) {
                     $this->msg("Message template processing failed: $message");
                     continue;
@@ -245,28 +247,30 @@ class ScheduledAlerts extends ReminderTask
                     continue;
                 }
             }
-            
+
             // Update search date
             $s->changeLastExecuted($searchDate);
         }
 
-        $this->reportErrors();        
+        $this->reportErrors();
         $this->msg('Scheduled alerts execution completed');
     }
 
     /**
      * Output a message with a timestamp
-     * 
+     *
      * @param string $msg Message
-     * 
+     *
      * @return void
      */
     protected function msg($msg)
     {
-        echo date('Y-m-d H:i:s') . ' [' . getmypid() . "] $msg\n"; 
+        echo date('Y-m-d H:i:s') . ' [' . getmypid() . "] $msg\n";
     }
 }
 
-$alerts = new ScheduledAlerts( isset($argv[1]) ? $argv[1] : '..', 
-                               isset($argv[2]) ? $argv[2] : false);
+$alerts = new ScheduledAlerts(
+    isset($argv[1]) ? $argv[1] : '..',
+    isset($argv[2]) ? $argv[2] : false
+);
 $alerts->send();

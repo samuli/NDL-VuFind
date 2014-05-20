@@ -416,7 +416,7 @@ class User extends DB_DataObject
         $list = new User_list();
         $list->user_id = $this->id;
         if (!$list->find(true)) {
-            $list->title = translate("My Favorites");
+            $list->title = "My Favorites";
             if (!$list->find(true)) {
                 $list->insert();
             }

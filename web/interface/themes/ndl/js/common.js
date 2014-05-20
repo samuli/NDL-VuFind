@@ -50,23 +50,6 @@ $(document).ready(function(){
    // Init placeholder (for archaic browsers)
    $.fn.placeholder();
     
-    // Assign click event to MetaLib tab:
-    $('#metalibTab').click(function(e) {    
-        var obj = $(this);
-        var src = path + "/interface/themes/ndl/images/ajax-loader.gif";        
-
-        // Preload and display background loader animation before starting metalib search
-        $('<img/>').attr('src', src).load(function() {
-            $(this).remove(); 
-            obj.addClass("tabLoader");
-            window.location = obj.attr("href");
-        });
-        
-        // Cancel default link navigation
-        e.preventDefault();
-    });
-
-
     // assign click event to "email search" links
     $('a.mailSearch').click(function(e) {
         var id = this.id.substr('mailSearch'.length);
