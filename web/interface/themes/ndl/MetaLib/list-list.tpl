@@ -58,7 +58,7 @@
             {if $record.Author}
             {translate text='by'}
             {foreach from=$record.Author item=author name="loop"}
-              <a href="{$url}/MetaLib/Search?type=Author&amp;lookfor={$author|unhighlight|escape:"url"}">{$author|highlight}</a>{if !$smarty.foreach.loop.last},{/if} 
+              <a href="{$url}/MetaLib/Search?lookfor={$author|unhighlight|escape:"url"}">{$author|highlight}</a>{if !$smarty.foreach.loop.last},{/if} 
             {/foreach}
             <br/>
             {/if}
@@ -112,3 +112,4 @@
 
 {include file="Search/paging.tpl" position="Bottom"}
 
+{include file="piwik.tpl"}

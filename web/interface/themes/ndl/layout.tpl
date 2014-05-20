@@ -18,7 +18,6 @@
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=9"/>
     <meta name="format-detection" content="telephone=no" />
     {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
@@ -316,8 +315,10 @@
       </div>
 
     </div> {* End doc *}
-
-    {include file="piwik.tpl"}
+    {* MetaLib search results are tracked in MetaLib/list-list.tpl *}
+    {if !( ($module eq 'MetaLib') && ($action eq 'Search') )}
+       {include file="piwik.tpl"}
+    {/if}    
     {include file="AJAX/keepAlive.tpl"}
   </body>
   {if !$showTopSearchBox}
