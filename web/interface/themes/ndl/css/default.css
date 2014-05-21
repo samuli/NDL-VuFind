@@ -2131,6 +2131,10 @@ clear:both;
     width:80%;
     max-width: 200px;
 }
+.libraryLogin input[type="reset"] {
+    display: none;
+}
+
 .loginForm .shibText h3 {
     background: #edf3f6;
     color: #464646;

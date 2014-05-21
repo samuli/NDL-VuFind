@@ -120,7 +120,39 @@ function displayLightboxFeedback($form, message, type) {
 
 function displayFormError($form, error) {
     $form.parent().find('.error').remove();
-    $form.prepend('<div class="error">' + error + '</div>');
+
+    var type = $.type(error);
+    var msg = type == 'string' ? error : error.msg;
+
+    // First login with a library card that is connected to an existing user account.
+    // Prompt for confirmation before logging in and creating a new ILS user account. 
+    if (type == 'object' && error['type'] == 'confirm_create_account') {
+        $('<input>').attr('type','hidden').attr('name', 'confirm').appendTo($form);
+
+        var submitBtn = $form.find('input[type=\'submit\']');
+        submitBtn.val(trConfirmCreateAccountBtn);
+
+        var abortBtn = $form.find('input[type=\'reset\']');
+        abortBtn.show();
+        abortBtn.on('click', function(e) {
+            $form.parent().find('.error').remove();            
+            $form.find('input[name=\'confirm\']').remove();
+            $(this).hide();
+        });
+
+        var accounts = [];
+        $.each(JSON.parse(error['accounts']), function (ind, account) {
+            var str = account['email'];
+            if (account['authMethod'] !== undefined) {
+                str += ' (' + account['authMethod'] + ')';
+            }
+            accounts.push('<li>' + str + '</li>');
+        });
+        
+        msg = msg.replace('{1}', '<ul>' + accounts.join('') + '</ul>');
+    }
+
+    $form.prepend('<div class="error">' + msg + '</div>');
 }
 
 function displayFormInfo($form, msg) {
@@ -142,7 +174,7 @@ function hideLoadingGraphic($form) {
  * to register the form in the dialog for ajax submission.
  */
 function lightboxDocumentReady() {
-    registerAjaxLogin();
+    registerAjaxLogin($('#modalDialog'), true);
     registerAjaxCart();
     registerAjaxCartExport();
     registerAjaxSaveRecord();
@@ -161,10 +193,14 @@ function lightboxDocumentReady() {
     $('.ui-dialog .mainFocus').focus();
 }
 
-function registerAjaxLogin() {
-    $('#modalDialog form[name="loginForm"]').unbind('submit').submit(function(){
+// NOTE: this function is used both in lightbox and on /MyResearch/Home
+function registerAjaxLogin(container, loginFromLightbox) {
+    container.find('form[name="loginForm"]').unbind('submit').submit(function(){
         if (!$(this).valid()) { return false; }
+
+        $(this).find('.error').remove();
         var form = this;
+
         $.ajax({
             url: path + '/AJAX/JSON?method=getSalt',
             dataType: 'json',
@@ -182,12 +218,17 @@ function registerAjaxLogin() {
                     // hex encode the encrypted password
                     password = hexEncode(password);
 
+                    data = {ajax_username:username, ajax_password:password};
+                    if (form.confirm) {
+                        data['confirm'] = 1;
+                    }
+
                     // login via ajax
                     $.ajax({
                         type: 'POST',
                         url: path + '/AJAX/JSON?method=login',
                         dataType: 'json',
-                        data: {ajax_username:username, ajax_password:password},
+                        data: data,
                         success: function(response) {
                             if (response.status == 'OK') {
                                 // Hide "log in" options and show "log out" options:
@@ -207,11 +248,17 @@ function registerAjaxLogin() {
                                     refreshCommentList(recordId);
                                 });
 
-                                // if there is a followup action, then it should be processed
-                                __dialogHandle.processFollowup = true;
-
-                                // and we close the dialog
-                                hideLightbox();
+                                if (loginFromLightbox) {
+                                    // if there is a followup action, then it should be processed
+                                    __dialogHandle.processFollowup = true;
+                                
+                                    // and we close the dialog
+                                    hideLightbox();
+                                } else {
+                                    var followupModule = $(form).find("input[name='followupModule']").val() || 'MyResearch';
+                                    var followupAction = $(form).find("input[name='followupAction']").val() || 'Home';
+                                    window.location = path + '/' + followupModule + '/' + followupAction;
+                                }
                             } else {
                                 displayFormError($(form), response.data);
                             }
