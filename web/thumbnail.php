@@ -70,7 +70,7 @@ if (!sanitizeParameters()) {
 /* END OF INLINE CODE */
 
 /**
- * Sanitize incoming parameters. File name is not sanitized here. 
+ * Sanitize incoming parameters. File name is not sanitized here.
  *
  * @return  bool       True if parameters ok, false on failure.
  */
@@ -104,8 +104,8 @@ function fetchFromRecord($id, $size, $index = null)
     }
 
     $localFile = 'images/covers/' . $size . '/' . urlencode($id) . (isset($index) ? "_$index" : '') . '.jpg';
-    $maxAge = isset($configArray['Content']['covercachetime']) ? $configArray['Content']['covercachetime'] : 1440; 
-    if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60 && false) {
+    $maxAge = isset($configArray['Content']['covercachetime']) ? $configArray['Content']['covercachetime'] : 1440;
+    if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
         // Load local cache if available
         header('Content-type: image/jpeg');
         echo readfile($localFile);
@@ -118,14 +118,14 @@ function fetchFromRecord($id, $size, $index = null)
             return false;
         }
         $recordDriver = RecordDriverFactory::initRecordDriver($record);
-        
+
         if (!isset($index)) {
             $url = $recordDriver->getThumbnailURL($size);
         } else {
             $images = array_keys($recordDriver->getAllImages($size));
             if (isset($images[$index])) {
                 $url = $images[$index];
-            } 
+            }
         }
         if ($url) {
             return processImageURL($url, $localFile, $size);
@@ -216,7 +216,7 @@ function dieWithDefaultFailImage()
 function processImageURL($url, $localFile, $size, $cache = true)
 {
     global $configArray;
-    
+
     if ($image = @file_get_contents(trim($url))) {
         // Figure out file paths -- $tempFile will be used to store the downloaded
         // image for analysis.  $finalFile will be used for long-term storage if
@@ -237,31 +237,31 @@ function processImageURL($url, $localFile, $size, $cache = true)
             @unlink($tempFile);
             return false;
         }
-                
+
         // Convert to JPEG and resize the image if necessary.
-        
+
         // Resize thumbnail if we have dimensions
         if ($_GET['size'] == 'small'
-            && isset($configArray['Content']['coverwidth']) && isset($configArray['Content']['coverheight']) 
+            && isset($configArray['Content']['coverwidth']) && isset($configArray['Content']['coverheight'])
         ) {
             // We no longer need the temp file:
             @unlink($tempFile);
-    
+
             // We can't proceed if we don't have image conversion functions:
             if (!is_callable('imagecreatefromstring')) {
                 return false;
             }
-    
+
             // Try to create a GD image and rewrite as JPEG, fail if we can't:
             if (!($imageGD = @imagecreatefromstring($image))) {
                 return false;
             }
-        
+
             $reqWidth = $configArray['Content']['coverwidth'];
             $reqHeight = $configArray['Content']['coverheight'];
-            $maxHeight = isset($configArray['Content']['covermaxheight']) 
+            $maxHeight = isset($configArray['Content']['covermaxheight'])
                 ? $configArray['Content']['covermaxheight'] : $configArray['Content']['coverheight'];
-            
+
             if ($height > $maxHeight && $height > $width) {
                 $reqHeight = $reqWidth * $height / $width;
                 if ($reqHeight > $maxHeight) {
@@ -274,16 +274,16 @@ function processImageURL($url, $localFile, $size, $cache = true)
                 $background = imagecolorallocate(
                     $imageGDResized, hexdec(substr($bg, 0, 2)),
                     hexdec(substr($bg, 2, 2)), hexdec(substr($bg, 4, 2))
-                ); 
+                );
             } else {
                 $background = imagecolorallocate($imageGDResized, 255, 255, 255);
             }
             imagefill($imageGDResized, 0, 0, $background);
-        
+
             // If both dimensions are smaller than the new image, just copy to center. Otherwise resample to fit if necessary.
             if ($width < $reqWidth && $height < $reqHeight) {
-                $imgX = floor(($reqWidth - $width) / 2);                    
-                $imgY = 0; // no centering here.. floor(($reqHeight - $height) / 2);                    
+                $imgX = floor(($reqWidth - $width) / 2);
+                $imgY = 0; // no centering here.. floor(($reqHeight - $height) / 2);
                 imagecopy($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $width, $height);
                 if (!@imagejpeg($imageGDResized, $finalFile)) {
                     return false;
@@ -300,41 +300,41 @@ function processImageURL($url, $localFile, $size, $cache = true)
                     $newHeight = round($newWidth * ($height / $width));
                     $imgX = 0;
                     $imgY = 0;
-                    imagecopyresampled($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $newWidth, $newHeight, $width, $height);                    
+                    imagecopyresampled($imageGDResized, $imageGD, $imgX, $imgY, 0, 0, $newWidth, $newHeight, $width, $height);
                 }
                 if (!@imagejpeg($imageGDResized, $finalFile)) {
                     return false;
-                }                
+                }
             } else {
                 if (!@imagejpeg($imageGD, $finalFile)) {
                     return false;
                 }
             }
-        } else {            
+        } else {
             switch ($size) {
-            case 'small': 
+            case 'small':
                 $maxWidth = 200;
-                $maxHeight = 400; 
+                $maxHeight = 400;
                 break;
-            case 'medium': 
-                $maxWidth = 350; $maxHeight = 250; 
+            case 'medium':
+                $maxWidth = 350; $maxHeight = 250;
                 break;
-            default: $maxWidth = $maxHeight = 2048; 
+            default: $maxWidth = $maxHeight = 2048;
             }
             if ($type != IMAGETYPE_JPEG || $width > $maxWidth || $height > $maxHeight) {
                 // We no longer need the temp file:
                 @unlink($tempFile);
-        
+
                 // We can't proceed if we don't have image conversion functions:
                 if (!is_callable('imagecreatefromstring')) {
                     return false;
                 }
-        
+
                 // Try to create a GD image and rewrite as JPEG, fail if we can't:
                 if (!($imageGD = @imagecreatefromstring($image))) {
                     return false;
                 }
-                
+
                 $ratio = $width / $height;
                 if ($width > $height || $size == 'small') {
                     $newWidth = $maxWidth;
@@ -344,7 +344,7 @@ function processImageURL($url, $localFile, $size, $cache = true)
                     $newWidth = $newHeight * $ratio;
                 }
                 $imageGDResized = imagecreatetruecolor($newWidth, $newHeight);
-                imagecopyresampled($imageGDResized, $imageGD, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);            
+                imagecopyresampled($imageGDResized, $imageGD, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
                 if (!@imagejpeg($imageGDResized, $finalFile)) {
                     return false;
                 }
