@@ -30,6 +30,8 @@ $(document).ready(function(){
     initClearable();
     
     initJumpMenus();
+    
+    initBodyClassSwitcher();
 
     // attach click event to the search help links
     /*
@@ -597,3 +599,27 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed, fixed
 
 }
 
+function initBodyClassSwitcher() {
+    switchBodyClass();
+    
+    $(window).resize(function() {
+        switchBodyClass();
+    });
+}
+
+function switchBodyClass() {
+    var w = $('.content').width();
+    if (!isNaN(w)) {
+        if (w == '480') {
+            $('body').removeClass('layout720').removeClass('layout960')
+                .addClass('layout480');
+        } else if (w == '720') {
+            $('body').removeClass('layout480').removeClass('layout960')
+                .addClass('layout720');
+        } else if (w == '960') {
+            $('body').removeClass('layout480').removeClass('layout720')
+                .addClass('layout960');
+        }
+    }
+    
+}
