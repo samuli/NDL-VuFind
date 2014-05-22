@@ -124,7 +124,13 @@ class JSON extends Action
         // Authenticate the user:
         $user = UserAccount::login();
         if (PEAR::isError($user)) {
-            return $this->output(translate($user->getMessage()), JSON::STATUS_ERROR);
+            $msgType = $user->getMessage();
+            $msg = translate($msgType);
+            if ($user->getCode() == ILSAuthentication::ERROR_CONFIRM_CREATE_ACCOUNT) {
+                return $this->output(array('msg' => $msg, 'type' => $msgType, 'accounts' => $user->getUserInfo()), JSON::STATUS_ERROR);
+            } else {
+                return $this->output($msg, JSON::STATUS_ERROR);
+            }
         }
         
         return $this->output(true, JSON::STATUS_OK);
@@ -351,11 +357,16 @@ class JSON extends Action
                 if ($data) {
                     // if this item was saved, add it to the list of saved items.
                     foreach ($data as $list) {
+                        if ($list->list_title == 'My Favorites') {
+                            $listTitle = translate($list->list_title);
+                        } else {
+                            $listTitle = $list->list_title;
+                        }
                         $result[] = array(
                             'record_id' => $id,
                             'resource_id' => $list->id,
                             'list_id' => $list->list_id,
-                            'list_title' => $list->list_title
+                            'list_title' => $listTitle
                         );
                     }
                 }
@@ -973,7 +984,7 @@ class JSON extends Action
         header('Content-type: application/javascript');
         header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        $output = array('data'=>$data,'status'=>$status);
+        $output = array('data'=>$data,'status'=>$status);        
         echo json_encode($output);
         exit;
     }

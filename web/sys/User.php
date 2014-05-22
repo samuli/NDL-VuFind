@@ -60,7 +60,7 @@ class UserAccount
     }
 
     /**
-     * Checks whether the user is authorized to access 
+     * Checks whether the user is authorized to access
      * restricted resources.
      *
      * @return bool Is the user authorized
@@ -69,31 +69,54 @@ class UserAccount
     public static function isAuthorized()
     {
         global $configArray;
-        
-        if (isset($_SESSION['authMethod']) && isset($configArray['Authorization']['authentication_methods'])) {
-            if (in_array($_SESSION['authMethod'], $configArray['Authorization']['authentication_methods'])) {
-                return true;
-            }
+
+        if (isset($_SESSION['userAuthorized']) && $_SESSION['userAuthorized']) {
+            return true;
         }
-        
+
         if (isset($configArray['Authorization']['ip']) && $configArray['Authorization']['ip']) {
             if (UserAccount::isInIpRange()) {
                 return true;
             }
         }
-        
+
+        if (isset($_SESSION['authMethod']) && isset($configArray['Authorization']['authentication_methods'])) {
+            if (in_array($_SESSION['authMethod'], $configArray['Authorization']['authentication_methods'])) {
+                if ($_SESSION['authMethod'] == 'ILS') {
+                    if (!isset($_SESSION['userAuthorized'])) {
+                        // Check ILS-based authorization
+                        $patron = UserAccount::catalogLogin();
+                        if ($patron !== false) {
+                            $catalog = ConnectionManager::connectToCatalog();
+                            if ($catalog->checkFunction('getPatronAuthorizationStatus')) {
+                                $status = $catalog->getPatronAuthorizationStatus($patron);
+                                if (!PEAR::isError($status)) {
+                                    $_SESSION['userAuthorized'] = $status;
+                                    if ($status) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
     /**
      * Check if user's IP address is in the known IP addresses
-     * 
+     *
      * @return boolean Whether the IP address is known
      */
     public static function isInIpRange()
     {
         global $configArray;
-        
+
         if (!isset($configArray['IP_Addresses'])) {
             return false;
         }
@@ -122,7 +145,7 @@ class UserAccount
         }
         return false;
     }
-    
+
     /**
      * Updates the user information in the session.
      *
@@ -189,8 +212,12 @@ class UserAccount
     {
         global $user;
 
+        if (!$user || !$user->cat_username) {
+            return false;
+        }
+
         $catalog = ConnectionManager::connectToCatalog();
-        if ($catalog && $catalog->status && $user && $user->cat_username) {
+        if ($catalog && $catalog->status) {
             $patron = $catalog->patronLogin(
                 $user->cat_username, $user->cat_password
             );
@@ -236,11 +263,11 @@ class UserAccount
 
     /**
      * Activate a catalog account (no checks performed)
-     * 
+     *
      * @param string $username    User ID
      * @param string $password    Password
      * @param string $homeLibrary Home Library
-     * 
+     *
      * @return void
      */
     public static function activateCatalogAccount($username, $password, $homeLibrary)
@@ -256,15 +283,15 @@ class UserAccount
 
     /**
      * Activate a catalog account (no checks performed)
-     * 
+     *
      * @param string $id Account ID
-     * 
+     *
      * @return void
      */
     public static function activateCatalogAccountID($id)
     {
         global $user;
-        
+
         $account = new User_account();
         $account->id = $id;
         $account->user_id = $user->id;
@@ -276,13 +303,13 @@ class UserAccount
             self::updateSession($user);
         }
     }
-    
+
     /**
      * Normalize IP address to numeric IPv6 address
-     * 
+     *
      * @param string  $ip  IP Address
      * @param boolean $end Whether to make this and "end of range" address
-     * 
+     *
      * @return number
      */
     protected static function normalizeIp($ip, $end = false)
@@ -292,7 +319,7 @@ class UserAccount
             while (count($addr) < 4) {
                 $addr[] = $end ? 255 : 0;
             }
-             
+
             $ip = '::' . implode('.', array_map('intval', $addr));
         } else {
             $ip = str_replace('::', ':' . str_repeat('0:', 8 - substr_count($ip, ':')), $ip);
@@ -308,9 +335,9 @@ class UserAccount
 
     /**
      * Verify that the current catalog account is in the account list
-     * 
+     *
      * @param object $user User
-     * 
+     *
      * @return void
      */
     protected static function verifyAccountInList($user)
@@ -332,9 +359,9 @@ class UserAccount
             $account->home_library = $user->home_library;
             $account->created = date('Y-m-d h:i:s');
             $account->insert();
-        } 
+        }
     }
-    
+
 }
 
 ?>

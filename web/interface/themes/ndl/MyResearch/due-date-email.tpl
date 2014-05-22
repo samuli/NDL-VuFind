@@ -10,6 +10,8 @@
 {translate text="due_date_email_link_title"}
 {$url}/MyResearch/CheckedOut
 
+{translate text="Unsubscribe description"}: 
+{$unsubscribeUrl}
 
 
 

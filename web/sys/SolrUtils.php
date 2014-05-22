@@ -153,7 +153,7 @@ class VuFindSolrUtils
      * query is not a range).
      *
      * @param string $query Solr query to parse.
-     * @param string $type query type ('overlap' or 'within')
+     * @param string $type  Query type ('overlap' or 'within')
      *
      * @return array|bool   Array with 'from' and 'to' values extracted from range
      * or false if the provided query is not a range.
@@ -162,12 +162,12 @@ class VuFindSolrUtils
     public static function parseSpatialDateRange($query, $type = 'overlap')
     {
         $regex = false;
-        if ($type == 'overlap') { 
-            $regex = '/\([\d-]+\s+([\d-]+)\s+([\d-]+)\s+[\d-]+\)/';
+        if ($type == 'overlap') {
+            $regex = '/[\(\[]\"*[\d-]+\s+([\d-]+)\"*[\s\w]+\"*([\d-]+)\s+[\d-]+\"*[\)\]]/';
         } elseif ($type == 'within') {
-            $regex = '/\(([\d-]+\.?[\d]+)\s+[\d-]+\s+[\d-]+\s+([\d-]+\.?[\d]+)\)/';
+            $regex = '/[\(\[]\"*([\d-]+\.?\d*)\s+[\d-]+\"*[\s\w]+\"*[\d-]+\s+([\d-]+\.?\d*)\"*[\)\]]/';
         }
-        
+
         if (!$regex || !preg_match($regex, $query, $matches)) {
             return false;
         }
@@ -176,7 +176,7 @@ class VuFindSolrUtils
         $to = $matches[2];
 
         if ($type == 'within') {
-            // Adjust time range end points to match original search query 
+            // Adjust time range end points to match original search query
             // (see SearchObject/Base::buildSpatialDateRangeFilter)
             $from += 0.5;
             $to -= 0.5;

@@ -102,18 +102,18 @@ class CatalogConnection
      *
      * @param string $function The name of the function to check.
      * @param string $id       (optional) A record id used to identify the used backend with
-     * MultiBackend driver  
+     * MultiBackend driver
      *
      * @return mixed On success, an associative array with specific function keys
      * and values; on failure, false.
      * @access public
      */
     public function checkFunction($function, $id = null)
-    {    	
+    {
         // Extract the configuration from the driver if available:
         $functionConfig = method_exists($this->driver, 'getConfig')
             ? $this->driver->getConfig($function, $id) : false;
-    	
+
         // See if we have a corresponding check method to analyze the response:
         $checkMethod = "_checkMethod".$function;
         if (!method_exists($this, $checkMethod)) {
@@ -155,7 +155,7 @@ class CatalogConnection
                 $response['extraHoldFields'] = $functionConfig['extraHoldFields'];
             }
             if (isset($functionConfig['helpText'])) {
-                $response['helpText'] = $functionConfig['helpText']; 
+                $response['helpText'] = $functionConfig['helpText'];
             }
         } else if (method_exists($this->driver, 'getHoldLink')) {
             $response = array('function' => "getHoldLink");
@@ -248,12 +248,12 @@ class CatalogConnection
                 $response['extraFields'] = $functionConfig['extraFields'];
             }
             if (isset($functionConfig['helpText'])) {
-                $response['helpText'] = $functionConfig['helpText']; 
+                $response['helpText'] = $functionConfig['helpText'];
             }
         }
         return $response;
     }
-    
+
     /**
      * Check UB Requests
      *
@@ -280,17 +280,17 @@ class CatalogConnection
                 $response['extraFields'] = $functionConfig['extraFields'];
             }
             if (isset($functionConfig['helpText'])) {
-                $response['helpText'] = $functionConfig['helpText']; 
+                $response['helpText'] = $functionConfig['helpText'];
             }
         }
         return $response;
     }
-    
+
     /**
      * Check Change Password
      *
      * A support method for checkFunction(). This is responsible for checking
-     * the driver configuration to determine if the system supports changing 
+     * the driver configuration to determine if the system supports changing
      * the password.
      *
      * @param string $functionConfig The change Password service configuration values
@@ -305,8 +305,27 @@ class CatalogConnection
             return $functionConfig;
         }
         return false;
-    }    
-    
+    }
+
+    /**
+     * Check Authorization
+     *
+     * A support method for checkFunction(). This is responsible for checking
+     * the driver configuration to determine if the system supports authorization.
+     *
+     * @param string $functionConfig The authorization service configuration values
+     *
+     * @return mixed On success, true; on failure, false.
+     * @access private
+     */
+    private function _checkMethodgetPatronAuthorizationStatus($functionConfig)
+    {
+        if (method_exists($this->driver, 'getPatronAuthorizationStatus')) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Check Request is Valid
      *
@@ -335,7 +354,7 @@ class CatalogConnection
     /**
      * Check Call Slip Request is Valid
      *
-     * This is responsible for checking if a call slip request is valid 
+     * This is responsible for checking if a call slip request is valid
      *
      * @param string $id     A Bibliographic ID
      * @param array  $data   Collected Holds Data
@@ -356,11 +375,11 @@ class CatalogConnection
         // attempts to place an illegal hold
         return true;
     }
-    
+
     /**
      * Check UB Request is Valid
      *
-     * This is responsible for checking if a universal borrowing request is valid 
+     * This is responsible for checking if a universal borrowing request is valid
      *
      * @param string $id     A Bibliographic ID
      * @param array  $data   Collected Holds Data
@@ -385,7 +404,7 @@ class CatalogConnection
         // UB requests cannot be made.
         return false;
     }
-    
+
     /**
      * Get Holds Mode
      *

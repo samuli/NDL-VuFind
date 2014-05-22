@@ -128,7 +128,7 @@ abstract class SearchObject_Base
     protected $retainFiltersByDefault = true;
     // Time range query type ('overlap' or 'within')
     protected $spatialDateRangeFilterType = null;
-    
+
     // STATS
     protected $initTime = null;
     protected $endTime = null;
@@ -165,7 +165,7 @@ abstract class SearchObject_Base
             $this->orFilterUrlParam = $params[1];
         }
     }
-    
+
 
     /**
      * Parse apart the field and value from a URL filter string.
@@ -231,15 +231,15 @@ abstract class SearchObject_Base
     {
         // Extract field and value from URL string:
         list($field, $value) = $this->parseFilter($filter);
-    
+
         if (isset($this->orFilters[$field])
             && in_array($value, $this->orFilters[$field])
         ) {
             return true;
         }
         return false;
-    }    
-    
+    }
+
     /**
      * Take a filter string and add it into the protected
      *   array checking for duplicates.
@@ -342,7 +342,7 @@ abstract class SearchObject_Base
 
         $translationPrefix = isset($this->facetTranslationPrefix)
             ? $this->facetTranslationPrefix : '';
-        
+
         $list = array();
         // Loop through all the current filter fields
         foreach ($this->filterList as $field => $values) {
@@ -370,7 +370,7 @@ abstract class SearchObject_Base
                     } else if (strstr($field, 'search_sdaterange_mv')) {
                         // Pretty display of date ranges
                         $display = $this->spatialDateRangeFilterToString($display);
-                        $facetLabel = 'Date Range'; 
+                        $facetLabel = 'Date Range';
                         $removeDaterangeType = true;
                     } else if ($field == 'building') {
                         // Translate building format and build hierarchy
@@ -382,7 +382,7 @@ abstract class SearchObject_Base
                             $buildingTree = '';
                             foreach ($buildings as $i => $building) {
                                 $buildingTree .= '/' . $building;
-                                $display .= ' > ' . translate(array('prefix' => $translationPrefix, 
+                                $display .= ' > ' . translate(array('prefix' => $translationPrefix,
                                     'text' => $i + 1 . '/' . $mainBuilding . $buildingTree ));
                             }
                         }
@@ -391,9 +391,9 @@ abstract class SearchObject_Base
                     // Stash current date range query type...
                     $tmp = $this->spatialDateRangeFilterType;
                     if ($removeDaterangeType) {
-                        // ...and set it temporary to null, so that the 
-                        // type doesn't get included in the removal url.           
-                        $this->spatialDateRangeFilterType = null;                        
+                        // ...and set it temporary to null, so that the
+                        // type doesn't get included in the removal url.
+                        $this->spatialDateRangeFilterType = null;
                     }
 
                     $list[$facetLabel][] = array(
@@ -415,7 +415,7 @@ abstract class SearchObject_Base
     /**
      * Return list of filters from other search types.
      *
-     * @return array            filters 
+     * @return array            filters
      * @access public
      */
     public function getFilterListOthers()
@@ -426,7 +426,7 @@ abstract class SearchObject_Base
     /**
      * Return names of URL parameters used to transfer filters
      *
-     * @return array           URL parameter names 
+     * @return array           URL parameter names
      * @access public
      */
     public function getFilterUrlParams()
@@ -565,15 +565,15 @@ abstract class SearchObject_Base
             }
             break;
         }
-        
+
         if (isset($_REQUEST['prefiltered'])) {
             $params[] = "prefiltered=" . $_REQUEST['prefiltered'];
         }
-        
+
         if (isset($_REQUEST['set'])) {
             $params[] = "set=" . $_REQUEST['set'];
         }
-        
+
         return $params;
     }
 
@@ -624,8 +624,8 @@ abstract class SearchObject_Base
             if ($isbn) {
             	$_REQUEST['lookfor'] = $isbn;
             }
-        }  
-        
+        }
+
         $this->searchTerms[] = array(
             'index'   => $type,
             'lookfor' => $_REQUEST['lookfor']
@@ -667,7 +667,7 @@ abstract class SearchObject_Base
                         $type = $this->defaultIndex;
                     }
 
-					
+
                     // If searching with ISBN, normalize to ISBN 13.
                     // NOTE: for AllFields search the ISBN needs to be recognized as one. Not the best solution...
                     if ($type == 'AllFields' || $type == 'ISN') {
@@ -676,8 +676,8 @@ abstract class SearchObject_Base
                     		$_REQUEST['lookfor'.$groupCount][$i] = $isbn;
                     	}
 
-                    }   
-                                     
+                    }
+
                     // Add term to this group
                     $group[] = array(
                         'field'   => $type,
@@ -692,7 +692,7 @@ abstract class SearchObject_Base
                 // Add the completed group to the list
                 $this->searchTerms[] = array(
                     'group' => $group,
-                    'join'  => isset($_REQUEST['join']) ? $_REQUEST['join'] : 'AND' 
+                    'join'  => isset($_REQUEST['join']) ? $_REQUEST['join'] : 'AND'
                 );
             }
 
@@ -894,7 +894,7 @@ abstract class SearchObject_Base
 
     /**
      * Support method for initDateFilters() -- build a spatial filter query based on a range
-     * of dates (expressed as days from unix epoch). 
+     * of dates (expressed as days from unix epoch).
      * See the index schema definition for more information.
      *
      * @param string $field field to use for filtering.
@@ -918,7 +918,7 @@ abstract class SearchObject_Base
         try {
             date_default_timezone_set('UTC');
             if ($from == '' || $from == '*') {
-                $from = $minFrom; 
+                $from = $minFrom;
             } else {
                 // Make sure year has four digits
                 if (preg_match('/^(-?)(\d+)(.*)/', $from, $matches)) {
@@ -953,9 +953,9 @@ abstract class SearchObject_Base
         } catch (Exception $e) {
             date_default_timezone_set($oldTZ);
             return '';
-        } 
+        }
         date_default_timezone_set($oldTZ);
-        
+
         if ($from > $to) {
             PEAR::RaiseError(new PEAR_Error("Invalid date range specified."));
         }
@@ -966,15 +966,15 @@ abstract class SearchObject_Base
         if ($type == 'overlap') {
             // document duration overlaps query duration
             // q=fieldX:"Intersects(-∞ start end ∞)"
-            $query = "{$field}:\"Intersects($minFrom $from $to $maxTo)\"";
+            $query = "{$field}:[\"$minFrom $from\" TO \"$to $maxTo\"]";
         } else if ($type == 'within') {
             // document duration within query duration
             // q=fieldX:"Intersects(start -∞ ∞ end)"
-            
-            // Enlarge query range to match records with exactly the same time range as the original query 
+
+            // Enlarge query range to match records with exactly the same time range as the original query
             $from -= 0.5;
             $to += 0.5;
-            $query = "{$field}:\"Intersects($from $minFrom $maxTo $to)\"";
+            $query = "{$field}:[\"$from $minFrom\" TO \"$maxTo $to\"]";
         }
 
         return $query;
@@ -982,9 +982,9 @@ abstract class SearchObject_Base
 
     /**
      * Convert spatial date range filter to displayable string
-     * 
+     *
      * @param string $filter Spatial date range filter
-     * 
+     *
      * @return string Resulting display string
      */
     protected function spatialDateRangeFilterToString($filter)
@@ -995,16 +995,16 @@ abstract class SearchObject_Base
         }
         $startDate = new DateTime("@{$range['from']}");
         $endDate = new DateTime("@{$range['to']}");
-        if ($startDate->format('m') == 1 && $startDate->format('d') == 1 
+        if ($startDate->format('m') == 1 && $startDate->format('d') == 1
             && $endDate->format('m') == 12 && $endDate->format('d') == 31
         ) {
             return $startDate->format('Y') . ' - ' . $endDate->format('Y');
         }
         $date = new VuFindDate();
-        return $date->convertToDisplayDate('U', $range['from']) . ' - ' 
+        return $date->convertToDisplayDate('U', $range['from']) . ' - '
             . $date->convertToDisplayDate('U', $range['to']);
     }
-    
+
     /**
      * Support method for initFilters() -- initialize date-related filters.  Factored
      * out as a separate method so that it can be more easily overridden by child
@@ -1045,7 +1045,7 @@ abstract class SearchObject_Base
                 $dateTo = $_REQUEST["{$range}to"];
 
                 // Build filter only if necessary:
-                if (!empty($range) && ($dateFrom != '' || $dateTo != '')) {         
+                if (!empty($range) && ($dateFrom != '' || $dateTo != '')) {
                     $dateFilter
                         = $this->buildSpatialDateRangeFilter($range, $dateFrom, $dateTo, $spatialRangeType);
                     $this->addFilter($dateFilter);
@@ -1111,7 +1111,7 @@ abstract class SearchObject_Base
         // Get the base URL and initialize the parameters attached to it:
         $url = $this->getBaseUrl();
         $params = $this->getSearchParams();
-        
+
         if ($includeLocalFilters) {
             // Add any filters
             if (count($this->filterList) > 0 && $this->filterUrlParam) {
@@ -1140,7 +1140,7 @@ abstract class SearchObject_Base
                 foreach ($filters as $filter) {
                     $params[] = urlencode("{$type}[]") . '=' .
                         urlencode("$field:\"$filter\"");
-                }             
+                }
             }
         }
 
@@ -1148,7 +1148,7 @@ abstract class SearchObject_Base
         if ($this->spatialDateRangeFilterType) {
             $params[] = "search_sdaterange_mvtype=$this->spatialDateRangeFilterType";
         }
-        
+
         // Sorting
         if ($this->sort != null) {
             $params[] = "sort=" . urlencode($this->sort);
@@ -1174,16 +1174,16 @@ abstract class SearchObject_Base
         if ($this->limit != null) {
             $params[] = "limit=" . urlencode($this->limit);
         }
-        
+
         // Join all parameters with an escaped ampersand,
         //   add to the base url and return
         return $url . join("&", $params);
     }
-    
+
     /**
      * Build a url for the current search without filters
      *
-     * @param  array  $discardSearchParams  list of parameters to discard from the URL. 
+     * @param  array  $discardSearchParams  list of parameters to discard from the URL.
      *
      * @return string URL of a search
      * @access public
@@ -1196,11 +1196,11 @@ abstract class SearchObject_Base
 
         $res = array();
         foreach ($params as $param) {
-            $temp = explode('=', $param);                
+            $temp = explode('=', $param);
             $field = trim($temp[0]);
 
             $discard = false;
-            foreach($discardSearchParams as $discardParam) {                
+            foreach($discardSearchParams as $discardParam) {
                 if ($field == trim($discardParam)) {
                     $discard = true;
                     continue 1;
@@ -1739,7 +1739,7 @@ abstract class SearchObject_Base
         }
         return $facets;
     }
-    
+
     /**
      * Get status information on the boolean checkbox facets.
      *
@@ -1759,7 +1759,7 @@ abstract class SearchObject_Base
             }
         }
         return $status;
-    }    
+    }
 
     /**
      * Get type of current spatial data range type (overlap, within)
@@ -2586,18 +2586,18 @@ abstract class SearchObject_Base
      */
     protected function normalizeIfValidISBN($lookfor = false)
     {
-        if (!$lookfor) { 
+        if (!$lookfor) {
             return false;
         }
-        
+
         if (ISBN::isValidISBN10($lookfor) || ISBN::isValidISBN13($lookfor)) {
             $isbn = new ISBN($lookfor);
             return $isbn->get13();
         }
-        
+
         return false;
     }
-    
+
     /**
      * Load all available facet settings.  This is mainly useful for showing
      * appropriate labels when an existing search has multiple filters associated
@@ -2675,9 +2675,9 @@ abstract class SearchObject_Base
 
         // Base 'advanced' query
         $output = "(" .
-            join(") " . 
-            (isset($this->searchTerms[0]['join']) 
-                ? $this->searchTerms[0]['join'] 
+            join(") " .
+            (isset($this->searchTerms[0]['join'])
+                ? $this->searchTerms[0]['join']
                 : 'AND') .
             " (", $groups) .
             ")";
@@ -2769,17 +2769,17 @@ abstract class SearchObject_Base
      * @access public
      */
     abstract public function getIndexError();
-    
+
     /**
      * Get advanced search filters
      *
      * @return array OR filters from advanced search
      * @access public
-     */    
-    public function getOrFilters() 
+     */
+    public function getOrFilters()
     {
         return array();
-    }    
+    }
 }
 
 /**

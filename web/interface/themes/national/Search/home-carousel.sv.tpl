@@ -11,7 +11,7 @@
           <div class="pickup-text">
            En ceremoniell huvudbonad som användes av aleuterna i Alaska i början av 1800-talet. 
 Alaskasamlingen omfattar ca 500 föremål som är insamlade av bl.a. Arvid Adolf Etholén, guvernör över ryska Alaska, och prästen Uno Cygnaeus. I samlingen finns bl.a. kläder, fångstredskap och små skulpturer av valrossbetar.  
-            <a href="{$url}/Search/Results?lookfor=&prefilter=-&SearchForm_submit=Hae&filter[]=topic_facet%3A%22arktiset+kulttuurit%22&filter[]=sector_str_mv%3A%220%2Fmus%2F%22&view=grid&limit=100">Till sökresultatet »</a>
+            <a href="{$url}/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=100">Till sökresultatet »</a>
           </div>
         </div>
       </li>

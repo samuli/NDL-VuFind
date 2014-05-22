@@ -178,9 +178,9 @@ class LDAPAuthentication implements Authentication
         global $configArray;
         
         $user = new User();
-        $user->authMethod = 'LDAP';
         $user->username = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $this->_username;
         $userIsInVufindDatabase = $this->_isUserInVufindDatabase($user);
+        $user->authMethod = 'LDAP';
         for ($i=0; $i<$data["count"];$i++) {
             for ($j=0;$j<$data[$i]["count"];$j++) {
                 if (($data[$i][$j] == $ldapConnectionParameter['firstname'])

@@ -42,26 +42,24 @@ require_once 'sys/VuFindDate.php';
 
 /**
  * Due Date Reminders Sender
- * 
+ *
  * @category VuFind
  * @package  Due_Date_Reminders
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
- * 
- * 
+ *
+ *
  * php due_date_reminders.php [main directory] [email]
- * 
+ *
  *   main directory   The main VuFind directory. Each web directory must reside under this (default: ..)
- *   email            Email address for error reporting 
- * 
+ *   email            Email address for error reporting
+ *
  */
 class DueDateReminders extends ReminderTask
 {
     /**
      * Send due date reminders
-     *
-     * @param string $mainDir         The main VuFind directory. Each web directory must reside under this (default: ..)
      *
      * @return void
      */
@@ -70,11 +68,11 @@ class DueDateReminders extends ReminderTask
         global $configArray;
         global $interface;
         global $translator;
-        
+
         $iso8601 = 'Y-m-d\TH:i:s\Z';
-        
+
         ini_set('display_errors', true);
-        
+
         $configArray = $mainConfig = readConfig();
         $datasourceConfig = getExtraConfigArray('datasources');
         $siteLocal = $configArray['Site']['local'];
@@ -83,16 +81,16 @@ class DueDateReminders extends ReminderTask
         date_default_timezone_set($configArray['Site']['timezone']);
 
         $this->msg('Sending due date reminders');
-        
+
         // Setup Local Database Connection
         ConnectionManager::connectToDatabase();
-        
+
         // And index
         $db = ConnectionManager::connectToIndex();
-        
+
         // Initialize Mailer
         $mailer = new VuFindMailer();
-        
+
         // Find all scheduled alerts
         $sql = 'SELECT * FROM "user" WHERE "due_date_reminder" > 0 ORDER BY id';
 
@@ -109,7 +107,7 @@ class DueDateReminders extends ReminderTask
                 $this->msg('User ' . $user->username . ' does not have an email address, bypassing due date reminders');
                 continue;
             }
-            
+
             // Initialize settings and interface
             $userInstitution = reset(explode(':', $user->username, 2));
             if (!$institution || $institution != $userInstitution) {
@@ -133,19 +131,19 @@ class DueDateReminders extends ReminderTask
                 $validLanguages = array_keys($configArray['Languages']);
                 $dateFormat = new VuFindDate();
             }
-            
+
             $language = $user->language;
             if (!in_array($user->language, $validLanguages)) {
                 $language = $configArray['Site']['language'];
             }
-        
+
             $translator = new I18N_Translator(
                 array($configArray['Site']['local'] . '/lang', $configArray['Site']['local'] . '/lang_local'),
                 $language,
                 $configArray['System']['debug']
             );
             $interface->setLanguage($language);
-            
+
             // Go through accounts and check loans
             $account = new User_account();
             $account->user_id = $user->id;
@@ -195,15 +193,20 @@ class DueDateReminders extends ReminderTask
                     }
                 }
             }
-            
+
             if ($remindLoans) {
                 $this->msg(count($remindLoans) . ' new loans to remind for user ' . $user->id);
-                
+
                 $interface->assign('date', $dateFormat->convertToDisplayDate("U", floor(time())));
                 $interface->assign('loans', $remindLoans);
-        
+                $key = $this->getSecret($user, $user->id);
+                $params = array('id' => $user->id, 'type' => 'reminder', 'key' => $key);
+                $unsubscribeUrl = $configArray['Site']['url'] . '/MyResearch/Unsubscribe?' . http_build_query($params);
+                $interface->assign(compact('unsubscribeUrl'));
                 // Load template
                 $message = $interface->fetch('MyResearch/due-date-email.tpl');
+                echo $message;
+                die();
                 if (strstr($message, 'Warning: Smarty error:')) {
                     $this->msg("Message template processing failed: $message");
                     continue;
@@ -213,7 +216,7 @@ class DueDateReminders extends ReminderTask
                     $this->msg("Failed to send message to {$user->email}: " . $result->getMessage());
                     continue;
                 }
-                
+
                 // Mark reminders sent
                 foreach ($remindLoans as $loan) {
                     $reminder = new Due_date_reminder();
@@ -229,13 +232,15 @@ class DueDateReminders extends ReminderTask
                 $this->msg('No loans to remind for user ' . $user->id);
             }
         }
-        
+
         $this->reportErrors();
         $this->msg('Due date reminders execution completed');
     }
 
 }
 
-$alerts = new DueDateReminders( isset($argv[1]) ? $argv[1] : '..', 
-                                isset($argv[2]) ? $argv[2] : false);
+$alerts = new DueDateReminders(
+    isset($argv[1]) ? $argv[1] : '..',
+    isset($argv[2]) ? $argv[2] : false
+);
 $alerts->send();

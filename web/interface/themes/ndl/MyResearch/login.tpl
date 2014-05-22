@@ -5,7 +5,7 @@
     <h2>{translate text="ils_offline_title"}</h2>
     <p><strong>{translate text="ils_offline_status"}</strong></p>
     <p>{translate text="ils_offline_login_message"}</p>
-    <p><a href="mailto:{$supportEmail}">{$supportEmail}</a></p>
+    <p><a href="mailto:{$supportEmail|escape:"html"}">{$supportEmail}</a></p>
   </div>
 {elseif $hideLogin}
   <div class="error">{translate text='login_disabled'}</div>
@@ -60,7 +60,7 @@
       <select id="login_target" name="login_target" class="{jquery_validation required='Please choose a library'}">
         <option value="">{translate text="Choose library"}</option>
       {foreach from=$loginTargets item=target}
-        <option value="{$target}"{if $target == $defaultLoginTarget} selected="selected"{/if}>{translate text=$target prefix='source_'}</option>
+        <option value="{$target|escape:"html"}"{if $target == $defaultLoginTarget} selected="selected"{/if}>{translate text=$target prefix='source_'}</option>
       {/foreach}
       </select>
       <br class="clear"/>
@@ -73,10 +73,12 @@
       <br class="clear"/>
       <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
       <br class="clear"/>
+      <input class="button buttonFinna" type="reset" value="{translate text='confirm_create_account_abort'}"/>
       <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Login'}"/>
-      {if $followup}<input type="hidden" name="followup" value="{$followup}"/>{/if}
-      {if $followupModule}<input type="hidden" name="followupModule" value="{$followupModule}"/>{/if}
-      {if $followupAction}<input type="hidden" name="followupAction" value="{$followupAction}"/>{/if}
+
+      {if $followup}<input type="hidden" name="followup" value="{$followup|escape:"html"}"/>{/if}
+      {if $followupModule}<input type="hidden" name="followupModule" value="{$followupModule|escape:"html"}"/>{/if}
+      {if $followupAction}<input type="hidden" name="followupAction" value="{$followupAction|escape:"html"}"/>{/if}
       {if $recordId}<input type="hidden" name="recordId" value="{$recordId|escape:"html"}"/>{/if}
       {if $extraParams}
         {foreach from=$extraParams item=item}
@@ -115,13 +117,19 @@
     <h3 class="grid_14">{$loginNumber}. {translate text="login_title_email"}</h3><div class="clear"></div>
      <div class="personaLogin grid_7">
      {if $followupModule == 'PCI' || $followupModule == 'MetaLib'}
-         <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$followupAction}?id={$recordId|escape:"url"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
+         <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$followupAction|escape:"url"}?id={$recordId|escape:"url"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
      {else}
-    	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup}" data-followupurl="{$url}/{$followupModule}/{$recordId|escape:"url"}/{$followupParams.0}?submit#{$followupParams.1}"><span>{translate text="Mozilla Persona"}</span></a>
+    	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$recordId|escape:"url"}/{$followupParams.0|escape:"url"}?submit#{$followupParams.1|escape:"url"}"><span>{translate text="Mozilla Persona"}</span></a>
      {/if}	
+
+         
+<script type="text/javascript">
+   trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
+</script>
+
 {if $lightbox}
-    <script type="text/javascript">
     {literal}
+   <script type="text/javascript">
     $(document).ready(function() {        
         $.ajax({
             url: 'https://login.persona.org/include.js',
@@ -133,8 +141,18 @@
             }
         });
     });
-    {/literal}
     </script>
+    {/literal}
+{else}
+  {js filename="lightbox.js" }
+  {js filename="rc4.js" }
+  {literal}
+   <script type="text/javascript">
+    $(document).ready(function() {        
+       registerAjaxLogin($('.loginForm'), false);
+    });
+    </script>
+    {/literal}    
 {/if}
    </div>
   </div>

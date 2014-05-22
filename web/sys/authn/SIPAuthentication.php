@@ -137,13 +137,13 @@ class SIPAuthentication implements Authentication
         include_once "services/MyResearch/lib/User.php";
 
         $user = new User();
-        $user->authMethod = 'SIP';
         $user->username = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $info['variable']['AA'][0];
         if ($user->find(true)) {
             $insert = false;
         } else {
             $insert = true;
         }
+        $user->authMethod = 'SIP';
 
         // This could potentially be different depending on the ILS.  Name could be
         // Bob Wicksall or Wicksall, Bob. This is currently assuming Wicksall, Bob

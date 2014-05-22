@@ -9,12 +9,12 @@ $(document).ready(function() {
     initDateVis();
     initFeedbackScroll();
     initFixedLimitSearch();
-    initMetaLibLoadingIndicator();
     initCustomEyeCandy();
     initScrollRecord();
     initScrollMenu();
     initContextHelp();
     initCoverImageTruncateLink();
+    init480Mobile()
 });
 
 // Header menu
@@ -324,16 +324,6 @@ function padZeros(number, length) {
     return (negative ? '-' : '') + str;
 }
 
-// Metalib loading indicator
-function initMetaLibLoadingIndicator() {
-    $('.searchformMetaLib #searchForm_searchButton').click(function() {
-        var selectedSet = $('input[name=searchSet]:checked').val();
-        $('input#searchForm_set').val(selectedSet);
-        $('.searchFormWrapper .clear_input').addClass('metaLibLoading');
-        $('#searchForm_input').css('color', '#aaa');
-    });
-}
-
 // Custom jQuery effects
 function initCustomEyeCandy() {
     
@@ -475,4 +465,15 @@ function initCoverImageTruncateLink() {
 
 }
 
+// Move the Advanced Search link in narrow screens
+function init480Mobile() {
+    // Get the dimensions of the viewport
+    var width = $(window).width();
+
+    if (width < 731) {
+        $("#480mobileFirst #move480mobile").appendTo("#480mobileSecond");
+    } else {
+        $("#480mobileSecond #move480mobile").appendTo("#480mobileFirst" );
+    }
+}
 

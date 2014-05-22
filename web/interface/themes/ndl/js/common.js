@@ -30,6 +30,8 @@ $(document).ready(function(){
     initClearable();
     
     initJumpMenus();
+    
+    initBodyClassSwitcher();
 
     // attach click event to the search help links
     /*
@@ -50,23 +52,6 @@ $(document).ready(function(){
    // Init placeholder (for archaic browsers)
    $.fn.placeholder();
     
-    // Assign click event to MetaLib tab:
-    $('#metalibTab').click(function(e) {    
-        var obj = $(this);
-        var src = path + "/interface/themes/ndl/images/ajax-loader.gif";        
-
-        // Preload and display background loader animation before starting metalib search
-        $('<img/>').attr('src', src).load(function() {
-            $(this).remove(); 
-            obj.addClass("tabLoader");
-            window.location = obj.attr("href");
-        });
-        
-        // Cancel default link navigation
-        e.preventDefault();
-    });
-
-
     // assign click event to "email search" links
     $('a.mailSearch').click(function(e) {
         var id = this.id.substr('mailSearch'.length);
@@ -614,3 +599,27 @@ function NDLCarousel(carouselId, itemsPerPage, scrolledItems, scrollSpeed, fixed
 
 }
 
+function initBodyClassSwitcher() {
+    switchBodyClass();
+    
+    $(window).resize(function() {
+        switchBodyClass();
+    });
+}
+
+function switchBodyClass() {
+    var w = $('.content').width();
+    if (!isNaN(w)) {
+        if (w == '480') {
+            $('body').removeClass('layout720').removeClass('layout960')
+                .addClass('layout480');
+        } else if (w == '720') {
+            $('body').removeClass('layout480').removeClass('layout960')
+                .addClass('layout720');
+        } else if (w == '960') {
+            $('body').removeClass('layout480').removeClass('layout720')
+                .addClass('layout960');
+        }
+    }
+    
+}

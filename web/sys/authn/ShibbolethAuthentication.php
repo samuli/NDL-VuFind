@@ -93,9 +93,9 @@ class ShibbolethAuthentication implements Authentication
             $_SESSION['logoutUrl'] = $logoutUrl;
         }
         $user = new User();
-        $user->authMethod = 'Shibboleth';
         $user->username = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $_SERVER[$this->_userAttributes['username']];
         $userIsInVufindDatabase = $this->_isUserInVufindDatabase($user);
+        $user->authMethod = 'Shibboleth';
 
         // Has the user configured attributes to use for populating the user table?
         $attribsToCheck = array(

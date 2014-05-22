@@ -122,14 +122,18 @@
   <p>The + sign can be used to indicate that the term must appear in each search result.  </p>
   <p>For example, to search for records that must include “economics” and may include “Keynes”: </p>
   <pre class="code">"economics Keynes" OR Keynes</pre>
-  <h3 title="NOT">NOT / -</h3>
-  <p>The<strong> NOT</strong> operator removes those records from the search results that include the term following the operator.  </p>
-  <p>For example, to search for records that include the term “economics”, but not the term “Keynes”: </p>
-  <pre class="code">economics NOT Keynes</pre>
-  <p>NB! The<strong> NOT</strong> operator cannot be used in single-term queries. </p>
-  <p>For example, the following query will produce no search results:</p>
-  <pre class="code">NOT economics</pre>
-  <p>The <strong>NOT</strong> operator can also be replaced with the - operator. </p>
+  <h3 title="-">Hyphen (-)</h3>
+  <p>The hyphen (-) excludes records that contain the term following the hyphen.
+  </p>
+  <p>To search for documents that contain "economics" but not "Keynes" use the query: 
+  </p>
+  <pre class="code">economics -Keynes</pre>
+  <p>Note: The hyphen cannot be used with just one term. For example, the following search will return no results:</p>
+  <pre class="code">-economics</pre>
+  <p>Note: If the term begins with the hyphen, it can be included by using the backslash (\). For example: to search the book Da Vinci -koodi (in Finnish) use the query:</p>
+  <pre class="code">Da Vinci \-koodi</pre>
+  <p>Note: The <strong>NOT</strong> operator can be used similarly with the hyphen. However, the <strong>NOT</strong> operator returns more results, some of which may contain the term following <strong>NOT</strong>.
+  </p>
   <h3 title="Phrase searches">Phrase searches</h3>
   <p>You can search for an exact phrase by writing your search terms within quotation marks.</p>
   <p> For example, to search only for records which include the phrase “mediaeval history”, not “mediaeval cultural history” or similar phrases: </p>

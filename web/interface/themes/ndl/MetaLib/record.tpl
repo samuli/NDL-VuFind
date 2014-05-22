@@ -107,7 +107,7 @@
         <th>{translate text='Author'}: </th>
         <td>
       {foreach from=$record.Author item="author" name="loop"}
-          <a href="{$url}/MetaLib/Search?type=Author&amp;lookfor={$author|escape:"url"}">{$author|escape}</a>{if !$smarty.foreach.loop.last},{/if} 
+          <a href="{$url}/MetaLib/Search?lookfor={$author|escape:"url"}">{$author|escape}</a>{if !$smarty.foreach.loop.last},{/if} 
       {/foreach}
         </td>
       </tr>

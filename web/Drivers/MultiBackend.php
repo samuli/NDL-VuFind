@@ -31,21 +31,21 @@ require_once 'Interface.php';
 /**
  * Multiple Backend Driver.
  *
- * This driver allows to use multiple backends determined by a record id or 
- * user id prefix (e.g. source.12345). 
+ * This driver allows to use multiple backends determined by a record id or
+ * user id prefix (e.g. source.12345).
  *
  * @category VuFind
  * @package  ILS_Drivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
- 
+
  */
 class MultiBackend implements DriverInterface
 {
     protected $config = null;
     protected $driverCache = array();
-    
+
     /**
      * Constructor
      *
@@ -56,10 +56,10 @@ class MultiBackend implements DriverInterface
         // Load Configuration for this Module
         $this->config = getExtraConfigArray('MultiBackend');
     }
-    
+
     /**
      * Get the drivers (data source IDs) enabled in MultiBackend for login
-     * 
+     *
      * @return string[]
      */
     public function getLoginDrivers()
@@ -75,7 +75,7 @@ class MultiBackend implements DriverInterface
 
     /**
      * Get the default driver (data source ID) for login
-     * 
+     *
      * @return string
      */
     public function getDefaultLoginDriver()
@@ -100,7 +100,7 @@ class MultiBackend implements DriverInterface
     {
         return $this->getHolding($id);
     }
-    
+
     /**
      * Get Statuses
      *
@@ -121,7 +121,7 @@ class MultiBackend implements DriverInterface
         }
         return $items;
     }
-    
+
     /**
      * Get Holding
      *
@@ -137,8 +137,8 @@ class MultiBackend implements DriverInterface
      * @access public
      */
     public function getHolding($id, $patron = false)
-    {   
-        $source = $this->getSource($id);    
+    {
+        $source = $this->getSource($id);
         $driver = $this->getDriver($source);
         if ($driver) {
             $holdings = $driver->getHolding($this->getLocalId($id), $patron ? $this->stripIdPrefixes($patron, $source) : false);
@@ -148,7 +148,7 @@ class MultiBackend implements DriverInterface
         }
         return array();
     }
-    
+
     /**
      * Get Purchase History
      *
@@ -163,14 +163,14 @@ class MultiBackend implements DriverInterface
      */
     public function getPurchaseHistory($id)
     {
-        $source = $this->getSource($id);    
+        $source = $this->getSource($id);
         $driver = $this->getDriver($source);
         if ($driver) {
             return $driver->getPurchaseHistory($this->getLocalId($id));
         }
         return array();
     }
-    
+
     /**
      * Get New Items
      *
@@ -197,7 +197,7 @@ class MultiBackend implements DriverInterface
         }
         return array();
     }
-    
+
     /**
      * Find Reserves
      *
@@ -219,7 +219,7 @@ class MultiBackend implements DriverInterface
         }
         return array();
     }
-    
+
     /**
      * Get Patron Profile
      *
@@ -241,7 +241,7 @@ class MultiBackend implements DriverInterface
         }
         return array();
     }
-    
+
     /**
      * Patron Login
      *
@@ -275,7 +275,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get Patron Transactions
      *
@@ -299,7 +299,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get Renew Details
      *
@@ -320,10 +320,10 @@ class MultiBackend implements DriverInterface
         if ($driver) {
             $details = $driver->getRenewDetails($this->stripIdPrefixes($checkoutDetails, $source));
             return $this->addIdPrefixes($details, $source);
-        } 
+        }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Renew My Items
      *
@@ -346,7 +346,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get Patron Fines
      *
@@ -368,7 +368,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get Patron Holds
      *
@@ -416,7 +416,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * checkRequestIsValid
      *
@@ -475,7 +475,7 @@ class MultiBackend implements DriverInterface
         }
         return false;
     }
-    
+
     /**
      * Get Pick Up Locations
      *
@@ -502,7 +502,7 @@ class MultiBackend implements DriverInterface
             if ($holdDetails) {
                 if ($this->getSource($holdDetails['id']) != $source) {
                     // TODO: any other error handling?
-                    return array();                 
+                    return array();
                 }
             }
             $locations = $driver->getPickUpLocations(
@@ -513,7 +513,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get request groups
      *
@@ -537,7 +537,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get Default Pick Up Location
      *
@@ -561,7 +561,7 @@ class MultiBackend implements DriverInterface
             if ($holdDetails) {
                 if ($this->getSource($holdDetails['id']) != $source) {
                     // TODO: any other error handling?
-                    return false;                 
+                    return false;
                 }
             }
             $locations = $driver->getDefaultPickUpLocation(
@@ -571,8 +571,8 @@ class MultiBackend implements DriverInterface
             return $this->addIdPrefixes($locations, $source);
         }
         return new PEAR_Error('No suitable backend driver found');
-    }    
-    
+    }
+
     /**
      * Get Default Request Group
      *
@@ -596,7 +596,7 @@ class MultiBackend implements DriverInterface
             if ($holdDetails) {
                 if ($this->getSource($holdDetails['id']) != $source) {
                     // TODO: any other error handling?
-                    return false;                 
+                    return false;
                 }
             }
             $locations = $driver->getDefaultRequestGroup(
@@ -606,8 +606,8 @@ class MultiBackend implements DriverInterface
             return $this->addIdPrefixes($locations, $source);
         }
         return new PEAR_Error('No suitable backend driver found');
-    }    
-    
+    }
+
     /**
      * Place Hold
      *
@@ -630,14 +630,14 @@ class MultiBackend implements DriverInterface
                 return array(
                     "success" => false,
                     "sysMessage" => 'hold_wrong_user_institution'
-                );                   
+                );
             }
             $holdDetails = $this->stripIdPrefixes($holdDetails, $source);
             return $driver->placeHold($holdDetails);
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Cancel Holds
      *
@@ -659,12 +659,12 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get Cancel Hold Details
      *
      * In order to cancel a hold, the ILS requires some information on the hold.
-     * This function returns the required information, which is then submitted 
+     * This function returns the required information, which is then submitted
      * as form data in Hold.php. This value is then extracted by the CancelHolds
      * function.
      *
@@ -683,7 +683,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Place Call Slip Request
      *
@@ -706,14 +706,14 @@ class MultiBackend implements DriverInterface
                 return array(
                     "success" => false,
                     "sysMessage" => 'hold_wrong_user_institution'
-                );                   
+                );
             }
             $details = $this->stripIdPrefixes($details, $source);
             return $driver->placeCallSlipRequest($details);
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Cancel Call Slips
      *
@@ -735,12 +735,12 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get Cancel Call Slip Details
      *
      * In order to cancel a call slip, the ILS requires some information on it.
-     * This function returns the required information, which is then submitted 
+     * This function returns the required information, which is then submitted
      * as form data in CallSlip.php. This value is then extracted by the CancelCallSlips
      * function.
      *
@@ -760,7 +760,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Change Password
      *
@@ -770,7 +770,7 @@ class MultiBackend implements DriverInterface
      *
      * @return mixed An array of data on the request including
      * whether or not it was successful and a system message (if available) or a
-     * PEAR error on failure of support classes 
+     * PEAR error on failure of support classes
      * @access public
      */
     public function changePassword($details)
@@ -783,7 +783,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get UB Request Details
      *
@@ -792,7 +792,7 @@ class MultiBackend implements DriverInterface
      *
      * @param array $details BIB, item and patron information
      *
-     * @return bool|array False if request not allowed, or an array of associative 
+     * @return bool|array False if request not allowed, or an array of associative
      * arrays with locationID and locationDisplay keys keyed by library
      * @access public
      */
@@ -806,15 +806,15 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Get UB Pickup Locations
-     * 
+     *
      * This is responsible for getting a list of possible pickup locations for a library
      *
      * @param array $details BIB, item, pickupLib and patron information
      *
-     * @return boo|array False if request not allowed, or an array of  
+     * @return boo|array False if request not allowed, or an array of
      * locations.
      * @access public
      */
@@ -828,7 +828,7 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
     /**
      * Place UB Request
      *
@@ -852,7 +852,26 @@ class MultiBackend implements DriverInterface
         }
         return new PEAR_Error('No suitable backend driver found');
     }
-    
+
+    /**
+     * Check if patron is authorized (e.g. to access electronic material).
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return bool True if patron is authorized, false if not
+     */
+    public function getPatronAuthorizationStatus($patron)
+    {
+        $source = $this->getSource($patron['id']);
+        $driver = $this->getDriver($source);
+        if ($driver) {
+            return $driver->getPatronAuthorizationStatus(
+                $this->stripIdPrefixes($patron, $source)
+            );
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+
     /**
      * Function which specifies renew, hold and cancel settings.
      *
@@ -865,7 +884,7 @@ class MultiBackend implements DriverInterface
     public function getConfig($function, $id = null)
     {
         global $user;
-        
+
         $source = null;
         if ($id) {
             $source = $this->getSource($id);
@@ -873,14 +892,14 @@ class MultiBackend implements DriverInterface
         if (!$source && $user && isset($user->cat_username)) {
             $source = $this->getSource($user->cat_username);
         }
-        
+
         $driver = $this->getDriver($source);
-        
+
         // If we have resolved the needed driver, just getConfig and return.
         if ($driver && method_exists($driver, 'getConfig')) {
             return $driver->getConfig($function);
         }
-        
+
         // If driver not available, return default values
         switch ($function) {
         case 'Holds':
@@ -904,13 +923,13 @@ class MultiBackend implements DriverInterface
         }
         return Array();
     }
-        
+
     /**
      * Extract local ID from the given prefixed ID
-     * 
+     *
      * @param string $id Prefixed ID
-     * 
-     * @return string Local ID 
+     *
+     * @return string Local ID
      */
     protected function getLocalId($id)
     {
@@ -924,9 +943,9 @@ class MultiBackend implements DriverInterface
 
     /**
      * Extract source from the given ID
-     * 
+     *
      * @param string $id Prefixed ID
-     * 
+     *
      * @return string Source
      */
     protected function getSource($id)
@@ -946,7 +965,7 @@ class MultiBackend implements DriverInterface
                 if ($arg == null) {
                     $args .= 'null';
                 } elseif (gettype($arg) == 'string') {
-                    $args .= "'$arg'";  
+                    $args .= "'$arg'";
                 } else {
                     $args .= print_r($arg, true);
                 }
@@ -958,21 +977,21 @@ class MultiBackend implements DriverInterface
 
     /**
      * Find the correct driver for the given source
-     * 
+     *
      * @param string $source Source
-     * 
+     *
      * @return mixed On success a driver object, otherwise null
      */
     protected function getDriver($source)
     {
         global $configArray;
-        
+
         $source = strtolower($source);
-        
+
         if (isset($this->driverCache[$source])) {
             return $this->driverCache[$source];
         }
-        
+
         if (isset($this->config[$source])) {
             // Try a local version first
             $driver = $this->config[$source]['driver'] . "Local_$source";
@@ -1000,13 +1019,13 @@ class MultiBackend implements DriverInterface
 
     /**
      * Change local ID's to global ID's in the given array
-     * 
+     *
      * @param mixed  $data         The data to be modified, normally
      *                             array or array of arrays
      * @param string $source       Source code
      * @param array  $modifyFields Fields to be modified in the array
-     * 
-     * @return mixed  Modified array or empty/null if that input was 
+     *
+     * @return mixed  Modified array or empty/null if that input was
      *                empty/null
      */
     protected function addIdPrefixes($data, $source, $modifyFields = array('id', 'cat_username'))
@@ -1015,7 +1034,7 @@ class MultiBackend implements DriverInterface
             return $data;
         }
         $array = is_array($data) ? $data : array($data);
-    
+
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $array[$key] = $this->addIdPrefixes(
@@ -1023,7 +1042,7 @@ class MultiBackend implements DriverInterface
                 );
             } else {
                 if (!is_numeric($key) && in_array($key, $modifyFields) && $value !== '') {
-                    $array[$key] = $source . '.' . $value; 
+                    $array[$key] = $source . '.' . $value;
                 }
             }
         }
@@ -1032,12 +1051,12 @@ class MultiBackend implements DriverInterface
 
     /**
      * Change global ID's to local ID's in the given array
-     * 
+     *
      * @param mixed  $data         The data to be modified, normally
      *                             array or array of arrays
      * @param string $source       Source code
      * @param array  $modifyFields Fields to be modified in the array
-     * 
+     *
      * @return mixed Modified array or empty/null if that input was
      *               empty/null
      */
@@ -1047,14 +1066,14 @@ class MultiBackend implements DriverInterface
             return $data;
         }
         $array = is_array($data) ? $data : array($data);
-    
+
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 $array[$key] = $this->stripIdPrefixes(
                     $value, $source, $modifyFields
                 );
             } else {
-                if (in_array($key, $modifyFields) 
+                if (in_array($key, $modifyFields)
                     && strncmp($source . '.', $value, strlen($source) + 1) == 0
                 ) {
                     $array[$key] = substr($value, strlen($source) + 1);
@@ -1065,4 +1084,4 @@ class MultiBackend implements DriverInterface
     }
 
 }
-    
+

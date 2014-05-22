@@ -76,7 +76,9 @@
 .iconlabel.formatsoundrecording:before,
 .iconlabel.formataudio:before,
 .iconlabel.formatother:before,
-.iconlabel.formatwebsite:before {
+.iconlabel.formatwebsite:before,
+.iconlabel.formatpaikkarakennus:before,
+.iconlabel.formatplace:before {
     background-image: url(../images/icons16-24px-01_black.png);
 }
 .breadcrumbinner span.iconlabel.formatdocument:before, 
@@ -103,7 +105,9 @@
 .breadcrumbinner span.iconlabel.formatsoundrecording:before,
 .breadcrumbinner span.iconlabel.formataudio:before,
 .breadcrumbinner span.iconlabel.formatother:before,
-.breadcrumbinner span.iconlabel.formatwebsite:before {
+.breadcrumbinner span.iconlabel.formatwebsite:before,
+.breadcrumbinner span.iconlabel.formatpaikkarakennus:before,
+.breadcrumbinner span.iconlabel.formatplace:before {
     background-image: url(../images/icons16-24px-01_white.png);
 }
 .iconlabel.formatdocument:before,
@@ -182,10 +186,16 @@
 .iconlabel.formatreferenceentry:before,
 .iconlabel.formatother:before,
 .iconlabel.formatwebsite:before,
+.iconlabel.formatpaikkarakennus:before,
 .breadcrumbinner span.iconlabel.formatreferenceentry:before,
 .breadcrumbinner span.iconlabel.formatother:before,
-.breadcrumbinner span.iconlabel.formatwebsite:before {
+.breadcrumbinner span.iconlabel.formatwebsite:before,
+.breadcrumbinner span.iconlabel.formatpaikkarakennus:before{
     background-position: 1px -727px;
+}
+.iconlabel.formatplace:before,
+.iconlabel.formatplacebuilding:before, .breadcrumbinner span.iconlabel.formatplace:before {
+	background-position:2px -643px;	
 }
 
 /* Header: info box */
@@ -274,10 +284,10 @@ a.clear_input {
     background-image: url(../images/icons16-24px-03_red.png);
 }
 .checkedout:before {
-    background-position: 1px -1439px;
+    background-position: 1px -1399px;
 }
 .checkedoutLoc:before {
-    background-position: 1px -1439px;
+    background-position: 1px -1399px;
 }
 .dateVisClear a, .holdPlace:before {
     background-image: url(../images/icons16-24px-03_turquoise.png);
@@ -400,7 +410,7 @@ a.clear_input {
 .resultNoImage.formatvideo, .resultNoImage.formataudiovideo,
 .resultNoImage.formatsound, .resultNoImage.formataudio,
 .resultNoImage.formatother, .resultNoImage.formatreferenceentry,
-.resultNoImage.formatwebsite {
+.resultNoImage.formatwebsite, .resultNoImage.formatpaikkarakennus, .resultNoImage.formatplace {
     background-image: url(../images/icons48px-03.png);
 }
 .resultNoImage.formatdocument,
@@ -452,8 +462,12 @@ a.clear_input {
 }
 .resultNoImage.formatother,
 .resultNoImage.formatreferenceentry,
-.resultNoImage.formatwebsite {
+.resultNoImage.formatwebsite,
+.resultNoImage.formatpaikkarakennus {
     background-position: -17px -1632px;
+}
+.resultNoImage.formatplace {
+	background-position: -9px -2013px;	
 }
 
 /* Main: Search tools */
@@ -815,7 +829,8 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .myResearch .formatvideo:before,
 .myResearch .formatsound:before,
 .myResearch .formatsoundrecording:before,
-.myResearch .formatother:before {
+.myResearch .formatother:before,
+.myResearch .formatpaikkarakennus:before {
     background-image: url(../images/icons16-24px-01_black.png);
 }
 .myResearch .formatdocument:before {
@@ -855,7 +870,8 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .myResearch .formatsoundrecording:before {
     background-position: 2px -499px;
 }
-.myResearch .formatother:before {
+.myResearch .formatother:before,
+.myResearch .formatpaikkarakennus:before {
     background-position: 1px -725px;
 }
 

@@ -37,7 +37,7 @@ Kansalliskirjasto vastaa Finnan kehittämisestä ja ylläpidosta, mutta palvelua
 
 <h3>Finnan palvelukokonaisuus</h3>
 <p>
-Tämä on arkistojen, kirjastojen ja museoiden yhteinen Finna-näkymä. Tämän verkkopalvelun lisäksi organisaatiot voivat toteuttaa omia Finna-näkymiään. Tällä hetkellä muita Finna-näkymiä ovat: <a href="https://jyu.finna.fi/">JYX</a>, <a href="https://museot.finna.fi/">Museo-Finna</a> ja <a href="">Kansalliskirjaston Finna</a>.
+Tämä on arkistojen, kirjastojen ja museoiden yhteinen Finna-näkymä. Tämän verkkopalvelun lisäksi organisaatiot voivat toteuttaa omia Finna-näkymiään. Tällä hetkellä muita Finna-näkymiä ovat: <a href="https://jyu.finna.fi/">JYKDOK</a>, <a href="https://museot.finna.fi/">Museo-Finna</a> ja <a href="">Kansalliskirjaston Finna</a>.
 </p>
 
 <h3>Finnan ohjelmisto</h3>

@@ -56,7 +56,7 @@ class SearchObject_Solr extends SearchObject_Base
     protected $facetQueries = array();
     protected $pseudoFacets = array();
     protected $pseudoPrefix = "pseudofacet_";
-    
+
     // Index
     protected $index = null;
     // Field List
@@ -217,12 +217,12 @@ class SearchObject_Solr extends SearchObject_Base
                 $filters[] = $rawFilter;
             }
         }
-        
+
         // Data source filters
         if (isset($config['Records']['sources']) && $config['Records']['sources']) {
             $sources = array_map(
                 function ($input) {
-                    return '"' . addcslashes($input, '"') . '"'; 
+                    return '"' . addcslashes($input, '"') . '"';
                 },
                 explode(',', $config['Records']['sources'])
             );
@@ -250,12 +250,18 @@ class SearchObject_Solr extends SearchObject_Base
                 $this->addFilter('illustrated:"Not Illustrated"');
             }
         }
-        
+
         // Coordinates
         if (isset($_REQUEST['coordinates']) && $_REQUEST['coordinates']) {
-            $this->addFilter('{!score=none}location_geo:"Intersects(' . str_replace('"', '\"', $_REQUEST['coordinates']) . ')"');
+            $coordinates = $_REQUEST['coordinates'];
+            // Convert simple coordinates to a polygon
+            if (preg_match('/^([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)$/', $coordinates, $matches)) {
+                list(, $minX, $minY, $maxX, $maxY) = $matches;
+                $coordinates = "POLYGON(($minX $maxY,$maxX $maxY,$maxX $minY,$minX $minY,$minX $maxY))";
+            }
+            $this->addFilter('{!score=none}location_geo:"Intersects(' . str_replace('"', '\"', $coordinates) . ')"');
         }
-      
+
     }
 
     /**
@@ -299,7 +305,7 @@ class SearchObject_Solr extends SearchObject_Base
                 'lookfor' => 'last_indexed:[' . gmdate('Y-m-d\TH:i:s\Z', strtotime('-' . $_REQUEST['range'] .' day 00:00:00')) . ' TO *]'
             );
         }
-            
+
         //********************
         // Basic Search logic
         if ($this->initBasicSearch()) {
@@ -488,7 +494,7 @@ class SearchObject_Solr extends SearchObject_Base
 
         // Call the standard initialization routine in the parent:
         parent::init();
-        
+
         $this->initFilters();
 
         $this->facetConfig = array();
@@ -640,14 +646,14 @@ class SearchObject_Solr extends SearchObject_Base
         }
         return $html;
     }
-    
+
     /**
      * Get advanced search filters
      *
      * @return array OR filters from advanced search
      * @access public
-     */    
-    public function getOrFilters() 
+     */
+    public function getOrFilters()
     {
         return $this->orFilters;
     }
@@ -657,8 +663,8 @@ class SearchObject_Solr extends SearchObject_Base
      *
      * @return string OR null
      * @access public
-     */    
-    public static function getPreferredRecordSource() 
+     */
+    public static function getPreferredRecordSource()
     {
         return isset($_COOKIE['preferredRecordSource']) ?
             $_COOKIE['preferredRecordSource'] : null;
@@ -1135,7 +1141,7 @@ class SearchObject_Solr extends SearchObject_Base
                 }
             }
         }
-        
+
         // OR filters for advanced search
         if (isset($_REQUEST['orfilter']) && $_REQUEST['orfilter']) {
             $orQuery = array();
@@ -1147,7 +1153,7 @@ class SearchObject_Solr extends SearchObject_Base
                 // Save OR filters for advanced search.
                 $this->orFilters[$field] [] = $value;
             }
-        
+
             if (!empty($orQuery)) {
                 foreach ($orQuery as $field => $filter) {
                     $filterQuery[] = '{!tag=' . $field . '_filter}'
@@ -1291,27 +1297,27 @@ class SearchObject_Solr extends SearchObject_Base
         if (!$configArray['Spelling']['enabled']) {
             return;
         }
-        
+
         // Spellcheck only basic search
         if (count($this->searchTerms) != 1
             || (isset($this->searchTerms[0]['index']) && $this->searchTerms[0]['index'] != 'AllFields')
         ) {
-            return;    
+            return;
         }
-        
+
         // Do nothing if there are no suggestions
         $suggestions = isset($this->indexResult['spellcheck']['suggestions']) ?
             $this->indexResult['spellcheck']['suggestions'] : array();
         if (count($suggestions) == 0) {
             return;
         }
-        
+
         // Loop through the array of search terms we have suggestions for
         $suggestionList = array();
         // More than one word use collation suggestions
         $queryTerm = $this->_buildSpellingQuery();
         $useCollate = (str_word_count($queryTerm, 0) > 1);
-        
+
         if ($useCollate) {
             foreach ($suggestions as $suggestion) {
                 if ($suggestion[0] != "collation") {
@@ -1329,33 +1335,33 @@ class SearchObject_Solr extends SearchObject_Base
         } else {
             foreach ($suggestions as $suggestion) {
                 $ourTerm = $suggestion[0];
-            
+
                 // Skip numeric terms if numeric suggestions are disabled
                 if (($this->spellSkipNumeric && is_numeric($ourTerm))
                     || $ourTerm == 'collation' || $ourTerm == 'correctlySpelled'
                 ) {
                     continue;
                 }
-            
+
                 $ourHit  = $suggestion[1]['origFreq'];
                 $count   = $suggestion[1]['numFound'];
                 $newList = $suggestion[1]['suggestion'];
-            
+
                 $validTerm = true;
-            
+
                 // Make sure the suggestion is for a valid search term.
                 // Sometimes shingling will have bridged two search fields (in
                 // an advanced search) or skipped over a stopword.
                 if (!$this->findSearchTerm($ourTerm)) {
                     $validTerm = false;
                 }
-            
+
                 // Unless this term had no hits
                 if ($ourHit != 0) {
                     // Filter out suggestions we are already using
                     $newList = $this->_filterSpellingTerms($newList);
                 }
-            
+
                 // Make sure it has suggestions and is valid
                 if (count($newList) > 0 && $validTerm) {
                     // Did we get more suggestions then our limit?
@@ -1374,9 +1380,9 @@ class SearchObject_Solr extends SearchObject_Base
                         }
                     }
                 }
-            }            
+            }
         }
-        
+
         $this->suggestions = $suggestionList;
     }
 
@@ -1489,8 +1495,8 @@ class SearchObject_Solr extends SearchObject_Base
         ) {
             return $list;
         }
-        
-        $translationPrefix = isset($this->facetTranslationPrefix) 
+
+        $translationPrefix = isset($this->facetTranslationPrefix)
             ? $this->facetTranslationPrefix : '';
 
         // Loop through every field returned by the result set
@@ -1538,7 +1544,7 @@ class SearchObject_Solr extends SearchObject_Base
                 $currentSettings['count'] = $facet[1];
                 $currentSettings['isApplied'] = false;
                 $currentSettings['url'] = $this->renderLinkWithFilter("$field:".$facet[0]);
-                
+
                 // If we want to have expanding links (all values matching the
                 // facet) in addition to limiting links (filter current search
                 // with facet), do some extra work:
@@ -1562,14 +1568,14 @@ class SearchObject_Solr extends SearchObject_Base
                 $list[$field]['list'][] = $currentSettings;
             }
         }
-        
+
         foreach ($this->indexResult['facet_counts']['facet_queries'] as $key => $count) {
             list($field, $query) = explode(':', $key, 2);
-             
+
             if (!in_array($field, $validFields)) {
                 continue;
             }
-             
+
             // Initialize the settings for the current field
             if (!isset($list[$field])) {
                 $list[$field] = array();
@@ -1578,7 +1584,7 @@ class SearchObject_Solr extends SearchObject_Base
                 // Build our array of values for this field
                 $list[$field]['list']  = array();
             }
-        
+
             // Initialize the array of data about the current facet:
             $currentSettings = array();
             $range = VuFindSolrUtils::parseRange($query);
@@ -1586,7 +1592,7 @@ class SearchObject_Solr extends SearchObject_Base
             $currentSettings['count'] = $count;
             $currentSettings['isApplied'] = false;
             $filter = $this->buildDateRangeFilter($field, $range['from'], $range['to']);
-             
+
             $currentSettings['url'] = $this->renderLinkWithFilter($filter);
             // If we want to have expanding links (all values matching the
             // facet) in addition to limiting links (filter current search
@@ -1601,12 +1607,12 @@ class SearchObject_Solr extends SearchObject_Base
                     $currentSettings['isApplied'] = true;
                 }
             }
-        
+
             // Store the collected values:
             $list[$field]['list'][] = $currentSettings;
-        
+
         }
-        
+
         return $list;
     }
 
@@ -1684,7 +1690,7 @@ class SearchObject_Solr extends SearchObject_Base
             'mode'     => 'simplexml'
         );
         $serializer = new XML_Serializer($serializer_options);
-        
+
         // The XML parsers have trouble with the control characters
         //   inside the marc data, so lets get rid of the 'fullrecord'
         //   nodes. Not sure what we'll do if these are needed for some
@@ -1720,20 +1726,20 @@ class SearchObject_Solr extends SearchObject_Base
                         urlencode($isbn) . '&size=large';
                 }
             } else if ($id) {
-                $result['response']['docs'][$i]['imageUrl'] 
+                $result['response']['docs'][$i]['imageUrl']
                     = $configArray['Site']['url'] .
                     '/thumbnail.php?id=' .
                     urlencode($id) . '&index=0&size=large';
             }
-            
+
             if (isset($result['response']['docs'][$i]['format'])) {
                 foreach ($result['response']['docs'][$i]['format'] as &$format) {
                     $format = rtrim($format, '/');
                 }
                 unset($format);
-            }                   
+            }
         }
-        
+
         // Serialize our results from PHP arrays to XML
         if ($serializer->serialize($result)) {
             $xmlResults = $serializer->getSerializedData();
@@ -1790,8 +1796,8 @@ class SearchObject_Solr extends SearchObject_Base
      * @param bool  $removeFilter Clear existing filters from selected fields (true)
      * or retain them (false)?
      * @param int   $limit        A limit for the number of facets returned, this may
-     * be useful for very large amounts of facets that can break the JSON parse 
-     * method because of PHP out of memory exceptions. 
+     * be useful for very large amounts of facets that can break the JSON parse
+     * method because of PHP out of memory exceptions.
      *
      * @return array an array with the facet values for each index field
      * @access public
@@ -1886,7 +1892,7 @@ class SearchObject_Solr extends SearchObject_Base
         // Send back data:
         return $returnFacets;
     }
-    
+
     /**
      * Adds a facet query to the object.
      *
@@ -1899,7 +1905,7 @@ class SearchObject_Solr extends SearchObject_Base
     {
         $this->facetQueries[] = $query;
     }
-    
+
     /**
      * Adds a query which forms a value of a pseudo "facet".
      * All queries associated with the same field are grouped
@@ -1919,7 +1925,7 @@ class SearchObject_Solr extends SearchObject_Base
         foreach ($queries as $query) {
             $this->addFacetQuery($field . ':' . $query);
         }
-    }  
+    }
 }
 
 /**

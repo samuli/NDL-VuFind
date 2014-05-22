@@ -68,6 +68,8 @@ class User extends DB_DataObject
     public $language;                        // string(30)  not_null
     public $due_date_reminder;               // int(11)  not_null
     public $last_login;                      // datetime(19)  not_null binary
+    public $authMethod;                      // string(50)  null 
+
     
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User',$k,$v); }
@@ -416,7 +418,7 @@ class User extends DB_DataObject
         $list = new User_list();
         $list->user_id = $this->id;
         if (!$list->find(true)) {
-            $list->title = translate("My Favorites");
+            $list->title = "My Favorites";
             if (!$list->find(true)) {
                 $list->insert();
             }
@@ -663,6 +665,8 @@ class User extends DB_DataObject
 
             $this->due_date_notification = 0;
             $this->due_date_reminder = 0;
+
+            $this->authMethod = 'null';
      
             $this->update();
         } catch (Exception $e) {

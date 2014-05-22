@@ -260,6 +260,38 @@ class UInterface extends Smarty
             }
         }
         $this->assign('contextHelp', $contextHelp);
+
+        // Set Advanced Search start year and scale
+        // The default values:
+        $advSearchYearScale = array(0,900,1800,1910);
+
+        $yearScale = !isset($configArray['Site']['advSearchYearScale'])
+            ? false : $configArray['Site']['advSearchYearScale'];
+
+        if (isset($yearScale)) {
+            $scaleArray = explode(',', $yearScale);
+            $i = count($scaleArray);
+            // Do we have more values or just the starting year
+            if ($i > 1) {
+                $j = 0;
+                if ($i <= 4) {
+                    while ($j < $i) {
+                        $advSearchYearScale[$j] = (int)$scaleArray[$j];
+                        $j++;
+                    }
+                } else {
+                    while ($j < 4) {
+                        $advSearchYearScale[$j] = (int)$scaleArray[$j];
+                        $j++;
+                    }
+                }
+            // Only the starting year is set
+            } else {
+                $advSearchYearScale[0] = (int)$yearScale;
+            }
+        }
+        $this->assign('advSearchYearScale', $advSearchYearScale);
+
     }
 
     /**
@@ -734,6 +766,34 @@ function translate($params)
         return $translator->translate($params['text'], isset($params['prefix']) ? $params['prefix'] : '');
     } else {
         return $translator->translate($params);
+    }
+}
+
+/**
+ * Smarty extension function to check if a translation exists.
+ *
+ * @param string|array $params Either array from Smarty or plain string to translate
+ *
+ * @return boolean              translation exists
+ */
+function translationExists($params)
+{
+    global $translator;
+
+    // If no translator exists yet, create one -- this may be necessary if we
+    // encounter a failure before we are able to load the global translator
+    // object.
+    if (!is_object($translator)) {
+        global $configArray;
+
+        $translator = new I18N_Translator(
+            array('lang', 'lang_local'), $configArray['Site']['language'], $configArray['System']['debug']
+        );
+    }
+    if (is_array($params)) {
+        return $translator->translationExists($params['text'], isset($params['prefix']) ? $params['prefix'] : ''); 
+    } else {
+        return $translator->translationExists($params); 
     }
 }
 
