@@ -66,7 +66,7 @@ class Search extends Base
         $interface->assign('lookfor', $displayQuery);
         $interface->assign('searchIndex', $this->searchObject->getSearchIndex());
         $interface->assign('searchType', $this->searchObject->getSearchType());
-        
+
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
@@ -76,7 +76,7 @@ class Search extends Base
 
         // Search PCI
         $result = $this->searchObject->processSearch(false, true);
-        
+
         // We'll need recommendations no matter how many results we found:
         $interface->assign('qtime', round($this->searchObject->getQuerySpeed(), 2));
         $interface->assign(
@@ -90,7 +90,7 @@ class Search extends Base
             'sideRecommendations',
             $this->searchObject->getRecommendationsTemplates('side')
         );
-        
+
         // Whether embedded openurl autocheck is enabled
         if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
             $interface->assign('openUrlAutoCheck', true);
@@ -100,7 +100,7 @@ class Search extends Base
         $interface->assign(
             'searchParams', $this->searchObject->renderSearchUrlParams()
         );
-        
+
         // We want to guide the user to login for access to licensed material
         $interface->assign('methodsAvailable', Login::getActiveAuthorizationMethods());
         $interface->assign('userAuthorized', UserAccount::isAuthorized());
@@ -108,7 +108,7 @@ class Search extends Base
         if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('Primo Central')) {
             $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);
         }
-        
+
         if ($result['recordCount'] > 0) {
             // If the "jumpto" parameter is set, jump to the specified result index:
             $this->_processJumpto($result);
@@ -138,6 +138,9 @@ class Search extends Base
             $interface->setTemplate('list.tpl');
             $interface->assign('subpage', 'PCI/list-list.tpl');
         } else {
+            // Don't let bots crawl "no results" pages
+            $this->disallowBots();
+
             $interface->assign('recordCount', 0);
             // Was the empty result set due to an error?
             $error = $this->searchObject->getIndexError();
@@ -157,9 +160,9 @@ class Search extends Base
                     );
                 }
             }
-            
+
             if (empty($displayQuery)) {
-                $interface->assign('noQuery', true);                
+                $interface->assign('noQuery', true);
             }
 
             $interface->assign('removeAllFilters', $this->searchObject->renderSearchUrlWithoutFilters(array('prefiltered')));
@@ -184,7 +187,7 @@ class Search extends Base
         // Initialize visFacets for PCI Published Timeline
         $visFacets = array('search_sdaterange_mv' => array(0 => "", 1 => "", 'label' => "Other"));
         $interface->assign('visFacets', $visFacets);
-        
+
         $interface->display('layout.tpl');
     }
 
