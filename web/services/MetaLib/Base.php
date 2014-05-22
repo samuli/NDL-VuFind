@@ -53,6 +53,10 @@ class Base extends Action
     public function __construct()
     {
         global $interface;
+
+        // Don't allow crawling of MetaLib results at all
+        $this->disallowBots();
+
         if (!$interface->get_template_vars('metalibEnabled')) {
              PEAR::raiseError(new PEAR_Error("MetaLib is not enabled."));
         }
@@ -75,7 +79,7 @@ class Base extends Action
             if (strcasecmp($irdInfo['access'], 'guest') != 0 && !UserAccount::isAuthorized()) {
                 PEAR::raiseError(translate('metalib_not_authorized_single'));
             }
-            
+
             // Add selected ird as a virtual search set in the beginning and select it
             $sets = array_reverse($sets, true);
             $sets["_ird:$ird"] = $irdInfo['name'];
@@ -85,8 +89,8 @@ class Base extends Action
 
         $interface->assign('metalibSearchTypes', $this->searchObject->getBasicTypes());
         $interface->assign('metalibSearchSets', $sets);
-        
+
         // Increase max execution time to allow slow MetaLib searches to complete
-        set_time_limit(60); 
+        set_time_limit(60);
     }
 }
