@@ -127,12 +127,15 @@ class AJAX_MetaLib extends Action
                 $interface->assign('recordSet', $result['documents']);
                 $interface->assign('sortList',   $searchObject->getSortList());
 
-                // If there is a limit for the size of the result set in the
-                // config file, we should use it in paging.
+                // If our result set is larger than the number of records that
+                // MetaLib will let us page through (10000 records per database), 
+                // we should cut off the number before passing it to our paging 
+                // mechanism:
                 $config = getExtraConfigArray('MetaLib');
-                $totalPagerItems = (isset($config['General']['result_limit']) 
-                    && $summary['resultTotal'] > $config['General']['result_limit']) ?
-                    $config['General']['result_limit'] : $summary['resultTotal'];
+                $pageLimit = isset($config['General']['result_limit']) ?
+                    $config['General']['result_limit'] : 2000;
+                $totalPagerItems = $summary['resultTotal'] < $pageLimit ?
+                    $summary['resultTotal'] : $pageLimit;
                                                 
                 // Process Paging
                 $link = $searchObject->renderLinkPageTemplate();

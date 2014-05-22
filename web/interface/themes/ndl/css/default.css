@@ -2292,6 +2292,11 @@ ul.recordSet .resultItemLine2{
     z-index: 3;
     min-height: 20px;
     padding: 0 0 0 5px;
+	text-align:center;
+	width:100%;
+}
+.myResearch .result .imagelinks {
+	width:62px;	
 }
 .collectionDetails .recordSet.listView .result .imagelinks {
     padding: 0;
@@ -2302,8 +2307,7 @@ ul.recordSet .resultItemLine2{
     
 }
 .result .imagelinks a {
-    float:left;
-    display:block;
+    display:inline-block;
     border:1px solid #cfcfcf;
     padding:1px;
     width:1em;
@@ -2312,7 +2316,8 @@ ul.recordSet .resultItemLine2{
 }
 .result .imagelinks a:hover {
     text-decoration:none;
-    background-color:#eee;
+    background:#00a3b5;
+	color:#fff;
 }
 .result .imagelinks a:focus {
     text-decoration:none;
@@ -3404,9 +3409,10 @@ h3.metalibSearchSets {
 }
 
 #searchSets label {
-    font-weight: 500;
-    margin: 0em 5px;
-    line-height: 25px;
+	font-weight: 500;
+	margin: 0em 5px 5px;
+	display: inline-block;
+	margin-left: 44px;
 }
 
 div#metalibDescription p img {
@@ -5372,12 +5378,12 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 }
 
 #searchSets input[type="radio"] + label span {
-    display: inline-block;
-    height: 20px;
-    margin: -4px 4px 0 10px;
-    padding-left: 30px;
-    vertical-align: middle;
-    cursor: pointer;
+	display: inline-block;
+	height: 20px;
+	padding-left: 30px;
+	vertical-align: middle;
+	cursor: pointer;
+	margin-left: -30px;
 }
 
 #searchSets label {
@@ -5860,6 +5866,7 @@ ul.recordSet.listView .result .imagelinks {
     top: none;
     left: auto;
     padding: 0;
+	width: 126px;
 }
 #myFavoritesList .imagelinks {
     left: 53px;
@@ -5869,7 +5876,6 @@ ul.recordSet.galleryView .result .imagelinks {
     position:absolute;
     left:0px;
     top:0px;
-    max-width: 126px;
     background:none;
     padding:0;
 }
@@ -5879,8 +5885,16 @@ ul.recordSet.galleryView .result .imagelinks {
     background:#fff;
     background: url(../images/white_90.png) repeat;
     border:none;
-    font-size:12px;
+    font-size:1em;
     padding:2px;
+	margin:0px;
+	transition:all 0.1s linear;
+}
+#myFavoritesList .imagelinks a:hover,
+.listView .result .imagelinks a:hover,
+.galleryView .result .imagelinks a:hover {
+	background:#00a3b5;
+	color:#fff;	
 }
 
 ul.recordSet.galleryView .addToFavLink {
