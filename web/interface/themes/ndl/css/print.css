@@ -17,7 +17,8 @@ body { background: white; font-family: "Helvetica Neue", Arial, Helvetica, sans-
 .module-PCI .tabNavi ul li:first-child, .module-PCI .tabNavi ul li:last-child,
 .module-Search .tabNavi ul li:first-child + li, .module-Search .tabNavi ul li:last-child,
 .resultOptions, .resultTerms, .paginationMove, .openurls, .coverDiv, .savedLists,
-#sidebarFacets, .resultPagination, .resultSearchTools, .moreDataLink, .noAvailabilityInfo {
+#sidebarFacets, .resultPagination, .resultSearchTools, .moreDataLink, .noAvailabilityInfo,
+.recordAverageRating, .coverImagesMoreLink, .coverImagesLessLink {
     display:none;
 }
 
@@ -43,6 +44,15 @@ a:link:after { content: " (" attr(href) ") "; }
 .recordSet > .result { margin-bottom: 1em; }
 
 h1.recordTitle, .result.recordId, .result.recordId h4 { margin-top: 0; }
+
+.recordSummary.truncateField {
+    height: auto ! important;
+    margin-bottom: 1em;
+}
+
+.coverImages img#thumbnail {
+    max-width: 95%;
+}
 
 .webResource, pre.xml { word-break: break-all; }
 .webResource th { word-break: normal; }
