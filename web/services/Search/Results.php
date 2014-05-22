@@ -163,6 +163,9 @@ class Results extends Action
 
         // If no record found
         if ($searchObject->getResultTotal() < 1) {
+            // Don't let bots crawl "no results" pages
+            $this->disallowBots();
+
             $interface->setTemplate('list-none.tpl');
             $interface->assign('recordCount', 0);
             $interface->assign('removeAllFilters', $searchObject->renderSearchUrlWithoutFilters(array('prefiltered')));
