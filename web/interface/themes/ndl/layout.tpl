@@ -17,6 +17,11 @@
 {/if}
 
   <head>
+    {if ($module == 'Search' && $action == 'Results' && $pageTemplate == 'list-none.tpl')
+      || ($module == 'PCI' && $action == 'Search' && $pageTemplate == 'list-none.tpl')
+      || $module == 'MetaLib'}
+    <meta name="robots" content="noindex,nofollow"/>
+    {/if}      
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=9"/>
     <meta name="format-detection" content="telephone=no" />
@@ -27,7 +32,7 @@
     <link rel="apple-touch-icon-precomposed" href="{path filename="images/apple-touch-icon.png"}" />
 
     {if $module=='Record' && $hasRDF}
-    <link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="{$url}/Record/{$id|escape}/RDF"/>    
+    <link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="{$url}/Record/{$id|escape}/RDF"/>
     {/if}
 
     <link rel="search" type="application/opensearchdescription+xml" title="Library Catalog Search" href="{$url}/Search/OpenSearch?method=describe"/>
