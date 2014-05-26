@@ -351,7 +351,6 @@ AllFields:
     - fulltext
     - isbn
     - issn
-    - ismn_str_mv
   QueryFields:
     -
       - [OR, 50]
@@ -408,8 +407,6 @@ AllFields:
       - [onephrase, ~]
     issn:
       - [onephrase, ~]
-    ismn_str_mv:
-      - [onephrase, ~]
 
 AllFieldsExact:
   DismaxFields:
@@ -419,7 +416,6 @@ AllFieldsExact:
     - fulltext_unstemmed^4010
     - isbn
     - issn
-    - ismn_str_mv
   QueryFields:
     title_full_unstemmed:
       - [onephrase, 8600]
@@ -434,8 +430,6 @@ AllFieldsExact:
     isbn:
       - [onephrase, ~]
     issn:
-      - [onephrase, ~]
-    ismn_str_mv:
       - [onephrase, ~]
 
 # These are advanced searches that never use Dismax:
