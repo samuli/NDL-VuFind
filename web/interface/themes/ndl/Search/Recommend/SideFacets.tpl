@@ -36,7 +36,7 @@
       <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{translate text=$field}: {$solrdate|date_format:"%e.%-m.%Y"}—</span></a></li>
             {assign var=hasSolrDate value=0}    
           {else}
-        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{if $filter.field != 'building' && !isset($filter.hideField)}{translate text=$field}: {/if}{$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&mdash;"}</span></a></li>
+        <li><a href="{$filter.removalUrl|escape}"><span class="roundButton deleteButtonSmall"></span><span class="filterText">{if $filter.field != 'building' && !isset($filter.hideField)}{translate text=$field}: {/if}{$filter.display|escape|regex_replace:"/[\[\]]/":""|replace:"-9999":""|replace:"9999":""|replace:" - ":"&ndash;"}</span></a></li>
           {/if}
         {/if}
       {/foreach}
