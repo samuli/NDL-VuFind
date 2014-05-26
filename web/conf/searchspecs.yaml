@@ -435,7 +435,8 @@ AllFieldsExact:
       - [onephrase, ~]
     issn:
       - [onephrase, ~]
-    ismn_str_mv: [onephrase, ~]
+    ismn_str_mv:
+      - [onephrase, ~]
 
 # These are advanced searches that never use Dismax:
 id:
