@@ -35,7 +35,7 @@
  * Purpose:  Find a template from one of the themes being used
  *           and return its full path.
  *           Supports one parameter:
- *              filename (required) - template to look for 
+ *              filename (required) - template to look for
  *              eg: MyResearch/footer-buttons.tpl
  * -------------------------------------------------------------
  *
@@ -46,10 +46,13 @@
  */ // @codingStandardsIgnoreStart
 function smarty_modifier_template_full_path($filename)
 {   // @codingStandardsIgnoreEnd
-    // Extract details from the config file, Smarty interface 
+    // Extract details from the config file, Smarty interface
     // so we can find the template file:
-    global $configArray;
     global $interface;
+
+    if (is_null($interface)) {
+        return false;
+    }
 
     $path = $configArray['Site']['path'];
     $local = $configArray['Site']['local'];
@@ -65,7 +68,7 @@ function smarty_modifier_template_full_path($filename)
             return $file;
         }
     }
-    
+
     // nothing found
     return false;
 }
