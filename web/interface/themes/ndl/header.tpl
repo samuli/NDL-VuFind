@@ -5,7 +5,8 @@
   {assign var=bookBagItems value=$bookBag->getItems()}
 {/if}
 
-{include file="homelogo.tpl" assign=logoUrl}
+{include file="homelogo.$userLang.tpl" assign=logoUrl}
+{if !$logoUrl|trim}{include file="homelogo.tpl" assign=logoUrl}{/if}
 
   <div class="grid_24 drop">
     <a id="logo" href="{$url}" title="{translate text='Home'}">
