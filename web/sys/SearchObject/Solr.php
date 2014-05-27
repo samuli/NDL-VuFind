@@ -1568,7 +1568,7 @@ class SearchObject_Solr extends SearchObject_Base
                 $list[$field]['list'][] = $currentSettings;
             }
         }
-
+        
         foreach ($this->indexResult['facet_counts']['facet_queries'] as $key => $count) {
             list($field, $query) = explode(':', $key, 2);
 
@@ -1607,12 +1607,25 @@ class SearchObject_Solr extends SearchObject_Base
                     $currentSettings['isApplied'] = true;
                 }
             }
-
+                    
             // Store the collected values:
             $list[$field]['list'][] = $currentSettings;
 
         }
-
+        
+        // Sort configured facets alphabetically
+        $alphaSorted = $this->getFacetSetting('Results_Settings', 'alpha_sorted');
+        
+        if (is_array($alphaSorted)) { 
+            foreach ($alphaSorted as $alphaFacet) {
+                if (isset($list[$alphaFacet])) {
+                    usort($list[$alphaFacet]['list'], function($a, $b) {
+                        return strtolower($a['value']) >
+                            strtolower($b['value']);
+                    });
+                }
+            }
+        }
         return $list;
     }
 
