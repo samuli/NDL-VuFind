@@ -52,6 +52,7 @@
       <br class="clear"/>
       <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
       <br class="clear"/>
+      <input class="button buttonFinna" type="reset" value="{translate text='confirm_create_account_abort'}"/>
       <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Login'}"/>
       {if $followup}<input type="hidden" name="followup" value="{$followup|escape:"html"}"/>{/if}
       {if $followupModule}<input type="hidden" name="followupModule" value="{$followupModule|escape:"html"}"/>{/if}
@@ -119,10 +120,15 @@
          <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$followupAction|escape:"url"}?id={$recordId|escape:"url"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
      {else}
     	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$recordId|escape:"url"}/{$followupParams.0|escape:"url"}?submit#{$followupParams.1|escape:"url"}"><span>{translate text="Mozilla Persona"}</span></a>
-     {/if}	
+     {/if}
+
+<script type="text/javascript">
+   trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
+</script>
+
 {if $lightbox}
-    <script type="text/javascript">
     {literal}
+    <script type="text/javascript">
     $(document).ready(function() {        
         $.ajax({
             url: 'https://login.persona.org/include.js',
@@ -134,8 +140,18 @@
             }
         });
     });
-    {/literal}
     </script>
+    {/literal}
+{else}
+    {js filename="lightbox.js" }
+    {js filename="rc4.js" }
+    {literal}
+    <script type="text/javascript">
+       $(document).ready(function() {
+          registerAjaxLogin($('.loginForm'), false);
+       });
+    </script>
+    {/literal}  
 {/if}
    </div>
   </div>
