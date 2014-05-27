@@ -2,9 +2,9 @@ $(document).ready(function(){
     // create the slider for the publish date facet
     var date = new Date();
     var endDate = date.getFullYear() + 2;
-    $("#publishDateSlider").jslider({ from: 0, to: endDate, 
-                                      heterogeneity: ['50/1800', '75/1910'], 
-                                      scale: [0, '|', 900, '|', '1800', '|', 1910, '|', endDate], 
+    $("#publishDateSlider").jslider({ from: startDate, to: endDate, 
+                                      heterogeneity: ['0/'+startDate, '25/'+scale1, '50/'+scale2, '75/'+scale3], 
+                                      scale: [startDate, '|', scale1, '|', scale2, '|', scale3, '|', endDate], 
                                       limits: false, step: 1, 
                                       dimension: '', 
                                       format: {locale: 'fi'},
@@ -12,6 +12,9 @@ $(document).ready(function(){
                                         updateFields();
                                       }
         });
+        // Set slider start point to starting year
+        $("#publishDateSlider").jslider("value", startDate);
+
         $('#publishDatefrom, #publishDateto').change(function(){
             updateSlider();
         });
@@ -34,7 +37,7 @@ function updateFields() {
 function updateSlider() {
     var from = parseInt($('#publishDatefrom').val());
     var to = parseInt($('#publishDateto').val());
-    var min = 0;
+    var min = startDate;
     if (!from || from < min) {
         from = min;
     }

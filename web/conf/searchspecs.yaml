@@ -193,11 +193,25 @@ Subject:
 
 SubjectExact:
   DismaxFields:
-    - topic_unstemmed^150
+    - topic_unstemmed^1500
+    - geographic^50
+    - genre^50
+    - era
   QueryFields:
     - topic_unstemmed:
-      - [onephrase, 350]
+      - [onephrase, 3500]
       - [and, 150]
+      - [or, ~]
+    - geographic:
+      - [onephrase, 300]
+      - [and, 100]
+      - [or, ~]
+    - genre:
+      - [onephrase, 300]
+      - [and, 100]
+      - [or, ~]
+    - era:
+      - [and, 100]
       - [or, ~]
 
 # This field definition is a compromise that supports both journal-level and
@@ -337,6 +351,7 @@ AllFields:
     - fulltext
     - isbn
     - issn
+    - ismn_isn_mv
   QueryFields:
     -
       - [OR, 50]
@@ -393,6 +408,8 @@ AllFields:
       - [onephrase, ~]
     issn:
       - [onephrase, ~]
+    ismn_isn_mv:
+      - [onephrase, ~]
 
 AllFieldsExact:
   DismaxFields:
@@ -402,6 +419,7 @@ AllFieldsExact:
     - fulltext_unstemmed^4010
     - isbn
     - issn
+    - ismn_isn_mv
   QueryFields:
     title_full_unstemmed:
       - [onephrase, 8600]
@@ -416,6 +434,8 @@ AllFieldsExact:
     isbn:
       - [onephrase, ~]
     issn:
+      - [onephrase, ~]
+    ismn_isn_mv:
       - [onephrase, ~]
 
 # These are advanced searches that never use Dismax:

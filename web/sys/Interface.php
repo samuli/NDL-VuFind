@@ -260,6 +260,38 @@ class UInterface extends Smarty
             }
         }
         $this->assign('contextHelp', $contextHelp);
+
+        // Set Advanced Search start year and scale
+        // The default values:
+        $advSearchYearScale = array(0,900,1800,1910);
+
+        $yearScale = !isset($configArray['Site']['advSearchYearScale'])
+            ? false : $configArray['Site']['advSearchYearScale'];
+
+        if (isset($yearScale)) {
+            $scaleArray = explode(',', $yearScale);
+            $i = count($scaleArray);
+            // Do we have more values or just the starting year
+            if ($i > 1) {
+                $j = 0;
+                if ($i <= 4) {
+                    while ($j < $i) {
+                        $advSearchYearScale[$j] = (int)$scaleArray[$j];
+                        $j++;
+                    }
+                } else {
+                    while ($j < 4) {
+                        $advSearchYearScale[$j] = (int)$scaleArray[$j];
+                        $j++;
+                    }
+                }
+            // Only the starting year is set
+            } else {
+                $advSearchYearScale[0] = (int)$yearScale;
+            }
+        }
+        $this->assign('advSearchYearScale', $advSearchYearScale);
+
     }
 
     /**

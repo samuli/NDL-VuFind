@@ -120,13 +120,20 @@
   <p>Om man använder operatorn <strong>OR</strong> visas de poster som innehåller en eller flera av de termer som operatorn kombinerar.</p>
   <p> Till exempel: du söker poster som innehåller antingen ”economics Keynes” eller bara ”Keynes”: </p>
   <pre class="code">"economics Keynes" OR Keynes</pre>
-  <h3 title="NOT">NOT / -</h3>
-  <p>Operatorn <strong>NOT</strong> utesluter poster som innehåller den term som kommer efter operatorn.  </p>
-  <p>Till exempel: du söker poster som innehåller termen ”economics” men inte termen ”Keynes”:</p>
-  <pre class="code">economics NOT Keynes</pre>
-  <p>Obs! <strong>NOT</strong> kan inte användas i sökningar med bara en sökterm.  </p>
-  <pre class="code">NOT economics</pre>
-  <p>NOT kan ersättas med operatorn -. </p>
+  <h3 title="-">Bindestreck (-)</h3>
+  <p>Bindestrecket (-) avlägsnar de poster från sökresultaten, vilka innehåller termen efter strecket.
+  </p>
+  <p>Exempel: sökes poster med termen "economics" men inte termen "Keynes": 
+  </p>
+  <pre class="code">economics -Keynes</pre>
+  <p>Obs! Bindestreck kan inte användas i sökningar med en enda sökterm.</p>
+  <p>Exempel: följande sökning ger inga resultat:</p>
+  <pre class="code">-economics</pre>
+  <p>Obs! Om någon av söktermen börjar med bindestreck, fås strecket med i sökningen med ett bakstreck (\):</p>
+  <p>Exempel: sökes boken <i>Da Vinci -koodi</i> (finsk översättning):<p>
+  <pre class="code">Da Vinci \-koodi</pre>
+  <p>Obs! <strong>NOT</strong>-operatorn kan användas på motsvarande sätt som bindestrecket. <strong>NOT</strong>-operatorn kan dock ge mera resultat som ändå innehåller söktermen som skulle uteslutas.
+  </p>      
   <h3 title="Phrase searches">Frassökning</h3>
   <p>Du kan göra en exakt frassökning genom att skriva dina sökord inom citationstecken. </p>
   <p>Till exempel: du söker poster som innehåller frasen ”medeltidens historia”, inte t.ex. ”medeltidens kulturhistoria”: </p>

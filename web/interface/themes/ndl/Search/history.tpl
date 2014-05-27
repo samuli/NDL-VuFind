@@ -30,10 +30,11 @@
         <table class="datagrid savedHistory" width="100%">
           <tr>
             <th width="15%">{translate text="history_time"}</th>
-            <th width="30%">{translate text="history_search"}</th>
+            <th width="25%">{translate text="history_search"}</th>
             <th width="20%">{translate text="history_limits"}</th>
+            {if $metalibEnabled || $pciEnabled}<th width="15%">{translate text="history_search_index"}</th>{/if}
             <th width="10%" style="text-align:right">{translate text="history_results"}</th>
-            <th width="20%">{translate text="history_schedule"}</th>
+            <th width="10%">{translate text="history_schedule"}</th>
             <th width="5%" class="alignMiddle">{translate text="history_delete"}</th>
           </tr>
           {foreach item=info from=$saved name=historyLoop}
@@ -47,14 +48,19 @@
             <td>{foreach from=$info.filters item=filters key=field}{foreach from=$filters item=filter}
               <strong>{translate text=$field|escape}</strong>: {$filter.display|escape}<br/>
             {/foreach}{/foreach}</td>
+            {if $metalibEnabled || $pciEnabled}
+            	<td class="smallNotification" style="color:grey">{if $info.url|strpos:"/PCI/" == true}{translate text="Primo Central"}{elseif $info.url|strpos:"/Metalib/" == true}{translate text="Metalib Searches"}{else}{translate text="Local Records"}{/if}</td>
+            {/if}
             <td style="text-align:right">{$info.hits}</td>
             <td>
-              {if $info.url|strpos:"PCI" == false && $info.url|strpos:"MetaLib" == false}
+              {if $info.url|strpos:"/PCI/" == false && $info.url|strpos:"/MetaLib/" == false}
               <select id="{$info.searchId|escape:"html"}" name="schedule" onchange="javascript:window.location='{$path}/MyResearch/SaveSearch?save={$info.searchId|escape:"url"}&amp;mode=history&amp;schedule=' + $(this).attr('value'); return false;">
                 <option value="0"{if $info.schedule == 0} selected="selected"{/if}>{translate text="schedule_none"}</option>
                 <option value="1"{if $info.schedule == 1} selected="selected"{/if}>{translate text="schedule_daily"}</option>
                 <option value="2"{if $info.schedule == 2} selected="selected"{/if}>{translate text="schedule_weekly"}</option>
               </select>
+              {else}
+               <p class="smallNotification" style="text-align:center;max-width:none;">{translate text="Cannot set"}</p>
               {/if}
             </td>
             <td><a href="{$path}/MyResearch/SaveSearch?delete={$info.searchId|escape:"url"}&amp;mode=history" class="delete"></a></td>
@@ -75,10 +81,11 @@
           <table class="datagrid sessionHistory" width="100%">
           <tr>
             <th width="15%">{translate text="history_time"}</th>
-            <th width="30%">{translate text="history_search"}</th>
+            <th width="25%">{translate text="history_search"}</th>
             <th width="20%">{translate text="history_limits"}</th>
+            {if $metalibEnabled || $pciEnabled}<th width="15%">{translate text="history_search_index"}</th>{/if}
             <th width="10%" class="alignRight">{translate text="history_results"}</th>
-            <th width="20%"> </th>
+            <th width="10%"> </th>
             <th width="5%" class="alignRight">{translate text='Save'}</th>
           </tr>
           {foreach item=info from=$links name=historyLoop}
@@ -92,8 +99,11 @@
             <td>{foreach from=$info.filters item=filters key=field}{foreach from=$filters item=filter}
               <strong>{translate text=$field|escape}</strong>: {$filter.display|escape}<br/>
             {/foreach}{/foreach}</td>
+            {if $metalibEnabled || $pciEnabled}
+            	<td class="smallNotification" style="color:grey">{if $info.url|strpos:"/PCI/" == true}{translate text="Primo Central"}{elseif $info.url|strpos:"/MetaLib/" == true}{translate text="MetaLib Searches"}{else}{translate text="Local Records"}{/if}</td>
+            {/if}
             <td style="text-align:right">{$info.hits}</td>
-            <td> </td>
+            <td></td>
             <td class="alignMiddle"><a href="{$path}/MyResearch/SaveSearch?save={$info.searchId|escape:"url"}&amp;mode=history" class="add"></a></td>
           </tr>
           {/foreach}

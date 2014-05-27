@@ -735,7 +735,7 @@ a.clear_input:hover {
     right:0;
 }
 .infoBoxText > * {
-    padding:0 15px;
+    padding: 0 15px;
 }
 .infoBoxText .strong {
     clear:both;
@@ -1125,11 +1125,55 @@ div.dialogLoading {
 .facet_loading {
     background-position:10px top;
 }
-.metaLibLoading {
-    background: url(../images/ajax_loading.gif) no-repeat center top !important;
-    cursor:pointer !important;
-    pointer-events: none;
+
+
+.module-MetaLib .recordSet {
+   filter: alpha(opacity=100);
+   -moz-opacity:1;
+   -khtml-opacity: 1;
+   opacity: 1;
+   height: auto;
+   overflow:hidden;
 }
+
+.module-MetaLib .recordSet.loading {
+    filter: alpha(opacity=0);
+    -moz-opacity:0;
+    -khtml-opacity: 0;
+    opacity: 0;
+    height: 200px;
+	overflow:hidden;
+	
+}
+div.metalibLoading {
+	background: #fff;
+	display: block;
+    position: absolute;
+    width: 670px;
+    top: 100px;
+	z-index:2;
+	height:0px;
+	overflow:hidden;
+    text-align: center; 
+    filter: alpha(opacity=0);
+    -moz-opacity:0;
+    -khtml-opacity: 0;
+    opacity: 0;
+	transition:opacity 0.1s linear;
+}
+div.metalibLoading.show {    
+    filter: alpha(opacity=100);
+    -moz-opacity:1;
+    -khtml-opacity: 1;
+    opacity: 1;
+    background: #fff;
+	height:100px;
+
+}
+.metalibLoading img {
+	margin: 10px 0px;
+}
+
 #dyntabnav_spinner {
     position:relative;
     left:50%;
@@ -1152,6 +1196,11 @@ div.dialogLoading {
     padding:0;
     font-size: 1.23em;
 }
+.module-MetaLib .no-hits #content {
+    overflow: hidden;
+}
+
+
 .highlight {
     background: none;
 }
@@ -1999,9 +2048,8 @@ clear:both;
 
 .loginForm h3 {
     background: #b0e9db;
-    text-align: center;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px 20px 5px 0;
     margin-top: 20px;
     font-weight: 400;
     background: none;
@@ -2034,8 +2082,6 @@ clear:both;
     font-weight: bold;
 }
 .loginForm .description {
-    font-size:1.1em;
-    font-weight:300;
     padding: 2em 2em;
     background-color: #edf3f6;
     margin-top: -12px;
@@ -2073,29 +2119,30 @@ clear:both;
     font-weight: bold;
     font-size: 1.230em;
 }
-.libraryLogin, .libraryLogin .button, .shibLogin, .personaLogin {
-    text-align:center;  
-}
 .shibLogin {
-    margin-top:10px; 
+    margin-top:5px; 
 }
 .personaLogin {
-    margin-top:50px;    
+    margin-top: 14px;
+	white-space: nowrap;
+	min-height: 34px;
 }
 .libraryLogin input[type="password"],.libraryLogin input[type="text"], .libraryLogin select {
     width:80%;
     max-width: 200px;
 }
+.libraryLogin input[type="reset"] {
+    display: none;
+}
+
 .loginForm .shibText h3 {
     background: #edf3f6;
     color: #464646;
-    font-weight: 300;
-    font-size: 1.23em;
-    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: left;
     padding: 10px;
     border:none;    
-}
-.loginForm .loginDescriptionSmall {
 }
 .loginForm .alreadyLogged {
     font-size:1.23em;
@@ -2105,7 +2152,7 @@ clear:both;
 }
 .loginForm form input[type="submit"] {
     margin: 15px 0;
-    margin-top:30px !important;
+    margin-top:12px !important;
 }
 #modalDialog #errormessage {
     margin-bottom:0px !important;   
@@ -2245,6 +2292,11 @@ ul.recordSet .resultItemLine2{
     z-index: 3;
     min-height: 20px;
     padding: 0 0 0 5px;
+	text-align:center;
+	width:100%;
+}
+.myResearch .result .imagelinks {
+	width:62px;	
 }
 .collectionDetails .recordSet.listView .result .imagelinks {
     padding: 0;
@@ -2255,8 +2307,7 @@ ul.recordSet .resultItemLine2{
     
 }
 .result .imagelinks a {
-    float:left;
-    display:block;
+    display:inline-block;
     border:1px solid #cfcfcf;
     padding:1px;
     width:1em;
@@ -2265,7 +2316,8 @@ ul.recordSet .resultItemLine2{
 }
 .result .imagelinks a:hover {
     text-decoration:none;
-    background-color:#eee;
+    background:#00a3b5;
+	color:#fff;
 }
 .result .imagelinks a:focus {
     text-decoration:none;
@@ -2497,6 +2549,16 @@ ul.recordSet .resolver {
     line-height: 1em;
     margin: 0;
 }
+.module-MetaLib .resultNumbers {
+    float:none;
+}
+
+.module-MetaLib .resultNumbers .paginationBack,
+.module-MetaLib .resultNumbers .paginationNext {
+    left: 0;
+    right: 0;
+}
+
 #dualResults .resultOptions {
       height: auto;
       margin: 0.15em 0;
@@ -2973,8 +3035,7 @@ ul.recordSet .addToFavLink a {
     background-repeat: no-repeat;
     background-position: left;
     padding: 25px 60px;
-    font-size: 1.23EM;
-    margin-left: 30PX;
+    font-size: 1.23em;
 }
 .persona-login-loading {
     background-image: url(../images/ajax_loading.gif);
@@ -3331,13 +3392,27 @@ h3.metalibSearchSets {
     color: #fff;
     padding: 20px 12px 20px 15px;
     line-height: 30px;
+    margin-top: 100px;
+}
+
+.module-MetaLib #deferredResults #databaseStatuses {
+    display: none;
+}
+
+.module-MetaLib #databaseStatuses,
+.module-MetaLib #searchSets {
+    margin-bottom: 20px;
+}
+
+.resultListContainer .content.no-hits h3.metalibSearchSets {
     margin-top: 25px;
 }
 
 #searchSets label {
-    font-weight: 500;
-    margin: 0em 5px;
-    line-height: 25px;
+	font-weight: 500;
+	margin: 0em 5px 5px;
+	display: inline-block;
+	margin-left: 44px;
 }
 
 div#metalibDescription p img {
@@ -4099,7 +4174,6 @@ div.coverImageLinks.snippet {
 div.coverImagesMoreLink {
     margin-top: 3px;
     margin-bottom: 15px;
-    z-index: 10000;
     position: relative;
     overflow: auto;
 }
@@ -5304,12 +5378,12 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 }
 
 #searchSets input[type="radio"] + label span {
-    display: inline-block;
-    height: 20px;
-    margin: -4px 4px 0 10px;
-    padding-left: 30px;
-    vertical-align: middle;
-    cursor: pointer;
+	display: inline-block;
+	height: 20px;
+	padding-left: 30px;
+	vertical-align: middle;
+	cursor: pointer;
+	margin-left: -30px;
 }
 
 #searchSets label {
@@ -5792,6 +5866,7 @@ ul.recordSet.listView .result .imagelinks {
     top: none;
     left: auto;
     padding: 0;
+	width: 126px;
 }
 #myFavoritesList .imagelinks {
     left: 53px;
@@ -5801,7 +5876,6 @@ ul.recordSet.galleryView .result .imagelinks {
     position:absolute;
     left:0px;
     top:0px;
-    max-width: 126px;
     background:none;
     padding:0;
 }
@@ -5811,8 +5885,16 @@ ul.recordSet.galleryView .result .imagelinks {
     background:#fff;
     background: url(../images/white_90.png) repeat;
     border:none;
-    font-size:12px;
+    font-size:1em;
     padding:2px;
+	margin:0px;
+	transition:all 0.1s linear;
+}
+#myFavoritesList .imagelinks a:hover,
+.listView .result .imagelinks a:hover,
+.galleryView .result .imagelinks a:hover {
+	background:#00a3b5;
+	color:#fff;	
 }
 
 ul.recordSet.galleryView .addToFavLink {

@@ -1,5 +1,5 @@
 <div id="openLibraryDeferredRecommend">
-    <p>{translate text="Loading"}... <img src="{$path}/interface/themes/blueprint/images/ajax_loading.gif" /></p>
+    <p>{translate text="Loading data..."} <img src="{path filename="images/ajax_loading.gif"}" /></p>
     <script>
     var url = path + "/AJAX/Recommend?mod=OpenLibrarySubjects&params=" +
         "{$deferredOLSubjectsParams|escape:"url"|escape:"javascript"}" +

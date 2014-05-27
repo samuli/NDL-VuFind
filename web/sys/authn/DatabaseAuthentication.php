@@ -55,10 +55,10 @@ class DatabaseAuthentication implements Authentication
             $user = new User();
             $user->username = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $username;
             $user->password = $password;
-            $user->authMethod = 'Database';
             if (!$user->find(true)) {
                 $user = new PEAR_Error('authentication_error_invalid');
             } else {
+                $user->authMethod = 'Database';
                 $user->last_login = date('Y-m-d H:i:s');
                 $user->update();
             }

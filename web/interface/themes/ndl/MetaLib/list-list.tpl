@@ -1,3 +1,11 @@
+
+<div class="resultNumbers">
+  {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
+   <span class="currentPage"><span>{translate text="Search Results"}</span> {$recordStart}&#8201;-&#8201;{$recordEnd} / </span>
+   <span class="resultTotals">{$recordCount}</span>
+   {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
+</div>
+      
 {* check save statuses via AJAX *}
 {js filename="check_save_statuses.js"}
 {js filename="jquery.cookie.js"}
@@ -50,7 +58,7 @@
             {if $record.Author}
             {translate text='by'}
             {foreach from=$record.Author item=author name="loop"}
-              <a href="{$url}/MetaLib/Search?type=Author&amp;lookfor={$author|unhighlight|escape:"url"}">{$author|highlight}</a>{if !$smarty.foreach.loop.last},{/if} 
+              <a href="{$url}/MetaLib/Search?lookfor={$author|unhighlight|escape:"url"}">{$author|highlight}</a>{if !$smarty.foreach.loop.last},{/if} 
             {/foreach}
             <br/>
             {/if}
@@ -98,3 +106,10 @@
   {/foreach}
   </ul>
 </form>
+
+{include file="MetaLib/database-statuses.tpl"}
+
+
+{include file="Search/paging.tpl" position="Bottom"}
+
+{include file="piwik.tpl"}

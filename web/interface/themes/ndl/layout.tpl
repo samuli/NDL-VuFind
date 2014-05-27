@@ -23,7 +23,6 @@
     <meta name="robots" content="noindex,nofollow"/>
     {/if}      
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=9"/>
     <meta name="format-detection" content="telephone=no" />
     {include file="og-metatags.tpl"}
     {if $addHeader}{$addHeader}{/if}
@@ -47,7 +46,7 @@
 
     {* Load Blueprint CSS framework *}
     {css media="screen, projection" filename="blueprint/screen.css"}
-    {css media="print" filename="blueprint/print.css"}
+
     <!--[if lt IE 8]>{css media="screen, projection" filename="blueprint/ie.css"}<![endif]-->
     {* Adjust some default Blueprint CSS styles *}
     {css media="screen, projection" filename="blueprint/blueprint-adjust.css"}
@@ -81,6 +80,7 @@
     {css media="screen, projection" filename="settings.css"}
     
     {css media="print" filename="print.css"}
+    {css media="print" filename="print_custom.css"}
     {if $dateRangeLimit}
       {css media="screen, projection" filename="jslider/jslider.css"}
     {/if}
@@ -320,8 +320,10 @@
       </div>
 
     </div> {* End doc *}
-
-    {include file="piwik.tpl"}
+    {* MetaLib search results are tracked in MetaLib/list-list.tpl *}
+    {if !( ($module eq 'MetaLib') && ($action eq 'Search') )}
+       {include file="piwik.tpl"}
+    {/if}    
     {include file="AJAX/keepAlive.tpl"}
   </body>
   {if !$showTopSearchBox}

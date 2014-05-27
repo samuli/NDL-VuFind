@@ -80,10 +80,11 @@ class MozillaPersonaAuthentication implements Authentication
             return new PEAR_ERROR($result->reason);
         }
         $user = new User();
-        $user->authMethod = 'MozillaPersona';
 
         $user->username = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $result->email;
         $userIsInVufindDatabase = $user->find(true);
+
+        $user->authMethod = 'MozillaPersona';
         if (!$userIsInVufindDatabase || !$user->email) {
             $user->email = $result->email;
         }

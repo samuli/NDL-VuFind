@@ -38,6 +38,8 @@ require_once 'Authentication.php';
  */
 class ILSAuthentication implements Authentication
 {
+    const ERROR_CONFIRM_CREATE_ACCOUNT = 1;
+
     /**
      * Attempt to authenticate the current user.
      *
@@ -68,6 +70,35 @@ class ILSAuthentication implements Authentication
                         $profile = $catalog->getMyProfile($patron);
                         $patron['email'] = $profile['email'];
                     }
+
+                    $confirm = isset($_POST['confirm']);
+                    
+                    if (!$confirm) {
+                        list($ILSUserExists, $user) = $this->checkIfILSUserExists($patron);
+                        if (!$ILSUserExists) {
+                            // First login with library card
+                            
+                            // Check if account is connected to existing user(s)
+                            $accounts = $this->checkIfLibraryCardIsConnectedToOtherUser($patron);
+                            if (!empty($accounts)) {
+                                $res = array();
+                                foreach ($accounts as $account) {
+                                    $tmp = array('email' => $account->email);
+                                    if ($account->authMethod !== null) {
+                                        $tmp['authMethod'] = translate("confirm_create_account_$account->authMethod");
+                                    }
+                                    $res[] = $tmp;
+                                }
+                                // Confirm if new user account should be created
+                                return new PEAR_Error('confirm_create_account', 
+                                                       ILSAuthentication::ERROR_CONFIRM_CREATE_ACCOUNT, 
+                                                       null,
+                                                       null, 
+                                                       json_encode($res)
+                                                       );
+                            }
+                        }
+                    }
                     $user = $this->_processILSUser($patron);
                 } else {
                     $user = new PEAR_Error('authentication_error_invalid');
@@ -80,14 +111,16 @@ class ILSAuthentication implements Authentication
     }
 
     /**
-     * Update the database using details from the ILS, then return the User object.
+     * Check if an ILS User object matching the given patron info already exists in the database.
      *
      * @param array $info User details returned by ILS driver.
      *
-     * @return object     Processed User object.
+     * @return array with elements:     
+     *   - boolean true if User object exists in the database
+     *   - User object, as retrieved from the database if found, or initialized with the field 'username' othervise.
      * @access private
      */
-    private function _processILSUser($info)
+    protected function checkIfILSUserExists($info)
     {
         global $configArray;
 
@@ -103,16 +136,67 @@ class ILSAuthentication implements Authentication
 
         // Check to see if we already have an account for this user:
         $user = new User();
-        $user->authMethod = 'ILS';
         $user->username = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $info[$usernameField];
-        if ($user->find(true)) {
-            $insert = false;
-        } else {
-            $insert = true;
+        $insert = $user->find(true);
+        return array($insert, $user);
+    }
+
+    /**
+     * Check if library card is already connected to an existing User object.
+     *
+     * @param array $info User details returned by ILS driver.
+     *
+     * @return array User objects that have the given library card connected.
+     * @access private
+     */
+    protected function checkIfLibraryCardIsConnectedToOtherUser($info)
+    {
+        global $configArray;
+
+        include_once "services/MyResearch/lib/User.php";
+        include_once "services/MyResearch/lib/User_account.php";
+
+        $account = new User_account();
+        $account->cat_username = $info['cat_username'];
+
+        $users = array();
+
+        if ($account->find(false)) {
+            $fullUsername = (isset($configArray['Site']['institution']) ? $configArray['Site']['institution'] . ':' : '') . $account->cat_username;
+            while ($account->fetch()) {
+                $user = new User();
+                $user->id = $account->user_id;
+                if ($user->find(true)) {
+                    if ($user->username !== $fullUsername) {
+                        $users[] = $user;
+                    }
+                }
+            }
         }
+        return $users;
+    }
+
+    /**
+     * Update the database using details from the ILS, then return the User object.
+     *
+     * @param array $info User details returned by ILS driver.
+     *
+     * @return object     Processed User object.
+     * @access private
+     */
+    private function _processILSUser($info)
+    {
+        global $configArray;
+
+        include_once "services/MyResearch/lib/User.php";
+        
+        // Check to see if we already have an account for this user:
+        list($ILSUserExists, $user) = $this->checkIfILSUserExists($info);
+        $insert = !$ILSUserExists;
 
         // No need to store the ILS password in VuFind's main password field:
         $user->password = "";
+        $user->authMethod = 'ILS';
 
         // Update user information based on ILS data:
         $user->firstname = $info['firstname'] == null ? " " : $info['firstname'];

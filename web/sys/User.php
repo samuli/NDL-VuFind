@@ -74,30 +74,34 @@ class UserAccount
             return true;
         }
 
-        if (isset($_SESSION['authMethod']) && isset($configArray['Authorization']['authentication_methods'])) {
-            if (in_array($_SESSION['authMethod'], $configArray['Authorization']['authentication_methods'])) {
-                if ($_SESSION['authMethod'] == 'ILS') {
-                    // Check ILS-based authorization
-                    $patron = UserAccount::catalogLogin();
-                    if ($patron !== false) {
-                        $catalog = ConnectionManager::connectToCatalog();
-                        if ($catalog->checkFunction('getPatronAuthorizationStatus')) {
-                            $status = $catalog->getPatronAuthorizationStatus($patron);
-                            if (!PEAR::isError($status)) {
-                                $_SESSION['userAuthorized'] = $status;
-                                return $status;
-                            }
-                        }
-                    }
-                    return false;
-                }
+        if (isset($configArray['Authorization']['ip']) && $configArray['Authorization']['ip']) {
+            if (UserAccount::isInIpRange()) {
                 return true;
             }
         }
 
-        if (isset($configArray['Authorization']['ip']) && $configArray['Authorization']['ip']) {
-            if (UserAccount::isInIpRange()) {
-                return true;
+        if (isset($_SESSION['authMethod']) && isset($configArray['Authorization']['authentication_methods'])) {
+            if (in_array($_SESSION['authMethod'], $configArray['Authorization']['authentication_methods'])) {
+                if ($_SESSION['authMethod'] == 'ILS') {
+                    if (!isset($_SESSION['userAuthorized'])) {
+                        // Check ILS-based authorization
+                        $patron = UserAccount::catalogLogin();
+                        if ($patron !== false) {
+                            $catalog = ConnectionManager::connectToCatalog();
+                            if ($catalog->checkFunction('getPatronAuthorizationStatus')) {
+                                $status = $catalog->getPatronAuthorizationStatus($patron);
+                                if (!PEAR::isError($status)) {
+                                    $_SESSION['userAuthorized'] = $status;
+                                    if ($status) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    return true;
+                }
             }
         }
 
