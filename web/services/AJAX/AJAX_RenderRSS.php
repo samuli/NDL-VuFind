@@ -126,9 +126,11 @@ class AJAX_RenderRSS extends Action
         }
 
         if ($rssFeed['url']) {
-            $rss =& new XML_RSS($rssFeed['url']);
-            $rss->parse();
+            $rssString = file_get_contents($rssFeed['url']);
+            $rss =& new XML_RSS($rssString);
 
+            $rss->parse();
+            
             $channelInfo = $rss->getChannelInfo();
             $rssFeed['channelURL'] 
                 = isset($channelInfo['link']) ? $channelInfo['link'] : null;
@@ -139,7 +141,7 @@ class AJAX_RenderRSS extends Action
             } else {
                 $rssFeed['items'] = $rss->getItems();
             }
-
+            
             if (trim($feed['title']) == 'rss') {
                 $rssFeed['title'] 
                     = isset($rss->channel['title']) ? $rss->channel['title'] : false;
@@ -151,7 +153,9 @@ class AJAX_RenderRSS extends Action
                 foreach ($rssFeed['items'] as &$item) {
                     $itemTitle = $item['title'];
                     if (strlen($itemTitle) > $truncValue) {
-                        $item['title'] = trim(mb_substr($itemTitle, 0, $truncValue, 'UTF-8'))."&hellip;";
+                        $item['title'] = trim(
+                            mb_substr($itemTitle, 0, $truncValue, 'UTF-8')
+                        ) . '&hellip;';
                     }
                 }
             }           
