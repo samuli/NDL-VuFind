@@ -49,15 +49,16 @@ function smarty_modifier_template_full_path($filename)
     // Extract details from the config file, Smarty interface
     // so we can find the template file:
     global $interface;
+    global $configArray;
 
-    if (is_null($interface)) {
+    if (is_null($interface) || is_null($configArray)) {
         return false;
     }
 
     $path = $configArray['Site']['path'];
     $local = $configArray['Site']['local'];
     $themes = explode(',', $interface->getVuFindTheme());
-
+    
     // loop through the themes and return the path of LAST theme in the list
     // that has the template file, this allows for themes to override
     // only a subset of template files
