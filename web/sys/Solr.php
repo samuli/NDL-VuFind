@@ -138,7 +138,7 @@ class Solr implements IndexEngine
      * Comma-separated list of data source codes to search in order of priority (most desired first)
      */
     private $_recordSources = '';
-    
+
     /**
      * Array of buildings in facet query, used to override configured merge priority
      */
@@ -153,21 +153,21 @@ class Solr implements IndexEngine
      * Whether to filter out component parts merged with host records
      */
     private $_hideComponentParts = false;
-    
+
     /**
      * Unicode normalization to perform. Valid values are empty, NFC, NFD, NFKC and NFKD.
      */
     private $_unicodeNormalizationForm = '';
-    
+
     /**
      * Constructor
      *
-     * @param string $host  The URL for the local Solr Server
-     * @param string $index The core to use on the specified server
+     * @param string|string[] $hosts The URL(s) for the local Solr Server
+     * @param string          $index The core to use on the specified server
      *
      * @access public
      */
-    public function __construct($host, $index = '')
+    public function __construct($hosts, $index = '')
     {
         global $configArray;
 
@@ -179,21 +179,40 @@ class Solr implements IndexEngine
             $this->core = $index;
         }
 
-        $this->host = $host . '/' . $this->core;
+        if (!is_array($hosts)) {
+            $hosts = array($hosts);
+        }
 
-        // Test to see solr is online
-        $test_url = $this->host . "/admin/ping";
-        $test_client = new Proxy_Request();
-        $test_client->setMethod(HTTP_REQUEST_METHOD_GET);
-        $test_client->setURL($test_url);
-        $result = $test_client->sendRequest();
-        if (!PEAR::isError($result)) {
-            // Even if we get a response, make sure it's a 'good' one.
-            if ($test_client->getResponseCode() != 200) {
-                PEAR::raiseError('Solr index is offline.');
+        for ($i = 0; $i < count($hosts); $i++) {
+            $host = $hosts[$i];
+            $this->host = $host . '/' . $this->core;
+
+            // Test to see solr is online
+            $test_url = $this->host . "/admin/ping";
+            $test_client = new Proxy_Request();
+            $test_client->setMethod(HTTP_REQUEST_METHOD_GET);
+            $test_client->setURL($test_url);
+            PEAR::pushErrorHandling(PEAR_ERROR_RETURN);
+            $result = $test_client->sendRequest();
+            PEAR::popErrorHandling();
+            if (!PEAR::isError($result)) {
+                // Even if we get a response, make sure it's a 'good' one.
+                if ($test_client->getResponseCode() != 200) {
+                    if ($i == count($hosts) - 1) {
+                        // Last possible host, raise an error
+                        PEAR::raiseError('Solr index is offline.');
+                    }
+                    continue;
+                }
+            } else {
+                if ($i == count($hosts) - 1) {
+                    // Last possible host, raise an error
+                    PEAR::raiseError($result);
+                }
+                continue;
             }
-        } else {
-            PEAR::raiseError($result);
+            // Test was successful, use this host
+            break;
         }
 
         // If we're still processing then solr is online
@@ -209,7 +228,7 @@ class Solr implements IndexEngine
             $this->_caseSensitiveRanges
                 = $searchSettings['General']['case_sensitive_ranges'];
         }
-        
+
         // Turn on highlighting if the user has requested highlighting or snippet
         // functionality:
         $highlight = !isset($searchSettings['General']['highlighting'])
@@ -250,26 +269,26 @@ class Solr implements IndexEngine
             // need to filter fields and facets:
             $this->setShards($shards);
         }
-        
+
         // Merged records
         if (isset($searchSettings['Records']['merged_records'])) {
             $this->_mergedRecords = $searchSettings['Records']['merged_records'];
             $this->_recordSources = isset($searchSettings['Records']['sources']) ? $searchSettings['Records']['sources'] : '';
             $this->setPreferredRecordSource();
         }
-        
+
         // Hide component parts?
         if (isset($searchSettings['General']['hide_component_parts'])) {
             $this->_hideComponentParts
                 = $searchSettings['General']['hide_component_parts'];
-        }       
+        }
 
         // Use UNICODE normalization?
         if (isset($configArray['Index']['unicode_normalization_form'])) {
             $this->_unicodeNormalizationForm
                 = $configArray['Index']['unicode_normalization_form'];
-        }       
-        
+        }
+
     }
 
     /**
@@ -303,7 +322,7 @@ class Solr implements IndexEngine
     private function _loadSearchSpecs()
     {
         global $configArray;
-        
+
         // Turn relative path into absolute path:
         $fullPath = $configArray['Site']['local'] . '/' . $this->searchSpecsFile;
 
@@ -364,7 +383,7 @@ class Solr implements IndexEngine
                 return $this->_searchSpecs["{$handler}Exact"];
             }
         }
-        
+
         // Return specs on the named search if found (easiest, most common case).
         if (isset($this->_searchSpecs[$handler])) {
             return $this->_searchSpecs[$handler];
@@ -456,7 +475,7 @@ class Solr implements IndexEngine
         return isset($result['response']['docs'])
             ? $result['response']['docs'] : null;
     }
-    
+
     /**
      * Get records similiar to one record
      * Uses MoreLikeThis Request Handler
@@ -477,14 +496,14 @@ class Solr implements IndexEngine
             'q' => 'id:"' . addcslashes($id, '"') . '"',
             'qt' => 'morelikethis'
         );
-        
+
         if ($this->_mergedRecords) {
             // Filter out merged children by default
             if (!isset($filter)) {
                 $filter = array();
             }
             $filter[] = '-merged_child_boolean:TRUE';
-            $filter[] = '-local_ids_str_mv:"' . addcslashes($id, '"') . '"'; 
+            $filter[] = '-local_ids_str_mv:"' . addcslashes($id, '"') . '"';
         } elseif ($this->_mergedRecords !== null) {
             // Filter out merged records by default
             if (!isset($filter)) {
@@ -505,22 +524,22 @@ class Solr implements IndexEngine
         if ($this->_recordSources) {
             $sources = array_map(
                 function($input) {
-                    return '"' . addcslashes($input, '"') . '"'; 
+                    return '"' . addcslashes($input, '"') . '"';
                 },
                 explode(',', $this->_recordSources)
             );
             $filter[] = 'source_str_mv:(' . implode(' OR ', $sources) . ')';
         }
-        
+
         if (isset($filter)) {
             $options['fq'] = $filter;
         }
-        
+
         // Build Filter Query
         if (is_array($filter) && count($filter)) {
             $options['fq'] = $filter;
         }
-        
+
         $result = $this->_select('GET', $options);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result);
@@ -1156,9 +1175,9 @@ class Solr implements IndexEngine
                         // needed to indicate when we want more than the default
                         // limit for hierarchical facets.
                         $options["f.$name.facet.limit"] = 1000;
-                    }                    
+                    }
                 } else {
-                    $options['facet.prefix'] = $facet['prefix']; 
+                    $options['facet.prefix'] = $facet['prefix'];
                 }
             }
             unset($facet['prefix']);
@@ -1170,8 +1189,8 @@ class Solr implements IndexEngine
                 unset($facet['offset']);
             }
             if (isset($facet['query'])) {
-            	$options['facet.query'] = $facet['query'];
-            	unset($facet['query']);
+                $options['facet.query'] = $facet['query'];
+                unset($facet['query']);
             }
             foreach ($facet as $param => $value) {
                 $options[$param] = $value;
@@ -1193,7 +1212,7 @@ class Solr implements IndexEngine
                 }
                 $filter[] = '-merged_boolean:TRUE';
             }
-            
+
             if ($this->_hideComponentParts) {
                 // Filter out component parts by default
                 if (!isset($filter)) {
@@ -1202,7 +1221,7 @@ class Solr implements IndexEngine
                 $filter[] = '-hidden_component_boolean:TRUE';
             }
         }
-        
+
         // Build Filter Query
         $this->_mergeBuildingPriority = array();
         if (is_array($filter) && count($filter)) {
@@ -1239,7 +1258,7 @@ class Solr implements IndexEngine
         if (isset($_REQUEST['debugSolrQuery'])) {
             $options['debugQuery'] = 'true';
         }
-        
+
         if ($this->debug) {
             echo '<pre>Search options: ' . print_r($options, true) . "\n";
 
@@ -1447,8 +1466,8 @@ class Solr implements IndexEngine
         $this->_preferredRecordSource = SearchObject_Solr::getPreferredRecordSource();
     }
 
-                
-    
+
+
     /**
      * Submit REST Request to write data (protected wrapper to allow child classes
      * to use this mechanism -- we should eventually phase out private _update).
@@ -1556,7 +1575,7 @@ class Solr implements IndexEngine
                 }
             }
         }
-        
+
         // pass the shard parameter along to Solr if necessary; if the shard
         // count is 0, shards are disabled; if the count is 1, only one shard
         // is selected so the host has already been adjusted:
@@ -1680,7 +1699,7 @@ class Solr implements IndexEngine
                     echo 'ID: ' . $doc['id'];
                     if (isset($doc['merged_boolean'])) {
                         echo ': ' . implode(', ', $doc['local_ids_str_mv']);
-                    } 
+                    }
                     echo "\n";
                     if (isset($doc['merged_child_boolean'])) {
                         echo " deduplicated with ";
@@ -1691,13 +1710,13 @@ class Solr implements IndexEngine
             print_r($result['debug']);
             echo "-->\n";
         }
-        
+
         // Handle merged records (choose the local record by priority)
         if ($this->_mergedRecords && isset($result['response']['docs'])) {
             $datasourceConfig = getExtraConfigArray('datasources');
             $sourcePriority = array_flip(explode(',', $this->_recordSources));
             $buildingPriority = $this->_mergeBuildingPriority;
-            $prefRecFromCookie = (is_array($buildingPriority) && 
+            $prefRecFromCookie = (is_array($buildingPriority) &&
                 empty($buildingPriority)) ? true : false;
             array_unshift($buildingPriority, '');
             $buildingPriority = array_flip($buildingPriority);
@@ -1743,19 +1762,19 @@ class Solr implements IndexEngine
                     // of dedupId
                     if ($prefRecFromCookie) {
                         if ($prefRec = $this->_preferredRecordSource) {
-                            $dedupId = isset($dedupData[$prefRec]['id']) 
+                            $dedupId = isset($dedupData[$prefRec]['id'])
                                 ? $dedupData[$prefRec]['id'] : $dedupId;
                         }
                     }
-                    
+
                     $doc['dedup_id'] = $dedupId;
                     $idList[] = $dedupId;
-                        
+
                     // Sort dedupData by priority
                     uasort(
-                        $dedupData, 
+                        $dedupData,
                         function($a, $b) {
-                            return $a['priority'] - $b['priority'];    
+                            return $a['priority'] - $b['priority'];
                         }
                     );
                     $doc['dedup_data'] = $dedupData;
@@ -1796,7 +1815,7 @@ class Solr implements IndexEngine
                                 }
                             }
                         }
-                        
+
                         $doc = $dedupRecord;
                     }
                 }
@@ -1812,7 +1831,7 @@ class Solr implements IndexEngine
                 }
             }
         }
-        
+
         // Inject highlighting details into results if necessary:
         if (isset($result['highlighting'])) {
             foreach ($result['response']['docs'] as $key => $current) {
@@ -1879,20 +1898,20 @@ class Solr implements IndexEngine
     {
         // Normalize UNICODE form
         switch ($this->_unicodeNormalizationForm) {
-        case 'NFC': 
+        case 'NFC':
             $input = Normalizer::normalize($input, Normalizer::FORM_C);
             break;
-        case 'NFD': 
+        case 'NFD':
             $input = Normalizer::normalize($input, Normalizer::FORM_D);
             break;
-        case 'NFKC': 
+        case 'NFKC':
             $input = Normalizer::normalize($input, Normalizer::FORM_KC);
             break;
-        case 'NFKD': 
+        case 'NFKD':
             $input = Normalizer::normalize($input, Normalizer::FORM_KD);
             break;
         }
-        
+
         // Normalize fancy quotes:
         $quotes = array(
             "\xC2\xAB"     => '"', // « (U+00AB) in UTF-8
@@ -2073,7 +2092,7 @@ class Solr implements IndexEngine
         $this->client->addQueryString('wt', 'json');
 
         $filters = SearchObject_Solr::getDefaultHiddenFilters();
-        
+
         if ($this->_mergedRecords) {
             // Filter out merged children by default
             $filters[] = '-merged_child_boolean:TRUE';
@@ -2084,16 +2103,16 @@ class Solr implements IndexEngine
             }
             $filters[] = '-merged_boolean:TRUE';
         }
-        
+
         if (!empty($filters)) {
             $this->client->addQueryString('filters', implode(' AND ', $filters));
         }
-        
+
         if ($this->debug) {
             echo '<pre>Browse: ' . $this->client->getUrl() . "\n";
             echo "</pre>\n";
         }
-        
+
         $result = $this->client->sendRequest();
 
         if (!PEAR::isError($result)) {
@@ -2104,7 +2123,7 @@ class Solr implements IndexEngine
             return $result;
         }
     }
-    
+
     /**
      * Convert a terms array (where every even entry is a term and every odd entry
      * is a count) into an associate array of terms => counts.
