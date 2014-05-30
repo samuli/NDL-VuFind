@@ -125,6 +125,13 @@ End Cover Image *}
   </tr>
   {/if}
 
+  {if $coreSubjectActors}
+  <tr valign="top">
+    <th>{translate text='Subject Actor'}: </th>
+    <td>{foreach from=$coreSubjectActors item=value}{$value|escape}<br>{/foreach}</td>
+  </tr>
+  {/if}
+  
   {if $coreNonPresenterAuthors}
   <tr valign="top" class="recordAuthors">
     <th>{translate text='Authors'}: </th>
