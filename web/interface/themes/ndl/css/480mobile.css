@@ -642,12 +642,17 @@
     }
     
     /* Content */
-    .module-Content #main > .menu {
-        display:none;
-    }
+    
     .module-Content #main .content .grid_17 {
         width:470px;
         padding-left:0;
+    }
+    .module-Content #main .content .grid_17.push_7 {
+        width:330px;
+    }
+    
+    .module-Content .main .menu ul li {
+        font-size: 0.96em;
     }
     
     /* Tabs */
