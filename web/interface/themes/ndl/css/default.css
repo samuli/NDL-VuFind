@@ -213,6 +213,9 @@ a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
 #headerMenu ul.subNav.activeTouch {
     display:block;
 }
+.menuLogin .logout span {
+	padding-left:20px !important;	
+}
 
 /*** Hide styled select elements ****/
 .styledDropdowns, .searchForm_styled, .jumpMenu, .resultOptionLimit select {
@@ -3113,7 +3116,7 @@ ul.recordSet .addToFavLink a {
 }
 .openurl_more_full {
     display: block;
-    padding-left: 24px;
+    padding-left: 0px;
     margin: 5px 0;
 }
 .checkedout:before, .checkedoutLoc:before {
