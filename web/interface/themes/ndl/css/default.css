@@ -503,7 +503,7 @@ div.sidegroup {
     margin: 20px 20px 10px;
 }
 #searchFormHeader #searchFormContainer {
-    padding:0 0 30px;
+    padding:0 0 10px;
 }
 
 .headerMetaLib .searchbox {
@@ -932,6 +932,7 @@ body > ul.ui-menu.ui-widget li:only-child a:hover {
 }
 .searchbox .dropdown dd ul {
     left:-7px;
+	top:1px;
 }
 
 /* Pop ups */
@@ -1064,19 +1065,20 @@ body > .ui-widget .button {
 
 .keepFilters {
     display: none;
-    clear: none;
-    float: left;
-    margin: 6px 0 0 12px;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border-radius: 10px 10px 10px 10px;
-    color: #666666;
-    padding: 8px 3px 9px 7px;
-    position: absolute;
-    top: 44px;
-    left: 402px;
-    width: 206px;
-    height: 18px;
-    z-index:10000;
+	clear: none;
+	float: left;
+	margin: 5px 0 0 12px;
+	background: none repeat scroll 0 0 #FFFFFF;
+	border-radius: 0px 0px 0px 0px;
+	color: #666666;
+	padding: 8px 3px 9px 2px;
+	position: absolute;
+	top: 42px;
+	left: 0px;
+	width: 206px;
+	height: 18px;
+	z-index: 10000;
+	box-shadow: 0px 15px 20px -16px;
 }
 .keepFilters input {
     margin-top: .15em;
@@ -3386,6 +3388,7 @@ ul.recordSet .addToFavLink a {
     font-size: 1.777em;
     margin-top: 0;
     margin-left: 5px;
+	margin-bottom:0px;
 }
 
 h3.metalibSearchSets {

@@ -13,10 +13,9 @@
       {/if *}
       {if $dualResultsEnabled && $searchType != 'advanced'}
       <div class="headerLeft">
-        <h2 class="searchTerms grid_12">
-      {else}
-      <h2 class="searchTerms grid_18">
       {/if}
+      <h2 class="searchTerms grid_18">
+
       {if $isEmptySearch}
         {if $searchType == 'advanced'}
           {translate text="Advanced Search"}: {translate text="history_empty_search_adv"}
@@ -39,11 +38,7 @@
       {/if}
       </h2>
       {if $spellingSuggestions}
-      {if $dualResultsEnabled && $searchType != 'advanced'}
-      <div class="correction grid_12">
-      {else}
-      <div class="correction grid_18">
-      {/if}
+      	<div class="correction grid_18">
         {translate text="spell_suggest"}:
         {foreach from=$spellingSuggestions item=details key=term name=termLoop}
           <span class="correctionTerms">{foreach from=$details.suggestions item=data key=word name=suggestLoop}<a href="{$data.replace_url|escape}">{$word|escape}</a>{if $data.expand_url} <a class="expandSearch" title="{translate text="spell_expand_alt"}" {* alt="{translate text="spell_expand_alt"}" NOT VALID ATTRIBUTE *} href="{$data.expand_url|escape}"></a> {/if}{if !$smarty.foreach.suggestLoop.last}, {/if}{/foreach}
