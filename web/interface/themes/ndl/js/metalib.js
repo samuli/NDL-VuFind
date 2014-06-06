@@ -1,6 +1,12 @@
 var metalibPage;
 var metalibInited = false;
 var metalibLoading = false;
+var metalibSearchTools = [
+    {'param': '&edit', 'selector': '.advancedOptions .advancedEdit'},
+    {'param': '?save', 'selector': '.searchtools .toolSavedSearch.not-saved'},
+    {'param': '?delete', 'selector': '.searchtools .toolSavedSearch.saved'}
+];
+
 
 function metalibSearch(step, set, saveHistory) 
 {
@@ -84,7 +90,8 @@ function metalibSearch(step, set, saveHistory)
     }
 
     metalibToggleLoading(true);
-    
+    metalibInitSearchTools();
+
     var contentHolder = $('.resultListContainer .content');
     contentHolder.removeClass('no-hits');
     
@@ -117,6 +124,7 @@ function metalibSearch(step, set, saveHistory)
             $('#sidebarFacets').append(setStatuses);
 
             if ($('ul.recordSet').length) {
+                metalibInitSearchTools();
                 metalibInitPagination();
                 metalibScrollToRecord();                
             } else {
@@ -159,12 +167,20 @@ function metalibToggleLoading(mode)
         $('.metalibLoading h4').html(txt);
         $('.metalibLoading .setNotification span').html(metalibSearchsets[metalibSet]);
     }
-    	var loader = $('.metalibLoading');
+    var loader = $('.metalibLoading');
     loader.toggleClass("show", mode);
-	    var recSet = $('.recordSet');
+    var recSet = $('.recordSet');
 	if (recSet.length) {
         recSet.toggleClass("loading", mode);
 	}
+
+
+    $.each(metalibSearchTools, function (ind, data) {
+        $(data.selector).toggleClass('loading', mode);        
+    });
+
+
+
 }
 function metalibInitPagination()
 {
@@ -199,6 +215,40 @@ function metalibInitPagination()
         e.preventDefault(); 
     });
 }
+
+function metalibInitSearchTools()
+{
+    // Assign searchId URL parameter to links that need it.
+    // (Edit advanced search, save/delete search) 
+    $.each(metalibSearchTools, function (ind, data) {
+        $(data.selector + ' a').unbind('click').on('click', function(e) {            
+            if (!metalibLoading) {
+                var o = $(this);
+                var url = o.attr('href');
+                url += data.param + '=' + metalibSearchId;
+                window.location = url;                
+            }
+            
+            e.preventDefault();
+        });
+    });
+
+    if (metalibLoading) {
+        return;
+    }
+
+    // Toggle 'Save search' or 'Delete saved search' links
+    var enableLink = $('.searchtools .toolSavedSearch.' + (metalibSavedSearch ? 'saved' : 'not-saved'));
+    var disableLink = $('.searchtools .toolSavedSearch.' + (!metalibSavedSearch ? 'saved' : 'not-saved'));
+
+    enableLink.show();
+    disableLink.hide();
+
+    // First li-element must be visible for li:first-child rules to work. 
+    // Move enabled link to the beginning of ul.
+    enableLink.after(disableLink);
+}
+
 
 function metalibChangeSet(set)
 {

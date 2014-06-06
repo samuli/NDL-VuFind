@@ -36,7 +36,8 @@
       {if $searchType == 'MetaLibAdvanced'}
       <div class="advancedOptions grid_6">
         <p class="advancedEdit">
-          <a href="{$path}/MetaLib/Advanced?edit={$searchId}&set={$searchSet|escape}"{* class="small"*}>{translate text="Edit this Advanced MetaLib Search"}</a>
+          {* searchId URL parameter appended in metalib.js *}
+          <a href="{$path}/MetaLib/Advanced?set={$searchSet|escape}">{translate text="Edit this Advanced MetaLib Search"}</a>
         </p>
         <p class="advancedNewSearch">
           <a href="{$path}/MetaLib/Advanced?set={$searchSet|escape}"{* class="small"*}>{translate text="Start a new Advanced MetaLib Search"}</a>
@@ -88,14 +89,14 @@
   <div class="content">
     <div class="searchtools">
       <ul>
-        <li class="toolSavedSearch">
-          {if $savedSearch}
-            <span class="searchtoolsHeader"><a href="{$url}/MyResearch/SaveSearch?delete={$searchId}">{translate text='save_search_remove'}</a></span>
-          {else}
-            <span class="searchtoolsHeader"><a href="{$url}/MyResearch/SaveSearch?save={$searchId}">{translate text="save_search"}</a></span>
-            <span class="searchtoolsText">
-            </span>
-          {/if}
+        <li class="toolSavedSearch saved">
+            {* searchId URL parameter appended in metalib.js *}
+           <span class="searchtoolsHeader"><a href="{$url}/MyResearch/SaveSearch">{translate text='save_search_remove'}</a></span>
+        </li>
+        <li class="toolSavedSearch not-saved">
+           {* searchId URL parameter appended in metalib.js *}
+           <span class="searchtoolsHeader"><a href="{$url}/MyResearch/SaveSearch">{translate text="save_search"}</a></span>
+           <span class="searchtoolsText"></span>
         </li>
         <li class="toolRssLink">
           <span class="searchtoolsHeader"><a href="{$rssLink|escape}">{translate text="Get RSS Feed"}</a></span>

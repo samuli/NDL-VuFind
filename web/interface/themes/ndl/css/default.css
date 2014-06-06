@@ -2445,6 +2445,21 @@ ul.recordSet .resolver {
         color: black;
 }
 
+.module-MetaLib .advancedEdit.loading,
+.module-MetaLib .toolSavedSearch.loading {
+    opacity: 0.5;
+}
+
+.module-MetaLib .advancedEdit.loading a,
+.module-MetaLib .toolSavedSearch.loading a {
+    cursor: default;
+    text-decoration: none;
+}
+
+.module-MetaLib .toolSavedSearch {
+    display: none;
+}
+
 .recommendation {
     margin: 0 auto;
 }
