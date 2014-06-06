@@ -5104,7 +5104,9 @@ ul.commentList li {
     position: relative;
     top: 1px;
 }
-
+#averageRating:hover {
+	cursor: pointer;
+}
 ul.commentList li div.posted {
     border-bottom:2px solid #FFFFFF;
     color: #666666;
