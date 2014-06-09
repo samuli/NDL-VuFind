@@ -285,8 +285,7 @@ class UInterface extends Smarty
                         $j++;
                     }
                 }
-            // Only the starting year is set
-            } else {
+            } else { // Only the starting year is set
                 $advSearchYearScale[0] = (int)$yearScale;
             }
         }
@@ -791,9 +790,9 @@ function translationExists($params)
         );
     }
     if (is_array($params)) {
-        return $translator->translationExists($params['text'], isset($params['prefix']) ? $params['prefix'] : ''); 
+        return $translator->translationExists($params['text'], isset($params['prefix']) ? $params['prefix'] : '');
     } else {
-        return $translator->translationExists($params); 
+        return $translator->translationExists($params);
     }
 }
 
