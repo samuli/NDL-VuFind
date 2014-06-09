@@ -51,7 +51,7 @@ class Unsubscribe extends MyResearch
     {
         parent::__construct(true);
     }
-    
+
     /**
      * Process parameters and remove the subscription.
      *
@@ -67,11 +67,11 @@ class Unsubscribe extends MyResearch
             PEAR::raiseError('Can\'t unsubscribe');
             return;
         }
-        
+
         $id = $_REQUEST['id'];
         $key = $_REQUEST['key'];
         $type = $_REQUEST['type'];
-                
+
         // display confirm dialog
         if (!isset($_REQUEST['confirm']) || !$_REQUEST['confirm']) {
             $params = array('id' => $id, 'type' => $type, 'key' => $key, 'confirm' => true);
@@ -92,11 +92,10 @@ class Unsubscribe extends MyResearch
                             $search->schedule = 0;
                             $search->update();
                             $success = true;
-                        } 
+                        }
                     }
-                 }
-            // due date reminder
-            } else if ($type == 'reminder') {
+                }
+            } else if ($type == 'reminder') { // due date reminder
                 $user = new User();
                 if ($user->get($id)) {
                     $secret = $this->_getSecret($user, $id);
@@ -104,22 +103,25 @@ class Unsubscribe extends MyResearch
                         $user->due_date_reminder = 0;
                         $user->update();
                         $success = true;
-                    } 
-                }           
-            } 
-        
+                    }
+                }
+            }
+
             if ($success) {
                 $interface->assign('success', true);
                 $interface->setTemplate('unsubscribe.tpl');
-                $interface->display('layout.tpl');            
+                $interface->display('layout.tpl');
             } else {
                 PEAR::raiseError('Can\'t unsubscribe');
-            }            
+            }
         }
     }
-    
+
     /**
      * Utility function for generating a token.
+     *
+     * @param object $user User object
+     * @param string $id   Record ID
      *
      * @return string token
      * @access public
