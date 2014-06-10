@@ -2230,6 +2230,10 @@ ul.recordSet .resultColumn2 {
     float: left;
     margin-left: 15px;
 }
+/* 	Widen space of record information in search results. Doesn't have to change grid settings in all layouts	*/
+.content .resultColumn2.grid_11 {
+	width:500px;	
+}
 #recordSet ul.recordSet .resultColumn2 > * {
     line-height: 16px;
     padding: 0 0 6px;
@@ -2272,10 +2276,11 @@ ul.recordSet .resultItemLine2{
 
 }
 .resultNoImage p {
-    display: table-cell;
+    display: inline-block;
     text-align: center;
     vertical-align: middle;
     color: #dddddd;
+	margin-top:45px;
 }
 .resultImage {
     margin: -126px 0 0 0;
@@ -2358,21 +2363,29 @@ li.result blockquote {
     margin:0;
 }
 .groupCallnumber {
-    display:none;
-    margin-left: 18px;
+	margin-left: 10px;
+	color: #b3b3b3;
+	font-weight: 400;
+	letter-spacing: 0.2px;
+	font-size: 0.85em;
+	display: inline;
 }
 .resultContentToggle {
-    margin: 8px 0 0;
+    margin: 6px 0 0;
+	font-weight: 500;
 }
 .resultContentToggle img {
     margin: 0 0 1px 5px;
 }
 .resultContentList {
-    margin: 2px 0 1em 0;
+    margin:2px 0px 0px 4px;
+	letter-spacing: 0.2px;
 }
 .resultContentList li {
-    list-style-type: disc;
-    margin-left: 15px;
+	list-style-type: none;
+	padding-left: 20px;
+	background: url(../images/icons16-24px-03_green.png) no-repeat;
+	background-position: 2px -1436px;
 }
  .resultHierarchyLinks .hierarchyDesc {
     font-size: 0.75em;
@@ -2411,13 +2424,17 @@ li.result blockquote {
 
 .itemLocationInfo {
     line-height: 18px;
-    margin-bottom: 3px;
-    margin-left: 17px;
-    text-indent: -19px;
+    margin-bottom: 0px;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow:hidden;
 }
 
 div[id*="locationDetails"] {
-    margin: 2px 0 4px;
+    margin: 2px 0px 5px 5px;
+	font-weight:400;
+	letter-spacing:0.3px;
+	color:rgb(120,120,120);
 
 }
 
@@ -4165,6 +4182,7 @@ div[id*="record"].record.recordId {
 
 .recordTitle {
     margin-top:0;
+	margin-bottom:0px;
 }
 .recordAltTitlesHeading {
       margin-top: -0.8em;
