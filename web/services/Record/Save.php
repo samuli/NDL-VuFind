@@ -71,8 +71,9 @@ class Save extends Action
         // Check if the request is an ajax request
         $isAjax = false;
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
-            AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-                $isAjax = true;
+            AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+        ) {
+            $isAjax = true;
         }
 
         // Check if user is logged in
@@ -106,7 +107,7 @@ class Save extends Action
             $this->saveRecord($this->_user);
             exit();
         }
-        
+
         if (isset($_GET['submit'])) {
             $this->saveRecord($this->_user);
             header(
@@ -191,13 +192,13 @@ class Save extends Action
 
         // Setup Search Engine Connection
         $db = ConnectionManager::connectToIndex();
-        
+
         // Get Record Information
         $record = $db->getRecord($_GET['id']);
         if (!$record) {
             return false;
         }
-        
+
         $resource = new Resource();
         $resource->record_id = $_GET['id'];
         if (!$resource->find(true)) {

@@ -35,7 +35,7 @@
  * Purpose:  Find a template from one of the themes being used
  *           and return its full path.
  *           Supports one parameter:
- *              filename (required) - template to look for 
+ *              filename (required) - template to look for
  *              eg: MyResearch/footer-buttons.tpl
  * -------------------------------------------------------------
  *
@@ -46,15 +46,19 @@
  */ // @codingStandardsIgnoreStart
 function smarty_modifier_template_full_path($filename)
 {   // @codingStandardsIgnoreEnd
-    // Extract details from the config file, Smarty interface 
+    // Extract details from the config file, Smarty interface
     // so we can find the template file:
-    global $configArray;
     global $interface;
+    global $configArray;
+
+    if (is_null($interface) || is_null($configArray)) {
+        return false;
+    }
 
     $path = $configArray['Site']['path'];
     $local = $configArray['Site']['local'];
     $themes = explode(',', $interface->getVuFindTheme());
-
+    
     // loop through the themes and return the path of LAST theme in the list
     // that has the template file, this allows for themes to override
     // only a subset of template files
@@ -65,7 +69,7 @@ function smarty_modifier_template_full_path($filename)
             return $file;
         }
     }
-    
+
     // nothing found
     return false;
 }

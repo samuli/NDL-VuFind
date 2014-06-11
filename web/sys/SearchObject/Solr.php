@@ -1613,6 +1613,27 @@ class SearchObject_Solr extends SearchObject_Base
 
         }
 
+        // Sort configured facets alphabetically
+        $alphaSorted = $this->getFacetSetting('Results_Settings', 'hierarchicalFacetSortOptions');
+
+        if (is_array($alphaSorted)) {
+            foreach ($alphaSorted as $alphaFacet => $mode) {
+                if (isset($list[$alphaFacet])) {
+                    if ($mode == 'all' || ($mode == 'top'
+                        && isset($list[$alphaFacet]['list'][0]['untranslated'][0])
+                        && $list[$alphaFacet]['list'][0]['untranslated'][0] == '0')
+                    ) {
+                        usort(
+                            $list[$alphaFacet]['list'],
+                            function($a, $b) {
+                                return strtolower($a['value']) >
+                                    strtolower($b['value']);
+                            }
+                        );
+                    }
+                }
+            }
+        }
         return $list;
     }
 

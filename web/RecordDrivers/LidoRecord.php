@@ -74,11 +74,12 @@ class LidoRecord extends IndexRecord
     public function getCoreMetadata()
     {
         global $interface;
-        
+
         parent::getCoreMetadata();
         $interface->assign('coreImages', $this->getAllImages());
         $interface->assign('coreSubjectDates', $this->getSubjectDates());
         $interface->assign('coreSubjectPlaces', $this->getSubjectPlaces());
+        $interface->assign('coreSubjectActors', $this->getSubjectActors());
         $interface->assign('coreSubjectDetails', $this->getSubjectDetails());
         $interface->assign('coreFormatClassifications', $this->getFormatClassifications());
         $interface->assign('coreMeasurements', $this->getMeasurements());        
@@ -311,6 +312,21 @@ class LidoRecord extends IndexRecord
     {
         $results = array();
         foreach ($this->xml->xpath('lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectPlace/displayPlace') as $node) {
+            $results[] = (string)$node;
+        }
+        return $results;	
+    }
+
+    /**
+     * Get subject actors
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getSubjectActors()
+    {
+        $results = array();
+        foreach ($this->xml->xpath('lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectActor/actor/nameActorSet/appellationValue') as $node) {
             $results[] = (string)$node;
         }
         return $results;	

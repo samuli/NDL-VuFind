@@ -57,7 +57,6 @@
     
     #searchFormHeader #searchFormContainer {
         padding: 10px 0;
-        margin-bottom: 3em;
     }
 
     .advancedLinkWrapper {
@@ -168,8 +167,8 @@
         clear: left;
         float: right;
         margin-right: 10px;
-        left: 242px;
-        top: 54px;
+        left: 0px;
+        top: 52px;
     }
     .keepdFilters > input {
         display: block;
@@ -354,7 +353,7 @@
     }
 
     .module-MetaLib h3.metalibSearchSets {
-        margin-top: 0;
+        margin-top: 10px;
     }
 
     .module-MetaLib #deferredResults #content {        
@@ -435,6 +434,18 @@
     .sidegroup dl.year.collapsible.timeline.open.collapsed dt {
         background-position: 102.8% 46% !important;
     }
+	.itemLocationInfo {
+		white-space: normal;
+		text-overflow: ellipsis;
+	}
+	.itemLocationInfo .groupCallnumber {
+		display:inline-block;	
+	}
+	.tabNavi ul.ui-tabs-nav > li a {
+		padding-left: 30px;
+		padding-right: 7px;
+		font-size:0.85em;
+	}
     
     /* Advanced search */
     #searchHolder .group {
@@ -642,12 +653,17 @@
     }
     
     /* Content */
-    .module-Content #main > .menu {
-        display:none;
-    }
+    
     .module-Content #main .content .grid_17 {
         width:470px;
         padding-left:0;
+    }
+    .module-Content #main .content .grid_17.push_7 {
+        width:330px;
+    }
+    
+    .module-Content .main .menu ul li {
+        font-size: 0.96em;
     }
     
     /* Tabs */
@@ -655,7 +671,6 @@
     .ui-tabs  .ui-tabs-nav > li {
         border-bottom-left-radius:7px;
         border-bottom-right-radius:7px;
-        margin: 0 3px 3px 0 !important;
     }
     
     .ui-tabs .ui-tabs-nav li.ui-tabs-selected {

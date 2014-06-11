@@ -90,12 +90,13 @@ class ILSAuthentication implements Authentication
                                     $res[] = $tmp;
                                 }
                                 // Confirm if new user account should be created
-                                return new PEAR_Error('confirm_create_account', 
-                                                       ILSAuthentication::ERROR_CONFIRM_CREATE_ACCOUNT, 
-                                                       null,
-                                                       null, 
-                                                       json_encode($res)
-                                                       );
+                                return new PEAR_Error(
+                                    'confirm_create_account', 
+                                    ILSAuthentication::ERROR_CONFIRM_CREATE_ACCOUNT,
+                                    null,
+                                    null, 
+                                    json_encode($res)
+                                );
                             }
                         }
                     }

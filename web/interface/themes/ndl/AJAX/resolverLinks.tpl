@@ -32,7 +32,7 @@
     </div>
   {/if}
   <div class="openurls">
-    <a class="openurl_more_full" href="{$openUrlBase|escape}?{$openUrl|escape}" target="_blank">{translate text="More options"} ({translate text="Open in a New Window"})</a>
+    <a class="openurl_more_full" href="{$openUrlBase|escape}?{$openUrl|escape}" target="_blank">{translate text="More options"}<span class="openWindow"></span></a>
     {if !empty($services)}
       <ul>
         {foreach from=$services item=link}

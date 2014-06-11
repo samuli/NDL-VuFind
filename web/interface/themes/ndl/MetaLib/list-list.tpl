@@ -107,6 +107,12 @@
   </ul>
 </form>
 
+
+<script type="text/javascript">
+   var metalibSearchId = {$searchId};
+   var metalibSavedSearch = {if $savedSearch}true{else}false{/if};
+</script>
+
 {include file="MetaLib/database-statuses.tpl"}
 
 

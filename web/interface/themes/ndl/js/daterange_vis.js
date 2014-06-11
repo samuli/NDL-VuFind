@@ -1,4 +1,4 @@
-var visNavigation = '', visDateStart, visDateEnd, visMove;
+var visNavigation = '', visDateStart, visDateEnd, visMove, visRangeSelected = false;
 
 // Move dates: params either + or -
 function moveVis(start,end) {
@@ -19,7 +19,7 @@ $(document).ready(function() {
 
 // Load the visualizer
 function loadVis(action, filterField, facetField, searchParams, baseURL, collection, collectionAction) {
-    
+  
     // Build AJAX url
     var url = baseURL + '/AJAX/JSON_DateRangeVis?method=getVisData&' + searchParams;
     if (typeof collection != 'undefined'){
@@ -117,7 +117,8 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                         backgroundColor: null, 
                         borderWidth:0,
                         axisMargin:0,
-                        margin:0
+                        margin:0,
+                        clickable:true
                     }
                 };
 
@@ -132,12 +133,23 @@ function loadVis(action, filterField, facetField, searchParams, baseURL, collect
                 // Draw the plot
                 var plot = $.plot(vis, [val], options);
                 
-                vis.bind("plotselected", function (event, ranges) {
+                // Bind events
+                vis.unbind("plotclick").bind("plotclick", function (event, pos, item) {
+                    if (!visRangeSelected) {
+                        var year = Math.floor(pos.x);
+                        $('#mainYearFrom, #mainYearTo').val(year);
+                        plot.setSelection({ x1: year , x2: year});
+                    }
+                    visRangeSelected = false;
+                });
+                
+                vis.unbind("plotselected").bind("plotselected", function (event, ranges) {
                     from = Math.floor(ranges.xaxis.from);
                     to = Math.floor(ranges.xaxis.to);
                     (from != '-9999') ? $('#mainYearFrom').val(from) : $('#mainYearFrom').val();
                     (to != '9999') ? $('#mainYearTo').val(to) : $('#mainYearTo').val();
                     $('body').click();
+                    visRangeSelected = true;
                 });
                 
                 // Set pre-selections

@@ -47,24 +47,24 @@ class AJAX_RenderRSS extends Action
     public function __construct()
     {
         parent::__construct();
-        $_SESSION['no_store'] = true; 
+        $_SESSION['no_store'] = true;
     }
-    
+
     /**
      * Get feed and pass configuration variables to template
-     * 
+     *
      * @return void
      */
     public function launch()
     {
         global $interface;
-        
+
         if (!isset($_REQUEST['id'])) {
             return;
         } else {
             $id = $_REQUEST['id'];
         }
-        
+
         /*
          * let's get the list of feeds and pick the right one by the id set in
          * the template that called us
@@ -81,13 +81,13 @@ class AJAX_RenderRSS extends Action
             $feed['items'] : 0;
         $rssFeed['itemsPerPage'] = isset($feed['itemsPerPage']) ?
             $feed['itemsPerPage'] : 4;
-        $rssFeed['scrolledItems'] = isset($feed['scrolledItems']) ? 
+        $rssFeed['scrolledItems'] = isset($feed['scrolledItems']) ?
             $feed['scrolledItems'] : $rssFeed['itemsPerPage'];
-        $rssFeed['useChannelTitle'] = isset($feed['useChannelTitle']) ? 
+        $rssFeed['useChannelTitle'] = isset($feed['useChannelTitle']) ?
             $feed['useChannelTitle'] : false;
         $rssFeed['direction'] = isset($feed['direction']) ?
             $feed['direction'] : 'left';
-        $rssFeed['height'] = (!isset($feed['height']) || 
+        $rssFeed['height'] = (!isset($feed['height']) ||
             $feed['height'] == 0) ? false : $feed['height'];
         $rssFeed['dateFormat'] = isset($feed['dateFormat']) ?
             $feed['dateFormat'] : "j.n.";
@@ -126,41 +126,45 @@ class AJAX_RenderRSS extends Action
         }
 
         if ($rssFeed['url']) {
-            $rss =& new XML_RSS($rssFeed['url']);
+            $rssString = file_get_contents($rssFeed['url']);
+            $rss =& new XML_RSS($rssString);
+
             $rss->parse();
 
             $channelInfo = $rss->getChannelInfo();
-            $rssFeed['channelURL'] 
+            $rssFeed['channelURL']
                 = isset($channelInfo['link']) ? $channelInfo['link'] : null;
 
             if ($rssFeed['numberOfItems']>0) {
-                $rssFeed['items'] 
+                $rssFeed['items']
                     = array_slice($rss->getItems(), 0, $rssFeed['numberOfItems']);
             } else {
                 $rssFeed['items'] = $rss->getItems();
             }
 
-            if (trim($feed['title']) == 'rss') {
-                $rssFeed['title'] 
+            if (isset($feed['title']) && trim($feed['title']) == 'rss') {
+                $rssFeed['title']
                     = isset($rss->channel['title']) ? $rss->channel['title'] : false;
             }
 
             // Truncate titles longer than itemTitleTrunc if > 0
             $truncValue = $rssFeed['itemTitleTrunc'];
-            if ($truncValue > 0) {                
+            if ($truncValue > 0) {
                 foreach ($rssFeed['items'] as &$item) {
                     $itemTitle = $item['title'];
                     if (strlen($itemTitle) > $truncValue) {
-                        $item['title'] = trim(mb_substr($itemTitle, 0, $truncValue, 'UTF-8'))."&hellip;";
+                        $item['title'] = trim(
+                            mb_substr($itemTitle, 0, $truncValue, 'UTF-8')
+                        ) . '&hellip;';
                     }
                 }
-            }           
+            }
 
 
             /* process the raw data in the array before passing it on to the
              * template */
             foreach ($rssFeed['items'] as &$item) {
-                /* to find the item image, first we look for 
+                /* to find the item image, first we look for
                 enclosure elements in the  feed item... */
                 if (array_key_exists("enclosures", $item)) {
                     if (count($item['enclosures']) > 0) {
@@ -174,13 +178,13 @@ class AJAX_RenderRSS extends Action
                 }
                 /* ...and if that fails, we try to extract the image url from the
                  * content:encoded element... */
-                if (!array_key_exists("imageUrl", $item) 
+                if (!array_key_exists("imageUrl", $item)
                     && array_key_exists('content:encoded', $item)
                 ) {
                     // let's load the HTML
                     $dom = new DOMDocument;
                     $dom->loadHTML($item['content:encoded']);
-                    
+
                     /*
                      * first, let's see if there are <a> elements with <img>
                      * children; they are likely links to full-size images
@@ -197,7 +201,7 @@ class AJAX_RenderRSS extends Action
                         if ($imageChild) {
                             $href = $anchor->getAttribute('href');
                             if ($href) {
-                                if ((substr($href, -4) == '.jpg') 
+                                if ((substr($href, -4) == '.jpg')
                                     || (substr($href, -4) == '.gif')
                                     || (substr($href, -4) == '.png')
                                     || (substr($href, -5) == '.jpeg')
@@ -208,25 +212,25 @@ class AJAX_RenderRSS extends Action
                             }
                         }
                     }
-                    
+
                     /*
                      * if there are no <a> elements with <img> children, let's
                      * settle for an <img> element with no <a> parent
                      */
                     if (!array_key_exists("imageUrl", $item)) {
                         $images = $dom->getElementsByTagName('img');
-                        if ($images 
-                            && $images->item(0) 
+                        if ($images
+                            && $images->item(0)
                             && $images->item(0)->getAttribute('src')
                         ) {
-                            $item['imageUrl'] 
+                            $item['imageUrl']
                                 = $images->item(0)->getAttribute('src');
                         }
                     }
                 }
                 /* ...and if that fails, we try to extract the image url from the
                  * description element */
-                if (!array_key_exists("imageUrl", $item) 
+                if (!array_key_exists("imageUrl", $item)
                     && array_key_exists('description', $item)
                 ) {
                     preg_match("/src=\"([^\"]*)/", $item['description'], $matches);
@@ -239,13 +243,13 @@ class AJAX_RenderRSS extends Action
                 if (array_key_exists('description', $item)) {
                     $item['description'] = strip_tags($item['description']);
                 }
-                
+
                 /* process and format the date */
                 if (array_key_exists("dc:date", $item)) {
-                    $dateTime 
+                    $dateTime
                         = DateTime::createFromFormat(DATE_ISO8601, $item['dc:date']);
                 } elseif (array_key_exists("pubdate", $item)) {
-                    $dateTime 
+                    $dateTime
                         = DateTime::createFromFormat(DATE_RFC2822, $item['pubdate']);
                 }
                 $item['date'] = false;
@@ -258,7 +262,7 @@ class AJAX_RenderRSS extends Action
                 $rssFeed['scrollSpeed'] = 1000 *
                                           ($rssFeed['scrolledItems'] /
                                           $rssFeed['itemsPerPage']);
-        
+
             $interface->assign('rssFeed', $rssFeed);
             $interface->display('Search/rss.tpl');
         }

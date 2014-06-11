@@ -35,6 +35,28 @@
   {if $coreSummary}<p>{$coreSummary|truncate:300:"..."|escape}</p>{/if}
   *}
 
+  {assign var="idPrefix" value=$id|substr:0:8}
+  {if !empty($coreURLs) || $coreOnlineURLs || $coreMergedRecordData.urls || $idPrefix == 'metalib_'}
+    {if $coreOnlineURLs || $coreMergedRecordData.urls}
+      {if $coreMergedRecordData.urls}
+        {assign var="displayURLs" value=$coreMergedRecordData.urls}
+      {else}
+        {assign var="displayURLs" value=$coreOnlineURLs}
+      {/if}
+      <div class="truncateField">
+      {foreach from=$displayURLs item=urldesc}
+        <div class="fulltextField"><a class="fulltext available" href="{$urldesc.url|proxify|escape}" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}
+        </div>
+      {/foreach}
+    </div>
+    {else if !empty($coreURLs)}
+      {foreach from=$coreURLs item=desc key=currentUrl name=loop}
+        <p><a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a>
+        </p>
+      {/foreach}
+    {/if}
+  {/if}
+
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
     {* Commented out since these are normally displayed in the links section 
@@ -306,6 +328,7 @@
     </tr>
     {/if}
 
+    {* Commented out due to moving links to below heading and below citation data
     {assign var="idPrefix" value=$id|substr:0:8}
     {if !empty($coreURLs) || $coreOnlineURLs || $coreOpenURL || $coreMergedRecordData.urls || $idPrefix == 'metalib_'}
     <tr valign="top" class="recordURLs">
@@ -341,6 +364,7 @@
       </td>
     </tr>
     {/if}
+    *}
 
     {if !empty($coreRecordLinks)}
     {assign var=prevRecordLinkTitle value=''}
@@ -373,6 +397,23 @@
       </td>
     </tr>
     {/if}
+
+    {if $coreOpenURL}
+    <tr valign="top" class="recordURLs">
+    <th colspan="2">
+      {include file="Search/openurl.tpl" openUrl=$coreOpenURL}
+      {include file="Search/rsi.tpl"}
+      {include file="Search/openurl_autocheck.tpl"}
+    {/if}
+    {if $idPrefix == 'metalib_'}
+      <span class="metalib_link">
+        <span id="metalib_link_{$id|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$id|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a></span>
+        <span id="metalib_link_na_{$id|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
+      </span>
+    </td>
+    </tr>
+    {/if}
+
     {* tags are disabled for now
     <tr valign="top" class="recordTags">
       <th>{translate text='Tags'}: </th>
