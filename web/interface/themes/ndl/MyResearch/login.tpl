@@ -108,6 +108,23 @@
  </div>
   {/if}
   <div class="clear"></div>
+
+  {if $libraryCard}
+    {if !$lightbox}
+      {js filename="lightbox.js" }
+      {js filename="rc4.js" }
+    {/if}
+    <script type="text/javascript">
+    trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
+
+    {literal}
+    $(document).ready(function() {        
+       registerAjaxLogin($('.loginForm'), false);
+    });
+    </script>
+    {/literal}    
+  {/if}
+ 
   {if $mozillaPersona}
     {assign var=loginNumber value=$loginNumber+1}
     {if $libraryCard || $sessionInitiator}
@@ -122,13 +139,8 @@
     	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$recordId|escape:"url"}/{$followupParams.0|escape:"url"}?submit#{$followupParams.1|escape:"url"}"><span>{translate text="Mozilla Persona"}</span></a>
      {/if}	
 
-         
-<script type="text/javascript">
-   trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
-</script>
-
-{if $lightbox}
-    {literal}
+   {if $lightbox}
+   {literal}
    <script type="text/javascript">
     $(document).ready(function() {        
         $.ajax({
@@ -143,17 +155,8 @@
     });
     </script>
     {/literal}
-{else}
-  {js filename="lightbox.js" }
-  {js filename="rc4.js" }
-  {literal}
-   <script type="text/javascript">
-    $(document).ready(function() {        
-       registerAjaxLogin($('.loginForm'), false);
-    });
-    </script>
-    {/literal}    
-{/if}
+    {/if}
+
    </div>
   </div>
   <div class="grid_7">
@@ -165,9 +168,9 @@
    </div>
   </div>
   <div class="clear"></div>
-  {/if}
 </div>
-  
+  {/if}
+
 {/if}
 
 <!-- END of: MyResearch/login.tpl -->

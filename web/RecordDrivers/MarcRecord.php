@@ -257,10 +257,10 @@ class MarcRecord extends IndexRecord
     public function getSearchResult($view = 'list')
     {
         global $interface;
-        
+
         // get other links from MARC field 787
         $interface->assign('coreOtherLinks', $this->getOtherLinks());
-        
+
         // MARC results work just like index results, except that we want to
         // enable the AJAX status display since we assume that MARC records
         // come from the ILS:
@@ -300,7 +300,7 @@ class MarcRecord extends IndexRecord
             $interface->assign('marc', $html);
         }
         $interface->assign('details', $this->fields);
-        
+
         return 'RecordDrivers/Marc/staff.tpl';
     }
 
@@ -340,8 +340,8 @@ class MarcRecord extends IndexRecord
     }
 
     /**
-     * Assign necessary Smarty variables and return a template name to 
-     * load in order to display component parts extracted from the 
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display component parts extracted from the
      * record.  Returns null if no component parts are available.
      *
      * @return string Name of Smarty template file to display.
@@ -351,16 +351,16 @@ class MarcRecord extends IndexRecord
     {
         global $interface;
         global $configArray;
-        
+
         $baseURI = $configArray['Site']['url'];
-        
-        // Collect the values of all the 979 fields and their subfields into 
+
+        // Collect the values of all the 979 fields and their subfields into
         // an array of arrays to be handed to a template for display.
         $fields = $this->marcRecord->getFields('979');
         if (!$fields) {
             return null;
-        } 
-        $partOrderCounter = 0;                
+        }
+        $partOrderCounter = 0;
         foreach ($fields as $field) {
             $partOrderCounter++;
             $partAuthors = array();
@@ -381,21 +381,21 @@ class MarcRecord extends IndexRecord
                     break;
                 case 'd':
                     $partAuthors[] = $subfield->getData();
-                    break;          
+                    break;
                 case 'e':
                     $uniformTitle = $subfield->getData();
-                    break;          
+                    break;
                 case 'f':
                     $duration = $subfield->getData();
                     if ($duration == '000000') {
                         $duration = '';
                     }
-                    break;      
-                }    
+                    break;
+                }
             }
             // Filter out any empty fields
             $partAuthors = array_filter($partAuthors);
-            
+
             $partPresenters = array();
             $partArrangers = array();
             $partOtherAuthors = array();
@@ -409,17 +409,17 @@ class MarcRecord extends IndexRecord
                         }
                     }
                 }
-                if (isset($configArray['Record']['arranger_roles'])) {                
+                if (isset($configArray['Record']['arranger_roles'])) {
                     foreach ($configArray['Record']['arranger_roles'] as $role) {
                         if (substr($author, -strlen($role) - 2) == ", $role") {
                             $partArrangers[] = $author;
                             continue 2;
                         }
                     }
-                }                
+                }
                 $partOtherAuthors[] = $author;
             }
-            
+
             $componentparts[] = array(
                 'number' => $partOrderCounter,
                 'title' => $partTitle,
@@ -436,8 +436,8 @@ class MarcRecord extends IndexRecord
         // Assign the appropriate variable and return the template name:
         $interface->assign('componentparts', $componentparts);
         return 'RecordDrivers/Marc/componentparts.tpl';
-    }    
-    
+    }
+
     /**
      * Return an XML representation of the record using the specified format.
      * Return false if the format is unsupported.
@@ -505,8 +505,8 @@ class MarcRecord extends IndexRecord
             return true;
         }
         return false;
-    }    
-    
+    }
+
     /**
      * Does this record support an RDF representation?
      *
@@ -798,27 +798,27 @@ class MarcRecord extends IndexRecord
         // Show holdings tab by default
         return true;
     }
-    
+
     /**
      * Check if an datasource has patron functions in order to show or hide the patron login
      *
      * @return bool
      * @access public
-     */   
+     */
     public function hasPatronFunctions()
     {
         global $configArray;
         $details = $this->getInstitutionDetails();
         $datasource = $details['datasource'];
         $datasourceConfig = getExtraConfigArray('datasources');
-        if (isset($datasourceConfig[$datasource]['disablePatronFunctions']) 
-            && $datasourceConfig[$datasource]['disablePatronFunctions'])
-        {
+        if (isset($datasourceConfig[$datasource]['disablePatronFunctions'])
+            && $datasourceConfig[$datasource]['disablePatronFunctions']
+        ) {
             return false;
         }
         return true;
     }
-    
+
 
     /**
      * Get Status/Holdings Information from the Marc Record (support method used by
@@ -1283,9 +1283,9 @@ class MarcRecord extends IndexRecord
         if ($diff) {
             $title .= " $diff";
         }
-        
-        // There are two possible ways we may want to link to a record with subfield w 
-        // -- either we will have a raw bibliographic record in subfield w, or else we 
+
+        // There are two possible ways we may want to link to a record with subfield w
+        // -- either we will have a raw bibliographic record in subfield w, or else we
         // will have an OCLC number prefixed by (OCoLC).  If we have both, we want to
         // favor the bib number over the OCLC number.  If we have an unrecognized
         // parenthetical prefix to the number, we should simply ignore it.
@@ -1323,14 +1323,14 @@ class MarcRecord extends IndexRecord
         return array(
             'title' => $labelPrfx.$value,
             'value' => $title,
-            'issn'  => $issn, 
+            'issn'  => $issn,
             'link'  => $link
         );
     }
 
     /**
-     * Return an associative array of image URLs associated with this record 
-     * (key = URL, value = empty), if available; false otherwise. 
+     * Return an associative array of image URLs associated with this record
+     * (key = URL, value = empty), if available; false otherwise.
      *
      * @return mixed
      * @access public
@@ -1349,13 +1349,13 @@ class MarcRecord extends IndexRecord
                     if ($address) {
                         $address = $address->getData();
                         $urls[$address] = '';
-                    }       
-                }    
+                    }
+                }
             }
         }
         return $urls;
-    }    
-    
+    }
+
     /**
      * Return an external URL where a displayable description text
      * can be retrieved from, if available; false otherwise.
@@ -1376,8 +1376,8 @@ class MarcRecord extends IndexRecord
                     if ($address) {
                         $address = $address->getData();
                         return $address;
-                    }       
-                }    
+                    }
+                }
             }
         }
         return false;
@@ -1405,13 +1405,13 @@ class MarcRecord extends IndexRecord
                     if ($address) {
                         return $configArray['Site']['url'] . '/thumbnail.php?id=' .
                             urlencode($this->getUniqueID()) . '&size=' . urlencode($size);
-                    }       
-                }    
+                    }
+                }
             }
-        }      
+        }
         return parent::getThumbnail($size);
     }
-    
+
     /**
      * Return the actual URL where a thumbnail can be retrieved, if available; false
      * otherwise.
@@ -1434,16 +1434,16 @@ class MarcRecord extends IndexRecord
                     if ($address) {
                         $address = $address->getData();
                         return $address;
-                    }       
-                }    
+                    }
+                }
             }
-        }      
+        }
         return false;
     }
 
     /**
      * Overload the IndexRecord method to include other references from MARC field 787.
-     *  
+     *
      * @return string Name of Smarty template file to display.
      * @access public
      */
@@ -1451,13 +1451,13 @@ class MarcRecord extends IndexRecord
     {
         global $configArray;
         global $interface;
-    
-        $interface->assign('coreOtherLinks', $this->getOtherLinks());     
-        
+
+        $interface->assign('coreOtherLinks', $this->getOtherLinks());
+
         // Call the parent method:
         return parent::getCoreMetadata();
     }
-        
+
     /**
      * Get the "other links" from MARC field 787.
      *
@@ -1497,7 +1497,7 @@ class MarcRecord extends IndexRecord
             } else {
                 $isn = '';
             }
-            
+
             $retval[] = compact('heading', 'title', 'author', 'isn');
         }
         return $retval;
@@ -1529,7 +1529,7 @@ class MarcRecord extends IndexRecord
             $type = substr($data, 6, 1);
             if (is_numeric($year) && $year != 0 && $type != 'e') {
                 return $year;
-            } 
+            }
         }
         return false;
     }
@@ -1539,7 +1539,7 @@ class MarcRecord extends IndexRecord
      *
      * @param string|string[] $input      String to strip
      * @param string          $additional Additional punctuation characters
-     * 
+     *
      * @return string
      */
     public function stripTrailingPunctuation($input, $additional = '')
@@ -1560,7 +1560,7 @@ class MarcRecord extends IndexRecord
         }
         return $array ? $input : $input[0];
     }
-    
+
     /**
      * Get an array of alternative titles for the record.
      *
@@ -1583,7 +1583,7 @@ class MarcRecord extends IndexRecord
         $fields = array(
             '020' => array('a'),
             '773' => array('z'),
-        ); 
+        );
         $isbn = array();
         foreach ($fields as $field => $subfields) {
             $isbn = array_merge($isbn, $this->stripTrailingPunctuation($this->getFieldArray($field, $subfields)));
@@ -1601,7 +1601,7 @@ class MarcRecord extends IndexRecord
     {
         $fields = array(
             '022' => array('a')
-            /* We don't want to display all ISSNs without further 
+            /* We don't want to display all ISSNs without further
              * explanation on their relationship with this record.
             '440' => array('x'),
             '490' => array('x'),
@@ -1610,8 +1610,8 @@ class MarcRecord extends IndexRecord
             '776' => array('x'),
             '780' => array('x'),
             '785' => array('x')
-             */ 
-        ); 
+             */
+        );
         $issn = array();
         foreach ($fields as $field => $subfields) {
             $issn = array_merge($issn, $this->stripTrailingPunctuation($this->getFieldArray($field, $subfields), '-'));
@@ -1628,19 +1628,19 @@ class MarcRecord extends IndexRecord
     protected function getClassifications()
     {
         $result = array();
-        
+
         foreach (array('050', '080', '084') as $fieldCode) {
             $fields = $this->marcRecord->getFields($fieldCode);
             if (is_array($fields)) {
                 foreach ($fields as $field) {
                     switch ($fieldCode) {
-                    case '050': 
+                    case '050':
                         $classification = 'dlc';
                         break;
                     case '080':
                         $classification = 'udk';
                         break;
-                    default:    
+                    default:
                         $classification = $this->getSubfieldArray($field, array('2'));
                         if (!empty($classification)) {
                             $classification = $classification[0];
@@ -1651,27 +1651,27 @@ class MarcRecord extends IndexRecord
                     if (empty($classification)) {
                         continue;
                     }
-                    
+
                     $subfields = $this->getSubfieldArray($field, array('a', 'b'));
                     if (!empty($subfields)) {
                         $result[$classification][] = $subfields[0];
                     }
                 }
             }
-        }        
-        return $result;        
+        }
+        return $result;
     }
 
     /**
      * Get all authors apart from presenters
-     * 
+     *
      * @return array
      */
     protected function getNonPresenterAuthors()
     {
         global $configArray;
         $result = array();
-        
+
         foreach (array('100', '110', '700', '710') as $fieldCode) {
             $fields = $this->marcRecord->getFields($fieldCode);
             if (is_array($fields)) {
@@ -1691,19 +1691,19 @@ class MarcRecord extends IndexRecord
                 }
             }
         }
-        return $result;        
+        return $result;
     }
-    
+
     /**
      * Get presenters
-     * 
+     *
      * @return array
      */
     protected function getPresenters()
     {
         global $configArray;
         $result = array('presenters' => array(), 'details' => array());
-        
+
         foreach (array('100', '110', '700', '710') as $fieldCode) {
             $fields = $this->marcRecord->getFields($fieldCode);
             if (is_array($fields)) {
@@ -1724,19 +1724,19 @@ class MarcRecord extends IndexRecord
             }
         }
         $result['details'] = $this->stripTrailingPunctuation($this->getFieldArray('511', array('a')));
-        return $result;        
+        return $result;
     }
-    
+
     /**
      * Get manufacturer
-     * 
+     *
      * @return string
      */
     protected function getManufacturer()
     {
         return $this->getFirstFieldValue('260', array('e', 'f', 'g'));
     }
-    
+
     /**
      * Get the estimated publication date of the record.
      *
@@ -1758,12 +1758,12 @@ class MarcRecord extends IndexRecord
         }
         return $dateString;
     }
-    
+
     /**
      * Get dissertation note for the record.
      * Use field 502 if available. If not use local field 509
-     * 
-     * @return string dissertation notes 
+     *
+     * @return string dissertation notes
      * @access protected
      */
     protected function getDissertationNote()
@@ -1774,7 +1774,7 @@ class MarcRecord extends IndexRecord
         }
         return $notes;
     }
-    
+
 }
 
 ?>

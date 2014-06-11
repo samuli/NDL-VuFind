@@ -50,11 +50,11 @@ function smarty_function_translation_exists($params, &$smarty)
     $status = true;
     if (function_exists('translationExists')) {
         $status = translationExists(
-                    array(
-                        'text' => $text, 
-                        'prefix' => $prefix, 
-                    )
-                  );        
+            array(
+                'text' => $text,
+                'prefix' => $prefix,
+            )
+        );
     }
 
     $smarty->assign('translationStatus', $status);
