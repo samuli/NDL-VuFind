@@ -1226,15 +1226,19 @@ div.truncateField {
     height: 1.5em;
     background-color: inherit;
 }
-#recordMetadata .citation .moreLink ,
-#recordMetadata .citation .lessLink {
+#recordMetadata .truncateField {
+    margin-top: .25em;
+}
+
+#recordMetadata .moreLink,
+#recordMetadata .lessLink {
     background-color:#fff;
 }
 
 .coverImages .moreLink a:after,
 .coverImages .lessLink a:after,
-#recordMetadata .citation .moreLink a:after,
-#recordMetadata .citation .lessLink a:after {
+#recordMetadata .moreLink a:after,
+#recordMetadata .lessLink a:after {
     content: "";
     display: inline-block;
     height: 15px;
@@ -3117,6 +3121,9 @@ ul.recordSet .addToFavLink a {
 .available {
     color: #00B270;
 }
+a.fulltext.available {
+    color: #00a3b5;
+}
 .openurl_more, .info_more {
     padding-left:14px;
     padding-right:10px;
@@ -4153,6 +4160,7 @@ div[id*="record"].record.recordId {
 }
 
 #recordMetadata .citation {
+    margin-top: .75em;
     table-layout:fixed;
 }
 
@@ -4164,7 +4172,7 @@ div[id*="record"].record.recordId {
 }
 
 .recordTitle {
-    margin-top:0;
+    margin: 0;
 }
 .recordAltTitlesHeading {
       margin-top: -0.8em;

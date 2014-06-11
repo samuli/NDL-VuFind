@@ -551,7 +551,7 @@ span.dynatree-expander:hover {
 #addThis .mail, .addthis_button_facebook, .addthis_button_twitter,
 .addthis_button_google_plusone_share,
 .fav, .mail, .export, .export img, .add, .delete,
-.citation .moreLink a:after, .citation .lessLink a:after,
+#recordMetadata .moreLink a:after, #recordMetadata .lessLink a:after,
 .openWindow {
     background-image: url(../images/icons16-24px-02_turquoise.png);
 }
@@ -586,11 +586,11 @@ span.dynatree-expander:hover {
     background-position: 7px -158px;
 }
 .coverImages .moreLink a:after,
-.citation .moreLink a:after {
+#recordMetadata .moreLink a:after {
     background-position: 2px -2318px;
 }
 .coverImages .lessLink a:after,
-.citation .lessLink a:after {
+#recordMetadata .lessLink a:after {
     background-position: 2px -2270px;
 }
 .openWindow {
