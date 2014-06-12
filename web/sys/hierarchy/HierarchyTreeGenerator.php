@@ -83,20 +83,20 @@ class HierarchyTreeGenerator
     ) {
         return false;
     }
-    
+
     /**
      * Generates the xml for this tree
-     * 
-     * @param string $hierarchyTopID Hierarchy ID 
-     * 
+     *
+     * @param string $hierarchyTopID Hierarchy ID
+     *
      * @return boolean Success
      */
     public function generateXMLfromSolr($hierarchyTopID)
     {
-    	$this->getXMLFromSolr($hierarchyTopID, true);
-    	return true;
+        $this->getXMLFromSolr($hierarchyTopID, true);
+        return true;
     }
-    
+
     /**
     * Get XML From Solr
     *
@@ -105,7 +105,7 @@ class HierarchyTreeGenerator
     * TODO: this should return false if it fails.
     *
     * @param string  $hierarchyTopID hierarchy_top_id form Solr
-    * @param boolean $createNew      Bypass cache     
+    * @param boolean $createNew      Bypass cache
     *
     * @return string The XML
     * @access protected
@@ -117,14 +117,14 @@ class HierarchyTreeGenerator
         $topRecord = RecordDriverFactory::initRecordDriver($top);
         $cacheFile = $configArray['Site']['local'] . '/interface/cache/hierarchyTree_' .
             urlencode($hierarchyTopID) . '.xml';
-            
+
         // Check if create new is set, if so don't bother looking up the config
         if (!$createNew) {
             $cacheTime = $this->recordDriver->getTreeCacheTime();
         } else {
             $cacheTime = -1;
         }
-        
+
         if (file_exists($cacheFile)
             && filemtime($cacheFile) > (time() - $cacheTime)
         ) {
@@ -145,7 +145,7 @@ class HierarchyTreeGenerator
     /**
      * Get the tree from Solr
      *
-     * @param string $hierarchyID Hierarchy ID (equivalent to Solr 
+     * @param string $hierarchyID Hierarchy ID (equivalent to Solr
      *                            field hierarchy_top_id)
      * @param string &$count      The total count of items in the tree
      *
@@ -169,13 +169,13 @@ class HierarchyTreeGenerator
         foreach ($results['response']['docs'] as $doc) {
             $item = array('id' => $doc['id'], 'title_full' => $doc['title_full']);
             if (isset($doc['hierarchy_parent_id']) && !empty($doc['hierarchy_parent_id'])) {
-                $item['hierarchy_parent_id'] = $doc['hierarchy_parent_id']; 
+                $item['hierarchy_parent_id'] = $doc['hierarchy_parent_id'];
             }
             if (isset($doc['is_hierarchy_id']) && !empty($doc['is_hierarchy_id'])) {
-                $item['is_hierarchy_id'] = $doc['is_hierarchy_id']; 
+                $item['is_hierarchy_id'] = $doc['is_hierarchy_id'];
             }
             if (isset($doc['hierarchy_sequence'])) {
-                $item['hierarchy_sequence'] = $doc['hierarchy_sequence']; 
+                $item['hierarchy_sequence'] = $doc['hierarchy_sequence'];
             }
             $docs[$doc['id']] = $item;
         }
@@ -199,12 +199,12 @@ class HierarchyTreeGenerator
         $xml .= '</root>';
         return $xml;
     }
-    
+
     /**
      * Convert an array tree to XML
-     * 
+     *
      * @param array $tree Nested array
-     * 
+     *
      * @return string XML
      */
     protected function treeToXML($tree)
@@ -233,7 +233,7 @@ class HierarchyTreeGenerator
             }
             $xmlNode .= '</item>';
             ++$idx;
-            $xml[$sequence . '-' . $idx] = $xmlNode; 
+            $xml[$sequence . '-' . $idx] = $xmlNode;
         }
 
         ksort($xml);
@@ -244,7 +244,7 @@ class HierarchyTreeGenerator
         }
         return $xmlReturnString;
     }
-    
+
     /**
      * XML Encode
      *

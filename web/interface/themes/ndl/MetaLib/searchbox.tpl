@@ -37,6 +37,7 @@
        <input type="checkbox" {if $retainFiltersByDefault}checked="checked" {/if} id="searchFormKeepFilters"/>
         <label for="searchFormKeepFilters">{translate text="basic_search_keep_filters"}</label>
       </div>
+    </div>
 
       <div class="offscreen">
 

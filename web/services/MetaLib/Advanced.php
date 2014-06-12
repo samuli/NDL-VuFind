@@ -61,6 +61,12 @@ class Advanced extends Base
             'advSearchTypes', $this->searchObject->getAdvancedTypes()
         );
 
+        if (isset($_REQUEST['set'])) {
+            $interface->assign(
+                'set', $_REQUEST['set']
+            );
+        }
+
         // If we found a saved search, let's assign some details to the interface:
         if ($savedSearch) {
             $interface->assign('searchDetails', $savedSearch->getSearchTerms());

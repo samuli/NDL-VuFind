@@ -34,6 +34,7 @@ CREATE TABLE `user` (
   `due_date_notification` int(11) NOT NULL DEFAULT '0',
   `due_date_reminder` int(11) NOT NULL DEFAULT '0',
   `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `authMethod` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `user_due_date_reminder_key` (`due_date_reminder`)
@@ -74,6 +75,7 @@ CREATE TABLE `user_account` (
   `saved` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
+  KEY `user_account_cat_username` (`cat_username`),
   CONSTRAINT `user_account_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
@@ -107,7 +109,7 @@ CREATE TABLE `user_resource` (
   PRIMARY KEY (`id`),
   KEY `resource_id` (`resource_id`),
   KEY `user_id` (`user_id`),
-  KEY `list_id` (`list_id`),
+  KEY `list_id` (`list_id`), 
   CONSTRAINT `user_resource_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_resource_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
   CONSTRAINT `user_resource_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,

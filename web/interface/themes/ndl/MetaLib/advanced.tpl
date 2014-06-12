@@ -66,18 +66,10 @@
         </div> {* searchHolder *}
 
         <div class="searchForm_setWrapper">
-{* Dropdown disabled now due to a change to radio buttons below
-          <label for="searchForm_setOLD" class="offscreen">{translate text="Search In"}</label>
-          <select id="searchForm_setOLD" name="set">
-          {foreach from=$metalibSearchSets item=searchDesc key=searchVal}
-            <option value="{$searchVal}"{if $searchSet == $searchVal} selected="selected"{/if}>{translate text=$searchDesc}</option>
-          {/foreach}
-          </select>
-*}
           <label for="searchForm_set">{translate text="Search In Set"}:</label>
           <div id="searchForm_set">
           {foreach from=$metalibSearchSets item=searchDesc key=searchVal}
-              <input id="{$searchVal}" type="radio" name="set" value="{$searchVal}"{if ($smarty.server.REQUEST_URI|escape|regex_replace:'/.*set=/':'') == $searchVal} checked="checked"{/if}/>
+              <input id="{$searchVal}" type="radio" name="set" value="{$searchVal}"{if $set == $searchVal} checked="checked"{/if}/>
               <label for="{$searchVal}"><span></span></label>{translate text=$searchDesc} &nbsp;&nbsp;&nbsp;
           {/foreach}
           </div>

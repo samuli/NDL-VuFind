@@ -46,7 +46,7 @@ if (isset($configArray['Site']['useHttps']) && $configArray['Site']['useHttps'])
         $host = isset($url['host']) ? $url['host'] : '';
         $path = isset($url['path']) ? $url['path'] : '';
         $configArray['Site']['url'] = 'https://' . $host . $port . $path;
-    }    
+    }
 }
 
 // Try to set the locale to UTF-8, but fail back to the exact string from the config
@@ -158,8 +158,8 @@ if ($module == 'Content' && !is_readable("services/$module/$action.php")) {
     $action = 'Home';
 }
 
-// If default prefilter is in use, remember result type (split, local, PCI) 
-// by resolving module & action in the following order: 
+// If default prefilter is in use, remember result type (split, local, PCI)
+// by resolving module & action in the following order:
 //   1. URL parameters (followupSearchModule & followupSearchAction): (search started from record page)
 //   2. HTTP referer
 $overridePrefilter = false;
@@ -176,18 +176,18 @@ if (in_array($module, array('Search', 'PCI', 'MetaLib'))
     } elseif (isset($_SERVER['HTTP_REFERER'])) {
         $parts = parse_url($_SERVER['HTTP_REFERER']);
         $pathParts = explode('/', $parts['path']);
-        
+
         $refAction = array_pop($pathParts);
-        $refModule = array_pop($pathParts);   
+        $refModule = array_pop($pathParts);
     }
-    
+
     if ($refModule && $refAction) {
-        if (in_array($refModule, array('Search', 'PCI', 'MetaLib')) 
+        if (in_array($refModule, array('Search', 'PCI', 'MetaLib'))
             && in_array($refAction, array('Results', 'DualResults', 'Search', 'Home'))
         ) {
-            $overridePrefilter = true;           
+            $overridePrefilter = true;
             if ($refAction == 'Home') {
-                // When arriving from search homepages, preserve Module and redirect to search results.                
+                // When arriving from search homepages, preserve Module and redirect to search results.
                 if ($refModule == 'Search') {
                     // local search
                     $refAction = 'Results';
@@ -202,18 +202,18 @@ if (in_array($module, array('Search', 'PCI', 'MetaLib'))
 }
 
 // Process prefilter redirection
-if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI')) 
+if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
     && isset($_REQUEST['prefilter'])
 ) {
     $prefilters = getExtraConfigArray('prefilters');
     if (isset($prefilters[$_REQUEST['prefilter']])) {
         $prefilter = $prefilters[$_REQUEST['prefilter']];
-        if (($prefilter && $_REQUEST['prefilter'] != '-') 
+        if (($prefilter && $_REQUEST['prefilter'] != '-')
             || $prefilter['module'] != $module || $prefilter['action'] != $action
             || $overridePrefilter
         ) {
             $params = explode('&', parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY));
-            
+
             // Remove followupSearchModule/followupSearchAction URL parameters
             foreach ($params as $key => $param) {
                 if (stripos($param, 'followupSearchModule=') === 0
@@ -238,11 +238,11 @@ if (in_array($module, array('Search', 'Summon', 'MetaLib', 'Collection', 'PCI'))
                     $params[] = "$key=" . urlencode($value);
                 }
             }
-            
+
             $url = '';
             if ($overridePrefilter) {
                 // Remember result type
-                $url = "../$refModule/$refAction";                
+                $url = "../$refModule/$refAction";
             } else {
                 if ($prefilter['module'] != $module) {
                     $url = '../' . $prefilter['module'] . '/';
@@ -271,8 +271,8 @@ if ($user && $shibbolethEnabled
     $user = false;
 } else if (!$user) {
     // Special case for Shibboleth:
-    $shibLoginNeeded = $shibbolethEnabled 
-        && ($module == 'MyResearch' 
+    $shibLoginNeeded = $shibbolethEnabled
+        && ($module == 'MyResearch'
         || (isset($configArray['Shibboleth']['required_attribute']) && getenv($configArray['Shibboleth']['required_attribute']) !== false));
     // Default case for all other authentication methods:
     $standardLoginNeeded = (isset($_POST['username']) && isset($_POST['password'])
@@ -284,7 +284,7 @@ if ($user && $shibbolethEnabled
         // If we authenticated, store the user in the session:
         if (PEAR::isError($user)) {
             if ($user->getMessage() == 'authentication_error_admin') {
-                error_log('User id not set, Shibboleth login not possible');
+                // Suppressed: error_log('User id not set, Shibboleth login not possible');
             } else {
                 error_log("Shibboleth login failed: " . $user->getMessage());
             }
@@ -304,7 +304,7 @@ if ($user && $shibbolethEnabled
 
 // Update user's language
 if ($user && (isset($_POST['mylang']) || isset($_GET['lng']))) {
-    $user->changeLanguage($language);    
+    $user->changeLanguage($language);
 }
 
 // Activate catalog account

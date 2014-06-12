@@ -131,10 +131,6 @@ $(document).ready(function(){
     
     // Show "keep filters" checkbox when prefilter -menu is opened
     prefilterMenu.bind("menuOpen", function() { 
-        // position prefilter menu to leave vertical space for retain filters -checkbox
-        if (isKeepFiltersOptionPresent()) {
-            $(".searchbox .dropdown dd ul").css('top', '40px');
-        }
         toggleKeepFiltersOption(true); 
     });
     // Hide "keep filters" checkbox when prefilter -menu is closed

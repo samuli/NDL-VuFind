@@ -1,21 +1,13 @@
 $(document).ready(function() {
-    checkItemStatuses();
+    $('.recordId').unbind('inview').one('inview', function() {
+        var id = $(this).attr('id').substr('record'.length);
+        checkItemStatuses([id]);
+    });
+
     selectItem();
 });
 
 function checkItemStatuses(id) {
-
-    // No parameter given; get all dedups of this record
-    if (typeof id == 'undefined') {
-        var id = $.map($('.recordId'), function(i) {
-            return $(i).attr('id').substr('record'.length);
-        });
-    } else { // Else toggle visibility of some elements before processing
-        safeId = jqEscape(id);
-        $('#locationDetails'+safeId+', #availableHoldings'+safeId+', #nodata'+safeId+', #moredata'+safeId).hide();
-        $('#callnumAndLocation'+safeId).show();
-        $('#location'+safeId).addClass('ajax_availability').show();
-    }
 
     if (id.length) {
         $("div[id^='callnumAndLocation'] .ajax_availability").show();
@@ -123,8 +115,13 @@ function selectItem() {
                 $(this).attr('href', $(this).attr('href').replace(currentRecord, id));
             }
         })
-        
-        checkItemStatuses([$(this).val()]);
+
+        safeId = jqEscape(id);
+        $('#locationDetails'+safeId+', #availableHoldings'+safeId+', #nodata'+safeId+', #moredata'+safeId).hide();
+        $('#callnumAndLocation'+safeId).show();
+        $('#location'+safeId).addClass('ajax_availability').show();
+
+        checkItemStatuses([id]);
     })
     
 }
