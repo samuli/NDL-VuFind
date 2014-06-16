@@ -35,6 +35,11 @@
     {if $cancelCallSlipResults.count > 0}
       <div class="holdsMessage"><p class="info">{$cancelCallSlipResults.count|escape} {translate text="call_slip_cancel_success_items"}</p></div>
     {/if}
+    {if $profile.blocks}
+      {foreach from=$profile.blocks item=block name=loop}
+        <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
+      {/foreach}
+    {/if}
     <h2>{translate text='Holds'}:      {foreach from=$catalogAccounts item=account}
         	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
      {/foreach} 

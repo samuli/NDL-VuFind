@@ -18,6 +18,11 @@
     </div>
   {/if}
   {if $user->cat_username}
+    {if $profile.blocks}
+      {foreach from=$profile.blocks item=block name=loop}
+        <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
+      {/foreach}
+    {/if}
     <h2>{translate text='Your Checked Out Items'}:      
     {foreach from=$catalogAccounts item=account}
         	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}

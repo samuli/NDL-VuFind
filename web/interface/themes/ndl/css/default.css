@@ -5495,6 +5495,11 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     width: 75px;
 }
 
+.borrowingBlock {
+    color: #666;
+    text-align:right;
+}
+
 #myFavoritesList {
     position:relative;
 }

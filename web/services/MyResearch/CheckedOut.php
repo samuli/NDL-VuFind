@@ -98,6 +98,10 @@ class CheckedOut extends MyResearch
             if ($this->checkRenew) {
                 $transList = $this->_addRenewDetails($transList);
             }
+            $profile = $this->catalog->getMyProfile($patron);
+            if (!PEAR::isError($profile)) {
+                $interface->assign('profile', $profile);
+            }
         }
         $interface->assign('transList', $transList);
         $interface->setTemplate('checkedout.tpl');
