@@ -4,8 +4,11 @@
   {js filename="cart.js"}
   {assign var=bookBagItems value=$bookBag->getItems()}
 {/if}
-
-{include file="homelogo.tpl" assign=logoUrl}
+{assign var=logoUrl value=""}
+{if "homelogo.$userLang.tpl"|template_full_path}
+  {include file="homelogo.$userLang.tpl" assign=logoUrl}
+{/if}
+{if !$logoUrl|trim}{include file="homelogo.tpl" assign=logoUrl}{/if}
 
   <div class="grid_24 drop">
     <a id="logo" href="{$url}" title="{translate text='Home'}">

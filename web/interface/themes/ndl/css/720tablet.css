@@ -343,7 +343,10 @@
     #recordProvidedBy dl.dropdown dd ul {
         max-height: 200px;
     }
-
+	
+	.content .resultColumn2.grid_11 {
+		width: 320px;
+	}
 
     /* Myresearch */
 
@@ -431,11 +434,6 @@
       min-width: 720px;
     }
 
-
-    
-    .keepFilters {
-        left: 242px;
-    }
     .ui-autocomplete {
         width: 457px !important;
     }

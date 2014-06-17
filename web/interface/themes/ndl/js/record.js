@@ -120,6 +120,8 @@ $(document).ready(function(){
         });
     });
     
+	setupLeftColumnRatingStars();
+	
     setUpCheckRequest();
     setUpCheckCallSlipRequest();
     setUpCheckUBRequest();
@@ -414,5 +416,14 @@ function deleteRecordComment(recordId,commentId) {
                 refreshCommentList(recordId);
             }
         }
+    });
+}
+
+function setupLeftColumnRatingStars() {
+    $('#averageRating').click( function ( event ) {
+	  $('#commentstab').trigger('click');
+	  $('html, body').animate({
+      	scrollTop: $('#commentstab').offset().top
+      }, 250);
     });
 }

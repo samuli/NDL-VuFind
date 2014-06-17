@@ -25,6 +25,18 @@
 .menuHome > a:hover span {
     background-position: -1px -363px;
 }
+.menuLogin dt a {
+	background:	url("../images/icons16-24px-02_white.png") 
+	!important;
+	background-repeat:no-repeat !important;
+	background-position:1px -1941px !important;
+	padding-left:22px !important;
+}
+.menuLogin .logout {
+	background:	url("../images/icons16-24px-02_black.png");
+	background-repeat:no-repeat;
+	background-position:8px -272px;
+}
 
 /* Common: Buttons */
 
@@ -539,8 +551,8 @@ span.dynatree-expander:hover {
 #addThis .mail, .addthis_button_facebook, .addthis_button_twitter,
 .addthis_button_google_plusone_share,
 .fav, .mail, .export, .export img, .add, .delete,
-.citation .moreLink a:after, .citation .lessLink a:after,
-.openurl_more_full {
+#recordMetadata .moreLink a:after, #recordMetadata .lessLink a:after,
+.openWindow {
     background-image: url(../images/icons16-24px-02_turquoise.png);
 }
 #addThis .mail {
@@ -574,15 +586,19 @@ span.dynatree-expander:hover {
     background-position: 7px -158px;
 }
 .coverImages .moreLink a:after,
-.citation .moreLink a:after {
+#recordMetadata .moreLink a:after {
     background-position: 2px -2318px;
 }
 .coverImages .lessLink a:after,
-.citation .lessLink a:after {
+#recordMetadata .lessLink a:after {
     background-position: 2px -2270px;
 }
-.openurl_more_full {
-    background-position: 2px -838px;
+.openWindow {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-position: -1px -2530px;
+	margin-left: 5px;
 }
 .savedHistory .delete, .accountList .delete, .accountList .edit {
     background-image: url(../images/icons16-24px-02_black.png);

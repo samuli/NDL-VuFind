@@ -283,6 +283,7 @@ function updateLoginStatus() {
                 $('#loginDetails').replaceWith(response.data);
                 createDropdowns();
                 initDropdowns();
+                initHeaderMenu();
             }
         }
     });

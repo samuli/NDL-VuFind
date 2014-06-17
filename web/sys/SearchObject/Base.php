@@ -382,8 +382,12 @@ abstract class SearchObject_Base
                             $buildingTree = '';
                             foreach ($buildings as $i => $building) {
                                 $buildingTree .= '/' . $building;
-                                $display .= ' > ' . translate(array('prefix' => $translationPrefix,
-                                    'text' => $i + 1 . '/' . $mainBuilding . $buildingTree ));
+                                $display .= ' > ' . translate(
+                                    array(
+                                        'prefix' => $translationPrefix,
+                                        'text' => $i + 1 . '/' . $mainBuilding . $buildingTree
+                                    )
+                                );
                             }
                         }
                     }
@@ -620,9 +624,9 @@ abstract class SearchObject_Base
         // If searching with ISBN, normalize to ISBN 13.
         // NOTE: for AllFields search the ISBN needs to be recognized as one. Not the best solution...
         if ($type == 'AllFields' || $type == 'ISN') {
-        	$isbn = $this->normalizeIfValidISBN($_REQUEST['lookfor']);
+            $isbn = $this->normalizeIfValidISBN($_REQUEST['lookfor']);
             if ($isbn) {
-            	$_REQUEST['lookfor'] = $isbn;
+                $_REQUEST['lookfor'] = $isbn;
             }
         }
 
@@ -671,11 +675,10 @@ abstract class SearchObject_Base
                     // If searching with ISBN, normalize to ISBN 13.
                     // NOTE: for AllFields search the ISBN needs to be recognized as one. Not the best solution...
                     if ($type == 'AllFields' || $type == 'ISN') {
-                    	$isbn = $this->normalizeIfValidISBN($_REQUEST['lookfor'.$groupCount][$i]);
-                    	if ($isbn) {
-                    		$_REQUEST['lookfor'.$groupCount][$i] = $isbn;
-                    	}
-
+                        $isbn = $this->normalizeIfValidISBN($_REQUEST['lookfor'.$groupCount][$i]);
+                        if ($isbn) {
+                            $_REQUEST['lookfor'.$groupCount][$i] = $isbn;
+                        }
                     }
 
                     // Add term to this group
@@ -1183,7 +1186,7 @@ abstract class SearchObject_Base
     /**
      * Build a url for the current search without filters
      *
-     * @param  array  $discardSearchParams  list of parameters to discard from the URL.
+     * @param array $discardSearchParams list of parameters to discard from the URL.
      *
      * @return string URL of a search
      * @access public
@@ -1200,7 +1203,7 @@ abstract class SearchObject_Base
             $field = trim($temp[0]);
 
             $discard = false;
-            foreach($discardSearchParams as $discardParam) {
+            foreach ($discardSearchParams as $discardParam) {
                 if ($field == trim($discardParam)) {
                     $discard = true;
                     continue 1;
@@ -2675,12 +2678,13 @@ abstract class SearchObject_Base
 
         // Base 'advanced' query
         $output = "(" .
-            join(") " .
-            (isset($this->searchTerms[0]['join'])
-                ? $this->searchTerms[0]['join']
-                : 'AND') .
-            " (", $groups) .
-            ")";
+            join(
+                ") " .
+                (isset($this->searchTerms[0]['join'])
+                    ? $this->searchTerms[0]['join']
+                    : 'AND') .
+                " (", $groups
+            ) . ")";
 
         // Concatenate exclusion after that
         if (count($excludes) > 0) {

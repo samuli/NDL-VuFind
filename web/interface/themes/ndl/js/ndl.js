@@ -169,17 +169,17 @@ function initSidebarFacets() {
         }        
     });
     
-    // Add clickable timeline icon function
-    $('.timelineview').click(function(e) {
+    // Add clickable function for timeline icon and text
+	$('.timelineview, .layout960 .year .yearLabel, .layout720 .year .yearLabel').click(function(e) {
         e.stopPropagation();
         var parentDl = $(this).closest('dl.narrowList');
-        if (!parentDl.hasClass('collapsed')) {
+        if ( !parentDl.hasClass('collapsed') ) { // if closed
             parentDl.find('> dt').trigger('click');
         }
         parentDl.toggleClass('timeline');
         moveMainYearForm(parentDl);
 	});
-    
+	
     // Keep main year form visible
     moveMainYearForm = function(el) {
         if (!el.hasClass('timeline')) {

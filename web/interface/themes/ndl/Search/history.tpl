@@ -49,7 +49,7 @@
               <strong>{translate text=$field|escape}</strong>: {$filter.display|escape}<br/>
             {/foreach}{/foreach}</td>
             {if $metalibEnabled || $pciEnabled}
-            	<td class="smallNotification" style="color:grey">{if $info.url|strpos:"/PCI/" == true}{translate text="Primo Central"}{elseif $info.url|strpos:"/Metalib/" == true}{translate text="Metalib Searches"}{else}{translate text="Local Records"}{/if}</td>
+            	<td class="smallNotification" style="color:grey">{if $info.url|strpos:"/PCI/" == true}{translate text="Primo Central"}{elseif $info.url|strpos:"/MetaLib/" == true}{translate text="MetaLib Searches"}{else}{translate text="Local Records"}{/if}</td>
             {/if}
             <td style="text-align:right">{$info.hits}</td>
             <td>
