@@ -49,7 +49,8 @@ require_once 'services/MyResearch/lib/Tags.php';
 class Record extends Base
 {
     protected $record;
-
+    protected $recordDriver;
+    
     /**
      * Constructor
      *
@@ -70,6 +71,9 @@ class Record extends Base
         if (PEAR::isError($this->record)) {
             PEAR::raiseError($this->record);
         } 
+        
+        // Get record driver
+        $this->recordDriver = RecordDriverFactory::initRecordDriver($this->record);
 
         // Set Proxy URL
         $interface->assign(
@@ -89,6 +93,19 @@ class Record extends Base
         
         // Send record ID to template
         $interface->assign('id', $_REQUEST['id']);
+        
+        // Send down legal export formats (if any):
+        $interface->assign('exportFormats', $this->recordDriver->getExportFormats());
+        
+        // Set AddThis User
+        $interface->assign(
+            'addThis', isset($configArray['AddThis']['key'])
+            ? $configArray['AddThis']['key'] : false
+        );
+        
+        // Get core metadata
+        $interface->assign('coreMetadata', $this->recordDriver->getCoreMetadata());
+        
     }
 
     /**
@@ -160,11 +177,11 @@ class Record extends Base
             'bXEnabled', isset($configArray['bX']['token'])
             ? true : false
         );
-        
+
         // Display Page
         $interface->setTemplate('record.tpl');
         $interface->display('layout.tpl');
     }
-}
-
+}       
+   
 ?>

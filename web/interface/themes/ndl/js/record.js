@@ -85,6 +85,11 @@ $(document).ready(function(){
         var $dialog = getLightbox('Record', 'Feedback', id, null, this.title);
         e.preventDefault();
     });
+    $('a.feedbackMetaLib').click(function(e) {
+        var id = this.id.substr('feedbackMetaLib'.length);
+        var $dialog = getLightbox('MetaLib', 'Feedback', id, null, this.title);
+        e.preventDefault();
+    });
     $('a.tagRecord').click(function(e) {
         var id = this.id.substr('tagRecord'.length);
         var $dialog = getLightbox('Record', 'AddTag', id, null, this.title, 'Record', 'AddTag', id);
