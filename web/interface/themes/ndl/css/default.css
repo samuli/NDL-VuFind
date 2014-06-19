@@ -6133,11 +6133,6 @@ tr:nth-child(even) td.gridMouseOver {
     margin-top: 20px;
 }
 
-/* toolbar was changed to collection-toolbar in Collection/view.tpl & Collection/view-alt.tpl */
-.collection-toolbar {
-    display: none;
-}
-
 /* RSS Recommendations */
 div.suggestionHeader {
     min-height:30px;
