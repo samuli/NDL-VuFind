@@ -255,9 +255,21 @@ function registerAjaxLogin(container, loginFromLightbox) {
                                     // and we close the dialog
                                     hideLightbox();
                                 } else {
+                                    var followup = $(form).find("input[name='followup']").val() || 'MyResearch';
                                     var followupModule = $(form).find("input[name='followupModule']").val() || 'MyResearch';
                                     var followupAction = $(form).find("input[name='followupAction']").val() || 'Home';
-                                    window.location = path + '/' + followupModule + '/' + followupAction;
+                                    var recordId = $(form).find("input[name='recordId']").val();
+                                    // This resembles processFollowup() special case in index.php
+                                    var url = path + '/' + followupModule;
+                                    if (followup == 'SaveSearch') {
+                                        url += '/' + followupAction + '?' + recordId;
+                                    } else {
+                                        if (recordId) {
+                                            url += '/' + recordId;
+                                        }
+                                        url += '/' + followupAction;
+                                    }
+                                    window.location = url;
                                 }
                             } else {
                                 displayFormError($(form), response.data);
