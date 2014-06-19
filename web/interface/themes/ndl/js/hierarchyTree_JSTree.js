@@ -1,5 +1,4 @@
 function initHierarchyTree(q) {
-  $('#hierarchyTree').html('<li><span class="hierarchyLoading"></span></li>');
   $.getJSON(path + "/AJAX/AJAX_HierarchyTree?q=" + q,
     {
       method: "getHierarchyTree",
@@ -21,7 +20,7 @@ function initHierarchyTree(q) {
           $('#hierarchyTree li.id__'+key).append(treeDoc)
             .addClass('openPath').find('>span').addClass('open expanded');
         } else {
-          $('#hierarchyTree').html(treeDoc);
+          $('#hierarchyTree').html(treeDoc).removeClass('hierarchyLoading');
         }
       }
     $('#hierarchyTree li.id__'+jqEscape(q)).addClass('openPath');

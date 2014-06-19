@@ -6401,13 +6401,8 @@ table.summHoldings .statusColumn {
 }
 
 .hierarchyLoading {
-    background: url("http://vufind-fe-kktest.lib.helsinki.fi/test/interface/themes/ndl/images/ajax_loading.gif") no-repeat scroll 0 0 #FFFFFF;
-    display: block;
-    height: 18px;
-    cursor:pointer;
-    width: 18px;
-    margin-left:12px;
-    opacity:.8;
+    background: url("../images/ajax_loading.gif") no-repeat center top;
+    margin: 2px 0 0 10px;
 }
 
 .moreLeaves a span.hierarchyLoading {
