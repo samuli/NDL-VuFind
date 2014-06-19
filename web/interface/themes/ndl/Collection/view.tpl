@@ -62,7 +62,7 @@
     </div>
     <div style="clear: left;"></div>
     <span class="Z3988" title="{$openURL|escape}"></span>
-    <p><a href="{$url}/Record/{$collectionID}">{translate text="Collection Details"}</a></p>
+    <p><a href="{$url}/Record/{$collectionID|urlencode}">{translate text="Collection Details"}</a></p>
   </div>
 	
   <div id="tabnav" >
