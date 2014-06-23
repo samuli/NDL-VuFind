@@ -3138,6 +3138,11 @@ ul.recordSet .addToFavLink a {
 .available {
     color: #00B270;
 }
+#recordMetadata .available:before {
+	height:18px;
+	height:18px;
+	padding-right:8px;
+}
 a.fulltext.available {
     color: #00a3b5;
 }

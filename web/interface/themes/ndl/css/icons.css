@@ -286,8 +286,17 @@ a.clear_input {
 .available:before, .availableLoc:before {
     background-image: url(../images/icons16-24px-03_green.png);
 }
+#recordMetadata .available:before {
+	background-image:none;	
+}
+#recordMetadata .fulltext.available {
+	background-image: url(../images/icons16-24px-01_turquoise.png);
+    background-position: 1px -776px;
+	min-height:21px;
+	display:inline-block;
+}
 .available:before {
-    background-position: 1px -1439px;
+	background-position: 1px -1439px;
 }
 .availableLoc:before {
     background-position: 1px -1439px;
