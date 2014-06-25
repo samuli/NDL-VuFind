@@ -3175,7 +3175,7 @@ a.fulltext.available {
 .checkedout {
     color:#ff461e;
 }
-.holdPlace:before, .callSlipPlace:before, .UBRequestPlace:before {
+.holdPlace:before, .UBRequestPlace:before {
     content: "";
     display: inline-block;
     height: 11px;
@@ -3188,8 +3188,13 @@ a.fulltext.available {
 .callSlipPlace {
     background-repeat:no-repeat;
     background-position: left;
-    padding:.5em .5em .5em 20px;
+    border-radius:5px; 
+	padding:5px; 
+	margin:0px 5px;
+	font-weight:400;
     margin-right:1em;
+	background:#00a3b5;
+	color:#fff !important;
 }
 .holdCancel {
     background-image:url(../images/fugue/holdCancel.png);
@@ -4344,6 +4349,28 @@ div.coverImagesLessLink {
     text-align: right;
     float: left;
     margin-right: 12px;
+	line-height: 27px;
+}
+.call-slip-form div {
+	margin:10px 0px;		
+}
+.call-slip-form .reference {
+	margin-top:0px;	
+}
+.call-slip-form strong input[type="radio"] {
+	padding: 3px;
+	height: 15px;
+	width: 20px;
+	line-height: 20px;
+	margin-bottom:5px;
+	
+}
+.call-slip-form strong input[type="radio"] + label, .call-slip-form strong input[type="text"]:disabled + span, #callSlipReference .label.disabled {
+	color: #999;
+	transition: color 0.1s ease-in;
+}
+.call-slip-form strong input[type="radio"]:checked + label, .call-slip-form strong input[type="radio"]:hover + label, .call-slip-form strong input[type="radio"]:hover .reference {
+	color:#464646;	
 }
 
 /***** Citation Table *****/
@@ -4985,7 +5012,7 @@ table.holdingsContainerHolding.visible {
     display:block;
 }
 table.holdingsContainerHolding.active {
-    border-bottom: 2px solid #D7D7D7;
+    border-bottom: 3px solid #D7D7D7;
 }
 tr.avail {
     display:none;
@@ -5041,6 +5068,10 @@ table.holdingsContainerHolding .copyDetails.display {
 table.holdingsContainerHolding .copyDetails.first > *,
 table.holdingsContainerHolding td {
     border-top:1px solid #d7d7d7;
+	
+table.holdingsContainerHolding .copyDetails td {
+		padding-top:7px !important;
+		padding-bottom:7px !important;
 }
 
 table.holdingsContainerHolding .toggleCopyDetails * {
@@ -5092,8 +5123,7 @@ table.holdingsContainerHolding .available {
 }
 
 table.holdingsContainerHolding .callSlipPlace {
-    padding:0;
-    font-weight:bold;
+    font-weight:400;
 }
 
 /* Comments */

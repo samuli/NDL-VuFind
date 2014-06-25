@@ -17,7 +17,6 @@
   {if $helpText}
     <p class="helptext">{$helpText}</p>
   {/if}
-
   {if $gatheredDetails}
   <div class="call-slip-form">
 
@@ -28,11 +27,10 @@
       {/if}
 
       <p>{translate text="call_slip_instructions"}</p>
-
       {if in_array("item-issue", $extraFields)}
       <div>
-        <strong><input type="radio" id="callSlipItem" name="gatheredDetails[level]" value="copy"{if $gatheredDetails.level != 'title'} checked="checked"{/if}>{translate text="call_slip_selected_item"}</input></strong><br/>
-        <strong><input type="radio" id="callSlipTitle" name="gatheredDetails[level]" value="title"{if $gatheredDetails.level == 'title'} checked="checked"{/if}>{translate text="call_slip_reference"}:</input></strong><br/>
+        <strong><input type="radio" id="callSlipItem" name="gatheredDetails[level]" value="copy"{if $gatheredDetails.level != 'title'} checked="checked" /{/if}><label for="callSlipItem">{translate text="call_slip_selected_item"}</label></strong><br/>
+        <strong><input type="radio" id="callSlipTitle" name="gatheredDetails[level]" value="title"{if $gatheredDetails.level == 'title'} checked="checked" /{/if}><label for="callSlipTitle">{translate text="call_slip_reference"}:</label></strong><br/>
         <div id="callSlipReference" class="reference">
           <span class="label">{translate text="call_slip_volume"}:</span> <input type="text" name="gatheredDetails[volume]" value="{$gatheredDetails.volume|escape}"></input><br/>
           <span class="label">{translate text="call_slip_issue"}:</span> <input type="text" name="gatheredDetails[issue]" value="{$gatheredDetails.issue|escape}"></input><br/>
@@ -40,7 +38,6 @@
         </div>
       </div>
       {/if}
-      
       {if in_array("pickUpLocation", $extraFields)}
         {if $gatheredDetails.pickUpLocation !=""}
           {assign var='selected' value=$gatheredDetails.pickUpLocation}
@@ -86,8 +83,10 @@ $(document).ready(function() {
   $("input[type='radio']").change(function() {
     if ($('#callSlipItem').attr('checked') == 'checked') {
       $('#callSlipReference input').attr('disabled', 'disabled');
+      $('#callSlipReference .label').toggleClass('disabled', true);
     } else {
       $('#callSlipReference input').removeAttr('disabled');
+      $('#callSlipReference .label').toggleClass('disabled', false);
     }
   });
   $('#callSlipItem').trigger('change');
