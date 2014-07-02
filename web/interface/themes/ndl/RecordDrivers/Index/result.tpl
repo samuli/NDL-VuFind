@@ -94,10 +94,17 @@
         {/if}        
       {/if}
       {if $summDate}{translate text='Published'}: {$summDate.0|escape}{/if}{if $summPublicationEndDate}&mdash;{if $summPublicationEndDate != 9999}{$summPublicationEndDate}{/if}{/if}
+      {if !empty($summDateSpan)}
+        <div class="resultDateSpan">
+            {foreach from=$summDateSpan item=field name=loop}
+              {$field|escape}<br/>
+            {/foreach}
+        </div>
+      {/if}
       {if !empty($summClassifications)}
         <div class="resultClassification">
-            {* This is a single-line mess due to Smarty otherwise adding spaces *}
             {translate text='Classification'}:
+            {* This is a single-line mess due to Smarty otherwise adding spaces *}
             {foreach from=$summClassifications key=class item=field name=loop}{if !$smarty.foreach.loop.first}, {/if}{foreach from=$field item=subfield name=subloop}{if !$smarty.foreach.subloop.first}, {/if}{$class|escape} {$subfield|escape}{/foreach}{/foreach}
         </div>
       {/if}
