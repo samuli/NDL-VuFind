@@ -12,35 +12,6 @@
 <div class="content">
   <div id="headingHierarchyCollection" class="{*span-13*}">
     <div class="record" id="collection{$id|escape}">
-      <div class="collection-toolbar">
-        <span class="backSpan">
-          {if $lastsearch}
-            <a href="{$lastsearch|escape}#record{$id|escape:"url"}" class="backtosearch">&laquo; {translate text="Back to Search Results"}</a>
-          {/if}
-        </span>
-        <ul>
-          <li><a href="{$url}/Record/{$id|escape:"url"}/Cite" class="citeRecord cite" id="citeRecord{$id|escape}" title="{translate text="Cite this"}">{translate text="Cite this"}</a></li>
-          <li><a href="{$url}/Record/{$id|escape:"url"}/SMS" class="smsRecord sms" id="smsRecord{$id|escape}" title="{translate text="Text this"}">{translate text="Text this"}</a></li>
-          <li><a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li>
-          {if is_array($exportFormats) && count($exportFormats) > 0}
-          <li>
-            <a href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormats.0|escape:"url"}" class="export exportMenu">{translate text="Export Record"}</a>
-            <ul class="menu offscreen" id="exportMenu">
-            {foreach from=$exportFormats item=exportFormat}
-              <li><a {if $exportFormat=="RefWorks"}target="{$exportFormat}Main" {/if}href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormat|escape:"url"}">{translate text="Export to"} {$exportFormat|escape}</a></li>
-            {/foreach}
-            </ul>
-          </li>
-          {/if}
-          <li id="saveLink"><a href="{$url}/Record/{$id|escape:"url"}/Save" class="saveRecord fav" id="saveRecord{$id|escape}" title="{translate text="Add to favorites"}">{translate text="Add to favorites"}</a></li>
-          {if !empty($addThis)}
-          <li id="addThis"><a class="addThis addthis_button" href="https://www.addthis.com/bookmark.php?v=250&amp;pub={$addThis|escape:"url"}">{translate text='Bookmark'}</a></li>
-          {/if}
-        </ul>
-        <div class="clear"></div>
-      </div>
-
-      <div style="clear: right;"></div>
       {if $errorMsg || $infoMsg}
       <div class="messages">
         {if $errorMsg}<div class="error">{$errorMsg|translate}</div>{/if}
