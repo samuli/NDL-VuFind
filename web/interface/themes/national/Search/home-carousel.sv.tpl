@@ -5,44 +5,42 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
-        {image src="01alaska.jpg"}
+       {image src="01lapset.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Alaskasamlingen i Kulturernas museum</span></div>
+          <div class="pickup-header"><span>Barnens nya mediekultur: bebisar surfar på nätet</span></div>
           <div class="pickup-text">
-           En ceremoniell huvudbonad som användes av aleuterna i Alaska i början av 1800-talet. 
-Alaskasamlingen omfattar ca 500 föremål som är insamlade av bl.a. Arvid Adolf Etholén, guvernör över ryska Alaska, och prästen Uno Cygnaeus. I samlingen finns bl.a. kläder, fångstredskap och små skulpturer av valrossbetar.  
-            <a href="{$url}/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=100">Till sökresultatet »</a>
-          </div>
-        </div>
-      </li>
-       <li class="grid_6">
-        {image src="02vr.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>VR:s reseaffischer</span></div>
-          <div class="pickup-text">
-Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har använt affischerna på stationerna, i tågen och vid olika evenemang och har bytt till sig affischer från olika länder. Affischerna har skapats av bl.a. konstnärerna Erik Bruun, Osmo K. Oksanen och Juha Anttinen och fotograferna Fred Runeberg, E. Tolvanen och Yrjö Metsälä.
-            <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>Till sökresultatet »</a>
+            Digitala medier hör till spädbarnens vardag och barnens mediekultur förändras snabbt, berättar källor i Finna. Enligt Barnens mediebarometer 2013 använder 40 procent av 0–2-åringarna internet varje vecka.
+            <a href="{$url}{'/Search/Results?lookfor=lapset+media+muutokset&SearchForm_submit=Hae&filter[]=format%3A%221%2FBook%2FBook%2F%22&filter[]=language%3A%22fin%22&view=list&limit=20&sort=relevance'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
       <li class="grid_6">
-        {image src="03nuorisobarometri.jpg"}
+        {image src="03mttk.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Välfärd i många led: ungdomsbarometern 2012</span></div>
+          <div class="pickup-header"><span>MTT:s publikationer</span></div>
           <div class="pickup-text">
-            I Finna finns också undersökningar, e-tidningar, artiklar och andra publikationer som är tillgängliga via webben. Ungdomsbarometern 2012 beskriver familjernas vardag, fostran och levnadssätt. Enligt barometern är de unga mer intresserade av politik i dag än någonsin tidigare under uppföljningen.
-            <a href="{$url}{"/Record/jykdok.1231846"|escape:'html'}">Till sökresultatet »</a>
+            Många av Forskningscentralen för jordbruk och livsmedelsekonomis (MTT:s) publikationer är tillgängliga som e-publikationer. Forskningscentralen är en organisation under jord- och skogsbruksministeriet som utvecklar livsmedelssystemens ansvarstagande och konkurrenskraft samt hållbar användning av naturresurserna.
+            <a href="{$url}{'/Search/Results?lookfor=Maa-+ja+elintarviketalouden+tutkimuskeskus&type=Author&filter[]=online_boolean%3A%221%22&filter[]=format%3A%220%2FBook%2F%22&sort=relevance&view=list&limit=20'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>  
-      <li class="grid_6">
-        {image src="04uudistusarkisto.jpg"}
+       <li class="grid_6">
+        {image src="02hkl.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Lantmäteristyrelsens arkiv för renoverade kartor</span></div>
+          <div class="pickup-header"><span>Helsingfors kollektivtrafiks historiar</span></div>
           <div class="pickup-text">
-Lantmäteristyrelsens renoverade kartor är den största kartsamlingen i Riksarkivet. Den innehåller renritade kartor från 1600-talet till 1900-talet som tillkommit i samband med lantmäteriförrättningar. Samlingen innehåller kartor över områden från hela Finland och de överlåtna områdena. 
-
-            <a href="{$url}{"/Collection/narc.VAKKA-312108.KA"|escape:'html'}">Till sökresultatet »</a>
+Biljetter, fortskaffningsmedel och fotografier ur Helsingfors stadsmuseums samlingar. Hur såg spårvagnarna ut på 1920-talet? Kommer du ihåg bussbiljetterna från 1986? Materialet som presenterar kollektivtrafikens historia omfattar perioden från början av 1900-talet till våra dagar.
+            <a href="{$url}{'/Search/Results?lookfor=liikennelaitos&type=AllFields&filter[]=building%3A%220%2FHKM%2F%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="04ediths.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Edith Södergrans fotografier (Svenska litteratursällskapet)</span></div>
+          <div class="pickup-text">
+Lyrikern Edit Södergran (1892-1923) är en av Finlands mest översätta författare och hennes dikter på svenska utkommer ständigt i nyutgåvor. Hon är också sedan 1990-talet känd som fotograf och omkring 400 fotografier med motiv från Davos, Schweiz och Raivola på Karelska näset finns bevarade. Ett favoritmotiv är hennes katter.
+            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>  
@@ -51,42 +49,43 @@ Lantmäteristyrelsens renoverade kartor är den största kartsamlingen i Riksark
   <div class="slide">
     <ul> 
       <li class="grid_6">
-        {image src="05hvittrask.jpg"}
+        {image src="08vr.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Nationalromantiska Hvitträsk (byggt 1901–1903)</span></div>
+          <div class="pickup-header"><span>VR:s reseaffischer</span></div>
           <div class="pickup-text">
-            Hvitträsk i Kyrkslätt ritades av arkitekterna Gesellius, Lindgren och Saarinen. Hvitträsk är ett helhetskonstverk och den främsta representanten för den finska art nouveau-stilen. Föremål och interiörer digitaliserades inom ramen för det internationella projektet Partage Plus. 
-            <a href="{$url}{'/Search/Results?lookfor=Hvitträsk&prefiltered=museums&SearchForm_submit=Hae&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&filter%5B%5D=sector_str_mv%3A"0%2Fmus%2F&view=grid&limit=100"'|escape:'html'}">Till sökresultatet »</a>
+Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har använt affischerna på stationerna, i tågen och vid olika evenemang och har bytt till sig affischer från olika länder. Affischerna har skapats av bl.a. konstnärerna Erik Bruun, Osmo K. Oksanen och Juha Anttinen och fotograferna Fred Runeberg, E. Tolvanen och Yrjö Metsälä.
+            <a href="{$url}{'/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
       <li class="grid_6">
-        {image src="06halonen.jpg"}
+        {image src="06jumissa.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Pekka Halonen: Tomater (1913). Konstmuseet Ateneum</span></div>
+          <div class="pickup-header"><span>Livshantering och droger: fakta och skönlitteratur</span></div>
           <div class="pickup-text">
-            Utställningen Den förtrollade sjön i Ateneum 11.10.2013–9.2.2014 berättar om livet i konstnärssamhället vid Tusby träsk och de fascinerande hemmen där flera av de viktigaste personerna inom det finländska kulturlivet bodde och arbetade. <span class="caption">Foto: Statens konstmuseum, Centralarkivet för bildkonst/Hannu Pakarinen.</span>
-            <a href="{$url}/Record/muusa.urn%3Auuid%3A0AC744B9-02DE-478F-B221-A838B1B123A1">Till sökresultatet »</a>
+            I Finna finns information och skönlitteratur som berättar om droganvändningens inverkan på förmågan att hantera sitt liv. Social- och hälsovårdsministeriet har (2006) producerat ett test för unga män, och Mihail Bulgakov skrev noveller på 1920-talet som baserar sig på vad han själv upplevt. Testet finns på nätet, Bulgakovs noveller kan man låna.</span>
+            <a href="{$url}{'/Search/Results?lookfor=el%C3%A4m%C3%A4nhallinta+huumeet&type=AllFields&filter[]=language%3A%22fin%22&filter[]=format%3A%220%2FBook%2F%22&filter[]=search_sdaterange_mv%3A%22[%22-4371587+12784%22+TO+%222932896+2932896%22]%22&search_sdaterange_mvtype=overlap&sort=relevance&view=list&limit=20'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
       <li class="grid_6">
-       {image src="constantinus.jpg"}
+        {image src="07alaska.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Constantinus Africanus: Theorica Pantegni</span></div>
+          <div class="pickup-header"><span>Alaskasamlingen i Kulturernas museum</span></div>
           <div class="pickup-text">
-            Den medeltida medicinska läro- och handboken Theorica Pantegni är den äldsta inbundna handskriften i Finland och en av Nationalbibliotekets pärlor. Finlands första omfattande och allmänna medicinska verk på latin har digitaliserats och transkriberats till moderna bokstäver.
-            <a href="{$url}/Record/fennica.971448">Till sökresultatet »</a>
+           En ceremoniell huvudbonad som användes av aleuterna i Alaska i början av 1800-talet. 
+Alaskasamlingen omfattar ca 500 föremål som är insamlade av bl.a. Arvid Adolf Etholén, guvernör över ryska Alaska, och prästen Uno Cygnaeus. I samlingen finns bl.a. kläder, fångstredskap och små skulpturer av valrossbetar.  
+            <a href="{$url}{'/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=10'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
       <li class="grid_6">
-        {image src="korvaus.jpg"}
+        {image src="05kultsa.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Arkivet för Statskontorets ersättningsärenden</span></div>
+          <div class="pickup-header"><span>Kulturhuset byggdes med talkokrafter</span></div>
           <div class="pickup-text">
-            Statskontorets ersättningsärenden hade till uppgift att ersätta lös och fast egendom som gick förlorad tillsammans med de överlåtna områdena efter vinter- och fortsättningskriget. Ersättningsansökningarna och bilagorna förvaras i original i Riksarkivet.
-            <a href="{$url}{"/Search/Results?lookfor=Valtiokonttorin+korvausasiaintoimiston+arkisto&type=AllFields&view=list"|escape:'html'}">Till sökresultatet »</a>
+            Kulturhuset, ritat av Alvar Aalto och uppfört med talkokrafter, är ett kraftprov av arbetarrörelsen. Kartoteket över arbetarna, vars insats varierade från några timmar till 400 timmar, omfattar mer än 5 000 namn. Huset som stod färdigt 1958 var stadens första konsertsal. <em>(Malmberg, Aleksi: Kulttuuritalo. Puoli vuosisataa tarinoita ja tapahtumia) </em>
+            <a href="{$url}{'/Search/Results?lookfor=Kulttuuritalon+rakentaminen+1955&type=AllFields&prefiltered=-&filter[]=online_boolean%3A%221%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
