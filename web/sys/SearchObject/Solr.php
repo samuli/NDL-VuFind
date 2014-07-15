@@ -642,6 +642,10 @@ class SearchObject_Solr extends SearchObject_Base
         for ($x = 0; $x < count($this->indexResult['response']['docs']); $x++) {
             $current = & $this->indexResult['response']['docs'][$x];
             $record = RecordDriverFactory::initRecordDriver($current);
+            
+            if (get_class($this) === 'SearchObject_SolrMetaLibBrowse') { 
+                $record->assignMetaLibBrowseData();
+            } 
             $html[] = $interface->fetch($record->getSearchResult($currentView));
         }
         return $html;

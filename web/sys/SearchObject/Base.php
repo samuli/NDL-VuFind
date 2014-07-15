@@ -65,7 +65,8 @@ abstract class SearchObject_Base
     // List of URL parameter names used to transmit active filters for all search types
     protected static $urlFilterTypes = array('local' => array('filter', 'orfilter'),
                                              'pci' => array('filterpci'),
-                                             'metalib' => array()
+                                             'metalib' => array(),
+                                             'metalibBrowse' => array('filterMetaLibBrowse')
                                              );
     // URL parameter type
     const URL_FILTER_TYPE = 'local';

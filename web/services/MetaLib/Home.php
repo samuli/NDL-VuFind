@@ -51,6 +51,8 @@ class Home extends Base
     {
         global $interface;
 
+        $interface->assign('browseDatabases', $this->getBrowseUrl('Browse'));
+
         $interface->setPageTitle('Search Home');
         $interface->setTemplate('home.tpl');
         $interface->display('layout.tpl');

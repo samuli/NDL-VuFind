@@ -14,9 +14,11 @@
           <p>{translate text="authorize_user_notification"}</p>
         </div>
       {/if}
-        <strong>{translate text='You can'}:</strong>
-        <p>- {translate text='Try to search with another phrase'}</p>
+      <strong>{translate text='You can'}:</strong>
+      <p>- {translate text='Try to search with another phrase'}</p>
+      {if $action != 'Browse'}
         <p>- {translate text='Try with a different search set'}</p>
+      {/if}
       </div>
     {/if}
 
@@ -50,6 +52,9 @@
 
   {include file="MetaLib/database-statuses.tpl"}
 
+  {if $action === 'Browse'}
+     {js filename="metalib_browse.js"}
+  {/if}
     
   </div>
 

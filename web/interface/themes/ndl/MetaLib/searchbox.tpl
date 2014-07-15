@@ -6,7 +6,14 @@
 {/if}
     
 {if $searchType != 'MetaLibAdvanced'}
-  <form method="get" action="{$path}/MetaLib/Search" name="searchForm" id="searchForm" class="search">
+
+ {if $action == 'Browse'}
+     {assign var='formAction' value='Browse'}
+ {else}
+     {assign var='formAction' value='Search'}
+ {/if}
+ 
+  <form method="get" action="{$path}/MetaLib/{$formAction}" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
         <div class="overLabelWrapper">
@@ -22,7 +29,7 @@
         </div>
      {/if}
 
-        <input type="hidden" name="set" id="searchForm_set" value="{foreach from=$metalibSearchSets item=searchDesc key=searchVal name=loop}{if $searchSet == $searchVal || (!$searchSet && $smarty.foreach.loop.first)}{$searchVal}{/if}{/foreach}">
+        <input type="hidden" name="set" id="searchForm_set" value="{$searchSet}">
         <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
       </div>
     </div>

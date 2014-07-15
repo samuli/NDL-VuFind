@@ -159,7 +159,7 @@ class SearchObject_MetaLib extends SearchObject_Base
             reset($this->searchSets);
             $this->set = key($this->searchSets);
         }
-        
+
         return true;
     }
 
@@ -201,6 +201,18 @@ class SearchObject_MetaLib extends SearchObject_Base
             $result[$key] = $set['name'];
         }
         return $result;
+    }
+
+    /**
+     * Get recently used MetaLib databases as an array of ird => name pairs.
+     * 
+     * @return string[] databases.
+     */
+    public function getRecentDatabases()
+    {
+        return isset($_SESSION['recentMetaLibDatabases']) 
+            ? array_reverse($_SESSION['recentMetaLibDatabases'])
+            : array();
     }
     
     /**

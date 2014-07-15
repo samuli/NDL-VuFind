@@ -1171,8 +1171,28 @@ class IndexRecord implements RecordInterface
         // All images
         $interface->assign('summImages', $this->getAllImages());
 
+
+
         // Send back the template to display:
         return 'RecordDrivers/Index/result-' . $view . '.tpl';
+    }
+
+    /**
+     * Assign Smarty variables for MetaLib database browsing.
+     *
+     * @return none
+     * @access public
+     */
+    public function assignMetaLibBrowseData()
+    {
+        global $interface;
+
+        $this->getExtendedMetadata();
+        
+        $browseFields = array('coreGenres' => 'genre');
+        foreach ($browseFields as $key => $val) {
+            $interface->assign($key, isset($this->fields[$val]) ? $this->fields[$val] : array());
+        }
     }
 
     /**

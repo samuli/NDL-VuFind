@@ -195,6 +195,16 @@
         width: 530px;
     }
 
+    .module-MetaLib .sidebarOnLeft .resultNumbers {
+        margin-left: -208px;
+    }
+
+
+    #metaLibBrowse li.result .iconsRight {
+        float: left;
+    }
+
+
     /* Search results: sidebar */
     
     .sidegroup ul.dynatree-container {

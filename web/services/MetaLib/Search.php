@@ -72,6 +72,8 @@ class Search extends Base
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
+        $interface->assign('browseDatabases', $this->getBrowseUrl('Browse'));        
+
         if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('MetaLib Searches')) {
             $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);
         }

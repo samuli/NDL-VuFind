@@ -547,13 +547,14 @@ span.dynatree-expander:hover {
 
 /* Main: Single record view */
 
-.resultLinks .button, .resultLinks .button span {
+.resultLinks .button, .resultLinks .button span,
+.backToMetaLib .button, .backToMetaLib .button span {
     background-image: url(../images/icons16-24px-02_white.png);
 }
-.resultLinks .button {
+.resultLinks .button, .backToMetaLib .button {
     background-position: 8px -2414px;
 }
-.resultLinks .button span {
+.resultLinks .button span, .backToMetaLib .button span {
     background-position: 1px -950px;
 }
 .coverImages .moreLink a:after, .coverImages .lessLink a:after, 

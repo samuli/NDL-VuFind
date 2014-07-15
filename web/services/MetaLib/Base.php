@@ -57,9 +57,13 @@ class Base extends Action
         // Don't allow crawling of MetaLib results at all
         $this->disallowBots();
 
-        if (!$interface->get_template_vars('metalibEnabled')) {
-             PEAR::raiseError(new PEAR_Error("MetaLib is not enabled."));
+        // Allow browsing even when MetaLib is disabled
+        if (isset($_GET['action']) && $_GET['action'] !== 'Browse') {
+            if (!$interface->get_template_vars('metalibEnabled')) {
+                PEAR::raiseError(new PEAR_Error("MetaLib is not enabled."));
+            }
         }
+
         $interface->assign('currentTab', 'MetaLib');
 
         // Send MetaLib search types to the template so the basic search box can
@@ -68,7 +72,8 @@ class Base extends Action
 
         $sets = $this->searchObject->getSearchSets();
         if (isset($_REQUEST['set']) && strncmp($_REQUEST['set'], '_ird:', 5) == 0) {
-            $ird = substr($_REQUEST['set'], 5);
+            $set = $_REQUEST['set'];
+            $ird = substr($set, 5);
             if (preg_match('/\W/', $ird)) {
                 PEAR::raiseError(new PEAR_Error('Invalid parameter'));
             }
@@ -76,21 +81,77 @@ class Base extends Action
             if ($irdInfo === false) {
                 PEAR::raiseError(new PEAR_Error('Invalid parameter'));
             }
-            if (strcasecmp($irdInfo['access'], 'guest') != 0 && !UserAccount::isAuthorized()) {
-                PEAR::raiseError(translate('metalib_not_authorized_single'));
-            }
 
-            // Add selected ird as a virtual search set in the beginning and select it
-            $sets = array_reverse($sets, true);
-            $sets["_ird:$ird"] = $irdInfo['name'];
-            $sets = array_reverse($sets, true);
+            // Append to recently used search sets and select as active
+            if (!isset($_SESSION['recentMetaLibDatabases'][$set])) {
+                $_SESSION['recentMetaLibDatabases'][$set] = $irdInfo['name'];
+            }
             $interface->assign('searchSet', "_ird:$ird");
+        } else {
+            // Select first set by default 
+            $interface->assign('searchSet', current(array_keys($sets)));
         }
 
+        
         $interface->assign('metalibSearchTypes', $this->searchObject->getBasicTypes());
         $interface->assign('metalibSearchSets', $sets);
+        $interface->assign('metalibRecentDatabases', $this->searchObject->getRecentDatabases());
 
         // Increase max execution time to allow slow MetaLib searches to complete
         set_time_limit(60);
     }
+
+    /**
+     * Build a url to or from MetaLib Browse.
+     *
+     * @param string $action  destination action (Home, Search or Browse).
+     * @param string $lookfor search term or null if the search term should be dropped.
+     *
+     * @return string URL
+     * @access public
+     */
+    protected function getBrowseUrl($action = 'Home', $lookfor = null)
+    {
+        global $configArray;
+        global $interface;
+
+        $fullPath = $interface->get_template_vars('fullPath');
+        $parts = parse_url($fullPath);        
+        $params = isset($parts['query']) ? $parts['query'] : null;
+
+        $searchTermReplaced = false;
+        if ($params) {
+            $params = explode('&', $params);
+            
+            // Url parameters that should be reset when moving between Search and Browse.
+            $reset = array('page', 'prefiltered', 'type', 'refLookfor', 'set');
+            
+            $tmp = array();
+            foreach ($params as $param) {
+                $var = explode('=', $param);
+
+                if (strcasecmp($var[0], 'lookfor') === 0) {
+                    if ($action === 'Browse') {
+                        // Preserve current MetaLib search term
+                        $tmp[] = "refLookfor=$var[1]";
+                    } else if ($lookfor) {
+                        $tmp[] = "lookfor=$lookfor";
+                        $searchTermReplaced = true;
+                    }
+                } else if (!in_array($var[0], $reset)) {
+                    $tmp[] = $param;
+                }
+            }            
+        }
+        if (!$searchTermReplaced && $lookfor) {
+            $tmp[] = "lookfor=$lookfor";            
+        }
+
+        $url = $configArray['Site']['url'] . "/MetaLib/$action?";
+        if ($tmp) {
+            $url .= implode('&', $tmp) . '&';
+        }
+        return $url;
+    }
+
 }

@@ -100,11 +100,16 @@
             <dt>{translate text=$cluster.label}</dt>
         </dl>
         {if in_array($title, $activeFacets) || (is_array($defaultFacets) && in_array($title, $defaultFacets))}
+          {if $searchObject}
+             {assign var='dynatreeSearchObject' value=$searchObject}
+          {else}
+             {assign var='dynatreeSearchObject' value=''}
+          {/if}
         {literal}
         <script type="text/javascript">
             //<![CDATA[
             $(document).ready(function() { 
-                enableDynatree($('#facet_{/literal}{$title}'), '{$title}', '{$fullPath}', '{$action}');
+                enableDynatree($('#facet_{/literal}{$title}'), '{$title}', '{$fullPath}', '{$action}', '{$dynatreeSearchObject}');
             {literal}});
             //]]>
         </script>

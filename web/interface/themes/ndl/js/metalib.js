@@ -165,7 +165,7 @@ function metalibToggleLoading(mode)
         txt = txt.replace('{1}', metalibPage);
         
         $('.metalibLoading h4').html(txt);
-        $('.metalibLoading .setNotification span').html(metalibSearchsets[metalibSet]);
+        $('.metalibLoading .setNotification span').html(metalibSearchsets[unescape(metalibSet)]);
     }
     var loader = $('.metalibLoading');
     loader.toggleClass("show", mode);
@@ -260,7 +260,7 @@ function metalibChangeSet(set)
 function metalibInit(page)
 {   
     metalibPage = page;
-    $("#searchSets input").on("click", function() { 
+    $(".searchSets input").on("click", function() { 
         metalibChangeSet($(this).val()); 
     });
 
@@ -281,7 +281,9 @@ function metalibInit(page)
 function metalibHomeInit()
 {
     // Handle set change on Metalib/Home
-    $("#searchSets input").on("click", function() { 
+    $(".searchSets input").on("click", function() { 
         $("#searchForm #searchForm_set").val($(this).val());
     });
 }
+
+
