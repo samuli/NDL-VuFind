@@ -3008,7 +3008,8 @@ dl.defaultFacet dd {
 
 /* common styles */
 
-.toolbar li a, ul.recordSet .addToFavLink a, .searchtools a.mailSearch, .accountFavorites h3 {
+.toolbar li a, ul.recordSet .addToFavLink a, .searchtools a.mailSearch, .accountFavorites h3,
+.mailRecord.mail, a.printRecord {
     display:block;
     text-align:left;
     background-repeat:no-repeat;
@@ -3054,15 +3055,6 @@ ul.recordSet .addToFavLink a {
 }
 .bookbagEmpty {
     background-image:url(../images/fugue/bookbagEmpty.png);
-    background-repeat:no-repeat;
-    background-position: left top;
-    padding:0 .5em .5em 20px;
-    margin-right:1em;
-}
-
-
-.print {
-    background-image:url(../images/silk/printer.png);
     background-repeat:no-repeat;
     background-position: left top;
     padding:0 .5em .5em 20px;
@@ -4202,7 +4194,6 @@ div[id*="record"].record.recordId {
     margin: 0;
 }
 .recordAltTitlesHeading {
-      margin-top: -0.8em;
       margin-bottom: 1em;
       color: #666666;
 }
@@ -4643,7 +4634,7 @@ h5.recordTabHeader {
     line-height: 1.23em;
 }
 .toolbar #addThis {
-    margin-left: -5px;
+    margin-top: 10px;
 }
 .toolbar ul {
     list-style-type:none;
@@ -6295,8 +6286,9 @@ table.summHoldings .statusColumn {
 /*** QRCode ***/
 
 #qrcode {
-    height: 160px;
+    height: 130px;
     position: relative;
+    left: 15px
 }
 
 #qrcode .overlay { /* overlay for QRCode branding, not used for now */
@@ -6308,6 +6300,9 @@ table.summHoldings .statusColumn {
     left: 45px;
     top: 50px;
 */
+}
+#qrcode .overlay + div {
+    border: 1px solid #bcdce0;
 }
 
 #qrcode canvas {
