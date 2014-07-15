@@ -120,6 +120,8 @@ class JSON extends Action
         // expects to find them:
         $_POST['username'] = $_POST['ajax_username'];
         $_POST['password'] = $password;
+        $_POST['login_target'] = $_POST['ajax_loginTarget'];
+
 
         // Authenticate the user:
         $user = UserAccount::login();

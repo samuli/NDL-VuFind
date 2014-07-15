@@ -211,6 +211,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                     // get the user entered username/password
                     var password = form.password.value;
                     var username = form.username.value;
+                    var loginTarget = form.login_target.value;
 
                     // encrypt the password with the salt
                     password = rc4Encrypt(salt, password);
@@ -218,7 +219,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                     // hex encode the encrypted password
                     password = hexEncode(password);
 
-                    data = {ajax_username:username, ajax_password:password};
+                    data = {ajax_username:username, ajax_password:password, ajax_loginTarget:loginTarget};
                     if (form.confirm) {
                         data['confirm'] = 1;
                     }
