@@ -136,7 +136,7 @@
      {if $followupModule == 'PCI' || $followupModule == 'MetaLib'}
          <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$followupAction|escape:"url"}?id={$recordId|escape:"url"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
      {else}
-       {if $followup == 'SaveSearch'}
+       {if $followup === 'SaveSearch'}
          {* SaveSearch special case. Note that $recordId is already urlencoded, so just escape html *}
          <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$followupAction|escape:"url"}?{$recordId|escape:"html"}"><span>{translate text="Mozilla Persona"}</span></a>
        {else}
