@@ -265,7 +265,7 @@ $(document).ready(function() {
                   {if $userLang == $langCode}
                   <li class="offscreen"><a href="#">{translate text=$langName}</a></li>
                   {else}
-                  <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">{translate text=$langName}</a></li>
+                  <li><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encode:'html'}">{translate text=$langName}</a></li>
                   {/if}
                 {/foreach}
                 </ul>

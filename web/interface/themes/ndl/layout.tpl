@@ -95,7 +95,7 @@
     <!--//--><![CDATA[//><!--
       var path = '{$url}';
       var userLang = '{$userLang}';
-      var fullPath = '{$fullPath}';
+      var fullPath = '{$fullPath|escape:'javascript'}';
       var action = '{$action}';
       
       // String translations
@@ -288,7 +288,7 @@
             <ul role="list">
               {foreach from=$allLangs key=langCode item=langName}
                 {if $userLang != $langCode}
-                  <li role="option"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
+                  <li role="option"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|escape:'html'}">
                     {translate text=$langName}</a>
                   </li>
                 {/if}
