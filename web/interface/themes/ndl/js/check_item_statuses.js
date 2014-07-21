@@ -54,7 +54,9 @@ function checkItemStatuses(id) {
                                 if (result.locationList[x].availability) {
                                     locationListHTML += '<span class="availableLoc">' 
                                         + result.locationList[x].location + '</span> ';
-                                } else if (result.use_unknown_status) {
+                                } else if (typeof(result.locationList[x].use_unknown_status) != 'undefined'
+                                    && result.locationList[x].use_unknown_status
+                                ) {
                                     if (result.locationList[x].location) {
                                         locationListHTML += '<span class="availableLoc">' 
                                             + result.locationList[x].location + '</span> ';
