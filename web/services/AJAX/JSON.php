@@ -53,7 +53,7 @@ class JSON extends Action
     public function __construct()
     {
         parent::__construct();
-        $_SESSION['no_store'] = true; 
+        $_SESSION['no_store'] = true;
     }
 
     /**
@@ -105,7 +105,7 @@ class JSON extends Action
         global $configArray;
 
         unset($_SESSION['no_store']);
-        
+
         // Fetch Salt
         $salt = $this->_generateSalt();
 
@@ -134,7 +134,7 @@ class JSON extends Action
                 return $this->output($msg, JSON::STATUS_ERROR);
             }
         }
-        
+
         return $this->output(true, JSON::STATUS_OK);
     }
 
@@ -308,7 +308,7 @@ class JSON extends Action
 
         // If any IDs were missing, send back appropriate dummy data, including a
         // "missing data" flag which can be used to completely suppress status info:
-        
+
         foreach ($missingIds as $missingId => $junk) {
             $statuses[] = array(
                 'id'                   => $missingId,
@@ -322,7 +322,7 @@ class JSON extends Action
                 'missing_data'         => true
             );
         }
-        
+
         // Done
         return $this->output($statuses, JSON::STATUS_OK);
     }
@@ -390,7 +390,7 @@ class JSON extends Action
             include_once 'services/MetaLib/Save.php';
         } else {
             include_once 'services/Record/Save.php';
-        }     
+        }
 
         // check if user is logged in
         $user = UserAccount::isLoggedIn();
@@ -434,7 +434,7 @@ class JSON extends Action
 
         return $this->output(translate('email_success'), JSON::STATUS_OK);
     }
-    
+
     /**
      * Give feedback on a record.
      *
@@ -446,20 +446,20 @@ class JSON extends Action
         // Load the appropriate module based on the "type" parameter:
         $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'Record';
         include_once 'services/' . $type . '/Feedback.php';
-    
+
         $feedbackService = new Feedback();
         $result = $feedbackService->sendEmail(
             $_REQUEST['from'], $_REQUEST['message']
         );
-    
+
         if (PEAR::isError($result)) {
             return $this->output(
                 translate($result->getMessage()), JSON::STATUS_ERROR
             );
         }
-    
+
         return $this->output(translate('email_success'), JSON::STATUS_OK);
-    }    
+    }
 
     /**
      * SMS a record.
@@ -563,7 +563,7 @@ class JSON extends Action
 
         return $this->output(translate('Done'), JSON::STATUS_OK);
     }
-    
+
     /**
      * Report comment inappropriate.
      *
@@ -573,7 +573,7 @@ class JSON extends Action
     public function inappropriateComment()
     {
         include_once 'services/Record/UserComments.php';
-        
+
         if (!UserComments::inappropriateComment()) {
             return $this->output(
                 translate('inappropriate_comment_error_save'), JSON::STATUS_ERROR
@@ -599,7 +599,7 @@ class JSON extends Action
         $html = $interface->fetch('Record/view-comments.tpl');
         return $this->output($html, JSON::STATUS_OK);
     }
-    
+
     /**
      * Update login-status HTML.
      *
@@ -888,7 +888,7 @@ class JSON extends Action
         }
         return $interface->display('AJAX/lightbox.tpl');
     }
-    
+
     /**
      * Fetch Links from resolver given an OpenURL and format as HTML
      * and output the HTML content in JSON object.
@@ -966,7 +966,7 @@ class JSON extends Action
             $tpl = 'ContextHelp/' . $id . '.' . $interface->lang . '.tpl';
             if ($interface->template_exists($tpl)) {
                 // Content-type needs to be text/plain for this to be callable from JQuery::getScript.
-                header('Content-Type:text/plain; charset=UTF-8');  
+                header('Content-Type:text/plain; charset=UTF-8');
                 echo $interface->fetch($tpl);
             }
         }
@@ -986,7 +986,7 @@ class JSON extends Action
         header('Content-type: application/javascript');
         header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        $output = array('data'=>$data,'status'=>$status);        
+        $output = array('data'=>$data,'status'=>$status);
         echo json_encode($output);
         exit;
     }
@@ -1128,6 +1128,7 @@ class JSON extends Action
                 && $info['use_unknown_message'] == true
             ) {
                 $use_unknown_status = true;
+                $locations[$info['location']]['use_unknown_status'] = true;
             }
             // Store call number/location info:
             $locations[$info['location']]['callnumbers'][] = $info['callnumber'];
@@ -1147,7 +1148,8 @@ class JSON extends Action
                 'location' => htmlentities($location, ENT_COMPAT, 'UTF-8'),
                 'callnumbers' =>
                     htmlentities($locationCallnumbers, ENT_COMPAT, 'UTF-8'),
-                'availableCount' => isset($details['availableCount']) ? $details['availableCount'] : null
+                'availableCount' => isset($details['availableCount']) ? $details['availableCount'] : null,
+                'use_unknown_status' => isset($details['use_unknown_status']) ? $details['use_unknown_status'] : false
             );
             $locationList[] = $locationInfo;
         }
