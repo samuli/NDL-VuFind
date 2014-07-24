@@ -238,6 +238,11 @@
     <!--[if lt IE 9]>
       {js filename="html5.js"}
     <![endif]-->
+
+    {* NDLBlankInclude *}
+    {include file='Additions/general-post-head.tpl'}
+    {* /NDLBlankInclude *}
+
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
     {if !$showTopSearchBox}
@@ -325,6 +330,11 @@
        {include file="piwik.tpl"}
     {/if}    
     {include file="AJAX/keepAlive.tpl"}
+
+    {* NDLBlankInclude *}
+    {include file='Additions/general-post-body.tpl'}
+    {* /NDLBlankInclude *}
+
   </body>
   {if !$showTopSearchBox}
     {literal}
