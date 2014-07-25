@@ -3874,6 +3874,10 @@ div.dateVisHandle.visible {
     margin-bottom: 0;
 }
 
+input.invalidField {
+    border: solid 2px red;
+}
+
 .resultDates {
     cursor:default;
 }
