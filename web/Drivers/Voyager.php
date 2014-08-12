@@ -1104,47 +1104,52 @@ class Voyager implements DriverInterface
         $login_field = isset($this->config['Catalog']['login_field'])
             ? $this->config['Catalog']['login_field'] : 'LAST_NAME';
         $login_field = preg_replace('/[^\w]/', '', $login_field);
+        $fallback_login_field = isset($this->config['Catalog']['fallback_login_field'])
+            ? preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field'])
+            : '';
 
-        $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME " .
-               "FROM $this->dbName.PATRON, $this->dbName.PATRON_BARCODE " .
+        // Turns out it's difficult and inefficient to handle the mismatching
+        // character sets of the Voyager database in the query (in theory something
+        // like "UPPER(UTL_I18N.RAW_TO_NCHAR(UTL_RAW.CAST_TO_RAW(PATRON.LAST_NAME), 'WE8ISO8859P1'))"
+        // could be used, but it's SLOW and ugly). We'll rely on the fact that the
+        // barcode shouldn't contain any characters outside the basic latin
+        // characters and check login verification fields here.
+
+        $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN";
+        if ($fallback_login_field) {
+            $sql .= ", PATRON.{$fallback_login_field} FALLBACK_LOGIN";
+        }
+        $sql .= " FROM $this->dbName.PATRON, $this->dbName.PATRON_BARCODE " .
                "WHERE PATRON.PATRON_ID = PATRON_BARCODE.PATRON_ID AND " .
                "lower(PATRON_BARCODE.PATRON_BARCODE) = :barcode AND " .
-               "(PATRON_BARCODE.BARCODE_STATUS = 1 OR PATRON_BARCODE.BARCODE_STATUS = 4) AND ";
-        if (isset($this->config['Catalog']['fallback_login_field'])) {
-            $fallback_login_field = preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field']);
-            $sql .= "(lower(PATRON.{$login_field}) = :login OR " .
-                    "(PATRON.{$login_field} IS NULL AND lower(PATRON.{$fallback_login_field}) = :login))";
-        } else {
-            $sql .= "lower(PATRON.{$login_field}) = :login";
-        }
+               "(PATRON_BARCODE.BARCODE_STATUS = 1 OR PATRON_BARCODE.BARCODE_STATUS = 4)";
         try {
             $sqlStmt = $this->db->prepare($sql);
             $sqlStmt->bindParam(
-                ':login', strtolower(utf8_decode($login)), PDO::PARAM_STR
+                ':barcode', strtolower($barcode), PDO::PARAM_STR
             );
-            $sqlStmt->bindParam(
-                ':barcode', strtolower(utf8_decode($barcode)), PDO::PARAM_STR
-            );
-            $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower(utf8_decode($barcode)), ':login' => '****'));
+            $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower($barcode)));
             $sqlStmt->execute();
-            $row = $sqlStmt->fetch(PDO::FETCH_ASSOC);
-            if (isset($row['PATRON_ID']) && ($row['PATRON_ID'] != '')) {
-                $results = array(
-                    'id' => utf8_encode($row['PATRON_ID']),
-                    'firstname' => utf8_encode($row['FIRST_NAME']),
-                    'lastname' => utf8_encode($row['LAST_NAME']),
-                    'cat_username' => $barcode,
-                    'cat_password' => $login,
-                    // There's supposed to be a getPatronEmailAddress stored
-                    // procedure in Oracle, but I couldn't get it to work here;
-                    // might be worth investigating further if needed later.
-                    'email' => null,
-                    'major' => null,
-                    'college' => null);
-                return $results;
-            } else {
-                return null;
+            while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
+                if ((!is_null($row['LOGIN']) && mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8') == mb_strtolower($login, 'UTF-8'))
+                    || ($fallback_login_field && is_null($row['LOGIN']) && mb_strtolower(utf8_encode($row['FALLBACK_LOGIN']), 'UTF-8') == mb_strtolower($login, 'UTF-8'))
+                ) {
+                    $results = array(
+                        'id' => utf8_encode($row['PATRON_ID']),
+                        'firstname' => utf8_encode($row['FIRST_NAME']),
+                        'lastname' => utf8_encode($row['LAST_NAME']),
+                        'cat_username' => $barcode,
+                        'cat_password' => $login,
+                        // There's supposed to be a getPatronEmailAddress stored
+                        // procedure in Oracle, but I couldn't get it to work here;
+                        // might be worth investigating further if needed later.
+                        'email' => null,
+                        'major' => null,
+                        'college' => null);
+                    return $results;
+                }
             }
+            return null;
         } catch (PDOException $e) {
             return new PEAR_Error($e->getMessage());
         }
