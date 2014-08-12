@@ -114,14 +114,14 @@ class JSON extends Action
 
         // Decrypt Password
         include_once 'Crypt/rc4.php';
-        $password = rc4Encrypt($salt, $password);
+        // Looks like we need utf8_encode to handle the password properly
+        $password = utf8_encode(rc4Decrypt($salt, $password));
 
         // Put the username/password in POST fields where the authentication module
         // expects to find them:
         $_POST['username'] = $_POST['ajax_username'];
         $_POST['password'] = $password;
         $_POST['login_target'] = $_POST['ajax_loginTarget'];
-
 
         // Authenticate the user:
         $user = UserAccount::login();
