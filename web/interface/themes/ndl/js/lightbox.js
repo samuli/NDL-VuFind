@@ -211,7 +211,8 @@ function registerAjaxLogin(container, loginFromLightbox) {
                     // get the user entered username/password
                     var password = form.password.value;
                     var username = form.username.value;
-                    var loginTarget = form.login_target.value;
+                    var loginTarget = (typeof form.login_target !== 'undefined')
+                        ? form.login_target.value : '';
 
                     // encrypt the password with the salt
                     password = rc4Encrypt(salt, password);
