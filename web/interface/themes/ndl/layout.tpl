@@ -102,6 +102,7 @@
       var trNext = "{translate text="Next"}";
       var trPrev = "{translate text="Prev"}";
       var trClose = "{translate text="Close"}";
+      var trListNotes = "{translate text="Description"}";
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}

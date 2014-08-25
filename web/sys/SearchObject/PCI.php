@@ -410,6 +410,25 @@ class SearchObject_PCI extends SearchObject_Base
         return $interface->fetch('PCI/listentry.tpl');
     }
 
+    /**
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display an item on a public "favorites" page.
+     *
+     * @param array  $record Record data.
+     * @param string $view   The current view.
+     *
+     * @return string        Name of Smarty template file to display.
+     * @access public
+     */
+    public function getPublicListHTML($record, $view)
+    {
+        global $interface;
+    
+        $interface->assign('record', $record);
+        $interface->assign('summThumb', false);
+        return $interface->fetch("PCI/result-$view.tpl");
+    }
+
     /** Prettifies an XML string into a human-readable and indented work of art 
     *
     * @param string  $xml         The XML as a string
