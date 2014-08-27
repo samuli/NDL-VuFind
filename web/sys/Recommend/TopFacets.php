@@ -71,8 +71,10 @@ class TopFacets implements RecommendationInterface
 
         // Load other relevant settings:
         $this->_baseSettings = array(
-            'rows' => $config['Results_Settings']['top_rows'],
-            'cols' => $config['Results_Settings']['top_cols']
+            'rows' => isset($config['Results_Settings']['top_rows'])
+                ? $config['Results_Settings']['top_rows'] : 1,
+            'cols' => isset($config['Results_Settings']['top_cols'])
+                ? $config['Results_Settings']['top_cols'] : 1
         );
     }
 
