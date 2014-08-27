@@ -69,13 +69,13 @@ class Accounts extends MyResearch
             if ($this->saveAccount()) {
                 header('Location: Accounts');
                 die();
-            } 
+            }
             return;
         }
-        
+
         // Get account list
         $interface->assign('accounts', $user->getCatalogAccounts());
- 
+
         $interface->setTemplate('accounts.tpl');
         $interface->setPageTitle('Library Cards');
         $interface->display('layout.tpl');
@@ -83,17 +83,17 @@ class Accounts extends MyResearch
 
     /**
      * Add or edit an account
-     * 
+     *
      * @param int $id Account ID (null to add a new account)
-     * 
+     *
      * @return void
      */
     protected function editAccount($id)
     {
         global $user;
         global $interface;
-        
-        if (isset($id)) { 
+
+        if (isset($id)) {
             $account = new User_account();
             $account->id = $id;
             $account->user_id = $user->id;
@@ -122,19 +122,19 @@ class Accounts extends MyResearch
         Login::setupLoginFormVars();
         $interface->setTemplate('editAccount.tpl');
         $interface->setPageTitle('Library Cards');
-        $interface->display('layout.tpl');        
+        $interface->display('layout.tpl');
     }
-    
+
     /**
      * Validate and save account information after editing
-     * 
+     *
      * @return boolean Success
      */
     protected function saveAccount()
     {
         global $interface;
         global $user;
-        
+
         $username = $_POST['username'];
         $password = $_POST['password'];
         $loginTarget = isset($_POST['login_target']) ? $_POST['login_target'] : false;
@@ -169,8 +169,8 @@ class Accounts extends MyResearch
                 return false;
             }
         }
-        
-        
+
+
         if (!$exists) {
             $account->created = date('Y-m-d h:i:s');
         } else {
@@ -179,9 +179,9 @@ class Accounts extends MyResearch
                 UserAccount::activateCatalogAccount($username, $password, $account->home_library);
             }
         }
-        
-        $account->account_name = $_REQUEST['account_name'];
-        $account->description = $_REQUEST['description'];
+
+        $account->account_name = isset($_REQUEST['account_name']) ? $_REQUEST['account_name'] : '-';
+        $account->description = isset($_REQUEST['description']) ? $_REQUEST['description'] : '';
         $account->cat_username = $username;
         $account->cat_password = $password;
         if ($exists) {
@@ -189,24 +189,24 @@ class Accounts extends MyResearch
         } else {
             $account->insert();
             // If this is the first one, activate it
-            if (count($user->getCatalogAccounts()) == 1) { 
+            if (count($user->getCatalogAccounts()) == 1) {
                 UserAccount::activateCatalogAccount($username, $password, $account->home_library);
             }
         }
         return true;
     }
-    
+
     /**
      * Delete an account
-     * 
+     *
      * @param int $id Account ID
-     * 
+     *
      * @return boolean Whether the account was deleted
      */
     protected function deleteAccount($id)
     {
         global $user;
-        
+
         $account = new User_account();
         $account->id = $id;
         $account->user_id = $user->id;
