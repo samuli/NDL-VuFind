@@ -126,9 +126,19 @@ class AJAX_RenderRSS extends Action
         }
 
         if ($rssFeed['url']) {
-            $rssString = file_get_contents($rssFeed['url']);
+          
+            $ch = curl_init($rssFeed['url']);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0');
+            $rssString = curl_exec($ch);
+            curl_close($ch);
+            
+            if (!$rssString) {
+                return;
+            }
+            
             $rss =& new XML_RSS($rssString);
-
+            
             $rss->parse();
 
             $channelInfo = $rss->getChannelInfo();
