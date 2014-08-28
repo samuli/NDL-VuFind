@@ -89,6 +89,7 @@ CREATE TABLE `user_list` (
   `title` varchar(200) COLLATE utf8_swedish_ci NOT NULL,
   `description` text COLLATE utf8_swedish_ci,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `public` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),

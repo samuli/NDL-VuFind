@@ -745,9 +745,15 @@
     }
 
     table.holdingsContainerHolding .checkedout,
-    table.holdingsContainerHolding .available {
+    table.holdingsContainerHolding .available, .callSlipPlace {
         display: inline-block;
     }
+	.call-slip-form input[type="text"] {
+		max-width:95%;	
+	}
+	.callSlipPlace {
+		margin-top:5px;	
+	}
 
     /*** Login ***/
     .loginForm .grid_7, .loginForm .grid_14 {

@@ -17,7 +17,7 @@
     <div class="imagelinks">
   {foreach from=$summImages item=desc name=imgLoop}
     {if $smarty.foreach.imgLoop.iteration <= 5}
-      <a data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+      <a data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 4}
             &hellip;
          {else}
@@ -40,7 +40,7 @@
     <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
   {if $summThumb}
       <div class="resultImage">
-          <a class="title fancybox fancybox.image" data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" href="{$summThumb|escape}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+          <a class="title fancybox fancybox.image" data-dates="{$summDate.0|escape}{if $summDate.1 && $summDate.1 != $summDate.0} - {$summDate.1|escape}{/if}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}href="{$summThumb|escape}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
               <img src="{$summThumb|escape}" class="summcover" alt="{translate text='Open Cover Image'}" />
           </a>
       </div>
@@ -94,10 +94,17 @@
         {/if}        
       {/if}
       {if $summDate}{translate text='Published'}: {$summDate.0|escape}{/if}{if $summPublicationEndDate}&mdash;{if $summPublicationEndDate != 9999}{$summPublicationEndDate}{/if}{/if}
+      {if !empty($summDateSpan)}
+        <div class="resultDateSpan">
+            {foreach from=$summDateSpan item=field name=loop}
+              {$field|escape}<br/>
+            {/foreach}
+        </div>
+      {/if}
       {if !empty($summClassifications)}
         <div class="resultClassification">
-            {* This is a single-line mess due to Smarty otherwise adding spaces *}
             {translate text='Classification'}:
+            {* This is a single-line mess due to Smarty otherwise adding spaces *}
             {foreach from=$summClassifications key=class item=field name=loop}{if !$smarty.foreach.loop.first}, {/if}{foreach from=$field item=subfield name=subloop}{if !$smarty.foreach.subloop.first}, {/if}{$class|escape} {$subfield|escape}{/foreach}{/foreach}
         </div>
       {/if}
@@ -244,23 +251,34 @@
       {/if}
     {/if}
 
-    {* Display the lists that this record is saved to *}
-    <div class="savedLists info hide" id="savedLists{$summId|escape}">
-      <strong>{translate text="Saved in"}:</strong>
-    </div>
-    {if $summHierarchy}
-      {foreach from=$summHierarchy key=hierarchyID item=hierarchyTitle}
-      <div class="hierarchyTreeLink">
-        <input type="hidden" value="{$hierarchyID|escape}" class="hiddenHierarchyId" />
-        <a id="hierarchyTree{$summId|escape}" class="hierarchyTreeLinkText" href="{$url}/Record/{$summId|escape:"url"}/HierarchyTree?hierarchy={$hierarchyID}#tabnav" title="{if $coreShortTitle}{$coreShortTitle|truncate:150:"&nbsp;..."|urlencode}{else}{translate text="hierarchy_tree"}{/if}">
-          {if count($summHierarchy) == 1}
-            {translate text="hierarchy_view_context"}
-          {else}
-            {translate text="hierarchy_view_context"}: {$hierarchyTitle}
-          {/if}
-        </a>
-      </div>
-      {/foreach}
+
+      
+
+    {if !$ownList}
+       {* Display the lists that this record is saved to *}
+       <div class="savedLists info hide" id="savedLists{$summId|escape}">
+         <strong>{translate text="Saved in"}:</strong>
+       </div>
+       {if $summHierarchy}
+         {foreach from=$summHierarchy key=hierarchyID item=hierarchyTitle}
+         <div class="hierarchyTreeLink">
+           <input type="hidden" value="{$hierarchyID|escape}" class="hiddenHierarchyId" />
+           <a id="hierarchyTree{$summId|escape}" class="hierarchyTreeLinkText" href="{$url}/Record/{$summId|escape:"url"}/HierarchyTree?hierarchy={$hierarchyID}#tabnav" title="{if $coreShortTitle}{$coreShortTitle|truncate:150:"&nbsp;..."|urlencode}{else}{translate text="hierarchy_tree"}{/if}">
+             {if count($summHierarchy) == 1}
+               {translate text="hierarchy_view_context"}
+             {else}
+               {translate text="hierarchy_view_context"}: {$hierarchyTitle}
+             {/if}
+           </a>
+         </div>
+         {/foreach}
+       {/if}
+    {/if}
+    {if $listNotes}
+       <div class="notes">
+         <p><span class="heading">{translate text="Description"} </span>({$listUsername}):</p>
+         <p class="text">{$listNotes}</p>
+       </div>
     {/if}
 </div>
   <div class="last addToFavLink">

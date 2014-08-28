@@ -3008,7 +3008,8 @@ dl.defaultFacet dd {
 
 /* common styles */
 
-.toolbar li a, ul.recordSet .addToFavLink a, .searchtools a.mailSearch, .accountFavorites h3 {
+.toolbar li a, ul.recordSet .addToFavLink a, .searchtools a.mailSearch, .accountFavorites h3,
+.mailRecord.mail, a.printRecord {
     display:block;
     text-align:left;
     background-repeat:no-repeat;
@@ -3054,15 +3055,6 @@ ul.recordSet .addToFavLink a {
 }
 .bookbagEmpty {
     background-image:url(../images/fugue/bookbagEmpty.png);
-    background-repeat:no-repeat;
-    background-position: left top;
-    padding:0 .5em .5em 20px;
-    margin-right:1em;
-}
-
-
-.print {
-    background-image:url(../images/silk/printer.png);
     background-repeat:no-repeat;
     background-position: left top;
     padding:0 .5em .5em 20px;
@@ -3138,6 +3130,11 @@ ul.recordSet .addToFavLink a {
 .available {
     color: #00B270;
 }
+#recordMetadata .available:before {
+	height:18px;
+	height:18px;
+	padding-right:8px;
+}
 a.fulltext.available {
     color: #00a3b5;
 }
@@ -3170,7 +3167,7 @@ a.fulltext.available {
 .checkedout {
     color:#ff461e;
 }
-.holdPlace:before, .callSlipPlace:before, .UBRequestPlace:before {
+.holdPlace:before, .UBRequestPlace:before {
     content: "";
     display: inline-block;
     height: 11px;
@@ -3183,8 +3180,13 @@ a.fulltext.available {
 .callSlipPlace {
     background-repeat:no-repeat;
     background-position: left;
-    padding:.5em .5em .5em 20px;
+    border-radius:5px; 
+	padding:5px; 
+	margin:0px 5px;
+	font-weight:400;
     margin-right:1em;
+	background:#00a3b5;
+	color:#fff !important;
 }
 .holdCancel {
     background-image:url(../images/fugue/holdCancel.png);
@@ -3375,6 +3377,7 @@ a.fulltext.available {
 .myresearchHeader h1,
 .myresearchHeader h2,
 .module-Cart h2,
+.module-List #listHeader,
 .module-Collection #collectionHeader {
     margin: 0;
     padding: 0;
@@ -3408,6 +3411,7 @@ a.fulltext.available {
 .resultLinks,
 .resultTerms,
 .advSearchHeader,
+.module-List #listHeader,
 .module-Collection #collectionHeader {
     background: #b2e3ea;
 }
@@ -3872,6 +3876,10 @@ div.dateVisHandle.visible {
     margin-bottom: 0;
 }
 
+input.invalidField {
+    border: solid 2px red;
+}
+
 .resultDates {
     cursor:default;
 }
@@ -4192,7 +4200,6 @@ div[id*="record"].record.recordId {
     margin: 0;
 }
 .recordAltTitlesHeading {
-      margin-top: -0.8em;
       margin-bottom: 1em;
       color: #666666;
 }
@@ -4339,6 +4346,28 @@ div.coverImagesLessLink {
     text-align: right;
     float: left;
     margin-right: 12px;
+	line-height: 27px;
+}
+.call-slip-form div {
+	margin:10px 0px;		
+}
+.call-slip-form .reference {
+	margin-top:0px;	
+}
+.call-slip-form strong input[type="radio"] {
+	padding: 3px;
+	height: 15px;
+	width: 20px;
+	line-height: 20px;
+	margin-bottom:5px;
+	
+}
+.call-slip-form strong input[type="radio"] + label, .call-slip-form strong input[type="text"]:disabled + span, #callSlipReference .label.disabled {
+	color: #999;
+	transition: color 0.1s ease-in;
+}
+.call-slip-form strong input[type="radio"]:checked + label, .call-slip-form strong input[type="radio"]:hover + label, .call-slip-form strong input[type="radio"]:hover .reference {
+	color:#464646;	
 }
 
 /***** Citation Table *****/
@@ -4611,7 +4640,7 @@ h5.recordTabHeader {
     line-height: 1.23em;
 }
 .toolbar #addThis {
-    margin-left: -5px;
+    margin-top: 10px;
 }
 .toolbar ul {
     list-style-type:none;
@@ -4980,7 +5009,7 @@ table.holdingsContainerHolding.visible {
     display:block;
 }
 table.holdingsContainerHolding.active {
-    border-bottom: 2px solid #D7D7D7;
+    border-bottom: 3px solid #D7D7D7;
 }
 tr.avail {
     display:none;
@@ -5037,6 +5066,10 @@ table.holdingsContainerHolding .copyDetails.first > *,
 table.holdingsContainerHolding td {
     border-top:1px solid #d7d7d7;
 }
+table.holdingsContainerHolding .copyDetails td {
+		padding-top:7px !important;
+		padding-bottom:7px !important;
+}
 
 table.holdingsContainerHolding .toggleCopyDetails * {
     border:none;
@@ -5087,8 +5120,7 @@ table.holdingsContainerHolding .available {
 }
 
 table.holdingsContainerHolding .callSlipPlace {
-    padding:0;
-    font-weight:bold;
+    font-weight:400;
 }
 
 /* Comments */
@@ -5495,6 +5527,11 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     width: 75px;
 }
 
+.borrowingBlock {
+    color: #666;
+    text-align:right;
+}
+
 #myFavoritesList {
     position:relative;
 }
@@ -5695,6 +5732,46 @@ padding-right: 10px !important;
     margin-top: 3px;
     margin-bottom:8px;
     padding: 5px 6px;
+}
+
+/* Public list */
+
+.module-List .pagination {
+    width: inherit;
+}
+
+.module-List #listContent .content {
+    margin-top: 2em
+}
+.module-List #listHeader {
+    padding: 12px 0 12px;
+}
+.module-List .listDesc {
+    margin-left: 0;
+}
+.module-List .listInfo {
+    text-align: right;
+    float: right;
+}
+.module-List .listInfo .listUsername {
+    margin-bottom: 20px
+}
+
+.module-List .result .notes {
+    margin-top: 10px;
+}
+
+.fancyNotes .heading,
+.module-List .result .notes .heading {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.module-List .galleryView .result .notes .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: -5px;
 }
 
 /* Browse Lists */
@@ -6128,11 +6205,6 @@ tr:nth-child(even) td.gridMouseOver {
     margin-top: 20px;
 }
 
-/* toolbar was changed to collection-toolbar in Collection/view.tpl & Collection/view-alt.tpl */
-.collection-toolbar {
-    display: none;
-}
-
 /* RSS Recommendations */
 div.suggestionHeader {
     min-height:30px;
@@ -6260,8 +6332,9 @@ table.summHoldings .statusColumn {
 /*** QRCode ***/
 
 #qrcode {
-    height: 160px;
+    height: 130px;
     position: relative;
+    left: 15px
 }
 
 #qrcode .overlay { /* overlay for QRCode branding, not used for now */
@@ -6273,6 +6346,9 @@ table.summHoldings .statusColumn {
     left: 45px;
     top: 50px;
 */
+}
+#qrcode .overlay + div {
+    border: 1px solid #bcdce0;
 }
 
 #qrcode canvas {
@@ -6401,13 +6477,8 @@ table.summHoldings .statusColumn {
 }
 
 .hierarchyLoading {
-    background: url("http://vufind-fe-kktest.lib.helsinki.fi/test/interface/themes/ndl/images/ajax_loading.gif") no-repeat scroll 0 0 #FFFFFF;
-    display: block;
-    height: 18px;
-    cursor:pointer;
-    width: 18px;
-    margin-left:12px;
-    opacity:.8;
+    background: url("../images/ajax_loading.gif") no-repeat center top;
+    margin: 2px 0 0 10px;
 }
 
 .moreLeaves a span.hierarchyLoading {

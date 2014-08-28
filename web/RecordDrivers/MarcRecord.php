@@ -1174,6 +1174,9 @@ class MarcRecord extends IndexRecord
                     if (!$desc) {
                         $desc = $url->getSubfield('z');
                     }
+                    if (!$desc) {
+                        $desc = $url->getSubfield('3');
+                    }
                     if ($desc) {
                         $desc = $desc->getData();
                     } else {

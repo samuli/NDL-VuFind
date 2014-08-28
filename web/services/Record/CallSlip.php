@@ -287,7 +287,7 @@ class CallSlip extends Record
         // Success: Go to Display Holds
         if ($results['success'] == true) {
             if ($_REQUEST['lightbox']) {
-                echo 'OK - ' . translate('call_slip_success');
+                echo 'OK - ' . '<h5 class="success">' . translate('call_slip_success') . '</h5>';
             } else {
                 header('Location: ../../MyResearch/Holds?callslip_success=true');
             }

@@ -421,7 +421,7 @@ class Demo implements DriverInterface
                         'institution_name' => 'ILL Library',
                         'institution_dbkey' => 'ill_institution'
                     );
-                } else {    
+                } else {
                     $holdList[] = array(
                         "id"       => $this->_getRandomBibId(),
                         "location" => $this->_getFakeLoc(false),
@@ -483,7 +483,7 @@ class Demo implements DriverInterface
                         "reqnum" => $i,
                         "volume" => '',
                         "processed" => (rand(1, 3) == 3)
-                          ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
+                          ? $dateFormat->convertToDisplayDate('Y-m-d', "now")
                           : '',
                         "title"    => "ILL Call Slip Title $i",
                         'institution_id' => 'ill_institution',
@@ -503,7 +503,7 @@ class Demo implements DriverInterface
                         "reqnum" => $i,
                         "volume" => '',
                         "processed" => (rand(1, 3) == 3)
-                          ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
+                          ? $dateFormat->convertToDisplayDate('Y-m-d', "now")
                           : ''
                     );
                 }
@@ -518,7 +518,7 @@ class Demo implements DriverInterface
         }
         return $_SESSION['demoData']['callslips'];
     }
-    
+
     /**
      * Get Patron Transactions
      *
@@ -572,9 +572,9 @@ class Demo implements DriverInterface
 
                 $renewalLimit = rand(3, 10);
                 $renewalCount = rand(0, $renewalLimit);
-                
+
                 if ($i == 2 || rand()%5 == 1) {
-                    // Mimic an ILL loan    
+                    // Mimic an ILL loan
                     $transList[] = array(
                         'duedate' => $due_date,
                         'dueStatus' => $dueStatus,
@@ -587,7 +587,8 @@ class Demo implements DriverInterface
                         'title'   => "ILL Loan Title $i",
                         'institution_id' => 'ill_institution',
                         'institution_name' => 'ILL Library',
-                        'institution_dbkey' => 'ill_institution'
+                        'institution_dbkey' => 'ill_institution',
+                        'borrowingLocation' => 'ILL Service Desk'
                     );
                 } else {
                     $transList[] = array(
@@ -600,7 +601,8 @@ class Demo implements DriverInterface
                         'item_id' => $i,
                         'renewable' => $renewalCount < $renewalLimit,
                         'renewalCount' => $renewalCount,
-                        'renewalLimit' => $renewalLimit
+                        'renewalLimit' => $renewalLimit,
+                        'borrowingLocation' => $this->_getFakeLoc()
                     );
                 }
             }
@@ -693,7 +695,7 @@ class Demo implements DriverInterface
      * @param array   $patronId Patron information returned by the patronLogin
      * method.
      *
-     * @return array  False if request groups not in use or an array of 
+     * @return array  False if request groups not in use or an array of
      * associative arrays with id and name keys
      */
     public function getRequestGroups($bibId, $patronId)
@@ -702,14 +704,14 @@ class Demo implements DriverInterface
             array(
                 'id' => 1,
                 'name' => 'Main Library'
-            ),                
+            ),
             array(
                 'id' => 2,
                 'name' => 'Branch Library'
             )
         );
     }
-    
+
     /**
      * Get Funds
      *
@@ -968,7 +970,7 @@ class Demo implements DriverInterface
     {
         return $details['reqnum'];
     }
-    
+
     /**
      * Renew My Items
      *
@@ -995,7 +997,7 @@ class Demo implements DriverInterface
                             "success" => false,
                             "new_date" => false,
                             "item_id" => $current['item_id'],
-                            "sysMessage" => 
+                            "sysMessage" =>
                                 'Item not renewable'
                         );
                     } else {
@@ -1004,7 +1006,7 @@ class Demo implements DriverInterface
                             = date("j-M-y", strtotime($old . " + 7 days"));
                         $_SESSION['demoData']['transactions'][$i]['renewalCount']++;
                         $_SESSION['demoData']['transactions'][$i]['renewable'] = $_SESSION['demoData']['transactions'][$i]['renewalCount'] < $_SESSION['demoData']['transactions'][$i]['renewalLimit'];
-    
+
                         $finalResult['details'][$current['item_id']] = array(
                             "success" => true,
                             "new_date" =>
@@ -1018,7 +1020,7 @@ class Demo implements DriverInterface
                         "success" => false,
                         "new_date" => false,
                         "item_id" => $current['item_id'],
-                        "sysMessage" => 
+                        "sysMessage" =>
                             'Demonstrating failure; keep trying and ' .
                             'it will work eventually.'
                     );
@@ -1066,8 +1068,8 @@ class Demo implements DriverInterface
         }
         return true;
     }
-    
-    
+
+
     /**
      * Place Hold
      *
@@ -1087,7 +1089,7 @@ class Demo implements DriverInterface
         if (rand() % 2) {
             return array(
                 "success" => false,
-                "sysMessage" => 
+                "sysMessage" =>
                     'Demonstrating failure; keep trying and ' .
                     'it will work eventually.'
             );
@@ -1133,7 +1135,7 @@ class Demo implements DriverInterface
         }
         return true;
     }
-    
+
     /**
      * Place Call Slip Request
      *
@@ -1153,7 +1155,7 @@ class Demo implements DriverInterface
         if (rand() % 2) {
             return array(
                 "success" => false,
-                "sysMessage" => 
+                "sysMessage" =>
                     'Demonstrating failure; keep trying and ' .
                     'it will work eventually.'
             );
@@ -1178,7 +1180,7 @@ class Demo implements DriverInterface
             "item_id" => $nextId,
             "volume" => '',
             "processed" => (rand(1, 3) == 3)
-              ? $dateFormat->convertToDisplayDate('Y-m-d', "now") 
+              ? $dateFormat->convertToDisplayDate('Y-m-d', "now")
               : ''
         );
 
@@ -1200,9 +1202,9 @@ class Demo implements DriverInterface
      */
     public function placeUBRequest($details)
     {
-        return $this->placeCallSlipRequest($details);    
+        return $this->placeCallSlipRequest($details);
     }
-    
+
     /**
      * Get UB Request Details
      *
@@ -1211,7 +1213,7 @@ class Demo implements DriverInterface
      *
      * @param array $details BIB, item and patron information
      *
-     * @return bool|array False if request not allowed, or an array of associative 
+     * @return bool|array False if request not allowed, or an array of associative
      * arrays with items, libraries, default library locations and default required by date.
      * @access public
      */
@@ -1220,7 +1222,7 @@ class Demo implements DriverInterface
         if (rand() % 10 == 1) {
             return false;
         }
-        
+
         $dateFormat = new VuFindDate();
         $requiredByDate = $dateFormat->convertToDisplayDate("Y-m-d H:i", "now + 30 days");
         return array(
@@ -1243,37 +1245,37 @@ class Demo implements DriverInterface
                     'id' => 1,
                     'name' => 'Main Library',
                     'isDefault' => true
-                ),                
+                ),
                 array(
                     'id' => 2,
                     'name' => 'Branch Library',
                     'isDefault' => false
-                ),                
+                ),
             ),
             'locations' => array(
                 array(
                     'id' => 1,
                     'name' => 'Circulation Desk',
                     'isDefault' => true
-                ),                
+                ),
                 array(
                     'id' => 2,
                     'name' => 'Reference Desk',
                     'isDefault' => false
-                ),                
+                ),
             ),
             'requiredBy' => $requiredByDate
         );
     }
-    
+
     /**
      * Get UB Pickup Locations
-     * 
+     *
      * This is responsible for getting a list of possible pickup locations for a library
      *
      * @param array $details BIB, item, pickupLib and patron information
      *
-     * @return boo|array False if request not allowed, or an array of  
+     * @return boo|array False if request not allowed, or an array of
      * locations.
      * @access public
      */
@@ -1284,7 +1286,7 @@ class Demo implements DriverInterface
                 'id' => 1,
                 'name' => 'Circulation Desk',
                 'isDefault' => true
-            ),                
+            ),
             array(
                 'id' => 2,
                 'name' => 'Reference Desk',
@@ -1292,7 +1294,7 @@ class Demo implements DriverInterface
             )
         );
     }
-        
+
     /**
      * Public Function which specifies renew, hold and cancel settings.
      *
@@ -1309,7 +1311,7 @@ class Demo implements DriverInterface
                 'extraHoldFields' => 'comments:pickUpLocation',
                 'helpText' => 'Demo hold help text<br/>with <strong>some formatting</strong>'
             );
-        } 
+        }
         if ($function == 'CallSlips') {
             return array(
                 'HMACKeys' => 'item_id:mfhd_id',

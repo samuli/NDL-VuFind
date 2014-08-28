@@ -379,7 +379,7 @@ class Hold extends Record
         // Success: Go to Display Holds
         if ($results['success'] == true) {
             if ($_REQUEST['lightbox']) {
-                echo 'OK - ' . translate('hold_success');
+                echo 'OK - ' . '<h5 class="success">' . translate('hold_success') . '</h5>';
             } else {
                 header('Location: ../../MyResearch/Holds?success=true');
             }

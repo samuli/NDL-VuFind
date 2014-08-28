@@ -21,17 +21,23 @@ $(document).ready(function() {
                                   else {
                                   	var dot = '';
                                   }
+
+                                  this.title = '<h3 class="fancyTitle">'+photoTitle+'</h3>'
+                                      +'<div class="fancyAuthorAndDates">'+author+dot+dates+'</div>'
+                                      +'<div class="fancyBuilding">'+building+'</div>';
+
+                                  if ($(this.element).data('notes')) {
+                                      this.title += '<div class="fancyNotes"><p class="heading">' + trListNotes + ':</p>';
+                                      this.title += '<p class="text">' + $(this.element).data('notes') + '</p></div>';
+                                  }
+                                  
                                   if ($(this.element).data('linktext')) {
-                                      var linkText = $(this.element).data('linktext');
-                                      this.title = '<h3 class="fancyTitle">'+photoTitle+'</h3>'
-                                                   +'<div class="fancyAuthorAndDates">'+author+dot+dates+'</div>'
-                                                   +'<div class="fancyBuilding">'+building+'</div>'
-                                                   +'<div class="fancyLink"><a href="'+url+'">'+linkText+'</a></div>';
-                                  } else {
-                                      this.title = '<h3 class="fancyTitle">'+photoTitle+'</h3>'
-                                                   +'<div class="fancyAuthorAndDates">'+author+dot+dates+'</div>'
-                                                   +'<div class="fancyBuilding">'+building+'</div>';
-                                  }    
+                                      this.title += '<div class="fancyLink"><a href="'+url+'">'
+                                          + $(this.element).data('linktext') 
+                                          + '</a></div>'
+                                      ;
+                                  }
+
                                   // for screen readers
                                   if (window.location.href.toLowerCase().indexOf("&lng=en-gb") > -1) {
                                       var screenReaderMsg = "Image opened";

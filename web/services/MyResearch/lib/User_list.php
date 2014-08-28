@@ -47,6 +47,7 @@ class User_list extends DB_DataObject
     public $title;                           // string(200)  not_null
     public $description;                     // string(500)
     public $created;                         // datetime(19)  not_null binary
+    public $modified;                        // datetime(19)  not_null binary
     public $public;                          // int(11)  not_null
 
     /* Static get */
@@ -79,7 +80,7 @@ class User_list extends DB_DataObject
     {
         $resourceList = array();
 
-        $sql = 'SELECT DISTINCT "resource".*, "user_resource"."saved" FROM "resource", "user_resource" ' .
+        $sql = 'SELECT DISTINCT "resource".*, "user_resource"."saved", "user_resource"."notes" FROM "resource", "user_resource" ' .
             'WHERE "resource"."id" = "user_resource"."resource_id" ' .
             'AND "user_resource"."user_id" = ' .
             "'" . $this->escape($this->user_id) . "' " .

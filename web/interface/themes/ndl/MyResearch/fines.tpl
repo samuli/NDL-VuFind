@@ -13,6 +13,11 @@
     {/if}
     {if !empty($catalogAccounts)}
     <div class="grid_24">
+      {if $profile.blocks}
+        {foreach from=$profile.blocks item=block name=loop}
+          <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
+        {/foreach}
+      {/if}
     <h2>{translate text='Your Fines'}: 
      {foreach from=$catalogAccounts item=account}
         	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
@@ -23,7 +28,6 @@
      {if empty($rawFinesData)}
       <p class="noContentMessage">{translate text='You do not have any fines'}</p>
      {else}
-    
 
     
     <table class="datagrid fines" summary="{translate text='Your Fines'}">

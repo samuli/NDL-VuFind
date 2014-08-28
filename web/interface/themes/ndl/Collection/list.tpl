@@ -31,7 +31,7 @@
 {if $recordSet}
   {include file= $searchPage }
 {else}
-  {translate text='collection_empty'}
+  {translate text='collection_empty'}<br/><a href="{$url}/Record/{$collectionID|urlencode}">{translate text='collection_empty_link'}</a>
 {/if}
 
 <!-- END of: Collection/list.tpl -->

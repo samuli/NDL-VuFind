@@ -279,7 +279,7 @@ class UBRequest extends Record
         // Success: Go to Display Holds
         if ($results['success'] == true) {
             if ($_REQUEST['lightbox']) {
-                echo 'OK - ' . translate('ub_request_success');
+                echo 'OK - ' . '<h5 class="success">' . translate('ub_request_success') . '</h5>';
             } else {
                 header('Location: ../../MyResearch/Holds?ub_request_success=true');
             }

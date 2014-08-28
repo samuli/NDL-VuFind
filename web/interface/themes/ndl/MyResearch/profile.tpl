@@ -23,6 +23,11 @@
       {* NDLBlankInclude *}
       		<p class="noContentMessage">{translate text='profile_instructions'}</p>
       {* /NDLBlankInclude *}
+      {if $profile.blocks}
+        {foreach from=$profile.blocks item=block name=loop}
+          <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
+        {/foreach}
+      {/if}
       <h2>{translate text='Your Profile'}</h2>
       <table class="profileGroup">
       <tr>

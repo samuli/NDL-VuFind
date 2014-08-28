@@ -8,7 +8,7 @@ body { background: white; font-family: "Helvetica Neue", Arial, Helvetica, sans-
 /* Remove elements */
 #headerRight, .searchbox, .breadcrumbs, .authorbox, .resulthead, #tabnav, .main .span-5, .result .span-4, .searchtools, .footer, .pagination, .offscreen, .checkbox,
 #nav, #sidebar, #footer, #searchFormHeader, #skip-link, #saveLink, #addThis, #recordFeedback, 
-.breadcrumbinner a:first-child, .resultLinks, .exportMenu, .mailRecord,
+.breadcrumbinner a:first-child, .resultLinks, .exportMenu, .mailRecord, .printRecord,
 #exportMenu li:first-child, #exportMenu li:first-child + li, #qrcode, #qrcode .small,
 .module-Record #bXRecommendations,
 .module-MetaLib #resultSide, .module-MetaLib #resultSidebar,
