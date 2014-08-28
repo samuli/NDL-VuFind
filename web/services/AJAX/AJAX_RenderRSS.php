@@ -126,12 +126,21 @@ class AJAX_RenderRSS extends Action
         }
 
         if ($rssFeed['url']) {
-          
-            $ch = curl_init($rssFeed['url']);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0');
-            $rssString = curl_exec($ch);
-            curl_close($ch);
+            $url = $rssFeed['url'];
+            $flags = array('flags' => FILTER_FLAG_SCHEME_REQUIRED);
+            
+            if (filter_var($url, FILTER_VALIDATE_URL, $flags) === false) {
+                // Backwards compatibility: support for local files
+                $rssString = file_get_contents($url);
+            } else {
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0');
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                $rssString = curl_exec($ch);
+                curl_close($ch);
+            }
+
             
             if (!$rssString) {
                 return;
