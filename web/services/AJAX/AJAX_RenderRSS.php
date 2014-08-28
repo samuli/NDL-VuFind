@@ -130,6 +130,7 @@ class AJAX_RenderRSS extends Action
             $ch = curl_init($rssFeed['url']);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0');
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             $rssString = curl_exec($ch);
             curl_close($ch);
             
