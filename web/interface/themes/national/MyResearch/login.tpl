@@ -33,7 +33,7 @@
     <div class="clear"></div>
     <div class="grid_7">
     <form class="libraryLogin" method="post" action="{$url}/MyResearch/Home" name="loginForm" id="loginForm">
-    {if $loginTargets}
+    {if count($loginTargets) > 1}
     <label for="login_target">{translate text="Choose library"}</label>
       <br class="clear"/>
       <select id="login_target" name="login_target" class="{jquery_validation required='Please choose a library'}">
@@ -43,7 +43,10 @@
       {/foreach}
       </select>
       <br class="clear"/>
-    {/if}
+  {elseif count($loginTargets) == 1}
+		<input type="hidden" value="{$loginTargets[0]|escape:"html"}" name="login_target" />
+		<p class="libraryDescription" name="libraryDescription"><strong>{translate text=$loginTargets[0] prefix='source_'}</strong></p>
+  {/if}
       <label for="login_username">{translate text='Username'}</label>
       <br class="clear"/>
       <input id="login_username" type="text" name="username" value="{$username|escape}" class="{jquery_validation required='This field is required'}"/>

@@ -92,6 +92,10 @@ class Fines extends MyResearch
                 $interface->assign('rawFinesData', $result);
                 $interface->assign('sum', $sum);
             }
+            $profile = $this->catalog->getMyProfile($patron);
+            if (!PEAR::isError($profile)) {
+                $interface->assign('profile', $profile);
+            }
         }
 
         $interface->setTemplate('fines.tpl');

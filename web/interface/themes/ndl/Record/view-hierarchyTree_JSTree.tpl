@@ -8,7 +8,7 @@ vufindString.moreLeaves = "{translate text="More"}...";
   <div class="grid_24">
     {if $hierarchyID}
     <div id="hierarchyTreeHolder">
-        <div id="hierarchyTree"></div>
+        <div id="hierarchyTree" class="hierarchyLoading"></div>
     </div>
     {/if}
   </div> 

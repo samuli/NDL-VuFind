@@ -142,32 +142,16 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {* SMS commented out for now
         <li><a href="{$url}/Record/{$id|escape:"url"}/SMS" class="smsRecord sms" id="smsRecord{$id|escape}" title="{translate text="Text this"}">{translate text="Text this"}</a></li>
         *}
-        
-        {*<li><a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}">{translate text="Email this"}</a></li> *}
         {* Citation commented out for now
         <li><a href="{$url}/Record/{$id|escape:"url"}/Cite" class="citeRecord cite" id="citeRecord{$id|escape}" title="{translate text="Cite this"}">{translate text="Cite this"}</a></li> *}
-        {* AddThis-Bookmark commented out
-        {if !empty($addThis)}
-        <li id="addThis"><a class="addThis addthis_button"" href="https://www.addthis.com/bookmark.php?v=250&amp;pub={$addThis|escape:"url"}">{translate text="Bookmark"}</a></li>
-        {/if} *}
-        {* AddThis for social sharing START *}
-	{if !empty($addThis)}
-	  <li id="addThis">
-            <div class="addthis_toolbox addthis_default_style ">
-              <a href="{$url}/Record/{$id|escape:"url"}/Email" class="mail" id="mailRecord{$id|escape}" title="{translate text="Email this"}"></a>
-              <a class="icon addthis_button_facebook"></a>
-              <a class="icon addthis_button_twitter"></a>
-              <a class="icon addthis_button_google_plusone_share"></a>
-            </div>
-          </li>
-        {/if}
-        {* Addthis for social sharing END *}
+        <li><a href="{$url}/Record/{$id|escape:"url"}/Email" class="mailRecord mail" id="mailRecord{$id|escape}" title="{translate text="Email Record"}">{translate text="Email Record"}</a></li>
+        <li><a href="javascript:window.print()" class="printRecord print" id="printRecord{$id|escape}" title="{translate text="Print Record"}">{translate text="Print Record"}</a></li>
         {if $bookBag}
         <li><a id="recordCart" class="{if in_array($id|escape, $bookBagItems)}bookbagDelete{else}bookbagAdd{/if} offscreen" href="">{translate text="Add to Book Bag"}</a></li>
         {/if}
         {if is_array($exportFormats) && count($exportFormats) > 0}
         <li>
-          <a href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormats.0|escape:"url"}" class="export exportMenu">{translate text="Export Record"}</a>
+          <a href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormats.0|escape:"url"}" class="export exportMenu" title="{translate text="Export Record"}">{translate text="Export Record"}</a>
           <ul class="menu offscreen" id="exportMenu">
           {foreach from=$exportFormats item=exportFormat}
             <li><a {if $exportFormat=="RefWorks"}target="{$exportFormat}Main" {/if}href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormat|escape:"url"}">{translate text="Export to"} {$exportFormat|escape}</a></li>
@@ -179,7 +163,21 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           </ul>
         </li>
         {/if}
-
+        {* AddThis-Bookmark commented out
+        {if !empty($addThis)}
+        <li id="addThis"><a class="addThis addthis_button"" href="https://www.addthis.com/bookmark.php?v=250&amp;pub={$addThis|escape:"url"}">{translate text="Bookmark"}</a></li>
+        {/if} *}
+        {* AddThis for social sharing START *}
+        {if !empty($addThis)}
+      	  <li id="addThis">
+          <div class="addthis_toolbox addthis_default_style ">
+            <a class="icon addthis_button_facebook"></a>
+            <a class="icon addthis_button_twitter"></a>
+            <a class="icon addthis_button_google_plusone_share"></a>
+          </div>
+        </li>
+        {/if}
+        {* Addthis for social sharing END *}
         <li>
           <div id="recordProvidedBy">
             <label for="deduprecordMenu">{translate text='Record Provided By'}</label>

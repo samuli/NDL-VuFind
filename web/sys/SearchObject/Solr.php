@@ -379,8 +379,13 @@ class SearchObject_Solr extends SearchObject_Base
             $this->spellcheck = false;
             $this->searchType = strtolower($action);
         } else if ($module == 'MyResearch') {
+            $this->initLimit();
             $this->spellcheck = false;
             $this->searchType = ($action == 'Favorites') ? 'favorites' : 'list';
+        } else if ($module == 'List') {
+            $this->initLimit();
+            $this->spellcheck = false;
+            $this->searchType = 'publiclist';
         } else if ($module == 'AJAX') {
             //special AJAX Search check if it's for MapInfo
             if ($action == 'ResultGoogleMapInfo') {
@@ -926,6 +931,9 @@ class SearchObject_Solr extends SearchObject_Base
             return $this->serverUrl . '/MyResearch/Favorites?';
         } else if ($this->searchType == 'list') {
             return $this->serverUrl . '/MyResearch/MyList/' .
+                urlencode($_GET['id']) . '?';
+        } else if ($this->searchType == 'publiclist') {
+            return $this->serverUrl . '/List/' .
                 urlencode($_GET['id']) . '?';
         }
 

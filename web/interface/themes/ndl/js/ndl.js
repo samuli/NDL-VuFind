@@ -197,8 +197,10 @@ function initSidebarFacets() {
     $(".mainYearForm").submit(function(e){
         e.preventDefault();
         // Get dates, build query
-        var from = $('.mainYearForm #mainYearFrom').val(),
-            to = $('.mainYearForm #mainYearTo').val(),
+        var fromElement = $('.mainYearForm #mainYearFrom'),
+            toElement = $('.mainYearForm #mainYearTo');
+        var from = fromElement.val(),
+            to = toElement.val(),
             action = $('.mainYearForm').attr('action');
         if (action.indexOf("?") < 0) {
             action += '?'; // No other parameters, therefore add ?
@@ -207,14 +209,25 @@ function initSidebarFacets() {
         }
         var type = $('.mainYearForm input[name=search_sdaterange_mvtype]:checked').val()
         var query = action + 'sdaterange[]=search_sdaterange_mv&search_sdaterange_mvtype=' + type + '&';
-                
+
+        fromElement.removeClass('invalidField');
+        toElement.removeClass('invalidField');
+      
         // Require numerical values
         if (!isNaN(from) && !isNaN(to)) {
             if (from == '' && to == '') { // both dates empty; use removal url
                 query = action;
             } else if (from == '') { // only start date set
+                if (type == 'within') {
+                    fromElement.addClass('invalidField');
+                    return false;
+                }
                 query += 'search_sdaterange_mvto='+padZeros(to);
             } else if (to == '')  { // only end date set
+                if (type == 'within') {
+                    toElement.addClass('invalidField');
+                    return false;
+                }
                 query += 'search_sdaterange_mvfrom='+padZeros(from);
             } else { // both dates set
                 query += 'search_sdaterange_mvfrom='+padZeros(from)+'&search_sdaterange_mvto='+padZeros(to);

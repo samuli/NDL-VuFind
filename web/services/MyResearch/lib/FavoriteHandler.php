@@ -47,6 +47,9 @@ class FavoriteHandler
     private $_user;
     private $_listId;
     private $_allowEdit;
+    private $_viewType;
+    private $_publicList = false;
+
     private $_records = array();
     protected $infoMsg = false;
     protected $sortOptions = array(
@@ -78,6 +81,20 @@ class FavoriteHandler
     }
 
     /**
+     * Set current list view to public. This is used in List module.
+     *
+     * @param string $viewType Current view.
+     *
+     * @return void
+     * @access public
+     */
+    public function initPublicListView($viewType)
+    {
+        $this->_publicList = true;
+        $this->_viewType = $viewType;
+    }
+
+    /**
      * Assign all necessary values to the interface.
      *
      * @return void
@@ -105,6 +122,11 @@ class FavoriteHandler
                 $data = unserialize($data);
             }
             $sortKey = $favorite->saved;
+
+            if ($this->_publicList) {
+                $interface->assign('listNotes', $favorite->notes);
+            }
+
             if ($source == 'VuFind') {
                 if (empty($data)) {
                     // Fetch data from index for backwards compatibility and store it in the resource
@@ -120,7 +142,12 @@ class FavoriteHandler
                     }
                 }
                 $record = RecordDriverFactory::initRecordDriver($data);
-                $html = $interface->fetch($record->getListEntry($this->_user, $this->_listId, $this->_allowEdit));
+                
+                $tpl = $this->_publicList
+                    ? $record->getSearchResult($this->_viewType)
+                    : $record->getListEntry($this->_user, $this->_listId, $this->_allowEdit);
+
+                $html = $interface->fetch($tpl);
                 switch ($currentSort) {
                 case 'title': 
                     $sortKey = isset($data['title_sort']) ? $data['title_sort'] : ''; 
@@ -143,12 +170,16 @@ class FavoriteHandler
                         continue;
                     }
                 }
-                $html = $searchObjects[$source]->getResultHTML(
-                    $data,
-                    $this->_user,
-                    $this->_listId,
-                    $this->_allowEdit
-                );
+
+                $html = $this->_publicList
+                    ? $searchObjects[$source]->getPublicListHTML($data, $this->_viewType)
+                    : $searchObjects[$source]->getResultHTML(
+                        $data,
+                        $this->_user,
+                        $this->_listId,
+                        $this->_allowEdit
+                    ); 
+                
                 if ($source == 'MetaLib') {
                     switch ($currentSort) {
                     case 'title': 
@@ -196,7 +227,10 @@ class FavoriteHandler
         } else {
             $page = 1;
         } 
-        $perPage = 20; // TODO: configurable?
+
+        $searchObject->init();
+
+        $perPage = $searchObject->getLimit();
         $recordCount = count($this->_favorites);
         $startRecord = ($page - 1) * $perPage;
         
@@ -216,7 +250,6 @@ class FavoriteHandler
         $interface->assign('recordStart', $startRecord + 1);
         $interface->assign('recordEnd', $endRecord);
 
-        $searchObject->init();
         $options = array(
             'totalItems' => $recordCount,
             'perPage' => $perPage,

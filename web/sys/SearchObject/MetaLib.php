@@ -495,7 +495,27 @@ class SearchObject_MetaLib extends SearchObject_Base
         
         return $interface->fetch('MetaLib/listentry.tpl');
     }
+
+    /**
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display an item on a public "favorites" page.
+     *
+     * @param array  $record Record data.
+     * @param string $view   The current view.
+     *
+     * @return string        Name of Smarty template file to display.
+     * @access public
+     */    
+    public function getPublicListHTML($record, $view)
+    {
+        global $interface;
     
+        $interface->assign(array('record' => $record));
+
+        return $interface->fetch("MetaLib/result-$view.tpl");
+    }
+
+
     /**
      * Get information regarding the IRD
      * 

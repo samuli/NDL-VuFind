@@ -4,7 +4,7 @@
     <div class="imagelinks">      
     {foreach from=$summImages item=desc name=imgLoop}
       {if $smarty.foreach.imgLoop.iteration <= 5}
-        <a data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; return false;" rel="gallery" />
+        <a data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 4}
             &hellip;
          {else}
@@ -26,6 +26,12 @@
       <div class="gridPublished">
         {if $summDate}{translate text='Published'}: {$summDate.0|escape}{/if}
       </div>
+      {if $listNotes}
+         <div class="notes">
+           <p><span class="heading">{translate text="Description"} </span>({$listUsername}):</p>
+           <p class="text">{$listNotes}</p>
+         </div>
+      {/if}
     </div>
   </div>
   <div class="coverDiv">
@@ -42,7 +48,7 @@
         <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
     {if $img_count == 1}
         <div class="resultImage">
-            <a class="title fancybox fancybox.image" data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+            <a class="title fancybox fancybox.image" data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
                 <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
             </a>
         </div>

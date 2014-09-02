@@ -1110,6 +1110,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('summClassifications', $this->getClassifications());
         $interface->assign('summContainerTitle', $this->getContainerTitle());
         $interface->assign('summContainerReference', $this->getContainerReference());
+        $interface->assign('summDateSpan', $this->getDateSpan());
         $interface->assign('summHierarchyParentId', $this->getHierarchyParentId());
         $interface->assign('summHierarchyParentTitle', $this->getHierarchyParentTitle());
         $interface->assign('summHierarchyTopId', $this->getHierarchyTopId());

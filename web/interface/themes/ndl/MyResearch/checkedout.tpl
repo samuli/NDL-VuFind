@@ -18,6 +18,11 @@
     </div>
   {/if}
   {if $user->cat_username}
+    {if $profile.blocks}
+      {foreach from=$profile.blocks item=block name=loop}
+        <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
+      {/foreach}
+    {/if}
     <h2>{translate text='Your Checked Out Items'}:      
     {foreach from=$catalogAccounts item=account}
         	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
@@ -135,11 +140,14 @@
         </td>
         <td class="dueDate floatright">
           <div class="checkedoutSource">
-            {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-            {if $resource.ils_details.institution_name}
+            {if $resource.ils_details.institution_name && $resource.ils_details.institution_name != $resource.ils_details.borrowingLocation}
               <span>{translate text=$resource.ils_details.institution_name prefix='library_'}</span>
             {/if}
           </div>
+            {if $resource.ils_details.borrowingLocation}
+              <strong>{translate text='Borrowing Location'}:</strong> {translate text=$resource.ils_details.borrowingLocation prefix='location_'}
+              <br />
+            {/if}
             {if !empty($resource.ils_details.renewalCount)}
               <strong>{translate text='Renewed'}:</strong> {$resource.ils_details.renewalCount|escape}
               {if !empty($resource.ils_details.renewalLimit)} / {$resource.ils_details.renewalLimit|escape}{/if}

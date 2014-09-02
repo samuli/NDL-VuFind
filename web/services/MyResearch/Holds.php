@@ -167,6 +167,10 @@ class Holds extends MyResearch
             } else {
                 PEAR::raiseError($result);
             }
+            $profile = $this->catalog->getMyProfile($patron);
+            if (!PEAR::isError($profile)) {
+                $interface->assign('profile', $profile);
+            }
         }
 
         $interface->setTemplate('holds.tpl');
