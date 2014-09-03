@@ -288,6 +288,10 @@ img.alignleft {
     display:inline;
 }
 
+.hiddenElement {
+  display:none !important;
+}
+
 .hiddenLabel {
     display: none;
 }
@@ -1541,12 +1545,13 @@ fieldset.publishDateLimit .ui-slider {
 
 
 /*** MyResearch ***/
-.myResearch .myResearchTitle {
+.myResearch .myResearchTitle h2 {
     background:none;    
     color:rgb(70,70,70);
     margin-bottom: 20px;
     font-weight: 500;
     font-size: 1.6em;
+    float:left;
 }
 
 .myresearchHeader #selectCard > li{
@@ -1595,6 +1600,23 @@ fieldset.publishDateLimit .ui-slider {
     width:40px;
 }
 
+.dynamicInput .placeholder {
+  cursor:pointer;
+  padding-right: 5px;
+}
+
+.dynamicInput .transform {
+  padding-right:5px;
+}
+
+.dynamicInput .placeholder:hover {
+  color:#555;
+}
+
+.dynamicInput form {
+  margin:0;
+}
+
 .right {
     text-align:right;    
 }
@@ -1626,15 +1648,17 @@ fieldset.publishDateLimit .ui-slider {
 }
 .myResearch .noContentMessage {
     padding:10px;
+    clear:both;
 }
 .checkedoutList div.bulkActionButtons, .holdsList div.bulkActionButtons, .finesList table.fines, .accounts table.accountList {
     margin:0;    
 }
 
 #sidebarFavoritesLists, #sidebarRecommend, #sidebarCollection  {
+    border-right: 1px solid #ddd;
     float: left;
-    margin: 0 0 40px 0;
-    width: 210px;
+    margin: 0 0 40px;
+    width: 209px;
 }
 .module-Collection #sidebarCollection {
     float:right;
@@ -1654,12 +1678,13 @@ fieldset.publishDateLimit .ui-slider {
     color: #fff;
 }
 #sidebarFavoritesLists .favoritesCount {
-    font-size:1em
+    font-size:1em;
+    font-weight: normal;
 }
 #sidebarFavoritesLists .selected .favoritesCount {
     color:#444;
 }
-   
+
 #sidebarFavoritesLists a.listAdd {
     margin: 0;
     display: block;
@@ -1720,7 +1745,11 @@ fieldset.publishDateLimit .ui-slider {
 #sidebarFavoritesLists #listAddForm {
     position:relative
 }
-#sidebarFavoritesLists a.listAdd {
+#sidebarFavoritesLists .dynamicInput {
+  position:relative;
+}
+
+#sidebarFavoritesLists div#listAdd {
     background-color: #FFFFFF;
     color: #444444;
     font-size: 14px;
@@ -1733,19 +1762,25 @@ fieldset.publishDateLimit .ui-slider {
 #sidebarFavoritesLists #listAddForm.hidden {
     display:none;
 }
-#sidebarFavoritesLists input.listAdd {
-    height: 32px;
+#sidebarFavoritesLists a.listAdd {
+    height: 30px;
     margin: 0;
     padding: 0;
     text-indent: -9999px;
     width: 32px;
-    border:1px solid #ddd;
+    border:1px solid #fff;
     background-color:#fff;
-    border-right:none;
     cursor:pointer;
     position:absolute;
     right:0;
     top:0;
+}
+#sidebarFavoritesLists .ready a.listAdd {
+    right:-1px;
+    width:33px;
+}
+#sidebarFavoritesLists #listAdd.hiddenElement + a.listAdd {
+    border:1px solid #ddd;
 }
 
 #sidebarFavoritesLists input[type="text"] {
@@ -1761,36 +1796,292 @@ fieldset.publishDateLimit .ui-slider {
 #sidebarFavoritesLists .listItem a {
     font-weight: bold;
 }
-#sidebarFavoritesLists .selected {
+#sidebarFavoritesLists .selected > div:first-child {
     background-color: #B0E9DB;
 }
-#sidebarFavoritesLists .listItem {
+#sidebarFavoritesLists .listItem > div {
     background-color: #4D4D4D;
+    transition: all .05s;
+}
+#sidebarFavoritesLists .listItem > div:hover {
+    background-color: #5D5D5D;
+}
+#sidebarFavoritesLists .listItem a:hover  {
+    text-decoration:none;
 }
 #sidebarFavoritesLists .edit,
 #sidebarFavoritesLists .delete {
   color: #4D4D4D;
 }
 
-#sidebarFavoritesLists ul li > div {
+#sidebarFavoritesLists ul li > div > div > a, 
+#sidebarFavoritesLists ul li > div.selected > div:first-child {
     padding: 15px 8px;
+    display:block;
 }
-#sidebarFavoritesLists, .myResearch .myResearchTitle {
+#sidebarFavoritesLists, .myResearch .myResearchTitle h2 {
     word-break:break-word;    
 }
 
+#listChangePublicityForm label {
+  font-weight:normal;
+}
+#sidebarFavoritesLists ul li > div > .listVisibility {
+  padding: 10px 8px;
+}
+
 .favoritesList {
+    border-left: 1px solid #ddd;
     float: right;
-    width: 709px;
+    left: -1px;
+    padding-left: 30px;
     position: relative;
-    padding-left:30px;
-    border-left:1px solid #ddd;
+    width: 709px;
 }
 .favoritesList h2 {
     margin: auto 0;
-    text-align: center;
     margin-bottom: 1em;
+    position:relative;
+    line-height:28px;
 }
+
+.dynamicInput.myResearchTitle a {
+    position: relative;
+    top: 15px;
+    float: left;
+    display: block;
+    height: 18px;
+}
+
+#listName + .edit {
+    visibility:visible;
+    position: relative;
+    top: 2px;
+    left: 4px;
+} 
+
+#listName.hiddenElement + .edit {
+  visibility:hidden;
+}
+
+#listChangeNameForm {
+  position:absolute;
+  left:0;
+  top:0;
+}
+
+.myResearchTitle h2.hiddenElement + a {
+  display:none;
+}
+
+.myResearchTitle {
+  display:inline-block;
+  clear:both;
+  margin-bottom:8px;
+  padding: 0 5px 0 0;
+}
+
+.myResearch .myResearchTitle input[type="text"] {
+    color: rgb(70,70,70);
+    font-weight: 500;
+    font-size: 21px;
+    letter-spacing: 0.2px;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    padding: 12px 10px;
+    line-height: 28px;
+    margin: -1px;
+    max-width:none;
+    width:420px;
+}
+
+.myResearchTitle form {
+  margin:0;
+}
+
+.listDescription {
+    float: left;
+    margin-bottom: 10px;
+    max-width: 460px;
+    padding: 5px 4px 4px;
+    clear:both;
+    margin-left: 6px;
+}
+
+.listDescription.dynamicInput.ready {
+    height:20px;
+}
+
+.listDescription > div {
+    color: #666;
+    display: inline;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 16px;
+    max-width: 420px;
+}
+.listDescription a {
+    display: block;
+    float: right;
+    height: 20px;
+    margin-top: -4px;
+}
+
+.listDescription div.hiddenElement + a {
+    display:none;
+}
+.listDescription form {
+  max-height:30px;
+}
+.listDescription input {
+    color: #666;
+    font-family: arial,sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    left: -9px;
+    margin: 0;
+    max-width: none !important;
+    padding: 9px 8px !important;
+    position: relative;
+    top: -14px;
+    width: 445px;
+}
+
+.listDescription.ready {
+  margin-bottom:0;
+}
+
+.listEntryDescription {
+    text-align: right;
+    width: 550px;
+    margin-top:10px;
+    position:relative;
+    margin-bottom:8px;
+}
+
+.listEntryDescription > div {
+    display: inline-block;
+    text-align: right;
+}
+
+.listEntryDescription > a.add {
+    padding: 6px 9px 8px 13px;
+}
+
+.listEntryDescription > div.hiddenElement + a {
+  display:none;
+}
+
+.listEntryDescription.ready {
+  text-align:left;
+  margin-bottom:2px;
+}
+
+.dynamicInput.listEntryDescription input[type="text"] {
+  color: #222;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-size: 1em;
+    line-height: 1.5;
+    margin-left: -3px;
+    margin-top: -4px;
+    margin-bottom:0;
+    padding: 4px 7px 4px;
+}
+
+.myResearch .listEntryDescription input[type="text"] {
+    display: block;
+    max-width: none;
+    width: 533px;
+}
+
+.listEntryDescription.ready strong {
+  display:none;
+}
+
+.listEntryDescription strong {
+  margin-right:4px;
+}
+
+.listEntryDescription .transform, .listEntryDescription strong {
+  float:left;
+  text-align: left;
+}
+.listEntryDescription strong { 
+  clear:both;
+}
+
+.listEntryDescription .transform {
+    display: block;
+    float: none;
+    margin-right: 4px;
+    max-width: 460px;
+}
+
+.listEntryDescription .transform.placeholder {
+  float:none;
+  margin-right:0;
+  display:inline;
+  
+}
+
+.listEntryDescription .transform.placeholder + a {
+  float:none;
+  height:auto;
+}
+
+.listEntryDescription a.edit {
+    display: block;
+    height: 18px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.placeholder.transform {
+    color:#777;
+}
+
+.placeholder.transform:hover + a {
+    color:#555;
+    opacity:1;
+}
+
+.dynamicInput.hover .placeholder {
+    color:#555;
+}
+
+.dynamicInput.hover.indicate {
+    outline: 1px solid #ccc;
+    outline-offset:3px;
+}
+
+.dynamicInput.hover.indicate.myResearchTitle {
+    outline-offset:0;
+}
+.dynamicInput input.loading {
+    background-image: url(../images/ajax_loading.gif);
+    background-position: 99% center;
+}
+.publicListURL {
+    margin-top: 12px;
+    word-wrap: break-word; 
+}
+
+.publicListURL.loading {
+    background-position: left center;
+    background-image: url(../images/ajax_loading.gif);
+    text-indent: -1000px;
+}
+
+#sidebarFavoritesLists .publicStatus {
+    display: block;
+    float: left;
+    height: 18px;
+    width: 18px;
+    padding: 0 10px 0 0;
+}
+
+
 .favoritesList .recordNumbers {
     font-size: 15px;
     font-weight: 300;
@@ -1829,7 +2120,7 @@ fieldset.publishDateLimit .ui-slider {
 
 .favoritesList ul.recordSet .result {
     border-top: 1px solid #EEEEEE;
-    margin-top:18px;
+    margin-top:10px;
     margin-bottom:0;
 }
 .favoritesList ul.recordSet .result:first-child {
@@ -1882,8 +2173,9 @@ form.visible .allCheckboxBackground {
     position:static;
     margin:0;    
 }
-.myResearch .myResearchTitle {
-    margin-bottom:10px;    
+.myResearch .myResearchTitle h2 {
+    margin-bottom:0px;    
+    max-width:420px;
 }
 .myResearch .checkboxFilter.favorites label {
     text-indent:-20px;
@@ -5502,7 +5794,7 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 .module-MyResearch h2, .myResearch h2 {
     font-size: 1.4em;
     margin:0;
-    line-height:1em;
+    line-height:28px;
 }
 .myResearch ul.recordSet .resultCheckbox {
     display: inherit;

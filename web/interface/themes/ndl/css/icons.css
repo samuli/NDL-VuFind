@@ -715,17 +715,40 @@ input[type="radio"]:checked + label span {
 }
 
 .sessionHistory .add,
-.editItem .edit, #sidebarFavoritesLists .edit,
+.editItem .edit, .myResearch .edit, .myResearch .save,
 .editItem .delete,
 #sidebarFavoritesLists .delete {
     background-image: url(../images/icons16-24px-02_black.png);
 }
+.myResearchTitle .edit, .favoritesList .edit {
+    background-image: url("../images/icons16-24px-02_black.png");
+    opacity:.75;
+}
+.myResearchTitle .edit:hover, .favoritesList .edit:hover,
+.favoritesList .add:hover, .listDescription .add:hover,
+#sidebarFavoritesLists a.listAdd:hover {
+    opacity:1;
+}
+.favoritesList .add {
+    background-image: url("../images/icons16-24px-02_black.png");
+    opacity:.75;
+    background-position: 2px -49px;
+}
+
+.listDescription .add {
+    background-position: 3px -52px;
+    opacity:.75;
+}
+
 .sessionHistory .add {
     background-position: 7px -49px;
 }
 .editItem .edit,
-#sidebarFavoritesLists .edit {
+.myResearch .edit {
     background-position: 1px -2104px;
+}
+.myResearch .save {
+    background-position: 1px -1446px;
 }
 .editItem .delete,
 #sidebarFavoritesLists .delete {
@@ -733,11 +756,17 @@ input[type="radio"]:checked + label span {
 }
 #sidebarFavoritesLists .listAdd {
     background-image: url(../images/icons16-24px-02_black.png);
-    background-position: 186px -49px;
+    opacity:.75;
+}
+#sidebarFavoritesLists .ready .listAdd {
+    opacity:1;
 }
 #sidebarFavoritesLists input.listAdd {
     background-image: url("../images/icons16-24px-02_black.png");
     background-position: 7px -50px;
+}
+#sidebarFavoritesLists #listAdd:hover + a.listAdd {
+    opacity:1;
 }
 .favoritesList div.bulkActionButtons input.button, 
 .favoritesList div.bulkActionButtons div > a,
@@ -905,6 +934,16 @@ body > .ui-dialog .ui-widget-header .ui-dialog-titlebar-close.ui-state-hover {
 .myResearch .formatpaikkarakennus:before {
     background-position: 1px -725px;
 }
+
+.publicStatus {
+    background-image: url("../images/icons16-24px-02_white.png");
+    background-position: 1px -392px;
+}
+
+.selected .publicStatus {
+   background-image: url("../images/icons16-24px-02_black.png");
+}
+
 
 /*** Webkit hacks ***/
 

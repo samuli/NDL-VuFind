@@ -94,7 +94,15 @@ class MyList extends Action
         if (!$list->public && $list->user_id != $user->id) {
             PEAR::raiseError(new PEAR_Error(translate('list_access_denied')));
         }
-
+        
+        // Redirect anonymous users to public list URL
+        if ($list->public && (!UserAccount::isLoggedIn() || $list->user_id != $user->id)) {
+            header(
+                "Location: " . $configArray['Site']['url'] . 
+                "/List/" . $list->id
+            );
+        }
+        
         $this->infoMsg = isset($_GET['infoMsg']) ? $_GET['infoMsg'] : false;
         $this->errorMsg = isset($_GET['errorMsg']) ? $_GET['errorMsg'] : false;
         $this->showExport = isset($_GET['showExport']) ? $_GET['showExport'] : false;
