@@ -95,9 +95,6 @@ class SearchObject_Solr extends SearchObject_Base
 
         global $configArray;
 
-        // Initialise the index
-        $this->indexEngine = ConnectionManager::connectToIndex();
-
         // Get default facet settings
         $this->allFacetSettings = getExtraConfigArray('facets');
         $this->facetConfig = array();
@@ -583,6 +580,10 @@ class SearchObject_Solr extends SearchObject_Base
      */
     public function getIndexEngine()
     {
+        if (is_null($this->indexEngine)) {
+            // Initialise the index
+            $this->indexEngine = ConnectionManager::connectToIndex();
+        }
         return $this->indexEngine;
     }
 
@@ -691,7 +692,7 @@ class SearchObject_Solr extends SearchObject_Base
 
         // Limit the ID list if it exceeds the clause limit, and adjust the return
         // value to reflect the problem:
-        $limit = $this->indexEngine->getBooleanClauseLimit();
+        $limit = $this->getIndexEngine()->getBooleanClauseLimit();
         if (count($ids) > $limit) {
             $ids = array_slice($ids, 0, $limit);
             $retVal = false;
@@ -1125,7 +1126,7 @@ class SearchObject_Solr extends SearchObject_Base
         }
 
         // Build Query
-        $query = $this->indexEngine->buildQuery($search);
+        $query = $this->getIndexEngine()->buildQuery($search);
         if (PEAR::isError($query)) {
             return $query;
         }
@@ -1228,7 +1229,7 @@ class SearchObject_Solr extends SearchObject_Base
         // The first record to retrieve:
         //  (page - 1) * limit = start
         $recordStart = ($this->page - 1) * $this->limit;
-        $this->indexResult = $this->indexEngine->search(
+        $this->indexResult = $this->getIndexEngine()->search(
             $this->query,      // Query string
             $this->index,      // DisMax Handler
             $filterQuery,      // Filter query
