@@ -114,7 +114,7 @@ function registerFavoritesActions() {
     });
     
     // Submit by pressing enter, cancel with esc
-    $('.dynamicInput input').bind('keypress', function(e) {
+    $('.dynamicInput input').bind('keydown', function(e) {
         var code = e.keyCode || e.which; 
         var $container = $(this).closest('.dynamicInput');
         // Enter
