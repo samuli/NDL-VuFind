@@ -35,15 +35,14 @@ Biljetter, fortskaffningsmedel och fotografier ur Helsingfors stadsmuseums samli
         </div>
       </li>
       <li class="grid_6">
-        {image src="04ediths.jpg"}
+        {image src="07sakuvat.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Edith Södergrans fotografier (Svenska litteratursällskapet)</span></div>
-          <div class="pickup-text">
-Lyrikern Edit Södergran (1892-1923) är en av Finlands mest översätta författare och hennes dikter på svenska utkommer ständigt i nyutgåvor. Hon är också sedan 1990-talet känd som fotograf och omkring 400 fotografier med motiv från Davos, Schweiz och Raivola på Karelska näset finns bevarade. Ett favoritmotiv är hennes katter.
-            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          <div class="pickup-header"><span>Bilder från vinter-, fortsättnings- och Lapplandskriget i Finland</span></div>
+          <div class="pickup-text">Framför dig har du Förvarsmaktens bildarkiv (SA-kuva-arkisto på finska) &endash; en unik bildsamling som består av nästan 160 000 fotografier från  vinterkriget, fortsättningskriget och Lapplandskriget i Finland. Största  delen har fotograferats av informationskompaniernas fotografer.
+          <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A%220%2FSA-kuva%2F%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
-      </li>  
+      </li>
     </ul>
   </div>
   <div class="slide">
@@ -69,16 +68,15 @@ Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har an
         </div>
       </li>
       <li class="grid_6">
-        {image src="07alaska.jpg"}
+        {image src="04ediths.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Alaskasamlingen i Kulturernas museum</span></div>
+          <div class="pickup-header"><span>Edith Södergrans fotografier (Svenska litteratursällskapet)</span></div>
           <div class="pickup-text">
-           En ceremoniell huvudbonad som användes av aleuterna i Alaska i början av 1800-talet. 
-Alaskasamlingen omfattar ca 500 föremål som är insamlade av bl.a. Arvid Adolf Etholén, guvernör över ryska Alaska, och prästen Uno Cygnaeus. I samlingen finns bl.a. kläder, fångstredskap och små skulpturer av valrossbetar.  
-            <a href="{$url}{'/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=10'|escape:'html'}">Till sökresultatet »</a>
+Lyrikern Edit Södergran (1892-1923) är en av Finlands mest översätta författare och hennes dikter på svenska utkommer ständigt i nyutgåvor. Hon är också sedan 1990-talet känd som fotograf och omkring 400 fotografier med motiv från Davos, Schweiz och Raivola på Karelska näset finns bevarade. Ett favoritmotiv är hennes katter.
+            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
-      </li>
+      </li>  
       <li class="grid_6">
         {image src="05kultsa.jpg"}
         <div class="pickup-content">
