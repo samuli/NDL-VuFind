@@ -40,7 +40,7 @@
           <div class="pickup-header"><span>Pictures from Finland's Winter, Continuation and Lapland Wars</span></div>
           <div class="pickup-text">
             What you have in front of you is a unique collection of photographs from the Wartime Photograph Archives ("SA-kuva-arkisto" in Finnish). It contains some 160,000 photographs from Finland's Winter War, Continuation War and Lapland War. Most of the pictures were taken by Information Company (IC) photographers.
-            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A%220%2FSA-kuva%2F%22&sort=relevance&view=grid&limit=100'|escape:'html'}">To the search result »</a>
+            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">To the search result »</a>
           </div>
         </div>
       </li>

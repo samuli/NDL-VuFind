@@ -39,7 +39,7 @@ Biljetter, fortskaffningsmedel och fotografier ur Helsingfors stadsmuseums samli
         <div class="pickup-content">
           <div class="pickup-header"><span>Bilder från vinter-, fortsättnings- och Lapplandskriget i Finland</span></div>
           <div class="pickup-text">Framför dig har du Förvarsmaktens bildarkiv (SA-kuva-arkisto på finska) &endash; en unik bildsamling som består av nästan 160 000 fotografier från  vinterkriget, fortsättningskriget och Lapplandskriget i Finland. Största  delen har fotograferats av informationskompaniernas fotografer.
-          <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A%220%2FSA-kuva%2F%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
