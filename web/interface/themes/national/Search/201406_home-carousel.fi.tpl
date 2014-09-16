@@ -5,15 +5,6 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
-        {image src="201311_01alaska.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Kulttuurien museon Alaska-kokoelma</span></div>
-          <div class="pickup-text">
-            Alaskan aleuttien 1800-luvun alkupuolella käyttämä seremoniallinen päähine. Kulttuurien museon Alaska-kokoelmaan kuuluu noin 500 esinettä, joita ovat keränneet mm. Venäjän Alaskassa kenraalikuvernöörinä toiminut Arvid Adolf Etholén ja pappina toiminut Uno Cygnaeus. Kokoelmaan kuuluu mm. vaatteita, pyyntivälineitä ja pieniä mursunluuveistoksia. 
-            <a href="{$url}/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=100">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
       <li class="grid_6">
         {image src="201311_02vr.jpg"}
         <div class="pickup-content">
@@ -21,6 +12,15 @@
           <div class="pickup-text">
             Suomen Rautatiemuseon julistekokoelma on 1930–2000 -luvuilta. VR on käyttänyt julisteita asemilla, junissa ja erilaisissa tapahtumissa sekä tehnyt kansainvälistä julistevaihtoa. Kuvaajina  ja piirtäjinä ovat toimineet mm. taiteilijat Erik Bruun, Osmo K. Oksanen, Juha Anttinen ja valokuvaajat Fred Runeberg, E. Tolvanen ja Yrjö Metsälä.
             <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+        {image src="201311_01alaska.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Kulttuurien museon Alaska-kokoelma</span></div>
+          <div class="pickup-text">
+            Alaskan aleuttien 1800-luvun alkupuolella käyttämä seremoniallinen päähine. Kulttuurien museon Alaska-kokoelmaan kuuluu noin 500 esinettä, joita ovat keränneet mm. Venäjän Alaskassa kenraalikuvernöörinä toiminut Arvid Adolf Etholén ja pappina toiminut Uno Cygnaeus. Kokoelmaan kuuluu mm. vaatteita, pyyntivälineitä ja pieniä mursunluuveistoksia. 
+            <a href="{$url}/Search/Results?lookfor=ent.+Ven%C3%A4j%C3%A4n+Amerikka&type=AllFields&prefiltered=-&filter%5B%5D=building%3A%220%2FSuomen+kansallismuseo%2F%22&sort=relevance&view=grid&limit=100">Hakutulokseen »</a>
           </div>
         </div>
       </li>
