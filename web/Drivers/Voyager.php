@@ -636,11 +636,10 @@ class Voyager implements DriverInterface
         $data = array();
 
         foreach ($sqlRows as $row) {
-            // Determine Copy Number (always use sequence number; append volume
-            // when available)
-            $number = $row['ITEM_SEQUENCE_NUMBER'];
+            // Determine Copy Number
+            $number = '';
             if (isset($row['ITEM_ENUM'])) {
-                $number .= ' (' . utf8_encode($row['ITEM_ENUM']) . ')';
+                $number = utf8_encode($row['ITEM_ENUM']);
             }
 
             // Concat wrapped rows (MARC data more than 300 bytes gets split

@@ -59,12 +59,10 @@
         <th><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
         <td><td>
       </tr>
-      <tr>
-        <th colspan="3"><div id="deleteAccount"><button class="button buttonFinna">{translate text="delete_account_title"}</button></div></th>
-      </tr>
     </table>
     </form>
     <div class="clear"></div>
+
 
     
     
@@ -134,42 +132,32 @@
       </tr>
       </form>
       { /if }
-      <tr><th colspan="2"><h3>{translate text='library_personal_details'}</h3></th></tr>
-
-
-      
+      <tr><th colspan="2"><h3>{translate text='library_personal_details'}</h3></th>
+      </tr>
       <tr>
         <th>{translate text='First Name'}</th><td>{if $profile.firstname}{$profile.firstname|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Last Name'}</th><td>{if $profile.lastname}{$profile.lastname|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Address'} 1</th><td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Address'} 2</th><td>{if $profile.address2}{$profile.address2|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Zip'}</th><td>{if $profile.zip}{$profile.zip|escape}{else}-{/if}</td><td></td>
-      </tr>
-    
+      </tr>   
       <tr>
         <th>{translate text='Phone Number'}</th><td>{if $profile.phone}{$profile.phone|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Email'}</th><td>{if $profile.email}{$profile.email|escape}{else}-{/if}</td><td></td>
       </tr>
-    
       <tr>
         <th>{translate text='Group'}</th><td>{$profile.group|escape}</td><td></td>
-      </tr>
-    
+      </tr> 
       <tr>
       {foreach from=$profile.blocks item=block name=loop}
         {if $smarty.foreach.loop.first}
@@ -184,6 +172,7 @@
         {include file="MyResearch/catalog-login.tpl"}
       {/if}
     </div>
+    <div id="deleteAccount"><button class="button buttonFinna">{translate text="delete_account_title"}</button></div>
   </div>
 </div>
 <div class="clear"></div>
