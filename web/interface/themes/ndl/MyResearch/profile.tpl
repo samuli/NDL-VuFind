@@ -30,24 +30,28 @@
       {/if}
       <h2>{translate text='Your Profile'}</h2>
       <table class="profileGroup">
-      <tr>
-        <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{translate text="notif_email"}</span></td>
+      <tr>        
+        <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{if !$hideDueDateReminder}{translate text="notif_email"}{else}{translate text="notif_email_alert"}{/if}</span></td>
       </tr>
       {if $libraryCard}
       <tr>
-        <th>{translate text='due_date_reminder'}</th>
-        <td>
-          <select name="due_date_reminder">
-            <option value="0" {if $dueDateReminder == 0}selected="selected"{/if}>{translate text='due_date_reminder_none'}</option>
-            <option value="1" {if $dueDateReminder == 1}selected="selected"{/if}>{translate text='due_date_reminder_one_day'}</option> 
-            <option value="2" {if $dueDateReminder == 2}selected="selected"{/if}>{translate text='due_date_reminder_two_days'}</option> 
-            <option value="3" {if $dueDateReminder == 3}selected="selected"{/if}>{translate text='due_date_reminder_three_days'}</option> 
-          </select>
-        </td>
-        {if count($catalogAccounts) > 1}
-          <td class="notif"><span class="userGuider">{translate text="notif_duedate"}</span></td>
-		{else}
-        	<td></td>
+        {if !$hideDueDateReminder}
+           <th>{translate text='due_date_reminder'}</th>
+           <td>
+              <select name="due_date_reminder">
+                <option value="0" {if $dueDateReminder == 0}selected="selected"{/if}>{translate text='due_date_reminder_none'}</option>
+                <option value="1" {if $dueDateReminder == 1}selected="selected"{/if}>{translate text='due_date_reminder_one_day'}</option> 
+                <option value="2" {if $dueDateReminder == 2}selected="selected"{/if}>{translate text='due_date_reminder_two_days'}</option> 
+                <option value="3" {if $dueDateReminder == 3}selected="selected"{/if}>{translate text='due_date_reminder_three_days'}</option> 
+              </select>
+           </td>
+           {if count($catalogAccounts) > 1}
+             <td class="notif"><span class="userGuider">{translate text="notif_duedate"}</span></td>
+		   {else}
+        	 <td></td>
+           {/if}
+        {else}
+            <input type="hidden" name="due_date_reminder" value="0" />
         {/if}
       </tr>
       {/if} <!-- end of duedate line -->
