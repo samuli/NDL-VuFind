@@ -188,6 +188,10 @@ class User extends DB_DataObject
                     }
                 }
             }
+            
+            // Update list modification date
+            $list->updateModifiedDate();
+            
             return true;
         } else {
             return false;
@@ -201,7 +205,7 @@ class User extends DB_DataObject
      *
      * @return void
      * @access public
-     * @todo: delete any unused tags
+     * @todo   delete any unused tags
      */
     public function removeResource($resource)
     {
@@ -272,6 +276,9 @@ class User extends DB_DataObject
 
         $removeTags = new Resource_tags();
         $removeTags->query($sql);
+        
+        // Update mofidication dates for all lists
+        $this->updateListModifiedDates();
 
         // If we got this far, there were no fatal DB errors so report success
         return true;
@@ -704,6 +711,24 @@ class User extends DB_DataObject
             }
         }
         return $users;
+    }
+    
+    /**
+     * Updates modification date of user's every list
+     *
+     * @return bool          True on success, false on error
+     * @access public
+     */
+    public function updateListModifiedDates()
+    {
+        $lists = $this->getLists();
+        foreach ($lists as $list) {
+            if (!$list->updateModifiedDate()) {
+                return false;
+            }
+        }
+        
+        return true;
     }
     
 }

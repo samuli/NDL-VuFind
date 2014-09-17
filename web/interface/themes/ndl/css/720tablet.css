@@ -401,6 +401,38 @@
 	.module-MyResearch h2, .myResearch h2 {
 		line-height: auto;
 	}
+  
+  .myResearch .myResearchTitle input[type="text"] {
+    width:310px;
+  }
+  
+  .listDescription > div {
+    max-width: 280px;
+  }
+
+  .listDescription {
+      max-width: 315px;
+  }
+  
+  .listDescription input {
+    width: 305px;
+  }
+  
+  .myResearch .myResearchTitle h2 {
+    max-width: 280px;
+  }
+  
+  .listEntryDescription .transform {
+    max-width: 280px;
+  }
+  
+  .myResearch .listEntryDescription input[type="text"] {
+    width: 300px;
+  }
+  
+  .listEntryDescription {
+    width: 316px;
+  }
     .loginForm .personaLogin {
         margin-top: 14px;
     }

@@ -30,24 +30,28 @@
       {/if}
       <h2>{translate text='Your Profile'}</h2>
       <table class="profileGroup">
-      <tr>
-        <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{translate text="notif_email"}</span></td>
+      <tr>        
+        <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{if !$hideDueDateReminder}{translate text="notif_email"}{else}{translate text="notif_email_alert"}{/if}</span></td>
       </tr>
       {if $libraryCard}
       <tr>
-        <th>{translate text='due_date_reminder'}</th>
-        <td>
-          <select name="due_date_reminder">
-            <option value="0" {if $dueDateReminder == 0}selected="selected"{/if}>{translate text='due_date_reminder_none'}</option>
-            <option value="1" {if $dueDateReminder == 1}selected="selected"{/if}>{translate text='due_date_reminder_one_day'}</option> 
-            <option value="2" {if $dueDateReminder == 2}selected="selected"{/if}>{translate text='due_date_reminder_two_days'}</option> 
-            <option value="3" {if $dueDateReminder == 3}selected="selected"{/if}>{translate text='due_date_reminder_three_days'}</option> 
-          </select>
-        </td>
-        {if count($catalogAccounts) > 1}
-          <td class="notif"><span class="userGuider">{translate text="notif_duedate"}</span></td>
-		{else}
-        	<td></td>
+        {if !$hideDueDateReminder}
+           <th>{translate text='due_date_reminder'}</th>
+           <td>
+              <select name="due_date_reminder">
+                <option value="0" {if $dueDateReminder == 0}selected="selected"{/if}>{translate text='due_date_reminder_none'}</option>
+                <option value="1" {if $dueDateReminder == 1}selected="selected"{/if}>{translate text='due_date_reminder_one_day'}</option> 
+                <option value="2" {if $dueDateReminder == 2}selected="selected"{/if}>{translate text='due_date_reminder_two_days'}</option> 
+                <option value="3" {if $dueDateReminder == 3}selected="selected"{/if}>{translate text='due_date_reminder_three_days'}</option> 
+              </select>
+           </td>
+           {if count($catalogAccounts) > 1}
+             <td class="notif"><span class="userGuider">{translate text="notif_duedate"}</span></td>
+		   {else}
+        	 <td></td>
+           {/if}
+        {else}
+            <input type="hidden" name="due_date_reminder" value="0" />
         {/if}
       </tr>
       {/if} <!-- end of duedate line -->
@@ -55,12 +59,10 @@
         <th><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
         <td><td>
       </tr>
-      <tr>
-        <th colspan="3"><div id="deleteAccount"><button class="button buttonFinna">{translate text="delete_account_title"}</button></div></th>
-      </tr>
     </table>
     </form>
     <div class="clear"></div>
+
 
     
     
@@ -130,42 +132,32 @@
       </tr>
       </form>
       { /if }
-      <tr><th colspan="2"><h3>{translate text='library_personal_details'}</h3></th></tr>
-
-
-      
+      <tr><th colspan="2"><h3>{translate text='library_personal_details'}</h3></th>
+      </tr>
       <tr>
         <th>{translate text='First Name'}</th><td>{if $profile.firstname}{$profile.firstname|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Last Name'}</th><td>{if $profile.lastname}{$profile.lastname|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Address'} 1</th><td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Address'} 2</th><td>{if $profile.address2}{$profile.address2|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Zip'}</th><td>{if $profile.zip}{$profile.zip|escape}{else}-{/if}</td><td></td>
-      </tr>
-    
+      </tr>   
       <tr>
         <th>{translate text='Phone Number'}</th><td>{if $profile.phone}{$profile.phone|escape}{else}-{/if}</td><td></td>
       </tr>
-
       <tr>
         <th>{translate text='Email'}</th><td>{if $profile.email}{$profile.email|escape}{else}-{/if}</td><td></td>
       </tr>
-    
       <tr>
         <th>{translate text='Group'}</th><td>{$profile.group|escape}</td><td></td>
-      </tr>
-    
+      </tr> 
       <tr>
       {foreach from=$profile.blocks item=block name=loop}
         {if $smarty.foreach.loop.first}
@@ -180,6 +172,7 @@
         {include file="MyResearch/catalog-login.tpl"}
       {/if}
     </div>
+    <div id="deleteAccount"><button class="button buttonFinna">{translate text="delete_account_title"}</button></div>
   </div>
 </div>
 <div class="clear"></div>

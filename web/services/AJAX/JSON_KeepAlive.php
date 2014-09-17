@@ -29,7 +29,7 @@ require_once 'JSON.php';
 
 /**
  * Session keepalive action
- * 
+ *
  * @category VuFind
  * @package  Controller_Record
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
@@ -59,6 +59,10 @@ class JSON_KeepAlive extends JSON
      */
     public function noop()
     {
+        // Verify that the index is up
+        $searchObject = SearchObjectFactory::initSearchObject();
+        $searchObject->init();
+        $searchObject->getIndexEngine();
         return $this->output(true, JSON::STATUS_OK);
     }
 }

@@ -62,6 +62,8 @@ defaultAccountPage = Favorites
 admin_enabled = false
 ; Show sidebar on the left side instead of right
 sidebarOnLeft = false
+; Whether to hide option for toggling due date reminders.
+hideDueDateReminder = false
 ; Show (true) / Hide (false) Book Bag - Default is Hide.  The Book Bag is currently
 ; only supported by the blueprint theme; other themes will ignore this setting.
 showBookBag = false
