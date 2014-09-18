@@ -204,11 +204,10 @@
             {if $showCopyTitle}<td class="copyTitle">{translate text="Copies"}{assign var="showCopyTitle" value=0}</td>
             {else}<td></td>{/if}
             <td class="copyNumber">
-            {if $row.number}
-              {translate text="Copy"} {$row.number|escape}
-            {/if}
             {if $row.itemSummary}
               {$row.itemSummary}
+            {else}
+              {translate text="Copy"} {$row.number|escape}
             {/if}
             </td>
             <td colspan="3" class="copyInfo">
