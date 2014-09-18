@@ -1374,7 +1374,7 @@ class MarcRecord extends IndexRecord
             $type = $url->getSubfield('q');
             if ($type) {
                 $type = $type->getData();
-                if ("TEXT" == $type) {
+                if ("TEXT" == $type || "text/html" == $type) {
                     $address = $url->getSubfield('u');
                     if ($address) {
                         $address = $address->getData();
