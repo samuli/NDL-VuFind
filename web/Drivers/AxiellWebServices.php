@@ -85,8 +85,6 @@ class AxiellWebServices implements DriverInterface
         if ($this->defaultPickUpLocation == '0') {
             $this->defaultPickUpLocation = false;
         }
-        
-        
 
         if (isset($this->config['Debug']['log'])) {
             $this->logFile = $this->config['Debug']['log'];
@@ -194,41 +192,35 @@ class AxiellWebServices implements DriverInterface
                 return $vfHoldings;
             }
 
-            $holdings = is_object($result->GetHoldingResult->catalogueRecord->compositeHolding) ?
-                array($result->GetHoldingResult->catalogueRecord->compositeHolding) :
-                $result->GetHoldingResult->catalogueRecord->compositeHolding;
-
-            $copy = 0;
+            $holdings = is_object($result->GetHoldingResult->catalogueRecord->compositeHolding) 
+                ? array($result->GetHoldingResult->catalogueRecord->compositeHolding)
+                : $result->GetHoldingResult->catalogueRecord->compositeHolding;
 
             if ($holdings[0]->type == 'year') {
 
                 foreach ($holdings as $holding) {
-
                     $year = $holding->value;
-                    $holdingsEditions = is_object($holding->compositeHolding) ?
-                        array($holding->compositeHolding) :
-                        $holding->compositeHolding;
-
+                    $holdingsEditions = is_object($holding->compositeHolding)
+                        ? array($holding->compositeHolding)
+                        : $holding->compositeHolding;
                     foreach ($holdingsEditions as $holdingsEdition) {
                         $edition = $holdingsEdition->value;
-                        $holdingsOrganisations = is_object($holdingsEdition->compositeHolding) ?
-                            array($holdingsEdition->compositeHolding) :
-                            $holdingsEdition->compositeHolding;
-                        foreach ($holdingsOrganisations as $holdingsOrganisation) {
-                            $this->parseHoldings($holdingsOrganisations, $id, $copy, $vfHoldings, $year, $edition);
-                        }
+                        $holdingsOrganisations = is_object($holdingsEdition->compositeHolding)
+                            ? array($holdingsEdition->compositeHolding) 
+                            : $holdingsEdition->compositeHolding;
+                        $this->parseHoldings($holdingsOrganisations, $id, $vfHoldings, $year, $edition);
                     }
                 }
             } else {
-                $this->parseHoldings($holdings, $id, $copy, $vfHoldings, '', '');
+                $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
             }
-
+            
             return empty($vfHoldings) ? false : $vfHoldings;
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
             $this->debugLog("Request: " . $client->__getLastRequest());
             $this->debugLog("Response: " . $client->__getLastResponse());
-            return new PEAR_Error('catalog_error_technical');;
+            return new PEAR_Error('catalog_error_technical');
         }
     }
 
@@ -237,7 +229,6 @@ class AxiellWebServices implements DriverInterface
      *
      * @param array     $organisationHoldings Organisation holdings
      * @param string    $id                   The record id to retrieve the holdings
-     * @param reference &$copy                Counter
      * @param reference &$vfHoldings          Reference
      * @param string    $year                 Publication year of the magazine
      * @param string    $edition              Edition of the magazine
@@ -245,83 +236,120 @@ class AxiellWebServices implements DriverInterface
      * @return null
      * @access protected
      */
-    protected  function parseHoldings($organisationHoldings, $id, &$copy, &$vfHoldings, $year, $edition)
+    protected function parseHoldings($organisationHoldings, $id, &$vfHoldings, $year, $edition)
     {
-        foreach ($organisationHoldings as $organisation) {
-            $organisationName = $organisation->value;
-            $reservationStatus = ($organisation->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
-            $noOfReservations = isset($organisation->nofReservations) ? $organisation->nofReservations : '';
-            $holdingsBranch = is_object($organisation->compositeHolding) ? array($organisation->compositeHolding) : $organisation->compositeHolding;
+        if ($organisationHoldings[0]->type == 'organisation') {
+            foreach ($organisationHoldings as $organisation) {
+                $organisationName = $organisation->value;
+                $noOfReservations = isset($organisation->nofReservations) ? $organisation->nofReservations : '';
+                
+                $holdingsBranch = is_object($organisation->compositeHolding) ? array($organisation->compositeHolding) : $organisation->compositeHolding;
 
-            foreach ($holdingsBranch as $branch) {
+                if ($holdingsBranch[0]->type == 'branch') {
+                    foreach ($holdingsBranch as $branch) {
+                        $branchName = $branch->value;
+                        $reservationStatus = ($branch->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
+                        $departments = is_object($branch->holdings->holding) ? array($branch->holdings->holding) : $branch->holdings->holding;
+                      
+                        foreach ($departments as $department) {
+                            $dueDate = isset($department->firstLoanDueDate)
+                                ? $this->dateFormat->convertToDisplayDate('* M d G:i:s e Y', $department->firstLoanDueDate)
+                                : '';
+                            $departmentName = $department->department;
+                            $locationName = isset($department->location) ? $department->location : '';
+                            $nofAvailableForLoan = isset($department->nofAvailableForLoan) ? $department->nofAvailableForLoan : '';
+                            $nofTotal = isset($department->nofTotal) ? $department->nofTotal : '';
+                            $nofOrdered = isset($department->nofOrdered) ? $department->nofOrdered : '';
+                            
+                            //TODO: itemSummary pilkottava omiin kenttiin, jotka kootaan fiksusti templatessa
+                            $itemSummary = '';
+                            $location = '';
+                            if ($year || $edition) {
+                                $location =  $year . ', ' . $edition;
+                                $itemSummary = $organisationName . ', ';
+                            } else {
+                                $location = $organisationName;
+                            }
 
-                // TODO: mfhd_id
-                $vfHolding = array(
-                        'id'                => $id,
-                        'mfhd_id'           => $id,
-                        'item_id'           => $id,
-                        'number'            => '',
-                        'requests_placed'   => $noOfReservations,
-                        'barcode'           => $id,
-                        'availability'      => true,
-                        'status'      		=> '',
-                        'location'          => '',
-                        'reserve'           => $reservationStatus,
-                        'callnumber'        => '',
-                        'duedate'           => '',
-                        'returnDate'        => false,
-                        'is_holdable'       => true,
-                        'addLink'           => false,
-                        'summary'           => $edition
-                );
+                            $itemSummary .= $branchName . ', Osasto: ' . $departmentName;
+                            
+                            if ($locationName) {
+                                $itemSummary .= ', Sijainti: ' . $locationName;
+                            }
+                            if ($nofTotal) {
+                                $itemSummary .= ', Yhteensä: ' . $nofTotal;
+                            }
+                            if ($nofAvailableForLoan) {
+                                $itemSummary .= ', Lainattavissa: ' . $nofAvailableForLoan;
+                            }
+                            
+                            if ($nofOrdered) {
+                                $itemSummary .= ', Tilattu: ' . $nofOrdered;
+                            }
+                            
+                            $available = null;
+                            $status = $department->status;
+                            switch ($department->status) {
+                            case 'availableForLoan':
+                                $available = true;
+                                $status = 'Available';
+                                break;
+                            case 'onLoan':
+                                $available = false;
+                                $status = 'Charged';
+                                break;
+                            case 'nonAvailableForLoan':
+                                if ($department->nofReference == 0) {
+                                    $available = false;
+                                    $status = 'Not Available';
+                                } else {
+                                    $status = 'On Reference Desk';
+                                }
+                                break;
+                            case 'overdueLoan':
+                                $available = false;
+                                $status = 'overdueLoan';
+                                break;
+                            case 'ordered':
+                                $available = false;
+                                $status = 'Ordered';
+                                break;
+                            case 'returnedToday':
+                                $available = true;
+                                $status = 'returnedToday';
+                                break;
+                            default:
+                                $this->debugLog('Unhandled status ' + $department->status + " for $id");
+                            }
+                            
+                            // TODO: mfhd_id
+                            $vfHolding = array(
+                                'id'                => $id,
+                                'mfhd_id'           => $id,
+                                'item_id'           => count($vfHoldings) + 1,
+                                'itemSummary'       => $itemSummary,
+                                'requests_placed'   => $noOfReservations,
+                                'barcode'           => '',
+                                'availability'      => $available,
+                                'status'      		=> $status,
+                                'location'          => $location,
+                                'reserve'           => 'N',
+                                'callnumber'        => isset($department->shelfMark) ? $department->shelfMark : '',
+                                'duedate'           => $dueDate,
+                                'returnDate'        => false,
+                                'is_holdable'       => $reservationStatus,
+                                'addLink'           => false,
+                                'summary'           => $edition
+                            );
 
-                $vfHolding['id'] = $id;
-                $vfHolding['location'] = $organisationName;
-                $vfHolding['location'] .= ', '. $branch->value . ' ' . $branch->holdings->holding->department . ' ' . $edition;
-                $vfHolding['location'] .=  isset($branch->holdings->holding->location) ? ', ' . $branch->holdings->holding->location : '';
-                $vfHolding['number'] = isset($branch->holdings->holding->nofTotal) ? $branch->holdings->holding->nofTotal : '';
-                $vfHolding['callnumber'] = isset($branch->holdings->holding->shelfMark) ? $branch->holdings->holding->shelfMark : '';
-                $vfHolding['status'] = isset($branch->holdings->holding->status) ? $branch->holdings->holding->status : '';
-
-                $available = null;
-                $status = $branch->status;
-                switch ($branch->status) {
-                case 'availableForLoan':
-                    $available = true;
-                    $status = 'Available';
-                    break;
-                case 'onLoan':
-                    $available = false;
-                    $status = 'Charged';
-                    break;
-                case 'nonAvailableForLoan':
-                    if ($holding->nofReference == 0) {
-                        $available = false;
-                        $status = 'Not Available For Loan';
+                            $vfHoldings[] = $vfHolding;
+                        }
                     }
-                    break;
-                case 'overdueLoan':
-                    $available = false;
-                    break;
-                case 'ordered':
-                    $available = false;
-                    break;
-                case 'returnedToday':
-                    $available = true;
-                    break;
-                default:
-                    $this->debugLog('Unhandled status ' + $branch->status + " for $id");
                 }
-
-                $vfHolding['number'] = $copy++;
-                $vfHolding['status'] = $status;
-                $vfHolding['availability'] = $available;
-                $vfHolding['reserve'] = 'N';
-                $vfHolding['is_holdable'] = $reservationStatus;
-                $vfHoldings[] = $vfHolding;
             }
         }
     }
+    
 
     /**
      * Get Purchase History
@@ -426,7 +454,7 @@ class AxiellWebServices implements DriverInterface
                 $this->debugLog("Patron information request failed for '$username'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
                 $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('authentication_error_technical');;
+                return new PEAR_Error('authentication_error_technical');
             }
 
             $this->debugLog("Request: " . $client->__getLastRequest());
@@ -442,36 +470,57 @@ class AxiellWebServices implements DriverInterface
             $names = explode(' ', $info->patronName);
             $user['lastname'] = array_pop($names);
             $user['firstname'] = implode(' ', $names);
-            // TODO: find first active address
-            $user['email'] = isset($info->emailAddresses) && isset($info->emailAddresses->emailAddress) ? $info->emailAddresses->emailAddress->address : ' ';
-            if (isset($info->addresses) && isset($info->addresses->address)) {
-                $user['address1'] = isset($info->addresses->address->streetAddress) ? $info->addresses->address->streetAddress : '';
-                $user['zip'] = isset($info->addresses->address->zipCode) ? $info->addresses->address->zipCode : '';
-                if (isset($info->addresses->address->city)) {
-                    if ($user['zip']) {
-                        $user['zip'] .= ' ';
+            $user['email'] = '';
+            $user['address1'] = '';
+            $user['zip'] = '';
+            $user['phone'] = '';
+                        
+            if (isset($info->emailAddresses)) {
+                $emailAddresses = is_object($info->emailAddresses->emailAddress) ? array($info->emailAddresses->emailAddress) : $info->emailAddresses->emailAddress;
+                foreach ($emailAddresses as $emailAddress) {
+                    if ($emailAddress->isActive == 'yes') {
+                        $user['email'] = isset($emailAddress->address) ? $emailAddress->address : '';
                     }
-                    $user['zip'] .= $info->addresses->address->city;
-                }
-
-                if (isset($info->addresses->address->country)) {
-                    if ($user['zip']) {
-                        $user['zip'] .= ', ';
-                    }
-                    $user['zip'] = $info->addresses->address->country;
                 }
             }
-            if (isset($info->phoneNumbers) && isset($info->phoneNumbers->phoneNumber)) {
-                $user['phone'] = isset($info->phoneNumbers->phoneNumber->areaCode) ? $info->phoneNumbers->phoneNumber->areaCode : '';
-                if (isset($info->phoneNumbers->phoneNumber->localCode)) {
-                    $user['phone'] .= $info->phoneNumbers->phoneNumber->localCode;
+            
+            if (isset($info->addresses)) {
+                $addresses = is_object($info->addresses->address) ? array($info->addresses->address) : $info->addresses->address;
+                foreach ($addresses as $address) {
+                    if ($address->isActive == 'yes') {
+                        $user['address1'] = isset($address->streetAddress) ? $address->streetAddress : '';
+                        $user['zip'] = isset($address->zipCode) ? $address->zipCode : '';
+                        if (isset($address->city)) {
+                            if ($user['zip']) {
+                                $user['zip'] .= ', ';
+                            }
+                            $user['zip'] .= $address->city;
+                        }
+                        if (isset($address->country)) {
+                            if ($user['zip']) {
+                                $user['zip'] .= ', ';
+                            }
+                            $user['zip'] .= $address->country;
+                        }
+                    }
+                } 
+            }
+            
+            if (isset($info->phoneNumbers)) {
+                $phoneNumbers = is_object($info->phoneNumbers->phoneNumber) ? array($info->phoneNumbers->phoneNumber) : $info->phoneNumbers->phoneNumber;
+                foreach ($phoneNumbers as $phoneNumber) {
+                    if ($phoneNumber->sms->useForSms == 'yes') {
+                        $user['phone'] = isset($phoneNumber->areaCode) ? $phoneNumber->areaCode : '';
+                        if (isset($phoneNumber->localCode)) {
+                            $user['phone'] .= $phoneNumber->localCode;
+                        }
+                    }
                 }
             }
             return $user;
-
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
-            return new PEAR_Error('authentication_error_technical');;
+            return new PEAR_Error('authentication_error_technical');
         }
     }
 
@@ -521,14 +570,19 @@ class AxiellWebServices implements DriverInterface
             $loans = is_object($result->loansResponse->loans->loan) ? array($result->loansResponse->loans->loan) : $result->loansResponse->loans->loan;
 
             foreach ($loans as $loan) {
+                $status = $loan->loanStatus->status;
+                if ($status == 'maxNofRenewals') {
+                    $status = '';
+                }
                 $trans = array();
                 $trans['id'] = $loan->catalogueRecord->id;
                 $trans['title'] = $loan->catalogueRecord->title;
                 $trans['duedate'] = $loan->loanDueDate;
                 $trans['renewable'] = ($loan->loanStatus->isRenewable == 'yes') ? true : false;
-                $trans['message'] = $loan->loanStatus->status;
+                $trans['message'] = $status;
                 $trans['barcode'] = $loan->id;
-                $trans['renew'] = $loan->remainingRenewals;
+                $trans['renewalCount'] = max(array(0, $this->config['Loans']['renewalLimit'] - $loan->remainingRenewals));
+                $trans['renewalLimit'] = $this->config['Loans']['renewalLimit'];
                 $transList[] = $trans;
             }
 
@@ -646,13 +700,20 @@ class AxiellWebServices implements DriverInterface
         $client = new SoapClient($this->payments_wsdl, $this->soapOptions);
         try {
             $patronId = $this->getPatronId($user['cat_username'], $user['cat_password']);
+            
+            global $interface;
+            $language = $interface->getLanguage();
+            if (!in_array($language, array('en', 'sv', 'fi'))) {
+                $language = 'en';
+            }
+            
             if (!$patronId) {
                 return new PEAR_Error('authentication_error_technical');
             }
 
             $this->debugLog("Debts request for '{$renewDetails['patron']['cat_username']}':");
 
-            $result = $client->GetDebts(array('debtsRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'fromDate' => '1699-12-31', 'toDate' => time())));
+            $result = $client->GetDebts(array('debtsRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => $language, 'fromDate' => '1699-12-31', 'toDate' => time())));
             if ($result->debtsResponse->status->type != 'ok') {
                 $this->debugLog("Debts request failed for '" . $user['cat_username'] . "'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
@@ -669,6 +730,7 @@ class AxiellWebServices implements DriverInterface
 
             foreach ($debts as $debt) {
                 $fine = array();
+                $fine['debt_id'] = $debt->id;
                 $fine['amount'] = str_replace(',', '.', $debt->debtAmountFormatted) * 100;
                 $fine['checkout'] = '';
                 $fine['fine'] = $debt->debtType . ' - ' . $debt->debtNote;
@@ -676,12 +738,10 @@ class AxiellWebServices implements DriverInterface
                 // Convert Axiell format to display date format
                 $fine['createdate'] = $this->formatDate($debt->debtDate);
                 $fine['duedate'] = $this->formatDate($debt->debtDate);
-                $fine['id'] = '';
                 $finesList[] = $fine;
             }
             return $finesList;
-
-
+            
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
             $this->debugLog("Request: " . $client->__getLastRequest());
@@ -712,7 +772,7 @@ class AxiellWebServices implements DriverInterface
 
             $this->debugLog("Holds request for '{$user['cat_username']}':");
 
-            $result = $client->getReservations(array('getReservationsParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en')));
+            $result = $client->getReservations(array('getReservationsParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'fi')));
             if ($result->getReservationsResult->status->type != 'ok') {
                 $this->debugLog("Reservations request failed for '" . $user['cat_username'] . "'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
@@ -732,12 +792,7 @@ class AxiellWebServices implements DriverInterface
                 $hold = array();
                 $hold['type'] = $reservation->reservationStatus; // TODO
                 $hold['id'] = $reservation->catalogueRecord->id;
-                $hold['location'] = $reservation->organisation;
-                if ($reservation->pickUpBranch) {
-                    if ($reservation->organisation)
-                        $hold['location'] .= ', ';
-                    $hold['location'] .= $reservation->pickUpBranch;
-                }
+                $hold['location'] = $reservation->pickUpBranchId;
                 $hold['reqnum'] = $reservation->id;
                 $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
                 $hold['expire'] = $this->formatDate($expireDate);
@@ -765,7 +820,8 @@ class AxiellWebServices implements DriverInterface
      *
      * This is responsible for retrieving pickup locations.
      *
-     * @param array $user The patron array from patronLogin
+     * @param array $user        The patron array from patronLogin
+     * @param array $holdDetails Hold details
      *
      * @return mixed      Array of the patron's fines on success, PEAR_Error
      * otherwise.
@@ -794,7 +850,7 @@ class AxiellWebServices implements DriverInterface
 
             $this->debugLog("Request: " . $client->__getLastRequest());
             $this->debugLog("Response: " . $client->__getLastResponse());
-  
+            
             $locationsList = array();
             if (!isset($result->getReservationBranchesResult->organisations->organisation))
                 return $locationsList;
@@ -805,8 +861,8 @@ class AxiellWebServices implements DriverInterface
             foreach ($organisations as $organisation) {
 
                 if (!isset($organisation->branches->branch))
-                    continue;      
-            
+                    continue;
+
                 // TODO: Make it configurable whether organisation names should be included in the location name
                 $branches = is_object($organisation->branches->branch) ? 
                   array($organisation->branches->branch) : 
@@ -825,7 +881,6 @@ class AxiellWebServices implements DriverInterface
                     );
                 }
             }
-            
             return $locationsList;
 
         } catch (Exception $e) {
@@ -891,7 +946,7 @@ class AxiellWebServices implements DriverInterface
         return array(
             array(
                 'id' => $bibId,
-                'name' => 'Vaski' //TODO change to generic form
+                'name' => 'Vaski' //TODO: change to generic form
             ),                
         );
     }

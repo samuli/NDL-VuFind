@@ -3412,6 +3412,9 @@ ul.recordSet .addToFavLink a {
     padding:.5em .5em .5em 30px;
     margin-right:0;
 }
+.availabilityUnknown {
+    color: #00B270;
+}
 .available:before, .availableLoc:before {
     content: "";
     display: inline-block;

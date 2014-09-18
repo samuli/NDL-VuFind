@@ -203,7 +203,14 @@
             {counter assign=copyCount}
             {if $showCopyTitle}<td class="copyTitle">{translate text="Copies"}{assign var="showCopyTitle" value=0}</td>
             {else}<td></td>{/if}
-            <td class="copyNumber">{translate text="Copy"} {$row.number|escape}</td>
+            <td class="copyNumber">
+            {if $row.number}
+              {translate text="Copy"} {$row.number|escape}
+            {/if}
+            {if $row.itemSummary}
+              {$row.itemSummary}
+            {/if}
+            </td>
             <td colspan="3" class="copyInfo">
               {if $row.reserve == "Y"}
                 {translate text="On Reserve - Ask at Circulation Desk"}
@@ -224,7 +231,11 @@
 
                   {else}
                   {* Begin Unavailable Items (Recalls) *}
+                    {if is_null($row.availability)}
+                    <span class="availabilityUnknown">{translate text=$row.status prefix='status_'}</span>
+                    {else}
                     <span class="checkedout">{translate text=$row.status prefix='status_'}</span>
+                    {/if}
                     {if $row.returnDate} <span class="statusExtra"><span class="returnDate">{$row.returnDate|escape}</span></span>
                     {/if}
                     {if $row.duedate}
@@ -318,9 +329,17 @@ $(document).ready(function() {
           (firstDate.getMonth() + 1) + '.' +firstDate.getFullYear()).css(iBlock);
 
       } else { /* Without a date, only show the checkedout message */
-        var availText = $(this).find('.checkedout').text();
-        if (availText != '') {
-        $headingAvail.addClass('checkedout').text(availText).css(iBlock);
+        var uniqueStatuses = [];
+        var fullStatus = '';
+        $(this).find('.checkedout').each(function(index, elem) {
+            var status = $(elem).text();
+            if ((jQuery.inArray(status, uniqueStatuses)) == -1) {
+                uniqueStatuses.push(status);
+                fullStatus += status + ' ';
+            }
+        });        
+        if (fullStatus !== '') {
+          $headingAvail.addClass('checkedout').text(fullStatus).css(iBlock);
         } else { /* If no message found, print the default one */
           $headingAvail.addClass('available').text(msg).css(iBlock);
         }
