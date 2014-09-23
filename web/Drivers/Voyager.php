@@ -1085,6 +1085,18 @@ class Voyager implements DriverInterface
     }
 
     /**
+     * Sanitize patron PIN code (removes characters Voyager doesn't handle properly)
+     *
+     * @param string $pin PIN code to sanitize
+     *
+     * @return string Sanitized PIN code
+     */
+    protected function sanitizePIN($pin)
+    {
+        return preg_replace('/[^0-9a-zA-Z#&<>+^`~]+/', '', $pin);
+    }
+
+    /**
      * Patron Login
      *
      * This is responsible for authenticating a patron against the catalog.
@@ -1127,11 +1139,15 @@ class Voyager implements DriverInterface
             $sqlStmt->bindParam(
                 ':barcode', strtolower($barcode), PDO::PARAM_STR
             );
+            $loginLower = mb_strtolower($login, 'UTF-8');
             $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower($barcode)));
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
-                if ((!is_null($row['LOGIN']) && mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8') == mb_strtolower($login, 'UTF-8'))
-                    || ($fallback_login_field && is_null($row['LOGIN']) && mb_strtolower(utf8_encode($row['FALLBACK_LOGIN']), 'UTF-8') == mb_strtolower($login, 'UTF-8'))
+                $loginColumnLower = !is_null($row['LOGIN'])
+                    ? mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8')
+                    : '';
+                if ((!is_null($row['LOGIN']) && ($loginColumnLower == $loginLower || $loginColumnLower == $this->sanitizePIN($loginLower)))
+                    || ($fallback_login_field && is_null($row['LOGIN']) && mb_strtolower(utf8_encode($row['FALLBACK_LOGIN']), 'UTF-8') == $loginLower)
                 ) {
                     $results = array(
                         'id' => utf8_encode($row['PATRON_ID']),
