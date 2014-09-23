@@ -15,9 +15,9 @@
 
 <form method="post" name="addForm" action="{$url}/Cart/Home">
   <ul class="recordSet">
-  {if !$userAuthorized && $methodsAvailable}
+  {if $setNotification|@count}    
    <div class="loginNotification">
-   <p>{translate text="authorize_user_notification"}</p>
+   <p>{$setNotification}</p>
    </div>
   {/if}
   {foreach from=$recordSet item=record name="recordLoop"}

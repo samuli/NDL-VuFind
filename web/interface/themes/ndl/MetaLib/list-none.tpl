@@ -9,10 +9,9 @@
     {else}
       <div class="metalibError">
         <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
-      {if !$userAuthorized && $methodsAvailable}
+      {if $setNotification}        
         <div class="loginNotification">
-          <p>{if $showDisallowedNotification}{translate text="metalib_not_authorized_all"}</p>{/if}
-          <p>{translate text="authorize_user_notification"}</p>
+          <p>{$setNotification}</p>
         </div>
       {/if}
       <strong>{translate text='You can'}:</strong>

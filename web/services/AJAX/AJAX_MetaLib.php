@@ -113,16 +113,13 @@ class AJAX_MetaLib extends Action
             $interface->assign('failedDatabases', $result['failedDatabases']);
             $interface->assign('successDatabases', $result['successDatabases']);
             
-            // We want to guide the user to login for access to licensed material
-            $interface->assign('methodsAvailable', Login::getActiveAuthorizationMethods());
-            $interface->assign('userAuthorized', UserAccount::isAuthorized());
+            $methodsAvailable = Login::getActiveAuthorizationMethods();
+            $userAuthorized = UserAccount::isAuthorized();
 
-            // Show notification if all databases were disallowed.
-            if (count($result['successDatabases']) === 0 
-                && count($result['failedDatabases']) === 0 
-                && count($result['disallowedDatabases']) > 0
-            ) {
-                $interface->assign('showDisallowedNotification', true);
+            $setNotification = array();
+            // We want to guide the user to login for access to licensed material
+            if (!$userAuthorized && $methodsAvailable) {
+                $setNotification[] = '<p>' . translate('authorize_user_notification') . '</p>';
             }
 
             if ($result['recordCount'] > 0) {
@@ -176,8 +173,22 @@ class AJAX_MetaLib extends Action
                         );
                     }
                 }    
+
+                // Show notification if all databases were disallowed.
+                if (count($result['successDatabases']) === 0 
+                    && count($result['failedDatabases']) === 0 
+                    && count($result['disallowedDatabases']) > 0
+                ) {
+                    array_unshift(
+                        $setNotification, 
+                        '<p>' . translate('metalib_not_authorized_all') . '</p>'
+                    );
+                }
+
                 $template = 'list-none.tpl';
             }
+
+            $interface->assign('setNotification', implode('', $setNotification));
         } else {
             $result = false;
             $interface->assign('noQuery', true);
