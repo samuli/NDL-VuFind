@@ -166,15 +166,10 @@ class AxiellWebServices implements DriverInterface
         }
         $client = new SoapClient($this->catalogue_wsdl, $this->soapOptions);
         try {
-            global $interface;
-            $language = $interface->getLanguage();
-            if (!in_array($language, array('en', 'sv', 'fi'))) {
-                $language = 'en';
-            }
 
             $this->debugLog("Catalogue record detail request for '$id':");
 
-            $result = $client->GetHoldings(array('GetHoldingsRequest' => array('arenaMember' => $this->arenaMember, 'id' => $localId, 'language' => $language)));
+            $result = $client->GetHoldings(array('GetHoldingsRequest' => array('arenaMember' => $this->arenaMember, 'id' => $localId, 'language' => $this->getLanguage())));
 
             if ($result->GetHoldingResult->status->type != 'ok') {
                 $this->debugLog("GetHoldings request failed for '$id'");
@@ -570,16 +565,12 @@ class AxiellWebServices implements DriverInterface
             $loans = is_object($result->loansResponse->loans->loan) ? array($result->loansResponse->loans->loan) : $result->loansResponse->loans->loan;
 
             foreach ($loans as $loan) {
-                $status = $loan->loanStatus->status;
-                if ($status == 'maxNofRenewals') {
-                    $status = '';
-                }
                 $trans = array();
                 $trans['id'] = $loan->catalogueRecord->id;
                 $trans['title'] = $loan->catalogueRecord->title;
                 $trans['duedate'] = $loan->loanDueDate;
                 $trans['renewable'] = ($loan->loanStatus->isRenewable == 'yes') ? true : false;
-                $trans['message'] = $status;
+                $trans['message'] = $this->mapStatus($loan->loanStatus->status);
                 $trans['barcode'] = $loan->id;
                 $trans['renewalCount'] = max(array(0, $this->config['Loans']['renewalLimit'] - $loan->remainingRenewals));
                 $trans['renewalLimit'] = $this->config['Loans']['renewalLimit'];
@@ -701,19 +692,13 @@ class AxiellWebServices implements DriverInterface
         try {
             $patronId = $this->getPatronId($user['cat_username'], $user['cat_password']);
             
-            global $interface;
-            $language = $interface->getLanguage();
-            if (!in_array($language, array('en', 'sv', 'fi'))) {
-                $language = 'en';
-            }
-            
             if (!$patronId) {
                 return new PEAR_Error('authentication_error_technical');
             }
 
             $this->debugLog("Debts request for '{$renewDetails['patron']['cat_username']}':");
 
-            $result = $client->GetDebts(array('debtsRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => $language, 'fromDate' => '1699-12-31', 'toDate' => time())));
+            $result = $client->GetDebts(array('debtsRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => $this->getLanguage(), 'fromDate' => '1699-12-31', 'toDate' => time())));
             if ($result->debtsResponse->status->type != 'ok') {
                 $this->debugLog("Debts request failed for '" . $user['cat_username'] . "'");
                 $this->debugLog("Request: " . $client->__getLastRequest());
@@ -1161,12 +1146,57 @@ class AxiellWebServices implements DriverInterface
     protected function formatDate($dateString)
     {
         // remove timezone from Axiell obscure dateformat
-        $date =  substr($dateString, 0, strpos("$dateString*", "+"));
+        $date = substr($dateString, 0, strpos("$dateString*", "+"));
         if (PEAR::isError($date)) {
             return $dateString;
         }
         return $this->dateFormat->convertToDisplayDate("Y-m-d", $date);
     }
+    
+    /**
+     * Get the language to be used in the interface
+     * 
+     * @return string Language as string
+     */
+    protected function getLanguage()
+    {
+        global $interface;
+        $language = $interface->getLanguage();
+        if (!in_array($language, array('en', 'sv', 'fi'))) {
+            $language = 'en';
+        }
+        return $language;
+    }
+    
+    
+    /**
+     * Map statuses
+     * 
+     * @param string $status as a string
+     * 
+     * @return string Mapped status
+     */
+    protected function mapStatus($status)
+    {
+        $statuses = array (
+            'isLoanedToday'         => 'Borrowed today',
+            'isRenewedToday'        => 'Renewed today',
+            'isOverdue'             => 'renew_item_overdue',
+            'patronIsDeniedLoan'    => 'fine_limit_patron',
+            'patronHasDebt'         => 'renew_item_patron_has_debt',
+            'maxNofRenewals'        => 'renew_item_limit',
+            'patronIsInvoiced'      => 'renew_item_patron_is_invoiced',
+            'copyHasSpecialCircCat' => 'Copy has special circulation',
+            'copyIsReserved'        => 'renew_item_requested',
+            'renewalIsDenied'       => 'renew_denied'
+        );
+        
+        if (isset($statuses[$status])) {
+            return $statuses[$status];
+        } 
+        return $status;
+    }
+    
 
     /**
      * Write to debug log, if defined
