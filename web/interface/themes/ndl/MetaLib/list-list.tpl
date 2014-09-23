@@ -15,7 +15,7 @@
 
 <form method="post" name="addForm" action="{$url}/Cart/Home">
   <ul class="recordSet">
-  {if $setNotification|@count}    
+  {if !empty($setNotification)}    
    <div class="loginNotification">
    <p>{$setNotification}</p>
    </div>

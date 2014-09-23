@@ -9,7 +9,7 @@
     {else}
       <div class="metalibError">
         <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
-      {if $setNotification}        
+      {if !empty($setNotification)}        
         <div class="loginNotification">
           <p>{$setNotification}</p>
         </div>
