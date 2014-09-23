@@ -4,6 +4,11 @@ $(document).ready(function() {
     });
 });
 
+function showMetaLibLink(obj) {
+    obj.show();    
+    obj.css('visibility', 'visible');    
+}
+
 function checkMetaLibLinks(obj) {
     var id = obj.attr('id').substr('record'.length);
     if (id.substr(0, 8) != 'metalib_') {
@@ -31,16 +36,25 @@ function checkMetaLibLinks(obj) {
                 var safeId = jqEscape(result.id);
                 
                 if (result.status == 'allowed') {
-                    obj.find('#metalib_link_' + safeId).show();
-
-                } else if (result.status == 'nonsearchable') {
-                    obj.find('#metalib_link_ns_' + safeId).show();
-                } else {
-                    obj.find('#metalib_link_na_' + safeId).show();
+                    showMetaLibLink(obj.find('#metalib_link_' + safeId));
                     
                     if (action == 'Browse') {
-                        var icon = obj.find('.metalibSearchDisallow');
-                        icon.css('visibility', 'visible');
+                        obj.find('.metalibLinkContainer .metalib_link_ok').show();
+                    }
+                } else if (result.status == 'nonsearchable') {
+                    showMetaLibLink(obj.find('#metalib_link_ns_' + safeId));
+
+                    if (action == 'Browse') {
+                        obj.find('.metalibLinkContainer').hide();
+                    }
+                } else {
+                    showMetaLibLink(obj.find('#metalib_link_' + safeId));
+                    showMetaLibLink(obj.find('#metalib_link_na_' + safeId));
+                    
+                    if (action == 'Browse') {
+                        showMetaLibLink(obj.find('.metalibSearchDisallow'));
+                        obj.find('.metalibLinkContainer .metalib_link_ok').show();
+                        obj.find('.metalibLinkContainer .metalib_link_na').show();
                     }
                 }
             });

@@ -11,6 +11,7 @@
         <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
       {if !$userAuthorized && $methodsAvailable}
         <div class="loginNotification">
+          <p>{if $showDisallowedNotification}{translate text="metalib_not_authorized_all"}</p>{/if}
           <p>{translate text="authorize_user_notification"}</p>
         </div>
       {/if}

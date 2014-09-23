@@ -2504,7 +2504,7 @@ clear:both;
 }
 
 /*** Login Notification for PCI and MetaLib ***/
-.loginNotification p {
+.loginNotification {
     background: #edf3f6;
     padding: 10px 15px;
     margin-bottom: 20px; 
@@ -2832,12 +2832,22 @@ ul.recordSet .resolver {
 #metaLibBrowse .metalib_link ul li {
     display: inline-block;
 }
+
+
 #metaLibBrowse .metalib_link span {
     background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
     width: 20px;
     height: 25px;
     display: block;
 }
+#metaLibBrowse .metalibLinkContainer .metalib_link span {
+    display: none;
+}
+
+#metaLibBrowse .iconsRight .metalib_link span {
+    visibility: hidden;
+}
+
 #metaLibBrowse li.result .metalib_link.iconsLeft span {
     width: 33px;
 }

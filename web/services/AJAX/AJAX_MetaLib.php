@@ -117,6 +117,13 @@ class AJAX_MetaLib extends Action
             $interface->assign('methodsAvailable', Login::getActiveAuthorizationMethods());
             $interface->assign('userAuthorized', UserAccount::isAuthorized());
 
+            // Show notification if all databases were disallowed.
+            if (count($result['successDatabases']) === 0 
+                && count($result['failedDatabases']) === 0 
+                && count($result['disallowedDatabases']) > 0
+            ) {
+                $interface->assign('showDisallowedNotification', true);
+            }
 
             if ($result['recordCount'] > 0) {
                 $summary = $searchObject->getResultSummary();
