@@ -551,6 +551,10 @@ span.dynatree-expander:hover {
 .backToMetaLib .button, .backToMetaLib .button span {
     background-image: url(../images/icons16-24px-02_white.png);
 }
+.module-MetaLib #browseLink a {
+	background-image: url(../images/icons16-24px-01_turquoise.png);
+	background-position: 0px -225px;	
+}
 .resultLinks .button, .backToMetaLib .button {
     background-position: 8px -2414px;
 }
