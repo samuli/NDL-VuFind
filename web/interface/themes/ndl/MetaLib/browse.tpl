@@ -5,16 +5,6 @@
 
 <div id="metaLibBrowse">
   <div class="resultHeader">
-   {if $backToMetaLib}
-    <div class="resultTerms">
-      <div class="content">
-        <div class="backToMetaLib">
-          <a href="{$backToMetaLib|escape}"><div class="button buttonFinna icon"><span class="icon">&laquo;</span></div>{$backToMetaLibLabel}</a>
-        </div>
-      </div>
-    </div>
-    {/if}
-
     <div class="resultViewOptions">
       <div class="content">
         <div class="resultNumbers">
@@ -41,8 +31,12 @@
           {/foreach}
         </ul>      
       </div>
-
       <div id="sidebarFacets" class="{if $sidebarOnLeft}pull-10 sidebarOnLeft{else}last{/if} grid_6">
+      {if $backToMetaLib}
+        <div class="backToMetaLib">
+          <a href="{$backToMetaLib|escape}"><div class="button buttonFinna icon"><span class="icon">&laquo;</span></div>{$backToMetaLibLabel}</a>
+        </div>
+    {/if}
         {* Recommendations *}
         {if $sideRecommendations}
         {foreach from=$sideRecommendations item="recommendations"}

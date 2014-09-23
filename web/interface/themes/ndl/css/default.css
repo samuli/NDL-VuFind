@@ -1217,7 +1217,7 @@ div.metalibLoading.show {
     -khtml-opacity: 1;
     opacity: 1;
     background: #fff;
-	height:100px;
+	min-height:125px;
 
 }
 .metalibLoading img {
@@ -2827,7 +2827,11 @@ ul.recordSet .resolver {
 }
 #metaLibBrowse li.result .iconsRight {
     float: right;
-    width: 40px;
+}
+#metaLibBrowse li.result .metalib_link.iconsRight li a span{
+    float: right;
+	width:30px;
+	margin-left:0px;   
 }
 #metaLibBrowse .metalib_link ul li {
     display: inline-block;
@@ -2906,6 +2910,12 @@ ul.recordSet .resolver {
 #metaLibBrowse li.result .moreinfo .metalibSearchDisallow {
     font-weight: bold;
     padding-left: 24px;
+}
+#metaLibBrowse li.result .moreinfo span.metalib_database_interface,
+#metaLibBrowse li.result .moreinfo span.metalib_database_guide  {
+	font-weight: bold;
+    padding-left: 28px;
+	line-height:1.9em;
 }
 #metaLibBrowse li.result .moreinfo .metalibSearchDisallow {
     display: inline-block;
@@ -3905,12 +3915,15 @@ h3.metalibSearchSets {
     margin: 0 0 13px 13px;
 }
 
-#sidebarFacets #recentMetalibDatabases #browseLink {
+.module-MetaLib #browseLink {
     font-weight: bold;
+	font-size:1.1em;
     margin-top: 13px;
     margin-left: 13px;
 }
-
+.module-MetaLib #browseLink a {
+	padding-left:25px;
+}
 .module-MetaLib .main-home h3.metalibSearchSets {
     margin-top: 15px;
 }
@@ -4606,6 +4619,10 @@ div.resultLinks a {
 }
 .module-Collection #collectionHeader a.fullRecordLink {
     padding-left: .6em;
+}
+.backToMetaLib {
+	margin-bottom:20px;
+	font-weight:bold;
 }
 .backToMetaLib .button {
     padding: 8px 12px 8px 15px;

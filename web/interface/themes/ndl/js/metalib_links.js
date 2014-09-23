@@ -45,7 +45,7 @@ function checkMetaLibLinks(obj) {
                     showMetaLibLink(obj.find('#metalib_link_ns_' + safeId));
 
                     if (action == 'Browse') {
-                        obj.find('.metalibLinkContainer').hide();
+                        obj.find('.metalibLinkContainer').css('display','none');
                     }
                 } else {
                     showMetaLibLink(obj.find('#metalib_link_' + safeId));

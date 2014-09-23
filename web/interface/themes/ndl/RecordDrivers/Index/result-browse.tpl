@@ -33,7 +33,7 @@
   </div>
 
   <div class="grid_4">
-    <div class="metalib_link iconsLeft">
+    <div class="metalib_link {if $metalibEnabled}iconsLeft{else}iconsRight{/if}">
       <ul>
       {foreach from=$summURLs key=recordurl item=urldesc}
       {if $recordurl != $urldesc}
@@ -99,11 +99,23 @@
     </div>
 
     <div class="clear"></div>
-
+    <div class="grid_16 interfaceLinkContainer">
+      <div>
+      	<div class="metalib_link">
+          {foreach from=$summURLs key=recordurl item=urldesc}
+          {if $recordurl != $urldesc}
+              <a href="{$recordurl|proxify|escape}" class="fulltext metalib_icon" target="_blank" title="{$urldesc|translate_prefix:'link_'|escape}">
+                <span class="metalib_{$urldesc|lower|replace:' ':'_'}">{$urldesc|translate_prefix:'link_'|escape}</span>          
+              </a>
+          {/if}
+          {/foreach}
+      	</div>
+      </div>
+    </div>
     {if $metalibEnabled}
     <div class="grid_16 metalibLinkContainer">
       <div>
-        <div>            
+        <div class="metalibsearch">         
           <span class="metalib_link">
             <a alt="{translate text='Search in this database'}" href="{$metalibSearch}set=_ird%3A{$summId|regex_replace:'/^.*?\./':''|escape}">
               <span class="metalibSearch metalib_link_ok">{translate text='metalib_browse_search'}</span>
