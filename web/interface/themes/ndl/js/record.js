@@ -269,13 +269,36 @@ function setUpUBRequestForm(recordId) {
             url: url,
             success: function(response) {
                 if (response.status == 'OK') {
-                    $.each(response.data.locations, function() {
-                        var option = $("<option></option>").attr("value", this.id).text(this.name);
-                        if (this.isDefault) {
-                            option.attr("selected", "selected");
-                        }
-                        $("#pickupLocation").append(option);
-                    });
+                    var locations = response.data.locations;
+
+                    if (locations.length == 1) {             
+                        // One pickup location allowed.
+                        // Replace location menu with hidden field & display text.
+                        var select = $("#pickupLocation");
+                        select.remove();
+                        
+                        var loc = locations[0];
+                        var label = $("#pickupLocationLabel");
+
+                        var hidden = $("<input>")
+                            .attr("id", "pickupLocation")
+                            .attr("value", loc.id)
+                            .attr("type", "hidden")
+                            .attr("name", "gatheredDetails[pickupLocation]")
+                        ;
+
+                        hidden.insertAfter(label);
+                        $("p.locationName").remove();
+                        $("<p class='locationName'>").text(loc.name).insertAfter(label);
+                    } else {
+                        $.each(response.data.locations, function() {
+                            var option = $("<option></option>").attr("value", this.id).text(this.name);
+                            if (this.isDefault) {
+                                option.attr("selected", "selected");
+                            }
+                            $("#pickupLocation").append(option);
+                        });
+                    }
                 }
                 $("#pickupLocationLabel").removeClass("ajax_ub_request_loading");
             },

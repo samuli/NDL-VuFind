@@ -2610,6 +2610,9 @@ EOT;
                 break;
             }
         }
+
+        $libraries = $this->filterAllowedUBPickupLibraries($libraries);
+
         return array(
             'items' => $items,
             'libraries' => $libraries,
@@ -2680,7 +2683,132 @@ EOT;
                 'isDefault' => $location->attributes()->isDefault == 'Y'
             );
         }
+
+        $locations = $this->filterAllowedUBPickupLocations($locations);
+
         return $locations;
+    }
+
+    /**
+     * Utility function for filtering the given UB pickup libraries 
+     * based on allowed pickup locations within the users local library.
+     * If allowed pickup locations are configured, only users local library 
+     * is returned. If not, no filtering is done.
+     *
+     * @param array $libraries array of libraries
+     *
+     * @return boo|array False if request not allowed, or an array of  
+     * allowed pickup libraries.
+     * @access protected
+     */
+    protected function filterAllowedUBPickupLibraries($libraries)
+    {
+        if (!$allowedIDs = $this->getAllowedUBPickupLocationIDs()) {
+            return $libraries;
+        }
+
+        if (!$patronHomeUBID = $this->getUserHomeUBID()) {
+            return false;
+        }
+
+        $allowedLibraries = array();
+        foreach ($libraries as $library) {
+            if ($patronHomeUBID === $library['id']) {
+                $allowedLibraries[] = $library;
+            } 
+        }
+
+        return $allowedLibraries;
+    }
+
+    /**
+     * Utility function for filtering the given UB locations
+     * based on allowed pickup locations within the users local library.
+     * If allowed pickup locations are not configured, no filtering is done.
+     *
+     * @param array $locations array of locations
+     *
+     * @return array array of allowed pickup locations.
+     * @access protected
+     */
+    protected function filterAllowedUBPickupLocations($locations)
+    {
+        if (!$allowedIDs = $this->getAllowedUBPickupLocationIDs()) {
+            return $locations;
+        }
+
+        $allowedLocations = array();
+        foreach ($locations as $location) {
+            if (in_array($location['id'], $allowedIDs)) {
+                $allowedLocations[] = $location;
+            }
+        }
+        
+        return $allowedLocations;
+    }
+
+    /**
+     * Return users local library UB id.
+     *
+     * @return boo|string False if request not allowed, or UB id
+     * @access protected
+     */
+    protected function getUserHomeUBID()
+    {
+        if (!$config = $this->getUserDriverConfig()) {
+            return false;
+        }
+
+        if (!isset($config['WebServices']['patronHomeUbId'])) {
+            return false;
+        }
+
+        return $config['WebServices']['patronHomeUbId'];
+    }
+
+    /**
+     * Return list of allowed UB pickup locations 
+     * within the users home local library.
+     *
+     * @return boo|array False if allowed pickup locations are 
+     * not configured, or array of location codes
+     * @access protected
+     */
+    protected function getAllowedUBPickupLocationIDs()
+    {
+        if (!$config = $this->getUserDriverConfig()) {
+            return false;
+        }
+        
+        if (!isset($config['UBRequests']['pickUpLocations'])) {
+            return false;
+        }
+
+        return explode(':', $config['UBRequests']['pickUpLocations']);
+    }
+
+    /**
+     * Return configuration for the users active library card driver.
+     *
+     * @return boo|array False if no driver configuration was found, 
+     * or configuration.
+     * @access protected
+     */
+    protected function getUserDriverConfig()
+    {
+        global $user;
+
+        $tmp = (array)$user;
+        if (($pos = strpos($tmp['cat_username'], '.')) > 0) {
+            $source = substr($tmp['cat_username'], 0, $pos);
+
+            $configFile = "conf/VoyagerRestful_$source.ini";
+            if (is_file($configFile)) {
+                return parse_ini_file($configFile, true);
+            }
+        }
+        
+        return false;
     }
     
     /**

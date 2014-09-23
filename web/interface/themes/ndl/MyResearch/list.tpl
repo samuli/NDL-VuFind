@@ -1,5 +1,9 @@
 <!-- START of: MyResearch/list.tpl -->
-
+<script type="text/javascript">
+vufindString.error = "{translate text="An error has occurred"}";
+vufindString.authError = "{translate text="You must be logged in first"}";
+</script>
+ 
 {js filename="bulk_actions.js"}
 {js filename="init_fancybox.js"}
 {if $bookBag}
@@ -23,16 +27,24 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   <div class="content">
     <div class="grid_24">
       <div class="resultHead">
-        {if $errorMsg || $infoMsg}
-          <div class="messages">
-            {if $errorMsg}<p class="error">{$errorMsg|translate}</p>{/if}
+          <div class="messages {if !$errorMsg && !$infoMsg}hiddenElement{/if}">
+              <p class="error {if !$errorMsg}hiddenElement{/if}">{if $errorMsg}{$errorMsg|translate}{/if}</p>
             {if $infoMsg}<p class="info">{$infoMsg|translate}{if $showExport} <a class="save" target="_new" href="{$showExport|escape}">{translate text="export_save"}</a>{/if}</p>{/if}
           </div>
-        {/if}
       </div>
-      <div class="favoritesList last">
+      <div class="favoritesList last" {if $list && $list->id}data-listid="{$list->id|escape:"url"}"{/if}>
         {if $list && $list->id}
-          <h2 class="myResearchTitle">{if $list->title == 'My Favorites'}{translate text=$list->title}{else}{$list->title|escape:"html"}{/if}</h2>
+          <div class="dynamicInput myResearchTitle clearfix autoSubmit notEmpty">
+            <h2 class="transform">{if $list->title == 'My Favorites'}{translate text=$list->title}{else}{$list->title|escape:"html"}{/if}</h2>
+            {if $listEditAllowed}<a class="icon edit" title="{translate text="edit_list"}" href="#"></a>
+            <input class="hiddenElement" type="text" name="title_change" value="" />{/if}
+          </div>
+          <br>
+          <div class="dynamicInput listDescription clearfix autoSubmit">
+            <div data-placeholder="{translate text="Add list description"}" class="transform{if !$list->description} placeholder">{translate text="Add list description"}{else}">{$list->description|escape:"html"}{/if}</div>
+            {if $listEditAllowed}<a class="icon {if !$list->description}add{else}edit{/if}" title="{if !$list->description}{translate text="Edit list description"}{else}{translate text="Add list description"}{/if}" href="#"></a>
+              <input class="hiddenElement" type="text" name="description_change" value="" />{/if}
+          </div>
         {else}
           <h2>{translate text='Your Favorites'}</h2>  
         {/if}
@@ -152,28 +164,45 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {if $listList}
           <span class="hefty">{translate text='Your Lists'}</span>
           <ul>
+              <li class="hiddenElement sidebarListTemplate">
+                  <div class="listItem"><div><a href="{$url}/MyResearch/MyList/"><span class="favoritesCount">(0)</span></a></div></div>
+              </li>
             {foreach from=$listList item=listItem}
               <li>
                 {if $list && $listItem->id == $list->id}
-                  <div class="selected">{if $listItem->title == 'My Favorites'}{translate text=$listItem->title}{else}{$listItem->title|escape:"html"}{/if}&nbsp;<span class="favoritesCount">({$listItem->cnt})</span>
-                    {if $listEditAllowed}
-                      <div class="editList">
-                        <a class="icon edit" title="{translate text="edit_list"}" href="{$url}/MyResearch/EditList/{$list->id|escape:"url"}"></a>
-                        <a class="icon delete" title="{translate text="delete_list"}" href="{$url}/Cart/Home?listID={$list->id|escape}&amp;listName={$list->title|escape}&amp;origin=Favorites&amp;listFunc=editList&amp;deleteList=true"></a>
+                  <div class="selected" data-list-id="{$list->id}">
+                    <div>
+                      <span class="publicStatus {if !$list->public == 1}hiddenElement{/if}"></span>
+                      <span class="sidebarListTitle">{if $listItem->title == 'My Favorites'}{translate text=$listItem->title}{else}{$listItem->title|escape:"html"}{/if}</span>&nbsp;<span class="favoritesCount">({$listItem->cnt})</span>
+                      {if $listEditAllowed}
+                        <div class="editList">
+                          <a class="icon delete" title="{translate text="delete_list"}" href="{$url}/Cart/Home?listID={$list->id|escape}&amp;listName={$list->title|escape}&amp;origin=Favorites&amp;listFunc=editList&amp;deleteList=true"></a>
+                        </div>
+                      {/if}
+                    </div>
+                    <div class="listVisibility">
+                      {translate text="Visibility"}
+                      <div class="dynamicInput dynamicRadioButton isListPublic">
+                        <input id="list_public_1" type="radio" name="publicity_change" value="1" {if $list->public == 1}checked="checked"{/if}/> <label for="list_public_1">{translate text="Public"}</label>
+                        <input id="list_public_0" type="radio" name="publicity_change" value="0" {if $list->public == 0}checked="checked"{/if}/> <label for="list_public_0">{translate text="Private"}</label> 
                       </div>
-                    {/if}
+                      <div class="publicListURL {if $list->public == 0}hiddenElement{/if}">
+                        {translate text="Public list URL"}
+                        <div><a href="{$url}/List/{$list->id|escape:"url"}">{$url}/List/{$list->id|escape:"url"}</a></div>
+                      </div>
+                    </div>
                   </div>
                 {else}
-                  <div class="listItem"><a href="{$url}/MyResearch/MyList/{$listItem->id|escape:"url"}">{if $listItem->title == 'My Favorites'}{translate text=$listItem->title}{else}{$listItem->title|escape:"html"}{/if}</a>&nbsp;<span class="favoritesCount">({$listItem->cnt})</span></div>
+                  <div class="listItem"><div><a href="{$url}/MyResearch/MyList/{$listItem->id|escape:"url"}"><span class="publicStatus {if !$listItem->public == 1}hiddenElement{/if}"></span>{if $listItem->title == 'My Favorites'}{translate text=$listItem->title}{else}{$listItem->title|escape:"html"}{/if}&nbsp;<span class="favoritesCount">({$listItem->cnt})</span></a></div></div>
                 {/if}
               </li>
             {/foreach}
           </ul>
-          <a href="#" class="listAdd add" id="listAdd" title="{translate text='Create a List'}">{translate text='Create a List'}</a>
-          <form id="listAddForm" method="post" action="{$url}/MyResearch/ListEdit" name="listEdit" class="hidden">
-            <input id="list_title" type="text" name="title" value="" size="30" class="{jquery_validation required='This field is required'}"/>
-            <input class="listAdd" type="submit" name="submit" value="{translate text="Save"}"/>
-          </form>
+          <div class="dynamicInput addNewList notEmpty">
+            <div id="listAdd" data-placeholder="{translate text='Create a List'}"class="transform placeholder">{translate text='Create a List'}</div>
+            <a class="listAdd add" title="{translate text="add_list"}" href="#"></a>
+            <input class="hiddenElement" type="text" name="list_add" value="" />
+          </div>
         {/if}
       </div>
     </div>

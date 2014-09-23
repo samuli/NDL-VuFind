@@ -40,15 +40,20 @@
 
       <div>
         <strong>{translate text="ub_request_pickup_library"}:</strong><br/>
+        {if $libraries|@count gt 1}
         <select id="pickupLibrary" name="gatheredDetails[pickupLibrary]">
           {foreach from=$libraries item=library}
           <option value="{$library.id|escape}"{if ($gatheredDetails.pickupLibrary && $gatheredDetails.pickupLibrary == $library.id) || (!$gatheredDetails.pickupLibrary && $library.isDefault)} selected="selected"{/if}>{$library.name|translate_prefix:'library_'|escape}</option>
           {/foreach}
         </select>
+        {else}
+        <input type="hidden" id="pickupLibrary" name="gatheredDetails[pickupLibrary]" value="{$libraries[0].id|escape}" />
+        <p>{$libraries[0].name|translate_prefix:'library_'|escape}</p>
+        {/if}
       </div>
 
       <div>
-        <span id="pickupLocationLabel"><strong>{translate text="ub_request_pickup_location"}:</strong></span><br/>
+        <p id="pickupLocationLabel"><strong>{translate text="ub_request_pickup_location"}:</strong></p>
         <select id="pickupLocation" name="gatheredDetails[pickupLocation]">
         </select>
       </div>

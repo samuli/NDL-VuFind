@@ -120,6 +120,12 @@ class Profile extends MyResearch
             Login::setupLoginFormVars();
         }
 
+        $interface->assign(
+            'hideDueDateReminder', 
+            isset($configArray['Site']['hideDueDateReminder']) 
+            && (boolean)$configArray['Site']['hideDueDateReminder']
+        );
+
         $interface->setTemplate('profile.tpl');
         $interface->setPageTitle('My Profile');
         $interface->display('layout.tpl');
