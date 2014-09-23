@@ -95,13 +95,14 @@
     <!--//--><![CDATA[//><!--
       var path = '{$url}';
       var userLang = '{$userLang}';
-      var fullPath = '{$fullPath}';
+      var fullPath = '{$fullPath|escape:'javascript'}';
       var action = '{$action}';
       
       // String translations
       var trNext = "{translate text="Next"}";
       var trPrev = "{translate text="Prev"}";
       var trClose = "{translate text="Close"}";
+      var trListNotes = "{translate text="Description"}";
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}
@@ -238,6 +239,11 @@
     <!--[if lt IE 9]>
       {js filename="html5.js"}
     <![endif]-->
+
+    {* NDLBlankInclude *}
+    {include file='Additions/general-post-head.tpl'}
+    {* /NDLBlankInclude *}
+
   </head>
   <body class="{foreach from=","|explode:$site.theme item=theme}theme-{$theme} {/foreach} {if $user}logged-in{/if}">
     {if !$showTopSearchBox}
@@ -288,7 +294,7 @@
             <ul role="list">
               {foreach from=$allLangs key=langCode item=langName}
                 {if $userLang != $langCode}
-                  <li role="option"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|encodeAmpersands}">
+                  <li role="option"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|escape:'html'}">
                     {translate text=$langName}</a>
                   </li>
                 {/if}
@@ -325,6 +331,11 @@
        {include file="piwik.tpl"}
     {/if}    
     {include file="AJAX/keepAlive.tpl"}
+
+    {* NDLBlankInclude *}
+    {include file='Additions/general-post-body.tpl'}
+    {* /NDLBlankInclude *}
+
   </body>
   {if !$showTopSearchBox}
     {literal}

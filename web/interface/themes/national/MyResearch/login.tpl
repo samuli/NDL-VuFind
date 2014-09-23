@@ -122,7 +122,12 @@
      {if $followupModule == 'PCI' || $followupModule == 'MetaLib'}
          <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$followupAction|escape:"url"}?id={$recordId|escape:"url"}&submit"><span>{translate text="Mozilla Persona"}</span></a>
      {else}
-    	 <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$recordId|escape:"url"}/{$followupParams.0|escape:"url"}?submit#{$followupParams.1|escape:"url"}"><span>{translate text="Mozilla Persona"}</span></a>
+       {if $followup === 'SaveSearch'}
+         {* SaveSearch special case. Note that $recordId is already urlencoded, so just escape html *}
+         <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$followupAction|escape:"url"}?{$recordId|escape:"html"}"><span>{translate text="Mozilla Persona"}</span></a>
+       {else}
+    	   <a id="personaLogin" class="persona-login" href="" data-followup="{$followup|escape:"html"}" data-followupurl="{$url}/{$followupModule|escape:"url"}/{$recordId|escape:"url"}/{$followupParams.0|escape:"url"}?submit#{$followupParams.1|escape:"url"}"><span>{translate text="Mozilla Persona"}</span></a>
+       {/if}
      {/if}
 
 <script type="text/javascript">

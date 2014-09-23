@@ -109,7 +109,7 @@
         <script type="text/javascript">
             //<![CDATA[
             $(document).ready(function() { 
-                enableDynatree($('#facet_{/literal}{$title}'), '{$title}', '{$fullPath}', '{$action}', '{$dynatreeSearchObject}');
+                enableDynatree($('#facet_{/literal}{$title}'), '{$title|escape:'javascript'}', '{$fullPath|escape:'javascript'}', '{$action|escape:'javascript'}', '{$dynatreeSearchObject|escape:'javascript'}');
             {literal}});
             //]]>
         </script>
@@ -136,7 +136,7 @@
           {if $cluster.label == 'Main Year' || $cluster.label == 'facet_pci_creationdate' || $cluster.label == 'Published'}
               <dd class="mainYearFormContainer1">
                 {* remove 'search_sdaterange_mvtype' from form action since it gets added in form submit handler (ndl.js) *}
-                <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl|regex_replace:"/search_sdaterange_mvtype=(within|overlap)/":""}{else}{$fullPath}{/if}" class="mainYearForm{if $module == "PCI"}PCI{/if}">
+                <form action="{if $filterList.$dateRange.0}{$filterList.$dateRange.0.removalUrl|regex_replace:"/search_sdaterange_mvtype=(within|overlap)/":""|escape:'html'}{else}{$fullPath|escape:'html'}{/if}" class="mainYearForm{if $module == "PCI"}PCI{/if}">
                   <div id="mainYearFields">
                     <input id="mainYearFrom" type="text" value="{if $visFacets.search_sdaterange_mv.0 != "-9999"}{$visFacets.search_sdaterange_mv.0}{/if}">
                     <span id="mainYearSeparator">&ndash;</span>

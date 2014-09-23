@@ -51,7 +51,7 @@
     </div>
     {else if !empty($coreURLs)}
       {foreach from=$coreURLs item=desc key=currentUrl name=loop}
-        <p><a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a>
+        <p><a href="{$currentUrl|proxify|escape}" target="_blank" class="fulltext available">{$desc|translate_prefix:'link_'|escape}</a>
         </p>
       {/foreach}
     {/if}

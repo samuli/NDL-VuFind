@@ -674,6 +674,11 @@
 		margin: 5px 0px;
 		max-width: 160px;
 	}
+  
+  #sidebarFavoritesLists input[type="text"] {
+    max-width: 419px;
+    width: 419px;
+  }
     
     /* Login form */
     .loginForm .separator, .loginForm .separatorSmall {

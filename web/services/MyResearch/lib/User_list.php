@@ -47,6 +47,7 @@ class User_list extends DB_DataObject
     public $title;                           // string(200)  not_null
     public $description;                     // string(500)
     public $created;                         // datetime(19)  not_null binary
+    public $modified;                        // datetime(19)  not_null binary
     public $public;                          // int(11)  not_null
 
     /* Static get */
@@ -79,7 +80,7 @@ class User_list extends DB_DataObject
     {
         $resourceList = array();
 
-        $sql = 'SELECT DISTINCT "resource".*, "user_resource"."saved" FROM "resource", "user_resource" ' .
+        $sql = 'SELECT DISTINCT "resource".*, "user_resource"."saved", "user_resource"."notes" FROM "resource", "user_resource" ' .
             'WHERE "resource"."id" = "user_resource"."resource_id" ' .
             'AND "user_resource"."user_id" = ' .
             "'" . $this->escape($this->user_id) . "' " .
@@ -147,7 +148,7 @@ class User_list extends DB_DataObject
      *
      * @return void
      * @access public
-     * @todo: delete any unused tags
+     * @todo   delete any unused tags
      */
     public function removeResource($resource)
     {
@@ -164,6 +165,9 @@ class User_list extends DB_DataObject
         $join->resource_id = $resource->id;
         $join->list_id = $this->id;
         $join->delete();
+        
+        // Update list modification date
+        $this->updateModifiedDate();
     }
 
     /**
@@ -199,7 +203,7 @@ class User_list extends DB_DataObject
      * @access public
      */
     public function removeResourcesById($ids, $source = 'VuFind')
-    {
+    { 
         $sqlIDS = array();
         foreach ($ids as $id) {
             if (!empty($id)) {
@@ -246,7 +250,10 @@ class User_list extends DB_DataObject
 
         $removeTags = new Resource_tags();
         $removeTags->query($sql);
-
+        
+        // Update list modification date
+        $this->updateModifiedDate();
+        
         // If we got this far, there were no fatal DB errors so report success
         return true;
     }
@@ -283,7 +290,7 @@ class User_list extends DB_DataObject
     }
 
     /**
-     * Updates a list
+     * Updates all properties of a list at once
      *
      * @param string $title  New title for list
      * @param string $desc   New description for list
@@ -297,8 +304,82 @@ class User_list extends DB_DataObject
         $this->title = $title;
         $this->description = $desc;
         $this->public = $public;
+        $this->updateModifiedDate(false);
         $this->update();
 
+        // If we got this far, there were no fatal DB errors so report success
+        return true;
+    }
+    
+    /**
+     * Updates list title
+     *
+     * @param string $title New title for list
+     *
+     * @return bool          True on success, false on error
+     * @access public
+     */
+    public function updateListTitle($title)
+    {
+        $this->title = $title;
+        $this->updateModifiedDate(false);
+        $this->update();
+
+        // If we got this far, there were no fatal DB errors so report success
+        return true;
+    }
+    
+    /**
+     * Updates list description
+     *
+     * @param string $desc New description for list
+     *
+     * @return bool          True on success, false on error
+     * @access public
+     */
+    public function updateListDescription($desc)
+    {
+        $this->description = $desc;
+        $this->updateModifiedDate(false);
+        $this->update();
+
+        // If we got this far, there were no fatal DB errors so report success
+        return true;
+    }
+    
+    /**
+     * Updates list publicity
+     *
+     * @param int $public Is list public? (1 = yes, 0 = no)
+     *
+     * @return bool          True on success, false on error
+     * @access public
+     */
+    public function updateListPublicity($public)
+    {
+        $this->public = $public;
+        $this->updateModifiedDate(false);
+        $this->update();
+
+        // If we got this far, there were no fatal DB errors so report success
+        return true;
+    }
+    
+    /**
+     * Updates list modification date
+     * 
+     * @param bool $update Update list?
+     *
+     * @return bool          True on success, false on error
+     * @access public
+     */
+    public function updateModifiedDate($update = true)
+    {
+      
+        $this->modified = date('Y-m-d H:i:s');
+        if ($update) {
+            $this->update();
+        }
         // If we got this far, there were no fatal DB errors so report success
         return true;
     }

@@ -591,4 +591,28 @@ class EadRecord extends IndexRecord
         return $physDesc;
     }
 
+    /**
+     * Get an array of summary strings for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getSummary()
+    {
+        // We need to return an array, so if we have a description, turn it into an
+        // array as needed (it should be a flat string according to the default
+        // schema, but we might as well support the array case just to be on the safe
+        // side. If needed, handle a special case where the indexed description consists 
+        // of several joined paragraphs:
+        if (isset($this->fields['description'])
+            && !empty($this->fields['description'])
+        ) {
+            return is_array($this->fields['description'])
+                ? $this->fields['description'] : explode('   /   ', $this->fields['description']);
+        }
+
+        // If we got this far, no description was found:
+        return array();
+    }
+
 }

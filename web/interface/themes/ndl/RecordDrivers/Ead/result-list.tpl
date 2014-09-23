@@ -18,7 +18,7 @@
       <div class="imagelinks">
     {foreach from=$summImages item=desc name=imgLoop}
       {if $smarty.foreach.imgLoop.iteration <= 5}
-        <a data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+        <a data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 4}
             &hellip;
          {else}
@@ -42,7 +42,7 @@
       <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
     {if $img_count == 1}
         <div class="resultImage">
-            <a class="title fancybox fancybox.image" data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+            <a class="title fancybox fancybox.image" data-dates="{$summYearRange|escape}" data-title="{$summTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$summBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$summAuthor}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
                 <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
             </a>
         </div>
@@ -198,24 +198,32 @@
       {/if}
     {/if}
 
-    {* Display the lists that this record is saved to *}
-    <div class="savedLists info hide" id="savedLists{$summId|escape}">
-      <strong>{translate text="Saved in"}:</strong>
-    </div>
-    {if $summHierarchy}
-      {foreach from=$summHierarchy key=hierarchyID item=hierarchyTitle}
-      <div class="hierarchyTreeLink">
-        <input type="hidden" value="{$hierarchyID|escape}" class="hiddenHierarchyId" />
-        <a id="hierarchyTree{$summId|escape}" class="hierarchyTreeLinkText" href="{$url}/Record/{$summId|escape:"url"}/HierarchyTree?hierarchy={$hierarchyID}#tabnav" title="{if $coreShortTitle}{$coreShortTitle|truncate:150:"&nbsp;..."|urlencode}{else}{translate text="hierarchy_tree"}{/if}">
-          {if count($summHierarchy) == 1}
-            {translate text="hierarchy_view_context"}
-          {else}
-            {translate text="hierarchy_view_context"}: {$hierarchyTitle}
-          {/if}
-        </a>
-      </div>
-      {/foreach}
+    {if !$ownList}
+       {* Display the lists that this record is saved to *}
+       <div class="savedLists info hide" id="savedLists{$summId|escape}">
+         <strong>{translate text="Saved in"}:</strong>
+       </div>
+       {if $summHierarchy}
+         {foreach from=$summHierarchy key=hierarchyID item=hierarchyTitle}
+         <div class="hierarchyTreeLink">
+           <input type="hidden" value="{$hierarchyID|escape}" class="hiddenHierarchyId" />
+           <a id="hierarchyTree{$summId|escape}" class="hierarchyTreeLinkText" href="{$url}/Record/{$summId|escape:"url"}/HierarchyTree?hierarchy={$hierarchyID}#tabnav" title="{if $coreShortTitle}{$coreShortTitle|truncate:150:"&nbsp;..."|urlencode}{else}{translate text="hierarchy_tree"}{/if}">
+             {if count($summHierarchy) == 1}
+               {translate text="hierarchy_view_context"}
+             {else}
+               {translate text="hierarchy_view_context"}: {$hierarchyTitle}
+             {/if}
+           </a>
+         </div>
+         {/foreach}
+       {/if}
     {/if}
+    {if $listNotes}
+       <div class="notes">
+          <p><span class="heading">{translate text="Description"} </span>({$listUsername}):</p>
+          <p class="text">{$listNotes}</p>
+       </div>
+    {/if}     
 </div>
   <div class="last addToFavLink">
     <a id="saveRecord{$summId|escape}" href="{$url}/Record/{$summId|escape:"url"}/Save" class="fav tool saveRecord" title="{translate text='Add to favorites'}"></a>
