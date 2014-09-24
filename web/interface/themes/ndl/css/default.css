@@ -2833,6 +2833,12 @@ ul.recordSet .resolver {
 	width:30px;
 	margin-left:0px;   
 }
+#metaLibBrowse .iconsRight .metalib_link a.disabled span,
+#metaLibBrowse .metalibLinkContainer .metalib_link a.disabled span {
+    opacity: 0.5;
+    cursor: default;
+}
+
 #metaLibBrowse .metalib_link ul li {
     display: inline-block;
 }

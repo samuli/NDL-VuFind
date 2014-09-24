@@ -48,13 +48,24 @@ function checkMetaLibLinks(obj) {
                         obj.find('.metalibLinkContainer').css('display','none');
                     }
                 } else {
-                    showMetaLibLink(obj.find('#metalib_link_' + safeId));
                     showMetaLibLink(obj.find('#metalib_link_na_' + safeId));
+
                     
+
                     if (action == 'Browse') {
+                        var span = obj.find('#metalib_link_' + safeId);
+                        showMetaLibLink(span);
+                        span.parent('a').addClass('disabled').attr('title', '').attr('href', '#');
+
+
                         showMetaLibLink(obj.find('.metalibSearchDisallow'));
-                        obj.find('.metalibLinkContainer .metalib_link_ok').show();
+                        
+
                         obj.find('.metalibLinkContainer .metalib_link_na').show();
+
+                        var link = obj.find('.metalibLinkContainer .metalib_link_ok');
+                        link.show();
+                        link.parent('a').addClass('disabled');
                     }
                 }
             });
