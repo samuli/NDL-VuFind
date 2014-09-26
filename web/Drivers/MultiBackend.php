@@ -268,6 +268,7 @@ class MultiBackend implements DriverInterface
         if ($driver) {
             $patron = $driver->patronLogin($this->getLocalId($username), $password);
             if (!PEAR::isError($patron)) {
+                $patron['driver'] = get_class($driver);
                 $patron = $this->addIdPrefixes($patron, $source);
                 $_SESSION['logins'][$username] = serialize($patron);
             }

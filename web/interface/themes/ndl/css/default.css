@@ -2313,6 +2313,9 @@ clear:both;
     padding-left: 29px;
     text-indent: -25px;
 }
+.finesList table tr td.axiellRecordFine:first-child {
+    text-indent: -18px;
+}
 .fineBalance {
     text-align: right;
     border-top: 3px solid #cccccc;
