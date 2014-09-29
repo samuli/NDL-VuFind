@@ -28,8 +28,8 @@
       </div>
       {if $listNotes}
          <div class="notes">
-           <p><span class="heading">{translate text="Description"} </span>({$listUsername}):</p>
-           <p class="text">{$listNotes}</p>
+           <p><span class="heading">{translate text="Description"} </span>({$listUsername|escape:'html'}):</p>
+           <p class="text">{$listNotes|escape:'html'}</p>
          </div>
       {/if}
     </div>
