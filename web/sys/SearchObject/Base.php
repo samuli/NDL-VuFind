@@ -27,6 +27,7 @@
  */
 require_once 'services/MyResearch/lib/Search.php';
 require_once 'sys/Recommend/RecommendationFactory.php';
+require_once 'sys/SolrUtils.php';
 
 /**
  * Search Object abstract base class.
