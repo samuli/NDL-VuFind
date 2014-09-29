@@ -28,7 +28,8 @@ $(document).ready(function() {
 
                                   if ($(this.element).data('notes')) {
                                       this.title += '<div class="fancyNotes"><p class="heading">' + trListNotes + ':</p>';
-                                      this.title += '<p class="text">' + $(this.element).data('notes') + '</p></div>';
+                                      notes = $('<div/>').text($(this.element).data('notes')).html(); // escape
+                                      this.title += '<p class="text">' + notes + '</p></div>';
                                   }
                                   
                                   if ($(this.element).data('linktext')) {
