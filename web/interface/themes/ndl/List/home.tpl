@@ -9,11 +9,11 @@
 <div id="listContent">
   <div class="content">
     <div class="grid_24">
-      <div class="listDesc grid_15">{$list->description}</div>  
+      <div class="listDesc grid_15">{$list->description|escape:"html"}</div>  
       <div class="listInfo grid_8">
         {if $listUsername}
           <div>{translate text="Collection Author"}:</div>
-          <div class="listUsername">{$listUsername}</div>
+          <div class="listUsername">{$listUsername|escape:'html'}</div>
         {/if}
         {if $listModified}
            <div>{translate text="Last Edited"}: {$listModified}</div>
