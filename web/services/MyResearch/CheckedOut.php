@@ -53,54 +53,54 @@ class CheckedOut extends MyResearch
         // Get My Transactions
         if ($patron = UserAccount::catalogLogin()) {
             if (PEAR::isError($patron)) {
-                PEAR::raiseError($patron);
-            }
-
-            // Renew Items
-            if (isset($_POST['renewAll']) || isset($_POST['renewSelected'])) {
-                $renewResult = $this->_renewItems($patron);
-            }
-
-            $result = $this->catalog->getMyTransactions($patron);
-            if (PEAR::isError($result)) {
-                PEAR::raiseError($result);
-            }
-
-            $transList = array();
-            foreach ($result as $data) {
-                $current = array('ils_details' => $data);
-                if ($record = $this->db->getRecord($data['id'])) {
-                    $formats = isset($record['format']) ? $record['format'] : '';
-                    if (!is_array($formats)) {
-                        $formats = array($formats);
-                    }
-                    foreach ($formats as &$format) {
-                        $format = preg_replace('/^\d\//', '', $format);
-                        $format = rtrim($format, "/");
-                    }
-                    $driver = RecordDriverFactory::initRecordDriver($record);
-                    
-                    $current += array(
-                        'id' => $record['id'],
-                        'isbn' => isset($record['isbn']) ? $record['isbn'] : null,
-                        'author' =>
-                            isset($record['author']) ? $record['author'] : null,
-                        'title' =>
-                            isset($record['title']) ? $record['title'] : null,
-                        'format' => $formats,
-                        'summImages' => $driver ? $driver->getAllImages() : null,
-                        'summThumb' => $driver ? $driver->getThumbnail() : null,
-                    );
+                $this->handleCatalogError($patron);
+            } else {
+                // Renew Items
+                if (isset($_POST['renewAll']) || isset($_POST['renewSelected'])) {
+                    $renewResult = $this->_renewItems($patron);
                 }
-                $transList[] = $current;
-            }
 
-            if ($this->checkRenew) {
-                $transList = $this->_addRenewDetails($transList);
-            }
-            $profile = $this->catalog->getMyProfile($patron);
-            if (!PEAR::isError($profile)) {
-                $interface->assign('profile', $profile);
+                $result = $this->catalog->getMyTransactions($patron);
+                if (PEAR::isError($result)) {
+                    PEAR::raiseError($result);
+                }
+
+                $transList = array();
+                foreach ($result as $data) {
+                    $current = array('ils_details' => $data);
+                    if ($record = $this->db->getRecord($data['id'])) {
+                        $formats = isset($record['format']) ? $record['format'] : '';
+                        if (!is_array($formats)) {
+                            $formats = array($formats);
+                        }
+                        foreach ($formats as &$format) {
+                            $format = preg_replace('/^\d\//', '', $format);
+                            $format = rtrim($format, "/");
+                        }
+                        $driver = RecordDriverFactory::initRecordDriver($record);
+
+                        $current += array(
+                            'id' => $record['id'],
+                            'isbn' => isset($record['isbn']) ? $record['isbn'] : null,
+                            'author' =>
+                                isset($record['author']) ? $record['author'] : null,
+                            'title' =>
+                                isset($record['title']) ? $record['title'] : null,
+                            'format' => $formats,
+                            'summImages' => $driver ? $driver->getAllImages() : null,
+                            'summThumb' => $driver ? $driver->getThumbnail() : null,
+                        );
+                    }
+                    $transList[] = $current;
+                }
+
+                if ($this->checkRenew) {
+                    $transList = $this->_addRenewDetails($transList);
+                }
+                $profile = $this->catalog->getMyProfile($patron);
+                if (!PEAR::isError($profile)) {
+                    $interface->assign('profile', $profile);
+                }
             }
         }
         $interface->assign('transList', $transList);

@@ -60,51 +60,52 @@ class Fines extends MyResearch
         // Get My Fines
         if ($patron = UserAccount::catalogLogin()) {
             if (PEAR::isError($patron)) {
-                PEAR::raiseError($patron);
-            }
-            $result = $this->catalog->getMyFines($patron);
-            $loans = $this->catalog->getMyTransactions($patron);
-            if (!PEAR::isError($result)) {
-                // assign the "raw" fines data to the template
-                // NOTE: could use foreach($result as &$row) here but it only works
-                // with PHP5
-                $sum = 0;
-                for ($i = 0; $i < count($result); $i++) {
-                    $row = &$result[$i];
-                    $sum += $row['balance'];
-                    $record = $this->db->getRecord($row['id']);
-                    $row['title'] = $record ? $record['title_short'] : null;
-                    $row['checkedOut'] = false;
-                    if (is_array($loans)) {
-                        foreach ($loans as $loan) {
-                            if ($loan['id'] == $row['id']) {
-                                $row['checkedOut'] = true;
-                                break;
+                $this->handleCatalogError($patron);
+            } else {
+                $result = $this->catalog->getMyFines($patron);
+                $loans = $this->catalog->getMyTransactions($patron);
+                if (!PEAR::isError($result)) {
+                    // assign the "raw" fines data to the template
+                    // NOTE: could use foreach($result as &$row) here but it only works
+                    // with PHP5
+                    $sum = 0;
+                    for ($i = 0; $i < count($result); $i++) {
+                        $row = &$result[$i];
+                        $sum += $row['balance'];
+                        $record = $this->db->getRecord($row['id']);
+                        $row['title'] = $record ? $record['title_short'] : null;
+                        $row['checkedOut'] = false;
+                        if (is_array($loans)) {
+                            foreach ($loans as $loan) {
+                                if ($loan['id'] == $row['id']) {
+                                    $row['checkedOut'] = true;
+                                    break;
+                                }
                             }
                         }
+                        $formats = array();
+                        foreach (isset($record['format']) ? $record['format'] : array() as $format) {
+                            $formats[] = preg_replace('/^\d\//', '', $format);
+                        }
+                        $row['format'] = $formats;
                     }
-                    $formats = array();
-                    foreach (isset($record['format']) ? $record['format'] : array() as $format) {
-                        $formats[] = preg_replace('/^\d\//', '', $format);
-                    }
-                    $row['format'] = $formats;
+                    $interface->assign('rawFinesData', $result);
+                    $interface->assign('sum', $sum);
                 }
-                $interface->assign('rawFinesData', $result);
-                $interface->assign('sum', $sum);
+                $profile = $this->catalog->getMyProfile($patron);
+                if (!PEAR::isError($profile)) {
+                    $interface->assign('profile', $profile);
+                }
+                $driver = isset($patron['driver']) ? $patron['driver'] : '';
+                $interface->assign('driver', $driver);
             }
-            $profile = $this->catalog->getMyProfile($patron);
-            if (!PEAR::isError($profile)) {
-                $interface->assign('profile', $profile);
-            }
-            $driver = isset($patron['driver']) ? $patron['driver'] : '';
-            $interface->assign('driver', $driver);
         }
 
         $interface->setTemplate('fines.tpl');
         $interface->setPageTitle('My Fines');
         $interface->display('layout.tpl');
     }
-    
+
 }
 
 ?>

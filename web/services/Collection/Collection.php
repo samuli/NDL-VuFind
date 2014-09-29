@@ -119,7 +119,7 @@ class Collection extends Action
                 $result = UserAccount::processCatalogLogin(
                     $_POST['cat_username'], $_POST['cat_password']
                 );
-                if ($result) {
+                if ($result && !PEAR::isError($result)) {
                     $interface->assign('user', $user);
                 } else {
                     $interface->assign('loginError', 'Invalid Patron Login');

@@ -14,7 +14,7 @@
 {if $errorMsg}
   <div class="messages">
    <div class="error">
-    {if $errorMsg === 'Invalid Patron Login'}{translate text="Login Failed Info"}
+    {if $errorMsg === 'authentication_error_failed'}{translate text="Login Failed Info"}
     {else}
      {$errorMsg|translate}     
     {/if} 

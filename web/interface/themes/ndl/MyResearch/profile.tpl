@@ -16,6 +16,9 @@
   {if $userError}
       <p class="error">{translate text=$userError}</p>
   {/if}
+  {if $errorMsg}
+      <p class="error">{translate text=$errorMsg}</p>
+  {/if}
     </div>
   
     <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">

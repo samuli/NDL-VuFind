@@ -4,8 +4,11 @@
 
 <div class="myResearch holdsList{if $sidebarOnLeft} last{/if}">
   <div class="content">
-      {* NDLBlankInclude *}
-    <div class="noContentMessage">{translate text='hold_instructions'}</div>
+    {* NDLBlankInclude *}
+    {assign var=hold_instructions value='hold_instructions'|translate}
+    {if $hold_instructions} 
+    <div class="noContentMessage">{$hold_instructions}</div>
+    {/if}
     {* /NDLBlankInclude *}
     
       {if empty($catalogAccounts)}
@@ -13,6 +16,9 @@
    			 <a class="button buttonFinna" type="button" href="{$url}/MyResearch/Accounts?add=1" />{translate text='Link Library Card'}...</a>
       {/if}
   <div class="grid_24">
+  {if $errorMsg}
+     <div class="holdsMessage"><p class="error">{translate text=$errorMsg}</p></div>
+  {/if}
   {if $user->cat_username}
   <div class="resultHead">
     {if $holdResults.success}
@@ -23,10 +29,6 @@
     {/if}
     {if $UBRequestResults.success}
       <div class="holdsMessage"><p class="success">{translate text=$UBRequestResults.status}</p></div>
-    {/if}
-
-    {if $errorMsg}
-       <div class="holdsMessage"><p class="error">{translate text=$errorMsg}</p></div>
     {/if}
 
     {if $cancelResults.count > 0}
@@ -40,10 +42,11 @@
         <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
       {/foreach}
     {/if}
-    <h2>{translate text='Holds'}:      {foreach from=$catalogAccounts item=account}
-        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
-     {/foreach} 
-            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
+    <h2>{translate text='Holds'}:
+      {foreach from=$catalogAccounts item=account}
+        {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+      {/foreach} 
+      {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
 
 
     
@@ -89,7 +92,7 @@
         	{assign var=summImages value=$resource.summImages}
         	{assign var=summThumb value=$resource.summThumb}        	
         	{assign var=summId value=$resource.id}        	
-			{assign var=img_count value=$summImages|@count}
+          {assign var=img_count value=$summImages|@count}
 		
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}

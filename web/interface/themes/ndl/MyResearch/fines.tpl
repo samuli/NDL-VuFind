@@ -13,22 +13,27 @@
     {/if}
     {if !empty($catalogAccounts)}
     <div class="grid_24">
+      {if $errorMsg || $infoMsg}
+        <div class="messages">
+        {if $errorMsg}<p class="error">{$errorMsg|translate}</p>{/if}
+        {if $infoMsg}<p class="info">{$infoMsg|translate}</p>{/if}
+        </div>
+      {/if}
       {if $profile.blocks}
         {foreach from=$profile.blocks item=block name=loop}
           <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
         {/foreach}
       {/if}
-    <h2>{translate text='Your Fines'}: 
-     {foreach from=$catalogAccounts item=account}
-        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
-     {/foreach} 
-            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
-    </h2>
     {if $user->cat_username}
-     {if empty($rawFinesData)}
-      <p class="noContentMessage">{translate text='You do not have any fines'}</p>
-     {else}
-
+      <h2>{translate text='Your Fines'}: 
+      {foreach from=$catalogAccounts item=account}
+        {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+      {/foreach} 
+      {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
+      </h2>
+      {if empty($rawFinesData)}
+        <p class="noContentMessage">{translate text='You do not have any fines'}</p>
+      {else}
     
     <table class="datagrid fines" summary="{translate text='Your Fines'}">
       {if $driver == 'AxiellWebServices'}

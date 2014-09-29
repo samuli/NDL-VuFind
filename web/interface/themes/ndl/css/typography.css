@@ -98,9 +98,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* link color */
 a, .ui-widget-content a,
-a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus {
+a:focus, a:hover, .ui-widget-content a:hover, .ui-widget-content a:focus, .error a, .alert a, .error a:hover, .alert a:hover {
     color: #00A3B5;
 }
+
 
 /* Is this needed? Would it be better to change h3 to h5 / use class normal? */
 div.recordsubcontent h3 {

@@ -44,7 +44,7 @@ class Holds extends MyResearch
     protected $cancelResults;
     protected $callSlipResults;
     protected $cancelCallSlipResults;
-    
+
     /**
      * Process parameters and display the page.
      *
@@ -58,86 +58,52 @@ class Holds extends MyResearch
         // Get My Holds
         if ($patron = UserAccount::catalogLogin()) {
             if (PEAR::isError($patron)) {
-                PEAR::raiseError($patron);
-            }
-            // Get Message from Hold.php
-            if (isset($_GET['success']) && $_GET['success'] != "") {
-                $this->holdResults = array(
-                    'success' => true, 'status' => "hold_place_success"
-                );
-                $interface->assign('holdResults', $this->holdResults);
-            }
-            // Get Message from CallSlip.php
-            if (isset($_GET['callslip_success']) && $_GET['callslip_success'] != "") {
-                $this->callSlipResults = array(
-                    'success' => true, 'status' => "call_slip_success"
-                );
-                $interface->assign('callSlipResults', $this->callSlipResults);
-            }
-            // Get Message from UBRequest.php
-            if (isset($_GET['ub_request_success']) && $_GET['ub_request_success'] != "") {
-                $this->UBRequestResults = array(
-                    'success' => true, 'status' => "ub_request_success"
-                );
-                $interface->assign('UBRequestResults', $this->UBRequestResults);
-            }
-            // Is cancelling Holds Available
-            if ($this->cancelHolds != false) {
-                // Process Submitted Form
-                if (isset($_POST['cancelSelected']) || isset($_POST['cancelAll'])) {
-                    $cancelRequest = $this->_cancelHolds($patron);
-                }
-                $interface->assign('cancelResults', $this->cancelResults);
-            }
-
-            if (isset($_POST['cancelSelectedCallSlips']) || isset($_POST['cancelAllCallSlips'])) {
-                $cancelCallSlipRequest = $this->_cancelCallSlips($patron);
-                $interface->assign('cancelCallSlipResults', $this->cancelCallSlipResults);
-            }
-            
-            // Get List of PickUp Libraries based on patrons home library
-            $libs = $this->catalog->getPickUpLocations($patron);
-            $interface->assign('pickup', $libs);
-    
-            $result = $this->catalog->getMyHolds($patron);
-            if (!PEAR::isError($result)) {
-                if (count($result)) {
-                    $recordList = array();
-                    foreach ($result as $row) {
-                        $record = $this->db->getRecord($row['id']);
-                        $record['ils_details'] = $row;
-                        $formats = array();
-                        foreach (isset($record['format']) ? $record['format'] : array() as $format) {
-                            $formatRaw = preg_replace('/^\d\//', '', $format);
-                            $format = rtrim($formatRaw, "/");
-                            $formats[] = $format;
-                        }
-                        $record['format'] = $formats;
-                        $driver = RecordDriverFactory::initRecordDriver($record);
-                        if ($driver) {
-                            $record['summImages'] = $driver->getAllImages();
-                            $record['summThumb'] =  $driver->getThumbnail();
-                        }
-                        $recordList[] = $record;
-                    }
-
-                    if ($this->cancelHolds != false) {
-                        $recordList = $this->_addCancelDetails($recordList);
-                    }
-                    $interface->assign('recordList', $recordList);
-                } else {
-                    $interface->assign('recordList', false);
-                }
+                $this->handleCatalogError($patron);
             } else {
-                PEAR::raiseError($result);
-            }
+                // Get Message from Hold.php
+                if (isset($_GET['success']) && $_GET['success'] != "") {
+                    $this->holdResults = array(
+                        'success' => true, 'status' => "hold_place_success"
+                    );
+                    $interface->assign('holdResults', $this->holdResults);
+                }
+                // Get Message from CallSlip.php
+                if (isset($_GET['callslip_success']) && $_GET['callslip_success'] != "") {
+                    $this->callSlipResults = array(
+                        'success' => true, 'status' => "call_slip_success"
+                    );
+                    $interface->assign('callSlipResults', $this->callSlipResults);
+                }
+                // Get Message from UBRequest.php
+                if (isset($_GET['ub_request_success']) && $_GET['ub_request_success'] != "") {
+                    $this->UBRequestResults = array(
+                        'success' => true, 'status' => "ub_request_success"
+                    );
+                    $interface->assign('UBRequestResults', $this->UBRequestResults);
+                }
+                // Is cancelling Holds Available
+                if ($this->cancelHolds != false) {
+                    // Process Submitted Form
+                    if (isset($_POST['cancelSelected']) || isset($_POST['cancelAll'])) {
+                        $cancelRequest = $this->_cancelHolds($patron);
+                    }
+                    $interface->assign('cancelResults', $this->cancelResults);
+                }
 
-            $result = $this->catalog->getMyCallSlips($patron);
-            if (!PEAR::isError($result)) {
-                if ($result !== false && count($result)) {
-                    $recordList = array();
-                    foreach ($result as $row) {
-                        if ($row['id']) {
+                if (isset($_POST['cancelSelectedCallSlips']) || isset($_POST['cancelAllCallSlips'])) {
+                    $cancelCallSlipRequest = $this->_cancelCallSlips($patron);
+                    $interface->assign('cancelCallSlipResults', $this->cancelCallSlipResults);
+                }
+
+                // Get List of PickUp Libraries based on patrons home library
+                $libs = $this->catalog->getPickUpLocations($patron);
+                $interface->assign('pickup', $libs);
+
+                $result = $this->catalog->getMyHolds($patron);
+                if (!PEAR::isError($result)) {
+                    if (count($result)) {
+                        $recordList = array();
+                        foreach ($result as $row) {
                             $record = $this->db->getRecord($row['id']);
                             $record['ils_details'] = $row;
                             $formats = array();
@@ -150,26 +116,61 @@ class Holds extends MyResearch
                             $driver = RecordDriverFactory::initRecordDriver($record);
                             if ($driver) {
                                 $record['summImages'] = $driver->getAllImages();
-                                $record['title'] = $driver->getTitle();
                                 $record['summThumb'] =  $driver->getThumbnail();
                             }
-                        } else {
-                            $record = array();
-                            $record['ils_details'] = $row;
+                            $recordList[] = $record;
                         }
-                        $recordList[] = $record;
+
+                        if ($this->cancelHolds != false) {
+                            $recordList = $this->_addCancelDetails($recordList);
+                        }
+                        $interface->assign('recordList', $recordList);
+                    } else {
+                        $interface->assign('recordList', false);
                     }
-                    $recordList = $this->_addCallSlipCancelDetails($recordList, $patron);
-                    $interface->assign('callSlipList', $recordList);
                 } else {
-                    $interface->assign('callSlipList', false);
+                    PEAR::raiseError($result);
                 }
-            } else {
-                PEAR::raiseError($result);
-            }
-            $profile = $this->catalog->getMyProfile($patron);
-            if (!PEAR::isError($profile)) {
-                $interface->assign('profile', $profile);
+
+                $result = $this->catalog->getMyCallSlips($patron);
+                if (!PEAR::isError($result)) {
+                    if ($result !== false && count($result)) {
+                        $recordList = array();
+                        foreach ($result as $row) {
+                            if ($row['id']) {
+                                $record = $this->db->getRecord($row['id']);
+                                $record['ils_details'] = $row;
+                                $formats = array();
+                                foreach (isset($record['format']) ? $record['format'] : array() as $format) {
+                                    $formatRaw = preg_replace('/^\d\//', '', $format);
+                                    $format = rtrim($formatRaw, "/");
+                                    $formats[] = $format;
+                                }
+                                $record['format'] = $formats;
+                                $driver = RecordDriverFactory::initRecordDriver($record);
+                                if ($driver) {
+                                    $record['summImages'] = $driver->getAllImages();
+                                    $record['title'] = $driver->getTitle();
+                                    $record['summThumb'] =  $driver->getThumbnail();
+                                }
+                            } else {
+                                $record = array();
+                                $record['ils_details'] = $row;
+                            }
+                            $recordList[] = $record;
+                        }
+                        $recordList = $this->_addCallSlipCancelDetails($recordList, $patron);
+                        $interface->assign('callSlipList', $recordList);
+                    } else {
+                        $interface->assign('callSlipList', false);
+                    }
+                } else {
+                    PEAR::raiseError($result);
+                }
+                $profile = $this->catalog->getMyProfile($patron);
+                if (!PEAR::isError($profile)) {
+                    $interface->assign('profile', $profile);
+                }
             }
         }
 
@@ -254,7 +255,7 @@ class Holds extends MyResearch
         $_SESSION['cancelValidData'] = $session_details;
         return $holdList;
     }
-    
+
     /**
      * Private method for cancelling call slips
      *
@@ -323,7 +324,7 @@ class Holds extends MyResearch
         // Save all valid options in the session so user input can be validated later
         $_SESSION['cancelCallSlipValidData'] = $session_details;
         return $holdList;
-    }    
+    }
 }
 
 ?>

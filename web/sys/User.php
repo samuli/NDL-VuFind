@@ -86,7 +86,7 @@ class UserAccount
                     if (!isset($_SESSION['userAuthorized'])) {
                         // Check ILS-based authorization
                         $patron = UserAccount::catalogLogin();
-                        if ($patron !== false) {
+                        if ($patron !== false && !PEAR::isError($patron)) {
                             $catalog = ConnectionManager::connectToCatalog();
                             if ($catalog->checkFunction('getPatronAuthorizationStatus')) {
                                 $status = $catalog->getPatronAuthorizationStatus($patron);
@@ -204,8 +204,8 @@ class UserAccount
      * fails, clear the user's stored credentials so they can enter new, corrected
      * ones.
      *
-     * @return mixed                     $user object (on success) or false (on
-     * failure)
+     * @return mixed                     $user object (on success), or
+     * PEAR_Error (on failure)
      * @access protected
      */
     public static function catalogLogin()
@@ -231,6 +231,9 @@ class UserAccount
                 self::verifyAccountInList($user);
                 return $patron;
             }
+            return PEAR::isError($patron)
+                ? $patron
+                : new PEAR_Error('catalog_login_failed');
         }
 
         return false;
