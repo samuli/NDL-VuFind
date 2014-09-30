@@ -1154,6 +1154,9 @@ div.dialogLoading {
 #browseExtended ul.recordSet {
     margin-top: 0;
 }
+#browseExtended ul.recordSet li h4 {
+    font-size: 1.3em;
+}
 #browseExtended ul.recordSet .result .snippet .savedLists {
     font-size: 13px;
 }
@@ -1178,8 +1181,6 @@ div.dialogLoading {
 }
 #browseExtended ul.recordSet li div.icon.open {
     background-position: -2px -2316px;
-}
-#browseExtended ul.recordSet li h4 {
 }
 #browseExtended ul.recordSet li.result .moreinfo {
     display: none;

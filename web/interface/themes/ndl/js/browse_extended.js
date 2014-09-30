@@ -15,7 +15,7 @@ function browseExtendedInit() {
     $('#searchForm_filter option[value="-"]').attr('selected', 'selected');
 
 
-    $("ul.recordSet li.result .snippet").on('click', function() {
+    $("ul.recordSet li.result a.toggle").on('click', function() {
         browseExtendedShowMore($(this));
         return false;
     });
