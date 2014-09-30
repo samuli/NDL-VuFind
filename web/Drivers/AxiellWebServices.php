@@ -1118,15 +1118,17 @@ class AxiellWebServices implements DriverInterface
 
             $result = $client->authenticatePatron(array('authenticatePatronParam' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'user' => $username, 'password' => $password)));
 
-            if ($result->authenticatePatronResult->status->type != 'ok') {
-                $this->debugLog("Authenticate patron request failed for '$username'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('authentication_error_invalid');
-            }
             $this->debugLog("Request: " . $client->__getLastRequest());
             $this->debugLog("Response: " . $client->__getLastResponse());
-
+            
+            if ($result->authenticatePatronResult->status->type != 'ok') {
+                $this->debugLog("Authenticate patron request failed for '$username'");
+                if ($result->authenticatePatronResult->status->message == 'BackendError') {
+                    return new PEAR_Error('authentication_error_technical');
+                }
+                return new PEAR_Error('authentication_error_invalid');
+            }
+            
             return $result->authenticatePatronResult->patronId;
 
         } catch (Exception $e) {
