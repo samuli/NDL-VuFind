@@ -276,6 +276,8 @@ function metalibInit(page)
             metalibSearch(null, set, false);
         }
     };
+
+    metalibCollapseSets();
 }
 
 function metalibHomeInit()
@@ -284,6 +286,12 @@ function metalibHomeInit()
     $(".searchSets input").on("click", function() { 
         $("#searchForm #searchForm_set").val($(this).val());
     });
+
+    metalibCollapseSets();
 }
 
+function metalibCollapseSets()
+{
+    $('#recentMetalibDatabases.truncateField').collapse({maxRows: 13, more: trMore, less: trLess});
+}
 

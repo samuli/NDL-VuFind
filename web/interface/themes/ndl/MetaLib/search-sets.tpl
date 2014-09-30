@@ -8,7 +8,7 @@
     <input id="set_{$cnt}" name="searchSet" type="radio" value="{$searchVal}"{if $searchSet == $searchVal} checked="checked"{/if} /> <label for="set_{$cnt++}"><span></span>{translate text=$searchDesc}</label><br>
    {/foreach}
     
-    <div id="recentMetalibDatabases">
+    <div id="recentMetalibDatabases" class="truncateField">
       {if $metalibRecentDatabases}
         <p>{translate text='Recently Used Databases'}</p>
       
@@ -21,7 +21,9 @@
         </div>      
       {/if}
         
-      <div id="browseLink"><a href="{$browseDatabases}">{translate text="Search For Databases"}</a></div>
 
-    </div>  
+    </div>
+
+    <div id="browseLink"><a href="{$browseDatabases}">{translate text="browse_extended_Database"}</a></div>
+
   </form>

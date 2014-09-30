@@ -54,6 +54,7 @@ class JSON_Autocomplete extends JSON
     {
         $autocomplete = true;
         $prefilters = getExtraConfigArray('prefilters');
+        
         if (isset($_REQUEST['prefilter']) 
             && $_REQUEST['prefilter'] 
             && isset($prefilters[$_REQUEST['prefilter']])

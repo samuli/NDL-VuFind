@@ -6,14 +6,7 @@
 {/if}
     
 {if $searchType != 'MetaLibAdvanced'}
-
- {if $action == 'Browse'}
-     {assign var='formAction' value='Browse'}
- {else}
-     {assign var='formAction' value='Search'}
- {/if}
- 
-  <form method="get" action="{$path}/MetaLib/{$formAction}" name="searchForm" id="searchForm" class="search">
+  <form method="get" action="{$path}/MetaLib/Search" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
         <div class="overLabelWrapper">

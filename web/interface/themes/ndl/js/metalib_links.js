@@ -4,9 +4,12 @@ $(document).ready(function() {
     });
 });
 
-function showMetaLibLink(obj) {
-    obj.show();    
-    obj.css('visibility', 'visible');    
+function showMetaLibLink(obj) {    
+    if (module == 'Browse') {
+        obj.addClass("visible");
+    } else {
+        obj.show();
+    }
 }
 
 function checkMetaLibLinks(obj) {
@@ -25,7 +28,7 @@ function checkMetaLibLinks(obj) {
     	$.getJSON(url, {id:id}, function(response) {
             obj.find('.metalib_link').removeClass('ajax_fulltext_availability');
 		    
-            if (action != 'Browse') {
+            if (module != 'Browse') {
                 if (response.status != 'OK') {		            
                     obj.find('.metalib_link').text("MetaLib link check failed.");		            
                     return;
@@ -38,40 +41,30 @@ function checkMetaLibLinks(obj) {
                 if (result.status == 'allowed') {
                     showMetaLibLink(obj.find('#metalib_link_' + safeId));
                     
-                    if (action == 'Browse') {
-                        obj.find('.metalibLinkContainer .metalib_link_ok').show();
+                    if (module == 'Browse') {
+                        showMetaLibLink(obj.find('.metalibLinkContainer .metalib_link_ok'));
                     }
                 } else if (result.status == 'nonsearchable') {
                     showMetaLibLink(obj.find('#metalib_link_ns_' + safeId));
 
-                    if (action == 'Browse') {
+                    if (module == 'Browse') {
                         obj.find('.metalibLinkContainer').css('display','none');
                     }
                 } else {
                     showMetaLibLink(obj.find('#metalib_link_na_' + safeId));
 
-                    
-
-                    if (action == 'Browse') {
-                        var span = obj.find('#metalib_link_' + safeId);
-                        showMetaLibLink(span);
-                        span.parent('a').addClass('disabled').attr('title', '').attr('href', '#');
-
-
+                    if (module == 'Browse') {
+                        showMetaLibLink(obj.find('#metalib_link_' + safeId));
                         showMetaLibLink(obj.find('.metalibSearchDisallow'));
-                        
 
-                        obj.find('.metalibLinkContainer .metalib_link_na').show();
-
-                        var link = obj.find('.metalibLinkContainer .metalib_link_ok');
-                        link.show();
-                        link.parent('a').addClass('disabled');
+                        showMetaLibLink(obj.find('.metalibLinkContainer .metalib_link_na'));
+                        showMetaLibLink(obj.find('.metalibLinkContainer .metalib_link_ok'));
                     }
                 }
             });
         }).error(function() {
             obj.find('.metalib_link').removeClass('ajax_fulltext_availability');
-            if (action != 'Browse') {
+            if (module != 'Browse') {
                 obj.find('.metalib_link').text("MetaLib link check failed.");
             }
         });              

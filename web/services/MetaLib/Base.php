@@ -83,9 +83,9 @@ class Base extends Action
             }
 
             // Append to recently used search sets and select as active
-            if (!isset($_SESSION['recentMetaLibDatabases'][$set])) {
-                $_SESSION['recentMetaLibDatabases'][$set] = $irdInfo['name'];
-            }
+            unset($_SESSION['recentMetaLibDatabases'][$set]);
+            $_SESSION['recentMetaLibDatabases'][$set] = $irdInfo['name'];
+
             $interface->assign('searchSet', "_ird:$ird");
         } else {
             // Select first set by default 
@@ -99,59 +99,6 @@ class Base extends Action
 
         // Increase max execution time to allow slow MetaLib searches to complete
         set_time_limit(60);
-    }
-
-    /**
-     * Build a url to or from MetaLib Browse.
-     *
-     * @param string $action  destination action (Home, Search or Browse).
-     * @param string $lookfor search term or null if the search term should be dropped.
-     *
-     * @return string URL
-     * @access public
-     */
-    protected function getBrowseUrl($action = 'Home', $lookfor = null)
-    {
-        global $configArray;
-        global $interface;
-
-        $fullPath = $interface->get_template_vars('fullPath');
-        $parts = parse_url($fullPath);        
-        $params = isset($parts['query']) ? $parts['query'] : null;
-
-        $searchTermReplaced = false;
-        if ($params) {
-            $params = explode('&', $params);
-            
-            // Url parameters that should be reset when moving between Search and Browse.
-            $reset = array('page', 'prefiltered', 'type', 'refLookfor', 'set');
-            
-            $tmp = array();
-            foreach ($params as $param) {
-                $var = explode('=', $param);
-
-                if (strcasecmp($var[0], 'lookfor') === 0) {
-                    if ($action === 'Browse') {
-                        // Preserve current MetaLib search term
-                        $tmp[] = "refLookfor=$var[1]";
-                    } else if ($lookfor) {
-                        $tmp[] = "lookfor=$lookfor";
-                        $searchTermReplaced = true;
-                    }
-                } else if (!in_array($var[0], $reset)) {
-                    $tmp[] = $param;
-                }
-            }            
-        }
-        if (!$searchTermReplaced && $lookfor) {
-            $tmp[] = "lookfor=$lookfor";            
-        }
-
-        $url = $configArray['Site']['url'] . "/MetaLib/$action?";
-        if ($tmp) {
-            $url .= implode('&', $tmp) . '&';
-        }
-        return $url;
     }
 
 }

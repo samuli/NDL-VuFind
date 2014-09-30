@@ -28,6 +28,17 @@ function loadResolverLinks($target, openUrl) {
             if (response.status == 'OK') {
                 $target.removeClass('ajax_availability').empty().append(response.data);
                 link = $target.find('.openurl_more');
+
+                if (module == 'Browse' && action == 'Journal') {
+                    // Browse/Journal:
+                    // - Move openurl 'More options' link to detailed view.
+                    var more = $target.closest('.recordId').find('.moreinfo').find('.moreOptions');
+                    if (more) {
+                        moreOptions = $target.find('.openurl_more_full');
+                        more.after(moreOptions);                        
+                    }
+                }
+
                 link.click(function(e) {
                     var div = $(this).siblings('.openurlDiv');
                     var self = $(this);

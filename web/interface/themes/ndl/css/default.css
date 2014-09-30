@@ -1145,21 +1145,30 @@ div.dialogLoading {
     background-position:10px top;
 }
 
-#metaLibBrowse .resultLinks {
-    background-color: #b2e3ea;
+.module-Browse .no-hits .content {
+    margin-top: 1em;
 }
-#metaLibBrowse li.result.alt {
+.module-Browse #browseExtended li.result.alt {
     background-color: #F5F5F5;
 }
-#metaLibBrowse ul.recordSet {
+#browseExtended ul.recordSet {
     margin-top: 0;
 }
+#browseExtended ul.recordSet .result .snippet .savedLists {
+    font-size: 13px;
+}
 
-#metaLibBrowse ul.recordSet li.result {
+#browseExtended .recordSet .recordId .resultContentToggle {
+    display: none;
+}
+.module-Browse .recordSet .recordId .savedLists {
+    margin-bottom: 0.1em;
+}
+#browseExtended ul.recordSet li.result {
     margin-bottom: 0px;
     padding: 7px 5px 7px 8px;
 }
-#metaLibBrowse ul.recordSet li div.icon {
+#browseExtended ul.recordSet li div.icon {
     background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
     background-position: 0 -2367px;
     padding: 0;
@@ -1167,12 +1176,12 @@ div.dialogLoading {
     height: 18px;
     float: left;    
 }
-#metaLibBrowse ul.recordSet li div.icon.open {
+#browseExtended ul.recordSet li div.icon.open {
     background-position: -2px -2316px;
 }
-#metaLibBrowse ul.recordSet li h4 {
+#browseExtended ul.recordSet li h4 {
 }
-#metaLibBrowse ul.recordSet li.result .moreinfo {
+#browseExtended ul.recordSet li.result .moreinfo {
     display: none;
     margin-top: 20px;
 }
@@ -1271,15 +1280,26 @@ div.truncateField {
     height: 1.5em;
     background-color: inherit;
 }
+.module-Browse .moreinfo .truncateField,
 #recordMetadata .truncateField {
     margin-top: .25em;
 }
 
+.module-MetaLib #recentMetalibDatabases .moreLink,
+.module-Browse .moreinfo .moreLink,
 #recordMetadata .moreLink,
 #recordMetadata .lessLink {
     background-color:#fff;
 }
 
+.module-Browse .result.alt .moreinfo .moreLink {
+    background-color:#F5F5F5;
+}
+
+.module-MetaLib #recentMetalibDatabases .moreLink a:after,
+.module-MetaLib #recentMetalibDatabases .lessLink a:after,
+.module-Browse .moreinfo .moreLink a:after,
+.module-Browse .moreinfo .lessLink a:after,
 .coverImages .moreLink a:after,
 .coverImages .lessLink a:after,
 #recordMetadata .moreLink a:after,
@@ -1313,7 +1333,6 @@ div.truncateField {
 .recordSummary.truncateField .lessLink a {
     background-image: url("../images/datevis_handle_close.png");
 }
-
 .recordSummary.truncateField .moreLink a {
     background-image: url("../images/datevis_handle_open.png");
 }
@@ -1322,6 +1341,14 @@ div.moreLink {
     left: 0; bottom: 0; right: 0;
 }
 
+.module-MetaLib #recentMetalibDatabases .lessLink {
+    margin-left: 15px;
+}
+.module-MetaLib #recentMetalibDatabases .moreLink {
+    padding-left: 15px;
+    bottom: -3px;
+    padding-top: 5px;
+}
 
 /** Buttons to do "bulk" actions **/
 
@@ -1563,7 +1590,9 @@ fieldset.publishDateLimit .ui-slider {
     float: left;
 }
 
-.no-hits #sidebarFacets, .module-MetaLib #sidebarFacets {
+.no-hits #sidebarFacets, 
+.module-MetaLib #sidebarFacets, 
+.module-Browse #sidebarFacets {
     margin-top: 0;
 }
 
@@ -2509,6 +2538,15 @@ clear:both;
     padding: 10px 15px;
     margin-bottom: 20px; 
 } 
+.module-MetaLib .no-hits.no-search .loginNotification p:first-child {
+    font-size: 1.2em;
+    padding-left: 25px;
+
+    background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
+    background-position: 0px -2698px;
+
+
+}
 
 /*** Result List ***/
 .resultHeader .headerLeft {
@@ -2814,116 +2852,115 @@ ul.recordSet .resolver {
     display: none;
 }
 
-#metaLibBrowse .resultTerms {
+#browseExtended .resultTerms {
     background: none;
     font-weight: bold;
 }
-#metaLibBrowse #resultList {
+#browseExtended #resultList {
     margin-bottom: 30px;
 }
-#metaLibBrowse li.result .metalib_link.iconsLeft {
+#browseExtended li.result .metalib_link.iconsLeft {
     float: left;
     margin-right: 20px;
 }
-#metaLibBrowse li.result .iconsRight {
+#browseExtended li.result .iconsRight {
     float: right;
 }
-#metaLibBrowse li.result .metalib_link.iconsRight li a span{
+#browseExtended li.result .metalib_link.iconsRight li a span{
     float: right;
 	width:30px;
 	margin-left:0px;   
 }
-#metaLibBrowse .iconsRight .metalib_link a.disabled span,
-#metaLibBrowse .metalibLinkContainer .metalib_link a.disabled span {
-    opacity: 0.5;
-    cursor: default;
-}
 
-#metaLibBrowse .metalib_link ul li {
+#browseExtended .metalib_link ul li {
     display: inline-block;
 }
 
 
-#metaLibBrowse .metalib_link span {
+#browseExtended .metalib_link span {
     background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
     width: 20px;
     height: 25px;
     display: block;
 }
-#metaLibBrowse .metalibLinkContainer .metalib_link span {
+#browseExtended .iconsRight .metalib_link a span {
     display: none;
 }
-
-#metaLibBrowse .iconsRight .metalib_link span {
-    visibility: hidden;
+#browseExtended .iconsRight .metalib_link {
+    min-width: 25px;
+    min-height: 25px;
 }
 
-#metaLibBrowse li.result .metalib_link.iconsLeft span {
+#browseExtended .iconsRight .metalib_link a span.visible,
+#browseExtended .metalib_link .metalibSearchDisallow.visible {
+    display: block;
+}
+
+#browseExtended li.result .metalib_link.iconsLeft span {
     width: 33px;
 }
-#metaLibBrowse li.result .iconsRight .searchDisallow {
+#browseExtended li.result .iconsRight .searchDisallow {
     margin-left: -5px;
     margin-top: 6px;
     height: 21px;
     float: left;
 }
-#metaLibBrowse .metalib_link .metalibSearchDisallow {
-    visibility: hidden;
+#browseExtended .metalib_link .metalibSearchDisallow {
+    display: none; //visibility: hidden;
     background-position: 0px -2698px;
 }
-#metaLibBrowse .search {
+#browseExtended .search {
     float: left;
 }
-#metaLibBrowse .search span.metalib_link.ajax_fulltext_availability {
+#browseExtended .search span.metalib_link.ajax_fulltext_availability {
     padding: 0;
     background: none;
 }
-#metaLibBrowse .searchDisallow span.metalib_link.ajax_fulltext_availability {
+#browseExtended .searchDisallow span.metalib_link.ajax_fulltext_availability {
     display: block;
-    //overflow: hidden;
     height: 20px;
     padding: 0;
 }
-#metaLibBrowse li.result .moreinfo .metalib_link span {
+#browseExtended li.result .moreinfo .metalib_link span {
     width: inherit;
 }
-#metaLibBrowse li.result .moreinfo .metalib_link_ok {
+#browseExtended li.result .moreinfo .metalib_link_ok {
     float: left;
 }
-#metaLibBrowse li.result .heading,
-#metaLibBrowse li.result .genre {
+#browseExtended li.result .heading,
+#browseExtended li.result .genre {
     word-wrap: break-word;
 }
-#metaLibBrowse span.metalibSearch {
+#browseExtended span.metalibSearch {
     background-position: 0 -943px;
 }
-#metaLibBrowse .moreinfo span.metalibSearch {
+#browseExtended .moreinfo span.metalibSearch {
     background-position: 0 -947px;
 }
-#metaLibBrowse .metalibSearchDisallow {
+#browseExtended .metalibSearchDisallow {
     background-position: 0 -1281px;
 }
-#metaLibBrowse span.metalib_database_interface {
+#browseExtended span.metalib_database_interface {
     background-position: 0 -2632px;
 }
-#metaLibBrowse span.metalib_database_guide {
+#browseExtended span.metalib_database_guide {
     background-position: 0 -2580px;
 }
-#metaLibBrowse .moreinfo .metalibLinkContainer {
+#browseExtended .moreinfo .metalibLinkContainer {
     margin-top: 20px;
 }
-#metaLibBrowse li.result .moreinfo span.metalibSearch,
-#metaLibBrowse li.result .moreinfo .metalibSearchDisallow {
+#browseExtended li.result .moreinfo span.metalibSearch,
+#browseExtended li.result .moreinfo .metalibSearchDisallow {
     font-weight: bold;
     padding-left: 24px;
 }
-#metaLibBrowse li.result .moreinfo span.metalib_database_interface,
-#metaLibBrowse li.result .moreinfo span.metalib_database_guide  {
+#browseExtended li.result .moreinfo span.metalib_database_interface,
+#browseExtended li.result .moreinfo span.metalib_database_guide  {
 	font-weight: bold;
     padding-left: 28px;
 	line-height:1.9em;
 }
-#metaLibBrowse li.result .moreinfo .metalibSearchDisallow {
+#browseExtended li.result .moreinfo .metalibSearchDisallow {
     display: inline-block;
     background-position: right -2697px;
     padding-right: 38px;
@@ -3422,8 +3459,7 @@ dl.defaultFacet dd {
 .module-Content .contentSection.odd {
     background:#f2f2f2;
 }
-.module-Content .main,
-.module-Browse .main {
+.module-Content .main {
     padding-bottom:40px;
 }
 .contentHeader + .content {
@@ -3800,12 +3836,12 @@ a.fulltext.available {
     overflow: auto;
 }
 .module-Search .resultPagination,
-.module-MetaLib #metaLibBrowse .resultPagination,
+.module-Browse #browseExtended .resultPagination,
 .alphaBrowsePageLinks {
     clear:both;
     background:#e6e6e6;
 }
-.module-MetaLib #metaLibBrowse .resultPagination.sidebarOnLeft .pagination,
+.module-Browse #browseExtended .resultPagination.sidebarOnLeft .pagination,
 .module-Search .resultPagination.sidebarOnLeft .pagination {
     float: right;
 }

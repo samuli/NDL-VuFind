@@ -183,6 +183,7 @@ class AJAX_MetaLib extends Action
                         $setNotification, 
                         '<p>' . translate('metalib_not_authorized_all') . '</p>'
                     );
+                    $interface->assign('noSearch', true);
                 }
 
                 $template = 'list-none.tpl';

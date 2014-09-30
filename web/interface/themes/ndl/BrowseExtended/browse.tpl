@@ -1,15 +1,26 @@
-<!-- START of: MetaLib/browse.tpl -->
+<!-- START of: BrowseExtended/browse.tpl -->
 {if $metalibEnabled}
-{js filename="metalib_links.js"}
+  {js filename="metalib_links.js"}
 {/if}
 
-<div id="metaLibBrowse">
+{if $openUrlAutoCheck}
+  {js filename="openurl.js"}
+  {include file="Search/rsi.tpl"}
+  {include file="Search/openurl_autocheck.tpl"}
+{/if}
+
+{js filename="browse_extended.js"}
+
+{js filename="check_save_statuses.js"}
+
+
+<div id="browseExtended">
   <div class="resultHeader">
     <div class="resultViewOptions">
       <div class="content">
         <div class="resultNumbers">
           {if !empty($pageLinks.pages)}<span class="paginationMove paginationBack {if !empty($pageLinks.back)}visible{/if}">{$pageLinks.back}<span>&#9668;</span></span>{/if}
-          <span class="currentPage"><span>{translate text="Search For Databases"}</span> {$recordStart|number_format:0:".":" "|replace:" ":"&#x2006;"}&#8201;-&#8201;{$recordEnd|number_format:0:".":" "|replace:" ":"&#x2006;"} / </span>
+          <span class="currentPage"><span>{$paginateTitle}</span> {$recordStart|number_format:0:".":" "|replace:" ":"&#x2006;"}&#8201;-&#8201;{$recordEnd|number_format:0:".":" "|replace:" ":"&#x2006;"} / </span>
           <span class="resultTotals">{$recordCount|number_format:0:".":" "|replace:" ":"&#x2006;"}</span>
           {if !empty($pageLinks.pages)}<span class="paginationMove paginationNext {if !empty($pageLinks.next)}visible{/if}">{$pageLinks.next}<span>&#9654;</span></span>{/if}
         </div>
@@ -49,7 +60,7 @@
   </div>
 
   {include file="Search/paging.tpl" position="Bottom"}
-  {js filename="metalib_browse.js"}
-
 </div>
-<!-- END of: MetaLib/browse.tpl -->
+
+<input id="searchForm_type" type="hidden" value="BrowseExtended_{$action}" />
+<!-- END of: BrowseExtended/browse.tpl -->

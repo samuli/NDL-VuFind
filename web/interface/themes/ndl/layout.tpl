@@ -96,6 +96,7 @@
       var path = '{$url}';
       var userLang = '{$userLang}';
       var fullPath = '{$fullPath|escape:'javascript'}';
+      var module = '{$module}';
       var action = '{$action}';
       
       // String translations
@@ -103,6 +104,8 @@
       var trPrev = "{translate text="Prev"}";
       var trClose = "{translate text="Close"}";
       var trListNotes = "{translate text="Description"}";
+      var trMore = "{translate text="More"}";
+      var trLess = "{translate text="less"}";      
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}
@@ -195,9 +198,9 @@
         <script type="text/javascript">
         // Long field truncation
         $(document).ready(function() {
-            $('.truncateField').not('.recordSummary').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}", less: "{/literal}{translate text="less"}{literal}"});
+            $('.truncateField').not('.recordSummary').not('#recentMetalibDatabases').collapse({maxLength: 150, more: "{/literal}{translate text="more"}{literal}", less: "{/literal}{translate text="less"}{literal}"});
             $('.recordSummary.truncateField').collapse({maxLength: 150, maxRows: 5, more: " ", less: " "});{/literal}
-            {literal}
+          {literal}
         });
         // Load child theme custom functions
         customInit();

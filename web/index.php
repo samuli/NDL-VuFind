@@ -183,7 +183,7 @@ if (in_array($module, array('Search', 'PCI', 'MetaLib'))
 
     if ($refModule && $refAction) {
         if (in_array($refModule, array('Search', 'PCI', 'MetaLib'))
-            && in_array($refAction, array('Results', 'DualResults', 'Search', 'Home', 'Browse'))
+            && in_array($refAction, array('Results', 'DualResults', 'Search', 'Home'))
         ) {
             $overridePrefilter = true;
             if ($refAction == 'Home') {

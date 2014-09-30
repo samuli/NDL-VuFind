@@ -1,1 +1,1 @@
-<a href="{$url}/Browse/Home">{translate text="Browse"}</a> <span>&gt;</span>
+{if !$disableBreadcrumbs}<a href="{$url}/Browse/Home">{/if}{translate text="Browse"}{if !$disableBreadcrumbs}</a>{/if}

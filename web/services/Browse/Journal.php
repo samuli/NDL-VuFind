@@ -1,11 +1,12 @@
 <?php
 /**
- * Home action for MetaLib module
+ * Browse action for MetaLib module
  *
  * PHP version 5
  *
  * Copyright (C) Andrew Nagy 2009.
  * Copyright (C) Ere Maijala, The National Library of Finland 2012.
+ * Copyright (C) Samuli Sillanpää, The National Library of Finland 2014.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -24,43 +25,36 @@
  * @package  Controller_MetaLib
  * @author   Andrew Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Samuli Silanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-require_once 'Base.php';
+require_once 'BrowseExtended.php';
+
+
 
 /**
- * Home action for MetaLib module
+ * Browse action for MetaLib module
  *
  * @category VuFind
  * @package  Controller_MetaLib
  * @author   Andrew Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Samuli Silanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-class Home extends Base
+class Journal extends BrowseExtended
 {
-    /**
-     * Display the page.
-     *
-     * @return void
-     * @access public
-     */
-    public function launch()
+    protected function initSearchObject($searchObject) 
     {
-        global $interface;
+        $searchObject->init(
+            'database', 
+            array('format:1/Journal/eSerial/'), 
+            array('coreGenres' => 'genre')
+        );
 
-
-        include_once 'services/Browse/Database.php';
-        $action = new Database();
-        
-
-        $interface->assign('browseDatabases', $action->getBrowseUrl('Database'));
-
-        $interface->setPageTitle('Search Home');
-        $interface->setTemplate('home.tpl');
-        $interface->display('layout.tpl');
+        return $searchObject;
     }
 
 }

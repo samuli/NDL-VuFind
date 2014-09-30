@@ -230,14 +230,6 @@ interface RecordInterface
     public function getSearchResult($view = 'list');
 
     /**
-     * Assign Smarty variables for MetaLib database browsing.
-     *
-     * @return none
-     * @access public
-     */
-    public function assignMetaLibBrowseData();
-
-    /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display the full record information on the Staff
      * View tab of the record view page.

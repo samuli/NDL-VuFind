@@ -29,7 +29,11 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-require_once 'Base.php';
+require_once 'Action.php';
+
+
+
+require_once 'services/MetaLib/Base.php';
 require_once 'sys/Pager.php';
 require_once 'services/MyResearch/Login.php';
 require_once 'services/MyResearch/lib/User.php';
@@ -45,7 +49,7 @@ require_once 'services/MyResearch/lib/User.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-class Browse extends Base
+class BrowseExtended extends Action
 {
     /**
      * Process parameters and display the page.
@@ -57,78 +61,39 @@ class Browse extends Base
     {
         global $interface;
         global $configArray;
+        global $action;
 
         $this->disallowBots();
 
-        $returnUrl = null;
+        $enabledActions = array();
 
-        $siteUrl = $interface->get_template_vars('url');
-
-        // Build return link back to MetaLib search
-        if (isset($_SERVER['HTTP_REFERER'])) {
-            $parts = parse_url($_SERVER['HTTP_REFERER']);
-            $pathParts = explode('/', $parts['path']);
-            
-            $refAction = array_pop($pathParts);
-            $refModule = array_pop($pathParts);
-        
-            $returnUrl = null;
-            $siteUrl = $interface->get_template_vars('url');
-
-            if ($refModule !== 'MetaLib') {
-                // Called outside MetaLib: no need to display link back to MetaLib.
-                unset($_SESSION['backToMetaLibURL']);
-                unset($_SESSION['metalibLookfor']);
-            } else {
-                if ($refAction === 'Home') {
-                    // Called from MetaLib/Home: return to same page and reset previous MetaLib search term.
-                    $returnUrl = "$siteUrl/MetaLib/Home";
-                    unset($_SESSION['metalibLookfor']);
-                } else if ($refAction === 'Search') {
-                    if (stripos($_SESSION['lastSearchURL'], '/MetaLib/Search') !== false) {
-                        // Called from MetaLib/Search: Set return url to current MetaLib search.
-                        $returnUrl = $_SESSION['lastSearchURL'];
-                    } else {
-                        // Previous search was outside MetaLib: reset search term and return to MetaLib/Home.
-                        $returnUrl = "$siteUrl/MetaLib/Home";
-                        unset($_SESSION['metalibLookfor']);
-                    }
-                } else if (isset($_SESSION['backToMetaLibURL'])) {
-                    // Called from MetaLib/Browse: use stored return url.
-                    $returnUrl = $_SESSION['backToMetaLibURL'];
+        $searchSettings = getExtraConfigArray('searches');
+        if (isset($searchSettings['BrowseExtended'])) {
+            foreach ($searchSettings['BrowseExtended'] as $key => $val) {
+                if ((boolean)$val) {
+                    $enabledActions[] = $key;
                 }
             }
-
-            if ($returnUrl && $interface->get_template_vars('metalibEnabled')) {
-                $_SESSION['backToMetaLibURL'] = $returnUrl;
-                $interface->assign('backToMetaLib', $returnUrl);
-                $interface->assign('backToMetaLibLabel', translate('Back to MetaLib Search'));
-            }
-        } else {
-            unset($_SESSION['metalibLookfor']);
+        }
+        
+        if (!in_array($action, $enabledActions)) {
+            die("not enabled");
         }
 
-
-       
-        if (isset($_REQUEST['refLookfor'])) {
-            $_SESSION['metalibLookfor'] = $_REQUEST['refLookfor'];
-        }       
-        $metalibSearch = null;
-        if (isset($_SESSION['metalibLookfor']) && $_SESSION['metalibLookfor'] !== '') {
-            $metalibSearch = $this->getBrowseUrl('Search', $_SESSION['metalibLookfor']);
-        } else {
-            $metalibSearch = $this->getBrowseUrl('Home');
+        if (!isset($searchSettings["BrowseExtended:$action"])) {
+            die("not configured");            
         }
-        $interface->assign('metalibSearch', $metalibSearch);
+        $settings = $searchSettings["BrowseExtended:$action"];
+
+        $searchObject = SearchObjectFactory::initSearchObject('SolrBrowseExtended');
+        $openUrl = isset($settings['openUrl']) ? $settings['openUrl'] : false;
+        $favorites = isset($settings['favorites']) ? $settings['favorites'] : false;
 
 
+        $searchObject->init($action);
 
-        $searchObject = SearchObjectFactory::initSearchObject('SolrMetaLibBrowse');
-        $searchObject->init();
-        $searchObject->setLimit(100);
-        $searchObject->setSort('title');
 
-        $result = $searchObject->processSearch(false, false);
+        $result = $searchObject->processSearch(true, true);
         if (PEAR::isError($result)) {
             PEAR::raiseError($result->getMessage());
         }
@@ -139,14 +104,19 @@ class Browse extends Base
         );
 
         $displayQuery = $searchObject->displayQuery();
+
         $interface->assign('lookfor', $displayQuery);
+        $interface->assign('paginateTitle', translate("browse_extended_$action"));
+        $interface->assign('openUrlAutoCheck', $openUrl);
+        $interface->assign('favorites', $favorites);
+        
+        $interface->assign('snippet', 'RecordDrivers/Index/result-browse-snippet-' . strtolower($action) . '.tpl');
+        $interface->assign('more', 'RecordDrivers/Index/result-browse-more-' . strtolower($action) . '.tpl');
+        $interface->assign('disableBreadcrumbs', true);
 
         // If no record found
         if ($searchObject->getResultTotal() < 1) {
-            // Don't let bots crawl "no results" pages
-            $this->disallowBots();
-
-            $interface->setTemplate('list-none.tpl');
+            $interface->setTemplate('../BrowseExtended/list-none.tpl');
         } else {
             $summary = $searchObject->getResultSummary();
             $interface->assign('recordCount', $summary['resultTotal']);
@@ -155,7 +125,7 @@ class Browse extends Base
 
             $interface->assign('recordSet', $searchObject->getResultRecordHTML());
 
-            $interface->setTemplate('browse.tpl');
+            $interface->setTemplate('../BrowseExtended/browse.tpl');
 
             // Process Paging
             $link = $searchObject->renderLinkPageTemplate();
@@ -165,6 +135,12 @@ class Browse extends Base
             $pager = new VuFindPager($options);
             $interface->assign('pageLinks', $pager->getLinks());
         }
+
+
+
+        $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
+
+
         $searchObject->close();
 
         $scroller = new ResultScroller();
@@ -174,6 +150,12 @@ class Browse extends Base
         $interface->display('layout.tpl');
     }
 
+
+    protected function initSearchObject($searchObject) 
+    {
+        return $searchObject;
+    }
+    
 }
 
 ?>

@@ -1178,24 +1178,6 @@ class IndexRecord implements RecordInterface
     }
 
     /**
-     * Assign Smarty variables for MetaLib database browsing.
-     *
-     * @return none
-     * @access public
-     */
-    public function assignMetaLibBrowseData()
-    {
-        global $interface;
-
-        $this->getExtendedMetadata();
-        
-        $browseFields = array('coreGenres' => 'genre');
-        foreach ($browseFields as $key => $val) {
-            $interface->assign($key, isset($this->fields[$val]) ? $this->fields[$val] : array());
-        }
-    }
-
-    /**
      * Return metadata required for RSI full text availability check
      * 
      * @return NULL|array

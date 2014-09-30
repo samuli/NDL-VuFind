@@ -11,7 +11,7 @@ function enableDynatree(tree, facet, url, action, searchObject)
 	},
 	onLazyRead: function(node) {
       var level = node.data.level + 1;
-      getFacetList(node, node.tree.options.query, node.tree.options.query.action, node.data.facet, level, node.data.filter, node.data.searchObject);
+      getFacetList(node, node.tree.options.query, node.tree.options.query.action || node.data.action, node.data.facet, level, node.data.filter, node.data.searchObject);
     }
   });
   var node = $(tree).dynatree("getRoot");
@@ -26,6 +26,7 @@ function getFacetList(node, query, action, facet, level, prefix, searchObject)
     facetName: facet,
     facetLevel: level,
     facetPrefix: prefix,
+    vufindAction: action
   };
   if (searchObject) {
     params['searchObject'] = searchObject;
@@ -45,7 +46,7 @@ function getFacetList(node, query, action, facet, level, prefix, searchObject)
               e.value = e.value.replace(/^\d+\//, '');
           }
           res.push({title: '<span class="facetTitle" title="' + title + '">' + e.value + '</span><span class="facetCount"> (' + e.count + ')</span>', href: e.url, url: e.url, icon: false, 
-        	facet: facet, level: level, filter: e.untranslated, searchObject: searchObject, unselectable: true, isLazy: e.children ? true : false});
+        	facet: facet, level: level, filter: e.untranslated, searchObject: searchObject, action: action, unselectable: true, isLazy: e.children ? true : false});
         }
         node.setLazyNodeStatus(DTNodeStatus_Ok);
         node.addChild(res);
