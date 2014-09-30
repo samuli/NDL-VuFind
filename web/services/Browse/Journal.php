@@ -46,17 +46,13 @@ require_once 'BrowseExtended.php';
  */
 class Journal extends BrowseExtended
 {
-    protected function initSearchObject($searchObject) 
+    public function launch()
     {
-        $searchObject->init(
-            'database', 
-            array('format:1/Journal/eSerial/'), 
-            array('coreGenres' => 'genre')
-        );
+        global $interface;
 
-        return $searchObject;
+        $interface->assign('openUrlAutoCheck', true);
+        parent::launch();
     }
-
 }
 
 ?>

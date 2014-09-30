@@ -112,18 +112,6 @@ class Database extends BrowseExtended
 
     }
 
-    /*
-    protected function initSearchObject($searchObject) 
-    {
-        $searchObject->init(
-            'database', 
-            array('format:0/Database/'), 
-            array('coreGenres' => 'genre')
-        );
-
-        return $searchObject;
-        }*/
-
     /**
      * Build a url to or from MetaLib Browse.
      *

@@ -77,19 +77,16 @@ class BrowseExtended extends Action
         }
         
         if (!in_array($action, $enabledActions)) {
-            die("not enabled");
+            PEAR::raiseError("Browse action $action not enabled"); 
+        }
+        if (!isset($searchSettings["BrowseExtended:$action"])) {
+            PEAR::raiseError("Browse action $action not configured"); 
         }
 
-        if (!isset($searchSettings["BrowseExtended:$action"])) {
-            die("not configured");            
-        }
+
         $settings = $searchSettings["BrowseExtended:$action"];
 
         $searchObject = SearchObjectFactory::initSearchObject('SolrBrowseExtended');
-        $openUrl = isset($settings['openUrl']) ? $settings['openUrl'] : false;
-        $favorites = isset($settings['favorites']) ? $settings['favorites'] : false;
-
-
         $searchObject->init($action);
 
 
@@ -107,9 +104,6 @@ class BrowseExtended extends Action
 
         $interface->assign('lookfor', $displayQuery);
         $interface->assign('paginateTitle', translate("browse_extended_$action"));
-        $interface->assign('openUrlAutoCheck', $openUrl);
-        $interface->assign('favorites', $favorites);
-        
         $interface->assign('snippet', 'RecordDrivers/Index/result-browse-snippet-' . strtolower($action) . '.tpl');
         $interface->assign('more', 'RecordDrivers/Index/result-browse-more-' . strtolower($action) . '.tpl');
         $interface->assign('disableBreadcrumbs', true);
