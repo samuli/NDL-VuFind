@@ -70,8 +70,9 @@ class AJAX_PopularSearches extends Action
             'format'       => 'json',
             'method'       => 'Actions.getSiteSearchKeywords',
             'idSite'       => $configArray['Piwik']['site_id'],
-            'period'       => 'week',
-            'date'         => date('Y-m-d'),
+            'period'       => 'range',
+            'date'         => date('Y-m-d', strtotime('-30 days')) .',' .
+                              date('Y-m-d'),
             'token_auth'   => $configArray['Piwik']['token_auth']
         );
         $url = $configArray['Piwik']['url'];
