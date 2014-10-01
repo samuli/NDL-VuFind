@@ -52,11 +52,12 @@ class Home extends Base
         global $interface;
 
 
-        include_once 'services/Browse/Database.php';
-        $action = new Database();
         
-
-        $interface->assign('browseDatabases', $action->getBrowseUrl('Database'));
+        if ($this->isBrowseEnabled()) {
+            include_once 'services/Browse/Database.php';
+            $action = new Database();
+            $interface->assign('browseDatabases', $action->getBrowseUrl('Database'));
+        }
 
         $interface->setPageTitle('Search Home');
         $interface->setTemplate('home.tpl');

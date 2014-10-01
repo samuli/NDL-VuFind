@@ -77,10 +77,10 @@ class Database extends BrowseExtended
                     }
                 }
             } else if ($refModule == 'Browse' && $refAction === 'Database' && isset($_SESSION['backToMetaLibURL'])) {
-                // Called from MetaLib/Browse: use stored return url.
+                // Called from Browse/Database: use stored return url.
                 $returnUrl = $_SESSION['backToMetaLibURL'];            
             } else {
-                // Called outside MetaLib: no need to display link back to MetaLib.
+                // Called outside Browse/Database and MetaLib: no need to display link back to MetaLib.
                 unset($_SESSION['backToMetaLibURL']);
                 unset($_SESSION['metalibLookfor']);            
             }
@@ -129,6 +129,7 @@ class Database extends BrowseExtended
         $fullPath = $interface->get_template_vars('fullPath');
         $parts = parse_url($fullPath);
         $params = isset($parts['query']) ? $parts['query'] : null;
+        $tmp = null;
 
         $searchTermReplaced = false;
         if ($params) {

@@ -107,7 +107,7 @@ class BrowseExtended extends Action
         $interface->assign('snippet', 'RecordDrivers/Index/result-browse-snippet-' . strtolower($action) . '.tpl');
         $interface->assign('more', 'RecordDrivers/Index/result-browse-more-' . strtolower($action) . '.tpl');
         $interface->assign('disableBreadcrumbs', true);
-
+        
         // If no record found
         if ($searchObject->getResultTotal() < 1) {
             $interface->setTemplate('../BrowseExtended/list-none.tpl');

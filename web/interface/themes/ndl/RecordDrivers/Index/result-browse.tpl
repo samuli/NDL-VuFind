@@ -11,10 +11,12 @@
             <h4>{if !empty($summHighlightedTitle)}{$summHighlightedTitle|addEllipsis:$summTitle|highlight}{elseif !$summTitle}{translate text='Title not available'}{else}{$summTitle|truncate:180:"..."|escape}{/if}</h4>
           </a>
 
+          {if $showSavedLists}
           <div class="savedLists info hide" id="savedLists{$summId|escape}">
             <strong>{translate text="Saved in"}:</strong>
           </div>
-
+          {/if}
+          
         </div>
     </p>    
   </div>

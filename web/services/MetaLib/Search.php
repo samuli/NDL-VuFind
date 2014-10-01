@@ -72,10 +72,11 @@ class Search extends Base
         $interface->assign('searchWithoutFilters', $this->searchObject->renderSearchUrlWithoutFilters());
         $interface->assign('searchWithFilters', $this->searchObject->renderSearchUrl());
 
-        include_once 'services/Browse/Database.php';
-        $action = new Database();
-
-        $interface->assign('browseDatabases', $action->getBrowseUrl('Database'));        
+        if ($this->isBrowseEnabled()) {
+            include_once 'services/Browse/Database.php';
+            $action = new Database();            
+            $interface->assign('browseDatabases', $action->getBrowseUrl('Database'));        
+        }
 
         if ($showGlobalFiltersNote = $interface->getGlobalFiltersNotification('MetaLib Searches')) {
             $interface->assign('showGlobalFiltersNote', $showGlobalFiltersNote);

@@ -23,7 +23,7 @@
         
 
     </div>
-
+    {if $browseDatabases}
     <div id="browseLink"><a href="{$browseDatabases}">{translate text="browse_extended_Database"}</a></div>
-
+    {/if}
   </form>

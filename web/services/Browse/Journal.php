@@ -51,6 +51,8 @@ class Journal extends BrowseExtended
         global $interface;
 
         $interface->assign('openUrlAutoCheck', true);
+        $interface->assign('showSavedLists', true);
+
         parent::launch();
     }
 }

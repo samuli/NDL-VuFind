@@ -101,4 +101,19 @@ class Base extends Action
         set_time_limit(60);
     }
 
+    protected function isBrowseEnabled()
+    {
+        $searchSettings = getExtraConfigArray('searches');
+        
+        if (isset($searchSettings['BrowseExtended'])) {
+            foreach ($searchSettings['BrowseExtended'] as $key => $val) {
+                if (strcmp('Database', $key) === 0 && (boolean)$val) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
