@@ -27,6 +27,8 @@
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 require_once 'services/MyResearch/MyResearch.php';
+require_once 'sys/PaymentRegister/PaymentRegisterFactory.php';
+require_once 'sys/Webpayment/WebpaymentFactory.php';
 
 /**
  * Fines action for MyResearch module
@@ -48,23 +50,90 @@ class Fines extends MyResearch
      */
     public function launch()
     {
+        global $configArray;
         global $interface;
         global $finesIndexEngine;
 
         // Assign the ID of the last search so the user can return to it.
-        $interface->assign(
-            'lastsearch',
-            isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : 'perkele'
-        );
+        if (isset($_SESSION['lastSearchURL'])) {
+            $interface->assign('lastsearch', $_SESSION['lastSearchURL']);
+        }
 
         // Get My Fines
         if ($patron = UserAccount::catalogLogin()) {
             if (PEAR::isError($patron)) {
                 $this->handleCatalogError($patron);
             } else {
+                $webpaymentHandler = null;
+                $webpaymentEnabled = false;
+                $webpaymentConfig = $this->catalog->getConfig('Webpayment');
+                if (isset($webpaymentConfig) && isset($webpaymentConfig['enabled'])
+                    && $webpaymentConfig['enabled']
+                ) {
+                    $webpaymentEnabled = true;
+                }
+                $paymentRegisterConfig = $this->catalog->getConfig('PaymentRegister');
+                if ($webpaymentEnabled) {
+                    if (isset($webpaymentConfig['handler'])) {
+                        try {
+                            $paymentRegister = null;
+                            if (isset($paymentRegisterConfig)
+                                && isset($paymentRegisterConfig['handler'])
+                            ) {
+                                $paymentRegister
+                                    = PaymentRegisterFactory::initPaymentRegister(
+                                        $paymentRegisterConfig['handler'],
+                                        $paymentRegisterConfig
+                                    );
+                            }
+                            $webpaymentHandler = WebpaymentFactory::initWebpayment(
+                                $webpaymentConfig['handler'], $webpaymentConfig,
+                                $paymentRegister
+                            );
+                        } catch (Exception $e) {
+                            if ($configArray['System']['debug']) {
+                                echo "Exception: " . $e->getMessage();
+                            }
+                            error_log(
+                                "Webpayment handler exception: " . $e->getMessage()
+                            );
+                            $webpaymentHandler = null;
+                        }
+                    }
+                    if (isset($_REQUEST['payment_status']) && $webpaymentHandler) {
+                        $responseMsg = $webpaymentHandler->processResponse(
+                            $patron['cat_username'], $_REQUEST['payment_status'],
+                            $_REQUEST
+                        );
+                        if ($responseMsg) {
+                            $interface->assign('webpaymentStatusMsg', $responseMsg);
+                        }
+                    }
+                }
+
                 $result = $this->catalog->getMyFines($patron);
                 $loans = $this->catalog->getMyTransactions($patron);
                 if (!PEAR::isError($result)) {
+                    if ($webpaymentHandler) {
+                        $webpaymentData 
+                            = $webpaymentHandler->getPaymentData($patron, $result);
+                        if (isset($webpaymentData['permitted'])
+                            && $webpaymentData['permitted']
+                        ) {
+                            $followupUrl
+                                = $configArray['Site']['url'] . '/MyResearch/Fines';
+                            $statusParam = 'payment_status';
+                            $webpaymentAmount = $webpaymentData['amount'];
+                            $interface->assign(
+                                'webpaymentForm', $webpaymentHandler->displayPaymentForm(
+                                    $patron['cat_username'], $webpaymentAmount,
+                                    $result, $followupUrl, $statusParam
+                                )
+                            );
+                        }
+                        $interface->assign('webpaymentData', $webpaymentData);
+                    }
+
                     // assign the "raw" fines data to the template
                     // NOTE: could use foreach($result as &$row) here but it only works
                     // with PHP5

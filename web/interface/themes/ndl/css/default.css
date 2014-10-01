@@ -1127,7 +1127,7 @@ div.dialogLoading {
     height: 20px;
 }
 
-.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading, .ajax_hold_request_loading {
+.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading, .ajax_hold_request_loading, .ajax_register_payment {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
@@ -2346,6 +2346,19 @@ clear:both;
     background-position: 6px -161px;
     background-repeat: no-repeat;
     
+}
+
+.myResearch table.webpaymentSummary {
+    border: 0px;
+    box-shadow: none !important;
+}
+.myResearch table.webpaymentSummary td {
+    border-top: 0px;
+}
+#paytrail-logo {
+    width: 40px;
+    height: 40px;
+    vertical-align:middle;
 }
 
 /***   Login information    ***/

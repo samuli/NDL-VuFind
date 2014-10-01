@@ -565,3 +565,10 @@ span.dynatree-node {
     padding: 5px 7px;
     float:left;
 }
+
+.webpaymentRemark, .webpaymentNonpayableAmount {
+    color: #888;
+}
+td.webpaymentSummaryAmount {
+    font-weight: bold;
+}

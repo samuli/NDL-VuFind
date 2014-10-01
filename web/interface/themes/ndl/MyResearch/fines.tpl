@@ -1,4 +1,8 @@
 <!-- START of: MyResearch/fines.tpl -->
+{if !empty($webpaymentData) || !empty($ajaxRegisterPayment)}
+   {js filename="webpayment.js"}
+{/if}
+
 
 {include file="MyResearch/menu.tpl"}
 <div class="myResearch finesList{if $sidebarOnLeft} last{/if}">
@@ -25,6 +29,19 @@
         {/foreach}
       {/if}
     {if $user->cat_username}
+      {if !empty($webpaymentStatusMsg)}
+         <div class="webpaymentMessage info">{$webpaymentStatusMsg|translate}.{if !empty($webpaymentPaidFines)}{include file="MyResearch/webpayment-fines-paid.tpl" fines=$webpaymentPaidFines}{/if}</div>
+         <div class="webpaymentMessage info">
+          {if $ajaxRegisterPayment}
+            <span class="ajax_register_payment hide" id="webpaymentStatusSpinner">{translate text="Registering Payment"}</span>
+            <div class="hide" id="webpaymentRegisterStatus"></div>
+          {/if}
+          <div id="webpaymentStatus"{if $ajaxRegisterPayment} class="hide"{/if}>
+            {$webpaymentStatusMsg|translate}.{if !empty($webpaymentPaidFines)}{include file="MyResearch/webpayment-fines-paid.tpl" fines=$webpaymentPaidFines}{/if}
+          </div>
+        </div>
+      {/if}
+
       <h2>{translate text='Your Fines'}: 
       {foreach from=$catalogAccounts item=account}
         {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
@@ -63,7 +80,7 @@
         </tr>
         {foreach from=$rawFinesData item=record}
           <tr>
-            <td>
+            <td class="fineTitle">
           {if is_array($record.format)}
           {assign var=mainFormat value=$record.format.0} 
           {assign var=displayFormat value=$record.format|@end} 
@@ -81,12 +98,35 @@
             <td>{$record.checkout|escape}</td>
             <td>{$record.duedate|escape}</td>
             <td class="fine">{translate text=$record.fine|escape prefix="status_"}</td>
-            {* <td>{$record.amount/100.00|safe_money_format|escape}</td> *}
-            <td style="text-align:right;">{$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}</td>
+            <td class="fineAmount" style="text-align:right;">
+              {if !empty($webpaymentData) && empty($record.payableOnline)}<span class="webpaymentNonpayableAmount">{/if}
+              {$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}
+              {if !empty($webpaymentData) && empty($record.payableOnline)}</span>{/if}
+              {if !empty($record.webpaymentRemark)}<div class="webpaymentRemark">{translate text=$record.webpaymentRemark}</div>{/if}
+            </td>
           </tr>
         {/foreach}
-        <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
-      {/if}
+        <tr><td colspan="5" class="fineBalance">
+          {translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
+          {if !empty($webpaymentData) && is_array($webpaymentData) && empty($ajaxRegisterPayment)}
+             {if !$webpaymentData.permitted}
+               <div class="webpaymentRemark">{$webpaymentData.paymentNotPermittedInfo}{if !empty($webpaymentData.minimumFee)} <span class="hefty">{$webpaymentData.minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>{/if}</div>
+             {else}
+               <br/>
+               {translate text='webpayment_payable_online'}: <span class="hefty">{$webpaymentData.payableSum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
+               {if !empty($webpaymentData.transactionFee)}
+                  <div class="webpaymentRemark" id="transactionFee">
+                    {translate text='webpayment_transaction_fee'}: <span class="hefty">{$webpaymentData.transactionFee/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
+                  </div>
+               {/if}
+               <div>
+               {assign var=amountFormatted value=$webpaymentData.amount/100.00|safe_money_format|replace:"Eu":" €"|escape}
+               {include file=$webpaymentForm paymentAmountFormatted=$amountFormatted}
+               </div>
+             {/if}
+          {/if}
+        </td></tr>
+       {/if}
     </table>
     {/if}
     {/if}
