@@ -14,27 +14,9 @@
   {/if}
   
   {* BTJ description start *}
-  <tr valign="top" class="extendedBTJDescription" id="btjdescription" style="display: none;">
-    <th>{translate text='Description'}: </th>
-    <td id="btjdescription_text"><img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
-      <script type="text/javascript">
-      //<![CDATA[
-     var path = {$path|@json_encode};
-     var id = {$id|@json_encode};
-     {literal}
-     $(document).ready(function() {
-       var url = path + '/AJAX/AJAX_Description?id=' + id;
-       $("#btjdescription_text").load(url, function(response, status, xhr) {
-       if (response.length != 0) {
-         $("#btjdescription").show();
-       }
-       });
-     });
-     //]]>
-     {/literal}
-      </script>  
-    </td>  
-  </tr>
+  {if $driver != 'AxiellWebServices'}
+    {include file='RecordDrivers/Index/extended-btjdescription.tpl'}
+  {/if} 
   {* BTJ description end *}
 
   {if !empty($extendedDateSpan)}
