@@ -19,14 +19,25 @@ $(document).ready(function() {
 });
 
 function loadResolverLinks($target, openUrl) {
-    $target.addClass('ajax_availability');
+    if (module == 'Browse') {
+        $target.hide();
+        $target.closest('li.result').addClass('ajax_availability_browse');
+    } else {
+        $target.addClass('ajax_availability');
+    }
     var url = path + '/AJAX/JSON?' + $.param({method:'getResolverLinks',openurl:openUrl});
     $.ajax({
         dataType: 'json',
         url: url,
         success: function(response) {
+            $target.show();
             if (response.status == 'OK') {
-                $target.removeClass('ajax_availability').empty().append(response.data);
+                if (module == 'Browse') {
+                    $target.closest('li.result').removeClass('ajax_availability_browse');
+                } else {
+                    $target.removeClass('ajax_availability');                    
+                }
+                $target.empty().append(response.data);
                 link = $target.find('.openurl_more');
 
                 if (module == 'Browse' && action == 'Journal') {
@@ -59,8 +70,12 @@ function loadResolverLinks($target, openUrl) {
                     e.preventDefault();
                 });
             } else {
-                $target.removeClass('ajax_availability').addClass('error')
-                    .empty().append(response.data);
+                if (module == 'Browse') {
+                    $target.closest('li.result').removeClass('ajax_availability_browse');
+                } else {
+                    $target.removeClass('ajax_availability');
+                } 
+                $target.addClass('error').empty().append(response.data);
                 $('.iframe_loading').removeClass('iframe_loading');
             }
         }
