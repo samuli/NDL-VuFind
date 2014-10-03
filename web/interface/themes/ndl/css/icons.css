@@ -568,7 +568,7 @@ span.dynatree-expander:hover {
 #recordMetadata .moreLink a:after, #recordMetadata .lessLink a:after,
 .module-Browse .moreinfo .moreLink a:after, .module-Browse .moreinfo .lessLink a:after,
 .module-MetaLib #recentMetalibDatabases .moreLink a:after, .module-MetaLib #recentMetalibDatabases .lessLink a:after,
-.openWindow {
+.openWindow,#browseExtended li.result .moreinfo .recordLink {
     background-image: url(../images/icons16-24px-02_turquoise.png);
 }
 .mailRecord.mail {

@@ -787,6 +787,22 @@
 	.callSlipPlace {
 		margin-top:5px;	
 	}
+	/*** Browsemode adjustments ***/
+	#browseExtended li.result .summary, #browseExtended li.result .authors {
+		width:45%;	
+	}
+	#browseExtended li.result .grid_8.snippet {
+		width:45%;	
+	}
+	#browseExtended li.result .grid_7 {
+		width:42%;	
+	}
+	#browseExtended li.result .grid_4.genre {
+		width:18%;	
+	}
+	#browseExtended li.result .grid_4 {
+		width:28%;	
+	}
 
     /*** Login ***/
     .loginForm .grid_7, .loginForm .grid_14 {

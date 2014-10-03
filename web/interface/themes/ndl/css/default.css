@@ -2817,6 +2817,10 @@ div[id*="locationDetails"] {
 ul.recordSet .resolver {
     padding-top: 4px;
 }
+ul.recordSet .result.ajax_availability_browse {
+    background-image: url('../images/ajax_loading.gif');
+    background-position: 94% 10px;
+}
 
 .availableTotals, .noAvailabilityInfo, .moreDataLink {
     display:none;
@@ -2967,7 +2971,17 @@ ul.recordSet .resolver {
     padding-right: 38px;
     padding-left: 10px;
 }
-
+#browseExtended li.result .moreinfo .recordLink {
+	float:right;
+	background-position:0 -2369px;
+	background-repeat:no-repeat;
+}
+#browseExtended li.result .moreinfo .recordLink a {
+	padding-left:12px;
+}
+#browseExtended li.result .moreinfo .openurl_more_full {
+	display:inline-block;	
+}
 
 .recommendation {
     margin: 0 auto;
