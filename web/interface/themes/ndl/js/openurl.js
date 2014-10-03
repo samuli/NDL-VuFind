@@ -13,14 +13,18 @@ $(document).ready(function() {
         var params = extractParams($(this).attr('class'));
         var openUrl = $(this).children('span.openUrl:first').attr('title');
         $(this).hide();
-        loadResolverLinks($('#openUrlEmbed'+params.openurl_id).show(), openUrl);
+
+        var target = $('#openUrlEmbed'+params.openurl_id);
+        if (module != 'Browse') {
+            target.show();
+        }
+        loadResolverLinks(target, openUrl);
         e.preventDefault();
     });
 });
 
 function loadResolverLinks($target, openUrl) {
     if (module == 'Browse') {
-        $target.hide();
         $target.closest('li.result').addClass('ajax_availability_browse');
     } else {
         $target.addClass('ajax_availability');

@@ -122,5 +122,27 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
 
         return $res;
     }
+
+    /**
+     * Build a url for the current search
+     *
+     * @param boolean $includeLocalFilters True if local filters should be included in the URL
+     *
+     * @return string URL of a search
+     * @access public
+     */
+    public function renderSearchUrl($includeLocalFilters = true)
+    {
+        // Temporarily reset 'sort', so that the setting used 
+        // in browsing (by default 'title') does not get included in the URL 
+        // and carried along when the user returns from browsing.
+        $sort = $this->sort;
+        $this->sort = null;
+        $url = parent::renderSearchUrl($includeLocalFilters);
+        $this->sort = $sort;
+        
+        return $url;
+    }
+
 }
 ?>
