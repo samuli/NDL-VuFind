@@ -1,6 +1,6 @@
 <!-- START of: RecordDrivers/Index/core.tpl -->
 
-<div id="recordMetadata">
+<div id="recordMetadata" class="driver-{$driver}">
     
   {* Host Record Title *}    
   {if !empty($coreContainerTitle)}
@@ -36,29 +36,34 @@
   *}
 
   {assign var="idPrefix" value=$id|substr:0:8}
-  {if !empty($coreURLs) || $coreOnlineURLs || $coreMergedRecordData.urls || $idPrefix == 'metalib_'}
-    {if $coreOnlineURLs || $coreMergedRecordData.urls}
-      {if $coreMergedRecordData.urls}
-        {assign var="displayURLs" value=$coreMergedRecordData.urls}
-      {else}
-        {assign var="displayURLs" value=$coreOnlineURLs}
+  {if $driver != 'AxiellWebServices'}
+    {if !empty($coreURLs) || $coreOnlineURLs || $coreMergedRecordData.urls || $idPrefix == 'metalib_'}
+      {if $coreOnlineURLs || $coreMergedRecordData.urls}
+        {if $coreMergedRecordData.urls}
+          {assign var="displayURLs" value=$coreMergedRecordData.urls}
+        {else}
+          {assign var="displayURLs" value=$coreOnlineURLs}
+        {/if}
+        <div class="truncateField">
+        {foreach from=$displayURLs item=urldesc}
+          <div class="fulltextField"><a class="fulltext available" href="{$urldesc.url|proxify|escape}" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}
+          </div>
+        {/foreach}
+      </div>
+      {else if !empty($coreURLs)}
+        {foreach from=$coreURLs item=desc key=currentUrl name=loop}
+          <p><a href="{$currentUrl|proxify|escape}" target="_blank" class="fulltext available">{$desc|translate_prefix:'link_'|escape}</a>
+          </p>
+        {/foreach}
       {/if}
-      <div class="truncateField">
-      {foreach from=$displayURLs item=urldesc}
-        <div class="fulltextField"><a class="fulltext available" href="{$urldesc.url|proxify|escape}" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}
-        </div>
-      {/foreach}
-    </div>
-    {else if !empty($coreURLs)}
-      {foreach from=$coreURLs item=desc key=currentUrl name=loop}
-        <p><a href="{$currentUrl|proxify|escape}" target="_blank" class="fulltext available">{$desc|translate_prefix:'link_'|escape}</a>
-        </p>
-      {/foreach}
     {/if}
   {/if}
 
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
+    {if $driver == 'AxiellWebServices'}
+      {include file='RecordDrivers/Index/extended-btjdescription.tpl'}
+    {/if}
     {* Commented out since these are normally displayed in the links section 
     {if !empty($coreNextTitles)}
     <tr valign="top" class="recordNextTitles">

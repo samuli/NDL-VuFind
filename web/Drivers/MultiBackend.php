@@ -140,6 +140,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($id);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $holdings = $driver->getHolding($this->getLocalId($id), $patron ? $this->stripIdPrefixes($patron, $source) : false);
             if ($holdings) {
@@ -165,6 +168,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($id);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             return $driver->getPurchaseHistory($this->getLocalId($id));
         }
@@ -192,6 +198,9 @@ class MultiBackend implements DriverInterface
     public function getNewItems($page, $limit, $daysOld, $fundId = null)
     {
         $driver = $this->getDriver($this->config['General']['defaultDriver']);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             return $driver->getNewItems($page, $limit, $daysOld, $fundId);
         }
@@ -214,6 +223,9 @@ class MultiBackend implements DriverInterface
     public function findReserves($course, $inst, $dept)
     {
         $driver = $this->getDriver($this->config['General']['defaultDriver']);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             return $driver->findReserves($course, $inst, $dept);
         }
@@ -235,6 +247,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($user['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $profile = $driver->getMyProfile($this->stripIdPrefixes($user, $source));
             return $this->addIdPrefixes($profile, $source);
@@ -265,9 +280,16 @@ class MultiBackend implements DriverInterface
             $source = $this->getDefaultLoginDriver();
         }
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            if ($driver->getMessage() == 'catalog_connection_failed') {
+                return new PEAR_Error('authentication_error_technical');
+            }
+            return $driver;
+        }
         if ($driver) {
             $patron = $driver->patronLogin($this->getLocalId($username), $password);
-            if (!PEAR::isError($patron)) {
+            if (!is_null($patron) && !PEAR::isError($patron)) {
+                $patron['driver'] = get_class($driver);
                 $patron = $this->addIdPrefixes($patron, $source);
                 $_SESSION['logins'][$username] = serialize($patron);
             }
@@ -292,6 +314,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($user['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $transactions = $driver->getMyTransactions($this->stripIdPrefixes($user, $source));
             $transactions = $this->addIdPrefixes($transactions, $source);
@@ -317,6 +342,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($checkoutDetails['id']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $details = $driver->getRenewDetails($this->stripIdPrefixes($checkoutDetails, $source));
             return $this->addIdPrefixes($details, $source);
@@ -340,6 +368,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($renewDetails['patron']['id']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $details = $driver->renewMyItems($this->stripIdPrefixes($renewDetails, $source));
             return $this->addIdPrefixes($details, $source);
@@ -362,6 +393,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($user['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $fines = $driver->getMyFines($this->stripIdPrefixes($user, $source));
             return $this->addIdPrefixes($fines, $source);
@@ -384,6 +418,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($user['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $holds = $driver->getMyHolds($this->stripIdPrefixes($user, $source));
             $holds = $this->addIdPrefixes($holds, $source, array('id', 'item_id', 'cat_username'));
@@ -407,6 +444,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($user['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if (method_exists($driver, 'getMyCallSlips')) {
                 $holds = $driver->getMyCallSlips($this->stripIdPrefixes($user, $source));
@@ -436,6 +476,9 @@ class MultiBackend implements DriverInterface
         }
         $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if ($this->getSource($id) != $source) {
                 return false;
@@ -464,6 +507,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if ($this->getSource($id) != $source) {
                 return false;
@@ -498,6 +544,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if ($holdDetails) {
                 if ($this->getSource($holdDetails['id']) != $source) {
@@ -528,6 +577,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($bibId);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $groups = $driver->getRequestGroups(
                 $this->stripIdPrefixes($bibId, $source),
@@ -557,6 +609,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if ($holdDetails) {
                 if ($this->getSource($holdDetails['id']) != $source) {
@@ -592,6 +647,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if ($holdDetails) {
                 if ($this->getSource($holdDetails['id']) != $source) {
@@ -625,6 +683,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($holdDetails['patron']['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if ($this->getSource($holdDetails['id']) != $source) {
                 return array(
@@ -654,6 +715,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($cancelDetails['patron']['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             return $driver->cancelHolds($this->stripIdPrefixes($cancelDetails, $source));
         }
@@ -677,6 +741,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($holdDetails['id'] ? $holdDetails['id'] : $holdDetails['item_id']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $holdDetails = $this->stripIdPrefixes($holdDetails, $source);
             return $driver->getCancelHoldDetails($holdDetails);
@@ -701,6 +768,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($details['patron']['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             if ($this->getSource($details['id']) != $source) {
                 return array(
@@ -730,6 +800,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($cancelDetails['patron']['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             return $driver->cancelCallSlips($this->stripIdPrefixes($cancelDetails, $source));
         }
@@ -754,6 +827,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($patron['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $details = $this->stripIdPrefixes($details, $source);
             return $driver->getCancelCallSlipDetails($details);
@@ -777,6 +853,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($details['patron']['cat_username']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $details = $this->stripIdPrefixes($details, $source);
             return $driver->changePassword($details);
@@ -800,6 +879,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($details['id']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver && is_callable(array($driver, 'getUBRequestDetails'))) {
             $details = $this->stripIdPrefixes($details, $source, array('id', 'item_id'));
             return $driver->getUBRequestDetails($details);
@@ -822,6 +904,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($details['id']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver && is_callable(array($driver, 'getUBPickupLocations'))) {
             $details = $this->stripIdPrefixes($details, $source, array('id'));
             return $driver->getUBPickupLocations($details);
@@ -846,6 +931,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($details['id']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             $details = $this->stripIdPrefixes($details, $source, array('id', 'item_id'));
             return $driver->placeUBRequest($details);
@@ -864,6 +952,9 @@ class MultiBackend implements DriverInterface
     {
         $source = $this->getSource($patron['id']);
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
         if ($driver) {
             return $driver->getPatronAuthorizationStatus(
                 $this->stripIdPrefixes($patron, $source)
@@ -894,6 +985,9 @@ class MultiBackend implements DriverInterface
         }
 
         $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
 
         // If we have resolved the needed driver, just getConfig and return.
         if ($driver && method_exists($driver, 'getConfig')) {
@@ -974,6 +1068,21 @@ class MultiBackend implements DriverInterface
         }
         return '';
     }
+    
+    /**
+     * Get record source driver
+     *
+     * @param string $id Prefixed ID
+     *
+     * @return string Driver
+     */
+    public function getSourceDriver($id) {
+        $source = $this->getSource($id);
+        $config = $this->config;
+        if (isset($config[$source]) && isset($config[$source]['driver'])) {
+            return $config[$source]['driver'];
+        }
+    }
 
     /**
      * Find the correct driver for the given source
@@ -1011,7 +1120,7 @@ class MultiBackend implements DriverInterface
                 return $driver;
             } catch (Exception $e) {
                 error_log("MultiBackend: error initializing driver '$driver': " . $e->__toString());
-                return null;
+                return new PEAR_Error('catalog_connection_failed');
             }
         }
         return null;

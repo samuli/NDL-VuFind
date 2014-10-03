@@ -67,6 +67,9 @@ class Holdings extends Record
         // See if patron is logged in to pass details onto get holdings for
         // holds / recalls
         $patron = UserAccount::isLoggedIn() ? UserAccount::catalogLogin() : false;
+        if (PEAR::isError($patron)) {
+            $patron = false;
+        }
 
         $interface->setPageTitle(
             $this->recordDriver->getBreadcrumb()

@@ -1337,6 +1337,10 @@ div.truncateField {
 .recordSummary.truncateField .moreLink a {
     background-image: url("../images/datevis_handle_open.png");
 }
+#recordMetadata .recordSummary.truncateField .moreLink a:after,
+#recordMetadata .recordSummary.truncateField .lessLink a:after {
+    background: none;
+}
 div.moreLink {
     position: absolute;
     left: 0; bottom: 0; right: 0;
@@ -2383,6 +2387,9 @@ clear:both;
 .finesList table tr td:first-child {
     padding-left: 29px;
     text-indent: -25px;
+}
+.finesList table tr td.axiellRecordFine:first-child {
+    text-indent: -18px;
 }
 .fineBalance {
     text-align: right;
@@ -4938,6 +4945,12 @@ div.coverImagesLessLink {
 .citation td {
     padding:.5em 0 .5em 1em;
 }
+
+#recordMetadata.driver-AxiellWebServices .citation td {
+    padding:.2em 0 .2em 1em;
+}
+
+
 .citation tr, .citation td {
     vertical-align:top;
 }
@@ -6159,6 +6172,25 @@ padding-right: 20px;
 .myResearch .dueDate.floatright {
 text-align: right;
 padding-right: 10px !important;
+}
+
+.myResearch.holdsList.driver-AxiellWebServices .positionDetails {
+    margin-top:10px;
+    font-size:1.1em;
+}
+
+.myResearch.holdsList.driver-AxiellWebServices .dueDate .available {
+    background: #b1e9dc;
+    border-radius: 5px;
+    color: #0d4549;
+    display: block;
+    padding: 10px;
+    margin-top:10px;
+    font-size:1.1em;
+}
+
+.myResearch.holdsList.driver-AxiellWebServices .dueDate .available:before {
+  display:none;
 }
 
 .myResearch.holdsList .resultColumn2,

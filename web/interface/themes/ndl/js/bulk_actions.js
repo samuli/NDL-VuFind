@@ -251,6 +251,7 @@ function registerFavoritesActions() {
         var $template = $('#sidebarFavoritesLists li.sidebarListTemplate').clone()
             .removeClass('hiddenElement sidebarListTemplate');
         // Set list text
+        listName = $('<div/>').text(listName).html(); // Escape list name
         var $listLink = $template.find('a');
         var linkHtml = listName + ' ' + $listLink.html();
         $listLink.attr('href', $listLink.attr('href')+listId).html(linkHtml);

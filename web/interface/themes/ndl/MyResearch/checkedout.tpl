@@ -150,7 +150,7 @@
             {/if}
             {if !empty($resource.ils_details.renewalCount)}
               <strong>{translate text='Renewed'}:</strong> {$resource.ils_details.renewalCount|escape}
-              {if !empty($resource.ils_details.renewalLimit)} / {$resource.ils_details.renewalLimit|escape}{/if}
+              {if !empty($resource.ils_details.renewalLimit)} / {$resource.ils_details.renewalLimit|escape} {translate text='times'}{/if}
               <br />
             {/if}
             {assign var="showStatus" value="show"}
