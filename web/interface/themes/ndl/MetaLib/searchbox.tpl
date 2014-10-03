@@ -22,7 +22,7 @@
         </div>
      {/if}
 
-        <input type="hidden" name="set" id="searchForm_set" value="{foreach from=$metalibSearchSets item=searchDesc key=searchVal name=loop}{if $searchSet == $searchVal || (!$searchSet && $smarty.foreach.loop.first)}{$searchVal}{/if}{/foreach}">
+        <input type="hidden" name="set" id="searchForm_set" value="{$searchSet}">
         <input id="searchForm_searchButton" type="submit" name="submit" value="{translate text="Find"}"/>
       </div>
     </div>

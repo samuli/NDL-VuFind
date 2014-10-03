@@ -648,6 +648,11 @@ class SearchObject_Solr extends SearchObject_Base
         for ($x = 0; $x < count($this->indexResult['response']['docs']); $x++) {
             $current = & $this->indexResult['response']['docs'][$x];
             $record = RecordDriverFactory::initRecordDriver($current);
+            
+            if (get_class($this) === 'SearchObject_SolrBrowseExtended') { 
+                $record->getCoreMetaData();
+                $record->getExtendedMetadata();
+            } 
             $html[] = $interface->fetch($record->getSearchResult($currentView));
         }
         return $html;
@@ -1101,7 +1106,7 @@ class SearchObject_Solr extends SearchObject_Base
     ) {
         // Our search has already been processed in init()
         $search = $this->searchTerms;
-
+        
         // Build a recommendations module appropriate to the current search:
         if ($recommendations) {
             $this->initRecommendations();

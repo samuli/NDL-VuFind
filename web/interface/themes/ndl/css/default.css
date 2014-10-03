@@ -1135,6 +1135,47 @@ div.dialogLoading {
     background-position:10px top;
 }
 
+.module-Browse .no-hits .content {
+    margin-top: 1em;
+}
+.module-Browse #browseExtended li.result.alt {
+    background-color: #F5F5F5;
+}
+#browseExtended ul.recordSet {
+    margin-top: 0;
+}
+#browseExtended ul.recordSet li h4 {
+    font-size: 1.3em;
+}
+#browseExtended ul.recordSet .result .snippet .savedLists {
+    font-size: 13px;
+}
+
+#browseExtended .recordSet .recordId .resultContentToggle {
+    display: none;
+}
+.module-Browse .recordSet .recordId .savedLists {
+    margin-bottom: 0.1em;
+}
+#browseExtended ul.recordSet li.result {
+    margin-bottom: 0px;
+    padding: 7px 5px 7px 8px;
+}
+#browseExtended ul.recordSet li div.icon {
+    background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
+    background-position: 0 -2367px;
+    padding: 0;
+    width: 15px;
+    height: 18px;
+    float: left;    
+}
+#browseExtended ul.recordSet li div.icon.open {
+    background-position: -2px -2316px;
+}
+#browseExtended ul.recordSet li.result .moreinfo {
+    display: none;
+    margin-top: 20px;
+}
 
 .module-MetaLib .recordSet {
    filter: alpha(opacity=100);
@@ -1176,7 +1217,7 @@ div.metalibLoading.show {
     -khtml-opacity: 1;
     opacity: 1;
     background: #fff;
-	height:100px;
+	min-height:125px;
 
 }
 .metalibLoading img {
@@ -1230,15 +1271,26 @@ div.truncateField {
     height: 1.5em;
     background-color: inherit;
 }
+.module-Browse .moreinfo .truncateField,
 #recordMetadata .truncateField {
     margin-top: .25em;
 }
 
+.module-MetaLib #recentMetalibDatabases .moreLink,
+.module-Browse .moreinfo .moreLink,
 #recordMetadata .moreLink,
 #recordMetadata .lessLink {
     background-color:#fff;
 }
 
+.module-Browse .result.alt .moreinfo .moreLink {
+    background-color:#F5F5F5;
+}
+
+.module-MetaLib #recentMetalibDatabases .moreLink a:after,
+.module-MetaLib #recentMetalibDatabases .lessLink a:after,
+.module-Browse .moreinfo .moreLink a:after,
+.module-Browse .moreinfo .lessLink a:after,
 .coverImages .moreLink a:after,
 .coverImages .lessLink a:after,
 #recordMetadata .moreLink a:after,
@@ -1272,7 +1324,6 @@ div.truncateField {
 .recordSummary.truncateField .lessLink a {
     background-image: url("../images/datevis_handle_close.png");
 }
-
 .recordSummary.truncateField .moreLink a {
     background-image: url("../images/datevis_handle_open.png");
 }
@@ -1285,6 +1336,14 @@ div.moreLink {
     left: 0; bottom: 0; right: 0;
 }
 
+.module-MetaLib #recentMetalibDatabases .lessLink {
+    margin-left: 15px;
+}
+.module-MetaLib #recentMetalibDatabases .moreLink {
+    padding-left: 15px;
+    bottom: -3px;
+    padding-top: 5px;
+}
 
 /** Buttons to do "bulk" actions **/
 
@@ -1526,7 +1585,9 @@ fieldset.publishDateLimit .ui-slider {
     float: left;
 }
 
-.no-hits #sidebarFacets, .module-MetaLib #sidebarFacets {
+.no-hits #sidebarFacets, 
+.module-MetaLib #sidebarFacets, 
+.module-Browse #sidebarFacets {
     margin-top: 0;
 }
 
@@ -2470,11 +2531,20 @@ clear:both;
 }
 
 /*** Login Notification for PCI and MetaLib ***/
-.loginNotification p {
+.loginNotification {
     background: #edf3f6;
     padding: 10px 15px;
     margin-bottom: 20px; 
 } 
+.module-MetaLib .no-hits.no-search .loginNotification p:first-child {
+    font-size: 1.2em;
+    padding-left: 25px;
+
+    background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
+    background-position: 0px -2698px;
+
+
+}
 
 /*** Result List ***/
 .resultHeader .headerLeft {
@@ -2744,6 +2814,10 @@ div[id*="locationDetails"] {
 ul.recordSet .resolver {
     padding-top: 4px;
 }
+ul.recordSet .result.ajax_availability_browse {
+    background-image: url('../images/ajax_loading.gif');
+    background-position: 94% 10px;
+}
 
 .availableTotals, .noAvailabilityInfo, .moreDataLink {
     display:none;
@@ -2778,6 +2852,132 @@ ul.recordSet .resolver {
 
 .module-MetaLib .toolSavedSearch {
     display: none;
+}
+
+#browseExtended .resultTerms {
+    background: none;
+    font-weight: bold;
+}
+#browseExtended #resultList {
+    margin-bottom: 30px;
+}
+#browseExtended li.result .metalib_link.iconsLeft {
+    float: left;
+    margin-right: 20px;
+}
+#browseExtended li.result .iconsRight {
+    float: right;
+}
+#browseExtended li.result .metalib_link.iconsRight li a span{
+    float: right;
+	width:30px;
+	margin-left:0px;   
+}
+
+#browseExtended .metalib_link ul li {
+    display: inline-block;
+}
+
+
+#browseExtended .metalib_link span {
+    background: url("../images/icons16-24px-02_turquoise.png") no-repeat;
+    width: 20px;
+    height: 25px;
+    display: block;
+}
+#browseExtended .iconsRight .metalib_link a span {
+    display: none;
+}
+#browseExtended .iconsRight .metalib_link {
+    min-width: 25px;
+    min-height: 25px;
+}
+
+#browseExtended .iconsRight .metalib_link a span.visible,
+#browseExtended .metalib_link .metalibSearchDisallow.visible {
+    display: block;
+}
+
+#browseExtended li.result .metalib_link.iconsLeft span {
+    width: 33px;
+}
+#browseExtended li.result .iconsRight .searchDisallow {
+    margin-left: -5px;
+    margin-top: 6px;
+    height: 21px;
+    float: left;
+}
+#browseExtended .metalib_link .metalibSearchDisallow {
+    display: none; //visibility: hidden;
+    background-position: 0px -2698px;
+}
+#browseExtended .search {
+    float: left;
+}
+#browseExtended .search span.metalib_link.ajax_fulltext_availability {
+    padding: 0;
+    background: none;
+}
+#browseExtended .searchDisallow span.metalib_link.ajax_fulltext_availability {
+    display: block;
+    height: 20px;
+    padding: 0;
+}
+#browseExtended li.result .moreinfo .metalib_link span {
+    width: inherit;
+}
+#browseExtended li.result .moreinfo .metalib_link_ok {
+    float: left;
+}
+#browseExtended li.result .heading,
+#browseExtended li.result .genre {
+    word-wrap: break-word;
+}
+#browseExtended span.metalibSearch {
+    background-position: 0 -943px;
+}
+#browseExtended .moreinfo span.metalibSearch {
+    background-position: 0 -947px;
+}
+#browseExtended .metalibSearchDisallow {
+    background-position: 0 -1281px;
+}
+#browseExtended span.metalib_database_interface {
+    background-position: 0 -2632px;
+}
+#browseExtended span.metalib_database_guide {
+    background-position: 0 -2580px;
+}
+#browseExtended .moreinfo .metalibLinkContainer {
+    margin-top: 20px;
+}
+#browseExtended li.result .moreinfo span.metalibSearch,
+#browseExtended li.result .moreinfo .metalibSearchDisallow {
+    font-weight: bold;
+    padding-left: 24px;
+}
+#browseExtended li.result .moreinfo span.metalib_database_interface,
+#browseExtended li.result .moreinfo span.metalib_database_guide  {
+	font-weight: bold;
+    padding-left: 28px;
+	line-height:1.9em;
+}
+#browseExtended li.result .moreinfo .metalibSearchDisallow {
+    display: inline-block;
+    background-position: right -2697px;
+    padding-right: 38px;
+    padding-left: 10px;
+}
+#browseExtended li.result .moreinfo .recordLink {
+	float:right;
+	background-position:0 -2369px;
+	background-repeat:no-repeat;
+}
+#browseExtended li.result .moreinfo .recordLink a {
+	padding-left:12px;
+}
+#browseExtended li.result .moreinfo .openurl_more_full {
+	display:inline-block;	
 }
 
 .recommendation {
@@ -2892,6 +3092,11 @@ ul.recordSet .resolver {
 .module-MetaLib .resultNumbers {
     float:none;
 }
+
+.module-MetaLib .sidebarOnLeft .resultNumbers {
+    margin-left: -278px;
+}
+
 
 .module-MetaLib .resultNumbers .paginationBack,
 .module-MetaLib .resultNumbers .paginationNext {
@@ -3266,10 +3471,15 @@ dl.defaultFacet dd {
 .module-Content .contentSection.odd {
     background:#f2f2f2;
 }
-.module-Content .main,
-.module-Browse .main {
+.module-Browse .main,
+.module-Content .main {
     padding-bottom:40px;
 }
+.module-Browse.action-Database .main,
+.module-Browse.action-Journal .main {
+    padding-bottom: 0;
+}
+
 .contentHeader + .content {
     padding-bottom:40px;
 }
@@ -3620,6 +3830,7 @@ a.fulltext.available {
 .myResearchMenu {
     background:#9fddce;
 }
+
 .tabNavi {
     background: #a9d9df;
 }
@@ -3643,10 +3854,12 @@ a.fulltext.available {
     overflow: auto;
 }
 .module-Search .resultPagination,
+.module-Browse #browseExtended .resultPagination,
 .alphaBrowsePageLinks {
     clear:both;
     background:#e6e6e6;
 }
+.module-Browse #browseExtended .resultPagination.sidebarOnLeft .pagination,
 .module-Search .resultPagination.sidebarOnLeft .pagination {
     float: right;
 }
@@ -3745,21 +3958,48 @@ h3.metalibSearchSets {
     line-height: 30px;
     margin-top: 100px;
 }
+#sidebarFacets #recentMetalibDatabases {
+    border-top: 1px solid #d8d8d8;
+    padding-top: 10px;
+    margin: 13px 8px 0 0;
+}
+
+
+.module-MetaLib #databaseStatuses,
+.module-MetaLib form.searchSets {
+    margin-bottom: 20px;
+}
+
+#sidebarFacets #recentMetalibDatabases p {
+    font-weight: bold;
+    margin: 0 0 13px 13px;
+}
+
+.module-MetaLib #browseLink {
+    font-weight: bold;
+	font-size:1.1em;
+    margin-top: 13px;
+    margin-left: 13px;
+}
+.module-MetaLib #browseLink a {
+	padding-left:25px;
+}
+.module-MetaLib .main-home h3.metalibSearchSets {
+    margin-top: 15px;
+}
 
 .module-MetaLib #deferredResults #databaseStatuses {
     display: none;
 }
 
-.module-MetaLib #databaseStatuses,
-.module-MetaLib #searchSets {
-    margin-bottom: 20px;
+.module-MetaLib #deferredResults #content.error {
+    margin-top: 100px;
 }
-
 .resultListContainer .content.no-hits h3.metalibSearchSets {
     margin-top: 25px;
 }
 
-#searchSets label {
+.searchSets label {
 	font-weight: 500;
 	margin: 0em 5px 5px;
 	display: inline-block;
@@ -3776,11 +4016,12 @@ div#metalibDescription {
 }
 
 div#databaseStatuses {
-    padding: 10px;
+    border-top: 1px solid #d8d8d8;    
+    padding: 0 10px 10px 10px;
 }
 
 div#databaseStatuses div {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 div.searchDescription p {
     padding-bottom: 1em;
@@ -4439,9 +4680,19 @@ div.resultLinks a {
 .module-Collection #collectionHeader a.fullRecordLink {
     padding-left: .6em;
 }
+.backToMetaLib {
+	margin-bottom:20px;
+	font-weight:bold;
+}
+.backToMetaLib .button {
+    padding: 8px 12px 8px 15px;
+}
+
+.backToMetaLib .button,
 .resultLinks .button {
     margin-right: 10px;
 }
+.backToMetaLib .button span,
 .resultLinks .button span {
     text-indent: -10000px;
     display: block;
@@ -5754,7 +6005,7 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     margin: 10px 0 15px;
 }
 /* Radio buttons */
-#searchForm_set input[type="radio"], #searchSets input[type="radio"] {
+#searchForm_set input[type="radio"], .searchSets input[type="radio"] {
     display: none;
 }
 #searchForm_set input[type="radio"] + label span {
@@ -5766,7 +6017,7 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     cursor: pointer;
 }
 
-#searchSets input[type="radio"] + label span {
+.searchSets input[type="radio"] + label span {
 	display: inline-block;
 	height: 20px;
 	padding-left: 30px;
@@ -5775,11 +6026,11 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
 	margin-left: -30px;
 }
 
-#searchSets label {
+.searchSets label {
     cursor: pointer;
 }
 
-#searchSets br {
+.searchSets br {
     margin-bottom: 0.5em;
 }
 
