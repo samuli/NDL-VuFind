@@ -5,7 +5,7 @@ $(document).ready(function() {
 function browseExtendedInit() {    
     // Hide 'preserve filters' option from Metalib/Browse search box
     // The current option is used even when not shown.
-    $('.keepFilters').addClass('offscreen').attr('offscreen', 1);
+    $('.keepFilters').addClass('offscreen');
 
     // Hide prefilter menu
     $('#searchForm .searchForm_filter').parent('div').hide();

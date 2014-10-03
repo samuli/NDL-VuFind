@@ -1,6 +1,6 @@
 <?php
 /**
- * Browse action for MetaLib module
+ * Extended browse action for journals.
  *
  * PHP version 5
  *
@@ -31,10 +31,8 @@
  */
 require_once 'BrowseExtended.php';
 
-
-
 /**
- * Browse action for MetaLib module
+ * Extended browse action for journals.
  *
  * @category VuFind
  * @package  Controller_MetaLib
@@ -46,6 +44,12 @@ require_once 'BrowseExtended.php';
  */
 class Journal extends BrowseExtended
 {
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
     public function launch()
     {
         global $interface;

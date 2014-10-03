@@ -1,6 +1,6 @@
 <?php
 /**
- * Solr Search Object class for browsing MetaLib databases.
+ * Solr Search Object class for extended browse actions.
  *
  * PHP version 5
  *
@@ -29,7 +29,7 @@ require_once 'sys/SearchObject/Base.php';
 require_once 'RecordDrivers/Factory.php';
 
 /**
- * Solr Search Object class for browsing MetaLib databases.
+ * Solr Search Object class for extended browse actions.
  *
  * @category VuFind
  * @package  SearchObject
@@ -42,6 +42,7 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
     const URL_FILTER_TYPE = 'browse';
 
     protected $browseType;
+
     /**
      * Initialise the object from the global
      *  search parameters in $_REQUEST.
@@ -60,41 +61,37 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
         $this->resultsModule = 'Browse';
         $this->resultsAction = $browseType;
 
+        $this->spellcheck  = false;
+
         $settings = getExtraConfigArray('searches');
 
         $filters = array();
         if ($settings["BrowseExtended:$browseType"]) {
             $settings = $settings["BrowseExtended:$browseType"];
-
             $filters = isset($settings['filter']) ? $settings['filter'] : array();
+        }
+        foreach ($filters as $filter) {
+            $this->addHiddenFilter($filter);
         }
 
 
         $limit = isset($settings['resultLimit']) ? $settings['resultLimit'] : 100;
         $sort = isset($settings['sort']) ? $settings['sort'] : 'title';
+
+        $this->setLimit($limit);
+        $this->setSort($sort);
+
+
         $searchType = !isset($_REQUEST['type']) && isset($settings['type']) 
             ? $settings['type'] 
             : false
         ;
-
-        $this->setLimit($limit);
-        $this->setSort($sort);
-        
-
-
-        $this->spellcheck  = false;
-
-        foreach ($filters as $filter) {
-            $this->addHiddenFilter($filter);
-        }
-        
         if ($searchType) {
             $this->searchTerms[0]['index'] = $searchType;
         }
 
         return true;
     } 
-
     
     /**
      * Basic 'getter' for view mode.
@@ -125,6 +122,5 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
 
         return $res;
     }
-
 }
 ?>

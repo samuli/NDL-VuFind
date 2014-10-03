@@ -1,6 +1,6 @@
 <?php
 /**
- * SideFacets Recommendations Module for MetaLib database browsing
+ * SideFacets Recommendations Module forextended browse actions.
  *
  * PHP version 5
  *
@@ -21,6 +21,7 @@
  *
  * @category VuFind
  * @package  Recommendations
+ * @author   Demian Katz <demian.katz@villanova.edu>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
@@ -29,12 +30,13 @@ require_once 'sys/Recommend/Interface.php';
 require_once 'sys/Recommend/SideFacets.php';
 
 /**
- * SideFacets Recommendations Module for MetaLib database browsing
+ * SideFacets Recommendations Module forextended browse actions.
  *
  * This class provides recommendations displaying facets beside search results
  *
  * @category VuFind
  * @package  Recommendations
+ * @author   Demian Katz <demian.katz@villanova.edu>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_recommendations_module Wiki
@@ -60,7 +62,6 @@ class BrowseExtendedSideFacets extends SideFacets
         parent::__construct($searchObject, 'BrowseExtended' . $params);
     }
 
-
     /**
      * process
      *
@@ -80,7 +81,10 @@ class BrowseExtendedSideFacets extends SideFacets
         parent::process();
 
         $interface->assign('activeFacets', array_keys($this->_mainFacets));
-        $interface->assign('sideFacetLabel', "Narrow BrowseExtended $this->browseType");
+        $interface->assign(
+            'sideFacetLabel', 
+            "Narrow BrowseExtended $this->browseType"
+        );
     }
 
 }

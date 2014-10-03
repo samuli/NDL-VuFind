@@ -1,6 +1,6 @@
 <?php
 /**
- * Browse action for MetaLib module
+ * Base action for extended browsing.
  *
  * PHP version 5
  *
@@ -39,7 +39,7 @@ require_once 'services/MyResearch/Login.php';
 require_once 'services/MyResearch/lib/User.php';
 
 /**
- * Browse action for MetaLib module
+ * Extended browse action.
  *
  * @category VuFind
  * @package  Controller_MetaLib
@@ -66,7 +66,8 @@ class BrowseExtended extends Action
         $this->disallowBots();
 
         $enabledActions = array();
-
+        
+        // Check if requested action is enabled and configured
         $searchSettings = getExtraConfigArray('searches');
         if (isset($searchSettings['BrowseExtended'])) {
             foreach ($searchSettings['BrowseExtended'] as $key => $val) {
@@ -75,7 +76,6 @@ class BrowseExtended extends Action
                 }
             }
         }
-        
         if (!in_array($action, $enabledActions)) {
             PEAR::raiseError("Browse action $action not enabled"); 
         }
@@ -88,9 +88,8 @@ class BrowseExtended extends Action
 
         $searchObject = SearchObjectFactory::initSearchObject('SolrBrowseExtended');
         $searchObject->init($action);
-
-
         $result = $searchObject->processSearch(true, true);
+
         if (PEAR::isError($result)) {
             PEAR::raiseError($result->getMessage());
         }
@@ -104,8 +103,14 @@ class BrowseExtended extends Action
 
         $interface->assign('lookfor', $displayQuery);
         $interface->assign('paginateTitle', translate("browse_extended_$action"));
-        $interface->assign('snippet', 'RecordDrivers/Index/result-browse-snippet-' . strtolower($action) . '.tpl');
-        $interface->assign('more', 'RecordDrivers/Index/result-browse-more-' . strtolower($action) . '.tpl');
+        $interface->assign(
+            'snippet', 
+            'RecordDrivers/Index/result-browse-snippet-' . strtolower($action) . '.tpl'
+        );
+        $interface->assign(
+            'more', 
+            'RecordDrivers/Index/result-browse-more-' . strtolower($action) . '.tpl'
+        );
         $interface->assign('disableBreadcrumbs', true);
         
         // If no record found
@@ -130,10 +135,7 @@ class BrowseExtended extends Action
             $interface->assign('pageLinks', $pager->getLinks());
         }
 
-
-
         $_SESSION['lastSearchURL'] = $searchObject->renderSearchUrl();
-
 
         $searchObject->close();
 
@@ -142,12 +144,6 @@ class BrowseExtended extends Action
 
         // Done, display the page
         $interface->display('layout.tpl');
-    }
-
-
-    protected function initSearchObject($searchObject) 
-    {
-        return $searchObject;
     }
     
 }

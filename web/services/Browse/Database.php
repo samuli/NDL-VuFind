@@ -1,6 +1,6 @@
 <?php
 /**
- * Browse action for MetaLib module
+ * Extended browse action for databases.
  *
  * PHP version 5
  *
@@ -31,10 +31,8 @@
  */
 require_once 'BrowseExtended.php';
 
-
-
 /**
- * Browse action for MetaLib module
+ * Extended browse action for databases.
  *
  * @category VuFind
  * @package  Controller_MetaLib
@@ -46,6 +44,12 @@ require_once 'BrowseExtended.php';
  */
 class Database extends BrowseExtended
 {
+    /**
+     * Process parameters and display the page.
+     *
+     * @return void
+     * @access public
+     */
     public function launch()
     {
         global $interface;
@@ -63,24 +67,34 @@ class Database extends BrowseExtended
 
             if ($refModule === 'MetaLib') {
                 if ($refAction === 'Home') {
-                    // Called from MetaLib/Home: return to same page and reset previous MetaLib search term.
+                    // Called from MetaLib/Home: 
+                    // return to same page and reset previous MetaLib search term.
                     $returnUrl = "$siteUrl/MetaLib/Home";
                     unset($_SESSION['metalibLookfor']);
                 } else if ($refAction === 'Search') {
-                    if (stripos($_SESSION['lastSearchURL'], '/MetaLib/Search') !== false) {
-                        // Called from MetaLib/Search: Set return url to current MetaLib search.
+                    if (stripos($_SESSION['lastSearchURL'], 
+                        '/MetaLib/Search') !== false
+                    ) {
+                        // Called from MetaLib/Search: 
+                        // Set return url to current MetaLib search.
                         $returnUrl = $_SESSION['lastSearchURL'];
                     } else {
-                        // Previous search was outside MetaLib: reset search term and return to MetaLib/Home.
+                        // Previous search was outside MetaLib: 
+                        // reset search term and return to MetaLib/Home.
                         $returnUrl = "$siteUrl/MetaLib/Home";
                         unset($_SESSION['metalibLookfor']);
                     }
                 }
-            } else if ($refModule == 'Browse' && $refAction === 'Database' && isset($_SESSION['backToMetaLibURL'])) {
-                // Called from Browse/Database: use stored return url.
+            } else if ($refModule == 'Browse' 
+                && $refAction === 'Database' 
+                && isset($_SESSION['backToMetaLibURL'])
+            ) {
+                // Called from Browse/Database: 
+                // use stored return url.
                 $returnUrl = $_SESSION['backToMetaLibURL'];            
             } else {
-                // Called outside Browse/Database and MetaLib: no need to display link back to MetaLib.
+                // Called outside Browse/Database and MetaLib:
+                // no need to display link back to MetaLib.
                 unset($_SESSION['backToMetaLibURL']);
                 unset($_SESSION['metalibLookfor']);            
             }
@@ -88,35 +102,38 @@ class Database extends BrowseExtended
             if ($returnUrl && $interface->get_template_vars('metalibEnabled')) {
                 $_SESSION['backToMetaLibURL'] = $returnUrl;
                 $interface->assign('backToMetaLib', $returnUrl);
-                $interface->assign('backToMetaLibLabel', translate('Back to MetaLib Search'));
+                $interface->assign(
+                    'backToMetaLibLabel', translate('Back to MetaLib Search')
+                );
             }
         } else {
             unset($_SESSION['metalibLookfor']);
         }
-
 
        
         if (isset($_REQUEST['refLookfor'])) {
             $_SESSION['metalibLookfor'] = $_REQUEST['refLookfor'];
         }       
         $metalibSearch = null;
-        if (isset($_SESSION['metalibLookfor']) && $_SESSION['metalibLookfor'] !== '') {
-            $metalibSearch = $this->getBrowseUrl('Search', $_SESSION['metalibLookfor']);
+        if (isset($_SESSION['metalibLookfor']) 
+            && $_SESSION['metalibLookfor'] !== ''
+        ) {
+            $metalibSearch = $this->getBrowseUrl(
+                'Search', $_SESSION['metalibLookfor']
+            );
         } else {
             $metalibSearch = $this->getBrowseUrl('Home');
         }
         $interface->assign('metalibSearch', $metalibSearch);
 
-
         parent::launch();
-
     }
 
     /**
      * Build a url to or from MetaLib Browse.
      *
      * @param string $action  destination action (Home, Search or Browse).
-     * @param string $lookfor search term or null if the search term should be dropped.
+     * @param string $lookfor search term or null if search term should be dropped.
      *
      * @return string URL
      * @access public
@@ -136,7 +153,9 @@ class Database extends BrowseExtended
             $params = explode('&', $params);
             
             // Url parameters that should be reset when moving between Search and Browse.
-            $reset = array('prefilter', 'page', 'prefiltered', 'type', 'refLookfor', 'set');
+            $reset = array(
+                'prefilter', 'page', 'prefiltered', 'type', 'refLookfor', 'set'
+            );
             
             $tmp = array();
             foreach ($params as $param) {
