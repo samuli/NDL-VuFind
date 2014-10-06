@@ -4943,9 +4943,13 @@ div.coverImagesLessLink {
 }
 
 #recordMetadata.driver-AxiellWebServices .citation td {
-    padding:.2em 0 .2em 1em;
+    padding:0 0 0 1em;
 }
 
+#recordMetadata.driver-AxiellWebServices .citation td#btjdescription_text {
+    padding: 0 0 5px 0;
+    font-size:1.1em;
+}
 
 .citation tr, .citation td {
     vertical-align:top;

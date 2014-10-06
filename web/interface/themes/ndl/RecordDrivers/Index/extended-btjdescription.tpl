@@ -1,8 +1,7 @@
 <!-- START of: RecordDrivers/Index/extended-btjdescription.tpl -->
 
 <tr valign="top" class="extendedBTJDescription" id="btjdescription" style="display: none;">
-  <th>{translate text='Description'}: </th>
-    <td id="btjdescription_text"><img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
+    <td id="btjdescription_text" colspan="2"><img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
       <script type="text/javascript">
         //<![CDATA[
        var path = {$path|@json_encode};
