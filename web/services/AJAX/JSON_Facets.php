@@ -48,10 +48,19 @@ class JSON_Facets extends JSON
     public function getFacets()
     {
         $facetConfig = getExtraConfigArray('facets');
-        
-        // Initialize from the current search globals
-        $searchObject = SearchObjectFactory::initSearchObject();
-        $searchObject->init();
+
+        // Initialize from the current search globals        
+        $searchObject = null;
+        if (isset($_REQUEST['searchObject'])) {
+            $searchObject = SearchObjectFactory::initSearchObject($_REQUEST['searchObject']);
+        } else {
+            $searchObject = SearchObjectFactory::initSearchObject();        
+        }
+        if (get_class($searchObject) == 'SearchObject_SolrBrowseExtended' && isset($_REQUEST['vufindAction'])) {
+            $searchObject->init($_REQUEST['vufindAction']);
+        } else {
+            $searchObject->init();
+        }
         
         $prefix = explode('/', isset($_REQUEST['facetPrefix']) ? $_REQUEST['facetPrefix'] : '', 2);
         $prefix = end($prefix);

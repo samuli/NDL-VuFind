@@ -360,6 +360,34 @@
         min-height: 200px;
     }
 
+    .module-MetaLib #deferredResults #content.error {
+        margin-top: 0;
+    }
+
+    .module-MetaLib .sidebarOnLeft .resultNumbers {
+        margin-left: -5px;
+    }
+
+    #metaLibBrowse li.result .iconsRight {
+        float: left;
+    }
+
+    #metaLibBrowse li.result .grid_8 {
+        width: 280px;
+    }
+
+    #metaLibBrowse li.result .moreinfo .authors {
+        margin-bottom: 10px;
+    }
+    
+    #metaLibBrowse li.result .iconsRight .searchDisallow {
+        margin-left: 0;
+    }
+
+    .content .resultColumn2.grid_11 {
+        width:300px;
+    }
+
 
 
     /* Search results: bottom */
@@ -758,6 +786,22 @@
 	}
 	.callSlipPlace {
 		margin-top:5px;	
+	}
+	/*** Browsemode adjustments ***/
+	#browseExtended li.result .summary, #browseExtended li.result .authors {
+		width:45%;	
+	}
+	#browseExtended li.result .grid_8.snippet {
+		width:45%;	
+	}
+	#browseExtended li.result .grid_7 {
+		width:42%;	
+	}
+	#browseExtended li.result .grid_4.genre {
+		width:18%;	
+	}
+	#browseExtended li.result .grid_4 {
+		width:28%;	
 	}
 
     /*** Login ***/

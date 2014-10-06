@@ -2,7 +2,7 @@
 
 <div class="holdingsHeader clearfix">
   <div class="holdingsHoldingURLs">
-  {if !empty($holdingURLs) || $holdingsOpenURL}
+  {if (!empty($holdingURLs) || $holdingsOpenURL) && $driver != 'AxiellWebServices'}
     <h5>{translate text="available_online"}</h5>
     <ul class="holdingsOnline">
     {if !empty($holdingURLs)}

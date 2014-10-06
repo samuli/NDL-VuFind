@@ -1,30 +1,15 @@
-<!-- START of: MetaLib/list-none.tpl -->
-  <div class="no-hits {if $noSearch}no-search {/if}content">
-    {if $noQuery}
-      <div class="metalibError">
-        <p class="error">{translate text='metalib_no_query'}</p>
-      </div>
-    {else}
-      <div class="metalibError">
+<!-- START of: BrowseExtended/list-none.tpl -->
+
+
+  <div class="no-hits">
+    <div class="content">
+      
         {if !$noSearch}<p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>{/if}
-      {if !empty($setNotification)}        
-        <div class="loginNotification">
-          {$setNotification}
-        </div>
-      {/if}
       {if !$noSearch}
       <strong>{translate text='You can'}:</strong>
       <p>- {translate text='Try to search with another phrase'}</p>
-      <p>- {translate text='Try with a different search set'}</p>
       {/if}
-      </div>
-    {/if}
-
-    {if $parseError}
-      <div class="metalibError">
-         <p class="error">{translate text='nohit_parse_error'}</p>
-      </div>
-    {/if}
+      
 
     {if $spellingSuggestions}
     <div class="correction">{translate text='nohit_spelling'}:<br/>
@@ -48,9 +33,8 @@
       {/if}
       {* End Recommendations *}
 
-
-
-  {include file="MetaLib/database-statuses.tpl"}
-     
   </div>
-<!-- END of: MetaLib/list-none.tpl -->
+</div>
+  
+
+<!-- END of: BrowseExtended/list-none.tpl -->

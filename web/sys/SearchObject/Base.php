@@ -66,7 +66,8 @@ abstract class SearchObject_Base
     // List of URL parameter names used to transmit active filters for all search types
     protected static $urlFilterTypes = array('local' => array('filter', 'orfilter'),
                                              'pci' => array('filterpci'),
-                                             'metalib' => array()
+                                             'metalib' => array(),
+                                             'browse' => array('filterBrowse')
                                              );
     // URL parameter type
     const URL_FILTER_TYPE = 'local';
@@ -596,6 +597,9 @@ abstract class SearchObject_Base
         if (!isset($_REQUEST['lookfor'])) {
             return false;
         }
+
+        
+
 
         // If lookfor is an array, we may be dealing with a legacy Advanced
         // Search URL.  If there's only one parameter, we can flatten it,
@@ -2493,6 +2497,7 @@ abstract class SearchObject_Base
         } else {
             $searchType = false;
         }
+
 
         // Load a type-specific recommendations setting if possible, or the default
         // otherwise:

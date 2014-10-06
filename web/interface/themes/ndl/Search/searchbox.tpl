@@ -4,7 +4,18 @@
   {if in_array('search', $contextHelp)}
   <span id="contextHelp_search" class="showHelp">{translate text="Search Tips"}</span>
   {/if}
-  <form method="get" action="{$path}/Search/Results" name="searchForm" id="searchForm" class="search">
+
+
+ {if $module == 'Browse'}
+   {assign var='formModule' value='Browse'}
+   {assign var='formAction' value=$action}
+ {else}
+  {assign var='formModule' value='Search'}
+  {assign var='formAction' value='Results'}
+ {/if}
+
+
+  <form method="get" action="{$path}/{$formModule}/{$formAction}" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">
@@ -72,8 +83,12 @@
 
     <div class="searchFormOuterWrapper">
       <div id="480mobileSecond" class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
-      {if $action == 'Home'}
-         {if $pciEnabled}
+      {if ($module == 'Search' && $action == 'Home') || $module == 'Browse' }
+        {if $module == 'Browse'}
+            <a href="{$path}/Search/Home" class="small homeLink">{translate text="Local Search"}</a>
+         {/if}
+
+        {if $pciEnabled}
             <a href="{$path}/PCI/Home" class="small PCILink">{translate text="PCI Search"}</a>
          {/if}
          {if $metalibEnabled}
