@@ -83,18 +83,22 @@ class Results extends Action
             exit();
         }
 
-        // Build XML for Results (if requested)
-        if ($searchObject->getView() == 'xml') {
+        $accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : '';
+
+        // Build JSON for Results (if requested)
+        if ($searchObject->getView() == 'json'
+            || stristr($accept, 'application/json')
+        ) {
             // Throw the XML to screen
-            echo $searchObject->buildXML();
+            echo $searchObject->buildJSON();
             // And we're done
             exit();
         }
 
-        // Build JSON for Results (if requested)
-        if ($searchObject->getView() == 'json') {
+        // Build XML for Results (if requested)
+        if ($searchObject->getView() == 'xml' || stristr($accept, 'text/xml')) {
             // Throw the XML to screen
-            echo $searchObject->buildJSON();
+            echo $searchObject->buildXML();
             // And we're done
             exit();
         }
