@@ -1825,6 +1825,146 @@ class SearchObject_Solr extends SearchObject_Base
     }
 
     /**
+     * Return Solr results in an extended array
+     *
+     * @param array $result Optional results to process
+     *
+     * @return array Results
+     */
+    protected function createResultArray($result = null)
+    {
+        global $configArray;
+
+        // First, get the search results if none were provided
+        if (is_null($result)) {
+            // Let's do at most 100 at a time...
+            if ($this->limit > 100) {
+                $this->limit = 100;
+            }
+
+            // Get the results:
+            $result = $this->processSearch(false, true);
+        }
+
+        if ($this->searchType == 'newitem') {
+            $lookfor = translate('New Items');
+        } else if ($this->searchType == 'reserves') {
+            $lookfor = translate('Course Reserves');
+        } else {
+            $lookfor = $this->displayQuery();
+        }
+        $resultHeader = array(
+            'searchTerms' => $lookfor,
+            'searchUrl' => $this->renderSearchUrl()
+        );
+
+        unset($result['responseHeader']);
+        $result = array_merge($resultHeader, $result);
+
+        // The marc_error nodes can cause problems, so let's get rid
+        //   of them at the same time.
+        // We add the record image to the array: for MARC records we
+        // use bookcover.php, for everything else thumbnail.php.
+        // Finally we remove an extra slash in format values.
+        for ($i = 0; $i < count($result['response']['docs']); $i++) {
+            if (isset($result['response']['docs'][$i]['marc_error'])) {
+                unset($result['response']['docs'][$i]['marc_error']);
+            }
+            if (isset($result['response']['docs'][$i]['thumbnail'])) {
+                unset($result['response']['docs'][$i]['thumbnail']);
+            }
+
+            $id = isset($result['response']['docs'][$i]['id']) ?
+                  $result['response']['docs'][$i]['id'] :
+                  false;
+            $type = isset($result['response']['docs'][$i]['recordtype']) ?
+                    $result['response']['docs'][$i]['recordtype'] :
+                    false;
+
+            if ($type === 'marc') {
+                if (isset($result['response']['docs'][$i]['fullrecord'])) {
+                    $marc = preg_replace('/#31;/', "\x1F", $result['response']['docs'][$i]['fullrecord']);
+                    $marc = preg_replace('/#30;/', "\x1E", $marc);
+                    $marc = new File_MARC($marc, File_MARC::SOURCE_STRING);
+                    $record = $marc->next();
+                    $result['response']['docs'][$i]['fullrecord'] = $record->toXML();
+                }
+            }
+
+            $result['response']['docs'][$i]['record_link']
+                = $this->serverUrl . '/Record/' . urlencode($id);
+
+            // Fetch image links and information
+            $record = RecordDriverFactory::initRecordDriver(
+                $result['response']['docs'][$i]
+            );
+            for ($img = 0; $img < count($record->getAllImages()); $img++) {
+                $result['response']['docs'][$i]['image_links'][]
+                    = $this->serverUrl . '/thumbnail.php?id=' . urlencode($id)
+                    . "&index=$img&size=large";
+            }
+            $thumbnail = $record->getThumbnail();
+            if ($thumbnail) {
+                $result['response']['docs'][$i]['thumbnail_link'] = $thumbnail;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Turn our results into XML
+     *
+     * @param array $result Existing result set (null to do new search)
+     *
+     * @return string       XML document
+     * @access public
+     */
+    public function buildJSON($result = null)
+    {
+        $result = $this->createResultArray($result);
+
+        //header('Content-type: application/json', true);
+        header('Content-type: text/plain', true);
+        if (defined('JSON_PRETTY_PRINT')) {
+            return json_encode($result, JSON_PRETTY_PRINT);
+        }
+        return json_encode($result);
+    }
+
+    /**
+     * Turn our results into XML
+     *
+     * @param array $result Existing result set (null to do new search)
+     *
+     * @return string       XML document
+     * @access public
+     */
+    public function buildXML($result = null)
+    {
+        $result = $this->createResultArray($result);
+
+        // Now prepare the serializer
+        $serializer_options = array (
+            'addDecl'  => true,
+            'encoding' => 'UTF-8',
+            'indent'   => '  ',
+            'rootName' => 'response',
+            'mode'     => 'simplexml'
+        );
+
+        // Serialize our results from PHP arrays to XML
+        $serializer = new XML_Serializer($serializer_options);
+        if ($serializer->serialize($result)) {
+            $xmlResults = $serializer->getSerializedData();
+        }
+
+        // XML HTTP header
+        header('Content-type: text/xml', true);
+
+        return $xmlResults;
+    }
+
+    /**
      * Get complete facet counts for several index fields
      *
      * @param array $facetfields  name of the Solr fields to return facets for

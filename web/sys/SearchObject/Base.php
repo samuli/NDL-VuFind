@@ -754,6 +754,12 @@ abstract class SearchObject_Base
             if ($_REQUEST['view'] == 'rss') {
                 // we don't want to store rss in the Session variable
                 $this->view = 'rss';
+            } elseif ($_REQUEST['view'] == 'xml') {
+                // we don't want to store xml in the Session variable
+                $this->view = 'xml';
+            } elseif ($_REQUEST['view'] == 'json') {
+                // we don't want to store json in the Session variable
+                $this->view = 'json';
             } else {
                 // store non-rss views in Session for persistence
                 $validViews = $this->getViewOptions();
