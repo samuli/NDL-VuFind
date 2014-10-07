@@ -1907,6 +1907,15 @@ class SearchObject_Solr extends SearchObject_Base
             if ($thumbnail) {
                 $result['response']['docs'][$i]['thumbnail_link'] = $thumbnail;
             }
+            $result['response']['docs'][$i]['parsed_title'] = $record->getTitle();
+            $links = $record->getAllRecordLinks();
+            if ($links) {
+                $result['response']['docs'][$i]['parsed_record_links'] = $links;
+            }
+            $urls = $record->getOnlineURLs();
+            if ($urls) {
+                $result['response']['docs'][$i]['parsed_online_urls'] = $urls;
+            }
         }
         return $result;
     }

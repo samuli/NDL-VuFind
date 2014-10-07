@@ -249,10 +249,10 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreContainerReference', $this->getContainerReference());
         $interface->assign('coreContainerStartPage', $this->getContainerStartPage());
         $interface->assign('coreContainerVolume', $this->getContainerVolume());
-        $interface->assign('coreContainerIssue', $this->getContainerIssue());    
+        $interface->assign('coreContainerIssue', $this->getContainerIssue());
         $interface->assign('coreInstitutions', $this->getInstitutions());
         $interface->assign('coreClassifications', $this->getClassifications());
-        $interface->assign('coreDissertationNote', $this->getDissertationNote());        
+        $interface->assign('coreDissertationNote', $this->getDissertationNote());
         $interface->assign('coreBuilding', $this->getBuilding());
         $interface->assign('coreAuthor', $this->getPrimaryAuthor());
 
@@ -274,7 +274,7 @@ class IndexRecord implements RecordInterface
             $interface->assign('coreURLs', $this->getURLs());
         }
         $interface->assign('coreOnlineURLs', $this->getOnlineURLs());
-        
+
         // The secondary author array may contain a corporate or primary author;
         // let's be sure we filter out duplicate values.
         $mainAuthor = $this->getPrimaryAuthor();
@@ -298,7 +298,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreNonPresenterAuthors', $this->getNonPresenterAuthors());
         // and presenters
         $interface->assign('corePresenters', $this->getPresenters());
-        
+
         // Assign only the first piece of summary data for the core; we'll get the
         // rest as part of the extended data.
         $summary = $this->getSummary();
@@ -309,22 +309,22 @@ class IndexRecord implements RecordInterface
         $interface->assign('coreComponentPartCount', $componentParts);
 
         $interface->assign('hasContainedComponentParts', $this->hasContainedComponentParts());
-        
+
         // All images
         $interface->assign('coreImages', $this->getAllImages());
 
         // Genres in their own field
         $interface->assign('coreGenres', isset($this->fields['genre']) ? $this->fields['genre'] : array());
-        
+
         // Manufacturer
         $interface->assign('coreManufacturer', $this->getManufacturer());
-        
+
         // Hierarchy
         $interface->assign('coreHierarchyParentId', $this->getHierarchyParentId());
         $interface->assign('coreHierarchyParentTitle', $this->getHierarchyParentTitle());
         $interface->assign('coreHierarchyTopId', $this->getHierarchyTopId());
         $interface->assign('coreHierarchyTopTitle', $this->getHierarchyTopTitle());
-        
+
         // Collections
         $interface->assign('coreCollections', $this->getCollections());
 
@@ -414,7 +414,7 @@ class IndexRecord implements RecordInterface
     {
         global $interface;
         $collection = array();
-    
+
         $mainAuthor = $this->getPrimaryAuthor();
         $corpAuthor = $this->getCorporateAuthor();
         $secondaryAuthors = $this->getSecondaryAuthors();
@@ -487,11 +487,11 @@ class IndexRecord implements RecordInterface
         if (count($summary) > 1) {
             $interface->assign('collSummaryAll', array_slice($summary, 1));
         }
-    
+
         // Send back the template name:
         return 'RecordDrivers/Index/collection-info.tpl';
     }
-    
+
     /**
      * Get the collection data to display.
      *
@@ -502,16 +502,16 @@ class IndexRecord implements RecordInterface
     {
         global $interface;
         $collection = array();
-    
+
         $interface->assign('collRecordShortTitle', $this->getShortTitle());
         $interface->assign('collRecordSubtitle', $this->getSubtitle());
         $interface->assign('collRecordTitleStatement', $this->getTitleStatement());
         $interface->assign('collRecordTitleSection', $this->getTitleSection());
         $interface->assign('collRecordID', $this->getUniqueID());
         $interface->assign('collRecordInstitutions', $this->getInstitutions());
-    
+
         $this->_assignCollectionRecordCollectionData();
-    
+
         $mainAuthor = $this->getPrimaryAuthor();
         $corpAuthor = $this->getCorporateAuthor();
         $secondaryAuthors = $this->getSecondaryAuthors();
@@ -581,11 +581,11 @@ class IndexRecord implements RecordInterface
         $summary = $this->getSummary();
         $summary = count($summary) > 0 ? $summary[0] : null;
         $interface->assign('collRecordSummary', $summary);
-    
+
         // Send back the template name:
         return 'RecordDrivers/Index/collection-record.tpl';
     }
-    
+
     /**
      * Get the text to represent this record in the body of an email.
      *
@@ -657,7 +657,7 @@ class IndexRecord implements RecordInterface
     public function getExport($format)
     {
         global $interface;
-        
+
         $format = strtolower($format);
         if ($format == 'refworks') {
             $this->redirectToRefWorks();
@@ -673,7 +673,7 @@ class IndexRecord implements RecordInterface
             header('Content-type: application/x-endnote-refer');
             header("Content-Disposition: attachment; filename=\"vufind.enw\";");
             $interface->assign('indexData', $this->fields);
-            return 'RecordDrivers/Index/export-endnote.tpl';   
+            return 'RecordDrivers/Index/export-endnote.tpl';
         } else {
             return null;
         }
@@ -792,22 +792,22 @@ class IndexRecord implements RecordInterface
         // Source ID
         $sourceId = $this->getSourceID();
         $interface->assign('source', $sourceId);
-        
+
         // NDL Location Service enabled
         $config = getExtraConfigArray('LocationService');
         if (isset($config['General']) && isset($config[$sourceId])) {
             $baseUrl = $config['General']['url'];
-            $lang = $interface->getLanguage();            
+            $lang = $interface->getLanguage();
             $params = array(
-                'lang' => substr($lang, 0, 2),  
+                'lang' => substr($lang, 0, 2),
                 'owner' => $config[$sourceId]['owner']
             );
             $url = $baseUrl . '?' . http_build_query($params);
-            $interface->assign('locationServiceUrl', $url);  
-            if (isset($config['General']['modal']) && $config['General']['modal']) { 
+            $interface->assign('locationServiceUrl', $url);
+            if (isset($config['General']['modal']) && $config['General']['modal']) {
                 $interface->assign('locationServiceModal', true);
             }
-        }        
+        }
 
         return 'RecordDrivers/Index/holdings.tpl';
     }
@@ -838,7 +838,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('listThumb', $this->getThumbnail());
         $interface->assign('listBuilding', $this->getBuilding());
         $interface->assign('listDate', $this->getPublicationDates());
-       
+
         // Extract user metadata from the database:
         $notes = array();
         $data = $user->getSavedData($id, $listId);
@@ -856,7 +856,7 @@ class IndexRecord implements RecordInterface
 
         // All images
         $interface->assign('summImages', $this->getAllImages());
-        
+
         return 'RecordDrivers/Index/listentry.tpl';
     }
 
@@ -1118,14 +1118,14 @@ class IndexRecord implements RecordInterface
         $interface->assign('summInstitutions', $this->getInstitutions());
         $interface->assign('summOnlineURLs', $this->getOnlineURLs());
         $interface->assign('summNonPresenterAuthors', $this->getNonPresenterAuthors());
-        
+
         //collection module only
         if (isset($configArray['Collections']['collections'])
             && $configArray['Collections']['collections'] == true
         ) {
             $this->_assignSearchResultCollectionData();
         }
-        
+
         // Obtain and assign snippet information:
         $snippet = $this->getHighlightedSnippet();
         $interface->assign(
@@ -1156,7 +1156,7 @@ class IndexRecord implements RecordInterface
         }
 
         $interface->assign('summHierarchy', $this->hasHierarchyTree());
-                
+
         // By default, do not display AJAX status; we won't assume that all
         // records exist in the ILS.  Child classes can override this setting
         // to turn on AJAX as needed:
@@ -1164,10 +1164,10 @@ class IndexRecord implements RecordInterface
 
         // Display institutions and links to deduplicated records.
         $interface->assign('summDedupData', $this->getDedupData());
-        
+
         // Publication end date
         $interface->assign('summPublicationEndDate', $this->getPublicationEndDate());
-        
+
         // All images
         $interface->assign('summImages', $this->getAllImages());
 
@@ -1177,18 +1177,18 @@ class IndexRecord implements RecordInterface
 
     /**
      * Return metadata required for RSI full text availability check
-     * 
+     *
      * @return NULL|array
      */
     public function getRSIValues()
     {
         global $configArray;
-        $retval = array();	        
-        
-        if (!$this->openURLActive('results')) { 
-            return null; 
+        $retval = array();
+
+        if (!$this->openURLActive('results')) {
+            return null;
         }
-                
+
     	// ISBN/ISSN (mandatory)
     	$retval['issn'] = $this->getCleanISSN();
 		$retval['isbn'] = $this->getCleanISBN();
@@ -1203,10 +1203,10 @@ class IndexRecord implements RecordInterface
     	} else {
     	    $retval['year'] = '';
     	}
-    	
-    	// Volume (optional)  	
+
+    	// Volume (optional)
     	$retval['volume'] = $this->getContainerVolume();
-    	
+
     	// Issue (optional)
     	$retval['issue'] = $this->getContainerIssue();
 
@@ -1216,10 +1216,10 @@ class IndexRecord implements RecordInterface
 		} else {
 		    $retval['institute'] = trim($configArray['OpenURL']['institute']);
 		}
-		 
+
     	return $retval;
     }
-    
+
     /**
      * Sub function of getSearchResult that only gets called when the collection
      * module is enabled
@@ -1240,7 +1240,7 @@ class IndexRecord implements RecordInterface
         $interface->assign(
             'summInCollectionID', ''
         );
-        
+
         $hierarchyType = $this->getHierarchyType();
         if (!$hierarchyType) {
             //not a hierarchy type record
@@ -1248,7 +1248,7 @@ class IndexRecord implements RecordInterface
         }
         $hierarchyDriver = $hierarchyDriver? $hierarchyDriver :
             HierarchyFactory::initHierarchy($hierarchyType);
-    
+
         //check config setting for what constitutes a collection
         $collectionIdentifier = $hierarchyDriver->getCollectionIdentifier();
 
@@ -1282,7 +1282,7 @@ class IndexRecord implements RecordInterface
             }
         }
     }
-    
+
     /**
      * Sub function of getCollectionRecord to determine if something is a collection
      *
@@ -1296,7 +1296,7 @@ class IndexRecord implements RecordInterface
     {
         global $configArray;
         global $interface;
-    
+
         $hierarchyType = $this->getHierarchyType();
         if (!$hierarchyType) {
             //not a hierarchy type record
@@ -1304,10 +1304,10 @@ class IndexRecord implements RecordInterface
         }
         $hierarchyDriver = $hierarchyDriver? $hierarchyDriver :
         HierarchyFactory::initHierarchy($hierarchyType);
-    
+
         //check config setting for what constitutes a collection
         $collectionIdentifier = $hierarchyDriver->getCollectionIdentifier();
-    
+
         if ($collectionIdentifier == "All Containers") {
             $isCollection = (isset($this->fields['is_hierarchy_title']));
             $interface->assign('collCollection', $isCollection);
@@ -1322,7 +1322,7 @@ class IndexRecord implements RecordInterface
             $interface->assign('collCollection', $isCollection);
         }
     }
-    
+
     /**
      * Return this records collection Identifier
      *
@@ -1333,10 +1333,10 @@ class IndexRecord implements RecordInterface
      */
     public function getCollectionRecordIdentifier($hierarchyDriver = false)
     {
-    
+
         global $configArray;
         global $interface;
-    
+
         $hierarchyType = $this->getHierarchyType();
         if (!$hierarchyType) {
             //not a hierarchy type record
@@ -1344,16 +1344,16 @@ class IndexRecord implements RecordInterface
         }
         $hierarchyDriver = $hierarchyDriver? $hierarchyDriver :
         HierarchyFactory::initHierarchy($hierarchyType);
-    
+
         $collectionIdentifier = $hierarchyDriver->getCollectionIdentifier();
-    
+
         if ($collectionIdentifier == "All Containers") {
             return 'hierarchy_parent_id';
         } elseif ($collectionIdentifier == "Top Only") {
             return 'hierarchy_top_id';
         }
     }
-    
+
     /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display similar items of the record view page.
@@ -1372,14 +1372,14 @@ class IndexRecord implements RecordInterface
             $this->fields['id'],
             array('fq' => SearchObject_Solr::getDefaultHiddenFilters())
         );
-        
+
         if (!$similar
             || !array_key_exists('response', $similar)
             || !array_key_exists('docs', $similar['response'])
         ) {
             PEAR::raiseError(new PEAR_Error('Cannot Load similar items'));
         }
-        
+
         // Loop over similar records, create record drivers for them and
         // (if available) use the getYearRange method to insert a year range
         // in the array for every record
@@ -1388,10 +1388,10 @@ class IndexRecord implements RecordInterface
             if (!$similarRecord) {
                 PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
             }
-            
+
             $similarRecordDriver
                 = RecordDriverFactory::initRecordDriver($similarRecord);
-            
+
             if (method_exists($similarRecordDriver, 'getYearRange')
                 && is_callable(array($similarRecordDriver, 'getYearRange'))
             ) {
@@ -1411,7 +1411,7 @@ class IndexRecord implements RecordInterface
         if (!PEAR::isError($editions)) {
             $interface->assign('editions', $editions);
         }
-        
+
         return 'Record/similar-items.tpl';
     }
 
@@ -1427,7 +1427,7 @@ class IndexRecord implements RecordInterface
     {
         global $interface;
         $interface->assign('details', $this->fields);
-        
+
         // Try to get an XML presentation
         $xml = trim($this->fields['fullrecord']);
 
@@ -1437,7 +1437,7 @@ class IndexRecord implements RecordInterface
         if ($doc->loadXML($xml)) {
             $doc->formatOutput = true;
             $geshi = new GeSHi($doc->saveXML(), 'xml');
-            $geshi->enable_classes(); 
+            $geshi->enable_classes();
             $interface->assign('record', $geshi->parse_code());
         }
 
@@ -1466,7 +1466,7 @@ class IndexRecord implements RecordInterface
 
     /**
      * If there are new formats with component parts consider
-     * making a driver for them! 
+     * making a driver for them!
      * Assign necessary Smarty variables and return a template name to
      * load in order to display the Table of Contents extracted from the
      * record.  Returns null if no Table of Contents is available.
@@ -1477,8 +1477,8 @@ class IndexRecord implements RecordInterface
     public function getContainedComponentParts()
     {
             return null;
-    }    
-    
+    }
+
     /**
      * Get the hierarchy_top_id associated with this item (empty array if none).
      *
@@ -1490,7 +1490,7 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['hierarchy_top_id']) ?
             $this->fields['hierarchy_top_id'] : array();
     }
-    
+
     /**
      * Get the absolute parent title associated with this item
      * (empty array if none).
@@ -1515,7 +1515,7 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['hierarchy_parent_id']) ?
             $this->fields['hierarchy_parent_id'] : array();
     }
-    
+
     /**
      * Get the parent title associated with this item
      * (empty array if none).
@@ -1528,7 +1528,7 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['hierarchy_parent_title']) ?
             $this->fields['hierarchy_parent_title'] : array();
     }
-    
+
     /**
      * Get the is hierarchy id associated with this item
      * (empty string if none).
@@ -1541,22 +1541,22 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['is_hierarchy_id']) ?
         $this->fields['is_hierarchy_id'] :false;
     }
-    
+
     /**
      * Get the value of wether or not this is a collection level record
-     * 
-     * @param string $hierarchyDriver Hierarchy driver 
-     * 
+     *
+     * @param string $hierarchyDriver Hierarchy driver
+     *
      * @return bool
      */
     public function getIsHierarchy($hierarchyDriver = null)
     {
         global $configArray;
         global $interface;
-    
+
         //default to not be a collection level record
         $isCollection = false;
-    
+
         $hierarchyType = $this->getHierarchyType();
         if (!$hierarchyType) {
             //not a hierarchy type record
@@ -1564,10 +1564,10 @@ class IndexRecord implements RecordInterface
         }
         $hierarchyDriver = $hierarchyDriver? $hierarchyDriver :
         HierarchyFactory::initHierarchy($hierarchyType);
-    
+
         //check config setting for what constitutes a collection
         $collectionIdentifier = $hierarchyDriver->getCollectionIdentifier();
-    
+
         //check
         if ($collectionIdentifier == "All Containers") {
             $isCollection = (isset($this->fields['is_hierarchy_id']));
@@ -1586,8 +1586,8 @@ class IndexRecord implements RecordInterface
         //print "<br/>";
         return  $isCollection;
     }
-    
-    
+
+
     /**
      * Get the is hierarchy title associated with this item
      * (empty string if none).
@@ -1600,7 +1600,7 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['is_hierarchy_title']) ?
         $this->fields['is_hierarchy_title'] :false;
     }
-    
+
     /**
      * Does this record have an archival tree?
      *
@@ -1613,11 +1613,11 @@ class IndexRecord implements RecordInterface
     public function hasHierarchyTree($hierarchyDriver = false, $hierarchyID = false)
     {
         global $configArray;
-    
+
         $hierarchyType = $this->getHierarchyType();
         $hierarchyDriver = $hierarchyDriver? $hierarchyDriver :
             HierarchyFactory::initHierarchy($hierarchyType);
-    
+
         if ($hierarchyDriver) {
             $treeConfigDriver = $hierarchyDriver->showTree();
             $treeConfigGlobal = isset($configArray['Content']['showHierarchyTree'])
@@ -1636,7 +1636,7 @@ class IndexRecord implements RecordInterface
         }
         return false;
     }
-    
+
     /**
      * Get a Hierarchy Tree
      *
@@ -1654,11 +1654,11 @@ class IndexRecord implements RecordInterface
         $currentRecordID = false
     ) {
         global $configArray;
-    
+
         $hierarchyType = $this->getHierarchyType();
         $hierarchyDriver = $hierarchyDriver? $hierarchyDriver :
         HierarchyFactory::initHierarchy($hierarchyType);
-    
+
         if ($hierarchyDriver) {
             $source = $hierarchyDriver->getTreeSource();
             $treeConfigDriver = $hierarchyDriver->showTree();
@@ -1679,7 +1679,7 @@ class IndexRecord implements RecordInterface
         }
         return false;
     }
-    
+
     /**
      * Get the Hierarchy Type
      *
@@ -1689,7 +1689,7 @@ class IndexRecord implements RecordInterface
     public function getHierarchyType()
     {
         global $configArray;
-    
+
         if (isset($this->fields['hierarchy_top_id'])) {
             $hierarchyType = isset($this->fields['hierarchytype'])
             ? $this->fields['hierarchytype'] : false;
@@ -1701,7 +1701,7 @@ class IndexRecord implements RecordInterface
         }
         return false;
     }
-    
+
     /**
      * Returns organisation / data source information for the
      * Feedback form.
@@ -1713,10 +1713,10 @@ class IndexRecord implements RecordInterface
     {
         $idparts = explode('.', $this->fields['id']);
         $institution = $this->getInstitutions();
-    
+
         return array('institution' => $institution[0], 'datasource' => $idparts[0]);
-    }    
-    
+    }
+
     /**
      * Get organization sector library/museum/archive
      *
@@ -1726,8 +1726,8 @@ class IndexRecord implements RecordInterface
     public function getSector()
     {
         return substr($this->fields['sector_str_mv'][0], 2, 3);
-    }    
-    
+    }
+
     /**
      * Get Tree Source
      *
@@ -1740,12 +1740,12 @@ class IndexRecord implements RecordInterface
     public function getTreeCacheTime()
     {
         $hierarchyType = $this->getHierarchyType();
-    
+
         $hierarchyDriver = isset($hierarchyDriver)? $hierarchyDriver :
         HierarchyFactory::initHierarchy($hierarchyType);
         return $hierarchyDriver->getTreeCacheTime();
     }
-    
+
     /**
      * Check if sorting is enabled in the hierarchy Options
      *
@@ -1757,12 +1757,12 @@ class IndexRecord implements RecordInterface
     public function treeSorting()
     {
         $hierarchyType = $this->getHierarchyType();
-    
+
         $hierarchyDriver = isset($hierarchyDriver)? $hierarchyDriver :
         HierarchyFactory::initHierarchy($hierarchyType);
         return $hierarchyDriver->treeSorting();
     }
-    
+
     /**
      * Return the unique identifier of this record within the Solr index;
      * useful for retrieving additional information (like tags and user
@@ -1776,7 +1776,7 @@ class IndexRecord implements RecordInterface
         return $this->fields['id'];
     }
 
-    
+
     /**
      * Return building from index
      *
@@ -1964,9 +1964,9 @@ class IndexRecord implements RecordInterface
     public function hasContainedComponentParts()
     {
         return null;
-    }    
-    
-    
+    }
+
+
     /**
      * Does this record have video content available?
      *
@@ -1991,7 +1991,7 @@ class IndexRecord implements RecordInterface
     {
         return array();
     }
-    
+
     /**
      * Assign a tag list to the interface based on the current unique ID.
      *
@@ -2067,9 +2067,9 @@ class IndexRecord implements RecordInterface
      * </code>
      *
      * @return null|array
-     * @access protected
+     * @access public
      */
-    protected function getAllRecordLinks()
+    public function getAllRecordLinks()
     {
         return null;
     }
@@ -2379,7 +2379,7 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['collection']) ?
         $this->fields['collection'] : array();
     }
-    
+
     /**
      * Get an array of all ISBNs associated with the record (may be empty).
      *
@@ -2567,7 +2567,7 @@ class IndexRecord implements RecordInterface
         return $retval;
     }
 
-    
+
     /**
      * Get the estimated publication dates of the record.
      *
@@ -2903,9 +2903,9 @@ class IndexRecord implements RecordInterface
 
     /**
      * Convert WKT polygon to array (support function for getGoogleMapMarker)
-     * 
+     *
      * @param string $polygon WKT polygon
-     * 
+     *
      * @return array Results
      */
     protected function polygonToArray($polygon)
@@ -2914,24 +2914,24 @@ class IndexRecord implements RecordInterface
         $polygon = preg_replace('/.*\((.+)\).*/', '\\1', $polygon);
         foreach (explode(',', $polygon) as $point) {
             list($lon, $lat) = explode(' ', trim($point), 2);
-            // Workaround for jquery geo issue preventing polygon with longitude -180.0 
+            // Workaround for jquery geo issue preventing polygon with longitude -180.0
             // from being displayed (https://github.com/AppGeo/geo/issues/128)
             if ((float)$lon === -180) {
                 $lon = -179.9999999;
-            } 
+            }
             $array[] = array((float)$lon, (float)$lat);
         }
         return $array;
     }
-    
-    /** 
+
+    /**
      * Convert WKT to array (support function for getGoogleMapMarker)
-     * 
+     *
      * @param string $wkt Well Known Text
-     * 
+     *
      * @return array A marker with title and other attributes
      */
-    protected function wktToMarker($wkt) 
+    protected function wktToMarker($wkt)
     {
         if (strtolower(substr($wkt, 0, 5)) == 'point') {
             if (preg_match('/\((.+)\s+(.+)\)/', $wkt, $matches)) {
@@ -2979,7 +2979,7 @@ class IndexRecord implements RecordInterface
             return array(
                 'title' => (string)$this->fields['title'],
                 'multipolygon' => $polygons
-            );                 
+            );
         } else {
             $coordinates = explode(' ', $wkt);
             if (count($coordinates) > 2) {
@@ -2998,7 +2998,7 @@ class IndexRecord implements RecordInterface
                     'title' => (string)$this->fields['title'],
                     'polygon' => array($polygon)
                 );
-            } 
+            }
             return array(
                 'title' => (string)$this->fields['title'],
                 'lon' => $coordinates[0],
@@ -3006,7 +3006,7 @@ class IndexRecord implements RecordInterface
             );
         }
     }
-    
+
     /**
      * getGoogleMapMarker - gets the JSON needed to display the record on a google
      * map.
@@ -3098,7 +3098,7 @@ class IndexRecord implements RecordInterface
         return isset($this->fields['container_reference'])
             ? $this->fields['container_reference'] : '';
     }
-        
+
     /**
      * Get the number of component parts belonging to this record
      *
@@ -3125,7 +3125,7 @@ class IndexRecord implements RecordInterface
         }
         return $result['response']['numFound'];
     }
-    
+
     /**
     * Get an array of all the dedup data associated with the record.
     *
@@ -3136,10 +3136,10 @@ class IndexRecord implements RecordInterface
     {
         return isset($this->fields['dedup_data']) ? $this->fields['dedup_data'] : array();
     }
-    
+
     /**
      * Get an array of dedup and link data associated with the record.
-     * 
+     *
      * @return array:null
      * @access protected
      */
@@ -3159,7 +3159,7 @@ class IndexRecord implements RecordInterface
         $res = array();
         if (isset($result['response']['docs'][0]['dedup_data'])) {
             $res['dedup_data'] = $result['response']['docs'][0]['dedup_data'];
-        }            
+        }
         if (isset($result['response']['docs'][0]['online_urls_str_mv'])) {
             $res['urls'] = $this->combineURLArray($result['response']['docs'][0]['online_urls_str_mv'], true);
         }
@@ -3214,7 +3214,7 @@ class IndexRecord implements RecordInterface
 
     /**
      * Get all authors apart from presenters
-     * 
+     *
      * @return array
      */
     protected function getNonPresenterAuthors()
@@ -3234,7 +3234,7 @@ class IndexRecord implements RecordInterface
 
     /**
      * Get presenters
-     * 
+     *
      * @return array
      */
     protected function getPresenters()
@@ -3245,14 +3245,14 @@ class IndexRecord implements RecordInterface
 
     /**
      * Get manufacturer
-     * 
+     *
      * @return string
      */
     protected function getManufacturer()
     {
         return '';
     }
-    
+
     /**
      * Get dissertation note for the record.
      *
@@ -3263,10 +3263,10 @@ class IndexRecord implements RecordInterface
     {
         return '';
     }
-    
+
     /**
      * Get record source ID
-     * 
+     *
      * @return string Source ID
      */
     protected function getSourceID()
@@ -3276,26 +3276,26 @@ class IndexRecord implements RecordInterface
         }
         return '';
     }
-    
+
     /**
      * Get online url's
-     * 
+     *
      * @return string Source ID
      */
-    protected function getOnlineURLs()
+    public function getOnlineURLs()
     {
         if (!isset($this->fields['online_urls_str_mv'])) {
             return array();
         }
         return $this->combineURLArray($this->fields['online_urls_str_mv'], isset($this->fields['dedup_data']));
     }
-    
+
     /**
      * A helper function that merges an array of JSON-encoded URLs
      *
      * @param array $urlArray Array of JSON-encoded URL attributes
      * @param bool  $sources  Whether to store data source of each URL
-     * 
+     *
      * @return array Array of URL information
      */
     protected function combineURLArray($urlArray, $sources = true)
@@ -3330,9 +3330,9 @@ class IndexRecord implements RecordInterface
                 $urls[] = $newURL;
             }
         }
-        return $urls; 
+        return $urls;
     }
-    
+
     /**
      * Redirect to the RefWorks site and then die -- support method for getExport().
      *
@@ -3355,7 +3355,7 @@ class IndexRecord implements RecordInterface
         header("Location: {$url}");
         die();
     }
-    
+
     /**
      * Does a record come from a source that has given data
      * source specific configuration set as true?
@@ -3370,8 +3370,8 @@ class IndexRecord implements RecordInterface
         global $configArray;
         $datasource = $this->fields['datasource_str_mv'];
         $datasource = $datasource[0];
-        return (isset($configArray['Record'][$confParam]) 
-            && isset($configArray['Record'][$confParam][$datasource]) 
+        return (isset($configArray['Record'][$confParam])
+            && isset($configArray['Record'][$confParam][$datasource])
             ? $configArray['Record'][$confParam][$datasource] : null);
     }
 
@@ -3380,7 +3380,7 @@ class IndexRecord implements RecordInterface
      *
      * @return bool
      * @access public
-     */   
+     */
     protected function hasPatronFunctions()
     {
         return false;
