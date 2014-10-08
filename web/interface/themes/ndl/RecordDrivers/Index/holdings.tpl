@@ -1,5 +1,10 @@
 <!-- START of: RecordDrivers/Index/holdings.tpl -->
 
+{if is_array($recordFormat)}
+  {assign var=format value=$recordFormat.0} 
+{else}
+  {assign var=format value=$recordFormat} 
+{/if}
 <div class="holdingsHeader clearfix">
   <div class="holdingsHoldingURLs">
   {if (!empty($holdingURLs) || $holdingsOpenURL) && $driver != 'AxiellWebServices'}
@@ -150,10 +155,10 @@
           </td>
         </tr>
         
-        
+
           {assign var="availCount" value=0}
           {if $row.summary}
-            <tr>
+            <tr class="rowSummary format-{$format}">
               <td class="copyTitle">{translate text="Volume Holdings"}: </td>
               <td colspan="4">
                 {foreach from=$row.summary item=summary}
@@ -211,7 +216,7 @@
             {else}<td></td>{/if}
             <td class="copyNumber">
             {if $driver ==  "AxiellWebServices"}
-              {$row.branch}, {$row.department}
+              {if $format == "Journal"}{$row.organisation}, {/if}{$row.branch}, {$row.department}
             {else}
               {if $row.itemSummary}
                 {$row.itemSummary}
@@ -241,7 +246,7 @@
                   {else}
                   {* Begin Unavailable Items (Recalls) *}
                     {if is_null($row.availability)}
-                    <span class="availabilityUnknown">{translate text=$row.status prefix='status_'}</span>
+                    <span class="availabilityUnknown" data-status="{$row.status}">{translate text=$row.status prefix='status_'}</span>
                     {else}
                     <span class="checkedout">{translate text=$row.status prefix='status_'}</span>
                     {/if}
@@ -314,11 +319,12 @@ $(document).ready(function() {
   /* Show copy details in the heading */
   $('.holdingsContainerHolding').each(function() {
 
-    var availableCount = $(this).find('.avail td').text();
-        $headingAvail = $(this).find('.holdingsContainerHeading .availability');
+    var availableCount = $(this).find('.avail td').text(),
+        $headingAvail = $(this).find('.holdingsContainerHeading .availability'),
         iBlock = {'display': 'inline-block'},
         msg = '{/literal}{translate text="Available"}{literal}',
-        due = '{/literal}{translate text="Closest due"}{literal}';
+        due = '{/literal}{translate text="Closest due"}{literal}',
+        refDesk = '{/literal}{translate text="On Reference Desk" prefix='status_'}{literal}';
     /* If there are available copies, show the number */
     if (availableCount > 0) {
       $headingAvail.addClass('available');
@@ -359,8 +365,16 @@ $(document).ready(function() {
         });        
         if (fullStatus !== '') {
           $headingAvail.addClass('checkedout').text(fullStatus).css(iBlock);
-        } else { /* If no message found, print the default one */
-          $headingAvail.addClass('available').text(msg).css(iBlock);
+        } else { 
+          /* Axiell journals have a unique holding header */
+          {/literal}{if $driver == "AxiellWebServices" && $format == "Journal"}{literal}
+            if ($(this).find('.availabilityUnknown').attr('data-status') == 'On Reference Desk') {
+              $headingAvail.addClass('available').text(refDesk).css(iBlock);
+            } 
+          {/literal}{else}{literal}
+            /* If no message found, print the default one */
+            $headingAvail.addClass('available').text(msg).css(iBlock);
+          {/literal}{/if}{literal}
         }
       }
     }
