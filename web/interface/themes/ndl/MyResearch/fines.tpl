@@ -29,15 +29,16 @@
         {/foreach}
       {/if}
     {if $user->cat_username}
-      {if !empty($webpaymentStatusMsg)}
-         <div class="webpaymentMessage info">{$webpaymentStatusMsg|translate}.{if !empty($webpaymentPaidFines)}{include file="MyResearch/webpayment-fines-paid.tpl" fines=$webpaymentPaidFines}{/if}</div>
-         <div class="webpaymentMessage info">
+      {if $paymentBlocked}
+        <div class="webpaymentMessage error">{translate text="webpayment_payment_blocked"}</div>
+      {elseif $webpaymentStatusMsg}
+	<div class="webpaymentMessage info">
           {if $ajaxRegisterPayment}
             <span class="ajax_register_payment hide" id="webpaymentStatusSpinner">{translate text="Registering Payment"}</span>
             <div class="hide" id="webpaymentRegisterStatus"></div>
           {/if}
           <div id="webpaymentStatus"{if $ajaxRegisterPayment} class="hide"{/if}>
-            {$webpaymentStatusMsg|translate}.{if !empty($webpaymentPaidFines)}{include file="MyResearch/webpayment-fines-paid.tpl" fines=$webpaymentPaidFines}{/if}
+            {$webpaymentStatusMsg|translate}{if !empty($webpaymentPaidFines)}{include file="MyResearch/webpayment-fines-paid.tpl" fines=$webpaymentPaidFines}{/if}
           </div>
         </div>
       {/if}
@@ -108,7 +109,7 @@
         {/foreach}
         <tr><td colspan="5" class="fineBalance">
           {translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
-          {if !empty($webpaymentData) && is_array($webpaymentData) && empty($ajaxRegisterPayment)}
+          {if $webpaymentEnabled && !empty($webpaymentData) && is_array($webpaymentData) && empty($ajaxRegisterPayment)}
              {if !$webpaymentData.permitted}
                <div class="webpaymentRemark">{$webpaymentData.paymentNotPermittedInfo}{if !empty($webpaymentData.minimumFee)} <span class="hefty">{$webpaymentData.minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>{/if}</div>
              {else}

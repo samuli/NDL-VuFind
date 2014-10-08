@@ -102,7 +102,7 @@ class Paytrail implements WebpaymentInterface
         $transactionId = $this->generateTransactionId($patron);
         $returnUrl = $followupUrl . '?' . $statusParam . '='
             . self::STATUS_PROCESSED . '&payment_id_param=ORDER_NUMBER';
-        $notifyUrl = $configArray['Site']['url'] . "/MyResearch/PaytraialNotify";
+        $notifyUrl = $configArray['Site']['url'] . "/MyResearch/PaytrailNotify";
         $cancelUrl = $followupUrl . '?' . $statusParam . '='
             . self::STATUS_CANCELED . '&payment_id_param=ORDER_NUMBER';
         $transactionFines = array();
@@ -122,7 +122,8 @@ class Paytrail implements WebpaymentInterface
         $interface->assign('return_url', $returnUrl);
         $interface->assign('cancel_url', $cancelUrl);
         $interface->assign('notify_url', $notifyUrl);
-        $interface->assign(
+        $interface->assign('transaction_id', $transactionId);
+	$interface->assign(
             'authcode', $this->generateAuthCode(
                 $amount, $transactionId, $returnUrl, $cancelUrl, $notifyUrl
             )
@@ -177,16 +178,18 @@ class Paytrail implements WebpaymentInterface
         }
         $notPermittedInfo = '';
         $permitted = true;
+        $paymentData = array();
+
         if ($this->hasUnregisteredPayments($patron)) {
             $permitted = false;
             $notPermittedInfo = translate('webpayment_nonregistered_payment');
+	    $paymentData['blocked'] = true;
         } else if (!$this->paymentPermitted($fees)) {
             $permitted = false;
             $notPermittedInfo
                 = translate('webpayment_fines_contain_nonpayable_fee');
         }
         $transactionFee = 0;
-        $paymentData = array();
         if ($permitted) {
             if ($payableSum > 0) {
                 $minimumFee = 0;
@@ -195,7 +198,7 @@ class Paytrail implements WebpaymentInterface
                 ) {
                     $minimumFee = $this->config['minimumFee'] * 100;
                 }
-                if ($payableSum > $minimumFee) {
+                if ($payableSum >= $minimumFee) {
                     $amount = $payableSum;
                     if (isset($this->config['transactionFee'])
                         && $this->config['transactionFee'] > 0
@@ -230,7 +233,10 @@ class Paytrail implements WebpaymentInterface
      *
      * @return boolean
      * @access protected
-     */
+        $transaction = new Transaction();
+        $transaction->user_id = $user_id;
+        $transaction->complete = 0;
+        $transaction->whereAdd('paid > 0');     */
     protected function hasUnregisteredPayments($patron)
     {
         include_once "services/MyResearch/lib/User.php";
@@ -247,28 +253,12 @@ class Paytrail implements WebpaymentInterface
 
         $transaction = new Transaction();
         $transaction->user_id = $user_id;
-        if (!$transaction->find()) {
-            return false;
-        }
-        $newest_registered = 0;
-        $newest_paid = 0;
-        while ($transaction->fetch()) {
-            if (($transaction->paid > 0) && ($transaction->registered > 0)) {
-                if ($transaction->registered > $newest_registered) {
-                    $newest_registered = $transaction->registered;
-                }
-            } else if ($transaction->paid > 0) {
-                if ($transaction->paid > $newest_paid) {
-                    $newest_paid = $transaction->paid;
-                }
-            }
-        }
-        if ($newest_paid > 0 && $newest_registered > 0) {
-            if ($newest_paid > $newest_registered) {
-                return true;
-            }
-        }
-        return false;
+	$transaction->whereAdd('complete = ' . Transaction::STATUS_RETRY);
+	$transaction->whereAdd('complete = ' . Transaction::STATUS_FAILED, 'OR');
+
+	$transaction->whereAdd('paid > 0');
+
+        return $transaction->find();
     }
 
     /**
@@ -593,10 +583,11 @@ class Paytrail implements WebpaymentInterface
         }
         $transaction = clone($orig_transaction);
         if ($no_error) {
-            $transaction->complete = true; // TODO: remove this column?
+	  $transaction->complete = Transaction::STATUS_COMPLETE;
             $transaction->status = 'payment_register_ok';
             $transaction->registered = date("Y-m-d H:i:s");
         } else {
+	  $transaction->complete = Transaction::STATUS_RETRY;
             if ($errorMsg) {
                 $transaction->status = $errorMsg;
             } else {

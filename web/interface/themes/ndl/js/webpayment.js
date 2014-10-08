@@ -9,37 +9,10 @@ function registerWebpaymentActions() {
             return false;
         }
         var self = this;
-        var amount = $('#webpaymentAmount').val();
-        var transactionId = $('#webpaymentTransactionId').val();
-        var transactionFee = 0;
-        if ($('#webpaymentTransactionFee').length != 0) {
-            transactionFee = $('#webpaymentTransactionFee').val();
-        }
-        var fines = [];
-        $('.webpaymentTransactionFine').each(function(index, item) {
-            var index = $(item).attr('id').replace('webpaymentFeeType', '');
-            var title = $('#webpaymentFeeTitle' + index).val();
-            var fee_type = $('#webpaymentFeeType' + index).val();
-            var fee_amount = $('#webpaymentFeeBalance' + index).val();
-            var fee_currency = $('#webpaymentFeeCurrency' + index).val();
-            fines.push( {
-                title: title,
-                type: fee_type,
-                amount: fee_amount,
-                currency: fee_currency
-            } );
-        });
-
-        //TODO: disable submit button ?
         $.ajax({
             url: path + '/AJAX/JSON_Transaction',
             data: {
-                method: 'startTransaction',
-                transaction_id: transactionId,
-                amount: amount,
-                transaction_fee: transactionFee,
-                currency: 'EUR', //TODO: customize currency
-                fines: fines
+                method: 'startTransaction'
             },
             dataType: 'json',
             success: function(data) {
@@ -78,7 +51,6 @@ function registerWebpayment() {
                         $('.webpaymentMessage').removeClass('info').addClass('error');
                     } else {
                         $('#webpaymentStatus').show();
-                        window.location.href = path + '/MyResearch/Fines'; //TODO: this is quite rough
                     }
                 } else {
                     $('#webpaymentRegisterStatus').replaceWith(data.data);

@@ -59,6 +59,10 @@ require_once 'sys/User.php';
  */
 class WebpaymentMonitor extends ReminderTask
 {
+
+    protected $expireHours;
+    protected $customerErrEmail;
+
     /**
      * Constructor
      *
@@ -72,11 +76,16 @@ class WebpaymentMonitor extends ReminderTask
      *
      * @return void
      */
-    function __construct($expirationDays, $mainDir, $errEmail)
+    function __construct($expireHours, $mainDir, $internalErrEmail, $customerErrEmail)
     {
-        parent::__construct($mainDir, $errEmail);
+        parent::__construct($mainDir, $internalErrEmail);
 
-        $this->expirationDays = $expirationDays;
+
+
+
+
+        $this->customerErrEmail = $customerErrEmail;
+        $this->expireHours = $expireHours;
     }
     /**
      * Process transactions. Try to register unregistered transactions
@@ -87,6 +96,8 @@ class WebpaymentMonitor extends ReminderTask
      */
     public function process()
     {
+        $this->msg("Webpayment monitor started");
+
         global $configArray;
 
         ini_set('display_errors', true);
@@ -106,81 +117,50 @@ class WebpaymentMonitor extends ReminderTask
 
         $now = new DateTime();
 
-        $this->msg('Checking unregistered payments');
 
-        // Find all transaction that have not been registered
-        // (rejected by payment register)
-        $t = new Transaction();
-        $t->query('SELECT * from transaction where paid > 0 and registered = 0 order by user_id');
+        // Find all paid transactions that have not been registered,
+        // and that have not been marked as failed.
+        $t = new Transaction();	
+        $t->whereAdd('complete = ' . Transaction::STATUS_PROGRESS);
+	$t->whereAdd('complete = ' . Transaction::STATUS_RETRY, 'OR');
+        $t->orderBy('user_id');
+        $t->find();
 
-        $expiredTransactionData = array();
-        $failedToRegisterData  = array();
-        $expiredTransactionCount = 0;
-        $registeredTransactionCount = 0;
-        $failedToRegisterCount = 0;
+
+        $expiredCnt = 0;
+        $failedCnt = 0;
+        $registeredCnt = 0;
+
         $user = false;
-        $institution = false;
+
+
+	$expired = array();
 
         while ($t->fetch()) {
-            if ($user === false || $t->user_id != $user->id) {
-                $user = User::staticGet($t->user_id);
-            }
+            $this->msg("  Registering transaction id {$t->id} / {$t->transaction_id}");
 
-            $userInstitution = reset(explode(':', $user->username, 2));
-            if (!$institution || $institution != $userInstitution) {
-                $institution = $userInstitution;
-
-                if (!isset($datasourceConfig[$institution])) {
-                    foreach ($datasourceConfig as $code => $values) {
-                        if (isset($values['institution'])
-                            && strcasecmp($values['institution'], $institution) == 0
-                        ) {
-                            $institution = $code;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!$institution) {
-                //TODO: some exception?
-                continue;
-            }
-            //check if the transaction has not been registered for too long
+            // check if the transaction has not been registered for too long
             $paid_time = new DateTime($t->paid);
             $diff = $now->diff($paid_time);
-            if ( $diff->days > $this->expirationDays) {
-                $feedbackEmail = null;
-                if (isset($datasourceConfig[$institution])
-                    && isset($datasourceConfig[$institution]['feedbackEmail'])
-                ) {
-                    $feedbackEmail
-                        = $datasourceConfig[$institution]['feedbackEmail'];
-                }
-                if ($feedbackEmail === null) {
-                    $this->msg(
-                        "No feedback email found for institution {$institution}"
-                    );
-                    continue;
-                }
-                if (isset($expiredTransactionData[$feedbackEmail])) {
-                    $expiredTransactionData[$feedbackEmail][] = array(
-                        "transaction_id" => $t->transaction_id,
-                        "user" => $user->cat_username,
-                        "paid" => $paid_time
-                    );
-                } else {
-                    $expiredTransactionData[$feedbackEmail] = array();
-                    $expiredTransactionData[$feedbackEmail][] = array(
-                        "transaction_id" => $t->transaction_id,
-                        "user" => $user->cat_username,
-                        "paid" => $paid_time
-                    );
-                }
-                $this->err(
-                    "Expired webpayment transaction: {$t->transaction_id}"
-                );
+            if ($diff->h > $this->expireHours) {
+              if (!isset($expired[$t->driver])) {
+		$expired[$t->driver] = 0;
+	      }
+	      $expired[$t->driver]++;
+	      $expiredCnt++;
+              
+              $transaction = clone($t);              
+              $transaction->complete = Transaction::STATUS_FAILED;
+              if ($transaction->update($t) === false) {
+                  $this->msg("    Failed to update transaction as expired.");
+              } else {
+                  $this->msg("    Transaction expired.");
+              }
             } else {
+	      if ($user === false || $t->user_id != $user->id) {
+                $user = User::staticGet($t->user_id);
+	      }
+
                 $catalog = ConnectionManager::connectToCatalog();
                 if ($catalog && $catalog->status) {
                     $paymentRegisterConfig = $catalog->getConfig(
@@ -200,140 +180,68 @@ class WebpaymentMonitor extends ReminderTask
                             $user->cat_username, $fees_amount
                         );
                         if (PEAR::isError($registered)) {
-                            $feedbackEmail = null;
-                            if (isset($datasourceConfig[$institution])
-                                && isset($datasourceConfig[$institution]['feedbackEmail'])
-                            ) {
-                                $feedbackEmail
-                                    = $datasourceConfig[$institution]['feedbackEmail'];
-                            }
-                            if ($feedbackEmail === null) {
-                                $this->msg(
-                                    "No feedback email found "
-                                    . "for institution {$institution}"
-                                );
-                                continue;
-                            }
-                            if (isset($failedToRegisterData[$feedbackEmail])) {
-                                $failedToRegisterData[$feedbackEmail][] = array(
-                                    "transaction_id" => $t->transaction_id,
-                                    "user" => $user->cat_username,
-                                    "paid" => $paid_time
-                                );
-                            } else {
-                                $failedToRegisterData[$feedbackEmail] = array();
-                                $failedToRegisterData[$feedbackEmail][] = array(
-                                    "transaction_id" => $t->transaction_id,
-                                    "user" => $user->cat_username,
-                                    "paid" => $paid_time
-                                );
-                            }
-                            $this->err(
-                                "Failed to register payment "
-                                . "{$t->transaction_id}: "
-                                . $registered->getMessage()
-                            );
-                            continue;
+                          $failedCnt++;
+                          $this->msg("    Registration failed");
+                          $this->msg("      {$registered->toString()}");
                         } else if ($registered) {
                             $transaction = clone($t);
-                            $transaction->complete = true;
+                            $transaction->complete = Transaction::STATUS_COMPLETE;
                             $transaction->status = 'payment_register_ok';
+
                             $transaction->registered = date("Y-m-d H:i:s");
                             if (!$transaction->update($t)) {
-                                $this->msg(
-                                    "Failed to update transaction data "
-                                    . "({$t->transaction_id})"
-                                );
+                                $this->msg("Failed to update transaction as complete.");
                                 continue;
+                            } else {
+                                $registeredCnt++;
                             }
-                            $registeredTransactionCount ++;
                         }
                     }
                 } else {
-                    $this->msg(
-                        "Failed to connect to catalog ({$user->cat_name})"
-                    );
+                    $this->msg("Failed to connect to catalog ({$user->cat_name})");
                     continue;
                 }
             }
         }
 
-        if (count($expiredTransactionData)) {
-            foreach ($expiredTransactionData as $feedbackEmail => $transactions) {
-                $message = "There are " . count($transactions)
-                    . " expired unregistered webpayment transactions:\n";
-                foreach ($transactions as $transaction_data) {
-                    $datePaid = $transaction_data['paid']->format("Y-m-d H:i");
-                    $message .= "{$transaction_data['transaction_id']} "
-                        . "paid by {$transaction_data['user']} on {$datePaid}.\n";
-                }
 
-                $result = $mailer->send(
-                    $feedbackEmail, $configArray['Site']['email'],
-                    "Webpayment service: There are unregistered payments",
-                    $message
-                );
-                if (PEAR::isError($result)) {
-                    $this->msg(
-                        "Failed to send message to {$feedbackEmail}: "
-                        . $result->getMessage()
-                    );
-                    continue;
-                }
-                $expiredTransactionCount += count($transactions);
-            }
+        if ($registeredCnt) {
+            $this->msg("  Total registered: $registeredCnt");
         }
-        if (count($failedToRegisterData)) {
-            foreach ($failedToRegisterData as $feedbackEmail => $transactions) {
-                $message = count($transactions)
-                    . " webpayment transactions have failed to register:\n";
-                foreach ($transactions as $transaction_data) {
-                    $datePaid = $transaction_data['paid']->format("Y-m-d H:i");
-                    $message .= "{$transaction_data['transaction_id']} "
-                        . " paid by {$transaction_data['user']} on {$datePaid}.\n";
-                }
+        if ($expiredCnt) {
+            $this->msg("  Total expired: $expiredCnt");
+        }
+        if ($failedCnt) {
+            $this->msg("  Total failed: $failedCnt");
+        }
+	
 
-                $result = $mailer->send(
-                    $feedbackEmail, $configArray['Site']['email'],
-                    "Webpayment service: Wepayment transactions registering failed",
-                    $message
-                );
-                if (PEAR::isError($result)) {
-                    $this->msg(
-                        "Failed to send message to {$feedbackEmail}: "
-                        . $result->getMessage()
-                    );
-                    continue;
-                }
-                $failedToRegisterCount += count($transactions);
-            }
-        }
-        $this->msg("Registered {$registeredTransactionCount} transactions.");
-        if ($failedToRegisterCount) {
-            $this->msg(
-                "{$failedToRegisterCount} transactions have failed to register."
-                . " This has been reported to Webpayment maintenance."
-            );
-        }
-        if ($expiredTransactionCount) {
-            $this->msg(
-                "{$expiredTransactionCount} expired transactions have "
-                . " been reported to Webpayment maintenance."
-            );
-        }
+	foreach ($expired as $driver => $cnt) {
+	  if ($cnt) {
+	    $settings = getExtraConfigArray("VoyagerRestful_$driver");
+	    if (!$settings || !isset($settings['Webpayment']['errorEmail'])) {
+	      $this->msg("  Error email for expired transactions not defined for driver $driver");
+	    }
+
+	    $email = $settings['Webpayment']['errorEmail'];
+	    $this->msg("  [$driver] Inform $cnt expired transactions to $email");
+	  }
+	}
+
+        $this->msg("Webpayment monitor completed");
 
         $this->reportErrors();
-        $this->msg("Webpayment monitor execution completed");
     }
 }
 
-if (count($argv) < 2) {
-    exit("Usage: php webpayment_monitor.php expire_days [main directory] [email]");
+if (count($argv) < 5) {
+    exit("Usage: php webpayment_monitor.php expire_hours main_directory internal_email customer_email" . PHP_EOL);
 }
 
 $monitor = new WebpaymentMonitor(
     $argv[1],
-    isset($argv[2]) ? $argv[2] : '..',
-    isset($argv[3]) ? $argv[3] : false
+    $argv[2],
+    $argv[3],
+    $argv[4]
 );
 $monitor->process();

@@ -2252,7 +2252,7 @@ clear:both;
 .myResearch table.profileGroup th {
     width:25%;    
 }
-.myResearch.checkedoutList table,.myResearch.holdsList table, .myResearch.finesList table{
+.myResearch.checkedoutList table,.myResearch.holdsList table, .myResearch.finesList table {
     padding:0px 10px;    
 }
 .myResearch.checkedoutList table th, .myResearch.checkedoutList table td, .myResearch.holdsList table th, .myResearch.holdsList table td,.myResearch.finesList td, .myResearch.finesList th {
@@ -2261,6 +2261,9 @@ clear:both;
 }
 .myResearch.finesList table {
     padding:10px;    
+}
+.myResearch.finesList table.webpaymentSummary {
+    padding:0;    
 }
 .myResearch.finesList td, .myResearch.finesList th {
     padding-top:10px;
@@ -2351,6 +2354,7 @@ clear:both;
 .myResearch table.webpaymentSummary {
     border: 0px;
     box-shadow: none !important;
+    margin-bottom: 0;
 }
 .myResearch table.webpaymentSummary td {
     border-top: 0px;

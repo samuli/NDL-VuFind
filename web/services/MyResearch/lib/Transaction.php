@@ -47,6 +47,7 @@ class Transaction extends DB_DataObject
     public $__table = 'transaction';         // table name
     public $id;                              // int(11)  not_null primary_key auto_increment
     public $transaction_id;                  // string(50) not null
+    public $driver;                          // string(50) not null
     public $user_id;                         // int(11)  not_null multiple_key
     public $amount;                          // float  not_null
     public $currency;                        // string(3) not_null
@@ -63,6 +64,14 @@ class Transaction extends DB_DataObject
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
     // @codingStandardsIgnoreEnd
+
+    const STATUS_PROGRESS = 0;
+    const STATUS_COMPLETE = 1;
+    const STATUS_RETRY    = 2;
+    const STATUS_FAILED   = 3;
+    const STATUS_RESOLVED = 4;
+    
+
 
     /**
      * Add fee to the current transaction.
