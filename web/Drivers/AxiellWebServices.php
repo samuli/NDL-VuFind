@@ -209,7 +209,7 @@ class AxiellWebServices implements DriverInterface
             } else {
                 $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
             }
-
+            
             return empty($vfHoldings) ? false : $vfHoldings;
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
@@ -326,7 +326,7 @@ class AxiellWebServices implements DriverInterface
                                 'requests_placed'   => $noOfReservations,
                                 'barcode'           => '',
                                 'availability'      => $available,
-                                'status'      		=> $status,
+                                'status'      		  => $status,
                                 'location'          => $location,
                                 'reserve'           => 'N',
                                 'callnumber'        => isset($department->shelfMark) ? $department->shelfMark : '',
@@ -334,7 +334,13 @@ class AxiellWebServices implements DriverInterface
                                 'returnDate'        => false,
                                 'is_holdable'       => $reservationStatus,
                                 'addLink'           => false,
-                                'summary'           => $edition
+                                'summary'           => $edition,
+                                'organisation'      => $organisationName,
+                                'department'        => $departmentName,
+                                'branch'            => $branchName,
+                                'total'             => $nofTotal,
+                                'available'         => $nofAvailableForLoan,
+                                'ordered'           => $nofOrdered
                             );
 
                             $vfHoldings[] = $vfHolding;

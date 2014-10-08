@@ -786,7 +786,27 @@ class IndexRecord implements RecordInterface
         $interface->assign('holdingArrOCLC', $this->getOCLC());
 
         // Load real-time data if available:
-        $interface->assign('holdings', $this->getRealTimeHoldings($patron));
+        $holdings = $this->getRealTimeHoldings($patron);
+        $interface->assign('holdings', $holdings);
+       
+        $holdCount = 0;
+        $requestCount = 0;
+        if (is_array($holdings)) {
+            foreach ($holdings as $holding) {
+                if (is_array($holding)) {
+                    foreach ($holding as $item) {
+                        if (is_array($item)) {
+                            $requestCount +=
+                                isset($item['requestCount']) ? $item['requestCount'] : 0;
+                            $holdCount += 
+                                isset($item['total']) ? $item['total'] : 0;
+                        }
+                    }
+                }
+            }
+        }
+        $interface->assign('holdCount', $holdCount);
+        $interface->assign('requestCount', $requestCount);
         $interface->assign('history', $this->getRealTimeHistory());
 
         // Source ID

@@ -5307,6 +5307,16 @@ h5.recordTabHeader {
     margin-left:10px;
 }
 
+.holdingsContainerHeader .holdRequestTotals {
+    float: right;
+    font-size: 0.96em;
+    font-weight: 500;
+}
+
+.holdingsContainerHeader .requestCount {
+    margin-right: 10px;
+}
+
 .dropdownMenuIcon {
     background-image: url("../images/icons16-24px-02_white.png");
     background-position: 1px -2324px;
@@ -5685,6 +5695,14 @@ table.holdingsContainerHolding .available {
 
 table.holdingsContainerHolding .callSlipPlace {
     font-weight:400;
+}
+
+.holdingsContainer.driver-AxiellWebServices td.copyNumber {
+    font-weight:500;
+}
+
+.holdingsContainer.driver-AxiellWebServices td.availableOfTotal {
+    color: #777;
 }
 
 /* Comments */

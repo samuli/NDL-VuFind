@@ -45,7 +45,7 @@
             <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id|escape}">{translate text="Login"}</a> {translate text="hold_login"}
         {/if}
         {if count($catalogAccounts) > 1}
-    	    {include file="MyResearch/select-card.tpl"}
+          {include file="MyResearch/select-card.tpl"}
         {/if}
         {if $user && !$user->cat_username}
             <a class="button buttonFinna" href="{$path}/MyResearch/Profile">{translate text="Add an account to place holds"}</a>
@@ -75,25 +75,31 @@
     </select>
   </div>
   {else}
-  <h5>{translate text=$source prefix='source_'}</h5>
+    <h5>{translate text=$source prefix='source_'}
+      {if $driver == "AxiellWebServices" && $holdings}
+        <div class="holdRequestTotals">
+          <span class="requestCount">{translate text="Request queue"}: {$requestCount}</span>
+          <span class="holdCount">{translate text="Total number of items"}: {$holdCount}</span>
+        </div>
+      {/if}
+    </h5>
   {/if}
   
 </div>
-
-<div class="holdingsContainer clearfix">
+<div class="holdingsContainer clearfix driver-{$driver}">
   {if !$holdings}
      <h5>{translate text="No holdings information available"}</h5>
-  {else}
-     <div>
+  {else} 
+    <div>
        {* Display link to access rights for records from fennica, viola and vaari *} 
-     {if $coreSource == 'fennica' || $coreSource == 'viola' || $coreSource == 'vaari'}  
-     <p class="accessRights"><a href="
-     {if $coreSource == 'fennica' || $coreSource == 'viola'}{if $userLang == 'fi'}http://www.kansalliskirjasto.fi/kokoelmatjapalvelut/lainaus/kansalliskokoelmankaytosta.html{elseif $userLang == 'sv'}http://www.nationalbiblioteket.fi/tjanster/lainaus/kansalliskokoelmankaytosta.html{else}http://www.nationallibrary.fi/services/lainaus/kansalliskokoelmankaytosta.html{/if}
-     {elseif $coreSource == 'vaari'}http://www.varastokirjasto.fi/{if $userLang == 'fi'}kaukolainaus/varastokirjaston-palvelut-henkiloasiakkaille/{elseif $userLang == 'sv'}utlaning/service-for-privatkunder/{else}loans-and-requests/ill-services-for-private-customers/{/if}
-     {/if}
-     " target="_blank">{translate text="Record access rights"}</a></p>
-     {/if}
-     </div>
+      {if $coreSource == 'fennica' || $coreSource == 'viola' || $coreSource == 'vaari'}  
+      <p class="accessRights"><a href="
+      {if $coreSource == 'fennica' || $coreSource == 'viola'}{if $userLang == 'fi'}http://www.kansalliskirjasto.fi/kokoelmatjapalvelut/lainaus/kansalliskokoelmankaytosta.html{elseif $userLang == 'sv'}http://www.nationalbiblioteket.fi/tjanster/lainaus/kansalliskokoelmankaytosta.html{else}http://www.nationallibrary.fi/services/lainaus/kansalliskokoelmankaytosta.html{/if}
+      {elseif $coreSource == 'vaari'}http://www.varastokirjasto.fi/{if $userLang == 'fi'}kaukolainaus/varastokirjaston-palvelut-henkiloasiakkaille/{elseif $userLang == 'sv'}utlaning/service-for-privatkunder/{else}loans-and-requests/ill-services-for-private-customers/{/if}
+      {/if}
+      " target="_blank">{translate text="Record access rights"}</a></p>
+      {/if}
+    </div>
   {/if}
 
   {foreach from=$holdings item=holding key=location name=holdings}
@@ -198,19 +204,23 @@
           {/if}
         {/if}
         {if $row.item_id}
-          {if $copyCount == 5}<tr class="toggleCopyDetails"><td class="copyTitle"></td><td colspan="2"><strong><a href="#">{translate text="More Results"}</a></strong></td></tr>{/if}
-          <tr class="copyDetails {if $showCopyTitle}{counter start=0 assign=copyCount}first{/if} {if $copyCount >= 5}hidden{/if}">
+          {if $copyCount == 5 && $driver != "AxiellWebServices"}<tr class="toggleCopyDetails"><td class="copyTitle"></td><td colspan="2"><strong><a href="#">{translate text="More Results"}</a></strong></td></tr>{/if}
+          <tr class="copyDetails {if $showCopyTitle}{counter start=0 assign=copyCount}first{/if} {if $copyCount >= 5 && $driver != "AxiellWebServices"}hidden{/if}">
             {counter assign=copyCount}
-            {if $showCopyTitle}<td class="copyTitle">{translate text="Copies"}{assign var="showCopyTitle" value=0}</td>
+            {if $showCopyTitle}<td class="copyTitle">{if $driver == "AxiellWebServices"}{translate text="Library unit"}{else}{translate text="Copies"}{/if}{assign var="showCopyTitle" value=0}</td>
             {else}<td></td>{/if}
             <td class="copyNumber">
-            {if $row.itemSummary}
-              {$row.itemSummary}
+            {if $driver ==  "AxiellWebServices"}
+              {$row.branch}, {$row.department}
             {else}
-              {translate text="Copy"} {$row.number|escape}
+              {if $row.itemSummary}
+                {$row.itemSummary}
+              {else}
+                {translate text="Copy"} {$row.number|escape}
+              {/if}
             {/if}
             </td>
-            <td colspan="3" class="copyInfo">
+            <td colspan="{if $driver == "AxiellWebServices"}2{else}3{/if}" class="copyInfo">
               {if $row.reserve == "Y"}
                 {translate text="On Reserve - Ask at Circulation Desk"}
               {elseif $row.use_unknown_message}
@@ -240,6 +250,9 @@
                     {if $row.duedate}
                       <span class="statusExtra">{translate text="Due"}: <span class="returnDate">{$row.duedate|escape}</span></span>
                     {/if}
+                    {if $row.ordered > 0 && $driver == "AxiellWebServices"}
+                      <span class="statusExtra">{translate text="status_Ordered"}: {$row.ordered|escape}</span>
+                    {/if}
                     {if $row.requests_placed > 0}
                       <span>{translate text="Requests"}: {$row.requests_placed|escape}</span>
                     {/if}
@@ -250,6 +263,7 @@
                 {/if}
               {/if}
             </td>
+            {if $driver == "AxiellWebServices"}<td class="availableOfTotal">{translate text="Available items"}: {$row.available} / {$row.total}</td>{/if}
           </tr>
         {/if}
       {/foreach}
@@ -308,7 +322,13 @@ $(document).ready(function() {
     /* If there are available copies, show the number */
     if (availableCount > 0) {
       $headingAvail.addClass('available');
-      $headingAvail.text(availableCount + ' ' + $headingAvail.text().toLowerCase()).show();
+      {/literal}{if $driver == "AxiellWebServices"}{literal}
+        availableText = '{/literal}{translate text="axiell_available"}{literal} '+
+          availableCount+' {/literal}{translate text="axiell_branches"}{literal}';
+      {/literal}{else}{literal}
+        availableText = availableCount + ' ' + $headingAvail.text().toLowerCase();
+      {/literal}{/if}{literal}
+      $headingAvail.text(availableText).show();
     } else { /* If no available copies, get return dates */
       var prevDate, firstDate, firstDateText;
       $(this).find('.copyDetails .returnDate').each(function() {
