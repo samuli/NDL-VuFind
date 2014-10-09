@@ -2591,9 +2591,22 @@ ul.recordSet .addToFavLink {
     width: auto;
     float: right;
     width: 20px;
+    position: relative;
 }
 .addToFavLink a {
     height: 20px;
+}
+
+.addToFavoritesSelector {
+    right: 0;
+    position: absolute;
+}
+.addToFavoritesSelector .dropdown ul {
+    right: 0;
+    top: 2em;
+}
+li#saveLink {
+    position: relative;
 }
 ul.recordSet .resultColumn1 {
     float: left;
