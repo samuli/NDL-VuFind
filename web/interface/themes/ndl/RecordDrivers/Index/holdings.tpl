@@ -258,7 +258,7 @@
                     {if $row.ordered > 0 && $driver == "AxiellWebServices"}
                       <span class="statusExtra">{translate text="status_Ordered"}: {$row.ordered|escape}</span>
                     {/if}
-                    {if $row.requests_placed > 0}
+                    {if $row.requests_placed > 0 && $driver != "AxiellWebServices"}
                       <span>{translate text="Requests"}: {$row.requests_placed|escape}</span>
                     {/if}
                     {if $row.link}
