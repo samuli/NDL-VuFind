@@ -794,10 +794,14 @@ class IndexRecord implements RecordInterface
         if (is_array($holdings)) {
             foreach ($holdings as $holding) {
                 if (is_array($holding)) {
-                    foreach ($holding as $item) {
+                    foreach ($holding as $itemKey => $item) {
                         if (is_array($item)) {
-                            $requestCount +=
-                                isset($item['requestCount']) ? $item['requestCount'] : 0;
+                            // Get reservation queue from the first item 
+                            if ($itemKey == 0) {
+                                $requestCount = isset($item['requests_placed']) ? 
+                                    $item['requests_placed'] : 0;
+                            }
+                            // Calculate total hold count
                             $holdCount += 
                                 isset($item['total']) ? $item['total'] : 0;
                         }
