@@ -3582,6 +3582,10 @@ ul.recordSet .addToFavLink a {
 .persona-login-loading {
     background-image: url(../images/ajax_loading.gif);
 }
+.libraryLogin .buttonFinna.loading {
+    background: url(../images/ajax_loading.gif) no-repeat left center;
+    cursor:default;
+}
 .new_account {
     background-image:url(../images/silk/user_add.png);
     background-repeat:no-repeat;
