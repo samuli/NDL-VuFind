@@ -58,8 +58,9 @@ class Base extends Action
         $this->disallowBots();
 
         if (!$interface->get_template_vars('metalibEnabled')) {
-             PEAR::raiseError(new PEAR_Error("MetaLib is not enabled."));
-        }
+            PEAR::raiseError(new PEAR_Error("MetaLib is not enabled."));
+        }        
+
         $interface->assign('currentTab', 'MetaLib');
 
         // Send MetaLib search types to the template so the basic search box can
@@ -68,7 +69,8 @@ class Base extends Action
 
         $sets = $this->searchObject->getSearchSets();
         if (isset($_REQUEST['set']) && strncmp($_REQUEST['set'], '_ird:', 5) == 0) {
-            $ird = substr($_REQUEST['set'], 5);
+            $set = $_REQUEST['set'];
+            $ird = substr($set, 5);
             if (preg_match('/\W/', $ird)) {
                 PEAR::raiseError(new PEAR_Error('Invalid parameter'));
             }
@@ -76,21 +78,44 @@ class Base extends Action
             if ($irdInfo === false) {
                 PEAR::raiseError(new PEAR_Error('Invalid parameter'));
             }
-            if (strcasecmp($irdInfo['access'], 'guest') != 0 && !UserAccount::isAuthorized()) {
-                PEAR::raiseError(translate('metalib_not_authorized_single'));
-            }
 
-            // Add selected ird as a virtual search set in the beginning and select it
-            $sets = array_reverse($sets, true);
-            $sets["_ird:$ird"] = $irdInfo['name'];
-            $sets = array_reverse($sets, true);
+            // Append to recently used search sets and select as active
+            unset($_SESSION['recentMetaLibDatabases'][$set]);
+            $_SESSION['recentMetaLibDatabases'][$set] = $irdInfo['name'];
+
             $interface->assign('searchSet', "_ird:$ird");
+        } else {
+            // Select first set by default 
+            $interface->assign('searchSet', current(array_keys($sets)));
         }
 
+        if ($this->isBrowseEnabled()) {
+            include_once 'services/Browse/Database.php';
+            $action = new Database();
+            $interface->assign('browseDatabases', $action->getBrowseUrl('Database'));
+        }
+        
         $interface->assign('metalibSearchTypes', $this->searchObject->getBasicTypes());
         $interface->assign('metalibSearchSets', $sets);
+        $interface->assign('metalibRecentDatabases', $this->searchObject->getRecentDatabases());
 
         // Increase max execution time to allow slow MetaLib searches to complete
         set_time_limit(60);
     }
+
+    protected function isBrowseEnabled()
+    {
+        $searchSettings = getExtraConfigArray('searches');
+        
+        if (isset($searchSettings['BrowseExtended'])) {
+            foreach ($searchSettings['BrowseExtended'] as $key => $val) {
+                if (strcmp('Database', $key) === 0 && (boolean)$val) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }

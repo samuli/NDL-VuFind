@@ -262,7 +262,7 @@ class Export extends Bulk
             }
             $formats = $newFormats;
         }
-
+        
         $interface->assign('exportOptions', $formats);
         $interface->assign('exportList', $exportList);
     }
@@ -395,6 +395,8 @@ class Export extends Bulk
                 $recordDetails->getCoreMetadata();
                 $result = $recordDetails->getExport($format);
                 if (!empty($result)) {
+                    $interface->assign('id', $id);
+
                     $current = $interface->fetch($result);
                     // For MARC-XML, extract <record> from <collection>:
                     if ($format == 'MARCXML') {
@@ -408,7 +410,7 @@ class Export extends Bulk
                 }
             }
         }
-
+        
         // MARC-XML needs a container close at the end:
         if ($format == 'MARCXML') {
             $exportDetails[] = '</collection>';

@@ -2,10 +2,13 @@
 
 {include file="MyResearch/menu.tpl"}
 
-<div class="myResearch holdsList{if $sidebarOnLeft} last{/if}">
+<div class="myResearch holdsList{if $sidebarOnLeft} last{/if} driver-{$driver}">
   <div class="content">
-      {* NDLBlankInclude *}
-    <div class="noContentMessage">{translate text='hold_instructions'}</div>
+    {* NDLBlankInclude *}
+    {assign var=hold_instructions value='hold_instructions'|translate}
+    {if $hold_instructions} 
+    <div class="noContentMessage">{$hold_instructions}</div>
+    {/if}
     {* /NDLBlankInclude *}
     
       {if empty($catalogAccounts)}
@@ -13,6 +16,9 @@
    			 <a class="button buttonFinna" type="button" href="{$url}/MyResearch/Accounts?add=1" />{translate text='Link Library Card'}...</a>
       {/if}
   <div class="grid_24">
+  {if $errorMsg}
+     <div class="holdsMessage"><p class="error">{translate text=$errorMsg}</p></div>
+  {/if}
   {if $user->cat_username}
   <div class="resultHead">
     {if $holdResults.success}
@@ -23,10 +29,6 @@
     {/if}
     {if $UBRequestResults.success}
       <div class="holdsMessage"><p class="success">{translate text=$UBRequestResults.status}</p></div>
-    {/if}
-
-    {if $errorMsg}
-       <div class="holdsMessage"><p class="error">{translate text=$errorMsg}</p></div>
     {/if}
 
     {if $cancelResults.count > 0}
@@ -40,10 +42,11 @@
         <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
       {/foreach}
     {/if}
-    <h2>{translate text='Holds'}:      {foreach from=$catalogAccounts item=account}
-        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
-     {/foreach} 
-            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
+    <h2>{translate text='Holds'}:
+      {foreach from=$catalogAccounts item=account}
+        {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+      {/foreach} 
+      {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
 
 
     
@@ -89,7 +92,7 @@
         	{assign var=summImages value=$resource.summImages}
         	{assign var=summThumb value=$resource.summThumb}        	
         	{assign var=summId value=$resource.id}        	
-			{assign var=img_count value=$summImages|@count}
+          {assign var=img_count value=$summImages|@count}
 		
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
@@ -134,8 +137,8 @@
             {/if}
             </td>
             <td class="dueDate floatright">
-              {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-              {translate text=$source prefix='source_'},
+            {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
+            {if $driver != 'AxiellWebServices'}{translate text=$source prefix='source_'},{/if}
             {* Depending on the ILS driver, the "location" value may be a string or an ID; figure out the best value to display... *}
             {assign var="pickupDisplay" value=""}
             {assign var="pickupTranslate" value="0"}
@@ -172,10 +175,15 @@
             {/foreach}
 
             {if $resource.ils_details.available == true}
-              <span class="available">{translate text="hold_available"}</span>
+              <span class="available">{translate text="hold_available"}
+                {if $driver == 'AxiellWebServices'}
+                  <br>
+                  <strong>{translate text="hold_number"}:</strong> {$resource.ils_details.reqnum}
+                {/if}
+                </span>
             {else}
               {if $resource.ils_details.position}
-              <p><strong>{translate text='hold_queue_position'}:</strong> {$resource.ils_details.position|escape}</p>
+              <p class="positionDetails"><strong>{translate text='hold_queue_position'}:</strong> {$resource.ils_details.position|escape}</p>
               {/if}
             {/if}
             {if $resource.ils_details.cancel_link}
@@ -197,6 +205,7 @@
     <div style="clear:both;padding-top: 2em;"></div>
 
   {* Call Slips *}
+  {if $driver != 'AxiellWebServices'}
   <h2>{translate text='Call Slips'}:      {foreach from=$catalogAccounts item=account}
         	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
      {/foreach} 
@@ -341,6 +350,7 @@
     </form>
     {else}
       <div class="noContentMessage">{translate text='You do not have any requests placed'}.</div>
+    {/if}
     {/if}
   {else}
     {include file="MyResearch/catalog-login.tpl"}

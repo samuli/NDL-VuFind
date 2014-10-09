@@ -64,7 +64,7 @@ class CallSlip extends Record
         if (isset($_REQUEST['lightbox'])) {
             $interface->assign('lightbox', true);
         }
-        
+
         // Are Call Slips Allowed?
         $this->checkCallSlips = $this->catalog->checkFunction("CallSlips", $this->recordDriver->getUniqueID());
         if ($this->checkCallSlips != false) {
@@ -96,25 +96,28 @@ class CallSlip extends Record
             if (UserAccount::isLoggedIn()) {
                 if ($patron = UserAccount::catalogLogin()) {
                     // Block invalid requests:
-                    if (!$this->catalog->checkCallSlipRequestIsValid(
-                        $this->recordDriver->getUniqueID(),
-                        $this->gatheredDetails, $patron
-                    )) {
+                    if (PEAR::isError($patron)
+                        || !$this->catalog->checkCallSlipRequestIsValid(
+                            $this->recordDriver->getUniqueID(),
+                            $this->gatheredDetails, $patron
+                        )
+                    ) {
+                        $errorMsg = PEAR::isError($patron) ? $patron->getMessage() : 'call_slip_error_blocked';
                         if (isset($_REQUEST['lightbox'])) {
                             $interface->assign('lightbox', true);
-                            $interface->assign('results', array('status' => 'call_slip_error_blocked'));
+                            $interface->assign('results', array('status' => $errorMsg));
                             $interface->display('Record/call-slip-submit.tpl');
                         } else {
                             header(
                                 'Location: ../../Record/' .
                                 urlencode($this->recordDriver->getUniqueID()) .
-                                "?errorMsg=call_slip_error_blocked#top"
+                                "?errorMsg=$errorMsg#top"
                             );
                         }
                         return false;
                     }
 
-                    
+
                     $interface->assign('formURL', $this->logonURL);
 
                     $interface->assign('gatheredDetails', $this->gatheredDetails);
@@ -125,7 +128,7 @@ class CallSlip extends Record
                     );
                     $interface->assign('pickup', $libs);
                     $interface->assign('home_library', $user->home_library);
-                    
+
                     $extraFields = isset($this->checkCallSlips['extraFields'])
                         ? explode(":", $this->checkCallSlips['extraFields'])
                             : array();
@@ -137,7 +140,7 @@ class CallSlip extends Record
                     } elseif (isset($this->checkCallSlips['helpText'])) {
                         $interface->assign('helpText', $this->checkCallSlips['helpText']);
                     }
-                    
+
                     if (isset($_POST['placeRequest'])) {
                         if ($this->_placeRequest($patron)) {
                             // If we made it this far, we're ready to place the request;
@@ -156,7 +159,7 @@ class CallSlip extends Record
                     $interface->display('Record/call-slip-submit.tpl');
                 } else {
                     $interface->assign('subTemplate', 'call-slip-submit.tpl');
-                    
+
                     // Main Details
                     $interface->setTemplate('view.tpl');
                     // Display Page
@@ -173,7 +176,7 @@ class CallSlip extends Record
                     $interface->assign('followupModule', 'Record');
                     $interface->assign('followupAction', 'CallSlip');
                     $interface->display('AJAX/login.tpl');
-                } else {                
+                } else {
                     $interface->setTemplate('../MyResearch/login.tpl');
                     // Display Page
                     $interface->display('layout.tpl');
@@ -279,7 +282,7 @@ class CallSlip extends Record
 
         // Attempt to place the hold:
         $function = (string)$this->checkCallSlips['function'];
-        
+
         $results = $this->catalog->$function($details);
         if (PEAR::isError($results)) {
             PEAR::raiseError($results);

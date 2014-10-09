@@ -81,8 +81,12 @@ class Record extends Action
             if (isset($_POST['cat_username'])
                 && isset($_POST['cat_password'])
             ) {
+                $username = $_POST['cat_username'];
+                if (isset($_POST['login_target'])) {
+                    $username = $_POST['login_target'] . '.' . $username;
+                }
                 $result = UserAccount::processCatalogLogin(
-                    $_POST['cat_username'], $_POST['cat_password']
+                    $username, $_POST['cat_password']
                 );
                 if ($result) {
                     $interface->assign('user', $user);
@@ -96,7 +100,7 @@ class Record extends Action
         if (!($record = $this->db->getRecord($_REQUEST['id']))) {
             PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
         }
-        
+
         $this->setRecord($_REQUEST['id'], $record);
     }
 
@@ -120,13 +124,13 @@ class Record extends Action
             unset($solrStats);
         }
     }
-    
+
     /**
      * Initialize the record
-     * 
+     *
      * @param string $id     Record ID
      * @param array  $record Record data
-     * 
+     *
      * @return void
      */
     protected function setRecord($id, $record)
@@ -134,11 +138,11 @@ class Record extends Action
         global $interface;
         global $configArray;
         global $user;
-        
+
         // Store ID of current record (this is needed to generate appropriate
         // links, and it is independent of which record driver gets used).
         $interface->assign('id', $_REQUEST['id']);
-        
+
         $this->recordDriver = RecordDriverFactory::initRecordDriver($record);
 
         // Define Default Tab
@@ -170,7 +174,7 @@ class Record extends Action
         if (isset($configArray['Site']['ajaxRecordTabs']) && $configArray['Site']['ajaxRecordTabs']) {
             $interface->assign('dynamicTabs', true);
         }
-        
+
         if ($this->recordDriver->hasRDF()) {
             $interface->assign(
                 'addHeader', '<link rel="alternate" type="application/rdf+xml" ' .
@@ -179,30 +183,30 @@ class Record extends Action
             );
         }
         $interface->assign('coreMetadata', $this->recordDriver->getCoreMetadata());
-        
+
         // Determine whether to display book previews
         if (isset($configArray['Content']['previews'])) {
             $interface->assignPreviews();
         }
-        
+
         // Determine whether comments or reviews are enabled
         if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
             $interface->assign('userCommentsEnabled', true);
         }
-        
+
         // Ratings for libraries, comments for museums and archives
         if ($this->recordDriver->getSector() == 'lib') {
             $interface->assign('ratings', true);
         }
-        
+
         if (isset($configArray['Site']['userComments']) && $configArray['Site']['userComments']) {
             // Get number of comments for this record
             include_once 'services/MyResearch/lib/Comments.php';
             $comments = new Comments();
-            $commentCount = $comments->getCommentCount($_REQUEST['id']);    
+            $commentCount = $comments->getCommentCount($_REQUEST['id']);
             $interface->assign(compact('commentCount'));
             $recordRating = $comments->getAverageRating($_REQUEST['id']);
-            $interface->assign(compact('recordRating'));            
+            $interface->assign(compact('recordRating'));
         }
 
         // Determine whether to include script tag for syndetics plus
@@ -249,10 +253,10 @@ class Record extends Action
         // Retrieve User Search History
         $lastsearch = isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false;
         $interface->assign('lastsearch', $lastsearch);
-        
+
         if ($lastsearch) {
             // Retrieve active filters and assign them to searchbox template.
-            // Since SearchObjects use $_REQUEST to init filters, we stash the current $_REQUEST 
+            // Since SearchObjects use $_REQUEST to init filters, we stash the current $_REQUEST
             // and fill it temporarily with URL parameters from last search.
 
             $query = parse_url($lastsearch, PHP_URL_QUERY);
@@ -265,7 +269,7 @@ class Record extends Action
             $searchObject->init();
             // This is needed for facet labels
             $searchObject->initRecommendations();
-                        
+
             $filterList = $searchObject->getFilterList();
             $filterListOthers = $searchObject->getFilterListOthers();
             $checkboxFilters = $searchObject->getCheckboxFacets();
@@ -283,10 +287,10 @@ class Record extends Action
                 // Set followup module & action for next search
                 $parts = parse_url($_SERVER['HTTP_REFERER']);
                 $pathParts = explode('/', $parts['path']);
-                
+
                 $refAction = array_pop($pathParts);
-                $refModule = array_pop($pathParts);   
-                
+                $refModule = array_pop($pathParts);
+
                 $interface->assign('followupSearchModule', $refModule);
                 $interface->assign('followupSearchAction', $refAction);
             }
@@ -298,17 +302,17 @@ class Record extends Action
             'lastsearchdisplayquery',
             isset($_SESSION['lastSearchDisplayQuery']) ? $_SESSION['lastSearchDisplayQuery'] : false
         );
-        
+
         $interface->assign(
             'searchId',
             isset($_SESSION['lastSearchID']) ? $_SESSION['lastSearchID'] : false
         );
-        
+
         $interface->assign(
             'searchType',
             isset($_SESSION['searchType']) ? $_SESSION['searchType'] : false
         );
-        
+
         unset($_SESSION['lastSearchID']);
         unset($_SESSION['searchType']);
 
@@ -322,12 +326,12 @@ class Record extends Action
         if (isset($configArray['OpenURL']['use_rsi']) && $configArray['OpenURL']['use_rsi']) {
             $interface->assign('rsi', true);
         }
-        
+
         // Whether embedded openurl autocheck is enabled
         if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
             $interface->assign('openUrlAutoCheck', true);
         }
-        
+
         // Send down legal export formats (if any):
         $interface->assign('exportFormats', $this->recordDriver->getExportFormats());
 
@@ -341,7 +345,7 @@ class Record extends Action
         if (isset($configArray['EZproxy']['host'])) {
             $interface->assign('proxy', $configArray['EZproxy']['host']);
         }
-        
+
         // Get Messages
         $this->infoMsg = isset($_GET['infoMsg']) ? $_GET['infoMsg'] : false;
         $this->errorMsg = isset($_GET['errorMsg']) ? $_GET['errorMsg'] : false;
@@ -351,6 +355,13 @@ class Record extends Action
             'bXEnabled', isset($configArray['bX']['token'])
             ? true : false
         );
+        
+        // Get Record source driver
+        $catalog = $this->catalog;
+        $driver = is_callable(array($catalog, 'getSourceDriver')) ?
+            $this->catalog->getSourceDriver($_REQUEST['id']) : '';
+
+        $interface->assign('driver', $driver);
     }
 }
 
