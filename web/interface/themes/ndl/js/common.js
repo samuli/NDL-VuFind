@@ -223,7 +223,10 @@ function initAutocomplete() {
     var params = extractParams(searchInput.attr('class'));
     var maxItems = params.maxItems > 0 ? params.maxItems : 10;
     var minLength = params.minLength > 0 ? params.minLength : 3;
-    var position = module != 'Browse' && isKeepFiltersOptionPresent() ? { offset: '0 46'} : { offset: '0 6'};
+    var position = 
+        typeof(module) != 'undefined' && module != 'Browse' && isKeepFiltersOptionPresent() 
+        ? { offset: '0 46'} : { offset: '0 6'}
+    ;
 
     ac = searchInput.autocomplete({    
         position: position,
