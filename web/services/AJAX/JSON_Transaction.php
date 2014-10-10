@@ -49,37 +49,42 @@ class JSON_Transaction extends JSON
     public function startTransaction()
     {
         global $user;
-	
-	if (!isset($_SESSION['webpayment'])) {
-	  $this->output('Transaction parameters missing', JSON::STATUS_ERROR);	  
-	}
+        
+        if (!isset($_SESSION['webpayment'])) {
+            $this->output('Transaction parameters missing', JSON::STATUS_ERROR);	  
+        }
 
-	$required = array('fines', 'amount', 'transactionFee', 'currency', 'transactionId');
-	foreach ($required as $field) {
-	  if (!isset($_SESSION['webpayment'][$field])) {
-	    $this->output("Transaction parameter '$field' missing", JSON::STATUS_ERROR);	  
-	  }
-	}
-
-	$fines = $_SESSION['webpayment']['fines']; 
+        $required = array(
+            'fines', 'amount', 'transactionFee', 'currency', 'transactionId'
+        );
+        foreach ($required as $field) {
+            if (!isset($_SESSION['webpayment'][$field])) {
+                $this->output(
+                    "Transaction parameter '$field' missing", 
+                    JSON::STATUS_ERROR
+                );
+            }
+        }
+        
+        $fines = $_SESSION['webpayment']['fines']; 
 
         foreach ($fines as $fine) {
-            if ( !isset($fine['title']) || !$fine['title']
+            if (!isset($fine['title']) || !$fine['title']
                 || !isset($fine['type']) || !$fine['type']
                 || !isset($fine['amount']) || !$fine['amount']
                 || !isset($fine['currency']) || !$fine['currency']
             ) {
-	      $this->output(
+                $this->output(
                     translate('json_transaction_fee_parameters_missing'),
                     JSON::STATUS_ERROR
                 );
             }
         }
 
-	$amount = $_SESSION['webpayment']['amount']; 
-	$transactionFee = $_SESSION['webpayment']['transactionFee']; 
-	$transactionId = $_SESSION['webpayment']['transactionId']; 
-	$currency = $_SESSION['webpayment']['currency']; 
+        $amount = $_SESSION['webpayment']['amount']; 
+        $transactionFee = $_SESSION['webpayment']['transactionFee']; 
+        $transactionId = $_SESSION['webpayment']['transactionId']; 
+        $currency = $_SESSION['webpayment']['currency']; 
 
         // replace decimal point with comma in order to comply
         // with number formatter's locale
@@ -90,10 +95,11 @@ class JSON_Transaction extends JSON
         $fmt = numfmt_create(
             'fi_FI', NumberFormatter::DECIMAL // TODO: customize locale
         );
+        
         $transaction = new Transaction();
         $transaction->transaction_id = $transactionId;
         $transaction->driver = reset(explode('.', $transactionId, 2)); 
-	$transaction->user_id = isset($user) && is_object($user) ? $user->id : null;
+        $transaction->user_id = isset($user) && is_object($user) ? $user->id : null;
         $transaction->amount = $fmt->parse($amount);
         $transaction->transaction_fee = $fmt->parse($transactionFee);
         $transaction->currency = $currency;
@@ -101,7 +107,7 @@ class JSON_Transaction extends JSON
         $transaction->complete = 0;
         $transaction->status = 'started';
         if (!$transaction->amount) {
-	  $this->output(
+            $this->output(
                 translate('json_transaction_amount_not_defined'), JSON::STATUS_ERROR
             );
         }
@@ -111,19 +117,16 @@ class JSON_Transaction extends JSON
             foreach ($fines as $fine) {
                 // replace decimal point with comma in order to comply
                 // with number formatter's locale
-	      $fine['amount'] = $fine['amount']/100;
+                $fine['amount'] = $fine['amount']/100;
                 $fine['amount'] = str_replace(".", ",", $fine['amount']);
                 $fine['amount'] = $fmt->parse($fine['amount']);
                 if (!$transaction->addFee($fine, $user)) {
-		  $this->output(
+                    $this->output(
                         translate('json_transaction_fee_insert_failed'),
                         JSON::STATUS_ERROR
                     );
                 }
             }
-
-
-
             $this->output('', JSON::STATUS_OK);
         } else {
             $this->output(

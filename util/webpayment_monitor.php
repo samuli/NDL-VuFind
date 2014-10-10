@@ -46,15 +46,17 @@ require_once 'sys/User.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
  *
- * Takes two parameters on command line:
+ * Takes the following parameters on command line:
  *
- * php webpayment_monitor.php expire_days [main directory] [email]
+ * php webpayment_monitor.php expire_hours main_directory internal_email customer_email
  *
- *   expire days      Number of days before considering unregistered
- *                    transaction to be an expired one
- *   main directory   The main VuFind directory. Each web directory
- *                    must reside under this (default: ..)
- *   email            Email address for error reporting
+ *   expire_hours      Number of days before considering unregistered
+ *                     transaction to be an expired one
+ *   main_directory    The main VuFind directory. Each web directory
+ *                     must reside under this (default: ..)
+ *   internal_email    Email address for internal error reporting
+ *   customer_email    Email address for reporting failed transactions 
+ *                     that need to be resolved by library staff.
  *
  */
 class WebpaymentMonitor extends ReminderTask
@@ -65,14 +67,14 @@ class WebpaymentMonitor extends ReminderTask
 
     /**
      * Constructor
-     *
-     * @param int    $expirationDays Number of days before considering
-     *                               unregistered transaction to be
-     *                               an expired one
-     * @param string $mainDir        The main VuFind directory.
-     *                               Each web directory must reside
-     *                               under this (default: ..)
-     * @param string $errEmail       Email address for error reporting.
+
+     * @param int $expireHours          Number of days before considering unregistered
+     *                                  transaction to be an expired one
+     * @param string $mainDir           The main VuFind directory. Each web directory
+     *                                  must reside under this (default: ..)
+     * @param string $internalErrEmail  Email address for internal error reporting
+     * @param string $customerErrEmail  Email address for reporting failed transactions 
+     *                                  that need to be resolved by library staff.
      *
      * @return void
      */
@@ -80,13 +82,10 @@ class WebpaymentMonitor extends ReminderTask
     {
         parent::__construct($mainDir, $internalErrEmail);
 
-
-
-
-
         $this->customerErrEmail = $customerErrEmail;
         $this->expireHours = $expireHours;
     }
+
     /**
      * Process transactions. Try to register unregistered transactions
      * and inform on expired transactions.
@@ -114,27 +113,22 @@ class WebpaymentMonitor extends ReminderTask
 
         // Initialize Mailer
         $mailer = new VuFindMailer();
-
         $now = new DateTime();
-
 
         // Find all paid transactions that have not been registered,
         // and that have not been marked as failed.
         $t = new Transaction();	
         $t->whereAdd('complete = ' . Transaction::STATUS_PROGRESS);
-	$t->whereAdd('complete = ' . Transaction::STATUS_RETRY, 'OR');
+        $t->whereAdd('complete = ' . Transaction::STATUS_RETRY, 'OR');
         $t->orderBy('user_id');
         $t->find();
-
 
         $expiredCnt = 0;
         $failedCnt = 0;
         $registeredCnt = 0;
 
         $user = false;
-
-
-	$expired = array();
+        $expired = array();
 
         while ($t->fetch()) {
             $this->msg("  Registering transaction id {$t->id} / {$t->transaction_id}");
@@ -143,23 +137,23 @@ class WebpaymentMonitor extends ReminderTask
             $paid_time = new DateTime($t->paid);
             $diff = $now->diff($paid_time);
             if ($diff->h > $this->expireHours) {
-              if (!isset($expired[$t->driver])) {
-		$expired[$t->driver] = 0;
-	      }
-	      $expired[$t->driver]++;
-	      $expiredCnt++;
+                if (!isset($expired[$t->driver])) {
+                    $expired[$t->driver] = 0;
+                }
+                $expired[$t->driver]++;
+                $expiredCnt++;
               
-              $transaction = clone($t);              
-              $transaction->complete = Transaction::STATUS_FAILED;
-              if ($transaction->update($t) === false) {
-                  $this->msg("    Failed to update transaction as expired.");
-              } else {
-                  $this->msg("    Transaction expired.");
-              }
+                $transaction = clone($t);              
+                $transaction->complete = Transaction::STATUS_FAILED;
+                if ($transaction->update($t) === false) {
+                    $this->err("    Failed to update transaction as expired.");
+                } else {
+                    $this->msg("    Transaction expired.");
+                }
             } else {
-	      if ($user === false || $t->user_id != $user->id) {
-                $user = User::staticGet($t->user_id);
-	      }
+                if ($user === false || $t->user_id != $user->id) {
+                    $user = User::staticGet($t->user_id);
+                }
 
                 $catalog = ConnectionManager::connectToCatalog();
                 if ($catalog && $catalog->status) {
@@ -180,9 +174,9 @@ class WebpaymentMonitor extends ReminderTask
                             $user->cat_username, $fees_amount
                         );
                         if (PEAR::isError($registered)) {
-                          $failedCnt++;
-                          $this->msg("    Registration failed");
-                          $this->msg("      {$registered->toString()}");
+                            $failedCnt++;
+                            $this->msg("    Registration failed");
+                            $this->msg("      {$registered->toString()}");
                         } else if ($registered) {
                             $transaction = clone($t);
                             $transaction->complete = Transaction::STATUS_COMPLETE;
@@ -190,7 +184,7 @@ class WebpaymentMonitor extends ReminderTask
 
                             $transaction->registered = date("Y-m-d H:i:s");
                             if (!$transaction->update($t)) {
-                                $this->msg("Failed to update transaction as complete.");
+                                $this->err("Failed to update transaction as complete.");
                                 continue;
                             } else {
                                 $registeredCnt++;
@@ -198,12 +192,11 @@ class WebpaymentMonitor extends ReminderTask
                         }
                     }
                 } else {
-                    $this->msg("Failed to connect to catalog ({$user->cat_name})");
+                    $this->err("Failed to connect to catalog ({$user->cat_name})");
                     continue;
                 }
             }
         }
-
 
         if ($registeredCnt) {
             $this->msg("  Total registered: $registeredCnt");
@@ -214,19 +207,20 @@ class WebpaymentMonitor extends ReminderTask
         if ($failedCnt) {
             $this->msg("  Total failed: $failedCnt");
         }
-	
 
-	foreach ($expired as $driver => $cnt) {
-	  if ($cnt) {
-	    $settings = getExtraConfigArray("VoyagerRestful_$driver");
-	    if (!$settings || !isset($settings['Webpayment']['errorEmail'])) {
-	      $this->msg("  Error email for expired transactions not defined for driver $driver");
-	    }
+        // Check for failed transactions that need to be resolved manually:
+        foreach ($expired as $driver => $cnt) {
+            if ($cnt) {
+                $settings = getExtraConfigArray("VoyagerRestful_$driver");
+                if (!$settings || !isset($settings['Webpayment']['errorEmail'])) {
+                    $this->err("  Error email for expired transactions not defined for driver $driver");
+                    continue;
+                }
 
-	    $email = $settings['Webpayment']['errorEmail'];
-	    $this->msg("  [$driver] Inform $cnt expired transactions to $email");
-	  }
-	}
+                $email = $settings['Webpayment']['errorEmail'];
+                $this->msg("  [$driver] Inform $cnt expired transactions to $email");
+            }
+        }
 
         $this->msg("Webpayment monitor completed");
 

@@ -568,7 +568,7 @@ class CatalogConnection
      */
     public function getMyTransactions($patron)
     {
-      return $this->driver->getMyTransactions($patron);
+        return $this->driver->getMyTransactions($patron);
     }
 
     /**
