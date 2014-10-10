@@ -718,6 +718,32 @@ class IndexRecord implements RecordInterface
     }
 
     /**
+     * Assign necessary Smarty variables used in extended browsing views.
+     *
+     * @param string $type browse action.
+     *
+     * @return none
+     * @access public
+     */
+    public function getBrowseMetaData($type)
+    {
+        global $interface;
+
+        switch ($type) {
+        case 'Database':
+            $interface->assign('extendedSummary', $this->getSummary());
+            break;
+
+        case 'Journal':
+            $interface->assign('extendedISSNs', $this->getISSNs());            
+            $interface->assign('recordLanguage', $this->getLanguages());
+            $interface->assign('corePublications', $this->getPublicationDetails());
+            $interface->assign('coreSubjects', $this->getAllSubjectHeadings());
+            break;
+        }
+    }
+
+    /**
      * Get an array of strings representing formats in which this record's
      * data may be exported (empty if none).  Legal values: "RefWorks",
      * "EndNote", "MARC", "RDF".
