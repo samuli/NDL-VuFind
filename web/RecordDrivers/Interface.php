@@ -158,6 +158,16 @@ interface RecordInterface
     public function getExtendedMetadata();
 
     /**
+     * Assign necessary Smarty variables used in extended browsing views.
+     *
+     * @param string $type browse action.
+     *
+     * @return none
+     * @access public
+     */
+    public function getBrowseMetaData($type);
+
+    /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display holdings extracted from the base record
      * (i.e. URLs in MARC 856 fields) and, if necessary, the ILS driver.

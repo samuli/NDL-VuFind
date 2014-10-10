@@ -650,8 +650,7 @@ class SearchObject_Solr extends SearchObject_Base
             $record = RecordDriverFactory::initRecordDriver($current);
 
             if (get_class($this) === 'SearchObject_SolrBrowseExtended') {
-                $record->getCoreMetaData();
-                $record->getExtendedMetadata();
+                $record->getBrowseMetaData($this->browseType);
             }
             $html[] = $interface->fetch($record->getSearchResult($currentView));
         }
