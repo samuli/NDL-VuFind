@@ -1,6 +1,9 @@
 function enableDynatree(tree, facet, url, action, searchObject)
 {
   var query = url.split('?')[1];
+  if (typeof(query) == 'undefined') {
+      query = '';
+  }
   tree.dynatree({
     isLazy: true,
     query: query,
