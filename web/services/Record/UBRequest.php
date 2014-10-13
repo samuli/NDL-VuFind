@@ -92,8 +92,9 @@ class UBRequest extends Record
             if (UserAccount::isLoggedIn()) {
                 if ($patron = UserAccount::catalogLogin()) {
                     // Block invalid requests:
-                    $result = !PEAR::isError($patron)
-                        && $this->catalog->checkUBRequestIsValid(
+                    $result = PEAR::isError($patron)
+                        ? false
+                        : $this->catalog->checkUBRequestIsValid(
                             $this->recordDriver->getUniqueID(),
                             $this->gatheredDetails, $patron
                         );
