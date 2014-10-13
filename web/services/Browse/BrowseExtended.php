@@ -99,6 +99,8 @@ class BrowseExtended extends Action
 
         $interface->assign('lookfor', $displayQuery);
         $interface->assign('paginateTitle', translate("browse_extended_$action"));
+        $interface->setPageTitle(translate("browse_extended_$action"));
+
         $interface->assign(
             'snippet', 
             'RecordDrivers/Index/result-browse-snippet-' . strtolower($action) . '.tpl'
