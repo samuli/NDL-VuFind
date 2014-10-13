@@ -235,9 +235,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                         dataType: 'json',
                         data: data,
                         success: function(response) {
-                            // Remove loading indicator
-                            $(this).find('.buttonFinna').removeClass('loading');
-                            
+                            $('.buttonFinna.loading').removeClass('loading');
                             if (response.status == 'OK') {
                                 // Hide "log in" options and show "log out" options:
                                 $('#loginOptions').hide();
@@ -285,6 +283,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                         }
                     });
                 } else {
+                    $('.buttonFinna.loading').removeClass('loading');
                     displayFormError($(form), response.data);
                 }
             }
