@@ -307,6 +307,7 @@ CREATE TABLE `transaction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `transaction_id` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
   `user_id` int(11) NOT NULL DEFAULT '0',
+  `driver` varchar(50) COLLATE utf8_swedish_ci NOT NULL,
   `amount` float NOT NULL DEFAULT '0',
   `currency` varchar(3) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'EUR',
   `transaction_fee` float NOT NULL DEFAULT '0',

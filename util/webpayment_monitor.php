@@ -98,6 +98,7 @@ class WebpaymentMonitor extends ReminderTask
         $this->msg("Webpayment monitor started");
 
         global $configArray;
+        global $interface;
 
         ini_set('display_errors', true);
 
@@ -118,8 +119,7 @@ class WebpaymentMonitor extends ReminderTask
         // Find all paid transactions that have not been registered,
         // and that have not been marked as failed.
         $t = new Transaction();	
-        $t->whereAdd('complete = ' . Transaction::STATUS_PROGRESS);
-        $t->whereAdd('complete = ' . Transaction::STATUS_RETRY, 'OR');
+        $t->whereAdd('complete = ' . Transaction::STATUS_RETRY);
         $t->orderBy('user_id');
         $t->find();
 
@@ -218,7 +218,20 @@ class WebpaymentMonitor extends ReminderTask
                 }
 
                 $email = $settings['Webpayment']['errorEmail'];
-                $this->msg("  [$driver] Inform $cnt expired transactions to $email");
+                $this->msg("  [$driver] Inform $cnt expired transactions for driver $driver to $email");
+
+                $mailer = new VuFindMailer();
+                $from = 'finna-posti@helsinki.fi';
+                $subject = "Ilmoitus tietokannan $driver epäonnistuneista verkkomaksuista";
+
+
+                $msg = $interface->fetch('MyResearch/webpayment-error.tpl');
+                $msg->assign('driver', $driver);
+                $msg->assign('cnt', $cnt);
+
+                if (!$result = $mailer->send($email, $from, $subject, $msg)) {
+                    $this->err("    Failed to send error email to customer: $email");
+                }
             }
         }
 

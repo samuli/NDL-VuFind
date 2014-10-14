@@ -72,8 +72,8 @@ class Fines extends MyResearch
                 ) {
                     $webpaymentEnabled = true;
                 }
-		$interface->assign('webpaymentEnabled', $webpaymentEnabled);
-
+                $interface->assign('webpaymentEnabled', $webpaymentEnabled);
+        
                 $paymentRegisterConfig = $this->catalog->getConfig('PaymentRegister');
                 if ($webpaymentEnabled) {
                     if (isset($webpaymentConfig['handler'])) {
@@ -108,20 +108,20 @@ class Fines extends MyResearch
                             $_REQUEST
                         );
                         if ($responseMsg) {
-			  $interface->assign('webpaymentStatusMsg', $responseMsg);
+                            $nterface->assign('webpaymentStatusMsg', $responseMsg);
                         }
                     }
                 }
 
                 $result = $this->catalog->getMyFines($patron);
 
-		$loans = $this->catalog->getMyTransactions($patron);
+                $loans = $this->catalog->getMyTransactions($patron);
                 if (!PEAR::isError($result)) {
-                     if ($webpaymentHandler) {
+                    if ($webpaymentHandler) {
                         $webpaymentData 
                             = $webpaymentHandler->getPaymentData($patron, $result);
-
-			if (isset($webpaymentData['permitted'])
+                        
+                        if (isset($webpaymentData['permitted'])
                             && $webpaymentData['permitted']
                         ) {
                             $followupUrl
@@ -135,12 +135,11 @@ class Fines extends MyResearch
                                 )
                             );
                         }
-			if (isset($webpaymentData['blocked'])) {
-			  $interface->assign('paymentBlocked', true);
-			}
+                        if (isset($webpaymentData['blocked'])) {
+                            $interface->assign('paymentBlocked', true);
+                        }
                         $interface->assign('webpaymentData', $webpaymentData);
                     }
-		    
                     // assign the "raw" fines data to the template
                     // NOTE: could use foreach($result as &$row) here but it only works
                     // with PHP5
@@ -160,35 +159,41 @@ class Fines extends MyResearch
                             }
                         }
                         $formats = array();
-                        foreach (isset($record['format']) ? $record['format'] : array() as $format) {
+                        foreach (isset($record['format']) 
+                                 ? $record['format'] 
+                                 : array() as $format) {
                             $formats[] = preg_replace('/^\d\//', '', $format);
                         }
                         $row['format'] = $formats;
                     }
 
-		    $sessionData = array();
-		    $sessionData['amount'] = $interface->get_template_vars('paymentAmount');
-		    $sessionData['transactionFee'] = $interface->get_template_vars('transactionFee');
-		    $sessionData['currency'] = $interface->get_template_vars('currency');
-		    $sessionData['transactionId'] = $interface->get_template_vars('transaction_id');
-
-		    $sessionData['fines'] = $result;
+                    $sessionData = array();
+                    $sessionData['amount'] 
+                        = $interface->get_template_vars('paymentAmount');
+                    $sessionData['transactionFee'] 
+                        = $interface->get_template_vars('transactionFee');
+                    $sessionData['currency']
+                        = $interface->get_template_vars('currency');
+                    $sessionData['transactionId'] 
+                        = $interface->get_template_vars('transaction_id');
+                    
+                    $sessionData['fines'] = $result;
 
 
                     for ($i = 0; $i < count($sessionData['fines']); $i++) {
-		      $row = &$sessionData['fines'][$i];
-			$row['currency'] = $sessionData['currency'];
-			$row['type'] = $row['fine'];
-			if (!$row['title'] || $row['title'] === '') {
-			  $row['title'] = translate('not_applicable');
-		      }
-
-		    }
-
-		    $_SESSION['webpayment'] = $sessionData;
-
-		    
-
+                        $row = &$sessionData['fines'][$i];
+                        $row['currency'] = $sessionData['currency'];
+                        $row['type'] = $row['fine'];
+                        if (!$row['title'] || $row['title'] === '') {
+                            $row['title'] = translate('not_applicable');
+                        }
+                        
+                    }
+                    
+                    $_SESSION['webpayment'] = $sessionData;
+                    
+                    
+                    
                     $interface->assign('rawFinesData', $result);
                     $interface->assign('sum', $sum);
                 }
