@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.recordId').unbind('inview').one('inview', function() {
+    $('.recordId').one('inview', function() {
         checkMetaLibLinks($(this));
     });
 });

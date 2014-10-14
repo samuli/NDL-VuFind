@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.recordId').unbind('inview').one('inview', function() {
+    $('.recordId').one('inview', function() {
         var id = $(this).attr('id').substr('record'.length);
         checkItemStatuses([id]);
     });
@@ -8,7 +8,6 @@ $(document).ready(function() {
 });
 
 function checkItemStatuses(id) {
-
     if (id.length) {
         $("div[id^='callnumAndLocation'] .ajax_availability").show();
         $.ajax({
