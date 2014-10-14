@@ -2593,7 +2593,7 @@ ul.recordSet .addToFavLink {
     width: 20px;
     position: relative;
 }
-.addToFavLink a {
+.addToFavLink > a {
     height: 20px;
 }
 
@@ -3538,7 +3538,7 @@ dl.defaultFacet dd {
     padding:.5em .5em .5em 25px;
 }
 ul.recordSet .addToFavLink a {
-    padding: 0 .5em .5em 25px;
+    padding: 8px;
 }
 .searchtools a.mailSearch {
     display:inline-block;
