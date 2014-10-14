@@ -24,6 +24,11 @@
   <div class="grid_14">
    <p class="loginInfo">{translate text="Login information"}</p>
   </div>
+
+  {* NDLBlankInclude *}
+  {include file='Additions/login-more.tpl'}
+  {* /NDLBlankInclude *}
+
   <div class="clear"></div>
 
   {if $sessionInitiator}
