@@ -731,6 +731,7 @@ class IndexRecord implements RecordInterface
 
         switch ($type) {
         case 'Database':
+            $interface->assign('coreGenres', isset($this->fields['genre']) ? $this->fields['genre'] : array());
             $interface->assign('extendedSummary', $this->getSummary());
             break;
 
