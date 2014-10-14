@@ -34,6 +34,7 @@ require_once 'sys/ConfigArray.php';
 require_once 'sys/Interface.php';
 require_once 'sys/Mailer.php';
 require_once 'sys/PaymentRegister/PaymentRegisterFactory.php';
+require_once 'sys/SearchObject/Factory.php';
 require_once 'sys/Translator.php';
 require_once 'sys/User.php';
 
@@ -55,15 +56,12 @@ require_once 'sys/User.php';
  *   main_directory    The main VuFind directory. Each web directory
  *                     must reside under this (default: ..)
  *   internal_email    Email address for internal error reporting
- *   customer_email    Email address for reporting failed transactions 
- *                     that need to be resolved by library staff.
  *
  */
 class WebpaymentMonitor extends ReminderTask
 {
 
     protected $expireHours;
-    protected $customerErrEmail;
 
     /**
      * Constructor
@@ -73,16 +71,13 @@ class WebpaymentMonitor extends ReminderTask
      * @param string $mainDir           The main VuFind directory. Each web directory
      *                                  must reside under this (default: ..)
      * @param string $internalErrEmail  Email address for internal error reporting
-     * @param string $customerErrEmail  Email address for reporting failed transactions 
-     *                                  that need to be resolved by library staff.
      *
      * @return void
      */
-    function __construct($expireHours, $mainDir, $internalErrEmail, $customerErrEmail)
+    function __construct($expireHours, $mainDir, $internalErrEmail)
     {
         parent::__construct($mainDir, $internalErrEmail);
 
-        $this->customerErrEmail = $customerErrEmail;
         $this->expireHours = $expireHours;
     }
 
@@ -208,12 +203,16 @@ class WebpaymentMonitor extends ReminderTask
             $this->msg("  Total failed: $failedCnt");
         }
 
+        $configArray = readConfig();
+        $siteLocal = $configArray['Site']['local'];
+	$interface = new UInterface($siteLocal);
+
         // Check for failed transactions that need to be resolved manually:
         foreach ($expired as $driver => $cnt) {
             if ($cnt) {
                 $settings = getExtraConfigArray("VoyagerRestful_$driver");
                 if (!$settings || !isset($settings['Webpayment']['errorEmail'])) {
-                    $this->err("  Error email for expired transactions not defined for driver $driver");
+                    $this->err("  Error email for expired transactions not defined for driver $driver ($cnt expired transactions)");
                     continue;
                 }
 
@@ -222,12 +221,11 @@ class WebpaymentMonitor extends ReminderTask
 
                 $mailer = new VuFindMailer();
                 $from = 'finna-posti@helsinki.fi';
-                $subject = "Ilmoitus tietokannan $driver epäonnistuneista verkkomaksuista";
+                $subject = "Finna: ilmoitus tietokannan $driver epäonnistuneista verkkomaksuista";
 
-
+                $interface->assign('driver', $driver);
+                $interface->assign('cnt', $cnt);
                 $msg = $interface->fetch('MyResearch/webpayment-error.tpl');
-                $msg->assign('driver', $driver);
-                $msg->assign('cnt', $cnt);
 
                 if (!$result = $mailer->send($email, $from, $subject, $msg)) {
                     $this->err("    Failed to send error email to customer: $email");
@@ -236,19 +234,17 @@ class WebpaymentMonitor extends ReminderTask
         }
 
         $this->msg("Webpayment monitor completed");
-
         $this->reportErrors();
     }
 }
 
-if (count($argv) < 5) {
-    exit("Usage: php webpayment_monitor.php expire_hours main_directory internal_email customer_email" . PHP_EOL);
+if (count($argv) < 4) {
+    exit("Usage: php webpayment_monitor.php expire_hours main_directory internal_error_email" . PHP_EOL);
 }
 
 $monitor = new WebpaymentMonitor(
     $argv[1],
     $argv[2],
-    $argv[3],
-    $argv[4]
+    $argv[3]
 );
 $monitor->process();

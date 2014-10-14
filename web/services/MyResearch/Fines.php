@@ -108,7 +108,7 @@ class Fines extends MyResearch
                             $_REQUEST
                         );
                         if ($responseMsg) {
-                            $nterface->assign('webpaymentStatusMsg', $responseMsg);
+                            $interface->assign('webpaymentStatusMsg', $responseMsg);
                         }
                     }
                 }
