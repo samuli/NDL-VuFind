@@ -97,7 +97,7 @@ class MyResearch extends Action
             if ($loginTarget) {
                 $username = "$loginTarget.$username";
             }
-            
+
             if (UserAccount::processCatalogLogin($username, $password)) {
                 $interface->assign('user', $user);
             } else {
@@ -122,6 +122,50 @@ class MyResearch extends Action
         $this->showExport = isset($_GET['showExport']) ? $_GET['showExport'] : false;
         $this->followupUrl = false;
     }
+
+    /**
+     * Determines whether an error is a catalog connection error that should be
+     * displayed to the user or raised as a general error. Formats a displayable
+     * error appropriately.
+     *
+     * @param PEAR_Error $error PEAR error
+     *
+     * @return void
+     */
+    protected function handleCatalogError($error)
+    {
+        global $configArray, $interface, $user;
+
+        $msg = $error->getMessage();
+        if ($msg == 'authentication_error_technical') {
+            $interface->assign('errorMsg', 'catalog_connection_failure_explanation');
+        } else if ($msg == 'catalog_login_failed') {
+            if ($user) {
+                $msg = translate($msg) . ' ' . translate('catalog_login_check_account');
+                $accountId = null;
+                // A failed login clears cat_username from $user, so fetch it from
+                // interface
+                $currentAccount = $interface->get_template_vars('currentCatalogAccount');
+                $catAccounts = $user->getCatalogAccounts();
+
+                foreach ($catAccounts as $catAccount) {
+                    if ($catAccount['cat_username'] == $currentAccount) {
+                        $accountId = $catAccount['id'];
+                        break;
+                    }
+                }
+                $accountUrl = $configArray['Site']['url'] . "/MyResearch/Accounts";
+                if (!is_null($accountId)) {
+                    $accountUrl .= "?edit=$accountId";
+                }
+            }
+            $interface->assign('errorMsg', str_replace('%%url%%', $accountUrl, $msg));
+        } else {
+            PEAR::raiseError($error);
+        }
+    }
+
+
 }
 
 ?>

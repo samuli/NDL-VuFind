@@ -729,9 +729,11 @@ class JSON extends Action
         include_once 'services/Cart/Export.php';
 
         global $configArray;
+        
+        unset($_SESSION['no_store']);
         $_SESSION['exportIDS'] =  $_POST['ids'];
         $_SESSION['exportFormat'] = $_POST['format'];
-
+        
         $url = Export::getExportUrl();
         $html = '<p><a class="save" onclick="hideLightbox();" href="';
         if (strtolower($_POST['format']) == 'refworks') {

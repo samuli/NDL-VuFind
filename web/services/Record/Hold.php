@@ -61,7 +61,7 @@ class Hold extends Record
         if (isset($_REQUEST['lightbox'])) {
             $interface->assign('lightbox', true);
         }
-        
+
         // Are Holds Allowed?
         $this->checkHolds = $this->catalog->checkFunction("Holds", $this->recordDriver->getUniqueID());
         if ($this->checkHolds != false) {
@@ -93,21 +93,26 @@ class Hold extends Record
             if (UserAccount::isLoggedIn()) {
                 if ($patron = UserAccount::catalogLogin()) {
                     // Block invalid requests:
-                    $result = $this->catalog->checkRequestIsValid(
-                        $this->recordDriver->getUniqueID(),
-                        $this->gatheredDetails, $patron
-                    );
-                    
+                    $result = PEAR::isError($patron)
+                        ? false
+                        : $this->catalog->checkRequestIsValid(
+                            $this->recordDriver->getUniqueID(),
+                            $this->gatheredDetails, $patron
+                        );
+
                     if (!$result || $result === 'block') {
+                        $errorMsg = PEAR::isError($patron) ? $patron->getMessage() : 'hold_error_blocked';
+                        // This might display login form, so setup login vars
+                        Login::setupLoginFormVars();
                         if (isset($_REQUEST['lightbox'])) {
                             $interface->assign('lightbox', true);
-                            $interface->assign('results', array('status' => 'hold_error_blocked'));
+                            $interface->assign('results', array('status' => $errorMsg));
                             $interface->display('Record/hold-submit.tpl');
                         } else {
                             header(
                                 'Location: ../../Record/' .
                                 urlencode($this->recordDriver->getUniqueID()) .
-                                "?errorMsg=hold_error_blocked#top"
+                                "?errorMsg=$errorMsg#top"
                             );
                         }
                         return false;
@@ -134,7 +139,7 @@ class Hold extends Record
                         }
                         $interface->assign('requestGroups', $requestGroups);
                     }
-                    
+
                     $interface->assign('defaultDuedate', $this->getDefaultDueDate());
 
                     $extraHoldFields = isset($this->checkHolds['extraHoldFields'])
@@ -146,19 +151,19 @@ class Hold extends Record
                         $patron, $this->gatheredDetails
                     );
                     $interface->assign('defaultPickUpLocation', $defaultPickUpLoc);
-                    
+
                     $defaultRequestGroup = $this->catalog->getDefaultRequestGroup(
                         $patron, $this->gatheredDetails
                     );
                     $interface->assign('defaultRequestGroup', $defaultRequestGroup);
-                    
+
                     $language = $interface->getLanguage();
                     if (isset($this->checkHolds['helpText'][$language])) {
                         $interface->assign('helpText', $this->checkHolds['helpText'][$language]);
                     } elseif (isset($this->checkHolds['helpText'])) {
                         $interface->assign('helpText', $this->checkHolds['helpText']);
                     }
-                
+
                     if (isset($_POST['placeHold'])) {
                         // If the form contained a pickup location, make sure that
                         // the value has not been tampered with:
@@ -183,7 +188,7 @@ class Hold extends Record
                     $interface->display('Record/hold-submit.tpl');
                 } else {
                     $interface->assign('subTemplate', 'hold-submit.tpl');
-    
+
                     // Main Details
                     $interface->setTemplate('view.tpl');
                     // Display Page
@@ -200,7 +205,7 @@ class Hold extends Record
                     $interface->assign('followupModule', 'Record');
                     $interface->assign('followupAction', 'Hold');
                     $interface->display('AJAX/login.tpl');
-                } else {                
+                } else {
                     $interface->setTemplate('../MyResearch/login.tpl');
                     // Display Page
                     $interface->display('layout.tpl');
@@ -302,7 +307,7 @@ class Hold extends Record
         global $interface;
 
         $interface->assign('results', $results);
-        
+
         // Fail: Display Form for Try Again
         // Get as much data back as possible
         $interface->assign('subTemplate', 'hold-submit.tpl');

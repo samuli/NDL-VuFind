@@ -547,13 +547,18 @@ span.dynatree-expander:hover {
 
 /* Main: Single record view */
 
-.resultLinks .button, .resultLinks .button span {
+.resultLinks .button, .resultLinks .button span,
+.backToMetaLib .button, .backToMetaLib .button span {
     background-image: url(../images/icons16-24px-02_white.png);
 }
-.resultLinks .button {
+.module-MetaLib #browseLink a {
+	background-image: url(../images/icons16-24px-01_turquoise.png);
+	background-position: 0px -225px;	
+}
+.resultLinks .button, .backToMetaLib .button {
     background-position: 8px -2414px;
 }
-.resultLinks .button span {
+.resultLinks .button span, .backToMetaLib .button span {
     background-position: 1px -950px;
 }
 .coverImages .moreLink a:after, .coverImages .lessLink a:after, 
@@ -561,7 +566,9 @@ span.dynatree-expander:hover {
 .addthis_button_google_plusone_share,
 .fav, .mail, .print, .export, .export img, .add, .delete,
 #recordMetadata .moreLink a:after, #recordMetadata .lessLink a:after,
-.openWindow {
+.module-Browse .moreinfo .moreLink a:after, .module-Browse .moreinfo .lessLink a:after,
+.module-MetaLib #recentMetalibDatabases .moreLink a:after, .module-MetaLib #recentMetalibDatabases .lessLink a:after,
+.openWindow,#browseExtended li.result .moreinfo .recordLink {
     background-image: url(../images/icons16-24px-02_turquoise.png);
 }
 .mailRecord.mail {
@@ -601,10 +608,14 @@ span.dynatree-expander:hover {
     background-position: 7px -158px;
 }
 .coverImages .moreLink a:after,
+.module-Browse .moreinfo .moreLink a:after,
+.module-MetaLib #recentMetalibDatabases .moreLink a:after,
 #recordMetadata .moreLink a:after {
     background-position: 2px -2318px;
 }
 .coverImages .lessLink a:after,
+.module-Browse .moreinfo .lessLink a:after,
+.module-MetaLib #recentMetalibDatabases .lessLink a:after,
 #recordMetadata .lessLink a:after {
     background-position: 2px -2270px;
 }

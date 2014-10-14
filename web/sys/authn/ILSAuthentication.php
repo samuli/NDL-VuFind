@@ -49,7 +49,7 @@ class ILSAuthentication implements Authentication
     public function authenticate()
     {
         global $configArray;
-        
+
         $username = $_POST['username'];
         $password = $_POST['password'];
         $loginTarget = isset($_POST['login_target']) ? $_POST['login_target'] : false;
@@ -66,18 +66,18 @@ class ILSAuthentication implements Authentication
                 $patron = $catalog->patronLogin($username, $password);
                 if ($patron && !PEAR::isError($patron)) {
                     // If the login command did not return an email address, try to fetch it from the profile information
-                    if (!$patron['email']) {
+                    if (empty($patron['email'])) {
                         $profile = $catalog->getMyProfile($patron);
                         $patron['email'] = $profile['email'];
                     }
 
                     $confirm = isset($_POST['confirm']);
-                    
+
                     if (!$confirm) {
-                        list($ILSUserExists, $user) = $this->checkIfILSUserExists($patron);
+                        list($ILSUserExists) = $this->checkIfILSUserExists($patron);
                         if (!$ILSUserExists) {
                             // First login with library card
-                            
+
                             // Check if account is connected to existing user(s)
                             $accounts = $this->checkIfLibraryCardIsConnectedToOtherUser($patron);
                             if (!empty($accounts)) {
@@ -91,10 +91,10 @@ class ILSAuthentication implements Authentication
                                 }
                                 // Confirm if new user account should be created
                                 return new PEAR_Error(
-                                    'confirm_create_account', 
+                                    'confirm_create_account',
                                     ILSAuthentication::ERROR_CONFIRM_CREATE_ACCOUNT,
                                     null,
-                                    null, 
+                                    null,
                                     json_encode($res)
                                 );
                             }
@@ -102,12 +102,14 @@ class ILSAuthentication implements Authentication
                     }
                     $user = $this->_processILSUser($patron);
                 } else {
-                    $user = new PEAR_Error('authentication_error_invalid');
+                    $user = PEAR::isError($patron)
+                        ? $patron
+                        : new PEAR_Error('authentication_error_invalid');
                 }
             } else {
                 $user = new PEAR_Error('authentication_error_technical');
             }
-        } 
+        }
         return $user;
     }
 
@@ -116,7 +118,7 @@ class ILSAuthentication implements Authentication
      *
      * @param array $info User details returned by ILS driver.
      *
-     * @return array with elements:     
+     * @return array with elements:
      *   - boolean true if User object exists in the database
      *   - User object, as retrieved from the database if found, or initialized with the field 'username' othervise.
      * @access private
@@ -190,7 +192,7 @@ class ILSAuthentication implements Authentication
         global $configArray;
 
         include_once "services/MyResearch/lib/User.php";
-        
+
         // Check to see if we already have an account for this user:
         list($ILSUserExists, $user) = $this->checkIfILSUserExists($info);
         $insert = !$ILSUserExists;

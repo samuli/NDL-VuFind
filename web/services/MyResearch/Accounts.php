@@ -145,7 +145,7 @@ class Accounts extends MyResearch
         $catalog = ConnectionManager::connectToCatalog();
         $result = $catalog->patronLogin($username, $password);
         if (!$result || PEAR::isError($result)) {
-            $interface->assign('errorMsg', 'Invalid Patron Login');
+            $interface->assign('errorMsg', $result ? $result->getMessage() : 'authentication_error_failed');
             $this->editAccount(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
             return false;
         }

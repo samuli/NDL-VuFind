@@ -65,8 +65,8 @@ class JSON_Autocomplete extends JSON
                 unset($params['prefilter']);
                 foreach ($prefilter as $key => $value) {
                     if ($key == 'module' || $key == 'action') {
-                        if ($key == 'module' && $value != 'Search') {
-                            // only autocomplete on local index
+                        if ($key == 'module' && ($value != 'Search' && $value != 'Browse')) {
+                            // only autocomplete on local index and browse
                             $autocomplete = false;
                             break;
                         }

@@ -114,6 +114,10 @@ class CatalogConnection
         $functionConfig = method_exists($this->driver, 'getConfig')
             ? $this->driver->getConfig($function, $id) : false;
 
+        if (PEAR::isError($functionConfig)) {
+            return false;
+        }
+
         // See if we have a corresponding check method to analyze the response:
         $checkMethod = "_checkMethod".$function;
         if (!method_exists($this, $checkMethod)) {

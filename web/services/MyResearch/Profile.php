@@ -61,7 +61,7 @@ class Profile extends MyResearch
                 }
             }
             $interface->assign('email', $user->email);
-            
+
             // Update due date reminder
             if (isset($_POST['due_date_reminder'])) {
                 $interval = $_POST['due_date_reminder'];
@@ -72,7 +72,7 @@ class Profile extends MyResearch
                 }
             }
             $interface->assign('dueDateReminder', $user->due_date_reminder);
-            
+
             // Change Password
             if (isset($_POST['oldPassword']) && isset($_POST['newPassword']) && isset($_POST['newPassword2'])) {
                 if ($_POST['newPassword'] !== $_POST['newPassword2']) {
@@ -92,37 +92,41 @@ class Profile extends MyResearch
                 }
             }
         }
-        
+
         // Get My Profile
         if ($patron = UserAccount::catalogLogin()) {
-            if (isset($_POST['home_library']) &&  $_POST['home_library'] != "") {
-                $home_library = $_POST['home_library'];
-                $updateProfile = $user->changeHomeLibrary($home_library);
-                if ($updateProfile == true) {
-                    $interface->assign('userMsg', 'profile_update');
+            if (PEAR::isError($patron)) {
+                $this->handleCatalogError($patron);
+            } else {
+                if (isset($_POST['home_library']) &&  $_POST['home_library'] != "") {
+                    $home_library = $_POST['home_library'];
+                    $updateProfile = $user->changeHomeLibrary($home_library);
+                    if ($updateProfile == true) {
+                        $interface->assign('userMsg', 'profile_update');
+                    }
                 }
-            }
-            $result = $this->catalog->getMyProfile($patron);
-            if (!PEAR::isError($result)) {
-                $result['home_library'] = $user->home_library;
-                $libs = $this->catalog->getPickUpLocations($patron);
-                $defaultPickUpLocation 
-                    = $this->catalog->getDefaultPickUpLocation($patron);
-                $interface->assign('defaultPickUpLocation', $defaultPickUpLocation);
-                $interface->assign('pickup', $libs);
-                $interface->assign('profile', $result);
-            }
-            $result = $this->catalog->checkFunction('changePassword');
-            if ($result !== false) {
-                $interface->assign('changePassword', $result);
+                $result = $this->catalog->getMyProfile($patron);
+                if (!PEAR::isError($result)) {
+                    $result['home_library'] = $user->home_library;
+                    $libs = $this->catalog->getPickUpLocations($patron);
+                    $defaultPickUpLocation
+                        = $this->catalog->getDefaultPickUpLocation($patron);
+                    $interface->assign('defaultPickUpLocation', $defaultPickUpLocation);
+                    $interface->assign('pickup', $libs);
+                    $interface->assign('profile', $result);
+                }
+                $result = $this->catalog->checkFunction('changePassword');
+                if ($result !== false) {
+                    $interface->assign('changePassword', $result);
+                }
             }
         } else {
             Login::setupLoginFormVars();
         }
 
         $interface->assign(
-            'hideDueDateReminder', 
-            isset($configArray['Site']['hideDueDateReminder']) 
+            'hideDueDateReminder',
+            isset($configArray['Site']['hideDueDateReminder'])
             && (boolean)$configArray['Site']['hideDueDateReminder']
         );
 
@@ -130,14 +134,14 @@ class Profile extends MyResearch
         $interface->setPageTitle('My Profile');
         $interface->display('layout.tpl');
     }
-    
+
     /**
      * Change patron's password (PIN code)
-     * 
+     *
      * @param string $oldPassword Old password for verification
      * @param string $newPassword New password
-     * 
-     * @return mixed Array of information on success/failure, PEAR_Error on error 
+     *
+     * @return mixed Array of information on success/failure, PEAR_Error on error
      */
     protected function changePassword($oldPassword, $newPassword)
     {
@@ -153,7 +157,7 @@ class Profile extends MyResearch
             return $this->catalog->changePassword($data);
         }
     }
-    
+
 }
 
 ?>

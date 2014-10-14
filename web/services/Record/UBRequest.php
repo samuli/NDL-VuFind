@@ -92,20 +92,23 @@ class UBRequest extends Record
             if (UserAccount::isLoggedIn()) {
                 if ($patron = UserAccount::catalogLogin()) {
                     // Block invalid requests:
-                    $result = $this->catalog->checkUBRequestIsValid(
-                        $this->recordDriver->getUniqueID(),
-                        $this->gatheredDetails, $patron
-                    );
+                    $result = PEAR::isError($patron)
+                        ? false
+                        : $this->catalog->checkUBRequestIsValid(
+                            $this->recordDriver->getUniqueID(),
+                            $this->gatheredDetails, $patron
+                        );
                     if (!$result) {
+                        $errorMsg = PEAR::isError($patron) ? $patron->getMessage() : 'ub_request_error_blocked';
                         if (isset($_REQUEST['lightbox'])) {
                             $interface->assign('lightbox', true);
-                            $interface->assign('results', array('status' => 'ub_request_error_blocked'));
+                            $interface->assign('results', array('status' => $errorMsg));
                             $interface->display('Record/ub-request-submit.tpl');
                         } else {
                             header(
                                 'Location: ../../Record/' .
                                 urlencode($this->recordDriver->getUniqueID()) .
-                                "?errorMsg=ub_request_error_blocked#top"
+                                "?errorMsg=$errorMsg#top"
                             );
                         }
                         return false;
@@ -115,7 +118,7 @@ class UBRequest extends Record
                     $interface->assign('libraries', $result['libraries']);
                     $interface->assign('locations', $result['locations']);
                     $interface->assign('requiredBy', $result['requiredBy']);
-                    
+
                     $interface->assign('formURL', $this->logonURL);
 
                     $interface->assign('gatheredDetails', $this->gatheredDetails);
@@ -131,7 +134,7 @@ class UBRequest extends Record
                     } elseif (isset($this->checkUBRequests['helpText'])) {
                         $interface->assign('helpText', $this->checkUBRequests['helpText']);
                     }
-                    
+
                     if (isset($_POST['placeRequest'])) {
                         if ($this->_placeRequest($patron)) {
                             // If we made it this far, we're ready to place the request;
@@ -150,7 +153,7 @@ class UBRequest extends Record
                     $interface->display('Record/ub-request-submit.tpl');
                 } else {
                     $interface->assign('subTemplate', 'ub-request-submit.tpl');
-                    
+
                     // Main Details
                     $interface->setTemplate('view.tpl');
                     // Display Page
@@ -167,7 +170,7 @@ class UBRequest extends Record
                     $interface->assign('followupModule', 'Record');
                     $interface->assign('followupAction', 'UBRequest');
                     $interface->display('AJAX/login.tpl');
-                } else {                
+                } else {
                     $interface->setTemplate('../MyResearch/login.tpl');
                     // Display Page
                     $interface->display('layout.tpl');

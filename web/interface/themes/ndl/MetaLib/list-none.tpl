@@ -1,22 +1,22 @@
 <!-- START of: MetaLib/list-none.tpl -->
-
-
-  <div class="no-hits content">
+  <div class="no-hits {if $noSearch}no-search {/if}content">
     {if $noQuery}
       <div class="metalibError">
         <p class="error">{translate text='metalib_no_query'}</p>
       </div>
     {else}
       <div class="metalibError">
-        <p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>
-      {if !$userAuthorized && $methodsAvailable}
+        {if !$noSearch}<p class="error">{translate text='nohit_prefix'} - <strong>{$lookfor|escape:"html"}</strong> - {translate text='nohit_suffix'}</p>{/if}
+      {if !empty($setNotification)}        
         <div class="loginNotification">
-          <p>{translate text="authorize_user_notification"}</p>
+          {$setNotification}
         </div>
       {/if}
-        <strong>{translate text='You can'}:</strong>
-        <p>- {translate text='Try to search with another phrase'}</p>
-        <p>- {translate text='Try with a different search set'}</p>
+      {if !$noSearch}
+      <strong>{translate text='You can'}:</strong>
+      <p>- {translate text='Try to search with another phrase'}</p>
+      <p>- {translate text='Try with a different search set'}</p>
+      {/if}
       </div>
     {/if}
 
@@ -34,25 +34,23 @@
     </div>
     {/if}
 
-  {* Recommendations *}
-  {if $topRecommendations}
-    {foreach from=$topRecommendations item="recommendations"}
-      {include file=$recommendations}
-    {/foreach}
-  {/if}
+      {* Recommendations *}
+      {if $topRecommendations}
+        {foreach from=$topRecommendations item="recommendations"}
+          {include file=$recommendations}
+        {/foreach}
+      {/if}
 
-  {if $noResultsRecommendations}
-    {foreach from=$noResultsRecommendations item="recommendations" key='key' name="noResults"}
-      {include file=$recommendations}
-    {/foreach}
-  {/if}
+      {if $noResultsRecommendations}
+        {foreach from=$noResultsRecommendations item="recommendations" key='key' name="noResults"}
+          {include file=$recommendations}
+        {/foreach}
+      {/if}
+      {* End Recommendations *}
+
 
 
   {include file="MetaLib/database-statuses.tpl"}
-
-    
+     
   </div>
-
-  
-
 <!-- END of: MetaLib/list-none.tpl -->
