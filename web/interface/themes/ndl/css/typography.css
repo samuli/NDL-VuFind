@@ -411,11 +411,6 @@ h2.titleStatement {
     font-family: inherit;
 }
 
-#recordMetadata .fulltextField,
-.fulltextField + .moreLink, .fulltextField + .moreLink + .lessLink {
-    font-size: 90%;
-}
-
 /* Citation Table */
 .citation {
     font-size: 90%;

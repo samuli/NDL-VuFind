@@ -35,30 +35,6 @@
   {if $coreSummary}<p>{$coreSummary|truncate:300:"..."|escape}</p>{/if}
   *}
 
-  {assign var="idPrefix" value=$id|substr:0:8}
-  {if $driver != 'AxiellWebServices'}
-    {if !empty($coreURLs) || $coreOnlineURLs || $coreMergedRecordData.urls || $idPrefix == 'metalib_'}
-      {if $coreOnlineURLs || $coreMergedRecordData.urls}
-        {if $coreMergedRecordData.urls}
-          {assign var="displayURLs" value=$coreMergedRecordData.urls}
-        {else}
-          {assign var="displayURLs" value=$coreOnlineURLs}
-        {/if}
-        <div class="truncateField">
-        {foreach from=$displayURLs item=urldesc}
-          <div class="fulltextField"><a class="fulltext available" href="{$urldesc.url|proxify|escape}" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}
-          </div>
-        {/foreach}
-      </div>
-      {else if !empty($coreURLs)}
-        {foreach from=$coreURLs item=desc key=currentUrl name=loop}
-          <p><a href="{$currentUrl|proxify|escape}" target="_blank" class="fulltext available">{$desc|translate_prefix:'link_'|escape}</a>
-          </p>
-        {/foreach}
-      {/if}
-    {/if}
-  {/if}
-
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
     {if $driver == 'AxiellWebServices'}
@@ -89,7 +65,39 @@
     </tr>
     {/if}
     *}
-
+    
+    {assign var="idPrefix" value=$id|substr:0:8}
+    {if $driver != 'AxiellWebServices'}
+      {if !empty($coreURLs) || $coreOnlineURLs || $coreMergedRecordData.urls || $idPrefix == 'metalib_'}
+        {if $coreOnlineURLs || $coreMergedRecordData.urls}
+          {if $coreMergedRecordData.urls}
+            {assign var="displayURLs" value=$coreMergedRecordData.urls}
+          {else}
+            {assign var="displayURLs" value=$coreOnlineURLs}
+          {/if}
+          <tr valign="top" class="recordURLs">
+            <td colspan="2">
+              <div class="truncateField">
+                {foreach from=$displayURLs item=urldesc}
+                  <div class="fulltextField"><a class="fulltext availableLocWWW" href="{$urldesc.url|proxify|escape}" target="_blank" title="{$urldesc.url|escape}">{if $urldesc.text}{$urldesc.text|translate_prefix:'link_'|escape}{else}{$urldesc.url|truncate_url|escape}{/if}</a>{if $urldesc.source} ({if is_array($urldesc.source)}{translate text='Multiple Organisations'}{else}{$urldesc.source|translate_prefix:'source_'}{/if}){/if}
+                  </div>
+                {/foreach}
+              </div>
+            </td>
+          </tr>
+        {else if !empty($coreURLs)}
+          <tr valign="top" class="recordURLs">
+            <td colspan="2">
+              <div class="truncateField">
+                {foreach from=$coreURLs item=desc key=currentUrl name=loop}
+                 <div class="fulltextField"><a href="{$currentUrl|proxify|escape}" target="_blank" class="fulltext availableLocWWW">{$desc|translate_prefix:'link_'|escape}</a></div>
+                {/foreach}
+              </div>
+            </td>
+          </tr>
+        {/if}
+      {/if}
+    {/if}
     {if !empty($coreOtherLinks)}
     {assign var=prevOtherLinkHeading value=''}
     {foreach from=$coreOtherLinks item=coreOtherLink}

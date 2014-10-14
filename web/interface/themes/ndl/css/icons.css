@@ -62,6 +62,11 @@
     background:none;
 }
 
+.closeButton {
+    background-image: url(../images/icons16-24px-03_turquoise.png);
+    background-position: 0 -128px;
+}
+
 /* Content type icons */
 
 .iconlabel.formatdocument:before,
@@ -286,6 +291,9 @@ a.clear_input {
 .available:before, .availableLoc:before {
     background-image: url(../images/icons16-24px-03_green.png);
 }
+.availableLocWWW:before {
+    background-image: url("../images/icons16-24px-01_turquoise.png");
+}
 #recordMetadata .available:before {
 	background-image:none;	
 }
@@ -300,6 +308,9 @@ a.clear_input {
 }
 .availableLoc:before {
     background-position: 1px -1439px;
+}
+.availableLocWWW:before {
+    background-position: 0 -779px;
 }
 .checkedout:before, .checkedoutLoc:before {
     background-image: url(../images/icons16-24px-03_red.png);

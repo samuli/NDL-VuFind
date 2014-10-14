@@ -37,7 +37,43 @@
 
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
-  
+    {assign var="idPrefix" value=$id|substr:0:8}
+    {capture name="links"}
+      {if $coreDocumentOrderLinkTemplate && $displayFormat == 'Document/ArchiveItem' && !$coreDigitizedMaterial}
+         <a class="availableLocWWW" href="{eval var=$coreDocumentOrderLinkTemplate}" target="_blank">{translate text='Document Order'}<br/>            
+       {/if}
+       {if $extendedAccess && $coreUsagePermissionRequestLinkTemplate}
+         <a class="availableLocWWW" href="{eval var=$coreUsagePermissionRequestLinkTemplate}" target="_blank">{translate text='Usage Permission Request'}<br/>
+       {/if}
+       {if $coreExternalLinkTemplate}
+          <span class="vakkaLink">
+             <a class="availableLocWWW" href="{eval var=$coreExternalLinkTemplate}" target="_blank">{translate text="view_in_vakka"}</a><br/>
+          </span>
+       {/if}
+       {foreach from=$coreURLs item=desc key=currentUrl name=loop}
+         <a class="availableLocWWW" href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
+       {/foreach}
+       {if $coreOpenURL}
+         {include file="Search/openurl.tpl" openUrl=$coreOpenURL}
+         {include file="Search/rsi.tpl"}
+         {include file="Search/openurl_autocheck.tpl"}
+       {/if}
+       {if $idPrefix == 'metalib_'}
+         <span class="metalib_link">
+           <span id="metalib_link_{$id|escape}" class="hide"><a class="availableLocWWW" href="{$path}/MetaLib/Home?set=_ird%3A{$id|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a></span>
+           <span id="metalib_link_na_{$id|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
+         </span>
+       {/if}
+    {/capture}
+    {if $smarty.capture.links|trim ne ""}
+      <tr valign="top" class="recordURLs">
+        <td colspan="2">
+          <div class="truncateField">
+            {$smarty.capture.links}
+          </div>
+        </td>
+      </tr>
+    {/if}
     <tr valign="top" class="recordFormat">
       <th>{translate text='Format'}: </th>
       <td>
@@ -371,44 +407,6 @@
     </tr>
     {/if}
 
-    {assign var="idPrefix" value=$id|substr:0:8}
-    {capture name="links"}
-      {if $coreDocumentOrderLinkTemplate && $displayFormat == 'Document/ArchiveItem' && !$coreDigitizedMaterial}
-         <a href="{eval var=$coreDocumentOrderLinkTemplate}" target="_blank">{translate text='Document Order'}<br/>            
-       {/if}
-       {if $extendedAccess && $coreUsagePermissionRequestLinkTemplate}
-         <a href="{eval var=$coreUsagePermissionRequestLinkTemplate}" target="_blank">{translate text='Usage Permission Request'}<br/>
-       {/if}
-       {if $coreExternalLinkTemplate}
-          <span class="vakkaLink">
-             <a href="{eval var=$coreExternalLinkTemplate}" target="_blank">{translate text="view_in_vakka"}</a><br/>
-          </span>
-       {/if}
-       {foreach from=$coreURLs item=desc key=currentUrl name=loop}
-         <a href="{$currentUrl|proxify|escape}" target="_blank">{$desc|translate_prefix:'link_'|escape}</a><br/>
-       {/foreach}
-       {if $coreOpenURL}
-         {include file="Search/openurl.tpl" openUrl=$coreOpenURL}
-         {include file="Search/rsi.tpl"}
-         {include file="Search/openurl_autocheck.tpl"}
-       {/if}
-       {if $idPrefix == 'metalib_'}
-         <span class="metalib_link">
-           <span id="metalib_link_{$id|escape}" class="hide"><a href="{$path}/MetaLib/Home?set=_ird%3A{$id|regex_replace:'/^.*?\./':''|escape}">{translate text='Search in this database'}</a></span>
-           <span id="metalib_link_na_{$id|escape}" class="hide">{translate text='metalib_not_authorized_single'}<br/></span>
-         </span>
-       {/if}
-    {/capture}
-    {if $smarty.capture.links|trim ne ""}
-    <tr valign="top" class="recordURLs">
-      <th>{translate text='available_online'}: </th>
-      <td>
-        <div class="truncateField">
-          {$smarty.capture.links}
-        </div>
-      </td>
-    </tr>
-    {/if}
     {*
     {if !empty($coreRecordLinks)}
     {foreach from=$coreRecordLinks item=coreRecordLink}
