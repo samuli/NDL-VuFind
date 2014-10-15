@@ -199,7 +199,7 @@ class Fines extends MyResearch
                         $row['type'] = $row['fine'];
                         if (!$row['title'] || $row['title'] === '') {
                             $row['title'] = translate('not_applicable');
-			    $row['id'] = null;
+                            $row['id'] = null;
                         }
                         
                     }

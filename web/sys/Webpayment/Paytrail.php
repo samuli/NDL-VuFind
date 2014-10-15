@@ -123,7 +123,7 @@ class Paytrail implements WebpaymentInterface
         $interface->assign('cancel_url', $cancelUrl);
         $interface->assign('notify_url', $notifyUrl);
         $interface->assign('transaction_id', $transactionId);
-	$interface->assign(
+        $interface->assign(
             'authcode', $this->generateAuthCode(
                 $amount, $transactionId, $returnUrl, $cancelUrl, $notifyUrl
             )
@@ -183,7 +183,7 @@ class Paytrail implements WebpaymentInterface
         if ($this->hasUnregisteredPayments($patron)) {
             $permitted = false;
             $notPermittedInfo = translate('webpayment_nonregistered_payment');
-	    $paymentData['blocked'] = true;
+            $paymentData['blocked'] = true;
         } else if (!$this->paymentPermitted($fees)) {
             $permitted = false;
             $notPermittedInfo
@@ -253,11 +253,10 @@ class Paytrail implements WebpaymentInterface
 
         $transaction = new Transaction();
         $transaction->user_id = $user_id;
-	$transaction->whereAdd('complete = ' . Transaction::STATUS_RETRY);
-	$transaction->whereAdd('complete = ' . Transaction::STATUS_FAILED, 'OR');
-
-	$transaction->whereAdd('paid > 0');
-
+        $transaction->whereAdd('complete = ' . Transaction::STATUS_RETRY);
+        $transaction->whereAdd('complete = ' . Transaction::STATUS_FAILED, 'OR');        
+        $transaction->whereAdd('paid > 0');
+    
         return $transaction->find();
     }
 
@@ -427,7 +426,7 @@ class Paytrail implements WebpaymentInterface
                 'title' => $fee->title,
                 'type' => $fee->type,
                 'amount' => $fee->amount * 100
-                );
+            );
         }
         return $feeList;
     }
@@ -583,11 +582,11 @@ class Paytrail implements WebpaymentInterface
         }
         $transaction = clone($orig_transaction);
         if ($no_error) {
-	  $transaction->complete = Transaction::STATUS_COMPLETE;
+            $transaction->complete = Transaction::STATUS_COMPLETE;
             $transaction->status = 'payment_register_ok';
             $transaction->registered = date("Y-m-d H:i:s");
         } else {
-	  $transaction->complete = Transaction::STATUS_RETRY;
+            $transaction->complete = Transaction::STATUS_RETRY;
             if ($errorMsg) {
                 $transaction->status = $errorMsg;
             } else {

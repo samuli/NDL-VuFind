@@ -205,7 +205,7 @@ class WebpaymentMonitor extends ReminderTask
 
         $configArray = readConfig();
         $siteLocal = $configArray['Site']['local'];
-	$interface = new UInterface($siteLocal);
+        $interface = new UInterface($siteLocal);
 
         // Check for failed transactions that need to be resolved manually:
         foreach ($expired as $driver => $cnt) {
