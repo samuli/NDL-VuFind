@@ -102,24 +102,37 @@ class Fines extends MyResearch
                             $webpaymentHandler = null;
                         }
                     }
-                    if (isset($_REQUEST['payment_status']) && $webpaymentHandler) {
-                        $responseMsg = $webpaymentHandler->processResponse(
-                            $patron['cat_username'], $_REQUEST['payment_status'],
+
+                    if (isset($_SESSION['payment_fines_changed'])
+                        && (boolean)$_SESSION['payment_fines_changed']
+			) {
+		      $interface->assign('paymentFinesChanged', true);
+		      unset($_SESSION['payment_fines_changed']);
+                    } else if (isset($_REQUEST['payment_status'])
+                        && $webpaymentHandler
+			       ) {
+		      $responseMsg = $webpaymentHandler->processResponse(
+									 $patron['cat_username'], $_REQUEST['payment_status'],
                             $_REQUEST
-                        );
-                        if ($responseMsg) {
-                            $interface->assign('webpaymentStatusMsg', $responseMsg);
-                        }
-                    }
+									 );
+		      if ($responseMsg) {
+			$interface->assign('webpaymentStatusMsg', $responseMsg);
+		      }
+                    } 
                 }
 
                 $result = $this->catalog->getMyFines($patron);
+
+
+		//		die(var_export($result, true));
 
                 $loans = $this->catalog->getMyTransactions($patron);
                 if (!PEAR::isError($result)) {
                     if ($webpaymentHandler) {
                         $webpaymentData 
                             = $webpaymentHandler->getPaymentData($patron, $result);
+
+			//die(var_export($webpaymentData, true));
                         
                         if (isset($webpaymentData['permitted'])
                             && $webpaymentData['permitted']

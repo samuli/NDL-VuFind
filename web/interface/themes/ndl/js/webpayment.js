@@ -19,7 +19,12 @@ function registerWebpaymentActions() {
                 if (data.status == 'OK') {
                     self.submit();
                 } else {
-                    $('table.fines').parent().prepend('<div class="webpaymentMessage info">' + data.data + '</div>');
+		    console.log("data: %o", data.data.redirect);
+                    if (typeof(data.data.redirect) != 'undefined') {
+			location.href = data.data.redirect;
+		    } else {
+			$('table.fines').parent().prepend('<div class="webpaymentMessage info">' + data.data + '</div>');
+		    }
                 }
             }
         }) ;

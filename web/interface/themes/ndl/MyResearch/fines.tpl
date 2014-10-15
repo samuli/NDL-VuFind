@@ -29,7 +29,9 @@
         {/foreach}
       {/if}
     {if $user->cat_username}
-      {if $paymentBlocked}
+      {if $paymentFinesChanged}
+        <div class="webpaymentMessage error">{translate text="webpayment_fines_changed"}</div>
+      {elseif $paymentBlocked}
         <div class="webpaymentMessage error">{translate text="webpayment_payment_blocked"}</div>
       {elseif $webpaymentStatusMsg}
 	<div class="webpaymentMessage info">
