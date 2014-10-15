@@ -90,10 +90,12 @@
           {assign var=displayFormat value=$record.format} 
           {/if}
           <span class="icon format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}" title="{translate text=$displayFormat prefix='format_'}">{*translate text=format_$displayFormat*}</span>
-              {if empty($record.title)}
-                {translate text='not_applicable'}
-              {else}
-                <a href="{$url}/Record/{$record.id|escape}">{$record.title|trim:'/:'|escape}</a>
+              {if $record.id}
+	         <a href="{$url}/Record/{$record.id|escape}">
+	      {/if}
+                {$record.title|trim:'/:'|escape}
+              {if $record.id}
+                 </a>              
               {/if}
             </td>
             <td>{$record.checkout|escape}</td>

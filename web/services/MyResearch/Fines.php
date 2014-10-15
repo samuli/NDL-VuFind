@@ -186,15 +186,14 @@ class Fines extends MyResearch
                         $row['type'] = $row['fine'];
                         if (!$row['title'] || $row['title'] === '') {
                             $row['title'] = translate('not_applicable');
+			    $row['id'] = null;
                         }
                         
                     }
                     
                     $_SESSION['webpayment'] = $sessionData;
                     
-                    
-                    
-                    $interface->assign('rawFinesData', $result);
+                    $interface->assign('rawFinesData', $sessionData['fines']);
                     $interface->assign('sum', $sum);
                 }
                 $profile = $this->catalog->getMyProfile($patron);
