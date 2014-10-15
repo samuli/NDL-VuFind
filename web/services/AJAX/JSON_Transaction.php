@@ -49,7 +49,8 @@ class JSON_Transaction extends JSON
     public function startTransaction()
     {
         global $user;
-        
+	global $configArray;
+
         if (!isset($_SESSION['webpayment'])) {
             $this->output('Transaction parameters missing', JSON::STATUS_ERROR);	  
         }
@@ -86,53 +87,88 @@ class JSON_Transaction extends JSON
         $transactionId = $_SESSION['webpayment']['transactionId']; 
         $currency = $_SESSION['webpayment']['currency']; 
 
-        // replace decimal point with comma in order to comply
-        // with number formatter's locale
-        $amount = str_replace(".", ",", $amount);
-        // replace decimal point with comma in order to comply
-        // with number formatter's locale
-        $transactionFee = str_replace(".", ",", $transactionFee);
-        $fmt = numfmt_create(
-            'fi_FI', NumberFormatter::DECIMAL // TODO: customize locale
-        );
+
+        // Retrieve current list of fines, and make sure that fine count and 
+	// total amount to be payed matches the information that was shown to the user.
+        $finesChanged = false;
+        if ($patron = UserAccount::catalogLogin()) {
+	  $catalog = ConnectionManager::connectToCatalog();
+	  $currentFines = $catalog->getMyFines($patron);
+	  if (count($fines) != count($currentFines)) {
+	    $finesChanged = true;
+	  }
+
+	  if ($proceed) {
+	    $currentFinesAmount = $transactionFee;
+	    foreach ($currentFines as $f) {
+	      $currentFinesAmount += $f['amount']/100;
+	    }
+
+	    if ((float)$amount != (float)$currentFinesAmount) {
+	      $finesChanged = true;
+	    }
+	  }
+
+	  if ($finesChanged) {
+	    // Fines changed: redirect and display error.
+	    unset($_SESSION['no_store']);
+	    $_SESSION['payment_fines_changed'] = true;
+	    $finesPage = $configArray['Site']['url'] . "/MyResearch/Fines";
+	    $this->output(
+			  array('redirect' => $finesPage),
+			  JSON::STATUS_ERROR
+			  );
+	  }
+
+
+	  // replace decimal point with comma in order to comply
+	  // with number formatter's locale
+	  $amount = str_replace(".", ",", $amount);
+	  // replace decimal point with comma in order to comply
+	  // with number formatter's locale
+	  $transactionFee = str_replace(".", ",", $transactionFee);
+	  $fmt = numfmt_create(
+			       'fi_FI', NumberFormatter::DECIMAL // TODO: customize locale
+			       );
         
-        $transaction = new Transaction();
-        $transaction->transaction_id = $transactionId;
-        $transaction->driver = reset(explode('.', $transactionId, 2)); 
-        $transaction->user_id = isset($user) && is_object($user) ? $user->id : null;
-        $transaction->amount = $fmt->parse($amount);
-        $transaction->transaction_fee = $fmt->parse($transactionFee);
-        $transaction->currency = $currency;
-        $transaction->created = date("Y-m-d H:i:s");
-        $transaction->complete = 0;
-        $transaction->status = 'started';
-        if (!$transaction->amount) {
+	  $transaction = new Transaction();
+	  $transaction->transaction_id = $transactionId;
+	  $transaction->driver = reset(explode('.', $transactionId, 2)); 
+	  $transaction->user_id = isset($user) && is_object($user) ? $user->id : null;
+	  $transaction->amount = $fmt->parse($amount);
+	  $transaction->transaction_fee = $fmt->parse($transactionFee);
+	  $transaction->currency = $currency;
+	  $transaction->created = date("Y-m-d H:i:s");
+	  $transaction->complete = 0;
+	  $transaction->status = 'started';
+	  if (!$transaction->amount) {
             $this->output(
-                translate('json_transaction_amount_not_defined'), JSON::STATUS_ERROR
-            );
-        }
+			  translate('json_transaction_amount_not_defined'), JSON::STATUS_ERROR
+			  );
+	  }
 
 
-        if ($transaction->insert()) {
+	  if ($transaction->insert()) {
             foreach ($fines as $fine) {
-                // replace decimal point with comma in order to comply
-                // with number formatter's locale
-                $fine['amount'] = $fine['amount']/100;
-                $fine['amount'] = str_replace(".", ",", $fine['amount']);
-                $fine['amount'] = $fmt->parse($fine['amount']);
-                if (!$transaction->addFee($fine, $user)) {
-                    $this->output(
-                        translate('json_transaction_fee_insert_failed'),
-                        JSON::STATUS_ERROR
-                    );
-                }
+	      // replace decimal point with comma in order to comply
+	      // with number formatter's locale
+	      $fine['amount'] = $fine['amount']/100;
+	      $fine['amount'] = str_replace(".", ",", $fine['amount']);
+	      $fine['amount'] = $fmt->parse($fine['amount']);
+	      if (!$transaction->addFee($fine, $user)) {
+		$this->output(
+			      translate('json_transaction_fee_insert_failed'),
+			      JSON::STATUS_ERROR
+			      );
+	      }
             }
             $this->output('', JSON::STATUS_OK);
-        } else {
+	  } else {
             $this->output(
-                translate('json_transaction_insert_failed'), JSON::STATUS_ERROR
-            );
-        }
+			  translate('json_transaction_insert_failed'), JSON::STATUS_ERROR
+			  );
+	  }
+	}
     }
 
     /**
