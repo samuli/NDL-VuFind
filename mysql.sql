@@ -319,6 +319,8 @@ CREATE TABLE `transaction` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `driver` (`driver`),
+  KEY `complete` (`complete`),
+  KEY `paid` (`paid`),
   CONSTRAINT `transactions_ibfk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
