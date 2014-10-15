@@ -97,9 +97,6 @@
     #searchForm_input {
         width: 195px;
     }
-    .searchformMetaLib #searchForm_input {
-        width: 95px;
-    }
 
     /* Front page */
     #introduction.section #siteDescription, #topSearches {
@@ -194,6 +191,16 @@
     div.metalibLoading {        
         width: 530px;
     }
+
+    .module-MetaLib .sidebarOnLeft .resultNumbers {
+        margin-left: -208px;
+    }
+
+
+    #metaLibBrowse li.result .iconsRight {
+        float: left;
+    }
+
 
     /* Search results: sidebar */
     

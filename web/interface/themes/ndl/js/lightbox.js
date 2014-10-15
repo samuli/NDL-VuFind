@@ -197,6 +197,9 @@ function lightboxDocumentReady() {
 function registerAjaxLogin(container, loginFromLightbox) {
     container.find('form[name="loginForm"]').unbind('submit').submit(function(){
         if (!$(this).valid()) { return false; }
+        
+        // Add loading indicator
+        $(this).find('.buttonFinna').addClass('loading');
 
         $(this).find('.error').remove();
         var form = this;
@@ -232,6 +235,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                         dataType: 'json',
                         data: data,
                         success: function(response) {
+                            $('.buttonFinna.loading').removeClass('loading');
                             if (response.status == 'OK') {
                                 // Hide "log in" options and show "log out" options:
                                 $('#loginOptions').hide();
@@ -279,6 +283,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                         }
                     });
                 } else {
+                    $('.buttonFinna.loading').removeClass('loading');
                     displayFormError($(form), response.data);
                 }
             }

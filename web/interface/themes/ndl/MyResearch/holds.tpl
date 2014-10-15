@@ -2,7 +2,7 @@
 
 {include file="MyResearch/menu.tpl"}
 
-<div class="myResearch holdsList{if $sidebarOnLeft} last{/if}">
+<div class="myResearch holdsList{if $sidebarOnLeft} last{/if} driver-{$driver}">
   <div class="content">
     {* NDLBlankInclude *}
     {assign var=hold_instructions value='hold_instructions'|translate}
@@ -137,8 +137,8 @@
             {/if}
             </td>
             <td class="dueDate floatright">
-              {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
-              {translate text=$source prefix='source_'},
+            {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
+            {if $driver != 'AxiellWebServices'}{translate text=$source prefix='source_'},{/if}
             {* Depending on the ILS driver, the "location" value may be a string or an ID; figure out the best value to display... *}
             {assign var="pickupDisplay" value=""}
             {assign var="pickupTranslate" value="0"}
@@ -175,10 +175,15 @@
             {/foreach}
 
             {if $resource.ils_details.available == true}
-              <span class="available">{translate text="hold_available"}</span>
+              <span class="available">{translate text="hold_available"}
+                {if $driver == 'AxiellWebServices'}
+                  <br>
+                  <strong>{translate text="hold_number"}:</strong> {$resource.ils_details.reqnum}
+                {/if}
+                </span>
             {else}
               {if $resource.ils_details.position}
-              <p><strong>{translate text='hold_queue_position'}:</strong> {$resource.ils_details.position|escape}</p>
+              <p class="positionDetails"><strong>{translate text='hold_queue_position'}:</strong> {$resource.ils_details.position|escape}</p>
               {/if}
             {/if}
             {if $resource.ils_details.cancel_link}
@@ -200,6 +205,7 @@
     <div style="clear:both;padding-top: 2em;"></div>
 
   {* Call Slips *}
+  {if $driver != 'AxiellWebServices'}
   <h2>{translate text='Call Slips'}:      {foreach from=$catalogAccounts item=account}
         	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
      {/foreach} 
@@ -344,6 +350,7 @@
     </form>
     {else}
       <div class="noContentMessage">{translate text='You do not have any requests placed'}.</div>
+    {/if}
     {/if}
   {else}
     {include file="MyResearch/catalog-login.tpl"}

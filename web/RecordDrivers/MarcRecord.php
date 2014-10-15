@@ -1228,9 +1228,9 @@ class MarcRecord extends IndexRecord
      * )
      *
      * @return null|array
-     * @access protected
+     * @access public
      */
-    protected function getAllRecordLinks()
+    public function getAllRecordLinks()
     {
         global $configArray;
 

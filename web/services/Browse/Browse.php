@@ -141,6 +141,7 @@ class Browse extends Action
         }
 
         $interface->assign('browseOptions', $browseOptions);
+        $interface->assign('homeAction', 'Home');
     }
 }
 

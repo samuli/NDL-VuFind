@@ -172,6 +172,8 @@ class Holds extends MyResearch
                     $interface->assign('profile', $profile);
                 }
             }
+            $driver = isset($patron['driver']) ? $patron['driver'] : '';
+            $interface->assign('driver', $driver);
         }
 
         $interface->setTemplate('holds.tpl');

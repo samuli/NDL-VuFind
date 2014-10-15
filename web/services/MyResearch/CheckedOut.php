@@ -174,8 +174,8 @@ class CheckedOut extends MyResearch
             // Add Patron Data to Submitted Data
             $gatheredDetails['patron'] = $patron;
             $renewResult = $this->catalog->renewMyItems($gatheredDetails);
-
-            if ($renewResult !== false) {
+            
+            if (!PEAR::isError($renewResult) && $renewResult !== false) {
                 // Assign Blocks to the Template
                 $interface->assign('blocks', $renewResult['blocks']);
 

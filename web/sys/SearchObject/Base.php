@@ -66,7 +66,8 @@ abstract class SearchObject_Base
     // List of URL parameter names used to transmit active filters for all search types
     protected static $urlFilterTypes = array('local' => array('filter', 'orfilter'),
                                              'pci' => array('filterpci'),
-                                             'metalib' => array()
+                                             'metalib' => array(),
+                                             'browse' => array('filterBrowse')
                                              );
     // URL parameter type
     const URL_FILTER_TYPE = 'local';
@@ -597,6 +598,9 @@ abstract class SearchObject_Base
             return false;
         }
 
+        
+
+
         // If lookfor is an array, we may be dealing with a legacy Advanced
         // Search URL.  If there's only one parameter, we can flatten it,
         // but otherwise we should treat it as an error -- no point in going
@@ -750,6 +754,12 @@ abstract class SearchObject_Base
             if ($_REQUEST['view'] == 'rss') {
                 // we don't want to store rss in the Session variable
                 $this->view = 'rss';
+            } elseif ($_REQUEST['view'] == 'xml') {
+                // we don't want to store xml in the Session variable
+                $this->view = 'xml';
+            } elseif ($_REQUEST['view'] == 'json') {
+                // we don't want to store json in the Session variable
+                $this->view = 'json';
             } else {
                 // store non-rss views in Session for persistence
                 $validViews = $this->getViewOptions();
@@ -2493,6 +2503,7 @@ abstract class SearchObject_Base
         } else {
             $searchType = false;
         }
+
 
         // Load a type-specific recommendations setting if possible, or the default
         // otherwise:
