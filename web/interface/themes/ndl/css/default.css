@@ -7086,15 +7086,13 @@ table.summHoldings .statusColumn {
 }
 
 #hierarchyTree li.item {
-    display:inline;
+    display:block;
 }
 
 #hierarchyTree li.item a {
     display:inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
-    width: 35%;
+    width: 100%;
 }
 
 #hierarchyTree li.item.openPath a {
