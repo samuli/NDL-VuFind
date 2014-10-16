@@ -290,7 +290,9 @@ class JSON_Transaction extends JSON
                 )) {
                     $this->output('', JSON::STATUS_OK);
                 } else {
-                    $this->output(translate($registerError), JSON::STATUS_ERROR);
+                    $msg = '<p>' . translate($registerError) . '</p>';
+                    $msg .= '<p>' . translate('webpayment_payment_blocked') . '</p>';
+                    $this->output($msg, JSON::STATUS_ERROR);
                 }
             }
         } else {
