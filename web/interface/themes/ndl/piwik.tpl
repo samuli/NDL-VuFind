@@ -7,6 +7,54 @@ var _paq = _paq || [];
 _paq.push(['setSiteId', {/literal}{$piwikSiteId}{literal}]); 
 _paq.push(['setTrackerUrl', u+'piwik.php']);{/literal}
 _paq.push(['setCustomUrl', location.protocol + '//' + location.host + location.pathname]);
+  {if ($module eq 'PCI') and ($action eq 'Record') and $id}
+    {if $record.format}
+      {assign var=newRecordFormat value=$record.format}
+    {else}
+      {assign var=newRecordFormat value='-'}
+    {/if}
+_paq.push(['setCustomVariable', 1, "PCIRecordFormat", "{$newRecordFormat|escape:"html"}", "page"]);
+    {if $record.title}
+      {assign var="recordTitle" value=$record.title}
+    {else}
+      {assign var="recordTitle" value="-"}
+    {/if}
+    {if $record.author and $record.author.0}
+      {assign var="recordAuthor" value=$record.author.0}
+    {else}
+      {assign var="recordAuthor" value="-"}
+    {/if}
+_paq.push(['setCustomVariable', 2, "PCIRecordData", "{$id|escape:"html"}|{$recordAuthor|escape:"html"}|{$recordTitle|escape:"html"}", "page"]);
+    {if $record.source}
+      {assign var=recordSource value=$record.source}
+    {else}
+      {assign var=recordSource value='-'}
+    {/if}
+_paq.push(['setCustomVariable', 3, "PCIRecordSource", "{$recordSource|escape:"html"}", "page"]);
+_paq.push(['setCustomVariable', 4, "RecordIndex", "PCI", "page"]);
+  {/if}
+  {if ($module eq 'MetaLib' and ($action eq 'Record') and $id)}
+    {if $record.Title and $record.Title.0}
+      {assign var="recordTitle" value=$record.Title.0}
+    {else}
+      {assign var="recordTitle" value="-"}
+    {/if}
+    {if $record.Author and $record.Author.0}
+      {assign var="recordAuthor" value=$record.Author.0}
+    {elseif $record.AdditionalAuthors}
+      {assign var="recordAuthor" value=$record.AdditionalAuthors}
+    {else}
+      {assign var="recordAuthor" value="-"}
+    {/if}
+_paq.push(['setCustomVariable', 2, "MetaLibRecordData", "{$id|escape:"html"}|{$recordAuthor|escape:"html"}|{$recordTitle|escape:"html"}", "page"]);
+    {if $record.Source and $record.Source.0}
+      {assign var=recordSource value=$record.Source.0}
+    {else}
+      {assign var=recordSource value='-'}
+    {/if}
+_paq.push(['setCustomVariable', 3, "MetaLibRecordSource", "{$recordSource|escape:"html"}", "page"]);
+_paq.push(['setCustomVariable', 4, "RecordIndex", "MetaLib", "page"]);
+  {/if}
   {if ($module eq 'Record')}
     {if $recordFormat}
       {if $recordFormat.1}
@@ -25,6 +73,7 @@ _paq.push(['setCustomVariable', 1, "RecordFormat", "{$newRecordFormat|escape:"ht
         {assign var="recordAuthor" value="-"}
       {/if}
 _paq.push(['setCustomVariable', 2, "RecordData", "{$id|escape:"html"}|{$recordAuthor|escape:"html"}|{if $coreShortTitle}{$coreShortTitle|escape:"html"}{if $coreSubtitle} : {$coreSubtitle|escape}{/if}{else}{translate text='Title not available'|escape:"html"}{/if}", "page"]);
+_paq.push(['setCustomVariable', 4, "RecordIndex", "Local", "page"]);
     {/if}
     {if $coreInstitutions}
 _paq.push(['setCustomVariable', 3, "RecordInstitution", "{$coreInstitutions.0|escape:"html"}", "page"]);
