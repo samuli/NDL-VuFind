@@ -388,7 +388,7 @@ class UInterface extends Smarty
         // Don't pass a PEAR error to interface
         $this->assign('user', PEAR::isError($user) ? null : $user);
 
-        if($user) {
+        if ($user) {
             // Get My Lists
             $listList = $user->getLists();
             $this->assign('listList', $listList);
