@@ -64,75 +64,41 @@ class Fines extends MyResearch
             if (PEAR::isError($patron)) {
                 $this->handleCatalogError($patron);
             } else {
-                $webpaymentHandler = null;
-                $webpaymentEnabled = false;
-                $webpaymentConfig = $this->catalog->getConfig('Webpayment');
-                if (isset($webpaymentConfig) && isset($webpaymentConfig['enabled'])
-                    && $webpaymentConfig['enabled']
-                ) {
-                    $webpaymentEnabled = true;
-                }
-                $interface->assign('webpaymentEnabled', $webpaymentEnabled);
-        
-                $paymentRegisterConfig = $this->catalog->getConfig('PaymentRegister');
-                if ($webpaymentEnabled) {
-                    if (isset($webpaymentConfig['handler'])) {
-                        try {
-                            $paymentRegister = null;
-                            if (isset($paymentRegisterConfig)
-                                && isset($paymentRegisterConfig['handler'])
-                            ) {
-                                $paymentRegister
-                                    = PaymentRegisterFactory::initPaymentRegister(
-                                        $paymentRegisterConfig['handler'],
-                                        $paymentRegisterConfig
-                                    );
-                            }
-                            $webpaymentHandler = WebpaymentFactory::initWebpayment(
-                                $webpaymentConfig['handler'], $webpaymentConfig,
-                                $paymentRegister
-                            );
-                        } catch (Exception $e) {
-                            if ($configArray['System']['debug']) {
-                                echo "Exception: " . $e->getMessage();
-                            }
-                            error_log(
-                                "Webpayment handler exception: " . $e->getMessage()
-                            );
-                            $webpaymentHandler = null;
-                        }
-                    }
+                
+                if ($res = $this->getPaymentHandlerAndData($patron, $this->catalog)) {
+                    $webpaymentHandler = $res['handler'];
+                    $webpaymentData = $res['data'];
+                    $fines = $res['fines'];
+
+                    $interface->assign('webpaymentEnabled', true);
 
                     if (isset($_SESSION['payment_fines_changed'])
                         && (boolean)$_SESSION['payment_fines_changed']
-			) {
-		      $interface->assign('paymentFinesChanged', true);
-		      unset($_SESSION['payment_fines_changed']);
+                        ) {
+                        $interface->assign('paymentFinesChanged', true);
+                        unset($_SESSION['payment_fines_changed']);
                     } else if (isset($_REQUEST['payment_status'])
-                        && $webpaymentHandler
-			       ) {
-		      $responseMsg = $webpaymentHandler->processResponse(
-									 $patron['cat_username'], $_REQUEST['payment_status'],
-                            $_REQUEST
-									 );
-		      if ($responseMsg) {
-			$interface->assign('webpaymentStatusMsg', $responseMsg);
-		      }
-                    } 
+                               && $webpaymentHandler
+                           ) {
+                        $responseMsg = $webpaymentHandler->processResponse(
+                                                                           $patron['cat_username'], $_REQUEST['payment_status'],
+                                                                           $_REQUEST
+                                                                           );
+                        if ($responseMsg) {
+                            $interface->assign('webpaymentStatusMsg', $responseMsg);
+                        }
+                    }
+
                 }
+                
+                
 
-                $result = $this->catalog->getMyFines($patron);
 
 
-		//		die(var_export($result, true));
 
                 $loans = $this->catalog->getMyTransactions($patron);
-                if (!PEAR::isError($result)) {
-                    if ($webpaymentHandler) {
-                        $webpaymentData 
-                            = $webpaymentHandler->getPaymentData($patron, $result);
-
-			//die(var_export($webpaymentData, true));
+                if (!PEAR::isError($fines)) {
+                    if ($webpaymentData) {
                         
                         if (isset($webpaymentData['permitted'])
                             && $webpaymentData['permitted']
@@ -144,7 +110,7 @@ class Fines extends MyResearch
                             $interface->assign(
                                 'webpaymentForm', $webpaymentHandler->displayPaymentForm(
                                     $patron['cat_username'], $webpaymentAmount,
-                                    $result, $followupUrl, $statusParam
+                                    $fines, $followupUrl, $statusParam
                                 )
                             );
                         }
@@ -154,11 +120,11 @@ class Fines extends MyResearch
                         $interface->assign('webpaymentData', $webpaymentData);
                     }
                     // assign the "raw" fines data to the template
-                    // NOTE: could use foreach($result as &$row) here but it only works
+                    // NOTE: could use foreach($fines as &$row) here but it only works
                     // with PHP5
                     $sum = 0;
-                    for ($i = 0; $i < count($result); $i++) {
-                        $row = &$result[$i];
+                    for ($i = 0; $i < count($fines); $i++) {
+                        $row = &$fines[$i];
                         $sum += $row['balance'];
                         $record = $this->db->getRecord($row['id']);
                         $row['title'] = $record ? $record['title_short'] : null;
@@ -190,7 +156,7 @@ class Fines extends MyResearch
                     $sessionData['transactionId'] 
                         = $interface->get_template_vars('transaction_id');
                     
-                    $sessionData['fines'] = $result;
+                    $sessionData['fines'] = $fines;
 
 
                     for ($i = 0; $i < count($sessionData['fines']); $i++) {
@@ -222,6 +188,59 @@ class Fines extends MyResearch
         $interface->setPageTitle('My Fines');
         $interface->display('layout.tpl');
     }
+
+
+    public function getPaymentHandlerAndData($patron, $catalog)
+    {
+        $webpaymentHandler = null;
+        $webpaymentConfig = $catalog->getConfig('Webpayment');
+        if (!isset($webpaymentConfig) || !isset($webpaymentConfig['enabled'])
+            || !$webpaymentConfig['enabled']
+            ) {
+            return false;
+        }
+        
+        $paymentRegisterConfig = $catalog->getConfig('PaymentRegister');
+        if (isset($webpaymentConfig['handler'])) {
+            try {
+                $paymentRegister = null;
+                if (isset($paymentRegisterConfig)
+                    && isset($paymentRegisterConfig['handler'])
+                    ) {
+                    $paymentRegister
+                        = PaymentRegisterFactory::initPaymentRegister(
+                                                                      $paymentRegisterConfig['handler'],
+                                                                      $paymentRegisterConfig
+                                                                      );
+                }
+                $webpaymentHandler = WebpaymentFactory::initWebpayment(
+                                                                       $webpaymentConfig['handler'], $webpaymentConfig,
+                                                                       $paymentRegister
+                                                                       );
+            } catch (Exception $e) {
+                if ($configArray['System']['debug']) {
+                    echo "Exception: " . $e->getMessage();
+                }
+                error_log(
+                          "Webpayment handler exception: " . $e->getMessage()
+                          );
+                return false;
+            }
+        }
+        
+        
+
+        $fines = $catalog->getMyFines($patron);
+        if (!PEAR::isError($fines)) {
+            return array(
+                      'handler' => $webpaymentHandler, 
+                      'data' => $webpaymentHandler->getPaymentData($patron, $fines),
+                      'fines' => $fines
+                   );
+        }
+
+        return false;
+    } 
 
 }
 

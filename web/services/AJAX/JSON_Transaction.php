@@ -26,6 +26,7 @@
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 
+require_once 'services/MyResearch/Fines.php';
 require_once 'services/MyResearch/lib/Transaction.php';
 require_once 'JSON.php';
 
@@ -88,37 +89,86 @@ class JSON_Transaction extends JSON
         $currency = $_SESSION['webpayment']['currency']; 
 
 
+
+
+
         // Retrieve current list of fines, and make sure that fine count and 
 	// total amount to be payed matches the information that was shown to the user.
         $finesChanged = false;
         if ($patron = UserAccount::catalogLogin()) {
-	  $catalog = ConnectionManager::connectToCatalog();
-	  $currentFines = $catalog->getMyFines($patron);
-	  if (count($fines) != count($currentFines)) {
-	    $finesChanged = true;
-	  }
+            $catalog = ConnectionManager::connectToCatalog();
 
-	  if ($proceed) {
-	    $currentFinesAmount = $transactionFee;
-	    foreach ($currentFines as $f) {
-	      $currentFinesAmount += $f['amount']/100;
-	    }
 
-	    if ((float)$amount != (float)$currentFinesAmount) {
-	      $finesChanged = true;
-	    }
-	  }
+            $action = new Fines();
+            if (!$res = $action->getPaymentHandlerAndData($patron, $catalog)) {
+                $this->output(
+                              translate('json_transaction_fee_parameters_missing'),
+                              JSON::STATUS_ERROR
+                );
 
-	  if ($finesChanged) {
-	    // Fines changed: redirect and display error.
-	    unset($_SESSION['no_store']);
-	    $_SESSION['payment_fines_changed'] = true;
-	    $finesPage = $configArray['Site']['url'] . "/MyResearch/Fines";
-	    $this->output(
-			  array('redirect' => $finesPage),
-			  JSON::STATUS_ERROR
-			  );
-	  }
+            }                 
+            $webpaymentHandler = $res['handler'];
+            $webpaymentData = $res['data'];
+            $currentFines = $res['fines'];
+            
+            // All fines still payable?
+            if ((isset($webpaymentData['permitted']) && !$webpaymentData['permitted'])
+                || (isset($webpaymentData['blocked']) && $webpaymentData['blocked'])
+            ) {
+                $finesChanged = true;
+            }
+            
+            // Amount of fines same?
+            if (!$finesChanged && count($fines) != count($currentFines)) {
+                $finesChanged = true;
+            }
+            
+            // Total amount to be payed same?
+            if (!$finesChanged) {
+                $currentFinesAmount = $transactionFee;
+                foreach ($currentFines as $f) {
+                    if (isset($f['payableOnline']) && $f['payableOnline']) {
+                        $currentFinesAmount += $f['amount']/100;
+                    }
+                }
+
+                if ((float)$amount != (float)$currentFinesAmount) {
+                    $finesChanged = true;
+                }
+            }
+            
+            // Finally, compare fines by selected fields
+            if (!$finesChanged) {
+                $fields = array('amount', 'createdate', 'fine');
+
+                $cnt = 0;
+                while ($cnt < count($fines)) {
+                    $f = $fines[$cnt];
+                    $f2 = $currentFines[$cnt];
+                    $cnt++;
+
+                    foreach ($fields as $field) {
+                        if (!isset($f[$field]) 
+                            || !isset($f2[$field])
+                            || $f[$field] !== $f2[$field]
+                            ) {
+                            $finesChanged = true;
+                            break;
+                        }                    
+                    }
+                }
+            }
+
+            if ($finesChanged) {
+                // Fines changed: redirect and display error.
+                unset($_SESSION['no_store']);
+                $_SESSION['payment_fines_changed'] = true;
+                $finesPage = $configArray['Site']['url'] . "/MyResearch/Fines";
+                $this->output(
+                              array('redirect' => $finesPage),
+                              JSON::STATUS_ERROR
+                              );
+            }
 
 
 	  // replace decimal point with comma in order to comply
