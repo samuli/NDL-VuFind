@@ -35,9 +35,14 @@ _paq.push(['trackPageView']);
 _paq.push(['setCustomVariable', 1, "Facets", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}|{$filter.display|escape:"html"}\t{/foreach}{/foreach}", "page"]);
 _paq.push(['setCustomVariable', 2, "FacetTypes", "{foreach from=$filterList item=filters}{foreach from=$filters item=filter}{$filter.field|escape:"html"}\t{/foreach}{/foreach}", "page"]);
     {/if}
-    {if $searchType}
-_paq.push(['setCustomVariable', 3, "SearchType", "{$searchType|escape:"html"}", "page"]);
+    {if $action eq 'DualResults'}
+      {assign var="typeOfSearch" value='dual'}
+    {elseif $searchType}
+      {assign var="typeOfSearch" value=$searchType}
+    {else}
+      {assign var="typeOfSearch" value='unknown'}
     {/if}
+_paq.push(['setCustomVariable', 3, "SearchType", "{$typeOfSearch|escape:"html"}", "page"]);
 {* Use trackSiteSearch *instead* of trackPageView in search pages *}
 _paq.push(['trackSiteSearch', "{if $lookfor}{$lookfor|escape:"html"}{else}-{/if}", "{if $activePrefilter}{$activePrefilter|escape:"html"}{else}-{/if}", {if $recordCount}{$recordCount|escape:"html"}{else}false{/if}]);
   {else}
