@@ -78,23 +78,17 @@ class Fines extends MyResearch
                         $interface->assign('paymentFinesChanged', true);
                         unset($_SESSION['payment_fines_changed']);
                     } else if (isset($_REQUEST['payment_status'])
-                               && $webpaymentHandler
-                           ) {
+                        && $webpaymentHandler
+                    ) {
                         $responseMsg = $webpaymentHandler->processResponse(
-                                                                           $patron['cat_username'], $_REQUEST['payment_status'],
-                                                                           $_REQUEST
-                                                                           );
+                            $patron['cat_username'], $_REQUEST['payment_status'],
+                            $_REQUEST
+                        );
                         if ($responseMsg) {
                             $interface->assign('webpaymentStatusMsg', $responseMsg);
                         }
                     }
-
                 }
-                
-                
-
-
-
 
                 $loans = $this->catalog->getMyTransactions($patron);
                 if (!PEAR::isError($fines)) {
@@ -189,14 +183,26 @@ class Fines extends MyResearch
         $interface->display('layout.tpl');
     }
 
-
+    /**
+     * Utility function for returning a payment handler and payment data.
+     *
+     * @param string            $patron  Patron's catalog username (e.g. barcode)
+     * @param CatalogConnection $catalog Catalog connection object
+     *
+     * @return mixed associative array with keys:
+     *     'handler' Webpayment handler object
+     *     'data' array payment data (see getPaymentData from Webpayment handler) 
+     *     'fines' array fines (see CatalogConnection::getMyFines)
+     *   or FALSE on error.
+     * @access public
+     */
     public function getPaymentHandlerAndData($patron, $catalog)
     {
         $webpaymentHandler = null;
         $webpaymentConfig = $catalog->getConfig('Webpayment');
         if (!isset($webpaymentConfig) || !isset($webpaymentConfig['enabled'])
             || !$webpaymentConfig['enabled']
-            ) {
+        ) {
             return false;
         }
         
@@ -206,30 +212,28 @@ class Fines extends MyResearch
                 $paymentRegister = null;
                 if (isset($paymentRegisterConfig)
                     && isset($paymentRegisterConfig['handler'])
-                    ) {
+                ) {
                     $paymentRegister
                         = PaymentRegisterFactory::initPaymentRegister(
-                                                                      $paymentRegisterConfig['handler'],
-                                                                      $paymentRegisterConfig
-                                                                      );
+                            $paymentRegisterConfig['handler'],
+                            $paymentRegisterConfig
+                        );
                 }
                 $webpaymentHandler = WebpaymentFactory::initWebpayment(
-                                                                       $webpaymentConfig['handler'], $webpaymentConfig,
-                                                                       $paymentRegister
-                                                                       );
+                    $webpaymentConfig['handler'], $webpaymentConfig,
+                    $paymentRegister
+                );
             } catch (Exception $e) {
                 if ($configArray['System']['debug']) {
                     echo "Exception: " . $e->getMessage();
                 }
                 error_log(
-                          "Webpayment handler exception: " . $e->getMessage()
-                          );
+                    "Webpayment handler exception: " . $e->getMessage()
+                );
                 return false;
             }
         }
         
-        
-
         $fines = $catalog->getMyFines($patron);
         if (!PEAR::isError($fines)) {
             return array(
