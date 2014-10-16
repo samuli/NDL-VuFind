@@ -209,7 +209,7 @@ class AxiellWebServices implements DriverInterface
             } else {
                 $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
             }
-
+            
             return empty($vfHoldings) ? false : $vfHoldings;
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
@@ -326,7 +326,7 @@ class AxiellWebServices implements DriverInterface
                                 'requests_placed'   => $noOfReservations,
                                 'barcode'           => '',
                                 'availability'      => $available,
-                                'status'      		=> $status,
+                                'status'      		  => $status,
                                 'location'          => $location,
                                 'reserve'           => 'N',
                                 'callnumber'        => isset($department->shelfMark) ? $department->shelfMark : '',
@@ -334,7 +334,13 @@ class AxiellWebServices implements DriverInterface
                                 'returnDate'        => false,
                                 'is_holdable'       => $reservationStatus,
                                 'addLink'           => false,
-                                'summary'           => $edition
+                                'summary'           => $edition,
+                                'organisation'      => $organisationName,
+                                'department'        => $departmentName,
+                                'branch'            => $branchName,
+                                'total'             => $nofTotal,
+                                'available'         => $nofAvailableForLoan,
+                                'ordered'           => $nofOrdered
                             );
 
                             $vfHoldings[] = $vfHolding;
@@ -1118,15 +1124,17 @@ class AxiellWebServices implements DriverInterface
 
             $result = $client->authenticatePatron(array('authenticatePatronParam' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'user' => $username, 'password' => $password)));
 
-            if ($result->authenticatePatronResult->status->type != 'ok') {
-                $this->debugLog("Authenticate patron request failed for '$username'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('authentication_error_invalid');
-            }
             $this->debugLog("Request: " . $client->__getLastRequest());
             $this->debugLog("Response: " . $client->__getLastResponse());
-
+            
+            if ($result->authenticatePatronResult->status->type != 'ok') {
+                $this->debugLog("Authenticate patron request failed for '$username'");
+                if ($result->authenticatePatronResult->status->message == 'BackendError') {
+                    return new PEAR_Error('authentication_error_technical');
+                }
+                return new PEAR_Error('authentication_error_invalid');
+            }
+            
             return $result->authenticatePatronResult->patronId;
 
         } catch (Exception $e) {

@@ -355,6 +355,13 @@ class Record extends Action
             'bXEnabled', isset($configArray['bX']['token'])
             ? true : false
         );
+        
+        // Get Record source driver
+        $catalog = $this->catalog;
+        $driver = is_callable(array($catalog, 'getSourceDriver')) ?
+            $this->catalog->getSourceDriver($_REQUEST['id']) : '';
+
+        $interface->assign('driver', $driver);
     }
 }
 

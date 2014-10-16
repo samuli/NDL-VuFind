@@ -93,8 +93,9 @@ class Hold extends Record
             if (UserAccount::isLoggedIn()) {
                 if ($patron = UserAccount::catalogLogin()) {
                     // Block invalid requests:
-                    $result = !PEAR::isError($patron)
-                        && $this->catalog->checkRequestIsValid(
+                    $result = PEAR::isError($patron)
+                        ? false
+                        : $this->catalog->checkRequestIsValid(
                             $this->recordDriver->getUniqueID(),
                             $this->gatheredDetails, $patron
                         );

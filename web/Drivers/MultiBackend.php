@@ -1068,6 +1068,21 @@ class MultiBackend implements DriverInterface
         }
         return '';
     }
+    
+    /**
+     * Get record source driver
+     *
+     * @param string $id Prefixed ID
+     *
+     * @return string Driver
+     */
+    public function getSourceDriver($id) {
+        $source = $this->getSource($id);
+        $config = $this->config;
+        if (isset($config[$source]) && isset($config[$source]['driver'])) {
+            return $config[$source]['driver'];
+        }
+    }
 
     /**
      * Find the correct driver for the given source

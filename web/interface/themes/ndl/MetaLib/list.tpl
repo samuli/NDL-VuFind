@@ -140,6 +140,11 @@
         {/if}
         metalibSearchsets['{$searchVal}'] = '{translate text=$searchDesc|escape}';
     {/foreach}
+
+    {foreach from=$metalibRecentDatabases item=searchDesc key=searchVal name=loop}
+        metalibSearchsets['{$searchVal}'] = '{translate text=$searchDesc|escape}';
+    {/foreach}
+
     {literal}
     $(function() {
         initSearchInputListener();
