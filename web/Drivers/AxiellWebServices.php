@@ -243,6 +243,7 @@ class AxiellWebServices implements DriverInterface
                 if ($holdingsBranch[0]->type == 'branch') {
                     foreach ($holdingsBranch as $branch) {
                         $branchName = $branch->value;
+                        $branchId = $branch->id;
                         $reservationStatus = ($branch->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
                         $departments = is_object($branch->holdings->holding) ? array($branch->holdings->holding) : $branch->holdings->holding;
 
@@ -338,6 +339,7 @@ class AxiellWebServices implements DriverInterface
                                 'organisation'      => $organisationName,
                                 'department'        => $departmentName,
                                 'branch'            => $branchName,
+                                'branch_id'         => $branchId,
                                 'total'             => $nofTotal,
                                 'available'         => $nofAvailableForLoan,
                                 'ordered'           => $nofOrdered
