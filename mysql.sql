@@ -185,6 +185,22 @@ CREATE TABLE `due_date_reminder` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 --
+-- Table structure for table `fee`
+--
+
+CREATE TABLE `fee` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `type` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `amount` float NOT NULL DEFAULT '0',
+  `currency` varchar(3) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'EUR',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `fee_ibfk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
 -- Table structure for table `oai_resumption`
 --
 
@@ -214,6 +230,27 @@ CREATE TABLE `ratings` (
   CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
+--
+-- Table structure for table `resource_tags`
+--
+
+CREATE TABLE `resource_tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `resource_id` int(11) NOT NULL DEFAULT '0',
+  `tag_id` int(11) NOT NULL DEFAULT '0',
+  `list_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `posted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `resource_id` (`resource_id`),
+  KEY `tag_id` (`tag_id`),
+  KEY `list_id` (`list_id`),
+  CONSTRAINT `resource_tags_ibfk_14` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `resource_tags_ibfk_15` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `resource_tags_ibfk_16` FOREIGN KEY (`list_id`) REFERENCES `user_list` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `resource_tags_ibfk_17` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 --
 -- Table structure for table `search`
@@ -240,6 +277,7 @@ CREATE TABLE `search` (
 --
 -- Table structure for table `session`
 --
+
 CREATE TABLE `session` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `session_id` varchar(128) COLLATE utf8_swedish_ci DEFAULT NULL,
@@ -262,23 +300,41 @@ CREATE TABLE `tags` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
 --
--- Table structure for table `resource_tags`
+-- Table structure for table `transaction`
 --
 
-CREATE TABLE `resource_tags` (
+CREATE TABLE `transaction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `resource_id` int(11) NOT NULL DEFAULT '0',
-  `tag_id` int(11) NOT NULL DEFAULT '0',
-  `list_id` int(11) DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `posted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `transaction_id` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `driver` varchar(50) COLLATE utf8_swedish_ci NOT NULL,
+  `amount` float NOT NULL DEFAULT '0',
+  `currency` varchar(3) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'EUR',
+  `transaction_fee` float NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `paid` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `registered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `complete` tinyint(1) NOT NULL DEFAULT '0',
+  `status` varchar(50) COLLATE utf8_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  KEY `resource_id` (`resource_id`),
-  KEY `tag_id` (`tag_id`),
-  KEY `list_id` (`list_id`),
-  CONSTRAINT `resource_tags_ibfk_14` FOREIGN KEY (`resource_id`) REFERENCES `resource` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `resource_tags_ibfk_15` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `resource_tags_ibfk_16` FOREIGN KEY (`list_id`) REFERENCES `user_list` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `resource_tags_ibfk_17` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL
+  KEY `driver` (`driver`),
+  KEY `complete` (`complete`),
+  KEY `paid` (`paid`),
+  CONSTRAINT `transactions_ibfk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
+
+--
+-- Table structure for table `transaction_fees`
+--
+
+CREATE TABLE `transaction_fees` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` int(11) NOT NULL DEFAULT '0',
+  `fee_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `fee_id` (`fee_id`),
+  CONSTRAINT `transaction_fees_ibfk11` FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `transaction_fees_ibfk12` FOREIGN KEY (`fee_id`) REFERENCES `fee` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;

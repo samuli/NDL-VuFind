@@ -1418,6 +1418,8 @@ class Voyager implements DriverInterface
             }
         }
 
+
+
         return array('amount' => $sqlRow['FINE_FEE_AMOUNT'],
               'fine' => utf8_encode($sqlRow['FINE_FEE_DESC']),
               'balance' => $sqlRow['FINE_FEE_BALANCE'],
@@ -1425,6 +1427,36 @@ class Voyager implements DriverInterface
               'checkout' => $chargeDate,
               'duedate' => $dueDate,
               'id' => $sqlRow['BIB_ID']);
+    }
+
+    /**
+     * Protected support method for getMyFines.
+     *
+     * Appends 'payableOnline' (boolean) key to a fine.
+     *
+     * @param array $fines Processed fines.
+     *
+     * @return array $fines Fines.
+     * @access public
+     */
+    protected function markOnlinePayableFines($fines)
+    {
+        $nonPayable = isset($this->config['Webpayment']['nonPayable'])
+            ? $this->config['Webpayment']['nonPayable']
+            : array()
+        ;
+        
+        foreach ($fines as &$fine) {
+            $payableOnline = true;
+            if (isset($fine['fine'])) {
+                if (in_array($fine['fine'], $nonPayable)) {
+                    $payableOnline = false;
+                }
+            }
+            $fine['payableOnline'] = $payableOnline;
+        }
+
+        return $fines;
     }
 
     /**
@@ -1457,10 +1489,154 @@ class Voyager implements DriverInterface
                 }
                 $fineList[] = $processFine;
             }
+
+            $fineList = $this->markOnlinePayableFines($fineList);
             return $fineList;
         } catch (PDOException $e) {
             return new PEAR_Error($e->getMessage());
         }
+    }
+
+    /**
+     * Mark fees as paid. 
+     *
+     * This is called after a successful webpayment.
+     *
+     * @param array $patron The patron array from patronLogin
+     * @param int   $amount Amount to be registered as payed.
+     *
+     * @return mixed true if successfull, false if payment register could 
+     * not be inited, or PEAR_Error if registering failed.
+     * @access public
+     */
+    public function markFeesAsPaid($patron, $amount)
+    {
+        $register = $this->config['Webpayment']['register'];
+        $registerParams = 
+            isset($this->config['Webpayment']['registerParams'])
+            ? $this->config['Webpayment']['registerParams']
+            : array()
+        ;
+
+        $paymentRegister = PaymentRegisterFactory::initPaymentRegister($register, $registerParams);
+
+        if (!$paymentRegister) {
+            return false;
+        }
+        
+        $currency = $this->config['Webpayment']['currency'];
+        $registered = $paymentRegister->register($patron['cat_username'], $amount, $currency);
+        if (PEAR::isError($registered)) {
+            $error = $registered->getMessage();                    
+            return $error;
+        } else {
+            return true;        
+        } 
+    }
+
+    /**
+     * Check if webpayment is enabled.
+     *
+     * @return boolean
+     * @access public
+     */
+    public function isWebpaymentEnabled()
+    {
+        if (isset($this->config['Webpayment']['enabled'])
+            && $this->config['Webpayment']['enabled']
+        ) {
+            return $this->config['Webpayment']['handler'];
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Return inited webpayment handler.
+     *
+     * @return mixed handler or false on error
+     * @access public
+     */
+    public function getWebpaymentHandler()
+    {
+
+        if (!$this->isWebpaymentEnabled()) {
+            return false;
+        }
+
+        if (!isset($this->config['Webpayment']['handler'])
+            || !isset($this->config['Webpayment']['register'])
+            ) {
+            return false;
+        }
+
+        $handler = $this->config['Webpayment']['handler'];
+        $handlerParams = 
+            isset($this->config['Webpayment']['handlerParams'])
+            ? $this->config['Webpayment']['handlerParams']
+            : array()
+        ;
+        /*
+        $register = $this->config['Webpayment']['register'];
+        $registerParams = 
+            isset($this->config['Webpayment']['registerParams'])
+            ? $this->config['Webpayment']['registerParams']
+            : array()
+            ;*/
+
+        return WebpaymentFactory::initWebpayment($handler, $handlerParams);
+    }
+
+    /**
+     * Check if webpayment of fines is allowed for a user.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed true if payment is allowed, 
+     * error message (not translated) if all fees are not payable online 
+     * or if the total amount does not exceed or equal minimum payable fee, 
+     * or false on error.
+     * @access public
+     */    
+    public function permitWebpayment($patron)
+    {
+        $fines = $this->getMyFines($patron);
+        if (!PEAR::isError($fines)) { 
+            $amount = 0;
+            foreach ($fines as $fine) {
+                $amount += $fine['balance']/100.0;
+                if (!$fine['payableOnline']) {
+                    return 'webpayment_fines_contain_nonpayable_fee';
+                }
+            }
+            if ($amount < $this->config['Webpayment']['minimumFee']) {
+                return 'webpayment_minimum_fee';
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Return total amount of fees that may be payed online.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return int amount
+     * @access public
+     */    
+    public function getWebpaymentPayableAmount($patron)
+    {
+        $fines = $this->getMyFines($patron);
+
+        if (!PEAR::isError($fines)) {
+            $amount = 0;
+            foreach ($fines as $fine) {
+                $amount += $fine['balance']/100.0;
+            }
+            return $amount;
+        }
+        return false;
     }
 
     /**
