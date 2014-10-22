@@ -46,14 +46,11 @@ class WebpaymentFactory
      * @param mixed  $configuration     Hash array containing webpayment module
      * configuration as key-value pairs, or filename of the file containing
      * the configuration
-     * @param mixed  $paymentRegister   Payment Register object or null
-     * if none used
      *
      * @return object Webpayment module
      * @access public
      */
-    static function initWebpayment($webpaymentHandler, $configuration,
-        $paymentRegister
+    static function initWebpayment($webpaymentHandler, $configuration
     ) {
         // Build the class name and filename.  Use basename on the filename just
         // to ensure nothing weird can happen if bad values are passed through.
@@ -65,7 +62,7 @@ class WebpaymentFactory
             && file_exists(dirname(__FILE__) . '/' . $filename)
         ) {
             include_once $filename;
-            return new $handler($configuration, $paymentRegister);
+            return new $handler($configuration);
         } else {
             throw new UnknownWebpaymentHanderException(
                 'Webpayment handler ' . $webpaymentHandler . ' does not exist!'

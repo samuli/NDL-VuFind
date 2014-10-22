@@ -40,57 +40,27 @@ interface WebpaymentInterface
     /**
      * Constructor
      *
-     * @param mixed $config          Hash array containing handler's
-     * configuration as key-value pairs, or filename of the file
-     * containing the configuration
-     * @param mixed $paymentRegister Payment Register object or null
-     * if none used
+     * @param mixed $config Configuration as key-value pairs.
      *
      * @access public
      */
-    public function __construct($config, $paymentRegister);
+    public function __construct($config);
 
     /**
-     * Generate the webpayment form.
+     * Process the response from Paytrail payment service.
      *
-     * @param string  $patron      Patron's catalog username (e.g. barcode)
-     * @param integer $amount      Payment amount (without decimal point)
-     * @param array   $fees        Array of fee objects
-     * @param string  $followupUrl URL the Payment service is supposed to return
-     *                             after the payment
-     * @param string  $statusParam HTTP parameter name to contain the payment status
+     * @param string $patron Patron's Catalog Username (barcode)
+     * @param array  $params Response variables
      *
-     * @return string The template to use to display the webpayment form.
+     * @return string error message (not translated) 
+     *   or associative array with keys:
+     *     'markFeesAsPaid' (boolean) true if payment was successful and fees 
+     *     should be registered as paid.
+     *     'transactionId' (string) Transaction ID.
+     *     'amount' (int) Amount to be registered (does not include transaction fee).
      * @access public
      */
-    public function displayPaymentForm($patron, $amount, $fees, $followupUrl,
-        $statusParam
-    );
-
-    /**
-     * Fetch payment data from patron's fees.
-     *
-     * @param string $patron Patron's catalog username (e.g. barcode)
-     * @param array  &$fees  Array of fees
-     *
-     * @return array Array containing payment data: is payment permitted, payment
-     * amount, sum of payable fees, details on why payment has not been permitted.
-     * @access public
-     */
-    public function getPaymentData($patron, &$fees);
-
-    /**
-     * Process the response from the payment operator service.
-     *
-     * @param string $patron   Patron's Catalog Username (barcode)
-     * @param string $status   Webpayment status
-     * @param array  $response Array containing response fields
-     * received from the payment service
-     *
-     * @return string Payment status text to be displayed to patron
-     * @access public
-     */
-    public function processResponse($patron, $status, $response);
+    public function processResponse($patron, $params);
 }
 
 

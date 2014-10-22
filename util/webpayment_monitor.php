@@ -114,7 +114,7 @@ class WebpaymentMonitor extends ReminderTask
         // Find all paid transactions that have not been registered,
         // and that have not been marked as failed.
         $t = new Transaction();	
-        $t->whereAdd('complete = ' . Transaction::STATUS_RETRY);
+        $t->whereAdd('complete = ' . Transaction::STATUS_REGISTRATION_FAILED);
         $t->orderBy('user_id');
         $t->find();
 
@@ -139,7 +139,7 @@ class WebpaymentMonitor extends ReminderTask
                 $expiredCnt++;
               
                 $transaction = clone($t);              
-                $transaction->complete = Transaction::STATUS_FAILED;
+                $transaction->complete = Transaction::STATUS_REGISTRATION_EXPIRED;
                 if ($transaction->update($t) === false) {
                     $this->err("    Failed to update transaction as expired.");
                 } else {
@@ -152,39 +152,17 @@ class WebpaymentMonitor extends ReminderTask
 
                 $catalog = ConnectionManager::connectToCatalog();
                 if ($catalog && $catalog->status) {
-                    $paymentRegisterConfig = $catalog->getConfig(
-                        'PaymentRegister', $user->cat_username
-                    );
-                    $paymentRegister = null;
-                    if (isset($paymentRegisterConfig)
-                        && isset($paymentRegisterConfig['handler'])
-                    ) {
-                        $paymentRegister
-                            = PaymentRegisterFactory::initPaymentRegister(
-                                $paymentRegisterConfig['handler'],
-                                $paymentRegisterConfig
-                            );
-                        $fees_amount = $t->amount - $t->transaction_fee;
-                        $registered = $paymentRegister->register(
-                            $user->cat_username, $fees_amount
-                        );
-                        if (PEAR::isError($registered)) {
-                            $failedCnt++;
-                            $this->msg("    Registration failed");
-                            $this->msg("      {$registered->toString()}");
-                        } else if ($registered) {
-                            $transaction = clone($t);
-                            $transaction->complete = Transaction::STATUS_COMPLETE;
-                            $transaction->status = 'payment_register_ok';
-
-                            $transaction->registered = date("Y-m-d H:i:s");
-                            if (!$transaction->update($t)) {
-                                $this->err("Failed to update transaction as complete.");
-                                continue;
-                            } else {
-                                $registeredCnt++;
-                            }
+                    $res = $catalog->markFeesAsPaid((array)$user, $t->amount);
+                    if ($res === true) {
+                        if (!$t->setTransactionRegistered($t->transaction_id)) {
+                            $this->err("    Failed to update transaction as registered");
                         }
+                        $registeredCnt++;
+                    } else {
+                        $t->setTransactionRegistrationFailed($t->transaction_id, $res);
+                        $failedCnt++;
+                        $this->msg("    Registration failed");
+                        $this->msg("      {$res}");
                     }
                 } else {
                     $this->err("Failed to connect to catalog ({$user->cat_name})");

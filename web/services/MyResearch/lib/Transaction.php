@@ -22,6 +22,7 @@
  * @category VuFind
  * @package  DB_DataObject
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://pear.php.net/package/DB_DataObject/ PEAR Documentation
  */
@@ -36,6 +37,7 @@ require_once 'services/MyResearch/lib/Transaction_fees.php';
  * @category VuFind
  * @package  DB_DataObject
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://pear.php.net/package/DB_DataObject/ PEAR Documentation
  */ // @codingStandardsIgnoreStart
@@ -65,12 +67,18 @@ class Transaction extends DB_DataObject
     ###END_AUTOCODE
     // @codingStandardsIgnoreEnd
 
-    const STATUS_PROGRESS = 0;
-    const STATUS_COMPLETE = 1;
-    const STATUS_RETRY    = 2;
-    const STATUS_FAILED   = 3;
-    const STATUS_RESOLVED = 4;
+    const STATUS_PROGRESS              = 0;    
+    const STATUS_COMPLETE              = 1;
     
+    const STATUS_CANCELLED             = 2;
+    const STATUS_PAID                  = 3;
+    const STATUS_PAYMENT_FAILED        = 4;
+
+    const STATUS_REGISTRATION_FAILED   = 5;
+    const STATUS_REGISTRATION_EXPIRED  = 6;
+    const STATUS_REGISTRATION_RESOLVED = 7;
+
+
 
 
     /**
@@ -155,4 +163,245 @@ class Transaction extends DB_DataObject
         }
         return $user->cat_username;
     }
+
+    /**
+     * Check if payment is permitted for the user.
+     * 
+     * Payment is not permitted if:
+     *   - user has a transaction in progress and translation maximum duration 
+     *     has not been exceeded
+     *   - user has a paid transaction that has not been registered as paid 
+     *     to the ILS
+     *
+     * @param object $patron                 Patron
+     * @param int    $transactionMaxDuration Maximum wait time (in minutes) after 
+     * which a started, and not processed, transaction is considered to have been 
+     * interrupted by the user.   
+     *
+     * @return mixed true if payment is permitted, 
+     * error message if payment is not permitted, false on error
+     * @access public
+     */
+    public function isPaymentPermitted($patron, $transactionMaxDuration)
+    {
+        include_once "services/MyResearch/lib/User.php";
+
+        $user = new User();
+        $user->cat_username = $patron['cat_username'];
+        if (!$user->find()) {
+            return false;
+        }
+        if (!$user->fetch()) {
+            return false;
+        }
+
+        $userId = $user->id;
+        
+        
+        $duration = mysql_real_escape_string($transactionMaxDuration);
+        $transaction = new Transaction();
+        $transaction->user_id = $userId;
+        $transaction->complete = self::STATUS_PROGRESS;        
+        $transaction->whereAdd("NOW() < DATE_ADD(created, INTERVAL $duration MINUTE)", 'AND');
+
+        if ($transaction->find()) {
+            // Transaction still in progress
+            return 'webpayment_in_progress';
+        }
+        
+        $transaction = new Transaction();
+        $transaction->user_id = $userId;
+        $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_FAILED);
+        $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_EXPIRED, 'or');
+
+        if ($transaction->find()) {
+            // Transaction could not be registered and is waiting to be resolved manually.
+            return 'webpayment_registration_failed';
+        }
+        
+        return true;
+    }
+
+    /**
+     * Check if transaction is in progress.
+     *
+     * @param string $transactionId Transaction ID.
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function isTransactionInProgress($transactionId)
+    {
+        if (!$t = $this->getTransaction($transactionId)) {
+            return false;
+        }
+        
+        return $t->complete == self::STATUS_PROGRESS;
+    }
+
+    /**
+     * Update transaction status to paid.
+     *
+     * @param string   $transactionId Transaction ID.
+     * @param datetime $timestamp     Timestamp
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionPaid($transactionId, $timestamp)
+    {
+        return $this->updateTransactionStatus($transactionId, $timestamp, self::STATUS_PAID, 'paid'); 
+    }
+
+   /**
+     * Update transaction status to payment failed.
+     *
+     * @param string   $transactionId Transaction ID.
+     * @param datetime $timestamp     Timestamp
+     * @param string   $msg           Error message
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionPaymentFailed($transactionId, $timestamp, $msg = false)
+    {
+        return $this->updateTransactionStatus($transactionId, $timestamp, self::STATUS_PAYMENT_FAILED, $msg); 
+    }
+
+   /**
+     * Update transaction status to cancelled.
+     *
+     * @param string $transactionId Transaction ID.
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionCancelled($transactionId)
+    {
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_CANCELLED, 'cancel'); 
+    }
+
+   /**
+     * Update transaction status to registered.
+     *
+     * @param string $transactionId Transaction ID.
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionRegistered($transactionId)
+    {
+        
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_COMPLETE, 'register_ok'); 
+    }
+
+   /**
+     * Update transaction status to registering failed.
+     *
+     * @param string $transactionId Transaction ID.
+     * @param string $msg           Error message
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionRegistrationFailed($transactionId, $msg)
+    {
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_FAILED, $msg); 
+    }
+
+   /**
+     * Update transaction status to expired.
+     *
+     * @param string   $transactionId Transaction ID.
+     * @param datetime $timestamp     Timestamp
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionExpired($transactionId, $timestamp)
+    {
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_EXPIRED);
+    }
+
+   /**
+     * Update transaction status to resolved..
+     *
+     * @param string $transactionId Transaction ID.
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionResolved($transactionId)
+    {
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_RESOLVED); 
+    }
+
+   /**
+     * Update transaction status to unkwnown payment response.
+     *
+     * @param string   $transactionId Transaction ID.
+     * @param datetime $timestamp     Timestamp
+     * @param string   $msg           Message
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionUnknownPaymentResponse($transactionId, $timestamp, $msg)
+    {
+        return $this->updateTransactionStatus($transactionId, false, 'unknown_response', $msg);        
+    }
+
+   /**
+     * Updates transaction status.
+     *
+     * @param string   $transactionId Transaction ID.
+     * @param datetime $timestamp     Timestamp
+     * @param int      $status        Status
+     * @param string   $statusMsg     Status message
+     *
+     * @return boolean success
+     * @access public
+     */    
+    protected function updateTransactionStatus($transactionId, $timestamp, $status, $statusMsg = false)
+    {
+        if (!$t = $this->getTransaction($transactionId)) {
+            return false;
+        }
+        
+        if ($status !== false) {
+            if ($timestamp === false) {
+                $timestamp = time(); 
+            }
+            $dateStr = date("Y-m-d H:i:s", $timestamp);
+            if ($status == self::STATUS_PAID) {
+                $t->paid = $dateStr;
+            } else if ($status == self::STATUS_COMPLETE) {
+                $t->registered = $dateStr;
+            }
+            
+            $t->complete = $status;
+        }
+        if ($statusMsg) {
+            $t->status = $statusMsg;
+        }
+
+        return $t->update();
+    }
+
+   /**
+     * Get transaction.
+     *
+     * @param string $transactionId Transaction ID.
+     *
+     * @return Transaction transaction or false on error
+     * @access public
+     */    
+    public function getTransaction($transactionId)
+    {
+        $t = new Transaction();
+        $t->transaction_id = $transactionId;
+        $t->find(true);
+        return $t;
+    }
+
 }

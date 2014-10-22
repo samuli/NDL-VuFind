@@ -71,34 +71,33 @@ class SIP2PaymentRegister implements PaymentRegisterInterface
      *
      * @param string $patron Patron's Catalog username (barcode)
      * @param string $amount Amount of the payment
+     * @param string $currency Currency
      *
      * @return mixed Boolean true on success, PEAR_Error on failure
      * @access public
      */
-    public function register($patron, $amount)
+    public function register($patron, $amount, $currency)
     {
         if (!isset($this->config['host']) || !isset($this->config['port'])
-            || !isset($this->config['userID']) || !isset($this->config['password'])
+            || !isset($this->config['userId']) || !isset($this->config['password'])
             || !isset($this->config['locationCode'])
         ) {
             return new PEAR_Error('sip2_payment_connection_params_missing');
         }
 
         $sip = new sip2;
-        $sip->error_detection = false; // TODO: parametrize?
-        $sip->msgTerminator = "\r";    // TODO: parametrize?
+        $sip->error_detection = false; 
+        $sip->msgTerminator = "\r";    
         $sip->hostname = $this->config['host'];
         $sip->port = $this->config['port'];
-        $sip->AO = ''; // institution ID, not used by Voyager.
-                       //TODO: Should it nevertheless be set to some other value
-                       //than SIP2's default?
+        $sip->AO = '';
 
         if ($sip->connect()) {
             $sip->scLocation = $this->config['locationCode'];
-            $sip->UIDalgorithm = 0; //TODO: customize?
-            $sip->PWDalgorithm = 0; //TODO: customize?
+            $sip->UIDalgorithm = 0; 
+            $sip->PWDalgorithm = 0;
             $login_msg = $sip->msgLogin(
-                $this->config['userID'], $this->config['password']
+                $this->config['userId'], $this->config['password']
             );
             $login_response = $sip->get_message($login_msg);
             if (preg_match("/^94/", $login_response)) {
@@ -110,10 +109,7 @@ class SIP2PaymentRegister implements PaymentRegisterInterface
                     } else {
                         $sip->patron = $patron['cat_username']; // barcode
                     }
-                    //TODO: what about setting some actual reasonable fee and
-                    //payment types, not using just 1 and 0
-                    //TODO: customize currency?
-                    $feepaid_msg = $sip->msgFeePaid(1, 0, $amount, 'EUR');
+                    $feepaid_msg = $sip->msgFeePaid(1, 0, $amount, $currency);
                     $feepaid_response = $sip->get_message($feepaid_msg);
                     if (preg_match("/^38/", $feepaid_response)) {
                         $feepaid_result

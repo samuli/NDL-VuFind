@@ -40,12 +40,13 @@ interface PaymentRegisterInterface
     /**
      * Register Patron's payment.
      *
-     * @param string $patron Patron's Catalog username (barcode)
-     * @param string $amount Amount of the payment
+     * @param string $patron   Patron's Catalog username (barcode)
+     * @param string $amount   Amount of the payment
+     * @param string $currency Currency
      *
      * @return mixed Boolean true on success, PEAR_Error on failure
      * @access public
      */
-    public function register($patron, $amount);
+    public function register($patron, $amount, $currency);
 }
 ?>

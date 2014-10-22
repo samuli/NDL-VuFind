@@ -22,15 +22,15 @@
  * @category VuFind
  * @package  Controller_MyResearch
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  * @link     http://docs.paytrail.com/ Paytrial API docoumentation
  */
 
-require_once 'services/MyResearch/MyResearch.php';
-require_once 'sys/PaymentRegister/PaymentRegisterFactory.php';
-require_once 'sys/Webpayment/WebpaymentFactory.php';
-require_once 'sys/Webpayment/Paytrail.php';
+require_once 'services/MyResearch/Fines.php';
+require_once 'services/MyResearch/lib/User.php';
+require_once 'services/MyResearch/lib/Transaction.php';
 
 /**
  * PaytrailNotify action for MyResearch module.
@@ -41,25 +41,15 @@ require_once 'sys/Webpayment/Paytrail.php';
  * @category VuFind
  * @package  Controller_MyResearch
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  * @link     http://docs.paytrail.com/ Paytrial API docoumentation
  */
-class PaytrailNotify extends MyResearch
+class PaytrailNotify extends Action
 {
     /**
-     * Constructor
-     *
-     * @return void
-     * @access public
-     */
-    public function __construct()
-    {
-        parent::__construct(true); // skip login
-    }
-
-    /**
-     * Process incoming notify request (if any) and send HTTP header.
+     * Process incoming notify request.
      * This should not be accessed by user.
      *
      * @return void
@@ -67,111 +57,55 @@ class PaytrailNotify extends MyResearch
      */
     public function launch()
     {
-        global $configArray;
-        global $interface;
-        global $user;
+        $parts = parse_url($_SERVER["REQUEST_URI"]);
 
-        if ( isset($_REQUEST['ORDER_NUMBER']) && isset($_REQUEST['TIMESTAMP'])
-            && isset($_REQUEST['PAID']) && isset($_REQUEST['METHOD'])
-            && isset($_REQUEST['RETURN_AUTHCODE'])
-        ) {
-            $transactionId = $_REQUEST['ORDER_NUMBER'];
-            $transactionPatron
-                = $this->getTransactionPatronCatUsername($transactionId);
-            if (isset($transactionPatron)) {
-                $webpaymentConfig
-                    = $this->catalog->getConfig('Webpayment', $transactionId);
-                if (isset($webpaymentConfig) && isset($webpaymentConfig['enabled'])
-                    && $webpaymentConfig['enabled']
-                    && isset($webpaymentConfig['handler'])
-                    && $webpaymentConfig['handler'] == 'Paytrail'
-                ) {
-                    $paymentRegisterConfig = $this->catalog->getConfig(
-                        'PaymentRegister', $transactionId
-                    );
-                    try {
-                        $paymentRegister = null;
-                        if (isset($paymentRegisterConfig)
-                            && isset($paymentRegisterConfig['handler'])
-                        ) {
-                            $paymentRegister
-                                = PaymentRegisterFactory::initPaymentRegister(
-                                    $paymentRegisterConfig['handler'],
-                                    $paymentRegisterConfig
-                                );
-                        }
-                        $webpaymentHandler
-                            = WebpaymentFactory::initWebpayment(
-                                $webpaymentConfig['handler'], $webpaymentConfig,
-                                $paymentRegister
-                            );
-                    } catch (Exception $e) {
-                        if ($configArray['System']['debug']) {
-                            echo "Exception: " . $e->getMessage();
-                        }
-                        error_log(
-                            "Webpayment handler exception: " . $e->getMessage()
-                        );
-                        $webpaymentHandler = null;
-                    }
-                    $requestParams = array(
-                        'payment_status' => Paytrail::STATUS_NOTIFY,
-                        'ORDER_NUMBER' => $_REQUEST['ORDER_NUMBER'],
-                        'TIMESTAMP' => $_REQUEST['TIMESTAMP'],
-                        'PAID' => $_REQUEST['PAID'],
-                        'METHOD' => $_REQUEST['METHOD'],
-                        'RETURN_AUTHCODE' => $_REQUEST['RETURN_AUTHCODE']
-                    );
-                    if (isset($webpaymentHandler)) {
-                        // this should process notify request, send HTTP header
-                        // and quit. Otherwise will redirect to
-                        // the default account page
-                        $webpaymentHandler->processResponse(
-                            $transactionPatron, Paytrail::STATUS_NOTIFY,
-                            $requestParams
-                        );
-                    }
+        $params = array();
+        foreach (($parts = explode('&', $parts['query'])) as $param) {
+            list($key, $val) = explode('=', $param);
+            $params[$key] = $val;            
+        }
+
+        if (!isset($params['ORDER_NUMBER'])) {
+            error_log("PaytrailNotify error: invalid request.");
+            error_log("   " . $_SERVER["REQUEST_URI"]);
+            return;
+        }
+
+        $transactionId = $params['ORDER_NUMBER'];
+        
+        $tr = new Transaction();
+        if (!$t = $tr->getTransaction($transactionId)) {
+            error_log("PaytrailNotify error: transaction $transactionId not found");
+            return;
+        }
+        
+        $parts = explode('_', $transactionId);
+        $catUsername = "{$parts[0]}_{$parts[1]}";
+   
+        $catalog = ConnectionManager::connectToCatalog();
+        $user = array('cat_username' => $catUsername);
+
+        if (!$paymentHandler = $catalog->getWebpaymentHandler($user)) {
+            error_log("PaytrailNotify error: no payment handler found for transaction $transactionId");
+            return;
+        }
+
+        $res = $paymentHandler->processResponse($user, $params);
+
+        if (isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {                    
+            $res = $catalog->markFeesAsPaid($user, $res['amount']);
+
+            if ($res !== true) { 
+                if (!$t->setTransactionRegistrationFailed($transactionId, $res)) {
+                    error_log("PaytrailNotify error: transaction ($transactionId) registration failed.");
+                    error_log("   $res");
+                }
+            } else {
+                if (!$t->setTransactionRegistered($transactionId)) {
+                    error_log("PaytrailNotify error: failed to update transaction $transactionId to registered");
                 }
             }
         }
-
-        $page = isset($configArray['Site']['defaultAccountPage']) ?
-            $configArray['Site']['defaultAccountPage'] : 'Profile';
-        $accountStart = $configArray['Site']['url'] . "/MyResearch/". $page;
-        header("Location: " . $accountStart);
-    }
-
-    /**
-     * Fetch the catalog username of the patron related to the given
-     * transaction.
-     *
-     * @param string $transactionId Transaction identifier
-     *
-     * @return mixed string on success, null on failure
-     * @access protected
-     */
-    protected function getTransactionPatronCatUsername($transactionId)
-    {
-        include_once "services/MyResearch/lib/Transaction.php";
-        include_once "services/MyResearch/lib/User.php";
-
-        $transaction = new Transaction();
-        $transaction->transaction_Id = $transactionId;
-        if (!$transaction->find()) {
-            return null;
-        }
-        if (!$transaction->fetch()) {
-            return null;
-        }
-        $user = new User();
-        $user->id = $transaction->user_id;
-        if (!$user->find()) {
-            return null;
-        }
-        if (!$user->fetch()) {
-            return null;
-        }
-        return $user->cat_username;
     }
 }
 

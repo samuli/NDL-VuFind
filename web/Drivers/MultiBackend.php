@@ -404,6 +404,119 @@ class MultiBackend implements DriverInterface
     }
 
     /**
+     * Check if webpayment is enabled.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return boolean
+     * @access public
+     */
+    public function isWebpaymentEnabled($user)
+    {
+        $source = $this->getSource($user['cat_username']);
+        $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+            return $driver->isWebpaymentEnabled();
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+
+    /**
+     * Return inited webpayment handler.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return mixed handler or false on error
+     * @access public
+     */
+    public function getWebpaymentHandler($user)
+    {
+        $source = $this->getSource($user['cat_username']);
+        $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+            return $driver->getWebpaymentHandler();
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+
+    /**
+     * Return total amount of fees that may be payed online.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return int amount
+     * @access public
+     */    
+    public function getWebpaymentPayableAmount($user)
+    {
+        $source = $this->getSource($user['cat_username']);
+        $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+            return $driver->getWebpaymentPayableAmount($this->stripIdPrefixes($user, $source));
+        }
+        return new PEAR_Error('No suitable backend driver found');        
+    }
+
+    /**
+     * Check if webpayment of fines is allowed for a user.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return mixed true if payment is allowed, 
+     * error message (not translated) if all fees are not payable online 
+     * or if the total amount does not exceed or equal minimum payable fee, 
+     * or false on error.
+     * @access public
+     */
+    public function permitWebpayment($user)
+    {
+        $source = $this->getSource($user['cat_username']);
+        $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+
+            return $driver->permitWebpayment($this->stripIdPrefixes($user, $source));
+        }
+        return new PEAR_Error('No suitable backend driver found');        
+    }
+
+    /**
+     * Mark fees as paid. 
+     *
+     * This is called after a successful webpayment.
+     *
+     * @param array $user   The patron array from patronLogin
+     * @param int   $amount Amount to be registered as payed.
+     *
+     * @return mixed true if successfull, false if payment register could 
+     * not be inited, or PEAR_Error if registering failed.
+     * @access public
+     */
+    public function markFeesAsPaid($user, $amount)
+    {
+        $source = $this->getSource($user['cat_username']);
+        $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+            return $driver->markFeesAsPaid($user, $amount);
+        }
+        return new PEAR_Error('No suitable backend driver found');        
+    }
+
+    /**
      * Get Patron Holds
      *
      * This is responsible for retrieving all holds by a specific patron.
@@ -1012,6 +1125,16 @@ class MultiBackend implements DriverInterface
         case 'CallSlips':
         case 'UBRequests':
             return array();
+        case 'Webpayment':
+            $config = "{$configArray['Site']['local']}/conf/{$this->config[$source]['driver']}_{$source}.ini";
+            if (is_file($config)) {
+                if ($config = parse_ini_file($config, true)) {
+                    if (isset($config['Webpayment'])) {
+                        return $config['Webpayment'];
+                    }
+                }
+            }
+            return false;
         default:
             error_log("MultiBackend: unhandled getConfig function: '$function'");
         }
