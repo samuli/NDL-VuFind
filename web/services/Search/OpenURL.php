@@ -188,45 +188,47 @@ class OpenURL extends Action
                 || $params['spage']
             ) {
                 // Ok, we found a journal. See if we can find an article too.
-                if ($searchObject->getResultTotal() < 20) {
-                    $articleSearchObject = clone($searchObject);
-                    $query = array();
+                $articleSearchObject = clone($searchObject);
+                $query = array();
 
-                    $ids = array();
-                    foreach ($results['response']['docs'] as $doc) {
-                        if (isset($doc['local_ids_str_mv'])) {
-                            $ids = array_merge($ids, $doc['local_ids_str_mv']);
-                        }
-                        $ids[] = $doc['id'];
+                $ids = array();
+                foreach ($results['response']['docs'] as $doc) {
+                    if (isset($doc['local_ids_str_mv'])) {
+                        $ids = array_merge($ids, $doc['local_ids_str_mv']);
                     }
-                    $query['hierarchy_parent_id'] = $ids;
+                    $ids[] = $doc['id'];
+                    // Take only max 20 IDs
+                    if (count($ids) >= 20) {
+                        break;
+                    }
+                }
+                $query['hierarchy_parent_id'] = $ids;
 
-                    if ($params['date']) {
-                        $query['publishDate'] = $params['date'];
-                    }
-                    if ($params['volume']) {
-                        $query['container_volume'] = $params['volume'];
-                    }
-                    if ($params['issue']) {
-                        $query['container_issue'] = $params['issue'];
-                    }
-                    if ($params['spage']) {
-                        $query['container_start_page'] = $params['spage'];
-                    }
-                    if ($this->trySearch($articleSearchObject, $query)) {
-                        return $articleSearchObject;
-                    }
+                if ($params['date']) {
+                    $query['publishDate'] = $params['date'];
+                }
+                if ($params['volume']) {
+                    $query['container_volume'] = $params['volume'];
+                }
+                if ($params['issue']) {
+                    $query['container_issue'] = $params['issue'];
+                }
+                if ($params['spage']) {
+                    $query['container_start_page'] = $params['spage'];
+                }
+                if ($this->trySearch($articleSearchObject, $query)) {
+                    return $articleSearchObject;
+                }
 
-                    // Broaden the search until we find something or run out of
-                    // options
-                    foreach (
-                        array('container_start_page', 'issue', 'volume') as $param
-                    ) {
-                        if (isset($query[$param])) {
-                            unset($query[$param]);
-                            if ($this->trySearch($articleSearchObject, $query)) {
-                                return $articleSearchObject;
-                            }
+                // Broaden the search until we find something or run out of
+                // options
+                foreach (
+                    array('container_start_page', 'issue', 'volume') as $param
+                ) {
+                    if (isset($query[$param])) {
+                        unset($query[$param]);
+                        if ($this->trySearch($articleSearchObject, $query)) {
+                            return $articleSearchObject;
                         }
                     }
                 }
