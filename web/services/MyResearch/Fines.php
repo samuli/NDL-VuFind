@@ -70,10 +70,11 @@ class Fines extends MyResearch
                 $this->handleCatalogError($patron);
             } else {
                 $fines = $this->catalog->getMyFines($patron);
-                $finesAmount = $this->catalog->driver->getWebpaymentPayableAmount($patron);
-
 
                 if ($this->catalog->isWebpaymentEnabled($patron)) {
+                    $finesAmount = $this->catalog->driver->getWebpaymentPayableAmount($patron);
+                    $interface->assign('payableSum', $finesAmount);
+
                     $config = $this->catalog->getConfig('Webpayment');                
 
                     $transactionFee = $config['transactionFee'];
@@ -164,9 +165,10 @@ class Fines extends MyResearch
                 $loans = $this->catalog->getMyTransactions($patron);
 
                 if (!PEAR::isError($fines)) {
-                    $fines = $this->processFines($fines, $loans);
+                    $sum = 0;
+                    $fines = $this->processFines($fines, $loans, &$sum);
                     $interface->assign('rawFinesData', $fines);
-                    $interface->assign('payableSum', $finesAmount);
+                    $interface->assign('sum', $sum);
                 }
                 
                 $profile = $this->catalog->getMyProfile($patron);
@@ -326,11 +328,11 @@ class Fines extends MyResearch
      * @return array Augmented fines.
      * @access public
      */
-    protected function processFines($fines, $loans)
+    protected function processFines($fines, $loans, &$sum = 0)
     {        
         for ($i = 0; $i < count($fines); $i++) {
             $row = &$fines[$i];
-            //    $sum += $row['balance'];
+            $sum += $row['balance']/100.0;
             $record = $this->db->getRecord($row['id']);
             $row['title'] = $record ? $record['title_short'] : null;
             $row['checkedOut'] = false;
