@@ -1632,7 +1632,9 @@ class Voyager implements DriverInterface
         if (!PEAR::isError($fines)) {
             $amount = 0;
             foreach ($fines as $fine) {
-                $amount += $fine['balance']/100.0;
+                if ($fine['payableOnline']) {
+                    $amount += $fine['balance']/100.0;
+                }
             }
             return $amount;
         }
