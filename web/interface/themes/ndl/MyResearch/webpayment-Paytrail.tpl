@@ -3,7 +3,7 @@
 {assign var=paymentText value="$goToPaymentText $amountFormatted"}
 
 <form id="paytrail_form" class="webpaymentForm" action="{$url}/MyResearch/Fines" method="post">
-  <img src="{$path}/images/paytrail-logo-200x200.png" id="paytrail-logo"/>
+  {image src="paytrail-logo.png" id="paytrail-logo" alt="Paytrail"}
   <input name="sessionId" type="hidden" value="{$transactionSessionId}">
   <input name="pay" type="hidden" value="1">
   <input type="submit" name="pay" class="button buttonFinna" value="{$paymentText|escape:"html"}" />
