@@ -88,6 +88,10 @@ class sip2
 
     /* Debug */
     public $debug        = false;
+
+    /* Error detection mode */
+    /* error detection is on by default but could be turned off, e.g. Voyager 8.1.1 seems to reject messages containing AY/AZ fields */
+    public $error_detection = true;
     
     /* Private variables for building messages */
     public $AO = 'WohlersSIP';
@@ -680,23 +684,25 @@ class sip2
 
         $this->_debugmsg("SIP2: {$result}");
 
-        /* test message for CRC validity */
-        if ($this->_check_crc($result)) {
-            /* reset the retry counter on successful send */
-            $this->retry=0;
-            $this->_debugmsg("SIP2: Message from ACS passed CRC check");
-        } else {
-            /* CRC check failed, request a resend */
-            $this->retry++;
-            if ($this->retry < $this->maxretry) {
-                /* try again */
-                $this->_debugmsg("SIP2: Message failed CRC check, retrying ({$this->retry})");
-                
-                $this->get_message($message);
+        if ($this->error_detection) {
+            /* test message for CRC validity */
+            if ($this->_check_crc($result)) {
+                /* reset the retry counter on successful send */
+                $this->retry=0;
+                $this->_debugmsg("SIP2: Message from ACS passed CRC check");
             } else {
-                /* give up */
-                $this->_debugmsg("SIP2: Failed to get valid CRC after {$this->maxretry} retries.");
-                return false;
+                /* CRC check failed, request a resend */
+                $this->retry++;
+                if ($this->retry < $this->maxretry) {
+                    /* try again */
+                    $this->_debugmsg("SIP2: Message failed CRC check, retrying ({$this->retry})");
+                
+                    $this->get_message($message);
+                } else {
+                    /* give up */
+                    $this->_debugmsg("SIP2: Failed to get valid CRC after {$this->maxretry} retries.");
+                    return false;
+                }
             }
         }
         return $result;
@@ -821,6 +827,10 @@ class sip2
     
     function _check_crc($message) 
     {
+        if (!$this->error_detection) {
+            return true;
+        }
+
         /* test the recieved message's CRC by generating our own CRC from the message */
         $test = preg_split('/(.{4})$/',trim($message),2,PREG_SPLIT_DELIM_CAPTURE);
 
@@ -864,13 +874,15 @@ class sip2
     
     function _returnMessage($withSeq = true, $withCrc = true) 
     {
-        /* Finalizes the message and returns it.  Message will remain in msgBuild until newMessage is called */
-        if ($withSeq) {
-            $this->msgBuild .= 'AY' . $this->_getseqnum();
-        }
-        if ($withCrc) {
-            $this->msgBuild .= 'AZ';
-            $this->msgBuild .= $this->_crc($this->msgBuild);
+        if ($this->error_detection) {
+            /* Finalizes the message and returns it.  Message will remain in msgBuild until newMessage is called */
+            if ($withSeq) {
+                $this->msgBuild .= 'AY' . $this->_getseqnum();
+            }
+            if ($withCrc) {
+                $this->msgBuild .= 'AZ';
+                $this->msgBuild .= $this->_crc($this->msgBuild);
+            }
         }
         $this->msgBuild .= $this->msgTerminator;
 
