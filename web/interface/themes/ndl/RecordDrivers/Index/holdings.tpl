@@ -209,8 +209,8 @@
           {/if}
         {/if}
         {if $row.item_id}
-          {if $copyCount == 5 && $driver != "AxiellWebServices"}<tr class="toggleCopyDetails"><td class="copyTitle"></td><td colspan="2"><strong><a href="#">{translate text="More Results"}</a></strong></td></tr>{/if}
-          <tr class="copyDetails {if $showCopyTitle}{counter start=0 assign=copyCount}first{/if} {if $copyCount >= 5 && $driver != "AxiellWebServices"}hidden{/if}">
+          {if $copyCount == 12 && $driver != "AxiellWebServices"}<tr class="toggleCopyDetails"><td class="copyTitle"></td><td colspan="2"><strong><a href="#">{translate text="More Results"}</a></strong></td></tr>{/if}
+          <tr class="copyDetails {if $showCopyTitle}{counter start=0 assign=copyCount}first{/if} {if $copyCount >= 12 && $driver != "AxiellWebServices"}hidden{/if}">
             {counter assign=copyCount}
             {if $showCopyTitle}<td class="copyTitle">{if $driver == "AxiellWebServices"}{translate text="Library unit"}{else}{translate text="Copies"}{/if}{assign var="showCopyTitle" value=0}</td>
             {else}<td></td>{/if}
@@ -221,7 +221,8 @@
               {if $row.itemSummary}
                 {$row.itemSummary}
               {else}
-                {translate text="Copy"} {$row.number|escape}
+                {if $row.number|trim == false}{translate text="Copy"}{/if}
+                {$row.number|escape}
               {/if}
             {/if}
             </td>
