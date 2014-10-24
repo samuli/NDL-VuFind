@@ -276,12 +276,27 @@
       </table>
   {/foreach}
 </div>
+<div id="map" style="height: 450px; width: 800px; background-color: #eee; margin-top: 30px;"></div>
+<div id="list" style="height: 50px; width: 800px; background-color: #eee; margin-top: 30px;"></div>
 
+{js filename="tmp/jquery.xml2json.js"}
+{js filename="serviceLocations.js"}
 {literal}
 <script type="text/javascript">
-$(document).ready(function() {
 
+$(document).ready(function() {
   // IE8 compatible Date.now()
+
+  loadGoogleMaps();
+
+  $.get('http://localhost:8888/vufind/interface/themes/ndl/js/tmp/libraries.xml', function(xml) {
+    var libraries = $.xml2json(xml);
+    console.log(libraries);
+    $.each(libraries.library, function(index, element) {
+    $("#list").append(element.name.value[0] + " (" + element.coordinates.lat+ ", " + element.coordinates.lon + ")<br />");
+    });
+  });
+
   Date.now = Date.now || function() { return +new Date; }; 
 
   /* Open volume details by clicking on the heading */
@@ -396,8 +411,9 @@ $(document).ready(function() {
   initDropdowns();
 
   initJumpMenus();
-  
+
 });
+
 </script>
 {/literal}
 <!-- END of: RecordDrivers/Index/holdings.tpl -->
