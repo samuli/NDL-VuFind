@@ -1167,7 +1167,7 @@ div.dialogLoading {
     height: 20px;
 }
 
-.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading, .ajax_hold_request_loading {
+.ajax_availability, .ajax_hold_availability, .ajax_fulltext_availability, .iframe_loading, .facet_loading, .ajax_call_slip_availability, .ajax_ub_request_availability, .ajax_ub_request_loading, .ajax_hold_request_loading, .ajax_register_payment {
     background: url(../images/ajax_loading.gif) no-repeat left top;
     padding:0 .5em .5em 20px;
 }
@@ -2357,7 +2357,7 @@ clear:both;
 .myResearch table.profileGroup th {
     width:25%;    
 }
-.myResearch.checkedoutList table,.myResearch.holdsList table, .myResearch.finesList table{
+.myResearch.checkedoutList table,.myResearch.holdsList table, .myResearch.finesList table {
     padding:0px 10px;    
 }
 .myResearch.checkedoutList table th, .myResearch.checkedoutList table td, .myResearch.holdsList table th, .myResearch.holdsList table td,.myResearch.finesList td, .myResearch.finesList th {
@@ -2366,6 +2366,9 @@ clear:both;
 }
 .myResearch.finesList table {
     padding:10px;    
+}
+.myResearch.finesList table.webpaymentSummary {
+    padding:0;    
 }
 .myResearch.finesList td, .myResearch.finesList th {
     padding-top:10px;
@@ -2451,6 +2454,19 @@ clear:both;
     background-position: 6px -161px;
     background-repeat: no-repeat;
     
+}
+
+.myResearch table.webpaymentSummary {
+    border: 0px;
+    box-shadow: none !important;
+    margin-bottom: 0;
+}
+.myResearch table.webpaymentSummary td {
+    border-top: 0px;
+}
+#paytrail-logo {
+    margin-right: 25px;
+    vertical-align:middle;
 }
 
 /***   Login information    ***/
@@ -7086,13 +7102,15 @@ table.summHoldings .statusColumn {
 }
 
 #hierarchyTree li.item {
-    display:block;
+    display:inline;
 }
 
 #hierarchyTree li.item a {
     display:inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
-    width: 100%;
+    width: 35%;
 }
 
 #hierarchyTree li.item.openPath a {

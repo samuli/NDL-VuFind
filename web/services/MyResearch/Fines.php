@@ -70,8 +70,9 @@ class Fines extends MyResearch
                 $this->handleCatalogError($patron);
             } else {
                 $fines = $this->catalog->getMyFines($patron);
+                $config = $this->catalog->getConfig('Webpayment');                
 
-                if ($this->catalog->isWebpaymentEnabled($patron)) {
+                if ($config && $this->catalog->isWebpaymentEnabled($patron)) {
                     $finesAmount = $this->catalog->driver->getWebpaymentPayableAmount($patron);
                     $interface->assign('payableSum', $finesAmount);
 
@@ -166,7 +167,7 @@ class Fines extends MyResearch
 
                 if (!PEAR::isError($fines)) {
                     $sum = 0;
-                    $fines = $this->processFines($fines, $loans, &$sum);
+                    $fines = $this->processFines($fines, $loans, $sum);
                     $interface->assign('rawFinesData', $fines);
                     $interface->assign('sum', $sum);
                 }
@@ -252,8 +253,10 @@ class Fines extends MyResearch
                             }
 
                             $error = true;
-                            $msg = '<ul><li>' . translate('webpayment_payment_blocked') . '</li>';
+                            $msg = '<ul>';
                             $msg .= translate($paidRes);
+                            $msg .= '<li>' . translate('webpayment_registration_failed') . '</li>';
+                            $msg .= '</ul>';
                         }
                     } else {
                         $error = true;

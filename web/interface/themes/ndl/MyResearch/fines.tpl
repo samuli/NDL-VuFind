@@ -67,7 +67,7 @@
             <td>{$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}</td>
           </tr>
         {/foreach}
-        <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
+        <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
       {else}
         <tr>
           <th style="width:50%;">{translate text='Title'}</th>
