@@ -91,6 +91,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 
 input[type="text"],
 input[type="password"],
+input[type="email"],
 textarea,
 .facetsContainer .chzn-container-multi .chzn-choices,
 .advSearchSection input {
@@ -554,45 +555,6 @@ div.sidegroup {
 .feedbackButton.fixed {
     position:fixed;
     top:0;
-}
-
-.survey {
-    background:#fff;
-    display:block;
-    font-size:1em;
-    font-weight:500;
-    letter-spacing: 0.3px;
-    line-height: 16px;
-    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.92);
-    border-radius: 5px;
-    bottom: 15px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    color: #333;
-    padding: 12px 17px;
-    position: fixed;
-    right: 15px;
-    z-index: 200;
-    width:160px;
-}
-
-.closeSurvey.closeButton {
-    border-radius: 20px;
-    padding: 12px;
-    position: absolute;
-    right: -7px;
-    top: -7px;
-}
-
-.survey ul {
-  margin:10px 0 0;
-  padding:0;
-}
-
-.survey li {
-    float: left;
-    margin-right: 6px;
-    padding:0;
-    list-style:none;
 }
 
 /*** Page navigation links ***/
@@ -2394,7 +2356,8 @@ clear:both;
     margin:5px 0px;
     max-width:200px;
 }
-.myResearch .profileGroup input[type="text"] {
+.myResearch .profileGroup input[type="text"],
+.myResearch .profileGroup input[type="email"] {
     width:200px;    
 }
 
