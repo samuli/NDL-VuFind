@@ -510,6 +510,7 @@ class HoldLogic
                 $number[$key] = $row['number'];
             }
             array_multisort($callNumber, SORT_ASC, $number, SORT_NUMERIC, $items);
+            $items = array_reverse($items);
         }
         return $holdings;
     }    

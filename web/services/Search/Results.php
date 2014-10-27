@@ -55,6 +55,22 @@ class Results extends Action
      */
     public function launch()
     {
+        // Initialise from the current search globals
+        $searchObject = SearchObjectFactory::initSearchObject();
+        $searchObject->init();
+
+        $this->showResults($searchObject);
+    }
+
+    /**
+     * Display search results
+     *
+     * @param object $searchObject Search Object
+     *
+     * @return void
+     */
+    public function showResults($searchObject)
+    {
         global $interface;
         global $configArray;
 
@@ -62,10 +78,6 @@ class Results extends Action
         if (isset($configArray['EZproxy']['host'])) {
             $interface->assign('proxy', $configArray['EZproxy']['host']);
         }
-
-        // Initialise from the current search globals
-        $searchObject = SearchObjectFactory::initSearchObject();
-        $searchObject->init();
 
         // Handle hierarchical facets (request level 0 only for initial display)
         $facetConfig = getExtraConfigArray('facets');
@@ -284,7 +296,7 @@ class Results extends Action
 
         // Done, display the page
         $interface->display('layout.tpl');
-    } // End launch()
+    }
 
     /**
      * Process the "jumpto" parameter.

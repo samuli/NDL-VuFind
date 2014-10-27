@@ -511,6 +511,7 @@ class Voyager implements DriverInterface
             "ITEM.RECALLS_PLACED", "ITEM.HOLDS_PLACED",
             "ITEM_STATUS_TYPE.ITEM_STATUS_DESC as status",
             "MFHD_DATA.RECORD_SEGMENT", "MFHD_ITEM.ITEM_ENUM",
+            "MFHD_ITEM.YEAR",
             "NVL(LOCATION.LOCATION_DISPLAY_NAME, " .
                 "LOCATION.LOCATION_NAME) as location",
             "ITEM.TEMP_LOCATION",
@@ -584,19 +585,19 @@ class Voyager implements DriverInterface
                                 "'N' as ON_RESERVE", "1 as ITEM_SEQUENCE_NUMBER",
                                 "'No information available' as status",
                                 "NVL(LOCATION.LOCATION_DISPLAY_NAME, " .
-                                    "LOCATION.LOCATION_NAME) as location",
+                                "LOCATION.LOCATION_NAME) as location",
                                 "null as TEMP_LOCATION",
                                 "null as PERM_LOCATION",
                                 "MFHD_MASTER.DISPLAY_CALL_NO as callnumber",
                                 "MFHD_MASTER.MFHD_ID",
                                 "null as duedate",
                                 $this->getItemSortSequenceSQL('LOCATION.LOCATION_ID')
-                               );
+        );
 
         // From
         $sqlFrom = array($this->dbName.".BIB_MFHD", $this->dbName.".LOCATION",
                          $this->dbName.".MFHD_MASTER", $this->dbName.".MFHD_DATA"
-                        );
+        );
 
         // Where
         $sqlWhere = array("BIB_MFHD.BIB_ID = :id",
@@ -605,7 +606,7 @@ class Voyager implements DriverInterface
                           "MFHD_DATA.MFHD_ID = BIB_MFHD.MFHD_ID",
                           "MFHD_MASTER.SUPPRESS_IN_OPAC='N'",
                           "NOT EXISTS (SELECT MFHD_ID FROM {$this->dbName}.MFHD_ITEM WHERE MFHD_ITEM.MFHD_ID=MFHD_MASTER.MFHD_ID)",
-                         );
+        );
 
         // Order
         $sqlOrder = array("MFHD_DATA.MFHD_ID", "MFHD_DATA.SEQNUM");
@@ -614,15 +615,15 @@ class Voyager implements DriverInterface
         $sqlBind = array(':id' => $id);
 
         $sqlArray = array('expressions' => $sqlExpressions,
-                          'from' => $sqlFrom,
-                          'where' => $sqlWhere,
-                          'order' => $sqlOrder,
-                          'bind' => $sqlBind,
-                          );
+            'from' => $sqlFrom,
+            'where' => $sqlWhere,
+            'order' => $sqlOrder,
+            'bind' => $sqlBind,
+        );
 
         return $sqlArray;
     }
-
+    
     /**
      * Protected support method for getHolding.
      *
@@ -638,10 +639,14 @@ class Voyager implements DriverInterface
         foreach ($sqlRows as $row) {
             // Determine Copy Number
             $number = '';
-            if (isset($row['ITEM_ENUM'])) {
-                $number = utf8_encode($row['ITEM_ENUM']);
+            if (isset($row['YEAR'])) {
+                $number .= utf8_encode($row['YEAR']) . ' ';
             }
-
+            if (isset($row['ITEM_ENUM'])) {
+                $number .= utf8_encode($row['ITEM_ENUM']);
+            }
+            $number = trim($number);
+			
             // Concat wrapped rows (MARC data more than 300 bytes gets split
             // into multiple rows)
             $rowId = isset($row['ITEM_ID']) ? $row['ITEM_ID'] : $row['MFHD_ID'];
@@ -672,7 +677,7 @@ class Voyager implements DriverInterface
         }
         return $data;
     }
-
+    
     /**
      * Protected support method for getHolding.
      *
