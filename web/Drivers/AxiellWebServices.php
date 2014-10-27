@@ -327,7 +327,7 @@ class AxiellWebServices implements DriverInterface
                                 'requests_placed'   => $noOfReservations,
                                 'barcode'           => '',
                                 'availability'      => $available,
-                                'status'      		  => $status,
+                                'status'            => $status,
                                 'location'          => $location,
                                 'reserve'           => 'N',
                                 'callnumber'        => isset($department->shelfMark) ? $department->shelfMark : '',
@@ -474,15 +474,20 @@ class AxiellWebServices implements DriverInterface
             $user['lastname'] = array_pop($names);
             $user['firstname'] = implode(' ', $names);
             $user['email'] = '';
+            $user['emailId'] = '';
             $user['address1'] = '';
             $user['zip'] = '';
             $user['phone'] = '';
+            $user['phoneId'] = '';
+            $user['phoneLocalCode'] = '';
+            $user['phoneAreaCode'] = '';
 
             if (isset($info->emailAddresses)) {
                 $emailAddresses = is_object($info->emailAddresses->emailAddress) ? array($info->emailAddresses->emailAddress) : $info->emailAddresses->emailAddress;
                 foreach ($emailAddresses as $emailAddress) {
                     if ($emailAddress->isActive == 'yes') {
                         $user['email'] = isset($emailAddress->address) ? $emailAddress->address : '';
+                        $user['emailId'] = isset($emailAddress->id) ? $emailAddress->id : '';
                     }
                 }
             }
@@ -514,8 +519,13 @@ class AxiellWebServices implements DriverInterface
                 foreach ($phoneNumbers as $phoneNumber) {
                     if ($phoneNumber->sms->useForSms == 'yes') {
                         $user['phone'] = isset($phoneNumber->areaCode) ? $phoneNumber->areaCode : '';
+                        $user['phoneAreaCode'] = $user['phone'];
                         if (isset($phoneNumber->localCode)) {
                             $user['phone'] .= $phoneNumber->localCode;
+                            $user['phoneLocalCode'] = $phoneNumber->localCode;
+                        } 
+                        if (isset($phoneNumber->id)) {
+                            $user['phoneId'] = $phoneNumber->id;
                         }
                     }
                 }
@@ -1108,6 +1118,172 @@ class AxiellWebServices implements DriverInterface
         }
         return array();
     }
+
+    /**
+     * Set patron phone number
+     *
+     * @param array $patron Patron array
+     *
+     * @return array Response
+     */
+    public function setPhoneNumber($patron)
+    {
+        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
+
+        try {
+            $patronId = $this->getPatronId($patron['cat_username'], $patron['cat_password']);
+
+            if (PEAR::isError($patronId)) {
+                return array(
+                    'success' => false,
+                    'sys_message' => 'No patron id',
+                    'status' => 'Phone number change failed'
+                );
+            }
+
+            $localCode = $patron['phoneLocalCode'];
+            $phoneCountry = isset($patron['phoneCountry']) ? $patron['phoneCountry'] : 'FI';
+            $areaCode = '';
+
+            $conf = array(
+                'arenaMember'  => $this->arenaMember,
+                'language'     => 'en',
+                'patronId'     => $patronId,
+                'areaCode'     => $areaCode,
+                'country'      => $phoneCountry,
+                'localCode'    => $localCode,
+                'useForSms'    => 'yes'
+            );
+
+            $this->debugLog("Phone number set request for '{$patron['cat_username']}':");
+            $error = false;
+            if (isset($patron['phoneId'])) {
+                $conf['id'] = $patron['phoneId'];
+                $result = $client->changePhone(array('changePhoneNumberParam' => $conf));
+                if ($result->changePhoneNumberResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->changePhoneNumberResult->status->message;
+                }
+            } else {
+                $result = $client->addPhone(array('addPhoneNumberParam' => $conf));
+                if ($result->addPhoneNumberResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->addPhoneNumberResult->status->message;
+                }
+            }
+
+            if ($error) {
+                $this->debugLog("Change phone number request failed for '" . $patron['cat_username'] . "'");
+                $this->debugLog("Request: " . $client->__getLastRequest());
+                $this->debugLog("Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => false,
+                    'status' => 'Phone number change failed',
+                    'sys_message' => $sysMessage
+                );
+            } else {
+                $this->debugLog("Set phone number Request: " . $client->__getLastRequest());
+                $this->debugLog("Set phone number Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => true,
+                    'status' => 'Phone number changed',
+                    'sys_message' => '',
+                );
+            }
+            return $results;
+        } catch (Exception $e) {
+            $this->debugLog($e->getMessage());
+            $this->debugLog("Request: " . $client->__getLastRequest());
+            $this->debugLog("Response: " . $client->__getLastResponse());
+            $results = array(
+                'success' => false,
+                'sys_message' => $e->getMessage,
+                'status' => 'Phone number change failed'
+            );
+        }
+        return $results;
+    }
+
+    /**
+     * Set patron email address
+     *
+     * @param array  $patron Patron array
+     * @param String $email  User Email
+     *
+     * @return array Response
+     */
+    public function setEmailAddress($patron, $email)
+    {
+        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
+
+        try {
+            $patronId = $this->getPatronId($patron['cat_username'], $patron['cat_password']);
+
+            if (PEAR::isError($patronId)) {
+                return array(
+                    'success' => false,
+                    'status' => 'Email address change failed',
+                    'sys_message' => 'No patron id',
+                );
+            }
+
+            $conf = array(
+                'arenaMember'  => $this->arenaMember,
+                'language'     => 'en',
+                'patronId'     => $patronId,
+                'address'      => $email,
+                'isActive'     => 'yes'
+            );
+
+            $this->debugLog("Email address set request for '{$patron['cat_username']}':");
+            $error = false;
+            if (isset($patron['emailId'])) {
+                $conf['id'] = $patron['emailId'];
+                $result = $client->changeEmail(array('changeEmailAddressParam' => $conf));
+                if ($result->changeEmailAddressResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->changeEmailAddressResult->status->message;
+                }
+            } else {
+                $result = $client->addPhone(array('addEmailAddressParam' => $conf));
+                if ($result->addPhoneNumberResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->addEmailAddressResult->status->message;
+                }
+            }
+
+            if ($error) {
+                $this->debugLog("Set email address request failed for '" . $patron['cat_username'] . "'");
+                $this->debugLog("Request: " . $client->__getLastRequest());
+                $this->debugLog("Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => false,
+                    'status' => 'Phone number change failed',
+                    'sys_message' => $sysMessage
+                );
+            } else {
+                $this->debugLog("Set email address Request: " . $client->__getLastRequest());
+                $this->debugLog("Set email address Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => true,
+                    'status' => 'Email address changed',
+                    'sys_message' => '',
+                );
+            }
+            return $results;
+        } catch (Exception $e) {
+            $this->debugLog($e->getMessage());
+            $this->debugLog("Request: " . $client->__getLastRequest());
+            $this->debugLog("Response: " . $client->__getLastResponse());
+            $results = array(
+                'success' => false,
+                'sys_message' => $e->getMessage,
+                'status' => 'Set email address failed'
+            );
+        }
+        return $results;
+    }
+
 
 
     /**

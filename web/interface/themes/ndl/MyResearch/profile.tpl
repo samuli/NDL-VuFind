@@ -24,7 +24,7 @@
     <form method="post" action="{$url}/MyResearch/Profile" id="profile_form">
     <div class="profileInfo grid_12 static">
       {* NDLBlankInclude *}
-      		<p class="noContentMessage">{translate text='profile_instructions'}</p>
+          <p class="noContentMessage">{translate text='profile_instructions'}</p>
       {* /NDLBlankInclude *}
       {if $profile.blocks}
         {foreach from=$profile.blocks item=block name=loop}
@@ -50,8 +50,8 @@
            </td>
            {if count($catalogAccounts) > 1}
              <td class="notif"><span class="userGuider">{translate text="notif_duedate"}</span></td>
-		   {else}
-        	 <td></td>
+           {else}
+             <td></td>
            {/if}
         {else}
             <input type="hidden" name="due_date_reminder" value="0" />
@@ -76,9 +76,9 @@
     {/if}
 
     {if $user->cat_username}
-    <h2>{translate text="Library Card Settings"}: 	
-    	     {foreach from=$catalogAccounts item=account}
-        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+    <h2>{translate text="Library Card Settings"}:   
+           {foreach from=$catalogAccounts item=account}
+          {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
      {/foreach} 
             {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
     </h2>
@@ -102,7 +102,7 @@
         </td>
       </tr>
         <tr>
-        	<th colspan="3"><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
+          <th colspan="3"><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
         </tr>
         {else}
           <td>{$pickup.0.locationDisplay}</td>
@@ -115,22 +115,22 @@
       <form method="post" action="{$url}/MyResearch/Profile" id="password_form">      
         <tr><td colspan="3"><h3>{translate text='change_password_title'}</h3></td></tr>
         <tr>
-	        <th>{translate text='change_password_old_password'}:</th>
-	        <td><input type="password" id="oldPassword" name="oldPassword" value=""></input></td>
+          <th>{translate text='change_password_old_password'}:</th>
+          <td><input type="password" id="oldPassword" name="oldPassword" value=""></input></td>
             <td><span class="userGuider">{translate text='change_password_instructions'}</span></td>
         </tr>
         <tr>
-	        <th>{translate text='change_password_new_password'}:</th>
-	        <td><input type="password" id="newPassword" name="newPassword" value=""></input></td>
+          <th>{translate text='change_password_new_password'}:</th>
+          <td><input type="password" id="newPassword" name="newPassword" value=""></input></td>
             <td></td>
         </tr>
         <tr>
-	        <th>{translate text='change_password_new_password_again'}:</th>
-	        <td><input type="password" id="newPassword2" name="newPassword2" value=""></input></td>
+          <th>{translate text='change_password_new_password_again'}:</th>
+          <td><input type="password" id="newPassword2" name="newPassword2" value=""></input></td>
             <td></td>
         </tr>
-	  <tr>
-      	<th><input class="button buttonFinna left" type="submit" value="{translate text='change_password_submit'}" /></th>
+    <tr>
+        <th><input class="button buttonFinna left" type="submit" value="{translate text='change_password_submit'}" /></th>
         <td colspan="2"></td>
       </tr>
       </form>
@@ -144,7 +144,7 @@
         <th>{translate text='Last Name'}</th><td>{if $profile.lastname}{$profile.lastname|escape}{else}-{/if}</td><td></td>
       </tr>
       <tr>
-        <th>{translate text='Address'} 1</th><td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td><td></td>
+        <th>{translate text='Address'} 1</th><td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td><td>{if $driver == "AxiellWebServices"}<span class="userGuider">{translate text="address_change"}</span>{/if}</td>
       </tr>
       <tr>
         <th>{translate text='Address'} 2</th><td>{if $profile.address2}{$profile.address2|escape}{else}-{/if}</td><td></td>
@@ -153,10 +153,16 @@
         <th>{translate text='Zip'}</th><td>{if $profile.zip}{$profile.zip|escape}{else}-{/if}</td><td></td>
       </tr>   
       <tr>
-        <th>{translate text='Phone Number'}</th><td>{if $profile.phone}{$profile.phone|escape}{else}-{/if}</td><td></td>
+        <th>{translate text='Phone Number'}</th><td>
+          {if $driver == "AxiellWebServices"}<input type="text" name="phone_number" id="phone_number" value="{if $profile.phone}{$profile.phone|escape}{/if}" />
+          {else}{if $profile.phone}{$profile.phone|escape}{else}-{/if}
+          {/if}</td><td></td>
       </tr>
       <tr>
-        <th>{translate text='Email'}</th><td>{if $profile.email}{$profile.email|escape}{else}-{/if}</td><td></td>
+        <th>{translate text='Email'}</th><td>
+          {if $driver == "AxiellWebServices"}<input type="email" name="email_address" id="email_address" value="{if $profile.email}{$profile.email|escape}{/if}" />
+          {else}{if $profile.email}{$profile.email|escape}{else}-{/if}
+          {/if}</td><td></td>
       </tr>
       <tr>
         <th>{translate text='Group'}</th><td>{$profile.group|escape}</td><td></td>
@@ -170,6 +176,12 @@
         <td class="blockInfo">{$block|escape}</td>
       {/foreach}
       </tr>
+      {if $driver == "AxiellWebServices"}
+        <tr>
+          <th><input class="button buttonFinna left" type="submit" value="{translate text='Save Personal Information'}" /></th>
+          <td><td>
+        </tr>
+      {/if}
     </table>
       {else}
         {include file="MyResearch/catalog-login.tpl"}
