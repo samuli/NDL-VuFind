@@ -669,7 +669,7 @@ $(document).ready(function(){
             }
 
             $('#survey').fadeOut(100);
-            $.cookie('noSurvey', 1);
+            $.cookie('noSurvey', 1, { path: '/' });
         });
     }
 });
