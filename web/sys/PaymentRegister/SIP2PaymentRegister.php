@@ -127,14 +127,14 @@ class SIP2PaymentRegister implements PaymentRegisterInterface
                     }
                 } else {
                     $sip->disconnect();
-                    return $this->handleError($patron, 'SIP2 login failed');
+                    return $this->handleError($patron, 'login failed');
                 }
             } else {
                 $sip->disconnect();
-                return $this->handleError($patron, 'SIP2 login failed');
+                return $this->handleError($patron, 'login failed');
             }
         } else {
-            return $this->handleError($patron, 'SIP2 connection error');
+            return $this->handleError($patron, 'connection error');
         }
     }
 
