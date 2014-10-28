@@ -588,6 +588,23 @@ class CatalogConnection
     }
 
     /**
+     * Return inited online payment handler.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return mixed handler or false on error
+     * @access public
+     */
+    public function getOnlinePaymentHandler($patron)
+    {
+        $config = getExtraConfigArray('datasources');
+        $driver = reset(explode('.', $patron['cat_username']));
+        $params = $config[$driver]['onlinePayment'];
+
+        return OnlinePaymentFactory::initOnlinePayment($params['handler'], $params);
+    }
+
+    /**
      * Get Patron Holds
      *
      * This is responsible for retrieving all holds by a specific patron.

@@ -1,8 +1,8 @@
 $(document).ready(function(){
-    registerWebpayment();
+    registerOnlinePayment();
 });
 
-function registerWebpayment() {
+function registerOnlinePayment() {
     $(".ajax_register_payment").show();
     
     $.ajax({
@@ -14,10 +14,10 @@ function registerWebpayment() {
         dataType: 'json',
         success: function(data) {
             $(".ajax_register_payment").removeClass('ajax_register_payment');
-            $('#webpaymentStatusSpinner').hide();
-            $('#webpaymentStatus').html(data.data).show();                
+            $('#onlinePaymentStatusSpinner').hide();
+            $('#onlinePaymentStatus').html(data.data).show();                
             if (data.status != 'OK') {
-                $('#webpaymentStatus').removeClass('info').addClass('error');
+                $('#onlinePaymentStatus').removeClass('info').addClass('error');
             }
 
         }

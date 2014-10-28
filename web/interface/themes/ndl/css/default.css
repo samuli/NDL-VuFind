@@ -2367,7 +2367,7 @@ clear:both;
 .myResearch.finesList table {
     padding:10px;    
 }
-.myResearch.finesList table.webpaymentSummary {
+.myResearch.finesList table.onlinePaymentSummary {
     padding:0;    
 }
 .myResearch.finesList td, .myResearch.finesList th {
@@ -2456,12 +2456,12 @@ clear:both;
     
 }
 
-.myResearch table.webpaymentSummary {
+.myResearch table.onlinePaymentSummary {
     border: 0px;
     box-shadow: none !important;
     margin-bottom: 0;
 }
-.myResearch table.webpaymentSummary td {
+.myResearch table.onlinePaymentSummary td {
     border-top: 0px;
 }
 #paytrail-logo {

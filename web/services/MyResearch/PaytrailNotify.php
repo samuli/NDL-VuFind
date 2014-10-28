@@ -28,6 +28,7 @@
  * @link     http://docs.paytrail.com/ Paytrial API docoumentation
  */
 
+require_once 'CatalogConnection.php';
 require_once 'services/MyResearch/Fines.php';
 require_once 'services/MyResearch/lib/User.php';
 require_once 'services/MyResearch/lib/Transaction.php';
@@ -85,7 +86,8 @@ class PaytrailNotify extends Action
         $catalog = ConnectionManager::connectToCatalog();
         $user = array('cat_username' => $catUsername);
 
-        if (!$paymentHandler = $catalog->getWebpaymentHandler($user)) {
+
+        if (!$paymentHandler = CatalogConnection::getOnlinePaymentHandler($user)) {        
             error_log("PaytrailNotify error: no payment handler found for transaction $transactionId");
             return;
         }
@@ -96,12 +98,12 @@ class PaytrailNotify extends Action
             $res = $catalog->markFeesAsPaid($user, $res['amount']);
 
             if ($res !== true) { 
-                if (!$t->setTransactionRegistrationFailed($transactionId, $res)) {
+                if (!$tr->setTransactionRegistrationFailed($transactionId, $res)) {
                     error_log("PaytrailNotify error: transaction ($transactionId) registration failed.");
                     error_log("   $res");
                 }
             } else {
-                if (!$t->setTransactionRegistered($transactionId)) {
+                if (!$tr->setTransactionRegistered($transactionId)) {
                     error_log("PaytrailNotify error: failed to update transaction $transactionId to registered");
                 }
             }

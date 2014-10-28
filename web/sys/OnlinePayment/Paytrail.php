@@ -1,6 +1,6 @@
 <?php
 /**
- * Paytrail webpayment handler
+ * Paytrail payment handler
  *
  * PHP version 5
  *
@@ -20,7 +20,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * @category VuFind
- * @package  Webpayment
+ * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
@@ -28,21 +28,21 @@
  * @link     http://docs.paytrail.com/ Paytrial API docoumentation
  */
 
-require_once 'sys/Webpayment/Interface.php';
+require_once 'sys/OnlinePayment/Interface.php';
 require_once 'services/MyResearch/lib/Transaction.php';
 
 /**
- * Paytrail webpayment handler module.
+ * Paytrail payment handler module.
  *
  * @category VuFind
- * @package  Webpayment
+ * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_authentication_handler Wiki
  * @link     http://docs.paytrail.com/ Paytrial API docoumentation
  */
-class Paytrail implements WebpaymentInterface
+class Paytrail implements OnlinePaymentInterface
 {
     const PAYMENT_SUCCESS = 'success';
     const PAYMENT_FAILURE = 'failure';
@@ -162,11 +162,12 @@ class Paytrail implements WebpaymentInterface
         $tr = new Transaction();
 
         if (!$tr->isTransactionInProgress($orderNum)) {            
-            return 'webpayment_transaction_already_processed_or_unknown';
+            return 'online_payment_transaction_already_processed_or_unknown';
         }
 
         if (($t = $tr->getTransaction($orderNum)) === false) {
-            return 'webpayment_transaction_not_found';
+            error_log("Paytrail: error processing transaction $orderNum: transaction not found");
+            return 'online_payment_failed';
         }
 
         $amount = $t->amount;
@@ -180,7 +181,9 @@ class Paytrail implements WebpaymentInterface
                 $params["METHOD"], 
                 $params["RETURN_AUTHCODE"]
             )) {
-                return 'webpayment_status_checksum_not_valid';
+                error_log("Paytrail: error processing response: invalid checksum");
+                error_log("   " . var_export($params, true));
+                return 'online_payment_failed';
             }
 
             if (!$t->setTransactionPaid($orderNum, $timestamp)) {
@@ -191,7 +194,7 @@ class Paytrail implements WebpaymentInterface
             if (!$t->setTransactionCancelled($orderNum)) {
                 error_log("Paytrail: error updating transaction $orderNum to cancelled");
             }
-            return 'webpayment_canceled';
+            return 'online_payment_canceled';
         } else {
             $t->setTransactionUnknownPaymentResponse($orderNum, $timestamp, $status);
         }
@@ -210,7 +213,7 @@ class Paytrail implements WebpaymentInterface
     }
 
     /**
-     * Generate the internal webpayment transaction identifer.
+     * Generate the internal payment transaction identifer.
      *
      * @param string $patron Patron's Catalog Username (barcode)
      *

@@ -1,6 +1,6 @@
 <?php
 /**
- * Webpayment handler interface
+ * Exception class used for unrecognized online payment methods.
  *
  * PHP version 5
  *
@@ -20,48 +20,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * @category VuFind
- * @package  Webpayment
+ * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_authentication_handler Wiki
  */
 
 /**
- * Webpayment handler interface.
+ * Exception class used for unrecognized online payment methods.
  *
  * @category VuFind
- * @package  Webpayment
+ * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_authentication_handler Wiki
  */
-interface WebpaymentInterface
+class UnknownOnlinePaymentHandlerException extends Exception
 {
-    /**
-     * Constructor
-     *
-     * @param mixed $config Configuration as key-value pairs.
-     *
-     * @access public
-     */
-    public function __construct($config);
-
-    /**
-     * Process the response from Paytrail payment service.
-     *
-     * @param string $patron Patron's Catalog Username (barcode)
-     * @param array  $params Response variables
-     *
-     * @return string error message (not translated) 
-     *   or associative array with keys:
-     *     'markFeesAsPaid' (boolean) true if payment was successful and fees 
-     *     should be registered as paid.
-     *     'transactionId' (string) Transaction ID.
-     *     'amount' (int) Amount to be registered (does not include transaction fee).
-     * @access public
-     */
-    public function processResponse($patron, $params);
 }
-
-
 ?>

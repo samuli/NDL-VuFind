@@ -206,7 +206,7 @@ class Transaction extends DB_DataObject
 
         if ($transaction->find()) {
             // Transaction still in progress
-            return 'webpayment_in_progress';
+            return 'online_payment_in_progress';
         }
         
         $transaction = new Transaction();
@@ -216,7 +216,7 @@ class Transaction extends DB_DataObject
 
         if ($transaction->find()) {
             // Transaction could not be registered and is waiting to be resolved manually.
-            return 'webpayment_registration_failed';
+            return 'online_payment_registration_failed';
         }
         
         return true;

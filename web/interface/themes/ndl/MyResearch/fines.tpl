@@ -1,6 +1,6 @@
 <!-- START of: MyResearch/fines.tpl -->
 {if $registerPayment}
-   {js filename="webpayment.js"}
+   {js filename="online-payment.js"}
 {/if}
 
 
@@ -30,14 +30,14 @@
       {/if}
     {if $user->cat_username}
       {if $paymentFinesChanged}
-        <div class="webpaymentMessage error">{translate text="webpayment_fines_changed"}</div>
+        <div class="error">{translate text="online_payment_fines_changed"}</div>
       {elseif $paymentNotPermittedInfo}
-        <div class="webpaymentMessage error">{$paymentNotPermittedInfo} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+        <div class="error">{$paymentNotPermittedInfo} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
       {elseif $registerPayment}
           {if $registerPayment}
-            <span class="ajax_register_payment hide" id="webpaymentStatusSpinner">{translate text="Registering Payment"}</span>
+            <span class="ajax_register_payment hide" id="onlinePaymentStatusSpinner">{translate text="Registering Payment"}</span>
           {/if}
-          <div id="webpaymentStatus" class="info hide">
+          <div id="onlinePaymentStatus" class="info hide">
           </div>
       {/if}
 
@@ -100,26 +100,27 @@
             <td>{$record.duedate|escape}</td>
             <td class="fine">{translate text=$record.fine|escape prefix="status_"}</td>
             <td class="fineAmount" style="text-align:right;">
-              {if $webpaymentEnabled && !$record.payableOnline}<span class="webpaymentNonpayableAmount">{/if}
+              {if $onlinePaymentEnabled && !$record.payableOnline}<span class="onlinePaymentNonpayableAmount">{/if}
               {$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}
-              {if $webpaymentEnabled && !$record.payableOnline}</span><div class="webpaymentRemark">{translate text='webpayment_nonpayable_fee'}</div>{/if}
+              {if $onlinePaymentEnabled && !$record.payableOnline}</span><div class="onlinePaymentRemark">{translate text='online_payment_nonpayable_fees'}</div>{/if}
             </td>
           </tr>
         {/foreach}
           <tr><td colspan="5" class="fineBalance">
-            {if $webpaymentEnabled}          
+            {if $onlinePaymentEnabled}          
              {if $paymentBlocked}
-                <div class="webpaymentRemark">{$paymentNotPermittedInfo} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
-             {else}
-               {translate text='webpayment_payable_online'}: <span class="hefty">{$payableSum|safe_money_format|replace:"Eu":" €"|escape}</span>
-               {if $transactionFee}
-                  <div class="webpaymentRemark" id="transactionFee">
-                    {translate text='webpayment_transaction_fee'}: <span class="hefty">{$transactionFee|safe_money_format|replace:"Eu":" €"|escape}</span>
-                  </div>
-               {/if}
-               <div>
+                <div class="onlinePaymentRemark">{$paymentNotPermittedInfo} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+             {/if}
+             {translate text='online_payment_payable_online'}: <span class="hefty">{$payableSum|safe_money_format|replace:"Eu":" €"|escape}</span>
+             {if $transactionFee}
+                <div class="onlinePaymentRemark" id="transactionFee">
+                  {translate text='online_payment_transaction_fee'}: <span class="hefty">{$transactionFee|safe_money_format|replace:"Eu":" €"|escape}</span>
+                </div>
+             {/if}
+             {if !$paymentBlocked}
+              <div>
                {assign var=amountFormatted value=$payableSum+$transactionFee|safe_money_format|replace:"Eu":" €"|escape}
-               {include file=$webpaymentForm paymentAmountFormatted=$amountFormatted}
+               {if $onlinePaymentForm}{include file=$onlinePaymentForm paymentAmountFormatted=$amountFormatted}{/if}
              </div>
             {/if}
          {else}

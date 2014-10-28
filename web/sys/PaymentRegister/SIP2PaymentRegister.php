@@ -69,8 +69,8 @@ class SIP2PaymentRegister implements PaymentRegisterInterface
     /**
      * Register Patron's payment.
      *
-     * @param string $patron Patron's Catalog username (barcode)
-     * @param string $amount Amount of the payment
+     * @param string $patron   Patron's Catalog username (barcode)
+     * @param string $amount   Amount of the payment
      * @param string $currency Currency
      *
      * @return mixed Boolean true on success, PEAR_Error on failure
@@ -82,7 +82,7 @@ class SIP2PaymentRegister implements PaymentRegisterInterface
             || !isset($this->config['userId']) || !isset($this->config['password'])
             || !isset($this->config['locationCode'])
         ) {
-            return new PEAR_Error('sip2_payment_connection_params_missing');
+            return $this->handleError($patron, 'parameters missing');
         }
 
         $sip = new sip2;
@@ -119,23 +119,44 @@ class SIP2PaymentRegister implements PaymentRegisterInterface
                             return true;
                         } else {
                             $sip->disconnect();
-                            return new PEAR_Error('sip2_payment_rejected');
+                            return $this->handleError($patron, 'payment rejected');
                         }
                     } else {
                         $sip->disconnect();
-                        return new PEAR_Error('sip2_payment_failed');
+                        return $this->handleError($patron, 'payment failed');
                     }
                 } else {
                     $sip->disconnect();
-                    return new PEAR_Error('sip2_login_failed');
+                    return $this->handleError($patron, 'SIP2 login failed');
                 }
             } else {
                 $sip->disconnect();
-                return new PEAR_Error('sip2_login_failed');
+                return $this->handleError($patron, 'SIP2 login failed');
             }
         } else {
-            return new PEAR_Error('sip2_connection_error');
+            return $this->handleError($patron, 'SIP2 connection error');
         }
+    }
+
+    /**
+     * Handle SIP2 error.
+     *
+     * @param string $patron Patron's Catalog username (barcode)
+     * @param string $error  Error message.
+     *
+     * @return PEAR_Error error
+     * @access public
+     */
+    protected function handleError($patron, $error) 
+    {
+        $patron 
+            = isset($patron['cat_username']) 
+            ? $patron['cat_username'] 
+            : $patron
+        ;
+        error_log("SIP2 payment error: $error");
+        error_log("   patron: $patron");
+        return new PEAR_Error('online_payment_registration_failed');
     }
 }
 

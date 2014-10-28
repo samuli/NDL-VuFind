@@ -1,6 +1,6 @@
 <?php
 /**
- * Factory class for constructing webpayment modules.
+ * Factory class for constructing online payment modules.
  *
  * PHP version 5
  *
@@ -20,52 +20,52 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * @category VuFind
- * @package  Webpayment
+ * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_authentication_handler Wiki
  */
 
-require_once 'UnknownWebpaymentHandlerException.php';
+require_once 'UnknownOnlinePaymentHandlerException.php';
 
 /**
- * Factory class for constructing webpayment modules.
+ * Factory class for constructing online payment modules.
  *
  * @category VuFind
- * @package  Webpayment
+ * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_authentication_handler Wiki
  */
-class WebpaymentFactory
+class OnlinePaymentFactory
 {
     /**
-     * Initialize a webpayment module.
+     * Initialize a online payment module.
      *
-     * @param string $webpaymentHandler The name of the module to initialize
-     * @param mixed  $configuration     Hash array containing webpayment module
+     * @param string $paymentHandler The name of the module to initialize
+     * @param mixed  $configuration  Hash array containing OnlinePayment module
      * configuration as key-value pairs, or filename of the file containing
      * the configuration
      *
-     * @return object Webpayment module
+     * @return object OnlinePayment module
      * @access public
      */
-    static function initWebpayment($webpaymentHandler, $configuration
+    static function initOnlinePayment($paymentHandler, $configuration
     ) {
         // Build the class name and filename.  Use basename on the filename just
         // to ensure nothing weird can happen if bad values are passed through.
-        $handler = $webpaymentHandler;
+        $handler = $paymentHandler;
         $filename = basename($handler . '.php');
 
         // Load up the handler if a legal name has been supplied.
-        if (!empty($webpaymentHandler)
+        if (!empty($paymentHandler)
             && file_exists(dirname(__FILE__) . '/' . $filename)
         ) {
             include_once $filename;
             return new $handler($configuration);
         } else {
-            throw new UnknownWebpaymentHanderException(
-                'Webpayment handler ' . $webpaymentHandler . ' does not exist!'
+            throw new UnknownOnlinePaymentHanderException(
+                'Online payment handler ' . $paymentHandler . ' does not exist!'
             );
         }
     }

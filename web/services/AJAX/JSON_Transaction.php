@@ -1,6 +1,6 @@
 <?php
 /**
- * JSON handler for webpayment transactions
+ * JSON handler for online payment transactions
  *
  * PHP version 5
  *
@@ -31,7 +31,7 @@ require_once 'services/MyResearch/lib/Transaction.php';
 require_once 'JSON.php';
 
 /**
- * JSON webpayment transaction handler
+ * JSON online payment transaction handler
  *
  * @category VuFind
  * @package  Controller_MyResearch

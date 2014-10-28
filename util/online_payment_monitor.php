@@ -1,6 +1,6 @@
 <?php
 /**
- * Webpayment Monitor script
+ * OnlinePayment Monitor script
  *
  * PHP version 5
  *
@@ -39,17 +39,17 @@ require_once 'sys/Translator.php';
 require_once 'sys/User.php';
 
 /**
- * Webpayment monitor. Validates unregistered webpayment transactions.
+ * Online payment monitor. Validates unregistered online payment transactions.
  *
  * @category VuFind
- * @package  Webpayment
+ * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
  *
  * Takes the following parameters on command line:
  *
- * php webpayment_monitor.php expire_hours main_directory internal_email customer_email
+ * php online_payment_monitor.php expire_hours main_directory internal_email customer_email
  *
  *   expire_hours      Number of days before considering unregistered
  *                     transaction to be an expired one
@@ -58,7 +58,7 @@ require_once 'sys/User.php';
  *   internal_email    Email address for internal error reporting
  *
  */
-class WebpaymentMonitor extends ReminderTask
+class OnlinePaymentMonitor extends ReminderTask
 {
 
     protected $expireHours;
@@ -90,7 +90,7 @@ class WebpaymentMonitor extends ReminderTask
      */
     public function process()
     {
-        $this->msg("Webpayment monitor started");
+        $this->msg("OnlinePayment monitor started");
 
         global $configArray;
         global $interface;
@@ -189,12 +189,12 @@ class WebpaymentMonitor extends ReminderTask
         foreach ($expired as $driver => $cnt) {
             if ($cnt) {
                 $settings = getExtraConfigArray("VoyagerRestful_$driver");
-                if (!$settings || !isset($settings['Webpayment']['errorEmail'])) {
+                if (!$settings || !isset($settings['OnlinePayment']['errorEmail'])) {
                     $this->err("  Error email for expired transactions not defined for driver $driver ($cnt expired transactions)");
                     continue;
                 }
 
-                $email = $settings['Webpayment']['errorEmail'];
+                $email = $settings['OnlinePayment']['errorEmail'];
                 $this->msg("  [$driver] Inform $cnt expired transactions for driver $driver to $email");
 
                 $mailer = new VuFindMailer();
@@ -203,7 +203,7 @@ class WebpaymentMonitor extends ReminderTask
 
                 $interface->assign('driver', $driver);
                 $interface->assign('cnt', $cnt);
-                $msg = $interface->fetch('MyResearch/webpayment-error.tpl');
+                $msg = $interface->fetch('MyResearch/online-payment-error.tpl');
 
                 if (!$result = $mailer->send($email, $from, $subject, $msg)) {
                     $this->err("    Failed to send error email to customer: $email");
@@ -211,16 +211,16 @@ class WebpaymentMonitor extends ReminderTask
             }
         }
 
-        $this->msg("Webpayment monitor completed");
+        $this->msg("OnlinePayment monitor completed");
         $this->reportErrors();
     }
 }
 
 if (count($argv) < 4) {
-    exit("Usage: php webpayment_monitor.php expire_hours main_directory internal_error_email" . PHP_EOL);
+    exit("Usage: php online_payment_monitori.php expire_hours main_directory internal_error_email" . PHP_EOL);
 }
 
-$monitor = new WebpaymentMonitor(
+$monitor = new OnlinePaymentMonitor(
     $argv[1],
     $argv[2],
     $argv[3]

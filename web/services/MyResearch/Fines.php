@@ -26,11 +26,13 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
+
+require_once 'CatalogConnection.php';
 require_once 'services/MyResearch/MyResearch.php';
 require_once 'services/MyResearch/lib/Transaction.php';
 require_once 'sys/PaymentRegister/PaymentRegisterFactory.php';
-require_once 'sys/Webpayment/WebpaymentFactory.php';
-require_once 'sys/Webpayment/Paytrail_Module_Rest.php';
+require_once 'sys/OnlinePayment/OnlinePaymentFactory.php';
+require_once 'sys/OnlinePayment/Paytrail_Module_Rest.php';
 
 /**
  * Fines action for MyResearch module
@@ -70,24 +72,26 @@ class Fines extends MyResearch
                 $this->handleCatalogError($patron);
             } else {
                 $fines = $this->catalog->getMyFines($patron);
-                $config = $this->catalog->getConfig('Webpayment');                
+                $config = $this->catalog->getConfig('OnlinePayment');
 
-                if ($config && $this->catalog->isWebpaymentEnabled($patron)) {
-                    $finesAmount = $this->catalog->driver->getWebpaymentPayableAmount($patron);
-                    $interface->assign('payableSum', $finesAmount);
-
-                    $config = $this->catalog->getConfig('Webpayment');                
+                if ($config && $config['enabled']) {
+                    $finesAmount = $this->catalog->driver->getOnlinePayableAmount($patron);
 
                     $transactionFee = $config['transactionFee'];
                     $minimumFee = $config['minimumFee'];
 
                     $interface->assign('transactionFee', $transactionFee);
                     $interface->assign('minimumFee', $minimumFee);
+                    if (is_numeric($finesAmount)) {
+                        $interface->assign('payableSum', $finesAmount);
+                    }
 
-                    $paymentHandler = $this->catalog->getWebpaymentHandler($patron);
+                    $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patron);
                     $paymentPermitted = false;
 
                     if ($paymentHandler) {
+                        $interface->assign('onlinePaymentEnabled', true);                            
+
                         $t = new Transaction();                    
                         $transactionMaxDuration = 
                             isset($config['transactionMaxDuration'])
@@ -98,12 +102,9 @@ class Fines extends MyResearch
                         // Check if there is a payment in progress or if the user has unregistered payments
                         $paymentPermittedForUser = $t->isPaymentPermitted($patron, $transactionMaxDuration);
 
-                        // Check if payment of current fees is allowed
-                        $finesPayable = $this->catalog->permitWebpayment($patron);
-
                         if (isset($_REQUEST['pay']) && $_REQUEST['pay'] 
-                            && $finesPayable === true
-                            && isset($_SESSION['webpayment'])
+                            && is_numeric($finesAmount)
+                            && isset($_SESSION['onlinePayment'])
                         ) {
                             // Payment started, check that fee list has not been updated
                             if ($this->checkIfFinesUpdated($patron, $fines)) {
@@ -127,7 +128,7 @@ class Fines extends MyResearch
                             // Payment response received. Display page and process via AJAX.
                             $interface->assign('registerPayment', true);
                         } else {
-                            $allowPayment = ($paymentPermittedForUser === true) && ($finesPayable === true);
+                            $allowPayment = $paymentPermittedForUser === true && is_numeric($finesAmount);
 
                             // Display possible warning and store fines to session.
                             $interface->assign('paymentBlocked', !$allowPayment);
@@ -137,11 +138,11 @@ class Fines extends MyResearch
                                     $info = translate($paymentPermittedForUser);
                                 }
 
-                                if ($finesPayable !== true) {
-                                    if ($finesPayable === 'webpayment_minimum_fee') {
+                                if (!is_numeric($finesAmount)) {
+                                    if ($finesAmount === 'online_payment_minimum_fee') {
                                         $interface->assign('paymentNotPermittedMinimumFee', true);
                                     }
-                                    $info = translate($finesPayable);
+                                    $info = translate($finesAmount);
                                 }
                                 $interface->assign('paymentNotPermittedInfo', $info);                                
                             }
@@ -156,9 +157,9 @@ class Fines extends MyResearch
                             // Store current fines to session 
                             $this->storeFines($patron, $fines);
 
-                            $interface->assign('transactionSessionId', $_SESSION['webpayment']['sessionId']); 
-                            $interface->assign('webpaymentEnabled', true);                            
-                            $interface->assign('webpaymentForm', "MyResearch/webpayment-" . $paymentHandler->getName() . '.tpl');
+                            $interface->assign('transactionSessionId', $_SESSION['onlinePayment']['sessionId']); 
+                            $interface->assign('onlinePaymentEnabled', true);                            
+                            $interface->assign('onlinePaymentForm', "MyResearch/online-payment-" . $paymentHandler->getName() . '.tpl');
                         }
                     }
                 }
@@ -216,8 +217,9 @@ class Fines extends MyResearch
                 $error = true;
                 $this->handleCatalogError($patron);
             } else {
-                if ($this->catalog->isWebpaymentEnabled($patron)) {
-                    $paymentHandler = $this->catalog->getWebpaymentHandler($patron);
+                $config = $this->catalog->getConfig('OnlinePayment');
+                if ($config && $config['enabled']) {
+                    $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patron);
                     $res = $paymentHandler->processResponse(
                         $patron['cat_username'], 
                         $params
@@ -244,8 +246,8 @@ class Fines extends MyResearch
                             }
 
                             $interface->assign('paidFines', $paidFines);
-                            $msg = '<p>' . translate('webpayment_successful') . '</p>';
-                            $msg .= $interface->fetch('MyResearch/webpayment-fines-paid.tpl');
+                            $msg = '<p>' . translate('online_payment_successful') . '</p>';
+                            $msg .= $interface->fetch('MyResearch/online-payment-fines-paid.tpl');
                         } else {
                             $t = new Transaction();
                             if (!$t->setTransactionRegistrationFailed($res['transactionId'], $paidRes)) {
@@ -255,7 +257,6 @@ class Fines extends MyResearch
                             $error = true;
                             $msg = '<ul>';
                             $msg .= translate($paidRes);
-                            $msg .= '<li>' . translate('webpayment_registration_failed') . '</li>';
                             $msg .= '</ul>';
                         }
                     } else {
@@ -287,10 +288,10 @@ class Fines extends MyResearch
      */
     protected function checkIfFinesUpdated($patron, $fines)
     {
-        return !isset($_SESSION['webpayment'])
+        return !isset($_SESSION['onlinePayment'])
             || $_REQUEST['sessionId'] !== $this->generateFingerprint($patron)
-            || $_SESSION['webpayment']['sessionId'] !== $this->generateFingerprint($patron)
-            || $_SESSION['webpayment']['fines'] !== $this->generateFingerprint($fines)
+            || $_SESSION['onlinePayment']['sessionId'] !== $this->generateFingerprint($patron)
+            || $_SESSION['onlinePayment']['fines'] !== $this->generateFingerprint($fines)
         ;
     }
 
@@ -305,8 +306,10 @@ class Fines extends MyResearch
      */
     protected function storeFines($patron, $fines)
     {
-        $_SESSION['webpayment'] = array('sessionId' => $this->generateFingerprint($patron),
-                                        'fines' => $this->generateFingerprint($fines));
+        $_SESSION['onlinePayment'] = array(
+            'sessionId' => $this->generateFingerprint($patron),
+            'fines' => $this->generateFingerprint($fines)
+        );
     } 
 
     /**
