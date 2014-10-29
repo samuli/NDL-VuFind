@@ -905,6 +905,14 @@ class AxiellWebServices implements DriverInterface
                     );
                 }
             }
+            
+            // Sort the location list
+            $location = array();
+            foreach ($locationsList as $key => $row) {
+                $location[$key] = $row['locationDisplay'];
+            }
+            array_multisort($location, SORT_REGULAR, $locationsList);
+            
             return $locationsList;
 
         } catch (Exception $e) {
