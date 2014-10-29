@@ -1421,6 +1421,3 @@ class AxiellWebServices implements DriverInterface
 }
 
 
-?>
-
-
