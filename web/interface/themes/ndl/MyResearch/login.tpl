@@ -23,12 +23,12 @@
   {if $message && $message != 'You must be logged in first'}<div class="error" id="errormessage">{$message|translate}</div>{/if}
   <div class="grid_14">
    <p class="loginInfo">{translate text="Login information"}</p>
-  </div>
 
   {* NDLBlankInclude *}
   {include file='Additions/login-more.tpl'}
   {* /NDLBlankInclude *}
 
+  </div>
   <div class="clear"></div>
 
   {if $sessionInitiator}
