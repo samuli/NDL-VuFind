@@ -1068,7 +1068,7 @@ class MultiBackend implements DriverInterface
         }
         return '';
     }
-    
+
     /**
      * Get record source driver
      *
@@ -1076,11 +1076,47 @@ class MultiBackend implements DriverInterface
      *
      * @return string Driver
      */
-    public function getSourceDriver($id) {
+    public function getSourceDriver($id)
+    {
         $source = $this->getSource($id);
         $config = $this->config;
         if (isset($config[$source]) && isset($config[$source]['driver'])) {
             return $config[$source]['driver'];
+        }
+    }
+
+    /**
+     * Set patron phone number
+     *
+     * @param array $patron Patron array
+     *
+     * @return array
+     */
+    public function setPhoneNumber($patron) 
+    {
+        $source = $this->getSource($patron['id']);
+        $driver = $this->getDriver($source);
+        if (!PEAR::isError($driver) && is_callable(array($driver, 'setPhoneNumber'))) {
+            $patron = $this->stripIdPrefixes($patron, $source);
+            return $driver->setPhoneNumber($patron);
+        }
+    }
+
+    /**
+     * Set patron email address
+     *
+     * @param array  $patron Patron array
+     * @param string $email  Email address
+     *
+     * @return array
+     */
+    public function setEmailAddress($patron, $email) 
+    {
+        $source = $this->getSource($patron['id']);
+        $driver = $this->getDriver($source);
+        if (!PEAR::isError($driver) && is_callable(array($driver, 'setEmailAddress'))) {
+            $patron = $this->stripIdPrefixes($patron, $source);
+            return $driver->setEmailAddress($patron, $email);
         }
     }
 

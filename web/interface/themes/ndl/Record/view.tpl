@@ -292,6 +292,11 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           <a id="componentstab" href="{$url}/Record/{$id|escape:"url"}/ComponentParts{if $dynamicTabs}?subPage=1{/if}#tabnav" class="first"><span></span>{translate text='Contents/Parts'}</a>
         </li>
         {/if}
+		{if $hasHierarchyTree}
+          <li{if $tab == 'Hierarchytree'} class="active"{/if}>
+            <a id="hierarchytab" href="{$url}/Record/{$id|escape:"url"}/HierarchyTree{if $dynamicTabs}?subPage=1{/if}#tabnav" class="first"><span></span>{translate text='hierarchy_tree'}</a>
+          </li>
+        {/if}
         {if $userCommentsEnabled}
         <li{if $tab == 'UserComments'} class="active"{/if}>
           <a id="commentstab" href="{$url}/Record/{$id|escape:"url"}/UserComments{if $dynamicTabs}?subPage=1{/if}#tabnav">{if $ratings}{translate text='Ratings'}{else}{translate text='Comments'}{/if} (<span id="commentCount">{$commentCount}</span>)</a>
@@ -306,11 +311,6 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         <li{if $tab == 'Excerpt'} class="active"{/if}>
           <a id="excerpttab" href="{$url}/Record/{$id|escape:"url"}/Excerpt{if $dynamicTabs}?subPage=1{/if}#tabnav">{translate text='Excerpt'}</a>
         </li>
-        {/if}
-        {if $hasHierarchyTree}
-          <li{if $tab == 'Hierarchytree'} class="active"{/if}>
-            <a id="hierarchytab" href="{$url}/Record/{$id|escape:"url"}/HierarchyTree{if $dynamicTabs}?subPage=1{/if}#tabnav" class="first"><span></span>{translate text='hierarchy_tree'}</a>
-          </li>
         {/if}
         {if $hasMap}
           <li{if $tab == 'Map'} class="active"{/if}>

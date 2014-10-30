@@ -1,21 +1,57 @@
 $(document).ready(function() {
     checkSaveStatuses();
     // attach click event to the save record link
-    $('a.saveRecord').unbind('click').click(function(e) {
+    $('a.saveRecord, a.saveMetaLibRecord, a.savePCIRecord').unbind('click').click(function(e) {
+        var module = 'Record';
+        if ($(this).hasClass('saveMetaLibRecord')) {
+            module = 'MetaLib';
+        } else if ($(this).hasClass('savePCIRecord')) {
+            module = 'PCI';
+        }
+        var favContainer = $(this).parent();
         var id = this.id.substr('saveRecord'.length);
-        var $dialog = getLightbox('Record', 'Save', id, null, this.title, 'Record', 'Save', id);
+        var title = this.title;
+        var idWithoutDots = id.replace(/\./g, '');
+      
+        if (listList.length > 0) {
+            if (favContainer.find('.dropdown').length == 0) {
+                // create the menu based on the listList array
+                var listMenu = '<form class="addToFavoritesSelector"><select id="favSelector' + idWithoutDots + '" class="styledDropdowns">';
+                for (var i = 0; i < listList.length; i++) {
+                    listMenu += '<option value="' + listList[i][0] + '">' + listList[i][1] + '</option>';
+                }
+                listMenu += '</select></form>';
+                favContainer.prepend(listMenu);
+
+                // initialize NDL customizations
+                createDropdowns();
+                initDropdowns();
+                
+                // hide the menu button
+                favContainer.find('dt a').hide();
+            }
+            
+
+            // close all other dropdowns
+            $(".dropdown").trigger("toggle", false);
+            // open the menu
+            favContainer.find('.dropdown').trigger("toggle", true);
+            
+            favContainer.find('li').unbind('click').click(function(e) {
+                var listId = $(this).find('.value').text();
+                var postparams = { list: listId };
+                var $dialog = getLightbox(module, 'Save', id, null, title, module, 'Save', id, postparams);
+            });
+            
+            // we have to stop propagation; otherwise the document click in dropdown.js
+            // closes the menu we have just opened
+            e.stopPropagation();
+        } else {
+            var $dialog = getLightbox(module, 'Save', id, null, title, module, 'Save', id);
+        }
+      
         e.preventDefault();
-    });    
-    $('a.saveMetaLibRecord').unbind('click').click(function(e) {
-        var id = this.id.substr('saveRecord'.length);
-        var $dialog = getLightbox('MetaLib', 'Save', id, null, this.title, 'MetaLib', 'Save', id);
-        e.preventDefault();
-    });    
-    $('a.savePCIRecord').unbind('click').click(function(e) {
-        var id = this.id.substr('saveRecord'.length);
-        var $dialog = getLightbox('PCI', 'Save', id, null, this.title, 'PCI', 'Save', id);
-        e.preventDefault();
-    });    
+    });
 });
 
 function checkSaveStatuses() {

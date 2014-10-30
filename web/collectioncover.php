@@ -86,9 +86,9 @@ function fetchFromTitle($title, $size)
     if (count($collections) > 1 || count($collections) == 0) {
         return false;
     }
-    
+
     $id = $collections[0]['id'];
-	//print_r($id);
+
     // Load local cache if available
     //header('Content-type: text/html');
     //return true;
@@ -96,10 +96,10 @@ function fetchFromTitle($title, $size)
     if ($id) {
         $localFile = 'images/collection_covers/' . $size . '/' . $id . '.jpg';
     } else {
-    	return false;
+        return false;
     }
-    
-    $maxAge = isset($configArray['Content']['covercachetime']) ? $configArray['Content']['covercachetime'] : 1440; 
+
+    $maxAge = isset($configArray['Content']['covercachetime']) ? $configArray['Content']['covercachetime'] : 1440;
     if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
         // Load local cache if available
         header('Content-type: image/jpeg');
