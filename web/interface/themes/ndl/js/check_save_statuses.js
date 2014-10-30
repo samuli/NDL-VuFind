@@ -16,11 +16,18 @@ $(document).ready(function() {
         if (listList.length > 0) {
             if (favContainer.find('.dropdown').length == 0) {
                 // create the menu based on the listList array
-                var listMenu = '<form class="addToFavoritesSelector"><select id="favSelector' + idWithoutDots + '" class="styledDropdowns">';
+                var listMenu = document.createElement('form');
+                $(listMenu).addClass('addToFavoritesSelector')
+                var listMenuSelect = document.createElement('select');
+                $(listMenuSelect).addClass('styledDropdowns')
+                    .prop('id', 'favSelector' + idWithoutDots);
                 for (var i = 0; i < listList.length; i++) {
-                    listMenu += '<option value="' + listList[i][0] + '">' + listList[i][1] + '</option>';
+                    var option = document.createElement('option');
+                    $(option).val(listList[i][0])
+                        .text(listList[i][1])
+                        .appendTo(listMenuSelect);
                 }
-                listMenu += '</select></form>';
+                $(listMenuSelect).appendTo(listMenu);
                 favContainer.prepend(listMenu);
 
                 // initialize NDL customizations
@@ -73,9 +80,12 @@ function checkSaveStatuses() {
                             $container.append('<ul></ul>');
                             $ul = $container.children('ul:first');
                         }
-                        var html = '<li><a href="' + path + '/MyResearch/MyList/' + result.list_id + '">' 
-                                 + result.list_title + '</a></li>';
-                        $ul.append(html);
+                        var li = document.createElement('li');
+                        var a = document.createElement('a');
+                        $(a).prop('href', path + '/MyResearch/MyList/' + result.list_id)
+                                .text(result.list_title);
+                        $(a).appendTo(li);
+                        $(li).appendTo($ul);
                         $container.show();
                     });
                 }
