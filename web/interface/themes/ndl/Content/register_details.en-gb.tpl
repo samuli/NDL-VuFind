@@ -13,13 +13,13 @@ P.O. Box 26 (Teollisuuskatu 23)<br />
 Phone: 09 1911</p>
 
 <p><strong>Data file contact person:</strong><br />
-Aki Lassila, Head of Development<br />
+Erkki Tolonen, Head of Development<br />
 Library Network Services<br />
 National Library of Finland<br />
 P.O. Box 26 (Teollisuuskatu 23)<br />
 00014 University of Helsinki<br />
-Phone: 09 1911<br />
-Email: aki.lassila(at)helsinki.fi</p>
+Phone: 050 576 2869<br />
+Email: erkki.tolonen(at)helsinki.fi</p>
 
 <p><strong>Regular sources of data:</strong><br />
 Personal information is received from the registers of the clients’ home organisations. For personalised functions, the information must be recorded by the user.</p>
