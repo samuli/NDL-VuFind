@@ -1946,6 +1946,7 @@ fieldset.publishDateLimit .ui-slider {
   clear:both;
   margin-bottom:8px;
   padding: 0 5px 0 0;
+  margin-top: 1px;
 }
 
 .myResearch .myResearchTitle input[type="text"] {
@@ -1975,7 +1976,7 @@ fieldset.publishDateLimit .ui-slider {
 }
 
 .listDescription.dynamicInput.ready {
-    height:20px;
+    height:auto;
 }
 
 .listDescription > div {
