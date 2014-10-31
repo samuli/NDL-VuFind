@@ -18,8 +18,8 @@ Biblioteksnättjänster<br />
 Nationalbiblioteket<br />
 PB 26 (Industrigatan 23)<br />
 00014 Helsingfors universitet<br />
-Tfn 09 1911<br />
-E-post: aki.lassila(at)helsinki.fi</p>
+Tfn 050 576 2869<br />
+E-post: erkki.tolonen(at)helsinki.fi</p>
 
 <p><strong>Regelmässiga informationskällor:</strong><br />
 Personuppgifterna fås från kundernas hemorganisationers kundregister. Användarna sparar själva de uppgifter som behövs för de individualiserade funktionerna.</p>
