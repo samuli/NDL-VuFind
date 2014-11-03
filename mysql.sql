@@ -190,11 +190,11 @@ CREATE TABLE `due_date_reminder` (
 
 CREATE TABLE `fee` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `title` varchar(255) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
-  `type` varchar(50) COLLATE utf8_swedish_ci NOT NULL DEFAULT '',
+  `user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(255) NOT NULL DEFAULT '',
   `amount` float NOT NULL DEFAULT '0',
-  `currency` varchar(3) COLLATE utf8_swedish_ci NOT NULL DEFAULT 'EUR',
+  `currency` varchar(3) NOT NULL DEFAULT 'EUR',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `fee_ibfk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
