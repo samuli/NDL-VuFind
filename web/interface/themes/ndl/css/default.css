@@ -3071,7 +3071,7 @@ ul.recordSet .result.ajax_availability_browse {
     margin: 0;
 }
 #dualResults .dualListHeader #panelToggle {
-    padding-right: 22px;
+    padding-right: 32px;
 }
 #dualResults .dualListHeader #dualListHeaderPanel {
     display: block;
@@ -3473,6 +3473,9 @@ dl.defaultFacet dd {
 }
 #main .noResultHeader {
     margin-bottom: 0;
+}
+.no-hits #sidebarFacets, .no-hits #resultList {
+	margin-top:25px;	
 }
 .newItem .header,
 #main .contentHeader h1,
@@ -6106,7 +6109,8 @@ div.module-PCI .advSearchSection, div.module-MetaLib .advSearchSection {
     border-bottom: 1px solid #dddddd;
 }
 .myResearch {
-    padding: 1.8em 0 1.5em 1em;
+    margin-top:25px;
+	margin-bottom:25px;
     overflow: auto;
 }
 .myResearch .resultHead h3 {
