@@ -43,7 +43,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           <div class="dynamicInput listDescription clearfix autoSubmit">
             <div data-placeholder="{translate text="Add list description"}" class="transform{if !$list->description} placeholder">{translate text="Add list description"}{else}">{$list->description|escape:"html"}{/if}</div>
             {if $listEditAllowed}<a class="icon {if !$list->description}add{else}edit{/if}" title="{if !$list->description}{translate text="Edit list description"}{else}{translate text="Add list description"}{/if}" href="#"></a>
-              <input class="hiddenElement" type="text" name="description_change" value="" />{/if}
+              <textarea class="hiddenElement" rows="2" cols="50" type="text" name="description_change" value=""></textarea>{/if}
           </div>
         {else}
           <h2>{translate text='Your Favorites'}</h2>  
