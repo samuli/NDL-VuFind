@@ -1322,12 +1322,6 @@ abstract class SearchObject_Base
         $oldLimit = $this->limit;
         // Add the new view
         $this->view = $newView;
-        // Set grid default limit to 100
-        if ($newView == 'grid') {
-            $this->limit = 100;
-        } else {
-            $this->limit = null;
-        }
         // Get the new url
         $url = $this->renderSearchUrl();
         // Restore the old data
