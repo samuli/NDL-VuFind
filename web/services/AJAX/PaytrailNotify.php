@@ -1,7 +1,7 @@
 <?php
 /**
- * JSON handler for online payment transactions
- *
+ * PaytrailNotify action.
+n *
  * PHP version 5
  *
  * Copyright (C) The National Library of Finland 2014.
@@ -22,45 +22,46 @@
  * @category VuFind
  * @package  Controller_MyResearch
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
+ * @link     http://docs.paytrail.com/ Paytrial API docoumentation
  */
 
 require_once 'services/MyResearch/Fines.php';
-require_once 'services/MyResearch/lib/Transaction.php';
-require_once 'JSON.php';
 
 /**
- * JSON online payment transaction handler
+ * PaytrailNotify action.
+ *
+ * This is used to handle Paytrail's notify requests (see Paytrail API
+ * documentation for details).
  *
  * @category VuFind
  * @package  Controller_MyResearch
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
+ * @link     http://docs.paytrail.com/ Paytrial API docoumentation
  */
-class JSON_Transaction extends JSON
+class PaytrailNotify extends Action
 {
     /**
-     * Register payment provided in the request.
+     * Process incoming Paytrail notify request.
+     * This should not be accessed by user.
      *
      * @return void
      * @access public
      */
-    public function registerPayment()
-    {        
-        unset($_SESSION['no_store']);
-        
-        $fines = new Fines();
-        $res = $fines->processPayment($_REQUEST['url']);
-        if ($res['success']) {
-            $this->output(
-                '',  JSON::STATUS_OK
-            );
-        } else {
-            $this->output(
-                $res['msg'],  JSON::STATUS_ERROR
-            );
+    public function launch()
+    {
+        $fines = new Fines(true);
+        $res = $fines->processPayment($_SERVER["REQUEST_URI"], false);
+        if (!$res['success']) {
+            error_log('PaytrailNotify error: ' . $_SERVER["REQUEST_URI"]);
+            if (isset($res['msg'])) {
+                error_log('   ' . $res['msg']);
+            }
         }
     }
 }

@@ -29,6 +29,7 @@
 require_once 'Interface.php';
 require_once 'sys/Proxy_Request.php';
 require_once 'sys/VuFindDate.php';
+require_once 'sys/SIP2.php';
 
 /**
  * Voyager ILS Driver
@@ -1444,11 +1445,15 @@ class Voyager implements DriverInterface
      */
     protected function markOnlinePayableFines($fines)
     {
+        $accruedType = 'Accrued Fine';
+
         $nonPayable = isset($this->config['OnlinePayment']['nonPayable'])
             ? $this->config['OnlinePayment']['nonPayable']
             : array()
         ;
-        
+        // Voyager's SIP module does not support paying accrued fines
+        $nonPayable[] = $accruedType;
+
         foreach ($fines as &$fine) {
             $payableOnline = true;
             if (isset($fine['fine'])) {
@@ -1456,6 +1461,7 @@ class Voyager implements DriverInterface
                     $payableOnline = false;
                 }
             }
+            $fine['accruedFine'] = ($fine['fine'] === $accruedType);
             $fine['payableOnline'] = $payableOnline;
         }
 
@@ -1505,40 +1511,94 @@ class Voyager implements DriverInterface
      *
      * This is called after a successful online payment.
      *
-     * @param array $patron The patron array from patronLogin
-     * @param int   $amount Amount to be registered as payed.
+     * @param string $patronId Patron's Catalog username (barcode).
+     * @param int    $amount   Amount to be registered as paid.
      *
-     * @return mixed true if successfull, false if payment register could 
-     * not be inited, or PEAR_Error if registering failed.
+     * @return mixed true if successfull, or PEAR_Error if registering failed.
      * @access public
      */
-    public function markFeesAsPaid($patron, $amount)
+    public function markFeesAsPaid($patronId, $amount)
     {
-        $register = $this->config['OnlinePayment']['registrationMethod'];
-        $registerParams = 
-            isset($this->config['OnlinePayment']['registrationParams'])
+        $params 
+            = isset($this->config['OnlinePayment']['registrationParams'])
             ? $this->config['OnlinePayment']['registrationParams']
             : array()
         ;
+        
+        $required = array('host', 'port', 'userId', 'password', 'locationCode');
+        foreach ($required as $req) {
+            if (!isset($params[$req])) {
+                error_log("Missing SIP2 parameter $req");
+                return new PEAR_Error('online_payment_registration_failed');
+            }
+        }
 
-        $paymentRegister = PaymentRegisterFactory::initPaymentRegister($register, $registerParams);
+        $currency = $this->config['OnlinePayment']['currency'];
 
-        if (!$paymentRegister) {
-            return false;
+        $errFun = function($patronId, $error) {
+            error_log("SIP2 payment error: $error");
+            error_log("   patron: $patronId");
+            return new PEAR_Error('online_payment_registration_failed');
+        };
+
+        
+        $sip = new sip2;
+        $sip->error_detection = false; 
+        $sip->msgTerminator = "\r";    
+        $sip->hostname = $params['host'];
+        $sip->port = $params['port'];
+        $sip->AO = '';
+
+        if ($sip->connect()) {
+            $sip->scLocation = $params['locationCode'];
+            $sip->UIDalgorithm = 0; 
+            $sip->PWDalgorithm = 0;
+            $login_msg = $sip->msgLogin(
+                $params['userId'], $params['password']
+            );
+            $login_response = $sip->get_message($login_msg);
+            if (preg_match("/^94/", $login_response)) {
+                $login_result = $sip->parseLoginResponse($login_response);
+                if ($login_result['fixed']['Ok'] == '1') {
+                    list($catSource, $catUsername) = explode('.', $patronId, 2);
+                    if (!empty($catUsername)) {
+                        $sip->patron = $catUsername;
+                    } else {
+                        $sip->patron = $patronId;
+                    }
+                    $feepaid_msg = $sip->msgFeePaid(1, 0, $amount/100.00, $currency);
+                    $feepaid_response = $sip->get_message($feepaid_msg);
+                    if (preg_match("/^38/", $feepaid_response)) {
+                        $feepaid_result
+                            = $sip->parseFeePaidResponse($feepaid_response);
+                        if ($feepaid_result['fixed']['PaymentAccepted'] == 'Y') {
+                            $sip->disconnect();
+                            return true;
+                        } else {
+                            $sip->disconnect();
+                            return $errFun($patronId, 'payment rejected');
+                        }
+                    } else {
+                        $sip->disconnect();
+                        return $errFun($patronId, 'payment failed');
+                    }
+                } else {
+                    $sip->disconnect();
+                    return $errFun($patronId, 'login failed');
+                }
+            } else {
+                $sip->disconnect();
+                return $errFun($patronId, 'login failed');
+            }
+        } else {
+            return $errFun($patronId, 'connection error');
         }
         
-        $currency = $this->config['OnlinePayment']['currency'];
-        $registered = $paymentRegister->register($patron['cat_username'], $amount, $currency);
-        if (PEAR::isError($registered)) {
-            $error = $registered->getMessage();                    
-            return $error;
-        } else {
-            return true;        
-        } 
+        return true;
     }
 
     /**
-     * Return total amount of fees that may be payed online.
+     * Return total amount of fees that may be paid online.
      *
      * @param array $patron The patron array from patronLogin
      *
@@ -1551,17 +1611,19 @@ class Voyager implements DriverInterface
     public function getOnlinePayableAmount($patron)
     {
         $fines = $this->getMyFines($patron);
-
+        
         if (!PEAR::isError($fines)) {
-            $amount = 0;
+            $amount = 0;            
             foreach ($fines as $fine) {
-                if (!$fine['payableOnline']) {
+                if (!$fine['payableOnline'] && !$fine['accruedFine']) {
                     return 'online_payment_fines_contain_nonpayable_fees';
                 }
-                $amount += $fine['balance']/100.0;                
+                if (!$fine['accruedFine']) {
+                    $amount += $fine['balance'];
+                }                
             }
 
-            if ($amount < $this->config['OnlinePayment']['minimumFee']) {
+            if ($amount/100.00 < $this->config['OnlinePayment']['minimumFee']) {
                 return 'online_payment_minimum_fee';
             }
             return $amount;

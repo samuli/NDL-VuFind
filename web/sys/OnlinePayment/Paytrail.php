@@ -29,6 +29,7 @@
  */
 
 require_once 'sys/OnlinePayment/Interface.php';
+require_once 'sys/OnlinePayment/Paytrail_Module_Rest.php';
 require_once 'services/MyResearch/lib/Transaction.php';
 
 /**
@@ -74,21 +75,13 @@ class Paytrail implements OnlinePaymentInterface
         return 'Paytrail';
     }
 
-    /*
-    public function getTransactionFee()
-    {
-        return isset($this->config['transactionFee'])
-            ? $this->config['transactionFee']
-            : 0
-        ;
-        }*/
-
     /**
      * Start Paytrail transaction.
      *
-     * @param string $patron         Patron's catalog username (e.g. barcode)
+     * @param string $patronId       Patron's catalog username (e.g. barcode)
      * @param float  $amount         Payment amount (without transaction fee)
      * @param float  $transactionFee Transaction fee
+     * @param array  $fines          Fines that belong to the transaction
      * @param string $currency       Currency
      * @param string $param          URL parameter that is used for payment 
      * statuses in Paytrail responses.
@@ -96,22 +89,22 @@ class Paytrail implements OnlinePaymentInterface
      * @return false on error, otherwise redirects to Paytrail.
      * @access public
      */
-    public function startPayment($patron, $amount, $transactionFee, $currency, $param)
+    public function startPayment($patronId, $amount, $transactionFee, $fines, $currency, $param)
     {
         global $configArray;
         global $user;
 
-        $base = $configArray['Site']['url'] . '/MyResearch';
+        $base = $configArray['Site']['url'];
         $urlset = new Paytrail_Module_Rest_Urlset(
-            "$base/Fines?$param=" . self::PAYMENT_SUCCESS, 
-            "$base/Fines?$param=" . self::PAYMENT_FAILURE,
-            "$base/PaytrailNotify?$param=" . self::PAYMENT_NOTIFY,
+            "$base/MyResearch/Fines?$param=" . self::PAYMENT_SUCCESS, 
+            "$base/MyResearch/Fines?$param=" . self::PAYMENT_FAILURE,
+            "$base/AJAX/PaytrailNotify?$param=" . self::PAYMENT_NOTIFY,
             ""  // pending-url not in use
         );
 
 
-        $orderNumber = $this->generateTransactionId($patron);
-        $totAmount = $amount+$transactionFee;
+        $orderNumber = $this->generateTransactionId($patronId);
+        $totAmount = ($amount+$transactionFee)/100.00;
         $payment = new Paytrail_Module_Rest_Payment_S1($orderNumber, $urlset, $totAmount);
         
         $module = $this->initPaytrail();
@@ -134,16 +127,27 @@ class Paytrail implements OnlinePaymentInterface
         $t->created = date("Y-m-d H:i:s");
         $t->complete = 0;
         $t->status = 'started';
-        $t->insert();
+        $t->cat_username = $patronId;
+
+        if (!$t->insert()) {
+            error_log('Paytrail: error creating transaction');
+            return false;
+        }
         
-        header("Location: {$result->getUrl()}");
+        foreach ($fines as $fine) {
+            if (!$t->addFee($fine, $user, $currency)) {
+                error_log('Paytrail: error adding fee to transaction.');
+                return false;
+            }
+        }
+        
+        header("Location: {$result->getUrl()}");        
     }
 
     /**
      * Process the response from Paytrail payment service.
      *
-     * @param string $patron Patron's Catalog Username (barcode)
-     * @param array  $params Response variables
+     * @param array $params Response variables
      *
      * @return string error message (not translated) 
      *   or associative array with keys:
@@ -153,7 +157,7 @@ class Paytrail implements OnlinePaymentInterface
      *     'amount' (int) Amount to be registered (does not include transaction fee).
      * @access public
      */
-    public function processResponse($patron, $params)
+    public function processResponse($params)
     {
         $status = $params['payment'];        
         $orderNum = $params['ORDER_NUMBER'];
@@ -196,7 +200,7 @@ class Paytrail implements OnlinePaymentInterface
             }
             return 'online_payment_canceled';
         } else {
-            $t->setTransactionUnknownPaymentResponse($orderNum, $timestamp, $status);
+            $t->setTransactionUnknownPaymentResponse($orderNum, $status);
         }
 
         return array('markFeesAsPaid' => $paid, 'transactionId' => $orderNum, 'amount' => $amount);
@@ -215,15 +219,13 @@ class Paytrail implements OnlinePaymentInterface
     /**
      * Generate the internal payment transaction identifer.
      *
-     * @param string $patron Patron's Catalog Username (barcode)
+     * @param string $patronId Patron's Catalog Username (barcode)
      *
      * @return string Transaction identifier
      * @access protected
      */
-    protected function generateTransactionId($patron)
+    protected function generateTransactionId($patronId)
     {
-        return $patron['cat_username'] . '_' . date("YmdHis");
+        return $patronId . '_' . date("YmdHis");
     }
 }
-
-?>

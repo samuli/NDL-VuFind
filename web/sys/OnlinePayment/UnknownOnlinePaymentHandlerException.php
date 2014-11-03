@@ -38,4 +38,3 @@
 class UnknownOnlinePaymentHandlerException extends Exception
 {
 }
-?>

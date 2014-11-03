@@ -316,11 +316,13 @@ CREATE TABLE `transaction` (
   `registered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `complete` tinyint(1) NOT NULL DEFAULT '0',
   `status` varchar(255) DEFAULT '',
+  `cat_username` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `driver` (`driver`),
   KEY `complete` (`complete`),
   KEY `paid` (`paid`),
+  KEY `cat_username` (`cat_username`),
   CONSTRAINT `transactions_ibfk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 

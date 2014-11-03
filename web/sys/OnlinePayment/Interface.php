@@ -47,10 +47,25 @@ interface OnlinePaymentInterface
     public function __construct($config);
 
     /**
+     * Start Paytrail transaction.
+     *
+     * @param string $patronId       Patron's catalog username (e.g. barcode)
+     * @param float  $amount         Payment amount (without transaction fee)
+     * @param float  $transactionFee Transaction fee
+     * @param array  $fines          Fines that belong to the transaction
+     * @param string $currency       Currency
+     * @param string $param          URL parameter that is used for payment 
+     * statuses in Paytrail responses.
+     *
+     * @return false on error, otherwise redirects to Paytrail.
+     * @access public
+     */
+    public function startPayment($patronId, $amount, $transactionFee, $fines, $currency, $param);
+
+    /**
      * Process the response from payment service.
      *
-     * @param string $patron Patron's Catalog Username (barcode)
-     * @param array  $params Response variables
+     * @param array $params Response variables
      *
      * @return string error message (not translated) 
      *   or associative array with keys:
@@ -60,8 +75,5 @@ interface OnlinePaymentInterface
      *     'amount' (int) Amount to be registered (does not include transaction fee).
      * @access public
      */
-    public function processResponse($patron, $params);
+    public function processResponse($params);
 }
-
-
-?>

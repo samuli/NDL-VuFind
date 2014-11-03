@@ -64,12 +64,9 @@ class OnlinePaymentFactory
             include_once $filename;
             return new $handler($configuration);
         } else {
-            throw new UnknownOnlinePaymentHanderException(
+            throw new UnknownOnlinePaymentHandlerException(
                 'Online payment handler ' . $paymentHandler . ' does not exist!'
             );
         }
     }
 }
-
-
-?>

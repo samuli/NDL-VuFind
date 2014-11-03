@@ -33,7 +33,6 @@ require_once 'services/MyResearch/lib/User.php';
 require_once 'sys/ConfigArray.php';
 require_once 'sys/Interface.php';
 require_once 'sys/Mailer.php';
-require_once 'sys/PaymentRegister/PaymentRegisterFactory.php';
 require_once 'sys/SearchObject/Factory.php';
 require_once 'sys/Translator.php';
 require_once 'sys/User.php';
@@ -62,6 +61,7 @@ class OnlinePaymentMonitor extends ReminderTask
 {
 
     protected $expireHours;
+    protected $fromEmail;
 
     /**
      * Constructor
@@ -71,14 +71,16 @@ class OnlinePaymentMonitor extends ReminderTask
      * @param string $mainDir           The main VuFind directory. Each web directory
      *                                  must reside under this (default: ..)
      * @param string $internalErrEmail  Email address for internal error reporting
+     * @param string $formEmail         Sender email address for notification of expired transactions.
      *
      * @return void
      */
-    function __construct($expireHours, $mainDir, $internalErrEmail)
+    function __construct($expireHours, $mainDir, $internalErrEmail, $fromEmail)
     {
         parent::__construct($mainDir, $internalErrEmail);
 
         $this->expireHours = $expireHours;
+        $this->fromEmail = $fromEmail;
     }
 
     /**
@@ -115,6 +117,7 @@ class OnlinePaymentMonitor extends ReminderTask
         // and that have not been marked as failed.
         $t = new Transaction();	
         $t->whereAdd('complete = ' . Transaction::STATUS_REGISTRATION_FAILED);
+        $t->whereAdd('paid > 0');
         $t->orderBy('user_id');
         $t->find();
 
@@ -141,9 +144,9 @@ class OnlinePaymentMonitor extends ReminderTask
                 $transaction = clone($t);              
                 $transaction->complete = Transaction::STATUS_REGISTRATION_EXPIRED;
                 if ($transaction->update($t) === false) {
-                    $this->err("    Failed to update transaction as expired.");
+                    $this->err('    Failed to update transaction ' . $t->transaction_id . 'as expired.');
                 } else {
-                    $this->msg("    Transaction expired.");
+                    $this->msg('    Transaction ' . $t->transaction_id . ' expired.');
                 }
             } else {
                 if ($user === false || $t->user_id != $user->id) {
@@ -152,20 +155,21 @@ class OnlinePaymentMonitor extends ReminderTask
 
                 $catalog = ConnectionManager::connectToCatalog();
                 if ($catalog && $catalog->status) {
-                    $res = $catalog->markFeesAsPaid((array)$user, $t->amount);
+                    $patronId = $t->cat_username;
+                    $res = $catalog->markFeesAsPaid($patronId, $t->amount);
                     if ($res === true) {
                         if (!$t->setTransactionRegistered($t->transaction_id)) {
-                            $this->err("    Failed to update transaction as registered");
+                            $this->err('    Failed to update transaction ' . $t->transaction_id . 'as registered');
                         }
                         $registeredCnt++;
                     } else {
                         $t->setTransactionRegistrationFailed($t->transaction_id, $res);
                         $failedCnt++;
-                        $this->msg("    Registration failed");
+                        $this->msg('    Registration of transaction ' . $t->transaction_id . 'failed');
                         $this->msg("      {$res}");
                     }
                 } else {
-                    $this->err("Failed to connect to catalog ({$user->cat_name})");
+                    $this->err("Failed to connect to catalog ($patronId)");
                     continue;
                 }
             }
@@ -198,14 +202,13 @@ class OnlinePaymentMonitor extends ReminderTask
                 $this->msg("  [$driver] Inform $cnt expired transactions for driver $driver to $email");
 
                 $mailer = new VuFindMailer();
-                $from = 'finna-posti@helsinki.fi';
                 $subject = "Finna: ilmoitus tietokannan $driver epäonnistuneista verkkomaksuista";
 
                 $interface->assign('driver', $driver);
                 $interface->assign('cnt', $cnt);
-                $msg = $interface->fetch('MyResearch/online-payment-error.tpl');
+                $msg = $interface->fetch('Emails/online-payment-error.tpl');
 
-                if (!$result = $mailer->send($email, $from, $subject, $msg)) {
+                if (!$result = $mailer->send($email, $this->fromEmail, $subject, $msg)) {
                     $this->err("    Failed to send error email to customer: $email");
                 }
             }
@@ -216,13 +219,14 @@ class OnlinePaymentMonitor extends ReminderTask
     }
 }
 
-if (count($argv) < 4) {
-    exit("Usage: php online_payment_monitori.php expire_hours main_directory internal_error_email" . PHP_EOL);
+if (count($argv) < 5) {
+    die("Usage: php {$argv[0]} expire_hours main_directory internal_error_email from_email" . PHP_EOL);
 }
 
 $monitor = new OnlinePaymentMonitor(
     $argv[1],
     $argv[2],
-    $argv[3]
+    $argv[3],
+    $argv[4]
 );
 $monitor->process();

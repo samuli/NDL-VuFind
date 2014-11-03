@@ -30,7 +30,7 @@
 require_once 'CatalogConnection.php';
 require_once 'services/MyResearch/MyResearch.php';
 require_once 'services/MyResearch/lib/Transaction.php';
-require_once 'sys/PaymentRegister/PaymentRegisterFactory.php';
+require_once 'services/MyResearch/lib/User.php';
 require_once 'sys/OnlinePayment/OnlinePaymentFactory.php';
 require_once 'sys/OnlinePayment/Paytrail_Module_Rest.php';
 
@@ -46,9 +46,6 @@ require_once 'sys/OnlinePayment/Paytrail_Module_Rest.php';
  */
 class Fines extends MyResearch
 {
-    // 
-    const PAYMENT_PARAM = 'payment';
-
     /**
      * Process parameters and display the page.
      *
@@ -59,7 +56,6 @@ class Fines extends MyResearch
     {
         global $configArray;
         global $interface;
-        global $finesIndexEngine;
 
         // Assign the ID of the last search so the user can return to it.
         if (isset($_SESSION['lastSearchURL'])) {
@@ -72,103 +68,13 @@ class Fines extends MyResearch
                 $this->handleCatalogError($patron);
             } else {
                 $fines = $this->catalog->getMyFines($patron);
-                $config = $this->catalog->getConfig('OnlinePayment');
-
-                if ($config && $config['enabled']) {
-                    $finesAmount = $this->catalog->driver->getOnlinePayableAmount($patron);
-
-                    $transactionFee = $config['transactionFee'];
-                    $minimumFee = $config['minimumFee'];
-
-                    $interface->assign('transactionFee', $transactionFee);
-                    $interface->assign('minimumFee', $minimumFee);
-                    if (is_numeric($finesAmount)) {
-                        $interface->assign('payableSum', $finesAmount);
-                    }
-
-                    $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patron);
-                    $paymentPermitted = false;
-
-                    if ($paymentHandler) {
-                        $interface->assign('onlinePaymentEnabled', true);                            
-
-                        $t = new Transaction();                    
-                        $transactionMaxDuration = 
-                            isset($config['transactionMaxDuration'])
-                            ? $config['transactionMaxDuration']
-                            : 30
-                        ;
-                        
-                        // Check if there is a payment in progress or if the user has unregistered payments
-                        $paymentPermittedForUser = $t->isPaymentPermitted($patron, $transactionMaxDuration);
-
-                        if (isset($_REQUEST['pay']) && $_REQUEST['pay'] 
-                            && is_numeric($finesAmount)
-                            && isset($_SESSION['onlinePayment'])
-                        ) {
-                            // Payment started, check that fee list has not been updated
-                            if ($this->checkIfFinesUpdated($patron, $fines)) {
-                                // Fines updated, redirect and show updated list.
-                                $_SESSION['payment_fines_changed'] = true;
-                                header("Location: {$configArray['Site']['url']}/MyResearch/Fines");
-                            } else {
-                                // Start payment
-                                $currency = $config['currency'];
-                                
-                                $paymentHandler->startPayment(
-                                    $patron, 
-                                    $finesAmount, 
-                                    $transactionFee, 
-                                    $currency, 
-                                    self::PAYMENT_PARAM,
-                                    $configArray['Site']['locale']
-                                );
-                            }
-                        } else if (isset($_REQUEST[self::PAYMENT_PARAM])) {                        
-                            // Payment response received. Display page and process via AJAX.
-                            $interface->assign('registerPayment', true);
-                        } else {
-                            $allowPayment = $paymentPermittedForUser === true && is_numeric($finesAmount);
-
-                            // Display possible warning and store fines to session.
-                            $interface->assign('paymentBlocked', !$allowPayment);
-                            if (count($fines) && !$allowPayment) {
-                                $info = array();
-                                if ($paymentPermittedForUser !== true) {
-                                    $info = translate($paymentPermittedForUser);
-                                }
-
-                                if (!is_numeric($finesAmount)) {
-                                    if ($finesAmount === 'online_payment_minimum_fee') {
-                                        $interface->assign('paymentNotPermittedMinimumFee', true);
-                                    }
-                                    $info = translate($finesAmount);
-                                }
-                                $interface->assign('paymentNotPermittedInfo', $info);                                
-                            }
-
-                            if (isset($_SESSION['payment_fines_changed'])
-                                && (boolean)$_SESSION['payment_fines_changed']
-                            ) {
-                                $interface->assign('paymentFinesChanged', true);
-                                unset($_SESSION['payment_fines_changed']);
-                            }
-                            
-                            // Store current fines to session 
-                            $this->storeFines($patron, $fines);
-
-                            $interface->assign('transactionSessionId', $_SESSION['onlinePayment']['sessionId']); 
-                            $interface->assign('onlinePaymentEnabled', true);                            
-                            $interface->assign('onlinePaymentForm', "MyResearch/online-payment-" . $paymentHandler->getName() . '.tpl');
-                        }
-                    }
-                }
-
                 $loans = $this->catalog->getMyTransactions($patron);
+                $sum = 0;
+                $fines = $this->processFines($fines, $loans, $sum);
+
+                $this->handleOnlinePayment($patron, $fines);
 
                 if (!PEAR::isError($fines)) {
-                    $sum = 0;
-                    $fines = $this->processFines($fines, $loans, $sum);
                     $interface->assign('rawFinesData', $fines);
                     $interface->assign('sum', $sum);
                 }
@@ -188,17 +94,140 @@ class Fines extends MyResearch
     }
 
     /**
-     * Register payment provided in the request.
-     * This is called by JSON_Transaction.
-     *
-     * @param string $request Request with parameters.
+     * Support for handling online payments.
      *
      * @return void
      * @access public
      */
-    public function processPayment($request)
+    protected function handleOnlinePayment($patron, $fines)
     {
         global $interface;
+        global $configArray;
+
+        $config = $this->catalog->getConfig('OnlinePayment');
+
+        if ($config && $config['enabled']) {
+            $finesAmount = $this->catalog->driver->getOnlinePayableAmount($patron);
+            $transactionFee = $config['transactionFee']*100.00;
+            $minimumFee = $config['minimumFee'];
+
+            $interface->assign('transactionFee', $transactionFee);
+            $interface->assign('minimumFee', $minimumFee);
+            if (is_numeric($finesAmount)) {
+                $interface->assign('payableSum', $finesAmount);
+            }
+
+            $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patron['cat_username']); 
+            $paymentPermitted = false;
+
+            if ($paymentHandler) {
+                $interface->assign('onlinePaymentEnabled', true);
+
+                $t = new Transaction();                    
+                $transactionMaxDuration 
+                    = isset($config['transactionMaxDuration'])
+                    ? $config['transactionMaxDuration']
+                    : 30
+                ;
+                        
+                // Check if there is a payment in progress or if the user has unregistered payments
+                $paymentPermittedForUser = $t->isPaymentPermitted($patron['cat_username'], $transactionMaxDuration);
+                $paymentParam = 'payment';
+
+                $filterFun = function($fine) {
+                    return $fine['payableOnline'];
+                };
+                $payableFines = array_filter($fines, $filterFun);
+
+                if (isset($_REQUEST['pay']) && $_REQUEST['pay'] 
+                    && is_numeric($finesAmount)
+                    && isset($_SESSION['onlinePayment'])
+                ) {
+                    // Payment started, check that fee list has not been updated
+                    if ($this->checkIfFinesUpdated($patron, $fines)) {
+                        // Fines updated, redirect and show updated list.
+                        $_SESSION['payment_fines_changed'] = true;
+                        header("Location: {$configArray['Site']['url']}/MyResearch/Fines");
+                    } else {
+                        // Start payment
+                        $currency = $config['currency'];
+                         
+                        $paymentHandler->startPayment(
+                            $patron['cat_username'], 
+                            $finesAmount, 
+                            $transactionFee,
+                            $payableFines,
+                            $currency,
+                            $paymentParam,
+                            $configArray['Site']['locale']
+                        );
+                    }
+                } else if (isset($_REQUEST[$paymentParam])) {
+                    // Payment response received. Display page and process via AJAX.
+                    $interface->assign('registerPayment', true);
+                } else {
+                    $allowPayment = $finesAmount > 0 && $paymentPermittedForUser === true && is_numeric($finesAmount);
+
+                    // Display possible warning and store fines to session.
+                    $interface->assign('paymentBlocked', !$allowPayment);
+                    if (count($fines) && !$allowPayment) {
+                        $info = null;
+                        if ($paymentPermittedForUser !== true) {
+                            $info = $paymentPermittedForUser;
+                        }
+
+                        if (count($payableFines) && !is_numeric($finesAmount)) {
+                            if ($finesAmount === 'online_payment_minimum_fee') {
+                                $interface->assign('paymentNotPermittedMinimumFee', true);
+                            }
+                            $info = $finesAmount;
+                        }
+                        if ($info) {
+                            $interface->assign('paymentNotPermittedInfo', $info);
+                        }                          
+                    }
+
+                    if (isset($_SESSION['payment_fines_changed'])
+                        && $_SESSION['payment_fines_changed']
+                    ) {
+                        $interface->assign('paymentFinesChanged', true);
+                        unset($_SESSION['payment_fines_changed']);
+                    }
+
+                    if (isset($_SESSION['payment_ok'])
+                        && $_SESSION['payment_ok']
+                    ) {
+                        unset($_SESSION['payment_ok']);
+                        $interface->assign('paymentOk', true);
+                    }
+
+                    // Store current fines to session 
+                    $this->storeFines($patron, $fines);
+
+                    $interface->assign('transactionSessionId', $_SESSION['onlinePayment']['sessionId']); 
+                    $interface->assign('onlinePaymentEnabled', true);                            
+                    $interface->assign('onlinePaymentForm', "MyResearch/online-payment-" . $paymentHandler->getName() . '.tpl');
+                }
+            }
+        }
+    }
+
+    /**
+     * Register payment provided in the request.
+     * This is called by JSON_Transaction.
+     *
+     * @param string  $request      Request with parameters.
+     * @param boolean $userLoggedIn Is user logged in at the time of method call.
+     *
+     * @return array array with keys 
+     *   - 'success' (boolean)
+     *   - 'msg' (string) error message if payment could not be processed.
+     * @access public
+     */
+    public function processPayment($request, $userLoggedIn = true)
+    {
+        global $interface;
+        global $user;
 
         $parts = parse_url($request);
 
@@ -208,65 +237,54 @@ class Fines extends MyResearch
             $params[$key] = $val;            
         }
 
-
         $error = false;
         $msg = null;
-        
-        if ($patron = UserAccount::catalogLogin()) {
-            if (PEAR::isError($patron)) {
-                $error = true;
-                $this->handleCatalogError($patron);
-            } else {
-                $config = $this->catalog->getConfig('OnlinePayment');
-                if ($config && $config['enabled']) {
-                    $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patron);
-                    $res = $paymentHandler->processResponse(
-                        $patron['cat_username'], 
-                        $params
-                    );
-                    if (isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {                    
-                        $loans = $this->catalog->getMyTransactions($patron);                        
-                        $fines = $this->catalog->getMyFines($patron);                            
-                        $fines = $this->processFines($fines, $loans);
-                        $paidFines = array();
-                        foreach ($fines as $fine) {
-                            if (isset($fine['payableOnline']) && $fine['payableOnline']) {
-                                $paidFines[] = $fine;
-                            }
-                        }
+        $transactionId = $params['ORDER_NUMBER'];
+
+        $tr = new Transaction();
+        if (!$t = $tr->getTransaction($transactionId)) {
+            error_log("Error processing payment: transaction $transactionId not found");
+            $error = true;
+        }
+
+        if (!$error) {
+            $patronId = $t->cat_username;
+
+            if (!$userLoggedIn) {
+                // MultiBackend::getConfig expects global user object and user->cat_username to be defined.
+                $user = new User();
+                $user->cat_username = $patronId;
+            }
+
+            $config = $this->catalog->getConfig('OnlinePayment');
+
+            if ($config && $config['enabled']) {
+                $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patronId);
+                $res = $paymentHandler->processResponse($params);
+
+                if (isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {                    
+                    $paidRes = $this->catalog->markFeesAsPaid($patronId, $res['amount']);
+                    if ($paidRes === true) {
+                        $t = new Transaction();
                         
-                        $interface->assign('fines', $fines);
-
-                        $paidRes = $this->catalog->markFeesAsPaid($patron, $res['amount']);
-                        if ($paidRes === true) {
-                            $t = new Transaction();
-                            
-                            if (!$t->setTransactionRegistered($res['transactionId'])) {
-                                error_log("error updating transaction");
-                            }
-
-                            $interface->assign('paidFines', $paidFines);
-                            $msg = '<p>' . translate('online_payment_successful') . '</p>';
-                            $msg .= $interface->fetch('MyResearch/online-payment-fines-paid.tpl');
-                        } else {
-                            $t = new Transaction();
-                            if (!$t->setTransactionRegistrationFailed($res['transactionId'], $paidRes)) {
-                                error_log("error updating transaction");
-                            }
-
-                            $error = true;
-                            $msg = '<ul>';
-                            $msg .= translate($paidRes);
-                            $msg .= '</ul>';
+                        if (!$t->setTransactionRegistered($res['transactionId'])) {
+                            error_log("Error updating transaction $transactionId status: registered");
                         }
+                        $_SESSION['payment_ok'] = true;
                     } else {
+                        $t = new Transaction();
+                        if (!$t->setTransactionRegistrationFailed($res['transactionId'], $paidRes)) {
+                            error_log("Error updating transaction $transactionId status: registering failed");
+                        }
                         $error = true;
-                        $msg = translate($res);
+                        $msg = translate($paidRes);
                     }
+                } else {
+                    $error = true;
+                    $msg = translate($res);
                 }
             }
         }
-
 
         $res = array('success' => !$error);
         if ($msg) {
@@ -338,7 +356,7 @@ class Fines extends MyResearch
     {        
         for ($i = 0; $i < count($fines); $i++) {
             $row = &$fines[$i];
-            $sum += $row['balance']/100.0;
+            $sum += $row['balance'];            
             $record = $this->db->getRecord($row['id']);
             $row['title'] = $record ? $record['title_short'] : null;
             $row['checkedOut'] = false;

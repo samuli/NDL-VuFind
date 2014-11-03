@@ -78,26 +78,24 @@ class Transaction extends DB_DataObject
     const STATUS_REGISTRATION_EXPIRED  = 6;
     const STATUS_REGISTRATION_RESOLVED = 7;
 
-
-
-
     /**
      * Add fee to the current transaction.
      *
-     * @param array  $feeData array fee data hash array
-     * @param object $user    user (patron) object
+     * @param array  $feeData  array fee data hash array
+     * @param object $user     user (patron) object
+     * @param string $currency currency
      *
      * @return boolean True on success, false otherwise.
      * @access public
      */
-    public function addFee($feeData, $user)
+    public function addFee($feeData, $user, $currency)
     {
         $fee = new Fee();
-        $fee->user_id = isset($user) && is_object($user) ? $user->id : null;
+        $fee->user_id = $user->id;
         $fee->title = $feeData['title'];
-        $fee->type = $feeData['type'];
+        $fee->type = $feeData['fine'];
         $fee->amount = $feeData['amount'];
-        $fee->currency = $feeData['currency'];
+        $fee->currency = $currency;
         if (!$fee->amount) {
             return false;
         }
@@ -114,66 +112,15 @@ class Transaction extends DB_DataObject
     }
 
     /**
-     * Get fees associated with the current transaction.
-     *
-     * @return array Array of fees
-     * @access public
-     */
-    public function getFees()
-    {
-        $feesList = array();
-
-        $join = new Transaction_fees();
-        $join->transaction_id = $this->id;
-        if (!$join->find()) {
-            return false;
-        }
-        while ($join->fetch()) {
-            $fee = new Fee();
-            $fee->id = $join->fee_id;
-            if (!$fee->find()) {
-                return false;
-            }
-            if (!$fee->fetch()) {
-                return false;
-            }
-            $feesList[] = clone($fee);
-        }
-        return $feesList;
-    }
-
-    /**
-     * Fetch the catalog username of the patron related to the current
-     * transaction.
-     *
-     * @return mixed string on success, null on failure
-     * @access public
-     */
-    public function getPatronCatUsername()
-    {
-        include_once "services/MyResearch/lib/User.php";
-
-        $user = new User();
-        $user->id = $this->user_id;
-        if (!$user->find()) {
-            return null;
-        }
-        if (!$user->fetch()) {
-            return null;
-        }
-        return $user->cat_username;
-    }
-
-    /**
-     * Check if payment is permitted for the user.
+     * Check if payment is permitted for the patron.
      * 
      * Payment is not permitted if:
-     *   - user has a transaction in progress and translation maximum duration 
+     *   - patron has a transaction in progress and translation maximum duration 
      *     has not been exceeded
-     *   - user has a paid transaction that has not been registered as paid 
+     *   - patron has a paid transaction that has not been registered as paid 
      *     to the ILS
      *
-     * @param object $patron                 Patron
+     * @param string $patronId               Patron's Catalog username (barcode).
      * @param int    $transactionMaxDuration Maximum wait time (in minutes) after 
      * which a started, and not processed, transaction is considered to have been 
      * interrupted by the user.   
@@ -182,25 +129,11 @@ class Transaction extends DB_DataObject
      * error message if payment is not permitted, false on error
      * @access public
      */
-    public function isPaymentPermitted($patron, $transactionMaxDuration)
+    public function isPaymentPermitted($patronId, $transactionMaxDuration)
     {
-        include_once "services/MyResearch/lib/User.php";
-
-        $user = new User();
-        $user->cat_username = $patron['cat_username'];
-        if (!$user->find()) {
-            return false;
-        }
-        if (!$user->fetch()) {
-            return false;
-        }
-
-        $userId = $user->id;
-        
-        
         $duration = mysql_real_escape_string($transactionMaxDuration);
         $transaction = new Transaction();
-        $transaction->user_id = $userId;
+        $transaction->cat_username = $patronId;
         $transaction->complete = self::STATUS_PROGRESS;        
         $transaction->whereAdd("NOW() < DATE_ADD(created, INTERVAL $duration MINUTE)", 'AND');
 
@@ -210,7 +143,7 @@ class Transaction extends DB_DataObject
         }
         
         $transaction = new Transaction();
-        $transaction->user_id = $userId;
+        $transaction->cat_username = $patronId;
         $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_FAILED);
         $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_EXPIRED, 'or');
 
@@ -251,21 +184,6 @@ class Transaction extends DB_DataObject
     public function setTransactionPaid($transactionId, $timestamp)
     {
         return $this->updateTransactionStatus($transactionId, $timestamp, self::STATUS_PAID, 'paid'); 
-    }
-
-   /**
-     * Update transaction status to payment failed.
-     *
-     * @param string   $transactionId Transaction ID.
-     * @param datetime $timestamp     Timestamp
-     * @param string   $msg           Error message
-     *
-     * @return boolean success
-     * @access public
-     */    
-    public function setTransactionPaymentFailed($transactionId, $timestamp, $msg = false)
-    {
-        return $this->updateTransactionStatus($transactionId, $timestamp, self::STATUS_PAYMENT_FAILED, $msg); 
     }
 
    /**
@@ -346,7 +264,7 @@ class Transaction extends DB_DataObject
      * @return boolean success
      * @access public
      */    
-    public function setTransactionUnknownPaymentResponse($transactionId, $timestamp, $msg)
+    public function setTransactionUnknownPaymentResponse($transactionId, $msg)
     {
         return $this->updateTransactionStatus($transactionId, false, 'unknown_response', $msg);        
     }

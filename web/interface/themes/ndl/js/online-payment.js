@@ -13,13 +13,14 @@ function registerOnlinePayment() {
         },
         dataType: 'json',
         success: function(data) {
-            $(".ajax_register_payment").removeClass('ajax_register_payment');
-            $('#onlinePaymentStatusSpinner').hide();
-            $('#onlinePaymentStatus').html(data.data).show();                
-            if (data.status != 'OK') {
-                $('#onlinePaymentStatus').removeClass('info').addClass('error');
+            if (data.status == 'OK') {
+                location.href = path + '/MyResearch/Fines';
+            } else {
+                $(".ajax_register_payment").removeClass('ajax_register_payment');
+                $('#onlinePaymentStatusSpinner').hide();
+                $('#onlinePaymentStatus').html(data.data).show(); 
+                $('#onlinePaymentStatus').removeClass('info').addClass('error');            
             }
-
         }
     });
 }

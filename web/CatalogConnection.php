@@ -590,18 +590,26 @@ class CatalogConnection
     /**
      * Return inited online payment handler.
      *
-     * @param array $user The patron array from patronLogin
+     * @param string $patronId Patron's Catalog username (barcode).
      *
      * @return mixed handler or false on error
      * @access public
      */
-    public function getOnlinePaymentHandler($patron)
+    public function getOnlinePaymentHandler($patronId)
     {
         $config = getExtraConfigArray('datasources');
-        $driver = reset(explode('.', $patron['cat_username']));
+        list($driver, $cat_username) = explode('.', $patronId, 2);
+        if (!isset($config[$driver]['onlinePayment'])) {
+            return false;
+        }
         $params = $config[$driver]['onlinePayment'];
-
-        return OnlinePaymentFactory::initOnlinePayment($params['handler'], $params);
+        
+        try {
+            return OnlinePaymentFactory::initOnlinePayment($params['handler'], $params);
+        } catch (Exception $e) {
+            error_log("Error initing payment handler $driver for patron $patronId: $e");
+            return false;
+        }
     }
 
     /**

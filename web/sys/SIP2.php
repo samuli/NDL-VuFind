@@ -684,26 +684,24 @@ class sip2
 
         $this->_debugmsg("SIP2: {$result}");
 
-        if ($this->error_detection) {
-            /* test message for CRC validity */
-            if ($this->_check_crc($result)) {
-                /* reset the retry counter on successful send */
-                $this->retry=0;
-                $this->_debugmsg("SIP2: Message from ACS passed CRC check");
-            } else {
-                /* CRC check failed, request a resend */
-                $this->retry++;
-                if ($this->retry < $this->maxretry) {
-                    /* try again */
-                    $this->_debugmsg("SIP2: Message failed CRC check, retrying ({$this->retry})");
+        /* test message for CRC validity */
+        if ($this->_check_crc($result)) {
+            /* reset the retry counter on successful send */
+            $this->retry=0;
+            $this->_debugmsg("SIP2: Message from ACS passed CRC check");
+        } else {
+            /* CRC check failed, request a resend */
+            $this->retry++;
+            if ($this->retry < $this->maxretry) {
+                /* try again */
+                $this->_debugmsg("SIP2: Message failed CRC check, retrying ({$this->retry})");
                 
-                    $this->get_message($message);
-                } else {
-                    /* give up */
-                    $this->_debugmsg("SIP2: Failed to get valid CRC after {$this->maxretry} retries.");
-                    return false;
-                }
-            }
+                $this->get_message($message);
+            } else {
+                /* give up */
+                $this->_debugmsg("SIP2: Failed to get valid CRC after {$this->maxretry} retries.");
+                return false;
+            }        
         }
         return $result;
     }	

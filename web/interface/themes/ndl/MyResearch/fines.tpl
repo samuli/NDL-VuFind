@@ -32,13 +32,15 @@
       {if $paymentFinesChanged}
         <div class="error">{translate text="online_payment_fines_changed"}</div>
       {elseif $paymentNotPermittedInfo}
-        <div class="error">{$paymentNotPermittedInfo} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+        <div class="error">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
       {elseif $registerPayment}
           {if $registerPayment}
             <span class="ajax_register_payment hide" id="onlinePaymentStatusSpinner">{translate text="Registering Payment"}</span>
           {/if}
           <div id="onlinePaymentStatus" class="info hide">
           </div>
+      {elseif $paymentOk}
+          <div class="info">{translate text='online_payment_successful'}</div>          
       {/if}
 
       <h2>{translate text='Your Fines'}: 
@@ -67,7 +69,7 @@
             <td>{$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}</td>
           </tr>
         {/foreach}
-        <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
+        <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
       {else}
         <tr>
           <th style="width:50%;">{translate text='Title'}</th>
@@ -109,22 +111,23 @@
           <tr><td colspan="5" class="fineBalance">
             {if $onlinePaymentEnabled}          
              {if $paymentBlocked}
-                <div class="onlinePaymentRemark">{$paymentNotPermittedInfo} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
-             {/if}
-             {translate text='online_payment_payable_online'}: <span class="hefty">{$payableSum|safe_money_format|replace:"Eu":" €"|escape}</span>
-             {if $transactionFee}
+                <div class="onlinePaymentRemark">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+             {else}
+                {translate text='online_payment_payable_online'}: <span class="hefty">{$payableSum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
+                {if $transactionFee}
                 <div class="onlinePaymentRemark" id="transactionFee">
-                  {translate text='online_payment_transaction_fee'}: <span class="hefty">{$transactionFee|safe_money_format|replace:"Eu":" €"|escape}</span>
+                  {translate text='online_payment_transaction_fee'}: <span class="hefty">{$transactionFee/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
                 </div>
+                {/if}
+
+               <div>
+                  {assign var=amountFormatted value=$payableSum+$transactionFee}
+                  {assign var=amountFormatted value=$amountFormatted/100.00|safe_money_format|replace:"Eu":" €"|escape}
+                  {if $onlinePaymentForm}{include file=$onlinePaymentForm paymentAmountFormatted=$amountFormatted}{/if}
+               </div>
              {/if}
-             {if !$paymentBlocked}
-              <div>
-               {assign var=amountFormatted value=$payableSum+$transactionFee|safe_money_format|replace:"Eu":" €"|escape}
-               {if $onlinePaymentForm}{include file=$onlinePaymentForm paymentAmountFormatted=$amountFormatted}{/if}
-             </div>
-            {/if}
          {else}
-           {translate text='Balance total'}: <span class="hefty">{$sum|safe_money_format|replace:"Eu":" €"|escape}</span
+           {translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span
          {/if}
         </td></tr>
        {/if}

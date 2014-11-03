@@ -406,7 +406,7 @@ class MultiBackend implements DriverInterface
     /**
      * Return total amount of fees that may be payed online.
      *
-     * @param array $patron The patron array from patronLogin
+     * @param array $user The patron array from patronLogin
      *
      * @return mixed int payable amount, 
      * string error message (not translated) if all fees are not payable online 
@@ -432,22 +432,23 @@ class MultiBackend implements DriverInterface
      *
      * This is called after a successful online payment.
      *
-     * @param array $user   The patron array from patronLogin
-     * @param int   $amount Amount to be registered as payed.
+     * @param string $patronId Patron's Catalog username (barcode).
+     * @param int    $amount   Amount to be registered as payed.
      *
      * @return mixed true if successfull, false if payment register could 
      * not be inited, or PEAR_Error if registering failed.
      * @access public
      */
-    public function markFeesAsPaid($user, $amount)
+    public function markFeesAsPaid($patronId, $amount)
     {
-        $source = $this->getSource($user['cat_username']);
+        $source = $this->getSource($patronId);
         $driver = $this->getDriver($source);
+
         if (PEAR::isError($driver)) {
             return $driver;
         }
         if ($driver) {
-            return $driver->markFeesAsPaid($user, $amount);
+            return $driver->markFeesAsPaid($patronId, $amount);
         }
         return new PEAR_Error('No suitable backend driver found');        
     }
