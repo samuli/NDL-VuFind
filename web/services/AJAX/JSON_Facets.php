@@ -1,6 +1,6 @@
 <?php
 /**
- * JSON handler for facet requests 
+ * JSON handler for facet requests
  *
  * PHP version 5
  *
@@ -49,24 +49,24 @@ class JSON_Facets extends JSON
     {
         $facetConfig = getExtraConfigArray('facets');
 
-        // Initialize from the current search globals        
+        // Initialize from the current search globals
         $searchObject = null;
         if (isset($_REQUEST['searchObject'])) {
             $searchObject = SearchObjectFactory::initSearchObject($_REQUEST['searchObject']);
         } else {
-            $searchObject = SearchObjectFactory::initSearchObject();        
+            $searchObject = SearchObjectFactory::initSearchObject();
         }
         if (get_class($searchObject) == 'SearchObject_SolrBrowseExtended' && isset($_REQUEST['vufindAction'])) {
             $searchObject->init($_REQUEST['vufindAction']);
         } else {
             $searchObject->init();
         }
-        
+
         $prefix = explode('/', isset($_REQUEST['facetPrefix']) ? $_REQUEST['facetPrefix'] : '', 2);
         $prefix = end($prefix);
         $facetName = $_REQUEST['facetName'];
         $level = isset($_REQUEST['facetLevel']) ? $_REQUEST['facetLevel'] : false;
-        
+
         // Add any facet filters unless a specific prefix has been specified
         if ($level !== false) {
             $searchObject->addFacetPrefix(array($facetName => "$level/$prefix"));
@@ -98,15 +98,33 @@ class JSON_Facets extends JSON
                     }
                     if (strncmp($item['untranslated'], $filterItem, strlen($filterItem)) == 0) {
                         $match = true;
-                    }   
+                    }
                 }
                 if ($match || !$levelSpecified) {
                     $list[] = $item;
-                } 
+                }
             }
             $facets = $list;
         }
-        
+
+        // Process exclusion filters
+        if (isset($facetConfig['ExcludeFilters'][$facetName])) {
+            $list = array();
+            foreach ($facets as $item) {
+                $match = false;
+                foreach ($facetConfig['ExcludeFilters'][$facetName] as $filterItem) {
+                    if (strncmp($item['untranslated'], $filterItem, strlen($filterItem)) == 0) {
+                        $match = true;
+                        break;
+                    }
+                }
+                if (!$match) {
+                    $list[] = $item;
+                }
+            }
+            $facets = $list;
+        }
+
         // For hierarchical facets: Now that we have the current facet level, try next level
         // so that we can indicate which facets on this level have children.
         if ($level !== false) {
@@ -132,17 +150,17 @@ class JSON_Facets extends JSON
                             }
                             if (strncmp($subFacet['untranslated'], $filterItem, strlen($filterItem)) == 0) {
                                 $match = true;
-                            }   
+                            }
                         }
                         if (!$match && $levelSpecified) {
                             continue;
                         }
                     }
-                    
+
                     $subFacetCode = implode('/', array_slice(explode('/', $subFacet['untranslated']), 1, $level));
                     foreach ($facets as &$facet) {
                         $facetCode = implode('/', array_slice(explode('/', $facet['untranslated']), 1, $level));
-                        if ($facetCode == $subFacetCode) { 
+                        if ($facetCode == $subFacetCode) {
                             $facet['children'] = true;
                             break;
                         }
@@ -150,7 +168,7 @@ class JSON_Facets extends JSON
                 }
             }
         }
-        
+
         $this->output($facets, JSON::STATUS_OK);
     }
 }
