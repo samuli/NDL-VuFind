@@ -123,20 +123,20 @@ class PCI
         $this->params['institution'] = $this->config['General']['institution'];
         $this->params['onCampus'] = UserAccount::isAuthorized();
         $this->params['db'] = isset($this->config['General']['db']) ? $this->config['General']['db'] : null;
-        
-        
+
+
     }
 
     /**
      * Check if PCI is configured and available
-     * 
+     *
      * @return bool Whether PCI is available
      */
     public function available()
     {
         return isset($this->config['General']);
     }
-    
+
     /**
      * Retrieves a document specified by the ID.
      *
@@ -200,7 +200,7 @@ EOE;
                 $facetKey = 'facet_' . $key;
                 $filterTerms .= sprintf($facetXml, htmlspecialchars($facetKey, ENT_COMPAT, 'UTF-8'), $this->u8ncr(htmlspecialchars($value, ENT_COMPAT, 'UTF-8')));
             }
-        }        
+        }
 
         $queryTermXml = <<<EOF
         <QueryTerm>
@@ -274,10 +274,10 @@ EOD;
      * @return array             An array of query results
      * @access public
      */
-    public function query($query, 
-        $filterList = array(), 
-        $startRec = 1, 
-        $limit = 10, 
+    public function query($query,
+        $filterList = array(),
+        $startRec = 1,
+        $limit = 10,
         $sortBy = null
     ) {
         $queryStr = $this->buildQuery($query, $filterList, $startRec, $limit, $sortBy);
@@ -303,27 +303,27 @@ EOD;
                 $key = (string) $facetValue->attributes()->KEY;
                 $count = (string) $facetValue->attributes()->VALUE;
                 $values[] = array('value'=> $key, 'count' => $count);
-            }       
+            }
 
             $facets[] = array('id' => $tag, 'tag' => $tag, 'values' => $values);
         }
         // Reorder facets by document count
         foreach ($facets as &$facet) {
             usort(
-                $facet['values'], 
+                $facet['values'],
                 function ($a, $b) {
                     return $b['count'] - $a['count'];
                 }
-            );            
-        }      
+            );
+        }
         return array('recordCount' => $hits, 'response' => array('numFound' => $hits, 'start' => 0, 'docs' => $records), 'facetFields' => $facets);
     }
-    
+
     /**
      * Call PCI Web Services API
      *
      * @param array $searchString XML parameters as a string
-     * 
+     *
      * @return string XML returned from server
      * @access protected
      */
@@ -345,7 +345,7 @@ EOD;
 
         return $xml;
     }
-    
+
     /**
      * Perform normalization and analysis of PCI return value
      * (a single record)
@@ -360,7 +360,7 @@ EOD;
         global $configArray;
         $primoRecord = $item->children('http://www.exlibrisgroup.com/xsd/primo/primo_nm_bib');
         $links = array();
-        $backlink = '';        
+        $backlink = '';
         foreach ((array) $primoRecord->PrimoNMBib->record->links->linktorsrc as $val) {
             $linkString = (string)$val;
             $ini = strripos($linkString, '$$U');
@@ -370,11 +370,11 @@ EOD;
             $ini +=3;
             $linkArray = explode('$$', substr($linkString, $ini));
             if ($linkArray[0]) {
-                $links [] = $linkArray[0];  
+                $links [] = $linkArray[0];
             }
         }
-        
-        // Back links sometimes contain non-valid XML and thus cannot 
+
+        // Back links sometimes contain non-valid XML and thus cannot
         // be treated like source links
         $backlinkString = (string)$primoRecord->PrimoNMBib->record->links->backlink;
         $ini = strripos($backlinkString, '$$U');
@@ -385,7 +385,7 @@ EOD;
                 $backlink = $backlinkArray[0];
             }
         }
-                
+
         $openurl = '';
         if (isset($configArray['OpenURL']['url']) && $configArray['OpenURL']['url']) {
             // Parse the OpenURL and extract parameters
@@ -406,20 +406,20 @@ EOD;
                 }
             }
         }
-        
+
         $fulltext = (string)$primoRecord->PrimoNMBib->record->delivery->fulltext;
-        
+
         $title = $this->hiLite((string)$primoRecord->PrimoNMBib->record->display->title);
-        
+
         $authors = explode(' ; ', (string) $primoRecord->PrimoNMBib->record->display->creator);
         foreach ($authors as &$author) {
             $author = $this->hiLite($author);
         }
 
         return array(
-            'title' => $title, 
+            'title' => $title,
             'author' => $authors,
-            'AdditionalAuthors' => (array)$primoRecord->PrimoNMBib->record->search->creatorcontrib,             
+            'AdditionalAuthors' => (array)$primoRecord->PrimoNMBib->record->search->creatorcontrib,
             'source' => (string)$primoRecord->PrimoNMBib->record->display->source,
             'publicationDate' => (string)$primoRecord->PrimoNMBib->record->search->creationdate,
             'publicationTitle' => (string)$primoRecord->PrimoNMBib->record->display->ispartof,
@@ -440,7 +440,7 @@ EOD;
             'endPage' => ''
         );
     }
-    
+
     /**
      * Fix highlighting to VuFind compatible mode
      *
@@ -448,10 +448,10 @@ EOD;
      *
      * @return string formatted string
      * @access protected
-     */    
-    protected function hiLite($str) 
+     */
+    protected function hiLite($str)
     {
-        return preg_replace('/<span class="searchword">(.*?)<\/span>/', '{{{{START_HILITE}}}}$1{{{{END_HILITE}}}}', $str); 
+        return preg_replace('/<span class="searchword">(.*?)<\/span>/', '{{{{START_HILITE}}}}$1{{{{END_HILITE}}}}', $str);
     }
 
     /**
@@ -461,12 +461,12 @@ EOD;
      * @param string $str UTF-8 string
      *
      * @return string encoded string
-     * @access protected 
+     * @access protected
      */
     protected function u8ncr($str)
     {
         return mb_encode_numericentity(
-                $str, array(0x0080,0xffff,0,0xffff), "UTF-8"
-            );
+            $str, array(0x0080,0xffff,0,0xffff), "UTF-8"
+        );
     }
 }

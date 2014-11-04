@@ -106,6 +106,15 @@
       var trListNotes = "{translate text="Description"}";
       var trMore = "{translate text="More"}";
       var trLess = "{translate text="less"}";      
+
+      var listList = [
+      {if $listList}
+          {foreach from=$listList item=listItem}
+              [{$listItem->id}, "{translate text=$listItem->title|escape:"html"}"],
+          {/foreach}
+      {/if}
+      ];
+
     //--><!]]>
     </script>
     {* Load jQuery framework and plugins *}

@@ -2594,9 +2594,22 @@ ul.recordSet .addToFavLink {
     width: auto;
     float: right;
     width: 20px;
+    position: relative;
 }
-.addToFavLink a {
+.addToFavLink > a {
     height: 20px;
+}
+
+.addToFavoritesSelector {
+    right: 0;
+    position: absolute;
+}
+.addToFavoritesSelector .dropdown ul {
+    right: 0;
+    top: 2em;
+}
+li#saveLink {
+    position: relative;
 }
 ul.recordSet .resultColumn1 {
     float: left;
@@ -2826,7 +2839,7 @@ ul.recordSet .result.ajax_availability_browse {
     display:none;
 }
 
-.groupLocation .availableLoc:before, .groupLocation .checkedoutLoc:before {
+.groupLocation .availableLoc:before, .availableLocWWW:before, .groupLocation .checkedoutLoc:before {
     width: 14px;
 }
 
@@ -3528,7 +3541,7 @@ dl.defaultFacet dd {
     padding:.5em .5em .5em 25px;
 }
 ul.recordSet .addToFavLink a {
-    padding: 0 .5em .5em 25px;
+    padding: 8px;
 }
 .searchtools a.mailSearch {
     display:inline-block;
@@ -3584,6 +3597,10 @@ ul.recordSet .addToFavLink a {
 }
 .persona-login-loading {
     background-image: url(../images/ajax_loading.gif);
+}
+.libraryLogin .buttonFinna.loading {
+    background: url(../images/ajax_loading.gif) no-repeat left center;
+    cursor:default;
 }
 .new_account {
     background-image:url(../images/silk/user_add.png);
@@ -3641,6 +3658,21 @@ ul.recordSet .addToFavLink a {
     height: 11px;
     width: 11px;
     padding-left: 5px;
+}
+.availableLocWWW:before {
+    content: "";
+    display: block;
+    float: left;
+    height: 20px;
+    padding-left: 5px;
+    width: 18px;
+}
+.availableLocWWW {
+    display:inline-block;
+    margin-top:-2px;
+}
+.citation .fulltextField {
+    line-height:17px;
 }
 .available {
     color: #00B270;
@@ -4743,6 +4775,10 @@ div[id*="record"].record.recordId {
 #recordMetadata .citation {
     margin-top: .75em;
     table-layout:fixed;
+}
+
+#recordMetadata .recordURLs td[colspan="2"] {
+    padding:0 0 10px 0;
 }
 
 /* Note: background colors required here for field truncation */
@@ -7013,15 +7049,13 @@ table.summHoldings .statusColumn {
 }
 
 #hierarchyTree li.item {
-    display:inline;
+    display:block;
 }
 
 #hierarchyTree li.item a {
     display:inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
-    width: 35%;
+    width: 100%;
 }
 
 #hierarchyTree li.item.openPath a {

@@ -111,6 +111,26 @@ class AxiellWebServices implements DriverInterface
     {
         return $this->getHolding($id);
     }
+    
+    /**
+     * checkRequestIsValid
+     *
+     * This is responsible for determining if an item is requestable
+     *
+     * @param string $id     The Bib ID
+     * @param array  $data   An Array of item data
+     * @param patron $patron An array of patron data
+     *
+     * @return string True if request is valid, false if not
+     * @access public
+     */
+    public function checkRequestIsValid($id, $data, $patron)
+    {
+    
+        //TODO Should there be additional control?
+    
+        return true;
+    }
 
     /**
      * Get Statuses
@@ -243,6 +263,7 @@ class AxiellWebServices implements DriverInterface
                 if ($holdingsBranch[0]->type == 'branch') {
                     foreach ($holdingsBranch as $branch) {
                         $branchName = $branch->value;
+                        $branchId = $branch->id;
                         $reservationStatus = ($branch->reservationButtonStatus == 'reservationOk') ? 'Y' : 'N';
                         $departments = is_object($branch->holdings->holding) ? array($branch->holdings->holding) : $branch->holdings->holding;
 
@@ -326,7 +347,7 @@ class AxiellWebServices implements DriverInterface
                                 'requests_placed'   => $noOfReservations,
                                 'barcode'           => '',
                                 'availability'      => $available,
-                                'status'      		  => $status,
+                                'status'            => $status,
                                 'location'          => $location,
                                 'reserve'           => 'N',
                                 'callnumber'        => isset($department->shelfMark) ? $department->shelfMark : '',
@@ -338,6 +359,7 @@ class AxiellWebServices implements DriverInterface
                                 'organisation'      => $organisationName,
                                 'department'        => $departmentName,
                                 'branch'            => $branchName,
+                                'branch_id'         => $branchId,
                                 'total'             => $nofTotal,
                                 'available'         => $nofAvailableForLoan,
                                 'ordered'           => $nofOrdered
@@ -472,15 +494,20 @@ class AxiellWebServices implements DriverInterface
             $user['lastname'] = array_pop($names);
             $user['firstname'] = implode(' ', $names);
             $user['email'] = '';
+            $user['emailId'] = '';
             $user['address1'] = '';
             $user['zip'] = '';
             $user['phone'] = '';
+            $user['phoneId'] = '';
+            $user['phoneLocalCode'] = '';
+            $user['phoneAreaCode'] = '';
 
             if (isset($info->emailAddresses)) {
                 $emailAddresses = is_object($info->emailAddresses->emailAddress) ? array($info->emailAddresses->emailAddress) : $info->emailAddresses->emailAddress;
                 foreach ($emailAddresses as $emailAddress) {
                     if ($emailAddress->isActive == 'yes') {
                         $user['email'] = isset($emailAddress->address) ? $emailAddress->address : '';
+                        $user['emailId'] = isset($emailAddress->id) ? $emailAddress->id : '';
                     }
                 }
             }
@@ -512,8 +539,13 @@ class AxiellWebServices implements DriverInterface
                 foreach ($phoneNumbers as $phoneNumber) {
                     if ($phoneNumber->sms->useForSms == 'yes') {
                         $user['phone'] = isset($phoneNumber->areaCode) ? $phoneNumber->areaCode : '';
+                        $user['phoneAreaCode'] = $user['phone'];
                         if (isset($phoneNumber->localCode)) {
                             $user['phone'] .= $phoneNumber->localCode;
+                            $user['phoneLocalCode'] = $phoneNumber->localCode;
+                        } 
+                        if (isset($phoneNumber->id)) {
+                            $user['phoneId'] = $phoneNumber->id;
                         }
                     }
                 }
@@ -849,34 +881,44 @@ class AxiellWebServices implements DriverInterface
                 $result->getReservationBranchesResult->organisations->organisation;
 
             foreach ($organisations as $organisation) {
-
+                                       
+                $organisationID = $organisation->id;
+                
                 if (!isset($organisation->branches->branch))
                     continue;
-
-                // TODO: Make it configurable whether organisation names should be included in the location name
+                
+                // TODO: Make it configurable whether organisation names should be included in the location name           
                 $branches = is_object($organisation->branches->branch) ?
                   array($organisation->branches->branch) :
                   $organisation->branches->branch;
+                
                 if (is_object($organisation->branches->branch)) {
                     $locationsList[] = array(
-                        'locationID' => $organisation->branches->branch->id,
+                        'locationID' => $organisationID . "." .  $organisation->branches->branch->id,
                         'locationDisplay' => $organisation->branches->branch->name
-
                     );
                 }
                 else foreach ($organisation->branches->branch as $branch) {
                     $locationsList[] = array(
-                        'locationID' => $branch->id,
+                        'locationID' => $organisationID . "." . $branch->id,
                         'locationDisplay' => $branch->name
                     );
                 }
             }
+            
+            // Sort the location list
+            $location = array();
+            foreach ($locationsList as $key => $row) {
+                $location[$key] = $row['locationDisplay'];
+            }
+            array_multisort($location, SORT_REGULAR, $locationsList);
+            
             return $locationsList;
 
         } catch (Exception $e) {
             $this->debugLog($e->getMessage());
             return new PEAR_Error('catalog_error_technical');
-        }
+        }    
     }
 
     /**
@@ -955,6 +997,9 @@ class AxiellWebServices implements DriverInterface
     public function placeHold($holdDetails)
     {
         global $configArray;
+
+        $bibId = $holdDetails['id'];
+        
         $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
         try {
             $patronId = $this->getPatronId($holdDetails['patron']['cat_username'], $holdDetails['patron']['cat_password']);
@@ -963,14 +1008,21 @@ class AxiellWebServices implements DriverInterface
             }
 
             $this->debugLog("Add reservation request for '" . $holdDetails['patron']['cat_username'] . "':");
+                        
+            $validFromDate = date("Y-m-d");     
+            
+            $validToDate = $this->dateFormat->convertFromDisplayDate(
+                "Y-m-d", $holdDetails['requiredBy']
+            );
+            if (PEAR::isError($validToDate)) {
+                // Hold Date is invalid
+                return $this->holdError("hold_date_invalid");
+            }
 
-            $expirationDate = $this->dateFormat->convertToDisplayDate('U', $holdDetails['requiredBy'])->getTimeStamp();
-            $id = $holdDetails['id'];
-            if (strncmp($id, $this->arenaMember . '.', strlen($this->arenaMember) + 1) == 0)
-                $id = substr($id, strlen($this->arenaMember) + 1);
-            $branch = $holdDetails['pickUpLocation'];
-            $organisation = substr($branch, 0, -3);
-            $result = $client->addReservation(array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'reservationEntities' => $id, 'reservationSource' => 'catalogueRecordDetail', 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => time(), 'validToDate' => $expirationDate )));
+            $pickUpLocation = $holdDetails['pickUpLocation'];
+            list($organisation, $branch) = explode('.', $pickUpLocation, 2);
+            
+            $result = $client->addReservation(array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => 'catalogueRecordDetail', 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));
 
             if ($result->addReservationResult->status->type != 'ok') {
                 $this->debugLog("Add reservation request failed for '" . $holdDetails['patron']['cat_username'] . "'");
@@ -978,7 +1030,7 @@ class AxiellWebServices implements DriverInterface
                 $this->debugLog("Response: " . $client->__getLastResponse());
                 return array(
                     'success' => false,
-                    'sysMessage' => $result->addReservationResponse->status->message
+                    'sysMessage' => $result->addReservationResult->status->message
                 );
             }
 
@@ -1077,35 +1129,189 @@ class AxiellWebServices implements DriverInterface
     }
 
     /**
-     * Get configuration
+     * Public Function which retrieves renew, hold and cancel settings from the
+     * driver ini file.
      *
-     * @param string $function Function
+     * @param string $function The name of the feature to be checked
      *
-     * @return array Configuration
+     * @return array An array with key-value pairs.
+     * @access public
      */
     public function getConfig($function)
     {
-        $this->debugLog("getConfig $function");
-        switch ($function) {
-        case 'Holds':
-            return array(
-                'function' => 'placeHold',
-                'HMACKeys' => 'id',
-                'extraHoldFields' => 'requiredByDate:pickUpLocation',
-                'defaultRequiredDate' => '1:0:0'
-            );
-        case 'cancelHolds':
-            return array(
-                'function' => 'cancelHolds',
-                'HMACKeys' => 'id'
-            );
-        case 'Renewals':
-            return array();
-        default:
-            $this->debugLog("unhandled getConfig function: '$function'");
+        if (isset($this->config[$function]) ) {
+            $functionConfig = $this->config[$function];
+        } else {
+            $functionConfig = false;
         }
-        return array();
+        return $functionConfig;
     }
+
+    /**
+     * Set patron phone number
+     *
+     * @param array $patron Patron array
+     *
+     * @return array Response
+     */
+    public function setPhoneNumber($patron)
+    {
+        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
+
+        try {
+            $patronId = $this->getPatronId($patron['cat_username'], $patron['cat_password']);
+
+            if (PEAR::isError($patronId)) {
+                return array(
+                    'success' => false,
+                    'sys_message' => 'No patron id',
+                    'status' => 'Phone number change failed'
+                );
+            }
+
+            $localCode = $patron['phoneLocalCode'];
+            $phoneCountry = isset($patron['phoneCountry']) ? $patron['phoneCountry'] : 'FI';
+            $areaCode = '';
+
+            $conf = array(
+                'arenaMember'  => $this->arenaMember,
+                'language'     => 'en',
+                'patronId'     => $patronId,
+                'areaCode'     => $areaCode,
+                'country'      => $phoneCountry,
+                'localCode'    => $localCode,
+                'useForSms'    => 'yes'
+            );
+
+            $this->debugLog("Phone number set request for '{$patron['cat_username']}':");
+            $error = false;
+            if (isset($patron['phoneId'])) {
+                $conf['id'] = $patron['phoneId'];
+                $result = $client->changePhone(array('changePhoneNumberParam' => $conf));
+                if ($result->changePhoneNumberResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->changePhoneNumberResult->status->message;
+                }
+            } else {
+                $result = $client->addPhone(array('addPhoneNumberParam' => $conf));
+                if ($result->addPhoneNumberResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->addPhoneNumberResult->status->message;
+                }
+            }
+
+            if ($error) {
+                $this->debugLog("Change phone number request failed for '" . $patron['cat_username'] . "'");
+                $this->debugLog("Request: " . $client->__getLastRequest());
+                $this->debugLog("Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => false,
+                    'status' => 'Phone number change failed',
+                    'sys_message' => $sysMessage
+                );
+            } else {
+                $this->debugLog("Set phone number Request: " . $client->__getLastRequest());
+                $this->debugLog("Set phone number Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => true,
+                    'status' => 'Phone number changed',
+                    'sys_message' => '',
+                );
+            }
+            return $results;
+        } catch (Exception $e) {
+            $this->debugLog($e->getMessage());
+            $this->debugLog("Request: " . $client->__getLastRequest());
+            $this->debugLog("Response: " . $client->__getLastResponse());
+            $results = array(
+                'success' => false,
+                'sys_message' => $e->getMessage,
+                'status' => 'Phone number change failed'
+            );
+        }
+        return $results;
+    }
+
+    /**
+     * Set patron email address
+     *
+     * @param array  $patron Patron array
+     * @param String $email  User Email
+     *
+     * @return array Response
+     */
+    public function setEmailAddress($patron, $email)
+    {
+        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
+
+        try {
+            $patronId = $this->getPatronId($patron['cat_username'], $patron['cat_password']);
+
+            if (PEAR::isError($patronId)) {
+                return array(
+                    'success' => false,
+                    'status' => 'Email address change failed',
+                    'sys_message' => 'No patron id',
+                );
+            }
+
+            $conf = array(
+                'arenaMember'  => $this->arenaMember,
+                'language'     => 'en',
+                'patronId'     => $patronId,
+                'address'      => $email,
+                'isActive'     => 'yes'
+            );
+
+            $this->debugLog("Email address set request for '{$patron['cat_username']}':");
+            $error = false;
+            if (isset($patron['emailId'])) {
+                $conf['id'] = $patron['emailId'];
+                $result = $client->changeEmail(array('changeEmailAddressParam' => $conf));
+                if ($result->changeEmailAddressResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->changeEmailAddressResult->status->message;
+                }
+            } else {
+                $result = $client->addPhone(array('addEmailAddressParam' => $conf));
+                if ($result->addPhoneNumberResult->status->type != 'ok') {
+                    $error = true;
+                    $sysMessage = $result->addEmailAddressResult->status->message;
+                }
+            }
+
+            if ($error) {
+                $this->debugLog("Set email address request failed for '" . $patron['cat_username'] . "'");
+                $this->debugLog("Request: " . $client->__getLastRequest());
+                $this->debugLog("Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => false,
+                    'status' => 'Phone number change failed',
+                    'sys_message' => $sysMessage
+                );
+            } else {
+                $this->debugLog("Set email address Request: " . $client->__getLastRequest());
+                $this->debugLog("Set email address Response: " . $client->__getLastResponse());
+                $results = array(
+                    'success' => true,
+                    'status' => 'Email address changed',
+                    'sys_message' => '',
+                );
+            }
+            return $results;
+        } catch (Exception $e) {
+            $this->debugLog($e->getMessage());
+            $this->debugLog("Request: " . $client->__getLastRequest());
+            $this->debugLog("Response: " . $client->__getLastResponse());
+            $results = array(
+                'success' => false,
+                'sys_message' => $e->getMessage,
+                'status' => 'Set email address failed'
+            );
+        }
+        return $results;
+    }
+
 
 
     /**
@@ -1221,8 +1427,5 @@ class AxiellWebServices implements DriverInterface
         file_put_contents($this->logFile, $msg, FILE_APPEND);
     }
 }
-
-
-?>
 
 

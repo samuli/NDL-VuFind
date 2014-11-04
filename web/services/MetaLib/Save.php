@@ -181,6 +181,8 @@ class Save extends Action
         $list = new User_list();
         if (isset($_GET['list']) && $_GET['list'] != '') {
             $list->id = $_GET['list'];
+        } else if (isset($_POST['list']) && ($_POST['list'] != '')) {
+            $list->id = $_POST['list'];
         } else {
             $list->user_id = $user->id;
             $list->title = "My Favorites";
