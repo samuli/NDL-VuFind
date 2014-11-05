@@ -48,13 +48,15 @@ require_once 'sys/User.php';
  *
  * Takes the following parameters on command line:
  *
- * php online_payment_monitor.php expire_hours main_directory internal_email customer_email
+ * php online_payment_monitor.php expire_hours main_directory internal_email from_email report_interval_hours
  *
- *   expire_hours      Number of days before considering unregistered
- *                     transaction to be an expired one
- *   main_directory    The main VuFind directory. Each web directory
- *                     must reside under this (default: ..)
- *   internal_email    Email address for internal error reporting
+ *   expire_hours          Number of hours before considering unregistered
+ *                         transaction to be an expired one
+ *   main_directory        The main VuFind directory. Each web directory
+ *                         must reside under this (default: ..)
+ *   internal_email        Email address for internal error reporting
+ *   from_email            Sender email address for notification of expired transactions
+ *   report_interval_hours Interval when to re-send report of unresolved transactions
  *
  */
 class OnlinePaymentMonitor extends ReminderTask
@@ -62,25 +64,28 @@ class OnlinePaymentMonitor extends ReminderTask
 
     protected $expireHours;
     protected $fromEmail;
+    protected $reportIntervalHours;
 
     /**
      * Constructor
 
-     * @param int $expireHours          Number of days before considering unregistered
-     *                                  transaction to be an expired one
-     * @param string $mainDir           The main VuFind directory. Each web directory
-     *                                  must reside under this (default: ..)
-     * @param string $internalErrEmail  Email address for internal error reporting
-     * @param string $formEmail         Sender email address for notification of expired transactions.
+     * @param int $expireHours            Number of days before considering unregistered
+     *                                    transaction to be an expired one
+     * @param string $mainDir             The main VuFind directory. Each web directory
+     *                                    must reside under this (default: ..)
+     * @param string $internalErrEmail    Email address for internal error reporting
+     * @param string $formEmail           Sender email address for notification of expired transactions.
+     * @param string $reportIntervalHours Interval (in minutes) when to re-send report of unresolved transactions.
      *
      * @return void
      */
-    function __construct($expireHours, $mainDir, $internalErrEmail, $fromEmail)
+    function __construct($expireHours, $mainDir, $internalErrEmail, $fromEmail, $reportIntervalHours)
     {
         parent::__construct($mainDir, $internalErrEmail);
 
         $this->expireHours = $expireHours;
         $this->fromEmail = $fromEmail;
+        $this->reportIntervalHours = $reportIntervalHours;
     }
 
     /**
@@ -113,20 +118,22 @@ class OnlinePaymentMonitor extends ReminderTask
         $mailer = new VuFindMailer();
         $now = new DateTime();
 
-        // Find all paid transactions that have not been registered,
-        // and that have not been marked as failed.
+
+        $expiredCnt = 0;
+        $failedCnt = 0;
+        $registeredCnt = 0;
+        $remindCnt = 0;
+        
+        $user = false;
+        $report = array();
+
+
+        // Attempt to re-register paid transactions whose registration has failed.
         $t = new Transaction();	
         $t->whereAdd('complete = ' . Transaction::STATUS_REGISTRATION_FAILED);
         $t->whereAdd('paid > 0');
         $t->orderBy('user_id');
         $t->find();
-
-        $expiredCnt = 0;
-        $failedCnt = 0;
-        $registeredCnt = 0;
-
-        $user = false;
-        $expired = array();
 
         while ($t->fetch()) {
             $this->msg("  Registering transaction id {$t->id} / {$t->transaction_id}");
@@ -134,12 +141,18 @@ class OnlinePaymentMonitor extends ReminderTask
             // check if the transaction has not been registered for too long
             $paid_time = new DateTime($t->paid);
             $diff = $now->diff($paid_time);
-            if ($diff->h > $this->expireHours) {
-                if (!isset($expired[$t->driver])) {
-                    $expired[$t->driver] = 0;
+            $diffHours = ($diff->days*24) + $diff->h;
+            if ($diffHours > $this->expireHours) {
+                if (!isset($report[$t->driver])) {
+                    $report[$t->driver] = 0;
                 }
-                $expired[$t->driver]++;
+                $report[$t->driver]++;
                 $expiredCnt++;
+
+
+                if (!$t->setTransactionReported($t->transaction_id)) {
+                    $this->err('    Failed to update transaction ' . $t->transaction_id . 'as reported');
+                }
               
                 $transaction = clone($t);              
                 $transaction->complete = Transaction::STATUS_REGISTRATION_EXPIRED;
@@ -175,6 +188,39 @@ class OnlinePaymentMonitor extends ReminderTask
             }
         }
 
+        /*
+        Report paid and unregistered transactions whose registration 
+        can not be re-tried:
+        
+        1. Transaction::STATUS_REGISTRATION_EXPIRED
+              Transaction has been updated to 'expired' 
+              after failed registration attempts.
+        2. Transaction::STATUS_FINES_UPDATED
+              Registration was not attempted after a successful payment 
+              because patron's payable sum got updated during the payment process.
+        */
+        $t = new Transaction();	
+        $t->whereAdd('complete = ' . Transaction::STATUS_REGISTRATION_EXPIRED . ' OR complete = ' . Transaction::STATUS_FINES_UPDATED);
+        $t->whereAdd('paid > 0');
+        $t->whereAdd('reported = 0 OR NOW() > DATE_ADD(reported, INTERVAL ' . $this->reportIntervalHours . ' HOUR)');
+        $t->orderBy('user_id');
+        $t->find();
+
+        while ($t->fetch()) {
+            $this->msg("  Transaction id {$t->transaction_id} still unresolved.");
+            
+            if (!$t->setTransactionReported($t->transaction_id)) {
+                $this->err('    Failed to update transaction ' . $t->transaction_id . ' as reported');
+            }
+            if (!isset($report[$t->driver])) {
+                $report[$t->driver] = 0;
+            }
+            $report[$t->driver]++;
+            $remindCnt++;
+        }
+
+
+
         if ($registeredCnt) {
             $this->msg("  Total registered: $registeredCnt");
         }
@@ -184,13 +230,17 @@ class OnlinePaymentMonitor extends ReminderTask
         if ($failedCnt) {
             $this->msg("  Total failed: $failedCnt");
         }
+        if ($remindCnt) {
+            $this->msg("  Total to be reminded: $remindCnt");
+        }
+
 
         $configArray = readConfig();
         $siteLocal = $configArray['Site']['local'];
         $interface = new UInterface($siteLocal);
 
-        // Check for failed transactions that need to be resolved manually:
-        foreach ($expired as $driver => $cnt) {
+        // Send report of transactions that need to be resolved manually:
+        foreach ($report as $driver => $cnt) {
             if ($cnt) {
                 $settings = getExtraConfigArray("VoyagerRestful_$driver");
                 if (!$settings || !isset($settings['OnlinePayment']['errorEmail'])) {
@@ -219,14 +269,15 @@ class OnlinePaymentMonitor extends ReminderTask
     }
 }
 
-if (count($argv) < 5) {
-    die("Usage: php {$argv[0]} expire_hours main_directory internal_error_email from_email" . PHP_EOL);
+if (count($argv) < 6) {
+    die("Usage: php {$argv[0]} expire_hours main_directory internal_error_email from_email report_interval_hours" . PHP_EOL);
 }
 
 $monitor = new OnlinePaymentMonitor(
     $argv[1],
     $argv[2],
     $argv[3],
-    $argv[4]
+    $argv[4],
+    $argv[5]
 );
 $monitor->process();

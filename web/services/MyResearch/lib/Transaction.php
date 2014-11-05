@@ -59,6 +59,8 @@ class Transaction extends DB_DataObject
     public $registered;                      // datetime(19)  not_null binary
     public $status;                          // string(50)
     public $complete;                        // boolean
+    public $cat_username;                    // string(50) not null
+    public $reported;                        // datetime(19)  not_null binary
 
     /* Static get */
     function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Transaction',$k,$v); }
@@ -77,6 +79,8 @@ class Transaction extends DB_DataObject
     const STATUS_REGISTRATION_FAILED   = 5;
     const STATUS_REGISTRATION_EXPIRED  = 6;
     const STATUS_REGISTRATION_RESOLVED = 7;
+
+    const STATUS_FINES_UPDATED         = 8;
 
     /**
      * Add fee to the current transaction.
@@ -146,6 +150,7 @@ class Transaction extends DB_DataObject
         $transaction->cat_username = $patronId;
         $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_FAILED);
         $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_EXPIRED, 'or');
+        $transaction->whereAdd('complete = ' . self::STATUS_FINES_UPDATED, 'or');
 
         if ($transaction->find()) {
             // Transaction could not be registered and is waiting to be resolved manually.
@@ -242,7 +247,7 @@ class Transaction extends DB_DataObject
     }
 
    /**
-     * Update transaction status to resolved..
+     * Update transaction status to resolved.
      *
      * @param string $transactionId Transaction ID.
      *
@@ -252,6 +257,36 @@ class Transaction extends DB_DataObject
     public function setTransactionResolved($transactionId)
     {
         return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_RESOLVED); 
+    }
+
+   /**
+     * Update transaction status payable fines updated.
+     *
+     * @param string $transactionId Transaction ID.
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionFinesUpdated($transactionId)
+    {
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_FINES_UPDATED, 'fines_updated'); 
+    }
+
+   /**
+     * Update transaction reported times.
+     *
+     * @param string $transactionId Transaction ID.
+     *
+     * @return boolean success
+     * @access public
+     */    
+    public function setTransactionReported($transactionId)
+    {
+        if (!$t = $this->getTransaction($transactionId)) {
+            return false;
+        }
+        $t->reported = date("Y-m-d H:i:s", time());
+        return $t->update();
     }
 
    /**

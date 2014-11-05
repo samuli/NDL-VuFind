@@ -107,7 +107,7 @@ class Fines extends MyResearch
         $config = $this->catalog->getConfig('OnlinePayment');
 
         if ($config && $config['enabled']) {
-            $finesAmount = $this->catalog->driver->getOnlinePayableAmount($patron);
+            $finesAmount = $this->catalog->getOnlinePayableAmount($patron);
             $transactionFee = $config['transactionFee']*100.00;
             $minimumFee = $config['minimumFee'];
 
@@ -248,12 +248,26 @@ class Fines extends MyResearch
         }
 
         if (!$error) {
+            $patron = null;
             $patronId = $t->cat_username;
 
             if (!$userLoggedIn) {
                 // MultiBackend::getConfig expects global user object and user->cat_username to be defined.
                 $user = new User();
                 $user->cat_username = $patronId;
+
+                $account = new User_account();
+                $account->user_id = $t->user_id;
+                $account->cat_username = $t->cat_username;
+                if ($account->find(true)) {
+                    $patron = $this->catalog->patronLogin($t->cat_username, $account->cat_password);
+                }
+                if (!$patron) {
+                    error_log("Error processing payment: could not perform patron login (transaction $transactionId)");
+                    $error = true;                
+                }
+            } else {
+                $patron = UserAccount::catalogLogin();
             }
 
             $config = $this->catalog->getConfig('OnlinePayment');
@@ -262,22 +276,34 @@ class Fines extends MyResearch
                 $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patronId);
                 $res = $paymentHandler->processResponse($params);
 
-                if (isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {                    
-                    $paidRes = $this->catalog->markFeesAsPaid($patronId, $res['amount']);
-                    if ($paidRes === true) {
-                        $t = new Transaction();
-                        
-                        if (!$t->setTransactionRegistered($res['transactionId'])) {
-                            error_log("Error updating transaction $transactionId status: registered");
-                        }
-                        $_SESSION['payment_ok'] = true;
+                if (isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {       
+                    $finesAmount = $this->catalog->getOnlinePayableAmount($patron);
+
+                    // Check that payable sum has not been updated
+                    if ($finesAmount == $res['amount']) {
+                        $paidRes = $this->catalog->markFeesAsPaid($patronId, $res['amount']);
+                        if ($paidRes === true) {
+                            $t = new Transaction();
+                            if (!$t->setTransactionRegistered($res['transactionId'])) {
+                                error_log("Error updating transaction $transactionId status: registered");
+                            }
+                            $_SESSION['payment_ok'] = true;
+                        } else {
+                            $t = new Transaction();
+                            if (!$t->setTransactionRegistrationFailed($res['transactionId'], $paidRes)) {
+                                error_log("Error updating transaction $transactionId status: registering failed");
+                            }
+                            $error = true;
+                            $msg = translate($paidRes);
+                        }           
                     } else {
+                        // Payable sum updated. Skip registration and inform user that payment processing has been delayed..
                         $t = new Transaction();
-                        if (!$t->setTransactionRegistrationFailed($res['transactionId'], $paidRes)) {
-                            error_log("Error updating transaction $transactionId status: registering failed");
+                        if (!$t->setTransactionFinesUpdated($res['transactionId'])) {
+                            error_log("Error updating transaction $transactionId status: payable sum updated");
                         }
                         $error = true;
-                        $msg = translate($paidRes);
+                        $msg = translate('online_payment_registration_failed');
                     }
                 } else {
                     $error = true;
