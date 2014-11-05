@@ -75,7 +75,7 @@ class OnlinePaymentMonitor extends ReminderTask
      *                                    must reside under this (default: ..)
      * @param string $internalErrEmail    Email address for internal error reporting
      * @param string $formEmail           Sender email address for notification of expired transactions.
-     * @param string $reportIntervalHours Interval (in minutes) when to re-send report of unresolved transactions.
+     * @param string $reportIntervalHours Interval when to re-send report of unresolved transactions.
      *
      * @return void
      */
