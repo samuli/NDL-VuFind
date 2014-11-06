@@ -1092,13 +1092,13 @@ class MultiBackend implements DriverInterface
      *
      * @return array
      */
-    public function setPhoneNumber($patron) 
+    public function setPhoneNumber($patron, $phone) 
     {
         $source = $this->getSource($patron['id']);
         $driver = $this->getDriver($source);
         if (!PEAR::isError($driver) && is_callable(array($driver, 'setPhoneNumber'))) {
             $patron = $this->stripIdPrefixes($patron, $source);
-            return $driver->setPhoneNumber($patron);
+            return $driver->setPhoneNumber($patron, $phone);
         }
     }
 

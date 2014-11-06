@@ -52,6 +52,8 @@ class AxiellWebServices implements DriverInterface
     protected $reservations_wsdl = '';
     protected $dateFormat;
     protected $logFile = '';
+    protected $durationLogPrefix = '';
+    protected $verbose = false;
 
     protected $soapOptions = array(
         'soap_version' => SOAP_1_1,
@@ -86,10 +88,18 @@ class AxiellWebServices implements DriverInterface
             $this->defaultPickUpLocation = false;
         }
 
+        if (isset($this->config['Debug']['durationLogPrefix'])) {
+            $this->durationLogPrefix = $this->config['Debug']['durationLogPrefix'];
+        }
+        
+        if (isset($this->config['Debug']['verbose'])) {
+            $this->verbose = $this->config['Debug']['verbose'];
+        }
+        
         if (isset($this->config['Debug']['log'])) {
             $this->logFile = $this->config['Debug']['log'];
         }
-
+        
         // Set up object for formatting dates and times:
         $this->dateFormat = new VuFindDate();
     }
@@ -171,72 +181,43 @@ class AxiellWebServices implements DriverInterface
 
     public function getHolding($id, $patron = false)
     {
-        $localId = $id;
+        $functionResult = 'GetHoldingResult';
+        $result = $this->doSOAPRequest($this->catalogue_wsdl, 'GetHoldings', $functionResult, $id, array('GetHoldingsRequest' => array('arenaMember' => $this->arenaMember, 'id' => $id, 'language' => $this->getLanguage())));
 
-        $p = strpos($localId, '.');
-        $year = '';
-        $edition = '';
-
-        if ($p > 0) {
-            $localId = substr($localId, $p + 1);
+        if (PEAR::isError($result)) {
+            return $result;
         }
-        $p = strpos($localId, '_');
-        if ($p > 0) {
-            $localId = substr($localId, $p + 1);
+
+        $vfHoldings = array();
+
+        if (!isset($result->$functionResult->catalogueRecord->compositeHolding)) {
+            return $vfHoldings;
         }
-        $client = new SoapClient($this->catalogue_wsdl, $this->soapOptions);
-        try {
 
-            $this->debugLog("Catalogue record detail request for '$id':");
+        $holdings = is_object($result->$functionResult->catalogueRecord->compositeHolding)
+            ? array($result->$functionResult->catalogueRecord->compositeHolding)
+            : $result->$functionResult->catalogueRecord->compositeHolding;
 
-            $result = $client->GetHoldings(array('GetHoldingsRequest' => array('arenaMember' => $this->arenaMember, 'id' => $localId, 'language' => $this->getLanguage())));
+        if ($holdings[0]->type == 'year') {
 
-            if ($result->GetHoldingResult->status->type != 'ok') {
-                $this->debugLog("GetHoldings request failed for '$id'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('catalog_error_technical');
-            }
-
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-
-            $vfHoldings = array();
-
-            if (!isset($result->GetHoldingResult->catalogueRecord->compositeHolding)) {
-                return $vfHoldings;
-            }
-
-            $holdings = is_object($result->GetHoldingResult->catalogueRecord->compositeHolding)
-                ? array($result->GetHoldingResult->catalogueRecord->compositeHolding)
-                : $result->GetHoldingResult->catalogueRecord->compositeHolding;
-
-            if ($holdings[0]->type == 'year') {
-
-                foreach ($holdings as $holding) {
-                    $year = $holding->value;
-                    $holdingsEditions = is_object($holding->compositeHolding)
-                        ? array($holding->compositeHolding)
-                        : $holding->compositeHolding;
-                    foreach ($holdingsEditions as $holdingsEdition) {
-                        $edition = $holdingsEdition->value;
-                        $holdingsOrganisations = is_object($holdingsEdition->compositeHolding)
-                            ? array($holdingsEdition->compositeHolding)
-                            : $holdingsEdition->compositeHolding;
-                        $this->parseHoldings($holdingsOrganisations, $id, $vfHoldings, $year, $edition);
-                    }
+            foreach ($holdings as $holding) {
+                $year = $holding->value;
+                $holdingsEditions = is_object($holding->compositeHolding)
+                    ? array($holding->compositeHolding)
+                    : $holding->compositeHolding;
+                foreach ($holdingsEditions as $holdingsEdition) {
+                    $edition = $holdingsEdition->value;
+                    $holdingsOrganisations = is_object($holdingsEdition->compositeHolding)
+                        ? array($holdingsEdition->compositeHolding)
+                        : $holdingsEdition->compositeHolding;
+                    $this->parseHoldings($holdingsOrganisations, $id, $vfHoldings, $year, $edition);
                 }
-            } else {
-                $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
             }
-            
-            return empty($vfHoldings) ? false : $vfHoldings;
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-            return new PEAR_Error('catalog_error_technical');
+        } else {
+            $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
         }
+        
+        return empty($vfHoldings) ? false : $vfHoldings;
     }
 
     /**
@@ -277,30 +258,15 @@ class AxiellWebServices implements DriverInterface
                             $nofTotal = isset($department->nofTotal) ? $department->nofTotal : '';
                             $nofOrdered = isset($department->nofOrdered) ? $department->nofOrdered : '';
 
-                            //TODO: itemSummary pilkottava omiin kenttiin, jotka kootaan fiksusti templatessa
-                            $itemSummary = '';
                             $location = '';
                             if ($year || $edition) {
                                 $location =  $year . ', ' . $edition;
-                                $itemSummary = $organisationName . ', ';
                             } else {
                                 $location = $organisationName;
                             }
 
-                            $itemSummary .= $branchName . ', Osasto: ' . $departmentName;
-
                             if ($locationName) {
-                                $itemSummary .= ', Sijainti: ' . $locationName;
-                            }
-                            if ($nofTotal) {
-                                $itemSummary .= ', Yhteensä: ' . $nofTotal;
-                            }
-                            if ($nofAvailableForLoan) {
-                                $itemSummary .= ', Lainattavissa: ' . $nofAvailableForLoan;
-                            }
-
-                            if ($nofOrdered) {
-                                $itemSummary .= ', Tilattu: ' . $nofOrdered;
+                                $departmentName .= ', ' . $locationName;
                             }
 
                             $available = null;
@@ -343,7 +309,6 @@ class AxiellWebServices implements DriverInterface
                                 'id'                => $id,
                                 'mfhd_id'           => $id,
                                 'item_id'           => count($vfHoldings) + 1,
-                                'itemSummary'       => $itemSummary,
                                 'requests_placed'   => $noOfReservations,
                                 'barcode'           => '',
                                 'availability'      => $available,
@@ -463,98 +428,81 @@ class AxiellWebServices implements DriverInterface
      */
     public function patronLogin($username, $password)
     {
-        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
-        try {
-            $patronId = $this->getPatronId($username, $password);
-            if (PEAR::isError($patronId)) {
-                return $patronId;
-            }
+        $functionResult = 'patronInformationResult';
+        $result = $this->doSOAPRequest($this->patron_wsdl, 'getPatronInformation', $functionResult, $username, array('patronInformationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage())));
 
-            $this->debugLog("Patron login for '$username':");
-
-            $result = $client->getPatronInformation(array('patronInformationParam' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'patronId' => $patronId)));
-            if ($result->patronInformationResult->status->type != 'ok') {
-                $this->debugLog("Patron information request failed for '$username'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('authentication_error_technical');
-            }
-
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-
-            $info = $result->patronInformationResult->patronInformation;
-
-            $user = array();
-            $user['id'] = $username;
-            $user['cat_username'] = $username;
-            $user['cat_password'] = $password;
-            // TODO: do we always get full name?
-            $names = explode(' ', $info->patronName);
-            $user['lastname'] = array_pop($names);
-            $user['firstname'] = implode(' ', $names);
-            $user['email'] = '';
-            $user['emailId'] = '';
-            $user['address1'] = '';
-            $user['zip'] = '';
-            $user['phone'] = '';
-            $user['phoneId'] = '';
-            $user['phoneLocalCode'] = '';
-            $user['phoneAreaCode'] = '';
-
-            if (isset($info->emailAddresses)) {
-                $emailAddresses = is_object($info->emailAddresses->emailAddress) ? array($info->emailAddresses->emailAddress) : $info->emailAddresses->emailAddress;
-                foreach ($emailAddresses as $emailAddress) {
-                    if ($emailAddress->isActive == 'yes') {
-                        $user['email'] = isset($emailAddress->address) ? $emailAddress->address : '';
-                        $user['emailId'] = isset($emailAddress->id) ? $emailAddress->id : '';
-                    }
-                }
-            }
-
-            if (isset($info->addresses)) {
-                $addresses = is_object($info->addresses->address) ? array($info->addresses->address) : $info->addresses->address;
-                foreach ($addresses as $address) {
-                    if ($address->isActive == 'yes') {
-                        $user['address1'] = isset($address->streetAddress) ? $address->streetAddress : '';
-                        $user['zip'] = isset($address->zipCode) ? $address->zipCode : '';
-                        if (isset($address->city)) {
-                            if ($user['zip']) {
-                                $user['zip'] .= ', ';
-                            }
-                            $user['zip'] .= $address->city;
-                        }
-                        if (isset($address->country)) {
-                            if ($user['zip']) {
-                                $user['zip'] .= ', ';
-                            }
-                            $user['zip'] .= $address->country;
-                        }
-                    }
-                }
-            }
-
-            if (isset($info->phoneNumbers)) {
-                $phoneNumbers = is_object($info->phoneNumbers->phoneNumber) ? array($info->phoneNumbers->phoneNumber) : $info->phoneNumbers->phoneNumber;
-                foreach ($phoneNumbers as $phoneNumber) {
-                    if ($phoneNumber->sms->useForSms == 'yes') {
-                        $user['phone'] = isset($phoneNumber->areaCode) ? $phoneNumber->areaCode : '';
-                        $user['phoneAreaCode'] = $user['phone'];
-                        if (isset($phoneNumber->localCode)) {
-                            $user['phone'] .= $phoneNumber->localCode;
-                            $user['phoneLocalCode'] = $phoneNumber->localCode;
-                        } 
-                        if (isset($phoneNumber->id)) {
-                            $user['phoneId'] = $phoneNumber->id;
-                        }
-                    }
-                }
-            }
-            return $user;
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            return new PEAR_Error('authentication_error_technical');
+        if (PEAR::isError($result)) {
+            return $result;
         }
+
+        $info = $result->$functionResult->patronInformation;
+
+        $user = array();
+        $user['id'] = $username;
+        $user['cat_username'] = $username;
+        $user['cat_password'] = $password;
+        // TODO: do we always get full name?
+        $names = explode(' ', $info->patronName);
+        $user['lastname'] = array_pop($names);
+        $user['firstname'] = implode(' ', $names);
+        $user['email'] = '';
+        $user['emailId'] = '';
+        $user['address1'] = '';
+        $user['zip'] = '';
+        $user['phone'] = '';
+        $user['phoneId'] = '';
+        $user['phoneLocalCode'] = '';
+        $user['phoneAreaCode'] = '';
+
+        if (isset($info->emailAddresses)) {
+            $emailAddresses = is_object($info->emailAddresses->emailAddress) ? array($info->emailAddresses->emailAddress) : $info->emailAddresses->emailAddress;
+            foreach ($emailAddresses as $emailAddress) {
+                if ($emailAddress->isActive == 'yes') {
+                    $user['email'] = isset($emailAddress->address) ? $emailAddress->address : '';
+                    $user['emailId'] = isset($emailAddress->id) ? $emailAddress->id : '';
+                }
+            }
+        }
+
+        if (isset($info->addresses)) {
+            $addresses = is_object($info->addresses->address) ? array($info->addresses->address) : $info->addresses->address;
+            foreach ($addresses as $address) {
+                if ($address->isActive == 'yes') {
+                    $user['address1'] = isset($address->streetAddress) ? $address->streetAddress : '';
+                    $user['zip'] = isset($address->zipCode) ? $address->zipCode : '';
+                    if (isset($address->city)) {
+                        if ($user['zip']) {
+                            $user['zip'] .= ', ';
+                        }
+                        $user['zip'] .= $address->city;
+                    }
+                    if (isset($address->country)) {
+                        if ($user['zip']) {
+                            $user['zip'] .= ', ';
+                        }
+                        $user['zip'] .= $address->country;
+                    }
+                }
+            }
+        }
+
+        if (isset($info->phoneNumbers)) {
+            $phoneNumbers = is_object($info->phoneNumbers->phoneNumber) ? array($info->phoneNumbers->phoneNumber) : $info->phoneNumbers->phoneNumber;
+            foreach ($phoneNumbers as $phoneNumber) {
+                if ($phoneNumber->sms->useForSms == 'yes') {
+                    $user['phone'] = isset($phoneNumber->areaCode) ? $phoneNumber->areaCode : '';
+                    $user['phoneAreaCode'] = $user['phone'];
+                    if (isset($phoneNumber->localCode)) {
+                        $user['phone'] .= $phoneNumber->localCode;
+                        $user['phoneLocalCode'] = $phoneNumber->localCode;
+                    } 
+                    if (isset($phoneNumber->id)) {
+                        $user['phoneId'] = $phoneNumber->id;
+                    }
+                }
+            }
+        }
+        return $user;
     }
 
     /**
@@ -571,68 +519,48 @@ class AxiellWebServices implements DriverInterface
      */
     public function getMyTransactions($user)
     {
-        $client = new SoapClient($this->loans_wsdl, $this->soapOptions);
-        try {
-            $patronId = $this->getPatronId($user['cat_username'], $user['cat_password']);
-            if (PEAR::isError($patronId)) {
-                return $patronId;
-            }
-
-            $this->debugLog("Loans request for '{$user['cat_username']}':");
-
-            $result = $client->GetLoans(array('loansRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en')));
-
-            if ($result->loansResponse->status->type != 'ok') {
-                $this->debugLog("Loans request failed for '" . $user['cat_username'] . "'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                if (isset($result->loansResponse->loans->loan)) {
-                    // Workaround for AWS problem when it cannot find a record
-                    $this->debugLog('AxiellWebServices: It seems we got the loans anyway...');
-                } else {
-                    return new PEAR_Error('catalog_error_technical');
-                }
-            }
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-
-            $transList = array();
-            if (!isset($result->loansResponse->loans->loan)) {
-                return $transList;
-            }
-            $loans = is_object($result->loansResponse->loans->loan) ? array($result->loansResponse->loans->loan) : $result->loansResponse->loans->loan;
-
-            foreach ($loans as $loan) {
-                $trans = array();
-                $trans['id'] = $loan->catalogueRecord->id;
-                $trans['title'] = $loan->catalogueRecord->title;
-                $trans['duedate'] = $loan->loanDueDate;
-                $trans['renewable'] = ($loan->loanStatus->isRenewable == 'yes') ? true : false;
-                $trans['message'] = $this->mapStatus($loan->loanStatus->status);
-                $trans['barcode'] = $loan->id;
-                $trans['renewalCount'] = max(array(0, $this->config['Loans']['renewalLimit'] - $loan->remainingRenewals));
-                $trans['renewalLimit'] = $this->config['Loans']['renewalLimit'];
-                $transList[] = $trans;
-            }
-
-            // Sort the Loans
-            $date = array();
-            foreach ($transList as $key => $row) {
-                $date[$key] = $row['duedate'];
-            }
-            array_multisort($date, SORT_ASC, $transList);
-
-            // Convert Axiell format to display date format
-            foreach ($transList as &$row) {
-                $row['duedate'] = $this->formatDate($row['duedate']);
-            }
-
-            return $transList;
-
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            return new PEAR_Error('catalog_error_technical');
+        $username = $user['cat_username'];
+        $password = $user['cat_password'];
+        
+        $functionResult = 'loansResponse';
+        $result = $this->doSOAPRequest($this->loans_wsdl, 'GetLoans', $functionResult, $username, array('loansRequest' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage())));
+                
+        if (PEAR::isError($result)) {
+            return $result;
         }
+        
+        $transList = array();
+        if (!isset($result->$functionResult->loans->loan)) {
+            return $transList;
+        }
+        $loans = is_object($result->$functionResult->loans->loan) ? array($result->$functionResult->loans->loan) : $result->$functionResult->loans->loan;
+
+        foreach ($loans as $loan) {
+            $trans = array();
+            $trans['id'] = $loan->catalogueRecord->id;
+            $trans['title'] = $loan->catalogueRecord->title;
+            $trans['duedate'] = $loan->loanDueDate;
+            $trans['renewable'] = ($loan->loanStatus->isRenewable == 'yes') ? true : false;
+            $trans['message'] = $this->mapStatus($loan->loanStatus->status);
+            $trans['barcode'] = $loan->id;
+            $trans['renewalCount'] = max(array(0, $this->config['Loans']['renewalLimit'] - $loan->remainingRenewals));
+            $trans['renewalLimit'] = $this->config['Loans']['renewalLimit'];
+            $transList[] = $trans;
+        }
+
+        // Sort the Loans
+        $date = array();
+        foreach ($transList as $key => $row) {
+            $date[$key] = $row['duedate'];
+        }
+        array_multisort($date, SORT_ASC, $transList);
+
+        // Convert Axiell format to display date format
+        foreach ($transList as &$row) {
+            $row['duedate'] = $this->formatDate($row['duedate']);
+        }
+
+        return $transList;
     }
 
     /**
@@ -664,52 +592,33 @@ class AxiellWebServices implements DriverInterface
      */
     public function renewMyItems($renewDetails)
     {
-        $client = new SoapClient($this->loans_wsdl, $this->soapOptions);
-        try {
-            $succeeded = 0;
-            $results = array();
-            foreach ($renewDetails['details'] as $id) {
-                $patronId = $this->getPatronId($renewDetails['patron']['cat_username'], $renewDetails['patron']['cat_password']);
-                if (PEAR::isError($patronId)) {
-                    return $patronId;
-                }
-
-                $this->debugLog("Renew loan request for '{$renewDetails['patron']['cat_username']}':");
-
-                $result = $client->RenewLoans(array('renewLoansRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'loans' => array($id))));
-
-                if ($result->renewLoansResponse->status->type != 'ok') {
-                    $this->debugLog("Renew loans request failed for '" . $renewDetails['patron']['cat_username'] . "'");
-                    $this->debugLog("Request: " . $client->__getLastRequest());
-                    $this->debugLog("Response: " . $client->__getLastResponse());
-                    $results[$id] = array(
-                        'success' => false,
-                        'status' => 'Renewal failed', // TODO
-                        'sys_message' => $result->renewLoansResponse->status->message
-                    );
-                } else {
-                    $this->debugLog("Renew loans Request: " . $client->__getLastRequest());
-                    $this->debugLog("Renew loans Response: " . $client->__getLastResponse());
-                    $results[$details] = array(
-                        'success' => true,
-                        'status' => 'Loan renewed', // TODO
-                        'sys_message' => '',
-                        'item_id' => $details,
-                        'new_date' => $this->formatDate($result->renewLoansResponse->loans->loan->loanDueDate),
-                        'new_time' => ''
-                    );
-                }
+        $succeeded = 0;
+        $results = array();
+        foreach ($renewDetails['details'] as $id) {
+            $username = $renewDetails['patron']['cat_username'];
+            $password = $renewDetails['patron']['cat_password'];
+            
+            $functionResult = 'renewLoansResponse';
+            $result = $this->doSOAPRequest($this->loans_wsdl, 'RenewLoans', $functionResult, $username, array('renewLoansRequest' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'loans' => array($id))));           
+            
+            if (PEAR::isError($result)) {               
+                $results[$id] = array(
+                    'success' => false,
+                    'status' => 'Renewal failed', // TODO
+                    'sys_message' => $result->getMessage()
+                );
+            } else {
+                $results[$details] = array(
+                    'success' => true,
+                    'status' => 'Loan renewed', // TODO
+                    'sys_message' => '',
+                    'item_id' => $details,
+                    'new_date' => $this->formatDate($result->$functionResult->loans->loan->loanDueDate),
+                    'new_time' => ''
+                );
             }
-            return $results;
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-            return array(
-                'block' => 'Renewal failed',
-                'details' => array()
-            );
         }
+        return $results;
     }
 
 
@@ -726,50 +635,34 @@ class AxiellWebServices implements DriverInterface
      */
     public function getMyFines($user)
     {
-        $client = new SoapClient($this->payments_wsdl, $this->soapOptions);
-        try {
-            $patronId = $this->getPatronId($user['cat_username'], $user['cat_password']);
-            if (PEAR::isError($patronId)) {
-                return $patronId;
-            }
-
-            $this->debugLog("Debts request for '{$renewDetails['patron']['cat_username']}':");
-
-            $result = $client->GetDebts(array('debtsRequest' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => $this->getLanguage(), 'fromDate' => '1699-12-31', 'toDate' => time())));
-            if ($result->debtsResponse->status->type != 'ok') {
-                $this->debugLog("Debts request failed for '" . $user['cat_username'] . "'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('catalog_error_technical');
-            }
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-
-            $finesList = array();
-            if (!isset($result->debtsResponse->debts->debt))
-                return $finesList;
-            $debts = is_object($result->debtsResponse->debts->debt) ? array($result->debtsResponse->debts->debt) : $result->debtsResponse->debts->debt;
-
-            foreach ($debts as $debt) {
-                $fine = array();
-                $fine['debt_id'] = $debt->id;
-                $fine['amount'] = str_replace(',', '.', $debt->debtAmountFormatted) * 100;
-                $fine['checkout'] = '';
-                $fine['fine'] = $debt->debtType . ' - ' . $debt->debtNote;
-                $fine['balance'] = str_replace(',', '.', $debt->debtAmountFormatted) * 100;
-                // Convert Axiell format to display date format
-                $fine['createdate'] = $this->formatDate($debt->debtDate);
-                $fine['duedate'] = $this->formatDate($debt->debtDate);
-                $finesList[] = $fine;
-            }
-            return $finesList;
-
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-            return new PEAR_Error('catalog_error_technical');
+        $username = $user['cat_username'];
+        $password = $user['cat_password'];
+        
+        $functionResult = 'debtsResponse';
+        $result = $this->doSOAPRequest($this->payments_wsdl, 'GetDebts', $functionResult, $username, array('debtsRequest' => array('arenaMember' => $this->arenaMember,'user' => $username, 'password' => $password, 'language' => $this->getLanguage(), 'fromDate' => '1699-12-31', 'toDate' => time())));
+        
+        if (PEAR::isError($result)) {
+            return $result;
         }
+
+        $finesList = array();
+        if (!isset($result->$functionResult->debts->debt))
+            return $finesList;
+        $debts = is_object($result->$functionResult->debts->debt) ? array($result->$functionResult->debts->debt) : $result->$functionResult->debts->debt;
+
+        foreach ($debts as $debt) {
+            $fine = array();
+            $fine['debt_id'] = $debt->id;
+            $fine['amount'] = str_replace(',', '.', $debt->debtAmountFormatted) * 100;
+            $fine['checkout'] = '';
+            $fine['fine'] = $debt->debtType . ' - ' . $debt->debtNote;
+            $fine['balance'] = str_replace(',', '.', $debt->debtAmountFormatted) * 100;
+            // Convert Axiell format to display date format
+            $fine['createdate'] = $this->formatDate($debt->debtDate);
+            $fine['duedate'] = $this->formatDate($debt->debtDate);
+            $finesList[] = $fine;
+        }
+        return $finesList;
     }
 
     /**
@@ -785,56 +678,41 @@ class AxiellWebServices implements DriverInterface
      */
     public function getMyHolds($user)
     {
-        $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
-        try {
-            $patronId = $this->getPatronId($user['cat_username'], $user['cat_password']);
-            if (PEAR::isError($patronId)) {
-                return $patronId;
-            }
-
-            $this->debugLog("Holds request for '{$user['cat_username']}':");
-
-            $result = $client->getReservations(array('getReservationsParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'fi')));
-            if ($result->getReservationsResult->status->type != 'ok') {
-                $this->debugLog("Reservations request failed for '" . $user['cat_username'] . "'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('catalog_error_technical');
-            }
-
-            $this->debugLog("Reservations Request: " . $client->__getLastRequest());
-            $this->debugLog("Reservations Response: " . $client->__getLastResponse());
-
-            $holdsList = array();
-            if (!isset($result->getReservationsResult->reservations->reservation))
-                return $holdsList;
-            $reservations = is_object($result->getReservationsResult->reservations->reservation) ? array($result->getReservationsResult->reservations->reservation) : $result->getReservationsResult->reservations->reservation;
-
-            foreach ($reservations as $reservation) {
-                $hold = array();
-                $hold['type'] = $reservation->reservationStatus; // TODO
-                $hold['id'] = $reservation->catalogueRecord->id;
-                $hold['location'] = $reservation->pickUpBranchId;
-                $hold['reqnum'] = $reservation->id;
-                $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
-                $hold['expire'] = $this->formatDate($expireDate);
-                $hold['create'] = $this->formatDate($reservation->validFromDate);
-                $hold['position'] = isset($reservation->queueNo) ? $reservation->queueNo : '-';
-                $hold['available'] = $reservation->reservationStatus == 'fetchable';
-                $hold['item_id'] = '';
-                $hold['volume'] = isset($reservation->catalogueRecord->volume) ? $reservation->catalogueRecord->volume : '';
-                $hold['publication_year'] = isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '';
-                $hold['title'] = isset($reservation->catalogueRecord->titles) ? $reservation->catalogueRecord->titles : '';
-                $holdsList[] = $hold;
-            }
-            return $holdsList;
-
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            $this->debugLog("Reservations Request: " . $client->__getLastRequest());
-            $this->debugLog("Reservations Response: " . $client->__getLastResponse());
-            return new PEAR_Error('catalog_error_technical');
+        $username = $user['cat_username'];
+        $password = $user['cat_password'];
+                
+        $functionResult =  'getReservationsResult';
+        $result = $this->doSOAPRequest($this->reservations_wsdl, 'getReservations', $functionResult, $username, array('getReservationsParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage())));
+        
+        $statusAWS = $result->$functionResult->status;
+        
+        if (PEAR::isError($result)) {
+            return $result;
         }
+
+        $holdsList = array();
+        if (!isset($result->$functionResult->reservations->reservation))
+            return $holdsList;
+        $reservations = is_object($result->$functionResult->reservations->reservation) ? array($result->$functionResult->reservations->reservation) : $result->$functionResult->reservations->reservation;
+
+        foreach ($reservations as $reservation) {
+            $hold = array();
+            $hold['type'] = $reservation->reservationStatus; // TODO
+            $hold['id'] = $reservation->catalogueRecord->id;
+            $hold['location'] = $reservation->pickUpBranchId;
+            $hold['reqnum'] = $reservation->id;
+            $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
+            $hold['expire'] = $this->formatDate($expireDate);
+            $hold['create'] = $this->formatDate($reservation->validFromDate);
+            $hold['position'] = isset($reservation->queueNo) ? $reservation->queueNo : '-';
+            $hold['available'] = $reservation->reservationStatus == 'fetchable';
+            $hold['item_id'] = '';
+            $hold['volume'] = isset($reservation->catalogueRecord->volume) ? $reservation->catalogueRecord->volume : '';
+            $hold['publication_year'] = isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '';
+            $hold['title'] = isset($reservation->catalogueRecord->titles) ? $reservation->catalogueRecord->titles : '';
+            $holdsList[] = $hold;
+        }
+        return $holdsList;
     }
 
     /**
@@ -851,74 +729,59 @@ class AxiellWebServices implements DriverInterface
      */
     public function getPickUpLocations($user, $holdDetails)
     {
-        $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
-        try {
-            $patronId = $this->getPatronId($user['cat_username'], $user['cat_password']);
-            if (PEAR::isError($patronId)) {
-                return $patronId;
-            }
-
-            $this->debugLog("Holds request for '{$user['cat_username']}':");
-
-            $id = $holdDetails['id']; //TODO: check if reservable is required
-
-            $result = $client->getReservationBranches(array('getReservationBranchesParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'fi', 'country' => 'FI', 'reservationEntities' => $id, 'reservationType' => 'normal')));
-            if ($result->getReservationBranchesResult->status->type != 'ok') {
-                $this->debugLog("Reservation branches request failed for '" . $user['cat_username'] . "'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return new PEAR_Error('catalog_error_technical');
-            }
-
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-
-            $locationsList = array();
-            if (!isset($result->getReservationBranchesResult->organisations->organisation))
-                return $locationsList;
-            $organisations = is_object($result->getReservationBranchesResult->organisations->organisation) ?
-                array($result->getReservationBranchesResult->organisations->organisation) :
-                $result->getReservationBranchesResult->organisations->organisation;
-
-            foreach ($organisations as $organisation) {
-                                       
-                $organisationID = $organisation->id;
+        $username = $user['cat_username'];
+        $password = $user['cat_password'];
+        
+        $id = $holdDetails['id']; //TODO: check if reservable is required
+  
+        $functionResult = 'getReservationBranchesResult';
+        $result = $this->doSOAPRequest($this->reservations_wsdl, 'getReservationBranches', $functionResult, $username, array('getReservationBranchesParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage(), 'country' => 'FI', 'reservationEntities' => $id, 'reservationType' => 'normal')));
                 
-                if (!isset($organisation->branches->branch))
-                    continue;
-                
-                // TODO: Make it configurable whether organisation names should be included in the location name           
-                $branches = is_object($organisation->branches->branch) ?
-                  array($organisation->branches->branch) :
-                  $organisation->branches->branch;
-                
-                if (is_object($organisation->branches->branch)) {
-                    $locationsList[] = array(
-                        'locationID' => $organisationID . "." .  $organisation->branches->branch->id,
-                        'locationDisplay' => $organisation->branches->branch->name
-                    );
-                }
-                else foreach ($organisation->branches->branch as $branch) {
-                    $locationsList[] = array(
-                        'locationID' => $organisationID . "." . $branch->id,
-                        'locationDisplay' => $branch->name
-                    );
-                }
-            }
-            
-            // Sort the location list
-            $location = array();
-            foreach ($locationsList as $key => $row) {
-                $location[$key] = $row['locationDisplay'];
-            }
-            array_multisort($location, SORT_REGULAR, $locationsList);
-            
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        
+        $locationsList = array();
+        if (!isset($result->$functionResult->organisations->organisation))
             return $locationsList;
+        $organisations = is_object($result->$functionResult->organisations->organisation) ?
+            array($result->$functionResult->organisations->organisation) :
+            $result->$functionResult->organisations->organisation;
 
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            return new PEAR_Error('catalog_error_technical');
-        }    
+        foreach ($organisations as $organisation) {
+                                   
+            $organisationID = $organisation->id;
+            
+            if (!isset($organisation->branches->branch))
+                continue;
+            
+            // TODO: Make it configurable whether organisation names should be included in the location name           
+            $branches = is_object($organisation->branches->branch) ?
+              array($organisation->branches->branch) :
+              $organisation->branches->branch;
+            
+            if (is_object($organisation->branches->branch)) {
+                $locationsList[] = array(
+                    'locationID' => $organisationID . "." .  $organisation->branches->branch->id,
+                    'locationDisplay' => $organisation->branches->branch->name
+                );
+            }
+            else foreach ($organisation->branches->branch as $branch) {
+                $locationsList[] = array(
+                    'locationID' => $organisationID . "." . $branch->id,
+                    'locationDisplay' => $branch->name
+                );
+            }
+        }
+        
+        // Sort the location list
+        $location = array();
+        foreach ($locationsList as $key => $row) {
+            $location[$key] = $row['locationDisplay'];
+        }
+        array_multisort($location, SORT_REGULAR, $locationsList);
+        
+        return $locationsList;  
     }
 
     /**
@@ -1000,50 +863,35 @@ class AxiellWebServices implements DriverInterface
 
         $bibId = $holdDetails['id'];
         
-        $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
-        try {
-            $patronId = $this->getPatronId($holdDetails['patron']['cat_username'], $holdDetails['patron']['cat_password']);
-            if (PEAR::isError($patronId)) {
-                return $patronId;
-            }
+        $username = $holdDetails['patron']['cat_username'];
+        $password = $holdDetails['patron']['cat_password'];
+        
+        $validFromDate = date("Y-m-d");     
+        
+        $validToDate = $this->dateFormat->convertFromDisplayDate(
+            "Y-m-d", $holdDetails['requiredBy']
+        );
 
-            $this->debugLog("Add reservation request for '" . $holdDetails['patron']['cat_username'] . "':");
-                        
-            $validFromDate = date("Y-m-d");     
-            
-            $validToDate = $this->dateFormat->convertFromDisplayDate(
-                "Y-m-d", $holdDetails['requiredBy']
-            );
-            if (PEAR::isError($validToDate)) {
-                // Hold Date is invalid
-                return $this->holdError("hold_date_invalid");
-            }
-
-            $pickUpLocation = $holdDetails['pickUpLocation'];
-            list($organisation, $branch) = explode('.', $pickUpLocation, 2);
-            
-            $result = $client->addReservation(array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => 'catalogueRecordDetail', 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));
-
-            if ($result->addReservationResult->status->type != 'ok') {
-                $this->debugLog("Add reservation request failed for '" . $holdDetails['patron']['cat_username'] . "'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                return array(
-                    'success' => false,
-                    'sysMessage' => $result->addReservationResult->status->message
-                );
-            }
-
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-
-            return array(
-                'success' => true
-            );
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            return new PEAR_Error('catalog_error_technical');
+        if (PEAR::isError($validToDate)) {
+            // Hold Date is invalid
+            return $this->holdError("hold_date_invalid");
         }
+
+        $pickUpLocation = $holdDetails['pickUpLocation'];
+        list($organisation, $branch) = explode('.', $pickUpLocation, 2);
+        
+        $result = $this->doSOAPRequest($this->reservations_wsdl, 'addReservation', 'addReservationResult', $username, array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => 'catalogueRecordDetail', 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));      
+        
+        if (PEAR::isError($result)) {
+            return array(
+                'success' => false,
+                'sysMessage' => $result->getMessage()
+            );
+        }
+
+        return array(
+            'success' => true
+        );
     }
 
     /**
@@ -1059,44 +907,31 @@ class AxiellWebServices implements DriverInterface
      */
     public function cancelHolds($cancelDetails)
     {
-        $client = new SoapClient($this->reservations_wsdl, $this->soapOptions);
-        try {
-            $patronId = $this->getPatronId($cancelDetails['patron']['cat_username'], $cancelDetails['patron']['cat_password']);
-            if (PEAR::isError($patronId)) {
-                return $patronId;
+        $username = $cancelDetails['patron']['cat_username'];
+        $password = $cancelDetails['patron']['cat_password'];
+        $succeeded = 0;
+        $results = array();
+        
+        foreach ($cancelDetails['details'] as $details) {
+            $result = $this->doSOAPRequest($this->reservations_wsdl, 'removeReservation', 'removeReservationResult', $username, array('removeReservationsParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'id' => $details)));
+            
+            if (PEAR::isError($result)) {                
+                $results[] = array(
+                    'success' => false,
+                    'status' => 'hold_cancel_fail', // TODO
+                    'sysMessage' => $result->getMessage()
+                );
+            } else {
+                $results[$details] = array(
+                    'success' => true,
+                    'status' => 'Hold canceled', // TODO
+                    'sysMessage' => ''
+                );
+                ++$succeeded;
             }
-
-            $succeeded = 0;
-            $results = array();
-            foreach ($cancelDetails['details'] as $details) {
-                $result = $client->removeReservation(array('removeReservationsParam' => array('arenaMember' => $this->arenaMember, 'patronId' => $patronId, 'language' => 'en', 'id' => $details)));
-
-                if ($result->removeReservationResult->status->type != 'ok') {
-                    $this->debugLog("Remove reservation request failed for '" . $cancelDetails['patron']['cat_username'] . "'");
-                    $this->debugLog("Request: " . $client->__getLastRequest());
-                    $this->debugLog("Response: " . $client->__getLastResponse());
-                    $results[] = array(
-                        'success' => false,
-                        'status' => 'Failed to cancel hold', // TODO
-                        'sysMessage' => $result->removeReservationResult->status->message
-                    );
-                } else {
-                    $this->debugLog("Cancel hold Request: " . $client->__getLastRequest());
-                    $this->debugLog("Cancel hold Response: " . $client->__getLastResponse());
-                    $results[$details] = array(
-                        'success' => true,
-                        'status' => 'Hold canceled', // TODO
-                        'sysMessage' => ''
-                    );
-                    ++$succeeded;
-                }
-            }
-            $results['count'] = $succeeded;
-            return $results;
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            return new PEAR_Error('catalog_error_technical');
         }
+        $results['count'] = $succeeded;
+        return $results;
     }
 
     /**
@@ -1154,81 +989,51 @@ class AxiellWebServices implements DriverInterface
      *
      * @return array Response
      */
-    public function setPhoneNumber($patron)
+  /**
+     * Set patron phone number
+     *
+     * @param array $patron Patron array
+     *
+     * @return array Response
+     */
+    public function setPhoneNumber($patron, $phone)
     {
-        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
+        $username = $patron['cat_username'];
+        $password = $patron['cat_password'];
+        $phoneCountry = isset($patron['phoneCountry']) ? $patron['phoneCountry'] : 'FI';
+        $areaCode = '';
+                    
+        $conf = array(
+            'arenaMember'  => $this->arenaMember,
+            'language'     => 'en',
+            'user'         => $username,
+            'password'     => $password,
+            'areaCode'     => $areaCode,
+            'country'      => $phoneCountry,
+            'localCode'    => $phone,
+            'useForSms'    => 'yes'
+        );
 
-        try {
-            $patronId = $this->getPatronId($patron['cat_username'], $patron['cat_password']);
+        if (isset($patron['phoneId'])) {
+            $conf['id'] = $patron['phoneId'];
+            $result = $this->doSOAPRequest($this->patron_wsdl, 'changePhone', 'changePhoneNumberResult', $username, array('changePhoneNumberParam' => $conf));
+        } else {
+            $result = $this->doSOAPRequest($this->patron_wsdl, 'addPhone', 'addPhoneNumberResult', $username, array('addPhoneNumberParam' => $conf));                
+        }
 
-            if (PEAR::isError($patronId)) {
-                return array(
-                    'success' => false,
-                    'sys_message' => 'No patron id',
-                    'status' => 'Phone number change failed'
-                );
-            }
-
-            $localCode = $patron['phoneLocalCode'];
-            $phoneCountry = isset($patron['phoneCountry']) ? $patron['phoneCountry'] : 'FI';
-            $areaCode = '';
-
-            $conf = array(
-                'arenaMember'  => $this->arenaMember,
-                'language'     => 'en',
-                'patronId'     => $patronId,
-                'areaCode'     => $areaCode,
-                'country'      => $phoneCountry,
-                'localCode'    => $localCode,
-                'useForSms'    => 'yes'
-            );
-
-            $this->debugLog("Phone number set request for '{$patron['cat_username']}':");
-            $error = false;
-            if (isset($patron['phoneId'])) {
-                $conf['id'] = $patron['phoneId'];
-                $result = $client->changePhone(array('changePhoneNumberParam' => $conf));
-                if ($result->changePhoneNumberResult->status->type != 'ok') {
-                    $error = true;
-                    $sysMessage = $result->changePhoneNumberResult->status->message;
-                }
-            } else {
-                $result = $client->addPhone(array('addPhoneNumberParam' => $conf));
-                if ($result->addPhoneNumberResult->status->type != 'ok') {
-                    $error = true;
-                    $sysMessage = $result->addPhoneNumberResult->status->message;
-                }
-            }
-
-            if ($error) {
-                $this->debugLog("Change phone number request failed for '" . $patron['cat_username'] . "'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                $results = array(
-                    'success' => false,
-                    'status' => 'Phone number change failed',
-                    'sys_message' => $sysMessage
-                );
-            } else {
-                $this->debugLog("Set phone number Request: " . $client->__getLastRequest());
-                $this->debugLog("Set phone number Response: " . $client->__getLastResponse());
-                $results = array(
-                    'success' => true,
-                    'status' => 'Phone number changed',
-                    'sys_message' => '',
-                );
-            }
-            return $results;
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
+        if (PEAR::isError($result)) {
             $results = array(
                 'success' => false,
-                'sys_message' => $e->getMessage,
-                'status' => 'Phone number change failed'
+                'status' => 'Changing the phone number failed',
+                'sys_message' => $result->getMessage()
             );
-        }
+        } else {
+            $results = array(
+                'success' => true,
+                'status' => 'Phone number changed',
+                'sys_message' => '',
+        );
+        }        
         return $results;
     }
 
@@ -1242,77 +1047,85 @@ class AxiellWebServices implements DriverInterface
      */
     public function setEmailAddress($patron, $email)
     {
-        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
-
-        try {
-            $patronId = $this->getPatronId($patron['cat_username'], $patron['cat_password']);
-
-            if (PEAR::isError($patronId)) {
-                return array(
-                    'success' => false,
-                    'status' => 'Email address change failed',
-                    'sys_message' => 'No patron id',
-                );
-            }
-
-            $conf = array(
-                'arenaMember'  => $this->arenaMember,
-                'language'     => 'en',
-                'patronId'     => $patronId,
-                'address'      => $email,
-                'isActive'     => 'yes'
-            );
-
-            $this->debugLog("Email address set request for '{$patron['cat_username']}':");
-            $error = false;
-            if (isset($patron['emailId'])) {
-                $conf['id'] = $patron['emailId'];
-                $result = $client->changeEmail(array('changeEmailAddressParam' => $conf));
-                if ($result->changeEmailAddressResult->status->type != 'ok') {
-                    $error = true;
-                    $sysMessage = $result->changeEmailAddressResult->status->message;
-                }
-            } else {
-                $result = $client->addPhone(array('addEmailAddressParam' => $conf));
-                if ($result->addPhoneNumberResult->status->type != 'ok') {
-                    $error = true;
-                    $sysMessage = $result->addEmailAddressResult->status->message;
-                }
-            }
-
-            if ($error) {
-                $this->debugLog("Set email address request failed for '" . $patron['cat_username'] . "'");
-                $this->debugLog("Request: " . $client->__getLastRequest());
-                $this->debugLog("Response: " . $client->__getLastResponse());
-                $results = array(
-                    'success' => false,
-                    'status' => 'Phone number change failed',
-                    'sys_message' => $sysMessage
-                );
-            } else {
-                $this->debugLog("Set email address Request: " . $client->__getLastRequest());
-                $this->debugLog("Set email address Response: " . $client->__getLastResponse());
-                $results = array(
-                    'success' => true,
-                    'status' => 'Email address changed',
-                    'sys_message' => '',
-                );
-            }
-            return $results;
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
+        $username = $patron['cat_username'];
+        $password = $patron['cat_password'];
+        
+        $conf = array(
+            'arenaMember'  => $this->arenaMember,
+            'language'     => 'en',
+            'user'         => $username,
+            'password'     => $password,
+            'address'      => $email,
+            'isActive'     => 'yes'
+        );
+        
+        if (isset($patron['emailId'])) {
+            $conf['id'] = $patron['emailId'];
+            $result = $this->doSOAPRequest($this->patron_wsdl, 'changeEmail', 'changeEmailAddressResult', $username, array('changeEmailAddressParam' => $conf));
+        } else {
+            $result = $this->doSOAPRequest($this->patron_wsdl, 'addEmail', 'addEmailAddressResult', $username, array('addEmailAddressParam' => $conf));
+        }
+        
+        if (PEAR::isError($result)) {
             $results = array(
                 'success' => false,
-                'sys_message' => $e->getMessage,
-                'status' => 'Set email address failed'
+                'status' => 'Set email address failed',
+                'sys_message' => $result->getMessage()
+            );
+        } else {
+            $results = array(
+                'success' => true,
+                'status' => 'Email address changed',
+                'sys_message' => '',
             );
         }
+        
         return $results;
     }
 
+    
+    /**
+     *
+     * @param string    $wsdl           Name of the wsdl file 
+     * @param string    $function       Name of the function
+     * @param string    $functionResult Name of the Result tag
+     * @param string    $id             Username or record id
+     * @param array     $params         Parameters needed for the SOAP call
+     * 
+     * @return object|PEAR_Error SOAP response or PEAR_Error
+     */
+    
+    protected function doSOAPRequest($wsdl, $function, $functionResult, $id, $params)
+    {
+        $client = new SoapClient($wsdl, $this->soapOptions);
+        try {
+            $this->debugLog("$function Request for '$id'");
+            
+            $startTime = microtime(true);
+            $result = $client->$function($params);            
 
+            if ($this->durationLogPrefix) {
+                file_put_contents($this->durationLogPrefix . '_' . $function . '.log', round(microtime(true) - $startTime, 4) . "\n", FILE_APPEND);
+            }
+            
+            if ($this->verbose) {
+                $this->debugLog("$function Request: " . $client->__getLastRequest());
+                $this->debugLog("$function Response: " . $client->__getLastResponse());       
+            }
+            
+            $statusAWS = $result->$functionResult->status;
+            
+            if ($statusAWS->type != 'ok') {
+                $message = $this->handleError($function, $statusAWS->message, $id, $client);
+                return new PEAR_Error($message);
+            }
+            
+            return $result;
+        } catch (Exception $e) {
+            $message = $this->handleError($function, $e->getMessage(), $id, $client);
+            return new PEAR_Error($message);
+        }
+    }
 
     /**
      * Get patron id from user name and password
@@ -1324,30 +1137,66 @@ class AxiellWebServices implements DriverInterface
      */
     protected function getPatronId($username, $password)
     {
-        $client = new SoapClient($this->patron_wsdl, $this->soapOptions);
-        try {
-            $this->debugLog("Get patron id: Authenticate patron request for '$username':");
+        $functionResult = 'authenticatePatronResult';
+        $result = $this->doSOAPRequest('patron_wsdl', 'authenticatePatron', $functionResult, $username, array('authenticatePatronParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage())));
 
-            $result = $client->authenticatePatron(array('authenticatePatronParam' => array('arenaMember' => $this->arenaMember, 'language' => 'en', 'user' => $username, 'password' => $password)));
-
-            $this->debugLog("Request: " . $client->__getLastRequest());
-            $this->debugLog("Response: " . $client->__getLastResponse());
-            
-            if ($result->authenticatePatronResult->status->type != 'ok') {
-                $this->debugLog("Authenticate patron request failed for '$username'");
-                if ($result->authenticatePatronResult->status->message == 'BackendError') {
-                    return new PEAR_Error('authentication_error_technical');
-                }
-                return new PEAR_Error('authentication_error_invalid');
-            }
-            
-            return $result->authenticatePatronResult->patronId;
-
-        } catch (Exception $e) {
-            $this->debugLog($e->getMessage());
-            return new PEAR_Error('authentication_error_technical');
-        }
+        if (PEAR::isError($result)) {
+            return $result;
+        }          
+        return $result->$functionResult->patronId;
     }
+    
+    /**
+     * Handle the error messages from Axiell Web Services
+     *
+     * @param string     $function Function name
+     * @param string     $message  Error message
+     * @param string     $username User name for logging
+     * @param SoapClient &$client  Soap client
+     *
+     * @return PEAR_Error PEAR Error message
+     */
+    
+    protected function handleError($function, $message, $id, &$client)
+    {
+        $this->debugLog("$function Request failed for '$id'");
+        $this->debugLog("AWS error: '$message'");       
+        $this->debugLog("$function Request: " . $client->__getLastRequest());
+        $this->debugLog("$function Response: " . $client->__getLastResponse());
+    
+        $status = array (
+            // Axiell system status error messages
+            'InvalidAccountCard'     => 'authentication_error_invalid',
+            'InvalidUser'            => 'authentication_error_invalid',
+            'InvalidPatron'          => 'authentication_error_invalid',
+            'InvalidLogin'           => 'authentication_error_invalid',
+            'InvalidPinCode'         => 'authentication_error_invalid',
+            'InvalidBorrCard'        => 'authentication_error_invalid',
+            'BackendError'           => 'catalog_connection_failed',
+            'ReservationDenied'      => 'hold_error_blocked',
+                
+            // Default system status error messages for different functions
+            'addReservation'         => 'hold_error_system',
+            'authenticatePatron'     => 'authentication_error_technical',
+            'GetDebts'               => 'catalog_connection_failed',
+            'getPatronInformation'   => 'patron_login_error_technical',
+            'GetHoldings'            => 'catalog_connection_failed',
+            'getReservations'        => 'hold_error_system',
+            'getReservationBranches' => 'hold_error_system',
+            'GetLoans'               => 'catalog_connection_failed',
+            'removeReservation'      => 'hold_error_system',
+            'renewLoans'             => 'renew_error',
+            'setEmailAddress'        => 'catalog_connection_failed',
+            'setPhoneNumber'         => 'catalog_connection_failed'
+            );
+
+        if (isset($status[$message])) {
+            return $status[$message];
+        } elseif (isset($status[$function])) {
+            return $status[$function];
+        } return 'catalog_connection_failed';
+    }
+    
 
     /**
      * Format date
@@ -1365,6 +1214,7 @@ class AxiellWebServices implements DriverInterface
         }
         return $this->dateFormat->convertToDisplayDate("Y-m-d", $date);
     }
+    
 
     /**
      * Get the language to be used in the interface
@@ -1379,6 +1229,24 @@ class AxiellWebServices implements DriverInterface
             $language = 'en';
         }
         return $language;
+    }
+    
+    /**
+     * Hold Error
+     *
+     * Returns a Hold Error Message
+     *
+     * @param string $msg An error message string
+     *
+     * @return array An array with a success (boolean) and sysMessage key
+     * @access protected
+     */
+    protected function holdError($msg)
+    {
+        return array(
+            "success" => false,
+            "sysMessage" => $msg
+        );
     }
 
 
