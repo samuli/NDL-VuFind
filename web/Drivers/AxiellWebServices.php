@@ -1138,7 +1138,7 @@ class AxiellWebServices implements DriverInterface
     protected function getPatronId($username, $password)
     {
         $functionResult = 'authenticatePatronResult';
-        $result = $this->doSOAPRequest('patron_wsdl', 'authenticatePatron', $functionResult, $username, array('authenticatePatronParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage())));
+        $result = $this->doSOAPRequest($this->patron_wsdl, 'authenticatePatron', $functionResult, $username, array('authenticatePatronParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage())));
 
         if (PEAR::isError($result)) {
             return $result;
