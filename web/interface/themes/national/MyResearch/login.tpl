@@ -23,6 +23,11 @@
   {if $message && $message != 'You must be logged in first'}<div class="error" id="errormessage">{$message|translate}</div>{/if}
   <div class="grid_14">
    <p class="loginInfo">{translate text="Login information"}</p>
+
+  {* NDLBlankInclude *}
+  {include file='Additions/login-more.tpl'}
+  {* /NDLBlankInclude *}
+
   </div>
   <div class="clear"></div>
 
@@ -89,6 +94,22 @@
  </div>
   {/if}
   <div class="clear"></div>
+
+  {if $libraryCard}
+    {if !$lightbox}
+      {js filename="lightbox.js" }
+      {js filename="rc4.js" }
+    {/if}
+    <script type="text/javascript">
+    trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
+
+    {literal}
+    $(document).ready(function() {        
+       registerAjaxLogin($('.loginForm'), false);
+    });
+    </script>
+    {/literal}    
+  {/if}
   
   {if $sessionInitiator}
     {assign var=loginNumber value=$loginNumber+1}
@@ -130,11 +151,9 @@
        {/if}
      {/if}
 
-<script type="text/javascript">
-   trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
-</script>
 
-{if $lightbox}
+
+    {if $lightbox}
     {literal}
     <script type="text/javascript">
     $(document).ready(function() {        
@@ -150,17 +169,8 @@
     });
     </script>
     {/literal}
-{else}
-    {js filename="lightbox.js" }
-    {js filename="rc4.js" }
-    {literal}
-    <script type="text/javascript">
-       $(document).ready(function() {
-          registerAjaxLogin($('.loginForm'), false);
-       });
-    </script>
-    {/literal}  
-{/if}
+    {/if}
+
    </div>
   </div>
   <div class="grid_7">
@@ -172,9 +182,9 @@
    </div>
   </div>
   <div class="clear"></div>
-  {/if}
 </div>
-  
+  {/if}  
+
 {/if}
 
 <!-- END of: MyResearch/login.tpl -->
