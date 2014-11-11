@@ -5,16 +5,16 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
-      <li class="grid_6">
-        {image src="201311_02vr.jpg"}
+        {image src="201411_03mttk.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>VR:n matkailujulisteita</span></div>
+          <div class="pickup-header"><span>Maatalouden tutkimuskeskuksen julkaisuja</span></div>
           <div class="pickup-text">
-            Suomen Rautatiemuseon julistekokoelma on 1930–2000 -luvuilta. VR on käyttänyt julisteita asemilla, junissa ja erilaisissa tapahtumissa sekä tehnyt kansainvälistä julistevaihtoa. Kuvaajina  ja piirtäjinä ovat toimineet mm. taiteilijat Erik Bruun, Osmo K. Oksanen, Juha Anttinen ja valokuvaajat Fred Runeberg, E. Tolvanen ja Yrjö Metsälä.
-            <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>Hakutulokseen »</a>
+            Maa- ja elintarviketalouden tutkimuskeskuksen (MTT) julkaisuista monet ovat saatavilla elektronisina julkaisuina. MTT on maa- ja metsätalousministeriön alainen organisaatio, joka kehittää ruokajärjestelmän vastuullisuutta ja kilpailukykyä sekä luonnonvarojen kestävää hyödyntämistä.
+            <a href="{$url}{'/Search/Results?lookfor=Maa-+ja+elintarviketalouden+tutkimuskeskus&type=Author&filter[]=online_boolean%3A%221%22&filter[]=format%3A%220%2FBook%2F%22&sort=relevance&view=list&limit=20'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
-      </li>
+      </li>  
+      <li class="grid_6">
         {image src="201311_01alaska.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Kulttuurien museon Alaska-kokoelma</span></div>

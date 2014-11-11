@@ -4,16 +4,16 @@
 <div class="slides_container">
   <div class="slide">
     <ul>
-       <li class="grid_6">
-        {image src="201311_02vr.jpg"}
+      <li class="grid_6">
+        {image src="201411_03mttk.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>VR:s reseaffischer</span></div>
+          <div class="pickup-header"><span>MTT:s publikationer</span></div>
           <div class="pickup-text">
-Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har använt affischerna på stationerna, i tågen och vid olika evenemang och har bytt till sig affischer från olika länder. Affischerna har skapats av bl.a. konstnärerna Erik Bruun, Osmo K. Oksanen och Juha Anttinen och fotograferna Fred Runeberg, E. Tolvanen och Yrjö Metsälä.
-            <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>Till sökresultatet »</a>
+            Många av Forskningscentralen för jordbruk och livsmedelsekonomis (MTT:s) publikationer är tillgängliga som e-publikationer. Forskningscentralen är en organisation under jord- och skogsbruksministeriet som utvecklar livsmedelssystemens ansvarstagande och konkurrenskraft samt hållbar användning av naturresurserna.
+            <a href="{$url}{'/Search/Results?lookfor=Maa-+ja+elintarviketalouden+tutkimuskeskus&type=Author&filter[]=online_boolean%3A%221%22&filter[]=format%3A%220%2FBook%2F%22&sort=relevance&view=list&limit=20'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
-      </li>
+      </li>  
       <li class="grid_6">
         {image src="201311_01alaska.jpg"}
         <div class="pickup-content">

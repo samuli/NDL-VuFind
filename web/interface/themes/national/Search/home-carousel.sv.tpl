@@ -15,16 +15,16 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="03mttk.jpg"}
+        {image src="03ss.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>MTT:s publikationer</span></div>
+          <div class="pickup-header"><span>Föremål och foton från Fölisöns friluftsmuseum</span></div>
           <div class="pickup-text">
-            Många av Forskningscentralen för jordbruk och livsmedelsekonomis (MTT:s) publikationer är tillgängliga som e-publikationer. Forskningscentralen är en organisation under jord- och skogsbruksministeriet som utvecklar livsmedelssystemens ansvarstagande och konkurrenskraft samt hållbar användning av naturresurserna.
-            <a href="{$url}{'/Search/Results?lookfor=Maa-+ja+elintarviketalouden+tutkimuskeskus&type=Author&filter[]=online_boolean%3A%221%22&filter[]=format%3A%220%2FBook%2F%22&sort=relevance&view=list&limit=20'|escape:'html'}">Till sökresultatet »</a>
+            Foton på föremål och hus på Fölisöns friluftsmuseum har digitaliserats. Nu kan du titta närmare på föremål från Kurssi, Ivars, Pertinotja, Halla gård och Kaukola rökpörten. Fotona visar husen på sina ursprungliga platser, när de flyttas till Fölisön och tidigare museiverksamhet. De nyare bilderna visar museets hus och deras interiörer.
+            <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>  
-       <li class="grid_6">
+      <li class="grid_6">
         {image src="02hkl.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Helsingfors kollektivtrafiks historiar</span></div>
