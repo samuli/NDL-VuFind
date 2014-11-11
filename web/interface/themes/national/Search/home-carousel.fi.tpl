@@ -14,15 +14,14 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="03mttk.jpg"}
+        {image src="03ss.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Maatalouden tutkimuskeskuksen julkaisuja</span></div>
-          <div class="pickup-text">
-            Maa- ja elintarviketalouden tutkimuskeskuksen (MTT) julkaisuista monet ovat saatavilla elektronisina julkaisuina. MTT on maa- ja metsätalousministeriön alainen organisaatio, joka kehittää ruokajärjestelmän vastuullisuutta ja kilpailukykyä sekä luonnonvarojen kestävää hyödyntämistä.
-            <a href="{$url}{'/Search/Results?lookfor=Maa-+ja+elintarviketalouden+tutkimuskeskus&type=Author&filter[]=online_boolean%3A%221%22&filter[]=format%3A%220%2FBook%2F%22&sort=relevance&view=list&limit=20'|escape:'html'}">Hakutulokseen »</a>
+          <div class="pickup-header"><span>Seurasaaren ulkomuseon esineitä ja valokuvia</span></div>
+          <div class="pickup-text">Seurasaaren talojen esineistöä ja valokuvia on digitoitu. Kurssin, Ivarsin, Pertinotsan, Hallan ja Kaukolan savutupien esineisiin pääsee tutustumaan nyt tarkemmin. Valokuvat esittelevät ulkomuseon taloja niiden alkuperäisillä paikoillaan, talojen siirtämistä Seurasaareen sekä aikaisempaa museotoimintaa. Uudemmat kuvat esittelevät museotaloja ja niiden interiöörejä.
+          <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
-      </li>  
+      </li>
       <li class="grid_6">
         {image src="02hkl.jpg"}
         <div class="pickup-content">
