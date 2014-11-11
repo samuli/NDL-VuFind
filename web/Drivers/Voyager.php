@@ -1557,7 +1557,7 @@ class Voyager implements DriverInterface
                 $params['userId'], $params['password']
             );
             $login_response = $sip->get_message($login_msg);
-            if (preg_match("/^94/", $login_response)) {
+            if (strncmp('94', $login_response, 2) == 0) {
                 $login_result = $sip->parseLoginResponse($login_response);
                 if ($login_result['fixed']['Ok'] == '1') {
                     list($catSource, $catUsername) = explode('.', $patronId, 2);
@@ -1568,7 +1568,7 @@ class Voyager implements DriverInterface
                     }
                     $feepaid_msg = $sip->msgFeePaid(1, 0, $amount/100.00, $currency);
                     $feepaid_response = $sip->get_message($feepaid_msg);
-                    if (preg_match("/^38/", $feepaid_response)) {
+                    if (strncmp('38', $feepaid_response, 2) == 0) { 
                         $feepaid_result
                             = $sip->parseFeePaidResponse($feepaid_response);
                         if ($feepaid_result['fixed']['PaymentAccepted'] == 'Y') {
@@ -1623,7 +1623,7 @@ class Voyager implements DriverInterface
                 }                
             }
 
-            if ($amount/100.00 < $this->config['OnlinePayment']['minimumFee']) {
+            if ($amount < $this->config['OnlinePayment']['minimumFee']) {
                 return 'online_payment_minimum_fee';
             }
             return $amount;

@@ -404,7 +404,7 @@ class MultiBackend implements DriverInterface
     }
 
     /**
-     * Return total amount of fees that may be payed online.
+     * Return total amount of fees that may be paid online.
      *
      * @param array $user The patron array from patronLogin
      *
@@ -435,7 +435,7 @@ class MultiBackend implements DriverInterface
      * @param string $patronId Patron's Catalog username (barcode).
      * @param int    $amount   Amount to be registered as payed.
      *
-     * @return mixed true if successfull, false if payment register could 
+     * @return mixed true if successful, false if payment register could 
      * not be inited, or PEAR_Error if registering failed.
      * @access public
      */

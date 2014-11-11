@@ -588,7 +588,7 @@ class CatalogConnection
     }
 
     /**
-     * Return inited online payment handler.
+     * Return initialized online payment handler.
      *
      * @param string $patronId Patron's Catalog username (barcode).
      *
@@ -607,7 +607,7 @@ class CatalogConnection
         try {
             return OnlinePaymentFactory::initOnlinePayment($params['handler'], $params);
         } catch (Exception $e) {
-            error_log("Error initing payment handler $driver for patron $patronId: $e");
+            error_log("Error initializing payment handler $driver for patron $patronId: " . $e->getMessage());
             return false;
         }
     }

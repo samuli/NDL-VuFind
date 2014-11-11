@@ -161,6 +161,51 @@ class Transaction extends DB_DataObject
     }
 
     /**
+     * Get paid transactions whose registration failed.
+     *
+     * @return array transactions or false on error.
+     * @access public
+     */    
+    public function getFailedTransactions()
+    {
+        $t = new Transaction();	
+        $t->whereAdd('complete = ' . self::STATUS_REGISTRATION_FAILED);
+        $t->whereAdd('paid > 0');
+        $t->orderBy('user_id');
+        $t->find();
+        
+        $items = array();
+        while ($t->fetch()) {
+            $items[] = $t;
+        }
+        return $items;
+    }
+
+    /**
+     * Get unresolved transactions for reporting.
+     *
+     * @param int $interval Minimum hours since last report was sent.
+     *
+     * @return array transactions or false on error.
+     * @access public
+     */    
+    public function getUnresolvedTransactions($interval)
+    {
+        $t = new Transaction();	
+        $t->whereAdd('complete = ' . self::STATUS_REGISTRATION_EXPIRED . ' OR complete = ' . self::STATUS_FINES_UPDATED);
+        $t->whereAdd('paid > 0');
+        $t->whereAdd("reported = 0 OR NOW() > DATE_ADD(reported, INTERVAL $interval HOUR)");
+        $t->orderBy('user_id');
+        $t->find();
+
+        $items = array();
+        while ($t->fetch()) {
+            $items[] = $t;
+        }
+        return $items;
+    }
+
+    /**
      * Check if transaction is in progress.
      *
      * @param string $transactionId Transaction ID.
@@ -292,9 +337,8 @@ class Transaction extends DB_DataObject
    /**
      * Update transaction status to unkwnown payment response.
      *
-     * @param string   $transactionId Transaction ID.
-     * @param datetime $timestamp     Timestamp
-     * @param string   $msg           Message
+     * @param string $transactionId Transaction ID.
+     * @param string $msg           Message
      *
      * @return boolean success
      * @access public
@@ -352,9 +396,8 @@ class Transaction extends DB_DataObject
     public function getTransaction($transactionId)
     {
         $t = new Transaction();
-        $t->transaction_id = $transactionId;
-        $t->find(true);
-        return $t;
+        $t->transaction_id =  $transactionId;
+        return $t->find(true) ? $t : false;
     }
 
 }

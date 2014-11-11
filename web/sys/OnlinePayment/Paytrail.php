@@ -78,32 +78,32 @@ class Paytrail implements OnlinePaymentInterface
     /**
      * Start Paytrail transaction.
      *
-     * @param string $patronId       Patron's catalog username (e.g. barcode)
-     * @param float  $amount         Payment amount (without transaction fee)
-     * @param float  $transactionFee Transaction fee
-     * @param array  $fines          Fines that belong to the transaction
-     * @param string $currency       Currency
-     * @param string $param          URL parameter that is used for payment 
-     * statuses in Paytrail responses.
+     * @param string $patronId            Patron's catalog username (e.g. barcode)
+     * @param int    $amount              Payment amount without transaction fee (in cents)
+     * @param int    $transactionFee      Transaction fee (in cents)
+     * @param array  $fines               Fines that belong to the transaction
+     * @param string $currency            Currency
+     * @param string $statusParams        URL parameter for payment status in callback requests
+     * @param string $transactionIdParams URL parameter for transaction Id in callback requests
      *
      * @return false on error, otherwise redirects to Paytrail.
      * @access public
      */
-    public function startPayment($patronId, $amount, $transactionFee, $fines, $currency, $param)
+    public function startPayment($patronId, $amount, $transactionFee, $fines, $currency, $statusParam, $transactionIdParam)
     {
         global $configArray;
         global $user;
 
+        $orderNumber = $this->generateTransactionId($patronId);
+
         $base = $configArray['Site']['url'];
         $urlset = new Paytrail_Module_Rest_Urlset(
-            "$base/MyResearch/Fines?$param=" . self::PAYMENT_SUCCESS, 
-            "$base/MyResearch/Fines?$param=" . self::PAYMENT_FAILURE,
-            "$base/AJAX/PaytrailNotify?$param=" . self::PAYMENT_NOTIFY,
+            "$base/MyResearch/Fines?$statusParam=" . self::PAYMENT_SUCCESS . "&$transactionIdParam=" . urlencode($orderNumber), 
+            "$base/MyResearch/Fines?$statusParam=" . self::PAYMENT_FAILURE . "&$transactionIdParam=" . urlencode($orderNumber), 
+            "$base/AJAX/PaytrailNotify?$statusParam=" . self::PAYMENT_NOTIFY . "&$transactionIdParam=" . urlencode($orderNumber), 
             ""  // pending-url not in use
         );
 
-
-        $orderNumber = $this->generateTransactionId($patronId);
         $totAmount = ($amount+$transactionFee)/100.00;
         $payment = new Paytrail_Module_Rest_Payment_S1($orderNumber, $urlset, $totAmount);
         
@@ -119,7 +119,7 @@ class Paytrail implements OnlinePaymentInterface
 
         $t = new Transaction();
         $t->transaction_id = $orderNumber;
-        $t->driver = reset(explode('.', $orderNumber, 2)); 
+        $t->driver = reset(explode('.', $patronId, 2)); 
         $t->user_id = isset($user) && is_object($user) ? $user->id : null;
         $t->amount = $amount;
         $t->transaction_fee = $transactionFee;
@@ -206,6 +206,13 @@ class Paytrail implements OnlinePaymentInterface
         return array('markFeesAsPaid' => $paid, 'transactionId' => $orderNum, 'amount' => $amount);
     }
 
+    
+    public function getTransactionId($params)
+    {
+        return isset($params['ORDER_NUMBER']) ? $params['ORDER_NUMBER'] : false; 
+    }
+
+
     /**
      * Init Paytrail module with configured merchantId, secret and URL.
      *
@@ -226,6 +233,6 @@ class Paytrail implements OnlinePaymentInterface
      */
     protected function generateTransactionId($patronId)
     {
-        return $patronId . '_' . date("YmdHis");
+        return md5($patronId . '_' . microtime(true));
     }
 }

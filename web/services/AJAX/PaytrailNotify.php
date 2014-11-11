@@ -55,8 +55,12 @@ class PaytrailNotify extends Action
      */
     public function launch()
     {
+        
+        $url = parse_url($_SERVER["REQUEST_URI"]);
+        parse_str($url['query'], $params);
+
         $fines = new Fines(true);
-        $res = $fines->processPayment($_SERVER["REQUEST_URI"], false);
+        $res = $fines->processPayment($params, false);
         if (!$res['success']) {
             error_log('PaytrailNotify error: ' . $_SERVER["REQUEST_URI"]);
             if (isset($res['msg'])) {

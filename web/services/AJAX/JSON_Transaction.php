@@ -50,9 +50,12 @@ class JSON_Transaction extends JSON
     public function registerPayment()
     {        
         unset($_SESSION['no_store']);
+
+        $url = parse_url($_REQUEST['url']);
+        parse_str($url['query'], $params);
         
         $fines = new Fines();
-        $res = $fines->processPayment($_REQUEST['url']);
+        $res = $fines->processPayment($params);
         if ($res['success']) {
             $this->output(
                 '',  JSON::STATUS_OK

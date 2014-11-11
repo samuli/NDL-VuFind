@@ -1,6 +1,6 @@
 <!-- START of: MyResearch/fines.tpl -->
 {if $registerPayment}
-   {js filename="online-payment.js"}
+{js filename="online-payment.js"}
 {/if}
 
 
@@ -32,7 +32,7 @@
       {if $paymentFinesChanged}
         <div class="error">{translate text="online_payment_fines_changed"}</div>
       {elseif $paymentNotPermittedInfo}
-        <div class="error">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+        <div class="error">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
       {elseif $registerPayment}
           {if $registerPayment}
             <span class="ajax_register_payment hide" id="onlinePaymentStatusSpinner">{translate text="Registering Payment"}</span>
@@ -90,13 +90,17 @@
           {assign var=displayFormat value=$record.format} 
           {/if}
           <span class="icon format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}" title="{translate text=$displayFormat prefix='format_'}">{*translate text=format_$displayFormat*}</span>
-             {if $record.id}
-	         <a href="{$url}/Record/{$record.id|escape}">
-	         {/if}
-             {$record.title|trim:'/:'|escape}
-             {if $record.id}
-             </a>              
-             {/if}
+            {if empty($record.title)}
+               {translate text='not_applicable'}  
+            {else}
+               {if $record.id}
+               <a href="{$url}/Record/{$record.id|escape}">
+               {/if}
+               {$record.title|trim:'/:'|escape}
+               {if $record.id}
+               </a>              
+               {/if}
+            {/if}
             </td>
             <td>{$record.checkout|escape}</td>
             <td>{$record.duedate|escape}</td>
@@ -111,7 +115,7 @@
           <tr><td colspan="5" class="fineBalance">
             {if $onlinePaymentEnabled}          
              {if $paymentBlocked}
-                <div class="onlinePaymentRemark">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+                <div class="onlinePaymentRemark">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
              {else}
                 {translate text='online_payment_payable_online'}: <span class="hefty">{$payableSum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
                 {if $transactionFee}

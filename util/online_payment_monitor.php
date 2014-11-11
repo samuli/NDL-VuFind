@@ -129,13 +129,8 @@ class OnlinePaymentMonitor extends ReminderTask
 
 
         // Attempt to re-register paid transactions whose registration has failed.
-        $t = new Transaction();	
-        $t->whereAdd('complete = ' . Transaction::STATUS_REGISTRATION_FAILED);
-        $t->whereAdd('paid > 0');
-        $t->orderBy('user_id');
-        $t->find();
-
-        while ($t->fetch()) {
+        $tr = new Transaction();	
+        foreach ($tr->getFailedTransactions() as $t) {
             $this->msg("  Registering transaction id {$t->id} / {$t->transaction_id}");
 
             // check if the transaction has not been registered for too long
@@ -188,25 +183,10 @@ class OnlinePaymentMonitor extends ReminderTask
             }
         }
 
-        /*
-        Report paid and unregistered transactions whose registration 
-        can not be re-tried:
-        
-        1. Transaction::STATUS_REGISTRATION_EXPIRED
-              Transaction has been updated to 'expired' 
-              after failed registration attempts.
-        2. Transaction::STATUS_FINES_UPDATED
-              Registration was not attempted after a successful payment 
-              because patron's payable sum got updated during the payment process.
-        */
-        $t = new Transaction();	
-        $t->whereAdd('complete = ' . Transaction::STATUS_REGISTRATION_EXPIRED . ' OR complete = ' . Transaction::STATUS_FINES_UPDATED);
-        $t->whereAdd('paid > 0');
-        $t->whereAdd('reported = 0 OR NOW() > DATE_ADD(reported, INTERVAL ' . $this->reportIntervalHours . ' HOUR)');
-        $t->orderBy('user_id');
-        $t->find();
-
-        while ($t->fetch()) {
+        // Report paid and unregistered transactions whose registration 
+        // can not be re-tried:
+        $tr = new Transaction();
+        foreach ($tr->getUnresolvedTransactions($this->reportIntervalHours) as $t) {
             $this->msg("  Transaction id {$t->transaction_id} still unresolved.");
             
             if (!$t->setTransactionReported($t->transaction_id)) {

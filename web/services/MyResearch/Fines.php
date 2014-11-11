@@ -108,7 +108,7 @@ class Fines extends MyResearch
 
         if ($config && $config['enabled']) {
             $finesAmount = $this->catalog->getOnlinePayableAmount($patron);
-            $transactionFee = $config['transactionFee']*100.00;
+            $transactionFee = $config['transactionFee'];
             $minimumFee = $config['minimumFee'];
 
             $interface->assign('transactionFee', $transactionFee);
@@ -153,13 +153,13 @@ class Fines extends MyResearch
                         $currency = $config['currency'];
                          
                         $paymentHandler->startPayment(
-                            $patron['cat_username'], 
+                            $patron['cat_username'],
                             $finesAmount, 
                             $transactionFee,
                             $payableFines,
                             $currency,
-                            $paymentParam,
-                            $configArray['Site']['locale']
+                            $paymentParam, 
+                            'transaction'
                         );
                     }
                 } else if (isset($_REQUEST[$paymentParam])) {
@@ -216,7 +216,7 @@ class Fines extends MyResearch
      * Register payment provided in the request.
      * This is called by JSON_Transaction.
      *
-     * @param string  $request      Request with parameters.
+     * @param array   $params       Key-value list of request variables.
      * @param boolean $userLoggedIn Is user logged in at the time of method call.
      *
      * @return array array with keys 
@@ -224,22 +224,15 @@ class Fines extends MyResearch
      *   - 'msg' (string) error message if payment could not be processed.
      * @access public
      */
-    public function processPayment($request, $userLoggedIn = true)
+    public function processPayment($params, $userLoggedIn = true)
     {
         global $interface;
         global $user;
 
-        $parts = parse_url($request);
-
-        $params = array();
-        foreach (($parts = explode('&', $parts['query'])) as $param) {
-            list($key, $val) = explode('=', $param);
-            $params[$key] = $val;            
-        }
-
         $error = false;
         $msg = null;
-        $transactionId = $params['ORDER_NUMBER'];
+
+        $transactionId = $params['transaction'];
 
         $tr = new Transaction();
         if (!$t = $tr->getTransaction($transactionId)) {

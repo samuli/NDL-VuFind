@@ -8,3 +8,13 @@
   <input name="pay" type="hidden" value="1">
   <input type="submit" name="pay" class="button buttonFinna" value="{$paymentText|escape:"html"}" />
 </form>
+
+{literal}
+<script type="text/javascript">
+$(document).ready(function() {
+  $('#paytrail_form').on('submit', function() {
+    $(this).find('input[type=submit]').prop('disabled', "disabled");
+  });
+});
+</script>
+{/literal}
