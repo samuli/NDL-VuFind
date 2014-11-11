@@ -30,10 +30,6 @@
 
   </div>
 
-  {* NDLBlankInclude *}
-  {include file='Additions/login-more.tpl'}
-  {* /NDLBlankInclude *}
-
   <div class="clear"></div>
 
   {if $sessionInitiator}
