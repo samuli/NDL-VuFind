@@ -13,13 +13,13 @@ PL 26 (Teollisuuskatu 23)<br />
 Puhelin: 09 1911</p>
 
 <p><strong>Rekisteriasioita hoitava henkilö:</strong><br />
-Aki Lassila, kehittämispäällikkö<br />
+Erkki Tolonen, kehittämispäällikkö<br />
 Kirjastoverkkopalvelut<br />
 Kansalliskirjasto<br />
 PL 26 (Teollisuuskatu 23)<br />
 00014 Helsingin yliopisto<br />
-Puhelin: 09 1911<br />
-Sähköposti: aki.lassila(at)helsinki.fi</p>
+Puhelin: 050 576 2869<br />
+Sähköposti: erkki.tolonen(at)helsinki.fi</p>
 
 <p><strong>Säännönmukaiset tietolähteet:</strong><br />
 Henkilötiedot saadaan asiakkaiden kotiorganisaatioiden asiakasrekistereistä. Personoitujen toimintojen tiedot tallentaa käyttäjä itse.</p>

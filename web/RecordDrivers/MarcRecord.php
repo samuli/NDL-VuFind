@@ -1280,11 +1280,31 @@ class MarcRecord extends IndexRecord
 
         $labelPrfx   = 'note_';
         $baseURI     = $configArray['Site']['url'];
-        $title       = $field->getSubfield('t') ? $field->getSubfield('t')->getData() : '';
-        $diff        = $field->getSubfield('c') ? $field->getSubfield('c')->getData() : '';
-        $issn        = $field->getSubfield('x') ? $field->getSubfield('x')->getData() : '';
+        $relInfo     = $field->getSubfield('i')
+                ? $field->getSubfield('i')->getData() : '';
+        $title       = $field->getSubfield('t')
+                ? $field->getSubfield('t')->getData() : '';
+        $diff        = $field->getSubfield('c')
+                ? $field->getSubfield('c')->getData() : '';
+        $issn        = $field->getSubfield('x') 
+                ? $field->getSubfield('x')->getData() : '';
+        $isbn        = $field->getSubfield('z') 
+                ? $field->getSubfield('z')->getData() : '';
         if ($diff) {
             $title .= " $diff";
+        }
+
+        $fallbackTitle = '';
+
+        if (empty($title)) {
+            if (!empty($relInfo)) {
+                $fallbackTitle = $relInfo . ' ';
+            }
+            if (!empty($issn)) {
+                $fallbackTitle .= $issn;
+            } else {
+                $fallbackTitle .= $isbn;
+            }
         }
 
         // There are two possible ways we may want to link to a record with subfield w
@@ -1309,8 +1329,8 @@ class MarcRecord extends IndexRecord
             }
         }
 
-        // Check which link type we found in the code above... and use title search if we
-        // found nothing!
+        // Check which link type we found in the code above... and use title search
+        // if we found nothing!
         if (!empty($bib)) {
             $link = $bib;
         } else if (!empty($oclc)) {
@@ -1318,6 +1338,9 @@ class MarcRecord extends IndexRecord
         } else if (!empty($issn)) {
             $link = $baseURI . '/Search/Results?lookfor=' .
                 urlencode($issn) . '&type=ISN';
+        } else if (!empty($isbn)) {
+            $link = $baseURI . '/Search/Results?lookfor=' .
+                urlencode($isbn) . '&type=ISN';
         } else {
             $link = $baseURI . '/Search/Results?lookfor=' .
                 urlencode('"' . $title . '"') . '&type=Title';
@@ -1325,7 +1348,7 @@ class MarcRecord extends IndexRecord
 
         return array(
             'title' => $labelPrfx.$value,
-            'value' => $title,
+            'value' => empty($title) ? $fallbackTitle : $title,
             'issn'  => $issn,
             'link'  => $link
         );

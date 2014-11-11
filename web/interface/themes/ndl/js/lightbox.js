@@ -751,7 +751,7 @@ function registerAjaxRequestForm() {
         $(this).ajaxSubmit({ 
             success: function(response, statusText, xhr, $form) {
                 hideLoadingGraphic($form);
-                if (response.substring(0, 5) == 'OK - ') {
+                if (response.substr(0, 5) == 'OK - ') {
                     $('#modalDialog').html(response.substring(5));
                     setTimeout(function() { hideLightbox(); window.location.reload(); }, 2000);
                 } else {

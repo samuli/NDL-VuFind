@@ -40,10 +40,10 @@
     {assign var="idPrefix" value=$id|substr:0:8}
     {capture name="links"}
       {if $coreDocumentOrderLinkTemplate && $displayFormat == 'Document/ArchiveItem' && !$coreDigitizedMaterial}
-         <a class="availableLocWWW" href="{eval var=$coreDocumentOrderLinkTemplate}" target="_blank">{translate text='Document Order'}<br/>            
+         <a class="availableLocWWW" href="{eval var=$coreDocumentOrderLinkTemplate}" target="_blank">{translate text='Document Order'}</a><br/>            
        {/if}
        {if $extendedAccess && $coreUsagePermissionRequestLinkTemplate}
-         <a class="availableLocWWW" href="{eval var=$coreUsagePermissionRequestLinkTemplate}" target="_blank">{translate text='Usage Permission Request'}<br/>
+         <a class="availableLocWWW" href="{eval var=$coreUsagePermissionRequestLinkTemplate}" target="_blank">{translate text='Usage Permission Request'}</a><br/>
        {/if}
        {if $coreExternalLinkTemplate}
           <span class="vakkaLink">

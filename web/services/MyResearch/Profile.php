@@ -105,6 +105,34 @@ class Profile extends MyResearch
                         $interface->assign('userMsg', 'profile_update');
                     }
                 }
+                if (isset($_POST['phone_number'])) {
+                    $phoneNumber = trim($_POST['phone_number']);
+                    if (preg_match('/^[\+]?[ \d\-]+\d+$/', $phoneNumber)) {
+                        $result = $this->catalog->setPhoneNumber($patron,  $phoneNumber);
+                        if ($result['success']) {
+                            $interface->assign('userMsg', 'profile_update');
+                            $patron['phone'] = $phoneNumber;
+                        } else {
+                            $interface->assign('userError', $result['sys_message']);
+                        }
+                    } else {
+                        $interface->assign('userError', 'Phone Number is invalid');
+                    }
+                }
+                if (isset($_POST['email_address'])) {
+                    $email = trim($_POST['email_address']);
+                    if (Mail_RFC822::isValidInetAddress($email)) {
+                        $result = $this->catalog->setEmailAddress($patron, $email);
+                        if ($result['success']) {
+                            $interface->assign('userMsg', 'profile_update');
+                            $patron['email'] = $email;
+                        } else {
+                            $interface->assign('userError', $result['sys_message']);
+                        }
+                    } else {
+                        $interface->assign('userError', 'Email address is invalid');
+                    }
+                }
                 $result = $this->catalog->getMyProfile($patron);
                 if (!PEAR::isError($result)) {
                     $result['home_library'] = $user->home_library;
@@ -119,6 +147,8 @@ class Profile extends MyResearch
                 if ($result !== false) {
                     $interface->assign('changePassword', $result);
                 }
+                $driver = isset($patron['driver']) ? $patron['driver'] : '';
+                $interface->assign('driver', $driver);
             }
         } else {
             Login::setupLoginFormVars();

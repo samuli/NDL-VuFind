@@ -114,7 +114,7 @@ function registerFavoritesActions() {
     });
     
     // Submit by pressing enter, cancel with esc
-    $('.dynamicInput input').bind('keydown', function(e) {
+    $('.dynamicInput input, .dynamicInput textarea').bind('keydown', function(e) {
         var code = e.keyCode || e.which; 
         var $container = $(this).closest('.dynamicInput');
         // Enter
@@ -140,7 +140,7 @@ function registerFavoritesActions() {
     });
     
     // Blur event
-    $(document).on('blur', '.dynamicInput input:not([type="radio"])', function(e) {
+    $(document).on('blur', '.dynamicInput input:not([type="radio"]), .dynamicInput textarea', function(e) {
         var $container = $(this).closest('.dynamicInput');
         // Process if icon clicked or autosubmit enabled
         if ($clickTarget && ($clickTarget[0] == $container.find('a')[0]
@@ -156,7 +156,7 @@ function registerFavoritesActions() {
 
     // Input visibility toggler
     function toggleDynamicInput($container, show, autofill, newValue) {
-        var $input = $container.find('input');
+        var $input = $container.find('input, textarea');
         var $text = $container.find('.transform');
         // Either populate or clean the input
         if (autofill) {
@@ -190,7 +190,7 @@ function registerFavoritesActions() {
     
     // Save modified values in the database
     function processDynamicInput($container, value) {
-        var $input = $container.find('input');  
+        var $input = $container.find('input, textarea');  
         if (typeof value === 'undefined') {
             value = $input.attr('value').trim();
         }
