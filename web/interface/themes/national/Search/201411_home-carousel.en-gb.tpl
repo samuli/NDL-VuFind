@@ -4,13 +4,13 @@
 <div class="slides_container">
   <div class="slide">
     <ul>
-       <li class="grid_6">
-         {image src="201311_02vr.jpg"}
+      <li class="grid_6">
+        {image src="201411_03mttk.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Finnish rail travel posters</span></div>
+          <div class="pickup-header"><span>Publications of MTT Agrifood Research Finland</span></div>
           <div class="pickup-text">
-           The poster collection of the Finnish Railway Museum is from the 1930s to the 2000s. VR, the Finnish public railway company, has used the posters at stations, in trains and at various events, and has also exchanged posters with international partners. The drawings and illustrations have been created by artists including Erik Bruun, Osmo K. Oksanen and Juha Anttinen, as well as photographers Fred Runeberg, E. Tolvanen and Yrjö Metsälä.
-            <a href='{$url}/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'>To the search result »</a>
+            Many of the publications of MTT Agrifood Research Finland are available electronically. MTT is an organisation operating under the Ministry of Agriculture and Forestry that develops the sustainability and competitiveness of the food system as well as the sustainable use of natural resources.
+            <a href="{$url}{'/Search/Results?lookfor=Maa-+ja+elintarviketalouden+tutkimuskeskus&type=Author&filter[]=online_boolean%3A%221%22&filter[]=format%3A%220%2FBook%2F%22&sort=relevance&view=list&limit=20'|escape:'html'}">To the search result »</a>
           </div>
         </div>
       </li>
