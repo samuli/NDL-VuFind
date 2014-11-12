@@ -101,7 +101,9 @@ class Results extends Action
         if ($searchObject->getView() == 'json'
             || stristr($accept, 'application/json')
         ) {
-            // Throw the XML to screen
+            // Allow cross-origin requests
+            header('Access-Control-Allow-Origin: *');
+            // Throw the JSON to screen
             echo $searchObject->buildJSON();
             // And we're done
             exit();
@@ -109,6 +111,8 @@ class Results extends Action
 
         // Build XML for Results (if requested)
         if ($searchObject->getView() == 'xml' || stristr($accept, 'text/xml')) {
+            // Allow cross-origin requests
+            header('Access-Control-Allow-Origin: *');
             // Throw the XML to screen
             echo $searchObject->buildXML();
             // And we're done
