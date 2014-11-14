@@ -51,6 +51,8 @@ class Organisations extends Action
         global $interface;
         global $configArray;
 
+        $facetConfig = getExtraConfigArray('facets');
+
         $sectors = array('arc', 'lib', 'mus');
         $res = array();
         $cnt = array();
@@ -72,6 +74,30 @@ class Organisations extends Action
             if (isset($result[organisations::BUILDING]['data'])) {
                 foreach ($result[organisations::BUILDING]['data'] as $i) {
                     $building = $i[0];
+
+                    // Process inclusion filters
+                    if (isset($facetConfig['FacetFilters'][organisations::BUILDING])) {
+                        $match = false;
+                        foreach ($facetConfig['FacetFilters'][organisations::BUILDING] as $filterItem) {
+                            if (strncmp($building, $filterItem, strlen($filterItem)) == 0) {
+                                $match = true;
+                                break;
+                            }
+                        }
+                        if (!$match) {
+                            continue;
+                        }
+                    }
+                    
+                    // Process exclusion filters
+                    if (isset($facetConfig['ExcludeFilters'][organisations::BUILDING])) {
+                        foreach ($facetConfig['ExcludeFilters'][organisations::BUILDING] as $filterItem) {
+                            if (strncmp($building, $filterItem, strlen($filterItem)) == 0) {
+                                continue 2;
+                            }
+                        }                        
+                    }
+
                     // cut trailing '/', append 'facet_' and translate
                     $name = translate('facet_' . substr($building, 0, -1));
                     $link = $searchObject->renderLinkWithFilter(organisations::BUILDING . ":$building");
