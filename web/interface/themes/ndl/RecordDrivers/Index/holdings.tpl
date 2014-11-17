@@ -254,7 +254,8 @@
                     {if $row.returnDate} <span class="statusExtra"><span class="returnDate">{$row.returnDate|escape}</span></span>
                     {/if}
                     {if $row.duedate}
-                      <span class="statusExtra">{translate text="Due"}: <span class="returnDate">{$row.duedate|escape}</span></span>
+                      {* N.B. The "returnDate duedate" classes on the next line are needed for the JS below to work properly *}
+                      <span class="statusExtra">{translate text="Due"}: <span class="returnDate duedate">{$row.duedate|escape}</span></span>
                     {/if}
                     {if $row.ordered > 0 && $driver == "AxiellWebServices"}
                       <span class="statusExtra">{translate text="status_Ordered"}: {$row.ordered|escape}</span>
@@ -338,7 +339,7 @@ $(document).ready(function() {
       $headingAvail.text(availableText).show();
     } else { /* If no available copies, get return dates */
       var prevDate, firstDate, firstDateText;
-      $(this).find('.copyDetails .returnDate').each(function() {
+      $(this).find('.copyDetails .returnDate.duedate').each(function() {
         var returnDateSplit = $(this).text().split('.'); /* Split the date and build it anew */
         var returnDate = new Date(returnDateSplit[2], returnDateSplit[1] - 1, returnDateSplit[0]);
         if (typeof prevDate == 'undefined' || returnDate < prevDate) { 
