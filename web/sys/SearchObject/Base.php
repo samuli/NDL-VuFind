@@ -799,7 +799,7 @@ abstract class SearchObject_Base
             }
         }
         // If we got this far, setting was missing or invalid; load the default
-        $this->limit = $_SESSION['lastUserLimit'] ? 
+        $this->limit = isset($_SESSION['lastUserLimit']) ? 
             $_SESSION['lastUserLimit'] : $this->defaultLimit;
         $_SESSION['lastUserLimit'] = null;
     }
