@@ -71,14 +71,14 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 <script type="text/javascript">
 $(document).ready(function() {
   // Collapsible Axiell holdings information
-  $(document).on('click', 'div["data-driver"="AxiellWebServices"] .resultHoldingsContainer .collapsible', function() {
+  $(document).on('click', 'div[data-driver="AxiellWebServices"] .resultHoldingsContainer .collapsible', function() {
     $siblings = $(this).closest('tr').siblings();
     $arrow = $(this).find('.arrowIndicator');
     $([$(this), $arrow, $siblings]).each(function() {
       $(this).toggleClass('collapsed');
     });
   });
-  $(document).on('click', 'div["data-driver"="AxiellWebServices"] a.holdPlace', function(e) {
+  $(document).on('click', 'div[data-driver="AxiellWebServices"] a.holdPlace', function(e) {
     var id = $(this).data('id');
     var href = $(this).attr('href');
     var hashPos = href.indexOf('#');
