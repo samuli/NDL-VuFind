@@ -172,7 +172,8 @@ class OnlinePaymentMonitor extends ReminderTask
                     if ($account->find(true)) {
                         if (!$patron = $catalog->patronLogin($t->cat_username, $account->cat_password)) {
                             $this->err('    Could not perform patron login for transaction ' . $t->transaction_id);
-                            $error = true;                
+                            $failedCnt++;
+                            continue;
                         }
                     }
 
