@@ -819,18 +819,20 @@ class IndexRecord implements RecordInterface
         $holdCount = 0;
         $requestCount = 0;
         if (is_array($holdings)) {
-            foreach ($holdings as $holding) {
-                if (is_array($holding)) {
-                    foreach ($holding as $itemKey => $item) {
-                        if (is_array($item)) {
-                            // Get reservation queue from the first item 
-                            if ($itemKey == 0) {
-                                $requestCount = isset($item['requests_placed']) ? 
-                                    $item['requests_placed'] : 0;
+            foreach ($holdings as $locationArray) {
+                if (is_array($locationArray)) {
+                    foreach ($locationArray as $location) {
+                        if (is_array($location) && isset($location['status']) 
+                            && isset($location['status']['reservations'])
+                        ) {
+                            $requestCount = $location['status']['reservations'];
+                        }
+                        if (is_array($location['holdings'])) {
+                            foreach ($location['holdings'] as $holding) {
+                                if (isset($holding['total'])) {
+                                    $holdCount += $holding['total'];
+                                }
                             }
-                            // Calculate total hold count
-                            $holdCount += 
-                                isset($item['total']) ? $item['total'] : 0;
                         }
                     }
                 }
@@ -1221,7 +1223,20 @@ class IndexRecord implements RecordInterface
 
         // All images
         $interface->assign('summImages', $this->getAllImages());
+        
+        // Record driver
+        $id = $this->getUniqueID();
+        $catalog = ConnectionManager::connectToCatalog();
+        $driver = '';
 
+        if ($catalog && $catalog->status) {
+            if (is_callable(array($catalog, 'getSourceDriver'))) {
+                $driver = $catalog->getSourceDriver($id);
+            }
+        }
+        
+        $interface->assign('driver', $driver);
+        
         // Send back the template to display:
         return 'RecordDrivers/Index/result-' . $view . '.tpl';
     }

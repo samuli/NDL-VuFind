@@ -1,7 +1,11 @@
 $(document).ready(function() {
-    $('.recordId').one('inview', function() {
+    $('.recordId').unbind('inview').one('inview', function() {
         var id = $(this).attr('id').substr('record'.length);
-        checkItemStatuses([id]);
+        if ($(this).attr('data-driver') && $(this).data('driver') == 'AxiellWebServices') {
+            checkAxiellItemStatuses(id);
+        } else {
+            checkItemStatuses([id]);
+        }
     });
 
     selectItem();
@@ -88,6 +92,26 @@ function checkItemStatuses(id) {
                 } else {
                     // display the error message on each of the ajax status place holder
                     $("div[id^='callnumAndLocation'] .ajax_availability").empty().append(response.data);
+                }
+                $("div[id^='callnumAndLocation'] .ajax_availability").removeClass('ajax_availability');
+            }
+        });
+    }
+}
+
+function checkAxiellItemStatuses(id) {
+    if (id.length) {
+        $("div[id^='callnumAndLocation'] .ajax_availability").show();
+        $.ajax({
+            dataType: 'json',
+            url: path + '/AJAX/JSON?method=getAxiellItemStatuses',
+            data: {id:id},
+            success: function(response) {
+                $("span[id='location"+id+"']").remove();
+                if(response.status == 'OK' && response.data.length > 0) {
+                    $("div[id='locationDetails"+id+"']").append(response.data).removeClass('hide');
+                } else {
+                    $("div[id^='callnumAndLocation'] .ajax_availability").empty();
                 }
                 $("div[id^='callnumAndLocation'] .ajax_availability").removeClass('ajax_availability');
             }

@@ -199,7 +199,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
         if (!$(this).valid()) { return false; }
         
         // Add loading indicator
-        $(this).find('.buttonFinna').addClass('loading');
+        $(this).find('.buttonFinna[type="submit"]').addClass('loading');
 
         $(this).find('.error').remove();
         var form = this;
@@ -235,7 +235,6 @@ function registerAjaxLogin(container, loginFromLightbox) {
                         dataType: 'json',
                         data: data,
                         success: function(response) {
-                            $('.buttonFinna.loading').removeClass('loading');
                             if (response.status == 'OK') {
                                 // Hide "log in" options and show "log out" options:
                                 $('#loginOptions').hide();
@@ -278,6 +277,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                                     window.location = url;
                                 }
                             } else {
+                                $('.buttonFinna.loading').removeClass('loading');
                                 displayFormError($(form), response.data);
                             }
                         }

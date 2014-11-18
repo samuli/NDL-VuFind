@@ -12,7 +12,7 @@
 {if $metalibEnabled}
 {js filename="metalib_links.js"}
 {/if}
-
+{js filename="record.js"}
 {include file="Search/rsi.tpl"}
 {include file="Search/openurl_autocheck.tpl"}
 
@@ -66,5 +66,30 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   </div>
 </form>
 {/if}
+
+{literal}
+<script type="text/javascript">
+$(document).ready(function() {
+  // Collapsible Axiell holdings information
+  $(document).on('click', 'div["data-driver"="AxiellWebServices"] .resultHoldingsContainer .collapsible', function() {
+    $siblings = $(this).closest('tr').siblings();
+    $arrow = $(this).find('.arrowIndicator');
+    $([$(this), $arrow, $siblings]).each(function() {
+      $(this).toggleClass('collapsed');
+    });
+  });
+  $(document).on('click', 'div["data-driver"="AxiellWebServices"] a.holdPlace', function(e) {
+    var id = $(this).data('id');
+    var href = $(this).attr('href');
+    var hashPos = href.indexOf('#');
+    if (hashPos >= 0) {
+      href = href.substring(0, hashPos);      
+    }
+    var $dialog = getPageInLightbox(href + '&lightbox=1', $(this).text(), 'Record', '', id);
+    e.preventDefault();
+  });
+});
+</script>
+{/literal}
 
 <!-- END of: Search/list-list.tpl -->
