@@ -22,6 +22,7 @@
  * @category VuFind
  * @package  ILS_Drivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
@@ -37,6 +38,7 @@ require_once 'Interface.php';
  * @category VuFind
  * @package  ILS_Drivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
 
@@ -432,23 +434,23 @@ class MultiBackend implements DriverInterface
      *
      * This is called after a successful online payment.
      *
-     * @param string $patronId Patron's Catalog username (barcode).
-     * @param int    $amount   Amount to be registered as payed.
+     * @param array $user   The patron array from patronLogin
+     * @param int   $amount Amount to be registered as payed.
      *
      * @return mixed true if successful, false if payment register could 
      * not be inited, or PEAR_Error if registering failed.
      * @access public
      */
-    public function markFeesAsPaid($patronId, $amount)
+    public function markFeesAsPaid($user, $amount)
     {
-        $source = $this->getSource($patronId);
+        $source = $this->getSource($user['cat_username']);
         $driver = $this->getDriver($source);
 
         if (PEAR::isError($driver)) {
             return $driver;
         }
         if ($driver) {
-            return $driver->markFeesAsPaid($patronId, $amount);
+            return $driver->markFeesAsPaid($this->stripIdPrefixes($user, $source), $amount);
         }
         return new PEAR_Error('No suitable backend driver found');        
     }

@@ -107,7 +107,10 @@ class Paytrail implements OnlinePaymentInterface
         $totAmount = ($amount+$transactionFee)/100.00;
         $payment = new Paytrail_Module_Rest_Payment_S1($orderNumber, $urlset, $totAmount);
         
-        $module = $this->initPaytrail();
+        if (!$module = $this->initPaytrail()) {
+            error_log("Paytrail: error starting payment processing.");            
+            return false;
+        }
         
         try {
             $result = $module->processPayment($payment);
@@ -177,7 +180,9 @@ class Paytrail implements OnlinePaymentInterface
         $amount = $t->amount;
         $paid = false;
         if ($status == self::PAYMENT_SUCCESS || $status == self::PAYMENT_NOTIFY) {
-            $module = $this->initPaytrail();
+            if (!$module = $this->initPaytrail()) {
+                return 'online_payment_failed';                
+            }
             if (!$module->confirmPayment(
                 $params["ORDER_NUMBER"], 
                 $params["TIMESTAMP"], 
@@ -206,13 +211,6 @@ class Paytrail implements OnlinePaymentInterface
         return array('markFeesAsPaid' => $paid, 'transactionId' => $orderNum, 'amount' => $amount);
     }
 
-    
-    public function getTransactionId($params)
-    {
-        return isset($params['ORDER_NUMBER']) ? $params['ORDER_NUMBER'] : false; 
-    }
-
-
     /**
      * Init Paytrail module with configured merchantId, secret and URL.
      *
@@ -220,6 +218,12 @@ class Paytrail implements OnlinePaymentInterface
      */    
     protected function initPaytrail()
     {
+        foreach (array('merchantId', 'secret', 'url') as $req) {
+            if (!isset($this->config[$req])) {
+                error_log("Paytrail: missing parameter $req");
+                return false;
+            }
+        }
         return new Paytrail_Module_Rest($this->config['merchantId'], $this->config['secret'], $this->config['url']);        
     }
 

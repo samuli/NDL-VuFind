@@ -1301,13 +1301,13 @@ class Demo implements DriverInterface
      *
      * This is called after a successful online payment.
      *
-     * @param string $patronId Patron's Catalog username (barcode).
-     * @param int    $amount   Amount to be registered as paid.
+     * @param array $user   The patron array from patronLogin
+     * @param int   $amount Amount to be registered as paid.
      *
-     * @return mixed PEAR_Error if required parameters are missing, otherwise true.
+     * @return boolean success
      * @access public
      */
-    public function markFeesAsPaid($patronId, $amount)
+    public function markFeesAsPaid($user, $amount)
     {
         $config = $this->getConfig('OnlinePayment');
         $params 
@@ -1316,14 +1316,15 @@ class Demo implements DriverInterface
             : array()
         ;
         
-        $required = array('host', 'port', 'userId', 'password', 'locationCode');
-        foreach ($required as $req) {
-            if (!isset($params[$req])) {
-                error_log("Missing SIP2 parameter $req");
-                return new PEAR_Error('online_payment_registration_failed');
-            }
+        if (rand()%2) {
+            return new PEAR_Error('online_payment_registration_failed');            
         }
 
+        foreach ($_SESSION['demoData']['fines'] as $key => $fine) {
+            if ($fine['payableOnline']) {
+                unset($_SESSION['demoData']['fines'][$key]);
+            }
+        }
         return true;
     }
 

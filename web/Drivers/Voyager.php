@@ -1511,13 +1511,13 @@ class Voyager implements DriverInterface
      *
      * This is called after a successful online payment.
      *
-     * @param string $patronId Patron's Catalog username (barcode).
-     * @param int    $amount   Amount to be registered as paid.
+     * @param array $patron The patron array from patronLogin
+     * @param int   $amount Amount to be registered as paid.
      *
      * @return mixed true if successfull, or PEAR_Error if registering failed.
      * @access public
      */
-    public function markFeesAsPaid($patronId, $amount)
+    public function markFeesAsPaid($patron, $amount)
     {
         $params 
             = isset($this->config['OnlinePayment']['registrationParams'])
@@ -1534,6 +1534,7 @@ class Voyager implements DriverInterface
         }
 
         $currency = $this->config['OnlinePayment']['currency'];
+        $patronId = $patron['cat_username'];
 
         $errFun = function($patronId, $error) {
             error_log("SIP2 payment error: $error");
@@ -1560,12 +1561,7 @@ class Voyager implements DriverInterface
             if (strncmp('94', $login_response, 2) == 0) {
                 $login_result = $sip->parseLoginResponse($login_response);
                 if ($login_result['fixed']['Ok'] == '1') {
-                    list($catSource, $catUsername) = explode('.', $patronId, 2);
-                    if (!empty($catUsername)) {
-                        $sip->patron = $catUsername;
-                    } else {
-                        $sip->patron = $patronId;
-                    }
+                    $sip->patron = $patronId;
                     $feepaid_msg = $sip->msgFeePaid(1, 0, $amount/100.00, $currency);
                     $feepaid_response = $sip->get_message($feepaid_msg);
                     if (strncmp('38', $feepaid_response, 2) == 0) { 

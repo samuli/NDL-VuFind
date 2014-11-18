@@ -22,6 +22,7 @@
  * @category VuFind
  * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_authentication_handler Wiki
  */
@@ -32,6 +33,7 @@
  * @category VuFind
  * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_authentication_handler Wiki
  */
@@ -49,13 +51,13 @@ interface OnlinePaymentInterface
     /**
      * Start transaction.
      *
-     * @param string $patronId            Patron's catalog username (e.g. barcode)
-     * @param int    $amount              Payment amount without transaction fee (in cents)
-     * @param int    $transactionFee      Transaction fee (in cents)
-     * @param array  $fines               Fines that belong to the transaction
-     * @param string $currency            Currency
-     * @param string $statusParams        URL parameter for payment status in callback requests
-     * @param string $transactionIdParams URL parameter for transaction Id in callback requests
+     * @param string $patronId           Patron's catalog username (e.g. barcode)
+     * @param int    $amount             Payment amount without transaction fee (in cents)
+     * @param int    $transactionFee     Transaction fee (in cents)
+     * @param array  $fines              Fines that belong to the transaction
+     * @param string $currency           Currency
+     * @param string $statusParam        URL parameter for payment status in callback requests
+     * @param string $transactionIdParam URL parameter for transaction Id in callback requests
      *
      * @return false on error, otherwise redirects to payment handler.
      * @access public

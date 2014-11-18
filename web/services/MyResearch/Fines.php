@@ -240,6 +240,11 @@ class Fines extends MyResearch
             $error = true;
         }
 
+        if (!$tr->isTransactionInProgress($transactionId)) {            
+            error_log("Error processing payment: transaction $transactionId already processed.");
+            $error = true;
+        }
+
         if (!$error) {
             $patron = null;
             $patronId = $t->cat_username;
@@ -274,7 +279,7 @@ class Fines extends MyResearch
 
                     // Check that payable sum has not been updated
                     if ($finesAmount == $res['amount']) {
-                        $paidRes = $this->catalog->markFeesAsPaid($patronId, $res['amount']);
+                        $paidRes = $this->catalog->markFeesAsPaid($patron, $res['amount']);
                         if ($paidRes === true) {
                             $t = new Transaction();
                             if (!$t->setTransactionRegistered($res['transactionId'])) {

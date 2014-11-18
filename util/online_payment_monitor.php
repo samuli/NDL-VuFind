@@ -4,7 +4,7 @@
  *
  * PHP version 5
  *
- * Copyright (C) The National Library of Finland 2012.
+ * Copyright (C) The National Library of Finland 2014.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -22,6 +22,7 @@
  * @category VuFind
  * @package  Controller
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/developer_manual Wiki
  */
@@ -30,6 +31,7 @@ require_once 'reminder_task.php';
 require_once 'util.inc.php';
 require_once 'services/MyResearch/lib/Transaction.php';
 require_once 'services/MyResearch/lib/User.php';
+require_once 'services/MyResearch/lib/User_account.php';
 require_once 'sys/ConfigArray.php';
 require_once 'sys/Interface.php';
 require_once 'sys/Mailer.php';
@@ -43,6 +45,7 @@ require_once 'sys/User.php';
  * @category VuFind
  * @package  OnlinePayment
  * @author   Leszek Manicki <leszek.z.manicki@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/
  *
@@ -163,8 +166,17 @@ class OnlinePaymentMonitor extends ReminderTask
 
                 $catalog = ConnectionManager::connectToCatalog();
                 if ($catalog && $catalog->status) {
-                    $patronId = $t->cat_username;
-                    $res = $catalog->markFeesAsPaid($patronId, $t->amount);
+                    $account = new User_account();
+                    $account->user_id = $t->user_id;
+                    $account->cat_username = $t->cat_username;
+                    if ($account->find(true)) {
+                        if (!$patron = $catalog->patronLogin($t->cat_username, $account->cat_password)) {
+                            $this->err('    Could not perform patron login for transaction ' . $t->transaction_id);
+                            $error = true;                
+                        }
+                    }
+
+                    $res = $catalog->markFeesAsPaid($patron, $t->amount);
                     if ($res === true) {
                         if (!$t->setTransactionRegistered($t->transaction_id)) {
                             $this->err('    Failed to update transaction ' . $t->transaction_id . 'as registered');
