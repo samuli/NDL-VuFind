@@ -51,9 +51,9 @@ class Transaction extends DB_DataObject
     public $transaction_id;                  // string(50) not null
     public $driver;                          // string(50) not null
     public $user_id;                         // int(11)  not_null multiple_key
-    public $amount;                          // float  not_null
+    public $amount;                          // int(11)  not_null
     public $currency;                        // string(3) not_null
-    public $transaction_fee;                 // float  not_null
+    public $transaction_fee;                 // int(11)  not_null
     public $created;                         // datetime(19)  not_null binary
     public $paid;                            // datetime(19)  not_null binary
     public $registered;                      // datetime(19)  not_null binary
