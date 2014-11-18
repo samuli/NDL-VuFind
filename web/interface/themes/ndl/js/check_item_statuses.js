@@ -2,7 +2,7 @@ $(document).ready(function() {
     $('.recordId').unbind('inview').one('inview', function() {
         var id = $(this).attr('id').substr('record'.length);
         if ($(this).attr('data-driver') && $(this).data('driver') == 'AxiellWebServices') {
-            checkAxiellItemStatuses(id);
+            checkAxiellItemStatuses(id, $(this));
         } else {
             checkItemStatuses([id]);
         }
@@ -99,21 +99,20 @@ function checkItemStatuses(id) {
     }
 }
 
-function checkAxiellItemStatuses(id) {
+function checkAxiellItemStatuses(id, $record) {
     if (id.length) {
-        $("div[id^='callnumAndLocation'] .ajax_availability").show();
+        $record.find('div[id*="callnumAndLocation"] > span').show();
+        $record.find('div[id*="locationDetails"]').empty();
         $.ajax({
             dataType: 'json',
             url: path + '/AJAX/JSON?method=getAxiellItemStatuses',
             data: {id:id},
             success: function(response) {
-                $("span[id='location"+id+"']").remove();
                 if(response.status == 'OK' && response.data.length > 0) {
-                    $("div[id='locationDetails"+id+"']").append(response.data).removeClass('hide');
+                   $record.find('div[id*="locationDetails"]').append(response.data).removeClass('hide').show();
                 } else {
-                    $("div[id^='callnumAndLocation'] .ajax_availability").empty();
                 }
-                $("div[id^='callnumAndLocation'] .ajax_availability").removeClass('ajax_availability');
+                $record.find('div[id*="callnumAndLocation"] > span').hide();
             }
         });
     }
@@ -146,7 +145,12 @@ function selectItem() {
         $('#callnumAndLocation'+safeId).show();
         $('#location'+safeId).addClass('ajax_availability').show();
 
-        checkItemStatuses([id]);
+        var $record = $(this).closest('.recordId');
+        if ($record.attr('data-driver') && $record.data('driver') == 'AxiellWebServices') {
+            checkAxiellItemStatuses(id, $record);
+        } else {
+            checkItemStatuses([id]);
+        }
     })
     
 }
