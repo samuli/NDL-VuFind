@@ -54,7 +54,7 @@
               <tr class="{if $collapseBranch}collapsed{/if}">
                 <td class="copyNumber">
                   <span class="holdingText indent {if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
-                    {if $journal}{$location.organisation}, {/if}{$holding.branch}, {$holding.department}
+                    {if $journal}{$location.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}
                   </span>
                 </td>
                 <td> 
