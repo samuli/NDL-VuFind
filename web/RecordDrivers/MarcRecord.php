@@ -1183,7 +1183,9 @@ class MarcRecord extends IndexRecord
                         $desc = $address;
                     }
 
-                    $retVal[$address] = $desc;
+                    if (!$this->urlBlacklisted($address, $desc)) {
+                        $retVal[$address] = $desc;
+                    }
                 }
             }
         }

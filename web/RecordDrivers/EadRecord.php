@@ -64,10 +64,10 @@ class EadRecord extends IndexRecord
     public function __construct($indexFields)
     {
         parent::__construct($indexFields);
-        
+
         $this->record = simplexml_load_string($this->fields['fullrecord']);
     }
-    
+
     /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display core metadata (the details shown in the
@@ -80,11 +80,11 @@ class EadRecord extends IndexRecord
     {
         global $configArray;
         global $interface;
-        
+
         $template = parent::getCoreMetadata();
 
         $interface->assign('coreIsPartOfArchiveSeries', $this->isPartOfArchiveSeries());
-        
+
         $interface->assign('coreYearRange', $this->getYearRange());
         $interface->assign('coreOrigination', $this->getOrigination());
         $interface->assign('coreOriginationId', $this->getOriginationID());
@@ -93,7 +93,7 @@ class EadRecord extends IndexRecord
             $interface->assign('coreDigitizedMaterial', true);
         }
         $interface->assign('coreIdentifier', $this->getIdentifier());
-        
+
         $interface->assign('coreSubjects', isset($this->fields['topic']) ? $this->fields['topic'] : array());
         $interface->assign('coreGeographicSubjects', isset($this->fields['geographic']) ? $this->fields['geographic'] : array());
 
@@ -101,7 +101,7 @@ class EadRecord extends IndexRecord
             $interface->assign('coreMeasurements', $this->fields['measurements']);
         }
 
-        
+
         $datasource = $this->fields['datasource_str_mv'][0];
         if (isset($configArray['Record']['ead_document_order_link_template'][$datasource])) {
             $interface->assign('coreDocumentOrderLinkTemplate', $configArray['Record']['ead_document_order_link_template'][$datasource]);
@@ -120,7 +120,7 @@ class EadRecord extends IndexRecord
 
         return 'RecordDrivers/Ead/core.tpl';
     }
-    
+
     /**
     * Assign necessary Smarty variables and return a template name for the current
     * view to load in order to display a summary of the item suitable for use in
@@ -134,19 +134,19 @@ class EadRecord extends IndexRecord
     public function getSearchResult($view = 'list')
     {
         global $interface;
-        
+
         $template = parent::getSearchResult($view);
-        
+
         $interface->assign('summYearRange', $this->getYearRange());
         $interface->assign('summOrigination', $this->getOrigination());
         $interface->assign('summOriginationId', $this->getOriginationID());
         $interface->assign('summPhysicalLocation', $this->getPhysicalLocation());
 
         $interface->assign('isPartOfArchiveSeries', $this->isPartOfArchiveSeries());
-        
+
         return 'RecordDrivers/Ead/result-' . $view . '.tpl';
     }
-        
+
     /**
      * Get the collection data to display.
      *
@@ -158,22 +158,22 @@ class EadRecord extends IndexRecord
         global $interface;
 
         parent::getCollectionMetadata();
-        
+
         $interface->assign('collYearRange', $this->getYearRange());
-        
+
         // Send back the template name:
         return 'RecordDrivers/Hierarchy/collection-info.tpl';
     }
 
     /**
      * Check if an item is part of an archive series.
-     * 
+     *
      * @return array
      * @access protected
      */
     public function isPartOfArchiveSeries()
     {
-        return isset($this->fields['hierarchy_parent_id'][0]) 
+        return isset($this->fields['hierarchy_parent_id'][0])
             && isset($this->fields['hierarchy_top_id'][0])
             && $this->fields['hierarchy_parent_id'][0] != $this->fields['hierarchy_top_id'][0]
             && $this->fields['hierarchy_top_id'] != $this->fields['id'];
@@ -181,7 +181,7 @@ class EadRecord extends IndexRecord
 
     /**
      * Return an associative array of image URLs associated with this record (key = URL,
-     * value = description), if available; false otherwise. 
+     * value = description), if available; false otherwise.
      *
      * @param string $size Size of requested images
      *
@@ -192,7 +192,7 @@ class EadRecord extends IndexRecord
     {
         $urls = array();
         $url = '';
-        $role = $size == 'large' 
+        $role = $size == 'large'
             ? 'image_reference'
             : 'image_thumbnail';
 
@@ -202,7 +202,7 @@ class EadRecord extends IndexRecord
         }
         return $urls;
     }
-    
+
     /**
      * Return a URL to a thumbnail preview of the record, if available; false
      * otherwise.
@@ -238,7 +238,7 @@ class EadRecord extends IndexRecord
         $urls = $this->getAllImages($size);
         return $urls ? reset(array_keys($urls)) : false;
     }
-        
+
     /**
     * Return an associative array of URLs associated with this record (key = URL,
     * value = description).
@@ -268,20 +268,22 @@ class EadRecord extends IndexRecord
                     $desc = $p[0];
                 }
             }
-            $urls[$url] = $desc;
+            if (!$this->urlBlacklisted($url, $desc)) {
+                $urls[$url] = $desc;
+            }
         }
-        
+
         // Portti links parsed from bibliography
         foreach ($this->record->xpath('//bibliography') as $node) {
             if (preg_match('/(.+) (http:\/\/wiki\.narc\.fi\/portti.*)/', (string)$node->p, $matches)) {
                 $urls[$matches[2]] = $matches[1];
             }
-        } 
+        }
         return $urls;
     }
-    
+
     /**
-     * Get the date range of the record as a year or range of years 
+     * Get the date range of the record as a year or range of years
      *
      * @return string
      * @access protected
@@ -315,7 +317,7 @@ class EadRecord extends IndexRecord
         }
         return '';
     }
-    
+
     /**
      * Get an array of information about record history, obtained in real-time
      * from the Hierarchy Driver.
@@ -338,7 +340,7 @@ class EadRecord extends IndexRecord
         }
         return array();
     }
-    
+
     /**
      * Get an array of information about record holdings, obtained in real-time
      * from the Hierarchy Driver.
@@ -351,7 +353,7 @@ class EadRecord extends IndexRecord
     protected function getRealTimeHoldings($patron = false)
     {
         global $configArray;
-    
+
         // Get ID and connect to catalog
         $id = $this->getUniqueID();
         $hierarchyType = $this->getHierarchyType();
@@ -362,7 +364,7 @@ class EadRecord extends IndexRecord
         }
         return false;
     }
-    
+
     /**
      * Get an array of status Information
      *
@@ -380,7 +382,7 @@ class EadRecord extends IndexRecord
         }
         return false;
     }
-    
+
     /**
      * Check if an item has holdings in order to show or hide the holdings tab
      *
@@ -400,7 +402,7 @@ class EadRecord extends IndexRecord
         }
         return false;
     }
-    
+
     /**
      * Get the collection data to display.
      *
@@ -410,15 +412,15 @@ class EadRecord extends IndexRecord
     public function getCollectionRecord()
     {
         global $interface;
-    
+
         parent::getCollectionRecord();
         $interface->assign('collDateDescription', $this->getDateDescription());
         $interface->assign('collExtent', $this->getExtent());
-    
+
         // Send back the template name:
         return 'RecordDrivers/Hierarchy/collection-record.tpl';
     }
-    
+
     /**
      * Get the text of the part/section portion of the Date Description.
      *
@@ -429,7 +431,7 @@ class EadRecord extends IndexRecord
     {
         return null;
     }
-    
+
     /**
      * Get the text of the part/section portion of the Date Description.
      *
@@ -440,7 +442,7 @@ class EadRecord extends IndexRecord
     {
         return null;
     }
-    
+
     /**
      * Get an array of all the dedup data associated with the record.
      *
@@ -451,20 +453,20 @@ class EadRecord extends IndexRecord
     {
         return array();
     }
-    
+
     /**
      * Get origination
-     * 
+     *
      * @return string
      */
     protected function getOrigination()
     {
         return isset($this->record->did->origination) ? (string)$this->record->did->origination->corpname : '';
     }
-        
+
     /**
      * Get origination Id
-     * 
+     *
      * @return string
      */
     protected function getOriginationId()
@@ -504,11 +506,11 @@ class EadRecord extends IndexRecord
         if ($doc->loadXML($xml)) {
             $doc->formatOutput = true;
             $geshi = new GeSHi($doc->saveXML(), 'xml');
-            $geshi->enable_classes(); 
+            $geshi->enable_classes();
             $interface->assign('record', $geshi->parse_code());
         }
         $interface->assign('details', $this->fields);
-        
+
         return 'RecordDrivers/Ead/staff.tpl';
     }
 
@@ -537,7 +539,7 @@ class EadRecord extends IndexRecord
             if (!preg_match('/(.+) (http:\/\/wiki\.narc\.fi\/portti.*)/', (string)$node->p)) {
                 $bibliography[] = (string)$node->p;
             }
-        } 
+        }
         return $bibliography;
     }
 
@@ -571,7 +573,7 @@ class EadRecord extends IndexRecord
      */
     protected function getIdentifier()
     {
-        return isset($this->record->did->unitid->attributes()->{'identifier'}) 
+        return isset($this->record->did->unitid->attributes()->{'identifier'})
             ? (string)$this->record->did->unitid->attributes()->{'identifier'}
             : (string)$this->record->did->unitid;
     }
@@ -602,7 +604,7 @@ class EadRecord extends IndexRecord
         // We need to return an array, so if we have a description, turn it into an
         // array as needed (it should be a flat string according to the default
         // schema, but we might as well support the array case just to be on the safe
-        // side. If needed, handle a special case where the indexed description consists 
+        // side. If needed, handle a special case where the indexed description consists
         // of several joined paragraphs:
         if (isset($this->fields['description'])
             && !empty($this->fields['description'])
