@@ -3439,6 +3439,15 @@ class IndexRecord implements RecordInterface
         return false;
     }
 
+    /**
+     * Check if a URL (typically from getURLs()) is blacklisted based on the URL
+     * itself and optionally its description.
+     *
+     * @param string $url  URL
+     * @param string $desc Optional description of the URL
+     *
+     * @return boolean Whether the URL is blacklisted
+     */
     protected function urlBlacklisted($url, $desc = '')
     {
         global $configArray;
