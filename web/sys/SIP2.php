@@ -88,6 +88,10 @@ class sip2
 
     /* Debug */
     public $debug        = false;
+
+    /* Error detection mode */
+    /* error detection is on by default but could be turned off, e.g. Voyager 8.1.1 seems to reject messages containing AY/AZ fields */
+    public $error_detection = true;
     
     /* Private variables for building messages */
     public $AO = 'WohlersSIP';
@@ -697,7 +701,7 @@ class sip2
                 /* give up */
                 $this->_debugmsg("SIP2: Failed to get valid CRC after {$this->maxretry} retries.");
                 return false;
-            }
+            }        
         }
         return $result;
     }	
@@ -821,6 +825,10 @@ class sip2
     
     function _check_crc($message) 
     {
+        if (!$this->error_detection) {
+            return true;
+        }
+
         /* test the recieved message's CRC by generating our own CRC from the message */
         $test = preg_split('/(.{4})$/',trim($message),2,PREG_SPLIT_DELIM_CAPTURE);
 
@@ -864,13 +872,15 @@ class sip2
     
     function _returnMessage($withSeq = true, $withCrc = true) 
     {
-        /* Finalizes the message and returns it.  Message will remain in msgBuild until newMessage is called */
-        if ($withSeq) {
-            $this->msgBuild .= 'AY' . $this->_getseqnum();
-        }
-        if ($withCrc) {
-            $this->msgBuild .= 'AZ';
-            $this->msgBuild .= $this->_crc($this->msgBuild);
+        if ($this->error_detection) {
+            /* Finalizes the message and returns it.  Message will remain in msgBuild until newMessage is called */
+            if ($withSeq) {
+                $this->msgBuild .= 'AY' . $this->_getseqnum();
+            }
+            if ($withCrc) {
+                $this->msgBuild .= 'AZ';
+                $this->msgBuild .= $this->_crc($this->msgBuild);
+            }
         }
         $this->msgBuild .= $this->msgTerminator;
 

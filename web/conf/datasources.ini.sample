@@ -16,3 +16,8 @@ mainView = web
 institution = Library
 ;disablePatronFunctions = true
 
+; Online payment
+onlinePayment['handler'] = ''
+onlinePayment['url'] = ''
+onlinePayment['merchantId'] = ''
+onlinePayment['secret'] = ''

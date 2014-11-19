@@ -588,6 +588,31 @@ class CatalogConnection
     }
 
     /**
+     * Return initialized online payment handler.
+     *
+     * @param string $patronId Patron's Catalog username (barcode).
+     *
+     * @return mixed handler or false on error
+     * @access public
+     */
+    public function getOnlinePaymentHandler($patronId)
+    {
+        $config = getExtraConfigArray('datasources');
+        list($driver, $cat_username) = explode('.', $patronId, 2);
+        if (!isset($config[$driver]['onlinePayment'])) {
+            return false;
+        }
+        $params = $config[$driver]['onlinePayment'];
+        
+        try {
+            return OnlinePaymentFactory::initOnlinePayment($params['handler'], $params);
+        } catch (Exception $e) {
+            error_log("Error initializing payment handler $driver for patron $patronId: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Get Patron Holds
      *
      * This is responsible for retrieving all holds by a specific patron.
