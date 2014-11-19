@@ -1320,9 +1320,11 @@ class Demo implements DriverInterface
             return new PEAR_Error('online_payment_registration_failed');            
         }
 
-        foreach ($_SESSION['demoData']['fines'] as $key => $fine) {
-            if ($fine['payableOnline']) {
-                unset($_SESSION['demoData']['fines'][$key]);
+        if (isset($_SESSION['demoData']['fines'])) {
+            foreach ($_SESSION['demoData']['fines'] as $key => $fine) {
+                if ($fine['payableOnline']) {
+                    unset($_SESSION['demoData']['fines'][$key]);
+                }
             }
         }
         return true;

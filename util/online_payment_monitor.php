@@ -186,7 +186,7 @@ class OnlinePaymentMonitor extends ReminderTask
                     } else {
                         $t->setTransactionRegistrationFailed($t->transaction_id, $res);
                         $failedCnt++;
-                        $this->msg('    Registration of transaction ' . $t->transaction_id . 'failed');
+                        $this->msg('    Registration of transaction ' . $t->transaction_id . ' failed');
                         $this->msg("      {$res}");
                     }
                 } else {

@@ -136,21 +136,27 @@ class Transaction extends DB_DataObject
     public function isPaymentPermitted($patronId, $transactionMaxDuration)
     {
         $duration = mysql_real_escape_string($transactionMaxDuration);
+        $patronId = mysql_real_escape_string($patronId);
+        
         $transaction = new Transaction();
-        $transaction->cat_username = $patronId;
-        $transaction->complete = self::STATUS_PROGRESS;        
-        $transaction->whereAdd("NOW() < DATE_ADD(created, INTERVAL $duration MINUTE)", 'AND');
+        $transaction->whereAdd("cat_username = '$patronId'"); 
+        $transaction->whereAdd('complete = ' . self::STATUS_PROGRESS);
+        $transaction->whereAdd("NOW() < DATE_ADD(created, INTERVAL $duration MINUTE)");
 
         if ($transaction->find()) {
             // Transaction still in progress
             return 'online_payment_in_progress';
         }
         
+        $statuses = array(
+            self::STATUS_REGISTRATION_FAILED, 
+            self::STATUS_REGISTRATION_EXPIRED,
+            self::STATUS_FINES_UPDATED
+        );
+
         $transaction = new Transaction();
-        $transaction->cat_username = $patronId;
-        $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_FAILED);
-        $transaction->whereAdd('complete = ' . self::STATUS_REGISTRATION_EXPIRED, 'or');
-        $transaction->whereAdd('complete = ' . self::STATUS_FINES_UPDATED, 'or');
+        $transaction->whereAdd("cat_username = '$patronId'"); 
+        $transaction->whereAdd('complete in (' . implode(',', $statuses) . ')');
 
         if ($transaction->find()) {
             // Transaction could not be registered and is waiting to be resolved manually.

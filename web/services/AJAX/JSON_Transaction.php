@@ -64,7 +64,7 @@ class JSON_Transaction extends JSON
             );
         } else {
             $this->output(
-                $res['msg'],  JSON::STATUS_ERROR
+                isset($res['msg']) ? $res['msg'] : '',  JSON::STATUS_ERROR
             );
         }
     }
