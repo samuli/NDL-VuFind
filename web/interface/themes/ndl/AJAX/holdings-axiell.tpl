@@ -76,11 +76,33 @@
         </td>
       </tr> 
     {/foreach}
-    {if $patronFunctions && $holdingTitleHold && $holdingTitleHold != 'block'}
+    {if $patronFunctions}
       <tr>
         <td colspan="2">
           <div class="holdingsPlaceHold axiell">
-            <a data-id="{$id}" class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
+            {if $isHoldable}
+              {if !$user}
+                {if $showLoginMsg || $showTitleLoginMsg}
+                    <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id|escape}">{translate text="title_hold_place"}</a>
+                {else}
+                  <span>{translate text="title_cant_place_hold"}</span>
+                {/if}
+              {else}
+                {if !$user->cat_username}
+                  <a class="button buttonFinna" href="{$path}/MyResearch/Profile">{translate text="Add an account to place holds"}</a>
+                {else}
+                  {if $holdingTitleHold && $holdingTitleHold != 'block'}
+                      <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
+                  {elseif $holdingTitleHold == 'block'}
+                      {translate text="hold_error_blocked"}
+                  {elseif !$holdingTitleHold}
+                      <span>{translate text="title_cant_place_hold"}</span>
+                  {/if}
+                {/if}
+              {/if}
+            {else}
+              <span>{translate text="title_cant_place_hold"}</span>
+            {/if}
           </div>
         </td>
       </tr>

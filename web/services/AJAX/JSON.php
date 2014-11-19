@@ -366,6 +366,7 @@ class JSON extends Action
         $closestDueDateStamp = 0;
         $journal = false;
         $itemStatusText = '';
+        $isHoldable = false;
 
         foreach ($holdings as $location) {
 
@@ -418,6 +419,11 @@ class JSON extends Action
                         $branchCount++;
                     }
                 }
+                if (isset($location['is_holdable']) 
+                    && $location['is_holdable']
+                ) {
+                    $isHoldable = true;
+                }
             }
         }
 
@@ -437,6 +443,7 @@ class JSON extends Action
         $interface->assign('availableCount', $availableCount);
         $interface->assign('closestDueDate', $closestDueDate);
         $interface->assign('itemStatusText', $itemStatusText);
+        $interface->assign('isHoldable', $isHoldable);
         $interface->assign('locationTreshold', $locationTreshold);
         $interface->assign('branchTreshold', $branchTreshold);
         $interface->assign('journal', $journal);
@@ -447,6 +454,14 @@ class JSON extends Action
         }
         $recordDriver = RecordDriverFactory::initRecordDriver($record);
         $interface->assign('patronFunctions', $recordDriver->hasPatronFunctions());
+
+        if ("driver" == CatalogConnection::getHoldsMode()) {
+            $interface->assign('driverMode', true);
+        }
+
+        if ("driver" == CatalogConnection::getTitleHoldsMode()) {
+            $interface->assign('titleDriverMode', true);
+        }
 
         if ($patron = UserAccount::catalogLogin()) {
             if (!PEAR::isError($patron)) {
