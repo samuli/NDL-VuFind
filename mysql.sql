@@ -319,12 +319,10 @@ CREATE TABLE `transaction` (
   `cat_username` varchar(50) NOT NULL,
   `reported` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
+  KEY `transaction_id` (`transaction_id`),
+  KEY `complete_cat_username_created` (`complete`,`cat_username`, `created`),
+  KEY `paid_reported` (`paid`,`reported`),
   KEY `driver` (`driver`),
-  KEY `complete` (`complete`),
-  KEY `paid` (`paid`),
-  KEY `reported` (`reported`),
-  KEY `cat_username` (`cat_username`),
   CONSTRAINT `transactions_ibfk1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 
