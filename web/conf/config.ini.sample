@@ -813,6 +813,11 @@ ead_usage_permission_request_link_template[narc] = "https://testavapaingest.narc
 lido_augment_display_measurement_with_extent[siiri] = true
 lido_augment_display_date_with_period[siiri] = true
 
+; List of URL's or descriptions for URL's that should not be displayed in the 
+; records. Supports regular expressions (use / as prefix and suffix, like '/test/'
+; to indicate a regexp).
+url_blacklist[] = 'Kuvaus' 
+url_blacklist[] = 'Kansikuva' 
 
 ; The following two sections control the Alphabetic Browse module.
 [AlphaBrowse]

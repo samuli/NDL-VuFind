@@ -736,7 +736,7 @@ class IndexRecord implements RecordInterface
             break;
 
         case 'Journal':
-            $interface->assign('extendedISSNs', $this->getISSNs());            
+            $interface->assign('extendedISSNs', $this->getISSNs());
             $interface->assign('recordLanguage', $this->getLanguages());
             $interface->assign('corePublications', $this->getPublicationDetails());
             $interface->assign('coreSubjects', $this->getAllSubjectHeadings());
@@ -2862,7 +2862,9 @@ class IndexRecord implements RecordInterface
             foreach ($this->fields['url'] as $url) {
                 // The index doesn't contain descriptions for URLs, so we'll just
                 // use the URL itself as the description.
-                $urls[$url] = $url;
+                if (!$this->urlBlacklisted($url)) {
+                    $urls[$url] = $url;
+                }
             }
         }
         return $urls;
@@ -3449,6 +3451,36 @@ class IndexRecord implements RecordInterface
      */
     protected function hasPatronFunctions()
     {
+        return false;
+    }
+
+    /**
+     * Check if a URL (typically from getURLs()) is blacklisted based on the URL
+     * itself and optionally its description.
+     *
+     * @param string $url  URL
+     * @param string $desc Optional description of the URL
+     *
+     * @return boolean Whether the URL is blacklisted
+     */
+    protected function urlBlacklisted($url, $desc = '')
+    {
+        global $configArray;
+
+        if (!isset($configArray['Record']['url_blacklist'])) {
+            return false;
+        }
+        foreach ($configArray['Record']['url_blacklist'] as $rule) {
+            if (substr($rule, 0, 1) == '/' && substr($rule, -1, 1) == '/') {
+                if (preg_match($rule, $url)
+                    || ($desc !== '' && preg_match($rule, $desc))
+                ) {
+                    return true;
+                }
+            } elseif ($rule == $url || $rule == $desc) {
+                return true;
+            }
+        }
         return false;
     }
 }
