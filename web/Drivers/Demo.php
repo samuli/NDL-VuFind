@@ -377,6 +377,7 @@ class Demo implements DriverInterface
                     "id"       => $this->_getRandomBibId()
                 );
             }
+            $fineList = $this->markOnlinePayableFines($fineList);
             $_SESSION['demoData']['fines'] = $fineList;
         }
         return $_SESSION['demoData']['fines'];
@@ -1296,6 +1297,111 @@ class Demo implements DriverInterface
     }
 
     /**
+     * Mark fees as paid. 
+     *
+     * This is called after a successful online payment.
+     *
+     * @param array $user   The patron array from patronLogin
+     * @param int   $amount Amount to be registered as paid.
+     *
+     * @return boolean success
+     * @access public
+     */
+    public function markFeesAsPaid($user, $amount)
+    {
+        $config = $this->getConfig('OnlinePayment');
+        $params 
+            = isset($config['registrationParams'])
+            ? $config['registrationParams']
+            : array()
+        ;
+        
+        if (rand()%2) {
+            return new PEAR_Error('online_payment_registration_failed');            
+        }
+
+        if (isset($_SESSION['demoData']['fines'])) {
+            foreach ($_SESSION['demoData']['fines'] as $key => $fine) {
+                if ($fine['payableOnline']) {
+                    unset($_SESSION['demoData']['fines'][$key]);
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Return total amount of fees that may be paid online.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed int payable amount, 
+     * string error message (not translated) if all fees are not payable online 
+     * or if the total amount does not exceed or equal minimum payable fee, 
+     * or false on error.
+     * @access public
+     */    
+    public function getOnlinePayableAmount($patron)
+    {
+        $fines = $this->getMyFines($patron);
+        
+        if (!PEAR::isError($fines)) {
+            $amount = 0;            
+            foreach ($fines as $fine) {
+                if (!$fine['payableOnline'] && !$fine['accruedFine']) {
+                    return 'online_payment_fines_contain_nonpayable_fees';
+                }
+                if (!$fine['accruedFine']) {
+                    $amount += $fine['balance'];
+                }                
+            }
+            $config = $this->getConfig('OnlinePayment');
+
+            if ($amount < $config['minimumFee']) {
+                return 'online_payment_minimum_fee';
+            }
+            return $amount;
+        }
+
+        return false;
+    }
+
+    /**
+     * Protected support method for getMyFines.
+     *
+     * Appends 'payableOnline' (boolean) key to a fine.
+     *
+     * @param array $fines Processed fines.
+     *
+     * @return array $fines Fines.
+     * @access public
+     */
+    protected function markOnlinePayableFines($fines)
+    {
+        $accruedType = 'Accrued Fine';
+
+        $config = $this->getConfig('OnlinePayment');
+        $nonPayable = isset($config['nonPayable'])
+            ? $config['nonPayable']
+            : array()
+        ;
+        $nonPayable[] = $accruedType;
+        
+        foreach ($fines as &$fine) {
+            $payableOnline = true;
+            if (isset($fine['fine'])) {
+                if (in_array($fine['fine'], $nonPayable)) {
+                    $payableOnline = false;
+                }
+            }
+            $fine['accruedFine'] = ($fine['fine'] === $accruedType);
+            $fine['payableOnline'] = $payableOnline;
+        }
+
+        return $fines;
+    }
+
+    /**
      * Public Function which specifies renew, hold and cancel settings.
      *
      * @param string $function The name of the feature to be checked
@@ -1326,6 +1432,25 @@ class Demo implements DriverInterface
                 'helpText' => 'Demo UB request help text<br/>with <strong>some formatting</strong>'
             );
         }
+        
+        if ($function == 'OnlinePayment') {
+            return array(
+                'enabled' => true,
+                'nonPayable' => rand()%10 > 7 ? array('Long Overdue') : array(),
+                'transactionFee' => 50,
+                'minimumFee' => 200,
+                'currency' => 'EUR',
+                'registrationMethod' => 'SIP2',
+                'registrationParams' => array(
+                    'host' => 'host',
+                    'port' => 'port',
+                    'userId' => 'user',
+                    'password' => 'pass',
+                    'locationCode' => 'location'
+                )
+            );
+        }
+
         return array();
     }
 }

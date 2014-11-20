@@ -80,7 +80,7 @@
       {/if}
 
       {if in_array("requiredByDate", $extraHoldFields)}
-        <div>
+        <div id="fieldRequiredByDate">
         <strong>{translate text="hold_required_by"}: </strong>
         <div id="requiredByHolder"><input id="requiredByDate" type="text" name="gatheredDetails[requiredBy]" value="{if $gatheredDetails.requiredBy !=""}{$gatheredDetails.requiredBy|escape}{else}{$defaultDuedate}{/if}" size="10" /> <strong>({displaydateformat})</strong></div>
         </div>
