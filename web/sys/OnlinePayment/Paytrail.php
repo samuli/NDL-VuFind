@@ -206,6 +206,7 @@ class Paytrail implements OnlinePaymentInterface
             return 'online_payment_canceled';
         } else {
             $t->setTransactionUnknownPaymentResponse($orderNum, $status);
+            return 'online_payment_failed';
         }
 
         return array('markFeesAsPaid' => $paid, 'transactionId' => $orderNum, 'amount' => $amount);
