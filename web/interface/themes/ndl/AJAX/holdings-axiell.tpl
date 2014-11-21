@@ -15,7 +15,17 @@
     <tr class="resultHoldingsHeading">
       <th class="{if $collapseLocations}collapsible collapsed{/if}">
         {if $availableLocationCount > 0}
-          <span class="availability available">{translate text="axiell_available"} {if $journal} {$availableCount} numeroa {else} {$branchCount} {translate text="axiell_branches_alt"}{/if}</span>
+          <span class="availability available">
+              {if $journal}
+                {if $userLang == 'fi'}
+                  {translate text="axiell_available"} {$availableCount} {translate text="axiell_issues"}
+                {else}
+                  {$availableCount} {translate text="axiell_issues"} {translate text="axiell_available"}
+                {/if}
+              {else} 
+                {translate text="axiell_available_from"} {$branchCount} {translate text="axiell_branches_alt"}
+              {/if}
+          </span>
         {else}
           {if $closestDueDate != ''}
             <span class="availability checkedout">{translate text="status_Charged"}
@@ -40,7 +50,7 @@
                 {$location.title} 
                 {if $collapseBranch}
                   {if $location.status.availableCount > 0}
-                     ({translate text="axiell_available"|lower} {$location.status.availableCount} {translate text="axiell_branches_alt"})
+                     ({translate text="axiell_available_from"} {$location.status.availableCount} {translate text="axiell_branches_alt"})
                   {elseif $location.status.text=="Closest due"}
                     ({translate text=$location.status.text} {$location.status.closestDueDate})
                   {else}

@@ -2897,7 +2897,7 @@ div[data-driver="AxiellWebServices"] div[id*="locationDetails"] {
 .resultHoldingsHeading .availableLoc:before,
 .resultHoldingsHeading .checkedout:before, 
 .resultHoldingsHeading .checkedoutLoc:before {
-    width: 11px;
+    width: 8px;
 }
  
 .resultHoldingsContainer table  span.indent {
