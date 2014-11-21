@@ -5646,6 +5646,14 @@ table.datagrid td {
     padding:0;
 }
 
+.profileGroup .editAddress {
+    padding: 3px 0px 1px 25px;
+}
+
+.addressChangeDescription {
+    opacity:.7;
+}
+
 
 #dyntabnav .holdingsContainerHeader .menuHolder,
 #dyntabnav .holdingsContainerHeader h5 {
