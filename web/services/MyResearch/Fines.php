@@ -274,7 +274,7 @@ class Fines extends MyResearch
                 $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patronId);
                 $res = $paymentHandler->processResponse($params);
 
-                if (isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {       
+                if (is_array($res) && isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {       
                     $finesAmount = $this->catalog->getOnlinePayableAmount($patron);
 
                     // Check that payable sum has not been updated
