@@ -157,7 +157,9 @@
                 <th>{translate text='Address'}</th>
                 <td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td>
                 <td>
-                  <span class="userGuider">{translate text="address_change"}</span>
+                  <span class="userGuider">{translate text="address_change"}
+                  <a class="editAddress" href="#" data-email="{if $profile.email}{$profile.email|escape}{/if}" data-name="{if $profile.firstname}{$profile.firstname|escape}{/if} {if $profile.lastname}{$profile.lastname|escape}{/if}" data-library="{$accountString}" data-address="{if $profile.address1}{$profile.address1|escape}{/if}" data-zip="{if $profile.zip}{$profile.zip|escape}{/if}">{translate text="axiell_request_address_change"}</a>
+                </span>
                 </td>
               </tr>
             {/if}

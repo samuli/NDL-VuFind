@@ -767,14 +767,17 @@ class AxiellWebServices implements DriverInterface
         $reservations = is_object($result->$functionResult->reservations->reservation) ? array($result->$functionResult->reservations->reservation) : $result->$functionResult->reservations->reservation;
 
         foreach ($reservations as $reservation) {
+
+            $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
+
             $hold = array();
-            $hold['type'] = $reservation->reservationStatus; // TODO
+            $hold['type'] = $reservation->reservationStatus;
             $hold['id'] = $reservation->catalogueRecord->id;
             $hold['location'] = $reservation->pickUpBranchId;
             $hold['reqnum'] = $reservation->isDeletable == yes ? isset($reservation->id) ? $reservation->id : '' : '';
-            $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
+            $hold['pickupnum'] = isset($reservation->pickUpNo) ? $reservation->pickUpNo : '';
             $hold['expire'] = $this->formatDate($expireDate);
-            $hold['create'] = $this->formatDate($reservation->validFromDate);
+            $hold['create'] = $reservation->validFromDate;
             $hold['position'] = isset($reservation->queueNo) ? $reservation->queueNo : '-';
             $hold['available'] = $reservation->reservationStatus == 'fetchable';
             $hold['item_id'] = '';
@@ -782,6 +785,18 @@ class AxiellWebServices implements DriverInterface
             $hold['publication_year'] = isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '';
             $hold['title'] = isset($reservation->catalogueRecord->titles) ? $reservation->catalogueRecord->titles : '';
             $holdsList[] = $hold;
+        }
+
+        // Sort the Holds
+        $date = array();
+        foreach ($holdsList as $key => $row) {
+            $date[$key] = $row['create'];
+        }
+        array_multisort($date, SORT_DESC, $holdsList);
+
+        // Convert Axiell format to display date format
+        foreach ($holdsList as &$row) {
+            $row['create'] = $this->formatDate($row['create']);
         }
         return $holdsList;
     }

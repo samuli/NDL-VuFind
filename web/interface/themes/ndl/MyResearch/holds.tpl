@@ -183,7 +183,7 @@
               <span class="available">{translate text="hold_available"}
                 {if $driver == 'AxiellWebServices'}
                   <br>
-                  <strong>{translate text="Pickup number"}:</strong> {$resource.ils_details.reqnum}
+                  <strong>{translate text="Pickup number"}:</strong> {$resource.ils_details.pickupnum}
                 {/if}
                 </span>
             {else}

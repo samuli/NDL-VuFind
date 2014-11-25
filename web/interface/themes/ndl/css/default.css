@@ -5650,6 +5650,11 @@ table.datagrid td {
     padding: 3px 0px 1px 25px;
 }
 
+.userGuider .editAddress {
+	background: none;
+	padding: 0px;
+}
+
 .addressChangeDescription {
     opacity:.7;
 }
