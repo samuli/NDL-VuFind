@@ -295,7 +295,7 @@
           <th class="holdingDetails" colspan="2">
             <span class="availability {if $availableLoc || $location.0.status.text=="On Reference Desk"}available{else}checkedout{/if}">
               {if $availableLoc}
-                {translate text="axiell_available"} {$location.0.status.availableCount} {translate text="axiell_branches"}
+                {translate text="axiell_available_from"} {$location.0.status.availableCount} {translate text="axiell_branches"}
               {elseif $status=="Closest due"}
                 {translate text=$status} {$location.0.status.closestDueDate}
               {else}
@@ -316,7 +316,7 @@
             <td class="copyInfo" colspan="2">
               <span class="{if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
               {if $holding.availability}
-                {translate text="axiell_available"}
+                {capture assign="avail" name="avail"}{translate text="axiell_available"}{/capture}{$avail|@ucfirst}
               {else}
                 {translate text="status_`$holding.status`"}
               {/if}
