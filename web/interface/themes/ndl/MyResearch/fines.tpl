@@ -1,4 +1,8 @@
 <!-- START of: MyResearch/fines.tpl -->
+{if $registerPayment}
+{js filename="online-payment.js"}
+{/if}
+
 
 {include file="MyResearch/menu.tpl"}
 <div class="myResearch finesList{if $sidebarOnLeft} last{/if}">
@@ -25,6 +29,20 @@
         {/foreach}
       {/if}
     {if $user->cat_username}
+      {if $paymentFinesChanged}
+        <div class="error">{translate text="online_payment_fines_changed"}</div>
+      {elseif $paymentNotPermittedInfo}
+        <div class="error">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+      {elseif $registerPayment}
+          {if $registerPayment}
+            <span class="ajax_register_payment hide" id="onlinePaymentStatusSpinner">{translate text="Registering Payment"}</span>
+          {/if}
+          <div id="onlinePaymentStatus" class="info hide">
+          </div>
+      {elseif $paymentOk}
+          <div class="info">{translate text='online_payment_successful'}</div>          
+      {/if}
+
       <h2>{translate text='Your Fines'}: 
       {foreach from=$catalogAccounts item=account}
         {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
@@ -63,7 +81,7 @@
         </tr>
         {foreach from=$rawFinesData item=record}
           <tr>
-            <td>
+            <td class="fineTitle">
           {if is_array($record.format)}
           {assign var=mainFormat value=$record.format.0} 
           {assign var=displayFormat value=$record.format|@end} 
@@ -72,21 +90,51 @@
           {assign var=displayFormat value=$record.format} 
           {/if}
           <span class="icon format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}" title="{translate text=$displayFormat prefix='format_'}">{*translate text=format_$displayFormat*}</span>
-              {if empty($record.title)}
-                {translate text='not_applicable'}
-              {else}
-                <a href="{$url}/Record/{$record.id|escape}">{$record.title|trim:'/:'|escape}</a>
-              {/if}
+            {if empty($record.title)}
+               {translate text='not_applicable'}  
+            {else}
+               {if $record.id}
+               <a href="{$url}/Record/{$record.id|escape}">
+               {/if}
+               {$record.title|trim:'/:'|escape}
+               {if $record.id}
+               </a>              
+               {/if}
+            {/if}
             </td>
             <td>{$record.checkout|escape}</td>
             <td>{$record.duedate|escape}</td>
             <td class="fine">{translate text=$record.fine|escape prefix="status_"}</td>
-            {* <td>{$record.amount/100.00|safe_money_format|escape}</td> *}
-            <td style="text-align:right;">{$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}</td>
+            <td class="fineAmount" style="text-align:right;">
+              {if $onlinePaymentEnabled && !$record.payableOnline}<span class="onlinePaymentNonpayableAmount">{/if}
+              {$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}
+              {if $onlinePaymentEnabled && !$record.payableOnline}</span><div class="onlinePaymentRemark">{translate text='online_payment_nonpayable_fees'}</div>{/if}
+            </td>
           </tr>
         {/foreach}
-        <tr><td colspan="5" class="fineBalance">{translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span></td></tr>
-      {/if}
+          <tr><td colspan="5" class="fineBalance">
+            {if $onlinePaymentEnabled}          
+             {if $paymentBlocked}
+                <div class="onlinePaymentRemark">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
+             {else}
+                {translate text='online_payment_payable_online'}: <span class="hefty">{$payableSum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
+                {if $transactionFee}
+                <div class="onlinePaymentRemark" id="transactionFee">
+                  {translate text='online_payment_transaction_fee'}: <span class="hefty">{$transactionFee/100.00|safe_money_format|replace:"Eu":" €"|escape}</span>
+                </div>
+                {/if}
+
+               <div>
+                  {assign var=amountFormatted value=$payableSum+$transactionFee}
+                  {assign var=amountFormatted value=$amountFormatted/100.00|safe_money_format|replace:"Eu":" €"|escape}
+                  {if $onlinePaymentForm}{include file=$onlinePaymentForm paymentAmountFormatted=$amountFormatted}{/if}
+               </div>
+             {/if}
+         {else}
+           {translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span
+         {/if}
+        </td></tr>
+       {/if}
     </table>
     {/if}
     {/if}

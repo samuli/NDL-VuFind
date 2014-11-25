@@ -736,7 +736,7 @@ class IndexRecord implements RecordInterface
             break;
 
         case 'Journal':
-            $interface->assign('extendedISSNs', $this->getISSNs());            
+            $interface->assign('extendedISSNs', $this->getISSNs());
             $interface->assign('recordLanguage', $this->getLanguages());
             $interface->assign('corePublications', $this->getPublicationDetails());
             $interface->assign('coreSubjects', $this->getAllSubjectHeadings());
@@ -819,18 +819,20 @@ class IndexRecord implements RecordInterface
         $holdCount = 0;
         $requestCount = 0;
         if (is_array($holdings)) {
-            foreach ($holdings as $holding) {
-                if (is_array($holding)) {
-                    foreach ($holding as $itemKey => $item) {
-                        if (is_array($item)) {
-                            // Get reservation queue from the first item 
-                            if ($itemKey == 0) {
-                                $requestCount = isset($item['requests_placed']) ? 
-                                    $item['requests_placed'] : 0;
+            foreach ($holdings as $locationArray) {
+                if (is_array($locationArray)) {
+                    foreach ($locationArray as $location) {
+                        if (is_array($location) && isset($location['status']) 
+                            && isset($location['status']['reservations'])
+                        ) {
+                            $requestCount = $location['status']['reservations'];
+                        }
+                        if (is_array($location['holdings'])) {
+                            foreach ($location['holdings'] as $holding) {
+                                if (isset($holding['total'])) {
+                                    $holdCount += $holding['total'];
+                                }
                             }
-                            // Calculate total hold count
-                            $holdCount += 
-                                isset($item['total']) ? $item['total'] : 0;
                         }
                     }
                 }
@@ -1221,7 +1223,20 @@ class IndexRecord implements RecordInterface
 
         // All images
         $interface->assign('summImages', $this->getAllImages());
+        
+        // Record driver
+        $id = $this->getUniqueID();
+        $catalog = ConnectionManager::connectToCatalog();
+        $driver = '';
 
+        if ($catalog && $catalog->status) {
+            if (is_callable(array($catalog, 'getSourceDriver'))) {
+                $driver = $catalog->getSourceDriver($id);
+            }
+        }
+        
+        $interface->assign('driver', $driver);
+        
         // Send back the template to display:
         return 'RecordDrivers/Index/result-' . $view . '.tpl';
     }
@@ -2847,7 +2862,9 @@ class IndexRecord implements RecordInterface
             foreach ($this->fields['url'] as $url) {
                 // The index doesn't contain descriptions for URLs, so we'll just
                 // use the URL itself as the description.
-                $urls[$url] = $url;
+                if (!$this->urlBlacklisted($url)) {
+                    $urls[$url] = $url;
+                }
             }
         }
         return $urls;
@@ -3434,6 +3451,36 @@ class IndexRecord implements RecordInterface
      */
     protected function hasPatronFunctions()
     {
+        return false;
+    }
+
+    /**
+     * Check if a URL (typically from getURLs()) is blacklisted based on the URL
+     * itself and optionally its description.
+     *
+     * @param string $url  URL
+     * @param string $desc Optional description of the URL
+     *
+     * @return boolean Whether the URL is blacklisted
+     */
+    protected function urlBlacklisted($url, $desc = '')
+    {
+        global $configArray;
+
+        if (!isset($configArray['Record']['url_blacklist'])) {
+            return false;
+        }
+        foreach ($configArray['Record']['url_blacklist'] as $rule) {
+            if (substr($rule, 0, 1) == '/' && substr($rule, -1, 1) == '/') {
+                if (preg_match($rule, $url)
+                    || ($desc !== '' && preg_match($rule, $desc))
+                ) {
+                    return true;
+                }
+            } elseif ($rule == $url || $rule == $desc) {
+                return true;
+            }
+        }
         return false;
     }
 }

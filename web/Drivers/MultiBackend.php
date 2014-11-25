@@ -22,6 +22,7 @@
  * @category VuFind
  * @package  ILS_Drivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
@@ -37,6 +38,7 @@ require_once 'Interface.php';
  * @category VuFind
  * @package  ILS_Drivers
  * @author   Ere Maijala <ere.maijala@helsinki.fi>
+ * @author   Samuli Sillanpää <samuli.sillanpaa@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_an_ils_driver Wiki
 
@@ -401,6 +403,56 @@ class MultiBackend implements DriverInterface
             return $this->addIdPrefixes($fines, $source);
         }
         return new PEAR_Error('No suitable backend driver found');
+    }
+
+    /**
+     * Return total amount of fees that may be paid online.
+     *
+     * @param array $user The patron array from patronLogin
+     *
+     * @return mixed int payable amount, 
+     * string error message (not translated) if all fees are not payable online 
+     * or if the total amount does not exceed or equal minimum payable fee, 
+     * or false on error.
+     * @access public
+     */    
+    public function getOnlinePayableAmount($user)
+    {
+        $source = $this->getSource($user['cat_username']);
+        $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+            return $driver->getOnlinePayableAmount($this->stripIdPrefixes($user, $source));
+        }
+        return new PEAR_Error('No suitable backend driver found');        
+    }
+
+    /**
+     * Mark fees as paid. 
+     *
+     * This is called after a successful online payment.
+     *
+     * @param array $user   The patron array from patronLogin
+     * @param int   $amount Amount to be registered as payed.
+     *
+     * @return mixed true if successful, false if payment register could 
+     * not be inited, or PEAR_Error if registering failed.
+     * @access public
+     */
+    public function markFeesAsPaid($user, $amount)
+    {
+        $source = $this->getSource($user['cat_username']);
+        $driver = $this->getDriver($source);
+
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+            return $driver->markFeesAsPaid($this->stripIdPrefixes($user, $source), $amount);
+        }
+        return new PEAR_Error('No suitable backend driver found');        
     }
 
     /**
@@ -1068,7 +1120,7 @@ class MultiBackend implements DriverInterface
         }
         return '';
     }
-
+    
     /**
      * Get record source driver
      *
@@ -1092,13 +1144,13 @@ class MultiBackend implements DriverInterface
      *
      * @return array
      */
-    public function setPhoneNumber($patron) 
+    public function setPhoneNumber($patron, $phone) 
     {
         $source = $this->getSource($patron['id']);
         $driver = $this->getDriver($source);
         if (!PEAR::isError($driver) && is_callable(array($driver, 'setPhoneNumber'))) {
             $patron = $this->stripIdPrefixes($patron, $source);
-            return $driver->setPhoneNumber($patron);
+            return $driver->setPhoneNumber($patron, $phone);
         }
     }
 

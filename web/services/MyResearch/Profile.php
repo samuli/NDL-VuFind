@@ -108,11 +108,10 @@ class Profile extends MyResearch
                 if (isset($_POST['phone_number'])) {
                     $phoneNumber = trim($_POST['phone_number']);
                     if (preg_match('/^[\+]?[ \d\-]+\d+$/', $phoneNumber)) {
-                        $patron['phoneLocalCode'] = $_POST['phone_number'];
-                        $result = $this->catalog->setPhoneNumber($patron);
+                        $result = $this->catalog->setPhoneNumber($patron,  $phoneNumber);
                         if ($result['success']) {
                             $interface->assign('userMsg', 'profile_update');
-                            $patron['phone'] = $patron['phoneLocalCode'];
+                            $patron['phone'] = $phoneNumber;
                         } else {
                             $interface->assign('userError', $result['sys_message']);
                         }
@@ -123,10 +122,10 @@ class Profile extends MyResearch
                 if (isset($_POST['email_address'])) {
                     $email = trim($_POST['email_address']);
                     if (Mail_RFC822::isValidInetAddress($email)) {
-                        $result = $this->catalog->setEmailAddress($patron, $_POST['email_address']);
+                        $result = $this->catalog->setEmailAddress($patron, $email);
                         if ($result['success']) {
                             $interface->assign('userMsg', 'profile_update');
-                            $patron['email'] = $_POST['email_address'];
+                            $patron['email'] = $email;
                         } else {
                             $interface->assign('userError', $result['sys_message']);
                         }
