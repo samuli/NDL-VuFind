@@ -100,8 +100,6 @@ class OnlinePaymentMonitor extends ReminderTask
      */
     public function process()
     {
-        $this->msg("OnlinePayment monitor started");
-
         global $configArray;
         global $interface;
 
@@ -113,6 +111,8 @@ class OnlinePaymentMonitor extends ReminderTask
         // Set up time zone. N.B. Don't use msg() or other
         // functions requiring date before this.
         date_default_timezone_set($configArray['Site']['timezone']);
+
+        $this->msg("OnlinePayment monitor started");
 
         // Setup Local Database Connection
         ConnectionManager::connectToDatabase();
