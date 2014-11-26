@@ -742,10 +742,11 @@ input[type="radio"]:checked + label span {
 #sidebarFavoritesLists .delete {
     background-image: url(../images/icons16-24px-02_black.png);
 }
-.myResearchTitle .edit, .favoritesList .edit {
+.myResearchTitle .edit, .favoritesList .edit, .editAddress {
     background-image: url("../images/icons16-24px-02_black.png");
     opacity:.75;
 }
+
 .myResearchTitle .edit:hover, .favoritesList .edit:hover,
 .favoritesList .add:hover, .listDescription .add:hover,
 #sidebarFavoritesLists a.listAdd:hover {
