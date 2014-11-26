@@ -1012,8 +1012,26 @@ class VoyagerRestful extends Voyager
             if ($reply == "ok" && isset($blocks->blocks)) {
                 $blockReason = array();
                 $borrowingBlocks = $blocks->xpath("//blocks/institution[@id='LOCAL']/borrowingBlock");
+                if (count($borrowingBlocks)) {
+                    $blockReason[] = translate('Borrowing Block Message');
+                }
                 foreach ($borrowingBlocks as $borrowBlock) {
-                    $blockReason[] = (string)$borrowBlock->blockReason;
+                    $reasons = array(
+                        15 => 'Borrowing Block Reason Patron Expired',
+                        18 => 'Borrowing Block Reason Charge Limit',
+                        19 => 'Borrowing Block Reason Fine Limit'
+                    );
+                    $code = (int)$borrowBlock->blockCode;
+
+                    if (isset($reasons[$code])) {
+                        $reason = translate($reasons[$code]);                        
+                        if ($code == 19) {
+                            // Fine limit
+                            $reason = str_replace('%%blockCount%%', $borrowBlock->blockCount, $reason);
+                            $reason = str_replace('%%blockLimit%%', $borrowBlock->blockLimit, $reason);
+                        }
+                        $blockReason[] = $reason;
+                    }
                 }
             }
         }
