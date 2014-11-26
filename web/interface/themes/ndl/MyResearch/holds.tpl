@@ -174,11 +174,16 @@
               {/if}
             {/foreach}
 
+            {if $driver == 'AxiellWebServices' && $resource.ils_details.type == inTransit}
+              <span class="available">{translate text="In Transit"}
+              </span>
+            {/if}
+
             {if $resource.ils_details.available == true}
               <span class="available">{translate text="hold_available"}
                 {if $driver == 'AxiellWebServices'}
                   <br>
-                  <strong>{translate text="Pickup number"}:</strong> {$resource.ils_details.reqnum}
+                  <strong>{translate text="Pickup number"}:</strong> {$resource.ils_details.pickupnum}
                 {/if}
                 </span>
             {else}
@@ -250,7 +255,7 @@
           {assign var=summImages value=$resource.summImages}
           {assign var=summThumb value=$resource.summThumb}  
           {assign var=summId value=$resource.id}          
-      {assign var=img_count value=$summImages|@count}
+          {assign var=img_count value=$summImages|@count}
      
 
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}

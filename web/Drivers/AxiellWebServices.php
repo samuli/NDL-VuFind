@@ -91,15 +91,15 @@ class AxiellWebServices implements DriverInterface
         if (isset($this->config['Debug']['durationLogPrefix'])) {
             $this->durationLogPrefix = $this->config['Debug']['durationLogPrefix'];
         }
-        
+
         if (isset($this->config['Debug']['verbose'])) {
             $this->verbose = $this->config['Debug']['verbose'];
         }
-        
+
         if (isset($this->config['Debug']['log'])) {
             $this->logFile = $this->config['Debug']['log'];
         }
-        
+
         // Set up object for formatting dates and times:
         $this->dateFormat = new VuFindDate();
     }
@@ -121,7 +121,7 @@ class AxiellWebServices implements DriverInterface
     {
         return $this->getHolding($id);
     }
-    
+
     /**
      * checkRequestIsValid
      *
@@ -240,9 +240,8 @@ class AxiellWebServices implements DriverInterface
      * @return null
      * @access protected
      */
-    protected function parseHoldings($organisationHoldings, $id, &$vfHoldings,
-        $year, $edition
-    ) {
+    protected function parseHoldings($organisationHoldings, $id, &$vfHoldings, $year, $edition)
+    {
         if ($organisationHoldings[0]->type == 'organisation') {
             foreach ($organisationHoldings as $organisation) {
                 $group = $organisation->value;
@@ -768,14 +767,17 @@ class AxiellWebServices implements DriverInterface
         $reservations = is_object($result->$functionResult->reservations->reservation) ? array($result->$functionResult->reservations->reservation) : $result->$functionResult->reservations->reservation;
 
         foreach ($reservations as $reservation) {
+
+            $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
+
             $hold = array();
-            $hold['type'] = $reservation->reservationStatus; // TODO
+            $hold['type'] = $reservation->reservationStatus;
             $hold['id'] = $reservation->catalogueRecord->id;
             $hold['location'] = $reservation->pickUpBranchId;
-            $hold['reqnum'] = $reservation->id;
-            $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
+            $hold['reqnum'] = $reservation->isDeletable == yes ? isset($reservation->id) ? $reservation->id : '' : '';
+            $hold['pickupnum'] = isset($reservation->pickUpNo) ? $reservation->pickUpNo : '';
             $hold['expire'] = $this->formatDate($expireDate);
-            $hold['create'] = $this->formatDate($reservation->validFromDate);
+            $hold['create'] = $reservation->validFromDate;
             $hold['position'] = isset($reservation->queueNo) ? $reservation->queueNo : '-';
             $hold['available'] = $reservation->reservationStatus == 'fetchable';
             $hold['item_id'] = '';
@@ -783,6 +785,18 @@ class AxiellWebServices implements DriverInterface
             $hold['publication_year'] = isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '';
             $hold['title'] = isset($reservation->catalogueRecord->titles) ? $reservation->catalogueRecord->titles : '';
             $holdsList[] = $hold;
+        }
+
+        // Sort the Holds
+        $date = array();
+        foreach ($holdsList as $key => $row) {
+            $date[$key] = $row['create'];
+        }
+        array_multisort($date, SORT_DESC, $holdsList);
+
+        // Convert Axiell format to display date format
+        foreach ($holdsList as &$row) {
+            $row['create'] = $this->formatDate($row['create']);
         }
         return $holdsList;
     }
@@ -929,12 +943,12 @@ class AxiellWebServices implements DriverInterface
         global $configArray;
 
         $bibId = $holdDetails['id'];
-        
+
         $username = $holdDetails['patron']['cat_username'];
         $password = $holdDetails['patron']['cat_password'];
-        
-        $validFromDate = date("Y-m-d");     
-        
+
+        $validFromDate = date("Y-m-d");
+
         $validToDate = $this->dateFormat->convertFromDisplayDate(
             "Y-m-d", $holdDetails['requiredBy']
         );
@@ -946,9 +960,9 @@ class AxiellWebServices implements DriverInterface
 
         $pickUpLocation = $holdDetails['pickUpLocation'];
         list($organisation, $branch) = explode('.', $pickUpLocation, 2);
-        
-        $result = $this->doSOAPRequest($this->reservations_wsdl, 'addReservation', 'addReservationResult', $username, array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => 'catalogueRecordDetail', 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));      
-        
+
+        $result = $this->doSOAPRequest($this->reservations_wsdl, 'addReservation', 'addReservationResult', $username, array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => 'catalogueRecordDetail', 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));
+
         if (PEAR::isError($result)) {
             return array(
                 'success' => false,
@@ -978,11 +992,11 @@ class AxiellWebServices implements DriverInterface
         $password = $cancelDetails['patron']['cat_password'];
         $succeeded = 0;
         $results = array();
-        
+
         foreach ($cancelDetails['details'] as $details) {
             $result = $this->doSOAPRequest($this->reservations_wsdl, 'removeReservation', 'removeReservationResult', $username, array('removeReservationsParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'id' => $details)));
-            
-            if (PEAR::isError($result)) {                
+
+            if (PEAR::isError($result)) {
                 $results[] = array(
                     'success' => false,
                     'status' => 'hold_cancel_fail', // TODO
@@ -1085,7 +1099,7 @@ class AxiellWebServices implements DriverInterface
             $conf['id'] = $patron['phoneId'];
             $result = $this->doSOAPRequest($this->patron_wsdl, 'changePhone', 'changePhoneNumberResult', $username, array('changePhoneNumberParam' => $conf));
         } else {
-            $result = $this->doSOAPRequest($this->patron_wsdl, 'addPhone', 'addPhoneNumberResult', $username, array('addPhoneNumberParam' => $conf));                
+            $result = $this->doSOAPRequest($this->patron_wsdl, 'addPhone', 'addPhoneNumberResult', $username, array('addPhoneNumberParam' => $conf));
         }
 
         if (PEAR::isError($result)) {

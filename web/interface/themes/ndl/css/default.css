@@ -2897,7 +2897,7 @@ div[data-driver="AxiellWebServices"] div[id*="locationDetails"] {
 .resultHoldingsHeading .availableLoc:before,
 .resultHoldingsHeading .checkedout:before, 
 .resultHoldingsHeading .checkedoutLoc:before {
-    width: 11px;
+    width: 8px;
 }
  
 .resultHoldingsContainer table  span.indent {
@@ -5644,6 +5644,19 @@ table.datagrid td {
     content:'';
     height:0px;
     padding:0;
+}
+
+.profileGroup .editAddress {
+    padding: 3px 0px 1px 25px;
+}
+
+.userGuider .editAddress {
+	background: none;
+	padding: 0px;
+}
+
+.addressChangeDescription {
+    opacity:.7;
 }
 
 
