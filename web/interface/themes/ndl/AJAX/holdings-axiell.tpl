@@ -84,10 +84,10 @@
             {/foreach}
           </table>
         </td>
-      </tr> 
+      </tr>
     {/foreach}
     {if $patronFunctions}
-      <tr>
+      <tr class="static">
         <td colspan="2">
           <div class="holdingsPlaceHold axiell">
             {if $isHoldable}
@@ -117,7 +117,7 @@
         </td>
       </tr>
     {/if}
-    <tr>
+    <tr class="static">
       <td colspan="2">
           <a class="moreHoldings" href="{$path}/Record/{$id|escape}#holdingstab">{translate text="axiell_see_all_holdings"} »</a>
       </td>
