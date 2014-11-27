@@ -2872,14 +2872,26 @@ div[data-driver="AxiellWebServices"] div[id*="locationDetails"] {
 
 .resultHoldingsContainer table {
     margin:0;
+	border-bottom:1px solid rgba(1,1,1,0.1);
+	margin-bottom:2px;
 }
-
+.resultHoldingsHeading th, .resultHoldingsContainer table th, .resultHoldingsContainer table td {
+		vertical-align: top;
+}
 .resultHoldingsContainer table tr:last-child td {
     padding-bottom: 3px;
+}
+.resultHoldingsContainer .resultHoldingsHeading th, .resultHoldingsContainer .resultHoldingsHeading td{
+		padding-bottom:7px;
 }
 
 .resultHoldingsContainer .collapsible {
     cursor:pointer;
+}
+.resultHoldingsContainer th:last-child, .resultHoldingsContainer table td:last-child {
+	color: rgb(150, 150, 150);
+	font-size: 0.95em;
+	text-align:right;		
 }
 
 .resultHoldingsHeading th:nth-child(2) {
