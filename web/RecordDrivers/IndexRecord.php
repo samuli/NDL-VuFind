@@ -914,6 +914,65 @@ class IndexRecord implements RecordInterface
     }
 
     /**
+     * Return record data to be used in lightbox.
+     *
+     * @return array array with keys:
+     *   'title'    Title
+     *   'author'   Authors
+     *   'dates'    Publication date
+     *   'url'      Record URL
+     *   'building' Translated building name
+     *   'rights'   Image rights, see RecordDriver::getRights
+     * @access public
+     */
+    public function getLightboxData()
+    {
+        global $configArray;
+
+        $data = array();
+        if (strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {
+            // MetaLib record
+            $data['title'] = $this->fields['Title'][0];
+            $data['url'] = $configArray['Site']['url'] . '/MetaLib/Record/' . urlencode($this->fields['ID'][0]);
+            if (isset($this->fields['Author']) && $this->fields['Author']) {
+                $data['author'] = implode(', ', $this->fields['Author']);
+            }
+
+            if (isset($this->fields['Source']) && $this->fields['Source']) {
+                $data['building'] = implode(', ', $this->fields['Source']);
+            }
+
+            if (isset($this->fields['PublicationDate_xml']) && $this->fields['PublicationDate_xml']) {
+                $date = $this->fields['PublicationDate_xml'][0];
+                if (isset($date['month'])) {
+                    $date['dates'] = $date['month'] . '/';
+                }
+                if (isset($date['day'])) {
+                    $date['dates'] .= $date['day'] . '/';
+                }
+                if (isset($date['year'])) {
+                    $date['dates'] .= $date['year'];
+                }
+            } else if (isset($this->fields['PublicationDate']) && $this->fields['PublicationDate']) {
+                $data['dates'] = $this->fields['PublicationDate'][0];
+            }
+        } else {
+            $data['title'] = $this->getTitle();
+            $data['author'] = $this->getPrimaryAuthor();
+            $data['dates'] = $this->getPublicationDates();
+            $data['url'] = $configArray['Site']['url'] . '/Record/' . urlencode($this->getUniqueID());
+            
+            $building = $this->getBuilding();
+            $data['building'] = translate('facet_' . rtrim($building[0], '/'));
+
+            if ($rights = $this->getImageRights()) {
+                $data['rights'] = $rights;
+            }
+        }
+        return $data;
+    }
+
+    /**
      * getMapView - gets the map view template.
      *
      * @return string template name
@@ -3343,6 +3402,44 @@ class IndexRecord implements RecordInterface
             return reset($this->fields['source_str_mv']);
         }
         return '';
+    }
+
+    /**
+     * Return image rights.
+     *
+     * @return mixed array with keys:
+     *   'copyright'  Copyright (e.g. 'CC BY 4.0')
+     *   'description Human readable description
+     *   'link'       Link to more info, if defined in config.ini
+     *   or false if no rights are defined.
+     * @access protected
+     */    
+    protected function getImageRights()
+    {
+        return false;
+    }
+
+    /**
+     * Return URL to copyright information.
+     *
+     * @param string $copyright Copyright
+     *
+     * @return mixed URL or false if no URL for the given copyright
+     * is defined in config.ini::ImageRights
+     * @access protected
+     */    
+    protected function getImageRightsLink($copyright)
+    {
+        global $configArray;
+        global $language;
+
+        if (isset($configArray['ImageRights']) 
+            && isset($configArray['ImageRights'][$language])
+            && isset($configArray['ImageRights'][$language][$copyright])
+        ) {
+            return $configArray['ImageRights'][$language][$copyright];
+        }
+        return false;
     }
 
     /**

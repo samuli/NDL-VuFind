@@ -87,6 +87,7 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreInscriptions', $this->getInscriptions());
         $interface->assign('coreWebResource', $this->getWebResource());
         $interface->assign('coreLocalIdentifiers', $this->getLocalIdentifiers());
+        $interface->assign('coreRights', $this->getImageRights());
         
         $interface->assign('coreIdentifier', $this->getIdentifier());
         
@@ -142,6 +143,7 @@ class LidoRecord extends IndexRecord
         if (isset($this->fields['event_use_displayplace_str'])) {
             $interface->assign('summUsePlace', $this->fields['event_use_displayplace_str']);
         }
+        $interface->assign('coreRights', $this->getImageRights());
         
         return 'RecordDrivers/Lido/result-' . $view . '.tpl';
     }
@@ -172,7 +174,33 @@ class LidoRecord extends IndexRecord
 
         return $res;
     }
-    
+
+    /**
+     * Return record data to be used in lightbox.
+     *
+     * @return array array with keys:
+     *   'title'    Title
+     *   'author'   Authors
+     *   'dates'    Publication date
+     *   'url'      Record URL
+     *   'building' Translated building-code
+     *   'rights'   Image rights, see RecrodDriver::getImageRights
+     * @access public
+     */    
+    public function getLightboxData()
+    {
+        $data = parent::getLightboxData();
+        if ($dates = $this->getResultDates()) {
+            $data['dates'] = $dates[0];
+            if ($dates[1] && $dates[1] != $dates[0]) {
+                $data['dates'] .= '- ' . $dates[1];
+            }            
+        } else {
+            unset($data['dates']);
+        }        
+        return $data;
+    }
+
     /**
      * Return an associative array of image URLs associated with this record (key = URL,
      * value = description), if available; false otherwise. 
@@ -651,5 +679,48 @@ class LidoRecord extends IndexRecord
             $date->convertToDisplayDate('U', $range[1])
         );        
     }
-    
+
+    /**
+     * Return image rights.
+     *
+     * @return mixed array with keys:
+     *   'copyright'   Copyright (e.g. 'CC BY 4.0')
+     *   'description' Human readable description
+     *   'link'        Link to copyright info, see IndexRecord::getImageRightsLink
+     *   or false if no rights are defined.
+     * @access protected
+     */    
+    public function getImageRights()
+    {
+        global $configArray;
+
+        if ($rights = $this->xml->xpath('lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource/rightsType')) {
+            $rights = $rights[0];
+
+            if ($conceptID = $rights->xpath('conceptID')) {
+                $conceptID = $conceptID[0];
+                $attributes = $conceptID->attributes();
+                if ($attributes->type && strtolower($attributes->type) == 'copyright') {
+                    $data = array();
+                    
+                    if ($desc = $rights->xpath('term')) {                        
+                        $data['description'] = (string)$desc[0];
+                    } 
+
+                    $copyright = (string)$conceptID;
+                    $copyright = strtoupper($copyright);
+
+                    $data['copyright'] = $copyright;
+                    
+                    if ($link = $this->getImageRightsLink($copyright)) {
+                        $data['link'] = $link;
+                    }
+
+                    return $data;
+                }
+            }
+        }
+        return false;
+    }
+
 }

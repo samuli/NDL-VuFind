@@ -1123,6 +1123,30 @@ class JSON extends Action
     }
 
     /**
+     * Return record data to be displayed in lightbox.
+     *
+     * @return void
+     * @access public
+     */
+    protected function getRecordData()
+    {
+        $id = urldecode($_GET['id']);
+
+        $db = null;
+        if (strpos($id, 'metalib.', 0) === 0) {
+            $db = new MetaLib();
+        } else {
+            $db = ConnectionManager::connectToIndex();            
+        }
+
+        if (!($record = $db->getRecord($id))) {
+            return $this->output('Record not found: ' . $id, JSON::STATUS_ERROR);
+        }
+        $rec = RecordDriverFactory::initRecordDriver($record);
+        return $this->output($rec->getLightboxData(), JSON::STATUS_OK);
+    }
+
+    /**
      * Send output data and exit.
      *
      * @param mixed  $data   The response data

@@ -4909,7 +4909,9 @@ div[id*="record"].record.recordId {
 }
 #resultToolbar ul {
     padding: 0;
-    margin: 0;
+    margin: 10px 0 0 0;
+    border-top: 1px solid #bcdce0;
+    padding-top: 10px;
 }
 
 #recordMetadata .citation {
@@ -4946,6 +4948,10 @@ div.recordsubcontent .call-slip-form form > p  {
     position: relative;
     margin: 0 1em 1em 0;
     overflow:hidden;
+}
+.record .imageRights {
+    font-size: 0.9em;
+    line-height: 1.2em;
 }
 .record .coverImages #thumbnail_link {
     width: 150px;
@@ -5007,8 +5013,7 @@ div.coverImagesLessLink {
     overflow: auto;
 }
 .coverImages img#thumbnail {
-    padding-bottom:20px !important;
-    border-bottom:1px solid #bcdce0;
+    padding-bottom:10px !important;
 }
 .coverImageLinks a {
     background-position: 50% 50%;
@@ -7740,6 +7745,52 @@ div.commentDetails > * {
     min-width: 160px;
     word-wrap: break-word;
 }
+
+.fancybox-overlay .fancybox-skin {
+    float: left;
+}
+.fancyImageRights {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    overflow: visible;
+}
+.fancyImageRights > div > span {
+    font-weight: bold;
+}
+
+.fancyImageRights > div {
+    float: left;
+}
+.fancyImageRights .copyrightLink {
+    margin-top: -1px;
+    margin-left: 20px;
+    position: inherit;
+}
+.fancyImageRights .copyrightLink a:after {
+    background-image: url(../images/icons16-24px-02_turquoise.png);
+    background-position: 2px -2318px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 15px;
+    position: relative;
+    top: 1px;
+    width: 20px;
+    content: "";
+}
+.fancyImageRights .lessLink {
+    display: none;
+    margin-left: 0;
+    clear: both;
+}
+.fancyImageRights .lessLink a:after {
+    background-position: 2px -2270px;
+}
+.fancyImageRights .copyright {
+    clear: both;
+    display: none;
+}
+
+
 
 /** Hopscotch context-help  **/
 

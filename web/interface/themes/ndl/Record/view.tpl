@@ -34,7 +34,6 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
   {js filename="metalib_links.js"}
 {/if}
 
-
 {* <div class="span-10{if $sidebarOnLeft} push-5 last{/if}"> *}
 
 <div class="resultLinks">
@@ -108,7 +107,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
         <div class="coverImageLinks{if $img_count > 6} snippet{/if}">
         {foreach from=$coreImages item=desc name=imgLoop}
-            <a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-author="{$coreAuthor}"  href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
+            <a data-id="{$id|escape:"url"}" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
             </a>
           {/foreach}
           </div>
@@ -123,7 +122,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           </div>
         {/if}
         
-        {if $coreThumbLarge}{if $img_count > 1}<a class="title fancybox-trigger" id="thumbnail_link" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large"><span></span>{else}<a data-dates="{$coreDate.0|escape}{if $coreDate.1 && $coreDate.1 != $coreDate.0} - {$coreDate.1|escape}{/if}" data-title="{$coreTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$coreBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$id|escape:'url'}" data-author="{$coreAuthor}" class="fancybox fancybox.image" href="{$coreThumbLarge|escape}" rel="gallery">{/if}{/if}
+        {if $coreThumbLarge}{if $img_count > 1}<a class="title fancybox-trigger" id="thumbnail_link" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large"><span></span>{else}<a data-id="{$id|escape:"url"}" class="fancybox fancybox.image" href="{$coreThumbLarge|escape}" rel="gallery">{/if}{/if}
         <span></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
         {if $coreThumbLarge}</a>
         {js filename="init_fancybox.js"}
@@ -133,6 +132,12 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {* <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}"> *}
     {/if}
     </div>
+    {if $coreRights}
+    <div class="imageRights">
+      <p>{translate text="Image Rights"}:</p>
+      <p>{if $coreRights.link}<a href="{$coreRights.link}">{/if}{$coreRights.copyright}{if $coreRights.link}</a>{/if}</p>
+    </div>
+    {/if}
     {* End Cover Image *}
   
     <div id="resultToolbar" class="toolbar">
