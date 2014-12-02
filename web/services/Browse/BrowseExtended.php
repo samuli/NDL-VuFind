@@ -140,6 +140,8 @@ class BrowseExtended extends Action
         $scroller = new ResultScroller();
         $scroller->init($searchObject, $result);
 
+        $interface->assign('formAction', "Browse/$action");
+
         // Done, display the page
         $interface->display('layout.tpl');
     }
