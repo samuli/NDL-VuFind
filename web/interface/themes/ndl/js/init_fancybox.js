@@ -91,14 +91,15 @@ $(document).ready(function() {
                                 }
                                 title += copyright;
                                 if (copyrightLink) {
-                                    title += '</a></div>';
+                                    title += '</a>';
                                 }
+                                title += '</div>';
+
                                 if (copyrightDesc) {
                                     title += '<div class="moreLink copyrightLink"><a data-mode="1" href="#">' + trMore + '</a></div>';
                                     title += '<div class="copyright">' + copyrightDesc + '</div>';
                                     title += '<div class="lessLink copyrightLink"><a data-mode="0" href="#">' + trLess + '</a></div>';
                                 }
-                                title += '</div>';
                             }
                         }
 
