@@ -1550,6 +1550,11 @@ class Voyager implements DriverInterface
         $sip->port = $params['port'];
         $sip->AO = '';
 
+        // SIP expects payable amount to be a string 
+        // with ',' as a decimal point
+        $amount = (string)($amount/100.00);
+        $amount = str_replace('.', ',', $amount); 
+        
         if ($sip->connect()) {
             $sip->scLocation = $params['locationCode'];
             $sip->UIDalgorithm = 0; 
@@ -1562,7 +1567,7 @@ class Voyager implements DriverInterface
                 $login_result = $sip->parseLoginResponse($login_response);
                 if ($login_result['fixed']['Ok'] == '1') {
                     $sip->patron = $patronId;
-                    $feepaid_msg = $sip->msgFeePaid(1, 0, $amount/100.00, $currency);
+                    $feepaid_msg = $sip->msgFeePaid(1, 0, $amount, $currency);
                     $feepaid_response = $sip->get_message($feepaid_msg);
                     if (strncmp('38', $feepaid_response, 2) == 0) { 
                         $feepaid_result
