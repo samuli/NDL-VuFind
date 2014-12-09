@@ -92,9 +92,7 @@
         	{assign var=summImages value=$resource.summImages}
         	{assign var=summThumb value=$resource.summThumb}        	
         	{assign var=summId value=$resource.id}        	
-			{assign var=img_count value=$summImages|@count}
-			
-         
+          {assign var=img_count value=$summImages|@count}
           
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
@@ -120,14 +118,14 @@
             {if $resource.notes}
               {translate text='Notes'}: {$resource.notes|escape}<br/>
             {/if}
- 			{if is_array($resource.format)}
-			  {assign var=mainFormat value=$resource.format.0} 
-			  {assign var=displayFormat value=$resource.format|@end} 
-			{else}
-			  {assign var=mainFormat value=$resource.format} 
-			  {assign var=displayFormat value=$resource.format} 
-			{/if}
-			<span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
+            {if is_array($resource.format)}
+              {assign var=mainFormat value=$resource.format.0} 
+              {assign var=displayFormat value=$resource.format|@end} 
+            {else}
+              {assign var=mainFormat value=$resource.format} 
+              {assign var=displayFormat value=$resource.format} 
+            {/if}
+            <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
             {if $resource.ils_details.volume}
               <strong>{translate text='Volume'}:</strong> {$resource.ils_details.volume|escape}
               <br />
