@@ -104,7 +104,7 @@ $(document).ready(function() {
                                     desc += '<p>' + p + '</p>';
                                 });
 
-                                if (copyrightLink) {
+                                if (copyrightLink && !copyright) {
                                     desc += ' <a href="' + copyrightLink + '">' + (copyright ? copyright : trSeeAlso) + '</a>';
                                 }
                                 title += '<div class="moreLink copyrightLink"><a data-mode="1" href="#">' + trMore + '</a></div>';
