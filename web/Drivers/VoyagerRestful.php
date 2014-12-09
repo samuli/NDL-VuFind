@@ -1024,7 +1024,7 @@ class VoyagerRestful extends Voyager
                     $code = (int)$borrowBlock->blockCode;
 
                     if (isset($reasons[$code])) {
-                        $reason = translate($reasons[$code]);                        
+                        $reason = translate($reasons[$code]);
                         if ($code == 19) {
                             // Fine limit
                             $reason = str_replace('%%blockCount%%', $borrowBlock->blockCount, $reason);
@@ -2045,6 +2045,80 @@ EOT;
             }
         }
         return $transactions;
+    }
+
+    /**
+     * Get Patron Fines
+     *
+     * This is responsible for retrieving all fines by a specific patron.
+     *
+     * @param array $patron The patron array from patronLogin
+     *
+     * @return mixed        Array of the patron's fines on success, PEAR_Error
+     * otherwise.
+     * @access public
+     */
+    public function getMyFines($patron)
+    {
+        $fines = parent::getMyFines($patron);
+
+        if (PEAR::isError($fines)) {
+            return $fines;
+        }
+
+        // Build Hierarchy
+        $hierarchy = array(
+            'patron' =>  $patron['id'],
+            'circulationActions' => 'debt',
+            'fines' => null
+        );
+
+        // Add Required Params
+        $params = array(
+            "patron_homedb" => $this->ws_patronHomeUbId,
+            "view" => "full"
+        );
+
+        $results = $this->makeRequest($hierarchy, $params);
+
+        if ($results === false) {
+            return new PEAR_Error('System error fetching fines');
+        }
+
+        $replyCode = (string)$results->{'reply-code'};
+        if ($replyCode != 0 && $replyCode != 8) {
+            return new PEAR_Error('System error fetching fines');
+        }
+        if (isset($results->fines->institution)) {
+            foreach ($results->fines->institution as $institution) {
+                if ((string)$institution->attributes()->id == 'LOCAL') {
+                    // We have local fines already
+                    continue;
+                }
+
+                foreach ($institution->fine as $fine) {
+                    $amount = preg_match(
+                        '/(\d+\.\d+)/', (string)$fine->amount, $matches
+                    ) ? $matches[1] * 100 : 0;
+
+                    $fines[] = array(
+                        'fine' => (string)$fine->fineType,
+                        'title' => (string)$fine->itemTitle,
+                        'balance' => $amount,
+                        'createdate' => $this->dateFormat->convertToDisplayDate(
+                            'Y-m-d H:i', (string)$fine->fineDate
+                        ),
+                        'chargedate' => '',
+                        'duedate' => '',
+                        'id' => '',
+                        'institution_id' => (string)$institution->attributes()->id,
+                        'institution_name' => (string)$fine->dbName,
+                        'institution_dbkey' => (string)$fine->dbKey,
+                    );
+                }
+            }
+        }
+        return $fines;
     }
 
     /**
