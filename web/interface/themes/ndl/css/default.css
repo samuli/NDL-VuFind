@@ -7763,9 +7763,12 @@ div.commentDetails > * {
 }
 .fancyImageRights .copyrightLink {
     margin-top: -1px;
-    margin-left: 20px;
     position: inherit;
 }
+.fancyImageRights .rights {
+    margin-right: 10px;
+}
+
 .fancyImageRights .copyrightLink a:after {
     background-image: url(../images/icons16-24px-02_turquoise.png);
     background-position: 2px -2318px;

@@ -107,6 +107,7 @@
       var trMore = "{translate text="More"}";
       var trLess = "{translate text="less"}";      
       var trImageRights = '{translate text="Image Rights"}';
+      var trSeeAlso = '{translate text="See also"}';
       var trToRecord = '{translate text="To the record"}';
 
       var listList = [

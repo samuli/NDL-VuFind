@@ -132,12 +132,6 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {* <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}"> *}
     {/if}
     </div>
-    {if $coreRights}
-    <div class="imageRights">
-      <p>{translate text="Image Rights"}:</p>
-      <p>{if $coreRights.link}<a href="{$coreRights.link}">{/if}{$coreRights.copyright}{if $coreRights.link}</a>{/if}</p>
-    </div>
-    {/if}
     {* End Cover Image *}
   
     <div id="resultToolbar" class="toolbar">

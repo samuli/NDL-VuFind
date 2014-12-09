@@ -73,33 +73,43 @@ $(document).ready(function() {
                         ;                                              
 
                         if (typeof(data.rights) != 'undefined') {
+                            var copyright = false;
+                            var copyrightLink = false;
+                            var copyrightDesc = false;
                             if (typeof(data.rights.copyright) != 'undefined') {
                                 copyright = unescape(data.rights.copyright);
-                                var copyrightLink = typeof(data.rights.link) != 'undefined' 
-                                    ? unescape(data.rights.link) 
-                                    : false
-                                ;
-                                
-                                var copyrightDesc = typeof(data.rights.description) != 'undefined'
-                                    ? $('<div/>').text(data.rights.description).html()
-                                    : false
-                                ;
-                                
-                                title += '<div class="fancyImageRights"><div><span>' + trImageRights + ':</span> ';
-                                if (copyrightLink) {
-                                    title += '<a target="_blank" href="' + copyrightLink + '">';
-                                }
-                                title += copyright;
-                                if (copyrightLink) {
-                                    title += '</a>';
-                                }
-                                title += '</div>';
+                            }
+                            if (typeof(data.rights.link) != 'undefined') {
+                                copyrightLink = unescape(data.rights.link);
+                            }
+                            if (typeof(data.rights.description) != 'undefined') {
+                                copyrightDesc = data.rights.description;
+                            }
 
-                                if (copyrightDesc) {
-                                    title += '<div class="moreLink copyrightLink"><a data-mode="1" href="#">' + trMore + '</a></div>';
-                                    title += '<div class="copyright">' + copyrightDesc + '</div>';
-                                    title += '<div class="lessLink copyrightLink"><a data-mode="0" href="#">' + trLess + '</a></div>';
+                            title += '<div class="fancyImageRights"><div class="rights"><span>' + trImageRights + ':</span> ';
+                            if (copyrightLink) {
+                                title += '<a target="_blank" href="' + copyrightLink + '">';
+                            }
+                            if (copyright) {
+                                title += copyright;
+                            }
+                            if (copyrightLink) {
+                                title += '</a>';
+                            }
+                            title += '</div>';
+
+                            if (copyrightDesc) {
+                                desc = '';
+                                $.each(copyrightDesc, function(ind, p) {
+                                    desc += '<p>' + p + '</p>';
+                                });
+
+                                if (copyrightLink) {
+                                    desc += ' <a href="' + copyrightLink + '">' + (copyright ? copyright : trSeeAlso) + '</a>';
                                 }
+                                title += '<div class="moreLink copyrightLink"><a data-mode="1" href="#">' + trMore + '</a></div>';
+                                title += '<div class="copyright">' + desc + '</div>';
+                                title += '<div class="lessLink copyrightLink"><a data-mode="0" href="#">' + trLess + '</a></div>';
                             }
                         }
 

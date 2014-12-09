@@ -924,6 +924,10 @@ authentication_methods[] = LDAP
 
 ; Links to copyright information used for image rights.
 [ImageRights]
+fi['CC0'] = "http://creativecommons.org/about/cc0"
+sv['CC0'] = "http://creativecommons.org/about/cc0"
+en-gb['CC0'] = "http://creativecommons.org/about/cc0"
+
 fi['CC BY 4.0'] = "http://creativecommons.org/licenses/by/4.0/deed.fi"
 sv['CC BY 4.0'] = "http://creativecommons.org/licenses/by/4.0/deed.sv"
 en-gb['CC BY 4.0'] = "http://creativecommons.org/licenses/by/4.0/deed.en"

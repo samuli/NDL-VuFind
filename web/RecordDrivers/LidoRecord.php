@@ -87,8 +87,7 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreInscriptions', $this->getInscriptions());
         $interface->assign('coreWebResource', $this->getWebResource());
         $interface->assign('coreLocalIdentifiers', $this->getLocalIdentifiers());
-        $interface->assign('coreRights', $this->getImageRights());
-        
+        // todo: corerights
         $interface->assign('coreIdentifier', $this->getIdentifier());
         
         return 'RecordDrivers/Lido/core.tpl';
@@ -143,7 +142,6 @@ class LidoRecord extends IndexRecord
         if (isset($this->fields['event_use_displayplace_str'])) {
             $interface->assign('summUsePlace', $this->fields['event_use_displayplace_str']);
         }
-        $interface->assign('coreRights', $this->getImageRights());
         
         return 'RecordDrivers/Lido/result-' . $view . '.tpl';
     }
@@ -684,16 +682,79 @@ class LidoRecord extends IndexRecord
      * Return image rights.
      *
      * @return mixed array with keys:
-     *   'copyright'   Copyright (e.g. 'CC BY 4.0')
-     *   'description' Human readable description
-     *   'link'        Link to copyright info, see IndexRecord::getImageRightsLink
-     *   or false if no rights are defined.
+     *   'copyright'  Copyright (e.g. 'CC BY 4.0') (optional)
+     *   'description Human readable description (array)
+     *   'link'       Link to copyright info
+     *   or false if the record contains no images
      * @access protected
-     */    
+     */
     public function getImageRights()
     {
         global $configArray;
 
+        if (!count($this->getAllImages())) {
+            return false;
+        }
+
+        $rights = array();
+
+        if ($type = $this->getAccessRestrictionsType()) {
+            $rights['copyright'] = $type['copyright'];
+            if (isset($type['link'])) {
+                $rights['link'] = $type['link'];
+            }
+        }
+
+        $desc = $this->getAccessRestrictions();
+        if ($desc && count($desc)) {
+            $description = array();
+            foreach ($desc as $p) {
+                $description[] = (string)$p;
+            }
+            $rights['description'] = $description;
+        }
+
+        return isset($rights['copyright']) || isset($rights['description'])
+            ? $rights
+            : parent::getImageRights()
+        ;
+    }
+
+    /**
+     * Get access restriction notes for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getAccessRestrictions()
+    {
+        if ($rights = $this->xml->xpath('lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource/rightsType')) {
+            $rights = $rights[0];
+
+            if ($conceptID = $rights->xpath('conceptID')) {
+                $conceptID = $conceptID[0];
+                $attributes = $conceptID->attributes();
+                if ($attributes->type && strtolower($attributes->type) == 'copyright') {
+                    if ($desc = $rights->xpath('term')) {                        
+                        return array((string)$desc[0]);
+                    } 
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get type of access restriction for the record.
+     *
+     * @return mixed array with keys:
+     *   'copyright'   Copyright (e.g. 'CC BY 4.0')
+     *   'link'        Link to copyright info, see IndexRecord::getRightsLink
+     *   or false if no access restriction type is defined.
+     * @access protected
+     */
+    protected function getAccessRestrictionsType()
+    {
         if ($rights = $this->xml->xpath('lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource/rightsType')) {
             $rights = $rights[0];
 
@@ -703,19 +764,13 @@ class LidoRecord extends IndexRecord
                 if ($attributes->type && strtolower($attributes->type) == 'copyright') {
                     $data = array();
                     
-                    if ($desc = $rights->xpath('term')) {                        
-                        $data['description'] = (string)$desc[0];
-                    } 
-
                     $copyright = (string)$conceptID;
-                    $copyright = strtoupper($copyright);
-
                     $data['copyright'] = $copyright;
-                    
-                    if ($link = $this->getImageRightsLink($copyright)) {
+
+                    $copyright = strtoupper($copyright);
+                    if ($link = $this->getRightsLink($copyright)) {
                         $data['link'] = $link;
                     }
-
                     return $data;
                 }
             }

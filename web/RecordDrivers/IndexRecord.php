@@ -697,6 +697,7 @@ class IndexRecord implements RecordInterface
         // elsewhere.
         $interface->assign('extendedSummary', $this->getSummary());
         $interface->assign('extendedAccess', $this->getAccessRestrictions());
+        $interface->assign('extendedAccessType', $this->getAccessRestrictionsType());
         $interface->assign('extendedRelated', $this->getRelationshipNotes());
         $interface->assign('extendedNotes', $this->getGeneralNotes());
         $interface->assign('extendedDateSpan', $this->getDateSpan());
@@ -2148,6 +2149,63 @@ class IndexRecord implements RecordInterface
     }
 
     /**
+     * Get type of access restriction for the record.
+     *
+     * @return mixed array with keys:
+     *   'copyright'   Copyright (e.g. 'CC BY 4.0')
+     *   'link'        Link to copyright info, see IndexRecord::getRightsLink
+     *   or false if no access restriction type is defined.
+     * @access protected
+     */
+    protected function getAccessRestrictionsType()
+    {
+        return false;
+    }
+
+    /**
+     * Return image rights.
+     *
+     * @return mixed array with keys:
+     *   'copyright'  Copyright (e.g. 'CC BY 4.0') (optional)
+     *   'description Human readable description (array)
+     *   'link'       Link to copyright info
+     *   or false if the record contains no images
+     * @access protected
+     */
+    protected function getImageRights()
+    {
+        global $configArray;
+
+        return array(
+            'description' => array(translate('Image Rights Default')),
+            'link' => $configArray['Site']['url'] . '/Content/terms_conditions'
+        );
+    }
+
+    /**
+     * Return URL to copyright information.
+     *
+     * @param string $copyright Copyright
+     *
+     * @return mixed URL or false if no URL for the given copyright
+     * is defined in config.ini::ImageRights
+     * @access protected
+     */
+    protected function getRightsLink($copyright)
+    {
+        global $configArray;
+        global $language;
+
+        if (isset($configArray['ImageRights'])
+            && isset($configArray['ImageRights'][$language])
+            && isset($configArray['ImageRights'][$language][$copyright])
+        ) {
+            return $configArray['ImageRights'][$language][$copyright];
+        }
+        return false;
+    }
+
+    /**
      * Get all subject headings associated with this record.  Each heading is
      * returned as an array of chunks, increasing from least specific to most
      * specific.
@@ -3402,44 +3460,6 @@ class IndexRecord implements RecordInterface
             return reset($this->fields['source_str_mv']);
         }
         return '';
-    }
-
-    /**
-     * Return image rights.
-     *
-     * @return mixed array with keys:
-     *   'copyright'  Copyright (e.g. 'CC BY 4.0')
-     *   'description Human readable description
-     *   'link'       Link to more info, if defined in config.ini
-     *   or false if no rights are defined.
-     * @access protected
-     */    
-    protected function getImageRights()
-    {
-        return false;
-    }
-
-    /**
-     * Return URL to copyright information.
-     *
-     * @param string $copyright Copyright
-     *
-     * @return mixed URL or false if no URL for the given copyright
-     * is defined in config.ini::ImageRights
-     * @access protected
-     */    
-    protected function getImageRightsLink($copyright)
-    {
-        global $configArray;
-        global $language;
-
-        if (isset($configArray['ImageRights']) 
-            && isset($configArray['ImageRights'][$language])
-            && isset($configArray['ImageRights'][$language][$copyright])
-        ) {
-            return $configArray['ImageRights'][$language][$copyright];
-        }
-        return false;
     }
 
     /**
