@@ -1617,6 +1617,11 @@ class Voyager implements DriverInterface
         if (!PEAR::isError($fines)) {
             $amount = 0;
             foreach ($fines as $fine) {
+                // Ignore UB-fines since they can not be registered using SIP
+                // (institution_id is not set for local fines).
+                if (isset($fine['institution_id'])) {
+                    continue;
+                }
                 if (!$fine['payableOnline'] && !$fine['accruedFine']) {
                     return 'online_payment_fines_contain_nonpayable_fees';
                 }
