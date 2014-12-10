@@ -2,34 +2,49 @@
 <div id="headerTexts">
      <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
+        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
+        <p>Kuvaaja: Volker von Bonin<br/>
+           Sijainti: Museoviraston kuvakokoelmat</p>
+        <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">Aineistotietoon »</a>
+    </div>
+	<div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
+        <p>Kuvaaja: Volker von Bonin<br/>
+           Sijainti: Museoviraston kuvakokoelmat</p>
+        <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">Aineistotietoon »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
         <p>Tekijä: Ei tiedossa<br/>
-           Sijainti: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p>
-        <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">Aineistotietoon »</a>
+           Sijainti: Suomen merimuseon kokoelmat</p>
+        <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">Aineistotietoon »</a>
     </div>
-    <div>
+     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
+        <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
         <p>Tekijä: Ei tiedossa<br/>
-           Sijainti: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p>
-        <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">Aineistotietoon »</a>
-    </div>
-    <div>
-        <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Näköala Fredrikinkadulta</p>
-        <p>Tekijä: Akseli Gallen-Kallela<br/>
-           Sijainti: Ateneumin taidemuseo</p>
-        <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">Aineistotietoon »</a>
-    </div>
-    <div>
-        <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Näköala Fredrikinkadulta</p>
-        <p>Tekijä: Akseli Gallen-Kallela<br/>
-           Sijainti: Ateneumin taidemuseo</p>
-        <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">Aineistotietoon »</a>
+           Sijainti: Suomen merimuseon kokoelmat</p>
+        <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">Aineistotietoon »</a>
     </div>
 </div>
-    <!-- <div>
+    <!-- 
+        <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
+        <p>Tekijä: Ei tiedossa<br/>
+           Sijainti: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p>
+        <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">Aineistotietoon »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Näköala Fredrikinkadulta</p>
+        <p>Tekijä: Akseli Gallen-Kallela<br/>
+           Sijainti: Ateneumin taidemuseo</p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">Aineistotietoon »</a>
+    </div>
+    <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">V-VI 5-7 [Maarianhamina] (1870-1919)</p>
         <p>Arkistonmuodostaja: Maanmittaushallitus<br/>
