@@ -171,9 +171,11 @@
       {if !empty($extendedAccessType)}
         {if !empty($extendedAccessType.link)}<a href="{$extendedAccessType.link}">{/if}{$extendedAccessType.copyright}{if !empty($extendedAccessType.link)}</a>{/if}<br/>
       {/if}
+      {if !empty($extendedAccess) && (count($extendedAccess) > 1 || $extendedAccessType.copyright !== $extendedAccess[0])}
       {foreach from=$extendedAccess item=field name=loop}
         {$field|escape}<br/>
       {/foreach}
+      {/if}
     </td>
   </tr>
   {/if}
