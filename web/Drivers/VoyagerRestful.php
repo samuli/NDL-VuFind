@@ -1016,15 +1016,11 @@ class VoyagerRestful extends Voyager
                     $blockReason[] = translate('Borrowing Block Message');
                 }
                 foreach ($borrowingBlocks as $borrowBlock) {
-                    $reasons = array(
-                        15 => 'Borrowing Block Reason Patron Expired',
-                        18 => 'Borrowing Block Reason Charge Limit',
-                        19 => 'Borrowing Block Reason Fine Limit'
-                    );
                     $code = (int)$borrowBlock->blockCode;
-
-                    if (isset($reasons[$code])) {
-                        $reason = translate($reasons[$code]);
+                    $reason = "Borrowing Block Voyager Reason $code";
+                    $translated = translate($reason);
+                    if ($reason !== $translated) {
+                        $reason = $translated;
                         if ($code == 19) {
                             // Fine limit
                             $reason = str_replace('%%blockCount%%', $borrowBlock->blockCount, $reason);
