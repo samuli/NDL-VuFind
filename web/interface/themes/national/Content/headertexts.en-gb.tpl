@@ -2,34 +2,50 @@
 <div id="headerTexts">
 	<div>
         <p class="headerInfoLight">Information about the picture:</p>
-        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
-        <p>Author:Unknown<br />
-           Location: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p> 
-          <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">To the record »</a>
+        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
+        <p>Photographer: Volker von Bonin<br />
+           Location: Museoviraston kuvakokoelmat</p> 
+          <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">To the record »</a>
     </div>
     <div>
         <p class="headerInfoLight">Information about the picture:</p>
-        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
-        <p>Author:Unknown<br />
-           Location: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p> 
-          <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">To the record »</a>
+        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
+        <p>Photographer: Volker von Bonin<br />
+           Location: Museoviraston kuvakokoelmat</p> 
+          <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">To the record »</a>
     </div>
     <div>
         <p class="headerInfoLight">Information about the picture:</p>
-        <p class="headerInfoTitle">View from Fredrikinkatu</p>
-        <p>Author: Akseli Gallen-Kallela<br />
-           Location: Ateneum Art Museum</p> 
-          <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">To the record »</a>
+        <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
+        <p>Photographer: Unknown<br />
+           Location: Suomen merimuseon kokoelmat</p> 
+          <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">To the record »</a>
     </div>
-        <div>
+    <div>
         <p class="headerInfoLight">Information about the picture:</p>
-        <p class="headerInfoTitle">View from Fredrikinkatu</p>
-        <p>Author: Akseli Gallen-Kallela<br />
-           Location: Ateneum Art Museum</p> 
-          <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">To the record »</a>
+        <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
+        <p>Photographer: Unknown<br />
+           Location: Suomen merimuseon kokoelmat</p> 
+          <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">To the record »</a>
     </div>
+
 </div>
-	<!-- <div>
+	<!-- 
+    <div>
+        <p class="headerInfoLight">Information about the picture:</p>
+        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
+        <p>Author:Unknown<br />
+           Location: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p> 
+          <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">To the record »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Information about the picture:</p>
+        <p class="headerInfoTitle">View from Fredrikinkatu</p>
+        <p>Author: Akseli Gallen-Kallela<br />
+           Location: Ateneum Art Museum</p> 
+          <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">To the record »</a>
+    </div>
+    <div>
         <p class="headerInfoLight">Information about the picture:</p>
         <p class="headerInfoTitle">Skiing competition</p>
         <p>Photographer:Unknown<br />
