@@ -101,12 +101,18 @@ $(document).ready(function() {
                             if (copyrightDesc) {
                                 desc = '';
                                 $.each(copyrightDesc, function(ind, p) {
-                                    desc += '<p>' + p + '</p>';
+                                    if (ind > 0) {
+                                        desc += '</p>';
+                                    }
+                                    desc += '<p>' + p;
                                 });
 
                                 if (copyrightLink && !copyright) {
                                     desc += ' <a href="' + copyrightLink + '">' + (copyright ? copyright : trSeeAlso) + '</a>';
                                 }
+
+                                desc += '</p>';
+                                
                                 title += '<div class="moreLink copyrightLink"><a data-mode="1" href="#">' + trMore + '</a></div>';
                                 title += '<div class="copyright">' + desc + '</div>';
                                 title += '<div class="lessLink copyrightLink"><a data-mode="0" href="#">' + trLess + '</a></div>';
