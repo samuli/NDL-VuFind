@@ -624,7 +624,7 @@ class Voyager implements DriverInterface
 
         return $sqlArray;
     }
-    
+
     /**
      * Protected support method for getHolding.
      *
@@ -647,7 +647,7 @@ class Voyager implements DriverInterface
                 $number .= utf8_encode($row['ITEM_ENUM']);
             }
             $number = trim($number);
-			
+
             // Concat wrapped rows (MARC data more than 300 bytes gets split
             // into multiple rows)
             $rowId = isset($row['ITEM_ID']) ? $row['ITEM_ID'] : $row['MFHD_ID'];
@@ -678,7 +678,7 @@ class Voyager implements DriverInterface
         }
         return $data;
     }
-    
+
     /**
      * Protected support method for getHolding.
      *
@@ -1137,7 +1137,8 @@ class Voyager implements DriverInterface
             $sql .= ", PATRON.{$fallback_login_field} FALLBACK_LOGIN";
         }
         $sql .= " FROM $this->dbName.PATRON, $this->dbName.PATRON_BARCODE " .
-               "WHERE PATRON.PATRON_ID = PATRON_BARCODE.PATRON_ID AND " .
+               "WHERE PATRON.DB_ID = 0 AND " .
+               "PATRON.PATRON_ID = PATRON_BARCODE.PATRON_ID AND " .
                "lower(PATRON_BARCODE.PATRON_BARCODE) = :barcode AND " .
                "(PATRON_BARCODE.BARCODE_STATUS = 1 OR PATRON_BARCODE.BARCODE_STATUS = 4)";
         try {
@@ -1507,7 +1508,7 @@ class Voyager implements DriverInterface
     }
 
     /**
-     * Mark fees as paid. 
+     * Mark fees as paid.
      *
      * This is called after a successful online payment.
      *
@@ -1519,12 +1520,12 @@ class Voyager implements DriverInterface
      */
     public function markFeesAsPaid($patron, $amount)
     {
-        $params 
+        $params
             = isset($this->config['OnlinePayment']['registrationParams'])
             ? $this->config['OnlinePayment']['registrationParams']
             : array()
         ;
-        
+
         $required = array('host', 'port', 'userId', 'password', 'locationCode');
         foreach ($required as $req) {
             if (!isset($params[$req])) {
@@ -1542,10 +1543,10 @@ class Voyager implements DriverInterface
             return new PEAR_Error('online_payment_registration_failed');
         };
 
-        
+
         $sip = new sip2;
-        $sip->error_detection = false; 
-        $sip->msgTerminator = "\r";    
+        $sip->error_detection = false;
+        $sip->msgTerminator = "\r";
         $sip->hostname = $params['host'];
         $sip->port = $params['port'];
         $sip->AO = '';
@@ -1557,7 +1558,7 @@ class Voyager implements DriverInterface
         
         if ($sip->connect()) {
             $sip->scLocation = $params['locationCode'];
-            $sip->UIDalgorithm = 0; 
+            $sip->UIDalgorithm = 0;
             $sip->PWDalgorithm = 0;
             $login_msg = $sip->msgLogin(
                 $params['userId'], $params['password']
@@ -1569,7 +1570,7 @@ class Voyager implements DriverInterface
                     $sip->patron = $patronId;
                     $feepaid_msg = $sip->msgFeePaid(1, 0, $amount, $currency);
                     $feepaid_response = $sip->get_message($feepaid_msg);
-                    if (strncmp('38', $feepaid_response, 2) == 0) { 
+                    if (strncmp('38', $feepaid_response, 2) == 0) {
                         $feepaid_result
                             = $sip->parseFeePaidResponse($feepaid_response);
                         if ($feepaid_result['fixed']['PaymentAccepted'] == 'Y') {
@@ -1594,7 +1595,7 @@ class Voyager implements DriverInterface
         } else {
             return $errFun($patronId, 'connection error');
         }
-        
+
         return true;
     }
 
@@ -1603,25 +1604,30 @@ class Voyager implements DriverInterface
      *
      * @param array $patron The patron array from patronLogin
      *
-     * @return mixed int payable amount, 
-     * string error message (not translated) if all fees are not payable online 
-     * or if the total amount does not exceed or equal minimum payable fee, 
+     * @return mixed int payable amount,
+     * string error message (not translated) if all fees are not payable online
+     * or if the total amount does not exceed or equal minimum payable fee,
      * or false on error.
      * @access public
-     */    
+     */
     public function getOnlinePayableAmount($patron)
     {
         $fines = $this->getMyFines($patron);
-        
+
         if (!PEAR::isError($fines)) {
-            $amount = 0;            
+            $amount = 0;
             foreach ($fines as $fine) {
+                // Ignore UB-fines since they can not be registered using SIP
+                // (institution_id is not set for local fines).
+                if (isset($fine['institution_id'])) {
+                    continue;
+                }
                 if (!$fine['payableOnline'] && !$fine['accruedFine']) {
                     return 'online_payment_fines_contain_nonpayable_fees';
                 }
                 if (!$fine['accruedFine']) {
                     $amount += $fine['balance'];
-                }                
+                }
             }
 
             if ($amount < $this->config['OnlinePayment']['minimumFee']) {

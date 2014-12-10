@@ -68,17 +68,20 @@ class Fines extends MyResearch
                 $this->handleCatalogError($patron);
             } else {
                 $fines = $this->catalog->getMyFines($patron);
+
+                if (PEAR::isError($fines)) {
+                    PEAR::raiseError($fines);
+                }
+
                 $loans = $this->catalog->getMyTransactions($patron);
                 $sum = 0;
                 $fines = $this->processFines($fines, $loans, $sum);
 
                 $this->handleOnlinePayment($patron, $fines);
 
-                if (!PEAR::isError($fines)) {
-                    $interface->assign('rawFinesData', $fines);
-                    $interface->assign('sum', $sum);
-                }
-                
+                $interface->assign('rawFinesData', $fines);
+                $interface->assign('sum', $sum);
+
                 $profile = $this->catalog->getMyProfile($patron);
                 if (!PEAR::isError($profile)) {
                     $interface->assign('profile', $profile);
@@ -96,8 +99,10 @@ class Fines extends MyResearch
     /**
      * Support for handling online payments.
      *
+     * @param array $patron Patron from patronLogin
+     * @param array $fines  Fines list
+     *
      * @return void
-     * @access public
      */
     protected function handleOnlinePayment($patron, $fines)
     {
@@ -117,19 +122,19 @@ class Fines extends MyResearch
                 $interface->assign('payableSum', $finesAmount);
             }
 
-            $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patron['cat_username']); 
+            $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patron['cat_username']);
             $paymentPermitted = false;
 
             if ($paymentHandler) {
                 $interface->assign('onlinePaymentEnabled', true);
 
-                $t = new Transaction();                    
-                $transactionMaxDuration 
+                $t = new Transaction();
+                $transactionMaxDuration
                     = isset($config['transactionMaxDuration'])
                     ? $config['transactionMaxDuration']
                     : 30
                 ;
-                        
+
                 // Check if there is a payment in progress or if the user has unregistered payments
                 $paymentPermittedForUser = $t->isPaymentPermitted($patron['cat_username'], $transactionMaxDuration);
                 $paymentParam = 'payment';
@@ -139,7 +144,7 @@ class Fines extends MyResearch
                 };
                 $payableFines = array_filter($fines, $filterFun);
 
-                if (isset($_REQUEST['pay']) && $_REQUEST['pay'] 
+                if (isset($_REQUEST['pay']) && $_REQUEST['pay']
                     && is_numeric($finesAmount)
                     && isset($_SESSION['onlinePayment'])
                 ) {
@@ -151,14 +156,14 @@ class Fines extends MyResearch
                     } else {
                         // Start payment
                         $currency = $config['currency'];
-                         
+
                         $paymentHandler->startPayment(
                             $patron['cat_username'],
-                            $finesAmount, 
+                            $finesAmount,
                             $transactionFee,
                             $payableFines,
                             $currency,
-                            $paymentParam, 
+                            $paymentParam,
                             'transaction'
                         );
                     }
@@ -184,7 +189,7 @@ class Fines extends MyResearch
                         }
                         if ($info) {
                             $interface->assign('paymentNotPermittedInfo', $info);
-                        }                          
+                        }
                     }
 
                     if (isset($_SESSION['payment_fines_changed'])
@@ -201,11 +206,11 @@ class Fines extends MyResearch
                         $interface->assign('paymentOk', true);
                     }
 
-                    // Store current fines to session 
+                    // Store current fines to session
                     $this->storeFines($patron, $fines);
 
-                    $interface->assign('transactionSessionId', $_SESSION['onlinePayment']['sessionId']); 
-                    $interface->assign('onlinePaymentEnabled', true);                            
+                    $interface->assign('transactionSessionId', $_SESSION['onlinePayment']['sessionId']);
+                    $interface->assign('onlinePaymentEnabled', true);
                     $interface->assign('onlinePaymentForm', "MyResearch/online-payment-" . $paymentHandler->getName() . '.tpl');
                 }
             }
@@ -219,7 +224,7 @@ class Fines extends MyResearch
      * @param array   $params       Key-value list of request variables.
      * @param boolean $userLoggedIn Is user logged in at the time of method call.
      *
-     * @return array array with keys 
+     * @return array array with keys
      *   - 'success' (boolean)
      *   - 'msg' (string) error message if payment could not be processed.
      * @access public
@@ -240,7 +245,7 @@ class Fines extends MyResearch
             $error = true;
         }
 
-        if (!$tr->isTransactionInProgress($transactionId)) {            
+        if (!$tr->isTransactionInProgress($transactionId)) {
             error_log("Error processing payment: transaction $transactionId already processed.");
             $error = true;
         }
@@ -262,7 +267,7 @@ class Fines extends MyResearch
                 }
                 if (!$patron) {
                     error_log("Error processing payment: could not perform patron login (transaction $transactionId)");
-                    $error = true;                
+                    $error = true;
                 }
             } else {
                 $patron = UserAccount::catalogLogin();
@@ -274,7 +279,7 @@ class Fines extends MyResearch
                 $paymentHandler = CatalogConnection::getOnlinePaymentHandler($patronId);
                 $res = $paymentHandler->processResponse($params);
 
-                if (is_array($res) && isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {       
+                if (is_array($res) && isset($res['markFeesAsPaid']) && $res['markFeesAsPaid']) {
                     $finesAmount = $this->catalog->getOnlinePayableAmount($patron);
 
                     // Check that payable sum has not been updated
@@ -293,7 +298,7 @@ class Fines extends MyResearch
                             }
                             $error = true;
                             $msg = translate($paidRes);
-                        }           
+                        }
                     } else {
                         // Payable sum updated. Skip registration and inform user that payment processing has been delayed..
                         $t = new Transaction();
@@ -319,7 +324,7 @@ class Fines extends MyResearch
     }
 
     /**
-     * Checks if the given list of fines is identical to the listing 
+     * Checks if the given list of fines is identical to the listing
      * preserved in the session variable.
      *
      * @param object $patron Patron.
@@ -333,8 +338,7 @@ class Fines extends MyResearch
         return !isset($_SESSION['onlinePayment'])
             || $_REQUEST['sessionId'] !== $this->generateFingerprint($patron)
             || $_SESSION['onlinePayment']['sessionId'] !== $this->generateFingerprint($patron)
-            || $_SESSION['onlinePayment']['fines'] !== $this->generateFingerprint($fines)
-        ;
+            || $_SESSION['onlinePayment']['fines'] !== $this->generateFingerprint($fines);
     }
 
     /**
@@ -352,7 +356,7 @@ class Fines extends MyResearch
             'sessionId' => $this->generateFingerprint($patron),
             'fines' => $this->generateFingerprint($fines)
         );
-    } 
+    }
 
     /**
      * Utility function for calculating a fingerprint for a object.
@@ -362,7 +366,7 @@ class Fines extends MyResearch
      * @return string fingerprint
      * @access public
      */
-    protected function generateFingerprint($data) 
+    protected function generateFingerprint($data)
     {
         return md5(json_encode($data));
     }
@@ -372,17 +376,20 @@ class Fines extends MyResearch
      *
      * @param array $fines Fines
      * @param array $loans Loans
+     * @param int   &$sum  Sum of fines
      *
      * @return array Augmented fines.
      * @access public
      */
     protected function processFines($fines, $loans, &$sum = 0)
-    {        
+    {
         for ($i = 0; $i < count($fines); $i++) {
             $row = &$fines[$i];
-            $sum += $row['balance'];            
+            $sum += $row['balance'];
             $record = $this->db->getRecord($row['id']);
-            $row['title'] = $record ? $record['title_short'] : null;
+            if (empty($row['title']) || $record) {
+                $row['title'] = $record ? $record['title_short'] : null;
+            }
             $row['checkedOut'] = false;
             if (is_array($loans)) {
                 foreach ($loans as $loan) {
@@ -393,12 +400,12 @@ class Fines extends MyResearch
                 }
             }
             $formats = array();
-            foreach (isset($record['format']) 
-                     ? $record['format'] 
+            foreach (isset($record['format'])
+                     ? $record['format']
                      : array() as $format) {
                 $formats[] = preg_replace('/^\d\//', '', $format);
             }
-            $row['format'] = $formats;        
+            $row['format'] = $formats;
         }
         return $fines;
     }

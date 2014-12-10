@@ -162,8 +162,9 @@ class Profile extends MyResearch
                     $datasources = getExtraConfigArray('datasources');
                     $to = (is_array($driver)
                         && isset($driver[0])
-                        && $datasources[$driver[0]])
+                        && isset($datasources[$driver[0]])
                         && isset($datasources[$driver[0]]['feedbackEmail'])
+                    )
                         ? $datasources[$driver[0]]['feedbackEmail']
                         : $configArray['Site']['email'];
                     $result = $this->sendEmail(

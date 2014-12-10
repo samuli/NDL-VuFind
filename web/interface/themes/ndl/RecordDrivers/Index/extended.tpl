@@ -168,6 +168,9 @@
   <tr valign="top" class="extendedAccess">
     <th>{translate text='Access restrictions'}: </th>
     <td>
+      {if !empty($extendedAccessType)}
+        {if !empty($extendedAccessType.link)}<a href="{$extendedAccessType.link}">{/if}{$extendedAccessType.copyright}{if !empty($extendedAccessType.link)}</a>{/if}<br/>
+      {/if}
       {foreach from=$extendedAccess item=field name=loop}
         {$field|escape}<br/>
       {/foreach}

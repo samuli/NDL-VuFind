@@ -5,17 +5,8 @@
   <span id="contextHelp_search" class="showHelp">{translate text="Search Tips"}</span>
   {/if}
 
+  <form method="get" action="{$path}/{if $formAction}{$formAction}{else}Search/Results{/if}" name="searchForm" id="searchForm" class="search">
 
- {if $module == 'Browse'}
-   {assign var='formModule' value='Browse'}
-   {assign var='formAction' value=$action}
- {else}
-  {assign var='formModule' value='Search'}
-  {assign var='formAction' value='Results'}
- {/if}
-
-
-  <form method="get" action="{$path}/{$formModule}/{$formAction}" name="searchForm" id="searchForm" class="search">
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">

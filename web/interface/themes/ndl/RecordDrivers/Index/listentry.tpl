@@ -16,7 +16,7 @@
     <div class="imagelinks">
 {foreach from=$summImages item=desc name=imgLoop}
    {if $smarty.foreach.imgLoop.iteration <= 3}
-      <a data-dates="{$listDate.0|escape}{if $listDate.1 && $listDate.1 != $listDate.0} - {$listDate.1|escape}{/if}" data-title="{$listTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$listBuilding.0|rtrim:'/' prefix="facet_"}" data-url="{$url}/Record/{$listId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$listAuthor}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+      <a data-id="{$listId|escape:"url"}" class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 2}
             &hellip;
          {else}
@@ -36,7 +36,7 @@
         </div>
     {elseif $img_count == 1 || $listThumb}
         <div class="resultImage">
-            <a class="fancybox fancybox.image" href="{$listThumb|escape}&index=0&size=large" rel="gallery" id="thumbnail_link_{$listId|escape:"url"}" data-dates="{$listDate.0|escape}{if $listDate.1 && $listDate.1 != $listDate.0} - {$listDate.1|escape}{/if}" data-title="{$listTitle|truncate:100:"..."|escape:"html"}" data-building="{translate text=$listBuilding.0|rtrim:'/'  prefix="facet_"}" data-url="{$url}/Record/{$listId|escape:'url'}" data-linktext="{translate text='To the record'}"  data-author="{$listAuthor}"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a>
+            <a class="fancybox fancybox.image" href="{$listThumb|escape}&index=0&size=large" rel="gallery" id="thumbnail_link_{$listId|escape:"url"}" data-id="{$listId|escape:"url"}"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a>
         </div>    
     {/if}  
   </div>

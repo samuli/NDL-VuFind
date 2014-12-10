@@ -195,14 +195,16 @@
               <td>{$profile.group|escape}</td>
               <td></td>
             </tr> 
+            {if $profile.blocks}
             <tr>
+              <th>{translate text='Borrowing Blocks'}</th>
+              <td colspan="2">
               {foreach from=$profile.blocks item=block name=loop}
-                {if $smarty.foreach.loop.first}
-                  <th>{translate text='Borrowing Blocks'}</th>
-                {/if}
-                <td class="blockInfo">{$block|escape}</td>
+                <p class="blockInfo">{$block|escape}</p>
               {/foreach}
+              </td>
             </tr>
+            {/if}
             {if $driver == "AxiellWebServices"}
               <tr>
                 <th><input class="button buttonFinna left" type="submit" value="{translate text='Save Personal Information'}" /></th>
