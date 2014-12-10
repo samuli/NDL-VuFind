@@ -2,34 +2,48 @@
 <div id="headerTexts">
 	<div>
         <p class="headerInfoLight">Information om bildet:</p>
-        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
+        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
+        <p>Fotograf: Volker von Boni<br />
+           Belägenhet:  Museoviraston kuvakokoelma</p> 
+        <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">Till posten »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
+        <p>Fotograf: Volker von Boni<br />
+           Belägenhet:  Museoviraston kuvakokoelma</p> 
+        <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">Till posten »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
         <p>Fotograf: obekant<br />
-           Belägenhet: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p> 
-        <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">Till posten »</a>
-    </div>
+           Belägenhet: Suomen merimuseon kokoelmat</p> 
+         <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">Till posten »</a>
+    </div>  
     <div>
         <p class="headerInfoLight">Information om bildet:</p>
-        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
+        <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
         <p>Fotograf: obekant<br />
-           Belägenhet: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p> 
-        <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">Till posten »</a>
-    </div>
-    <div>
-        <p class="headerInfoLight">Information om bildet:</p>
-        <p class="headerInfoTitle">Vy från Fredriksgatan</p>
-        <p>Konstnären: Akseli Gallen-Kallela<br />
-           Belägenhet: Konstmuseet Ateneum</p> 
-         <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">Till posten »</a>
-    </div>
-    <div>
-        <p class="headerInfoLight">Information om bildet:</p>
-        <p class="headerInfoTitle">Vy från Fredriksgatan</p>
-        <p>Konstnären: Akseli Gallen-Kallela<br />
-           Belägenhet: Konstmuseet Ateneum</p> 
-         <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">Till posten »</a>
+           Belägenhet: Suomen merimuseon kokoelmat</p> 
+         <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">Till posten »</a>
     </div>    
 </div>
-   <!--  
+   <!--
+   <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
+        <p>Fotograf: <br />
+           Belägenhet: Suomen kansallismuseo, Suomen merimuseon kuvakokoelma</p> 
+        <a href="{$url}/Record/musketti.M012%3ASMK200414%3A1030">Till posten »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Vy från Fredriksgatan</p>
+        <p>Konstnären: Akseli Gallen-Kallela<br />
+           Belägenhet: Konstmuseet Ateneum</p> 
+         <a href="{$url}/Record/muusa.urn%3Auuid%3A09FBFAA5-F85C-4AC4-A86A-A80C19C19E0E">Till posten »</a>
+    </div>  
     <div>
         <p class="headerInfoLight">Information om bildet:</p>
         <p class="headerInfoTitle">Skidtävlingen</p>
