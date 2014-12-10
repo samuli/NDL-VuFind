@@ -113,9 +113,11 @@ $(document).ready(function() {
 
                                 desc += '</p>';
                                 
-                                title += '<div class="moreLink copyrightLink"><a data-mode="1" href="#">' + trMore + '</a></div>';
-                                title += '<div class="copyright">' + desc + '</div>';
-                                title += '<div class="lessLink copyrightLink"><a data-mode="0" href="#">' + trLess + '</a></div>';
+                                if (copyrightDesc.length > 1 || copyright !== copyrightDesc[0]) {
+                                    title += '<div class="moreLink copyrightLink"><a data-mode="1" href="#">' + trMore + '</a></div>';
+                                    title += '<div class="copyright">' + desc + '</div>';
+                                    title += '<div class="lessLink copyrightLink"><a data-mode="0" href="#">' + trLess + '</a></div>';
+                                }
                             }
                         }
 
