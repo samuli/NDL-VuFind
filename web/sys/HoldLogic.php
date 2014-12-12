@@ -186,17 +186,26 @@ class HoldLogic
      */
     protected function driverHoldings($result)
     {
+        global $configArray;
+
         $holdings = array();
 
         // Are holds allowed?
+        $disallowHolds = false;
         $id = null;
         $record = current($result);
         if ($record) {
             $id = $record['id'];
+            if (isset($configArray['Catalog']['disable_driver_hold_actions'])) {
+                $db = ConnectionManager::connectToIndex();
+                if ($rec = $db->getRecord($id)) {
+                    $disallowHolds = count(array_intersect($rec['format'], $configArray['Catalog']['disable_driver_hold_actions']));
+                }
+            }
         }
-        $checkHolds = $this->catalog->checkFunction("Holds", $id);
-        $checkCallSlips = $this->catalog->checkFunction("CallSlips", $id);
-        $checkUBRequests = $this->catalog->checkFunction("UBRequests", $id);
+        $checkHolds = !$disallowHolds && $this->catalog->checkFunction("Holds", $id);
+        $checkCallSlips = !$disallowHolds && $this->catalog->checkFunction("CallSlips", $id);
+        $checkUBRequests = !$disallowHolds && $this->catalog->checkFunction("UBRequests", $id);
         if (count($result)) {
             foreach ($result as $copy) {
                 $show = !in_array($copy['location'], $this->hideHoldings);

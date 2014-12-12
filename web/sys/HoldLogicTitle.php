@@ -101,8 +101,17 @@ class HoldLogicTitle
      */
     protected function driverHold($id, $patron)
     {
+        global $configArray;
+
+        $disallowHolds = false;
+        if (isset($configArray['Catalog']['disable_driver_hold_actions'])) {
+            $db = ConnectionManager::connectToIndex();
+            if ($record = $db->getRecord($id)) {
+                $disallowHolds = count(array_intersect($record['format'], $configArray['Catalog']['disable_driver_hold_actions']));
+            }
+        }
         // Get Hold Details
-        $checkHolds = $this->catalog->checkFunction("Holds", $id);
+        $checkHolds = !$disallowHolds && $this->catalog->checkFunction("Holds", $id);
         $data = array(
             'id' => $id,
             'level' => "title"
