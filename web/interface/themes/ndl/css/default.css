@@ -7838,6 +7838,13 @@ div.hopscotch-bubble {
     display:inline-block;
 }
 
+.tabNavi ul.ui-tabs-nav > li:last-child.contextHelp {
+    border-right: 0;
+}
+#contextHelp_tabs {
+    margin: 2px 0 0 10px;
+}
+
 /* New in Finna Facet */
 
 #newItemsLimit {
