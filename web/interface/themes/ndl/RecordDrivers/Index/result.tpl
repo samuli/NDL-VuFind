@@ -170,7 +170,7 @@
       {/if}
       </div>
       <div id="nodata{$summId|escape}" class="noAvailabilityInfo">{translate text="No holdings available"}</div>
-      <a id="moredata{$summId|escape}" class="clearfix moreDataLink" href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}">{translate text="More holdings"} »</a>
+      <a id="moredata{$summId|escape}" class="clearfix moreDataLink" href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}#holdingstab">{translate text="More holdings"} »</a>
     </div>
       {include file="RecordDrivers/Index/result-onlineurls.tpl"}
       

@@ -84,9 +84,6 @@ function initScrollRecord() {
       	 		  scrollTop: $("#searchFormHeader").offset().top - 10
     	}, 200);
 	}
-	if (($('div').hasClass('resultLinks') === true) && ($(window).width() < 721)) {
-    	    window.location.hash = "results";
-	}
 } 
 
 
