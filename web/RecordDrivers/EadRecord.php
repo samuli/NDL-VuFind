@@ -515,6 +515,46 @@ class EadRecord extends IndexRecord
     }
 
     /**
+     * Return image rights.
+     *
+     * @return mixed array with keys:
+     *   'copyright'  Copyright (e.g. 'CC BY 4.0') (optional)
+     *   'description Human readable description (array)
+     *   'link'       Link to copyright info
+     *   or false if the record contains no images
+     * @access protected
+     */
+    public function getImageRights()
+    {
+        if (!count($this->getAllImages())) {
+            return false;
+        }
+
+        $rights = array();
+
+        if ($type = $this->getAccessRestrictionsType()) {
+            $rights['copyright'] = $type['copyright'];
+            if (isset($type['link'])) {
+                $rights['link'] = $type['link'];
+            }
+        }
+
+        $desc = $this->getAccessRestrictions();
+        if ($desc && count($desc)) {
+            $description = array();
+            foreach ($desc as $p) {
+                $description[] = (string)$p;
+            }
+            $rights['description'] = $description;
+        }
+
+        return isset($rights['copyright']) || isset($rights['description'])
+            ? $rights
+            : parent::getImageRights()
+        ;
+    }
+
+    /**
      * Get access restriction notes for the record.
      *
      * @return array
@@ -523,6 +563,31 @@ class EadRecord extends IndexRecord
     protected function getAccessRestrictions()
     {
         return isset($this->record->accessrestrict->p) ? $this->record->accessrestrict->p : array();
+    }
+
+    /**
+     * Get type of access restriction for the record.
+     *
+     * @return mixed array with keys:
+     *   'copyright'   Copyright (e.g. 'CC BY 4.0')
+     *   'link'        Link to copyright info, see IndexRecord::getRightsLink
+     *   or false if no access restriction type is defined.
+     * @access protected
+     */
+    protected function getAccessRestrictionsType()
+    {
+        $attributes = $this->record->accessrestrict->attributes();
+        if (isset($attributes['type'])) {
+            $copyright = (string)$attributes['type'];
+            $data = array();
+            $data['copyright'] = $copyright;
+            if ($link = $this->getRightsLink(strtoupper($copyright))) {
+                $data['link'] = $link;
+            }
+            return $data;
+        }
+
+        return false;
     }
 
     /**

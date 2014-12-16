@@ -337,6 +337,10 @@
     table.holdingsContainerHolding .available {
         display: inline-block;
     }
+	.resultHoldingsContainer table {
+		padding-bottom: 10px;
+		margin-top: 10px;
+	}
 	
     #recordProvidedBy .dropdown dt a {
         width: 100px;        

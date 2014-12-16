@@ -87,7 +87,7 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreInscriptions', $this->getInscriptions());
         $interface->assign('coreWebResource', $this->getWebResource());
         $interface->assign('coreLocalIdentifiers', $this->getLocalIdentifiers());
-        
+        // todo: corerights
         $interface->assign('coreIdentifier', $this->getIdentifier());
         
         return 'RecordDrivers/Lido/core.tpl';
@@ -172,7 +172,33 @@ class LidoRecord extends IndexRecord
 
         return $res;
     }
-    
+
+    /**
+     * Return record data to be used in lightbox.
+     *
+     * @return array array with keys:
+     *   'title'    Title
+     *   'author'   Authors
+     *   'dates'    Publication date
+     *   'url'      Record URL
+     *   'building' Translated building-code
+     *   'rights'   Image rights, see RecrodDriver::getImageRights
+     * @access public
+     */    
+    public function getLightboxData()
+    {
+        $data = parent::getLightboxData();
+        if ($dates = $this->getResultDates()) {
+            $data['dates'] = $dates[0];
+            if ($dates[1] && $dates[1] != $dates[0]) {
+                $data['dates'] .= '- ' . $dates[1];
+            }            
+        } else {
+            unset($data['dates']);
+        }        
+        return $data;
+    }
+
     /**
      * Return an associative array of image URLs associated with this record (key = URL,
      * value = description), if available; false otherwise. 
@@ -651,5 +677,105 @@ class LidoRecord extends IndexRecord
             $date->convertToDisplayDate('U', $range[1])
         );        
     }
-    
+
+    /**
+     * Return image rights.
+     *
+     * @return mixed array with keys:
+     *   'copyright'  Copyright (e.g. 'CC BY 4.0') (optional)
+     *   'description Human readable description (array)
+     *   'link'       Link to copyright info
+     *   or false if the record contains no images
+     * @access protected
+     */
+    public function getImageRights()
+    {
+        global $configArray;
+
+        if (!count($this->getAllImages())) {
+            return false;
+        }
+
+        $rights = array();
+
+        if ($type = $this->getAccessRestrictionsType()) {
+            $rights['copyright'] = $type['copyright'];
+            if (isset($type['link'])) {
+                $rights['link'] = $type['link'];
+            }
+        }
+
+        $desc = $this->getAccessRestrictions();
+        if ($desc && count($desc)) {
+            $description = array();
+            foreach ($desc as $p) {
+                $description[] = (string)$p;
+            }
+            $rights['description'] = $description;
+        }
+
+        return isset($rights['copyright']) || isset($rights['description'])
+            ? $rights
+            : parent::getImageRights()
+        ;
+    }
+
+    /**
+     * Get access restriction notes for the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getAccessRestrictions()
+    {
+        if ($rights = $this->xml->xpath('lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource/rightsType')) {
+            $rights = $rights[0];
+
+            if ($conceptID = $rights->xpath('conceptID')) {
+                $conceptID = $conceptID[0];
+                $attributes = $conceptID->attributes();
+                if ($attributes->type && strtolower($attributes->type) == 'copyright') {
+                    if ($desc = $rights->xpath('term')) {                        
+                        return array((string)$desc[0]);
+                    } 
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get type of access restriction for the record.
+     *
+     * @return mixed array with keys:
+     *   'copyright'   Copyright (e.g. 'CC BY 4.0')
+     *   'link'        Link to copyright info, see IndexRecord::getRightsLink
+     *   or false if no access restriction type is defined.
+     * @access protected
+     */
+    protected function getAccessRestrictionsType()
+    {
+        if ($rights = $this->xml->xpath('lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource/rightsType')) {
+            $rights = $rights[0];
+
+            if ($conceptID = $rights->xpath('conceptID')) {
+                $conceptID = $conceptID[0];
+                $attributes = $conceptID->attributes();
+                if ($attributes->type && strtolower($attributes->type) == 'copyright') {
+                    $data = array();
+                    
+                    $copyright = (string)$conceptID;
+                    $data['copyright'] = $copyright;
+
+                    $copyright = strtoupper($copyright);
+                    if ($link = $this->getRightsLink($copyright)) {
+                        $data['link'] = $link;
+                    }
+                    return $data;
+                }
+            }
+        }
+        return false;
+    }
+
 }

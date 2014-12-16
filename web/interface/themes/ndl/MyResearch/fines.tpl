@@ -34,9 +34,7 @@
       {elseif $paymentNotPermittedInfo}
         <div class="error">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
       {elseif $registerPayment}
-          {if $registerPayment}
-            <span class="ajax_register_payment hide" id="onlinePaymentStatusSpinner">{translate text="Registering Payment"}</span>
-          {/if}
+          <span class="ajax_register_payment hide" id="onlinePaymentStatusSpinner">{translate text="Registering Payment"}</span>
           <div id="onlinePaymentStatus" class="info hide">
           </div>
       {elseif $paymentOk}
@@ -104,7 +102,12 @@
             </td>
             <td>{$record.checkout|escape}</td>
             <td>{$record.duedate|escape}</td>
-            <td class="fine">{translate text=$record.fine|escape prefix="status_"}</td>
+            <td class="fine">
+              {if $record.institution_name}
+                {translate text=$record.institution_name prefix='library_'}<br/>
+              {/if}
+              {translate text=$record.fine|escape prefix="status_"}
+            </td>
             <td class="fineAmount" style="text-align:right;">
               {if $onlinePaymentEnabled && !$record.payableOnline}<span class="onlinePaymentNonpayableAmount">{/if}
               {$record.balance/100.00|safe_money_format|replace:"Eu":" €"|escape}
@@ -113,7 +116,8 @@
           </tr>
         {/foreach}
           <tr><td colspan="5" class="fineBalance">
-            {if $onlinePaymentEnabled}          
+          <div class="fineTotal">{translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span></div>
+          {if $onlinePaymentEnabled}          
              {if $paymentBlocked}
                 <div class="onlinePaymentRemark">{$paymentNotPermittedInfo|translate} {if $paymentNotPermittedMinimumFee}{$minimumFee/100.00|safe_money_format|replace:"Eu":" €"|escape}{/if}</div>
              {else}
@@ -130,8 +134,6 @@
                   {if $onlinePaymentForm}{include file=$onlinePaymentForm paymentAmountFormatted=$amountFormatted}{/if}
                </div>
              {/if}
-         {else}
-           {translate text='Balance total'}: <span class="hefty">{$sum/100.00|safe_money_format|replace:"Eu":" €"|escape}</span
          {/if}
         </td></tr>
        {/if}

@@ -554,6 +554,10 @@
 	.metalibSearchSets {
 		width:100% !important;	
 	}
+	.resultHoldingsContainer table {
+		padding-bottom: 10px;
+		margin-top: 10px;
+	}
     
     /* Myresearch */
 

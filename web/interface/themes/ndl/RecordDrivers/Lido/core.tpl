@@ -344,6 +344,10 @@ End Cover Image *}
   </tr>
   {/if}
 
+  {if $extendedMetadata}
+     {include file=$extendedMetadata}
+  {/if}
+
   {if !empty($coreURLs) || $coreOpenURL}
   <tr valign="top" class="recordURLs">
     <th>{translate text='Online Access'}: </th>
