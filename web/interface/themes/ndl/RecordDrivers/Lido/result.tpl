@@ -140,7 +140,7 @@
           
   </div>
   <div class="last addToFavLink">
-      <a href="{$url}/Record/{$summId|escape:"url"}/Save" onClick="getLightbox('Record', 'Save', '{$summId|escape}', '', '{translate text='Add to favorites'}', 'Record', 'Save', '{$summId|escape}'); return false;" class="fav tool" title="{translate text='Add to favorites'}"></a>
+      <a id="saveRecord{$summId|escape}" href="{$url}/Record/{$summId|escape:"url"}/Save" class="fav tool saveRecord" title="{translate text='Add to favorites'}"></a>
   </div>
   <div class="clear"></div>
  </div>

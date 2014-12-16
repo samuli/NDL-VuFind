@@ -2607,7 +2607,6 @@ ul.recordSet .addToFavLink {
 .addToFavLink > a {
     height: 20px;
 }
-
 .addToFavoritesSelector {
     right: 0;
     position: absolute;
@@ -2615,6 +2614,9 @@ ul.recordSet .addToFavLink {
 .addToFavoritesSelector .dropdown ul {
     right: 0;
     top: 2em;
+}
+#resultToolbar .addToFavoritesSelector .dropdown ul {
+    padding-top: 0;
 }
 li#saveLink {
     position: relative;
@@ -6832,7 +6834,7 @@ ul.recordSet.galleryView .addToFavLink {
     position: absolute;
     right: 0px;
     top: 0px;
-    z-index: 10;
+    z-index: 1001;
     display:none;
 }
 ul.recordSet.galleryView .gridPublished {
