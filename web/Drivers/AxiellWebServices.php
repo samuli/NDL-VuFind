@@ -136,9 +136,7 @@ class AxiellWebServices implements DriverInterface
      */
     public function checkRequestIsValid($id, $data, $patron)
     {
-
-        //TODO Should there be additional control?
-
+        // There's currently not much that can be checked here with AWS.
         return true;
     }
 
