@@ -155,7 +155,16 @@
                 {assign var="pickupDisplay" value=$resource.ils_details.location}
               {/if}
             {/if}
-            {if !empty($pickupDisplay)}
+            {if $resource.ils_details.modifiable == true}
+                <div class="changePickUpLocation">
+                    <span id="pickUpLoader"></span>
+                    <select id="pickUpLocation" data-reservationid="{if $resource.ils_details.reservation_id}{$resource.ils_details.reservation_id|escape}{/if}" data-created="{if $resource.ils_details.create}{$resource.ils_details.create}{/if}" data-expires="{if $resource.ils_details.expire}{$resource.ils_details.expire}{/if}">
+                        {foreach from=$pickup item=library}
+                        <option value="{$library.locationID|escape}" {if $library.locationDisplay == $resource.ils_details.location}selected="selected"{/if}>{$library.locationDisplay|escape}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            {elseif !empty($pickupDisplay)}
               <strong>{translate text='pick_up_location'}:</strong>
               {if $pickupTranslate}{translate text=$pickupDisplay}{else}{$pickupDisplay|escape}{/if}
               <br />
@@ -256,7 +265,6 @@
           {assign var=summThumb value=$resource.summThumb}  
           {assign var=summId value=$resource.id}          
           {assign var=img_count value=$summImages|@count}
-     
 
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
@@ -365,5 +373,41 @@
 </div>
 
 <div class="clear"></div>
+
+{literal}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('select#pickUpLocation').change(function() {
+            $('.holdsMessage').fadeOut(100);
+            var pickup = $(this).val();
+            var created = $(this).data('created');
+            var expires = $(this).data('expires');
+            var reservationId = $(this).data('reservationid');
+            var url = path + '/AJAX/JSON_Hold?' + $.param({method:'changePickupLocation', pickup :pickup, created:created, expires:expires, reservationId:reservationId });
+            $('#pickUpLoader').addClass('ajax_hold_request_loading');
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+            }).always(function() {
+                $('#pickUpLoader').removeClass();
+                if (!$('.holdsMessage').length ) {
+                    $('.resultHead').append($('<div style="display:none;" class="holdsMessage"></div>'));
+                }
+            }).done(function(msg) {
+                var holdsMsg = '';
+                if (msg.status == 'OK') {
+                    holdsMsg = '<p class="success">{/literal}{translate text="call_slip_change_success"}{literal}</p>';
+                } else {
+                    holdsMsg = '<p class="error">{/literal}{translate text="call_slip_change_fail"}{literal}</p>';
+                }
+                $('.holdsMessage').html(holdsMsg).fadeIn(100);
+            }).error(function(msg) {
+                $('.holdsMessage').html('<p class="error">{/literal}{translate text="call_slip_change_fail"}{literal}</p>').fadeIn(100);
+            });
+        });
+    });
+</script>
+{/literal}
 
 <!-- END of: MyResearch/holds.tpl -->

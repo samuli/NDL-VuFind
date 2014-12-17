@@ -74,7 +74,7 @@
                     {if $holding.duedate != '' && !$holding.availability}
                       {translate text="Closest due"} {$holding.duedate}
                     {elseif $holding.ordered > 0}
-                      {translate text="status_Ordered} {$holding.ordered}
+                      {translate text="status_Ordered"} {$holding.ordered}
                     {else}
                       {translate text="status_`$holding.status`"}
                     {/if}

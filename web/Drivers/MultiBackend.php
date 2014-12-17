@@ -681,6 +681,37 @@ class MultiBackend implements DriverInterface
     }
 
     /**
+     * Change pick up location
+     *
+     * This is responsible for changing a pick up location of a hold
+     *
+     * @param array $patron      Patron information returned by the patronLogin
+     * method.
+     * @param array $holdDetails Hold information
+     *
+     * @return array
+     * @access public
+     */
+    public function changePickUpLocation($patron = false, $holdDetails = null)
+    {
+        $source = $this->getSource($patron['cat_username']);
+        $driver = $this->getDriver($source);
+        if (PEAR::isError($driver)) {
+            return $driver;
+        }
+        if ($driver) {
+            $result = $driver->changePickupLocation(
+                $this->stripIdPrefixes($patron, $source),
+                $this->stripIdPrefixes($holdDetails, $source)
+            );
+
+            return $result;
+
+        }
+        return new PEAR_Error('No suitable backend driver found');
+    }
+
+    /**
      * Get Default Request Group
      *
      * Returns the default request group

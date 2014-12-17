@@ -240,7 +240,7 @@
   $(document).ready(function() {
     $("#profile_form").validate();
   {/literal}
-  {if $changePassword}
+  {if $changePassword}{*
     {literal}
     $("#password_form").validate();
     $("#password_form input[type='password']").each(function() {
@@ -260,7 +260,7 @@
         }
     });
     {/literal}
-  {/if}
+  *}{/if}
   {literal}
   $('.editAddress').click(function(e) {
     var $account = $(this).closest('.profileGroup');

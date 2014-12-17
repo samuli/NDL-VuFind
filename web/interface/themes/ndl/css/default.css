@@ -5821,6 +5821,18 @@ table.holdingsContainerHolding {
     width: 100%;
 }
 
+table.holdingsContainerHolding .locationLink a.button:before {
+    content:'';
+    display:none;
+}
+
+table.holdingsContainerHolding .locationLink a.button {
+    background:#00a3b5;
+    line-height: 15px;
+    padding: 6px 10px;
+    color:#fff;
+}
+
 tr.holdingsContainerHeading th.location {
     padding-left: 23px;
     text-indent: -17px;
@@ -6392,8 +6404,15 @@ padding-right: 20px;
     width: 284px;
 }
 .myResearch .dueDate.floatright {
-text-align: right;
-padding-right: 10px !important;
+    text-align: right;
+    padding-right: 10px !important;
+}
+
+.myResearch .changePickUpLocation {
+    clear: both;
+    display: inline-block;
+    float: right;
+    margin-left:50px;
 }
 
 .myResearch.holdsList.driver-AxiellWebServices .positionDetails {

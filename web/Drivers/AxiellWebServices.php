@@ -218,10 +218,19 @@ class AxiellWebServices implements DriverInterface
             $branches = array();
             if (isset($location['holdings']) && is_array($location['holdings'])) {
                 foreach ($location['holdings'] as $i => $holding) {
+                    $holdable = !((isset($holding['department'])
+                        && $holding['department'] == 'Jokeri')
+                        || (isset($holding['status'])
+                        && $holding['status'] == 'Ordered'));
                     $branches[$i] = $holding['branch'];
                 }
                 array_multisort($branches, SORT_ASC, $vfHoldings[$key]['holdings']);
             }
+            // Disable reservations on Ordered & Jokeri holdings
+            if (isset($location['is_holdable'])) {
+                $vfHoldings[$key]['is_holdable'] = $holdable;
+            }
+
         }
         return empty($vfHoldings) ? false : $vfHoldings;
     }
@@ -251,6 +260,8 @@ class AxiellWebServices implements DriverInterface
                         $branchName = $branch->value;
                         $reservationStatus = $branch->reservationButtonStatus ==
                             'reservationOk';
+                        $reservableId = isset($branch->reservable)
+                            ? $branch->reservable : '';
                         $departments = is_object($branch->holdings->holding) ?
                             array($branch->holdings->holding) :
                             $branch->holdings->holding;
@@ -366,7 +377,8 @@ class AxiellWebServices implements DriverInterface
                                         'reservations' => $reservations,
                                     ),
                                     'title' => $group,
-                                    'is_holdable' => $reservationStatus
+                                    'is_holdable' => $reservationStatus,
+                                    'reservableId' => $branch->reservable
                                 );
                             }
 
@@ -782,7 +794,9 @@ class AxiellWebServices implements DriverInterface
             $hold['create'] = $reservation->validFromDate;
             $hold['position'] = isset($reservation->queueNo) ? $reservation->queueNo : '-';
             $hold['available'] = $reservation->reservationStatus == 'fetchable';
+            $hold['modifiable'] = $reservation->reservationStatus == 'active';
             $hold['item_id'] = '';
+            $hold['reservation_id'] = $reservation->id;
             $hold['volume'] = isset($reservation->catalogueRecord->volume) ? $reservation->catalogueRecord->volume : '';
             $hold['publication_year'] = isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '';
             $hold['title'] = isset($reservation->catalogueRecord->titles) ? $reservation->catalogueRecord->titles : '';
@@ -820,7 +834,10 @@ class AxiellWebServices implements DriverInterface
         $username = $user['cat_username'];
         $password = $user['cat_password'];
 
-        $id = $holdDetails['id']; //TODO: check if reservable is required
+        $id = isset($holdDetails['issueId'])
+        && $holdDetails['issueId'] != ''
+        && $holdDetails['issueId']
+            ? $holdDetails['issueId'] : $holdDetails['id'];
 
         $functionResult = 'getReservationBranchesResult';
         $result = $this->doSOAPRequest($this->reservations_wsdl, 'getReservationBranches', $functionResult, $username, array('getReservationBranchesParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage(), 'country' => 'FI', 'reservationEntities' => $id, 'reservationType' => 'normal')));
@@ -944,7 +961,11 @@ class AxiellWebServices implements DriverInterface
     {
         global $configArray;
 
-        $bibId = $holdDetails['id'];
+        $bibId = isset($holdDetails['issueId'])
+            && $holdDetails['issueId'] != ''
+            && $holdDetails['issueId']
+            ? $holdDetails['issueId'] : $holdDetails['id'];
+
 
         $username = $holdDetails['patron']['cat_username'];
         $password = $holdDetails['patron']['cat_password'];
@@ -1031,6 +1052,46 @@ class AxiellWebServices implements DriverInterface
     public function getCancelHoldDetails($holdDetails)
     {
         return $holdDetails['reqnum'];
+    }
+
+    /**
+     * Change Hold
+     *
+     * This is responsible for editing a hold
+     *
+     * @param string $patron      Patron array
+     * @param string $holdDetails The request details
+     *
+     * @return mixed           True if successful, false if unsuccessful, PEAR_Error
+     * on error
+     * @access public
+     */
+    public function changePickupLocation($patron, $holdDetails)
+    {
+        global $configArray;
+        $username = $patron['cat_username'];
+        $password = $patron['cat_password'];
+        $pickUpLocation = $holdDetails['pickup'];
+        $created = $this->dateFormat->convertFromDisplayDate(
+            "Y-m-d", $holdDetails['created']
+        );
+        $expires = $this->dateFormat->convertFromDisplayDate(
+            "Y-m-d", $holdDetails['expires']
+        );
+        $reservationId = $holdDetails['reservationId'];
+        list($organisation, $branch) = explode('.', $pickUpLocation, 2);
+
+        $result = $this->doSOAPRequest($this->reservations_wsdl, 'changeReservation', 'changeReservationResult', $username, array('changeReservationsParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'id' => $reservationId, 'pickUpBranchId' => $branch, 'validFromDate' => $created, 'validToDate' => $expires )));
+
+        if (PEAR::isError($result)) {
+            return array(
+                'success' => false,
+                'sysMessage' => $result->getMessage()
+            );
+        }
+        return array(
+            'success' => true
+        );
     }
 
     /**
@@ -1157,6 +1218,41 @@ class AxiellWebServices implements DriverInterface
             );
         }
 
+        return $results;
+    }
+
+    /**
+     * Change pin code
+     *
+     * @param String $cardDetails Patron card data
+     *
+     * @return array Response
+     */
+    public function changePassword($cardDetails)
+    {
+        $username = $cardDetails['patron']['cat_username'];
+        $password = $cardDetails['patron']['cat_password'];
+
+        $conf = array(
+            'arenaMember'  => $this->arenaMember,
+            'cardNumber'   => $cardDetails['patron']['cat_username'],
+            'cardPin'      => $cardDetails['oldPassword'],
+            'newCardPin'   => $cardDetails['newPassword'],
+        );
+
+        $result = $this->doSOAPRequest($this->patron_wsdl, 'changeCardPin', 'changeCardPinResult', $username, array('changeCardPinParam' => $conf));
+
+        if (PEAR::isError($result)) {
+            $results = array(
+                'success' => false,
+                'status' => $result->getMessage()
+            );
+        } else {
+            $results = array(
+                'success' => true,
+                'status' => '',
+            );
+        }
         return $results;
     }
 
