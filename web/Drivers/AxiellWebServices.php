@@ -218,19 +218,10 @@ class AxiellWebServices implements DriverInterface
             $branches = array();
             if (isset($location['holdings']) && is_array($location['holdings'])) {
                 foreach ($location['holdings'] as $i => $holding) {
-                    $holdable = !((isset($holding['department'])
-                        && $holding['department'] == 'Jokeri')
-                        || (isset($holding['status'])
-                        && $holding['status'] == 'Ordered'));
                     $branches[$i] = $holding['branch'];
                 }
                 array_multisort($branches, SORT_ASC, $vfHoldings[$key]['holdings']);
             }
-            // Disable reservations on Ordered & Jokeri holdings
-            if (isset($location['is_holdable'])) {
-                $vfHoldings[$key]['is_holdable'] = $holdable;
-            }
-
         }
         return empty($vfHoldings) ? false : $vfHoldings;
     }
@@ -336,6 +327,7 @@ class AxiellWebServices implements DriverInterface
                             $holding = array(
                                 'availability' => $available,
                                 'available'    => $nofAvailableForLoan,
+                                'organisation' => $organisation->value,
                                 'branch'       => $branchName,
                                 'department'   => $departmentName,
                                 'duedate'      => $dueDate,

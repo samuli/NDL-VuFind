@@ -303,7 +303,15 @@
               {/if}
             </span>
           </th>
-          <th class="locationLink">{$location.0.callnumber}</th>
+          <th class="locationLink">{$location.0.callnumber}
+            {if $location.0.journal && $location.0.is_holdable && $user && $user->cat_username && $location.0.reservableIdLink}
+              {if $holdingTitleHold != 'block'}
+                  <a class="button buttonFinna holdPlace" href="{$location.0.reservableIdLink|escape}">{translate text="title_hold_place"}</a>
+              {elseif $holdingTitleHold == 'block'}
+                  {translate text="hold_error_blocked"}
+              {/if}
+            {/if}
+          </th>
         </tr>
         {foreach from=$location.0.holdings item=holding name=holding}
           <tr class="copyDetails {if $smarty.foreach.holding.first}first{/if}">
@@ -312,7 +320,7 @@
             {else}
               <td></td>
             {/if}
-            <td class="copyNumber">{if $location.0.journal}{$location.0.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}</td>
+            <td class="copyNumber">{if $location.0.journal}{$holding.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}</td>
             <td class="copyInfo" colspan="2">
               <span class="{if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
               {if $holding.availability}
@@ -324,7 +332,7 @@
               {if $holding.duedate != '' && !$holding.availability}
                 <span class="statusExtra">{translate text="Due Date"}: <span class="returnDate">{$holding.duedate}</span></span>
               {elseif $holding.ordered > 0}
-                <span class="statusExtra">{translate text="status_Ordered}: {$holding.ordered}</span>
+                <span class="statusExtra">{translate text="status_Ordered"}: {$holding.ordered}</span>
               {/if}
             </td>
             <td class="availableOfTotal">{translate text="Available items"}: {$holding.available} / {$holding.total}</td>
