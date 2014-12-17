@@ -24,7 +24,7 @@
  * @package  Controller_Search
  * @author   Andrew Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Demian Katz <demian.katz@villanova.edu>
- * @author   Ere Maijala <ere.maijala@helsinki.fi> 
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
@@ -36,12 +36,12 @@ require_once 'sys/ResultScroller.php';
 
 /**
  * Two Column Results Action for Search
- *  
+ *
  * @category VuFind
  * @package  Controller_Search
  * @author   Andrew Nagy <vufind-tech@lists.sourceforge.net>
  * @author   Demian Katz <demian.katz@villanova.edu>
- * @author   Ere Maijala <ere.maijala@helsinki.fi> 
+ * @author   Ere Maijala <ere.maijala@helsinki.fi>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
@@ -61,7 +61,7 @@ class DualResults extends Action
         if (!$interface->get_template_vars('dualResultsEnabled')) {
             PEAR::raiseError(new PEAR_Error("Dual result view is not enabled."));
         }
-        
+
         // Initialise from the current search globals
         $searchObject = SearchObjectFactory::initSearchObject();
         $searchObject->init();
@@ -74,7 +74,7 @@ class DualResults extends Action
         if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
             $interface->assign('openUrlAutoCheck', true);
         }
-        
+
         // Set Proxy URL
         if (isset($configArray['EZproxy']['host'])) {
             $interface->assign('proxy', $configArray['EZproxy']['host']);
@@ -86,12 +86,12 @@ class DualResults extends Action
         }
 
         $interface->assign(
-        	"showContext",
+            "showContext",
             isset($configArray['Content']['showHierarchyTree'])
             ? $configArray['Content']['showHierarchyTree']
             : false
         );
-        
+
         // Process Search
         $result = $searchObject->processSearch(true, true);
         if (PEAR::isError($result)) {
@@ -107,7 +107,7 @@ class DualResults extends Action
         $interface->assign('searchType',          $searchObject->getSearchType());
         // Will assign null for an advanced search
         $interface->assign('searchIndex',         $searchObject->getSearchIndex());
-        
+
         // Setup Display
         $interface->assign('sitepath', $configArray['Site']['path']);
         $interface->assign('more', $searchObject->renderSearchUrl());
@@ -120,15 +120,15 @@ class DualResults extends Action
         if ($spatialDateRangeType = $searchObject->getSpatialDateRangeFilterType()) {
             $interface->assign('spatialDateRangeType', $spatialDateRangeType);
         }
-        
+
         $interface->assign('pci_more', str_replace('/Search/Results', '/PCI/Search', $searchObject->renderSearchUrl()));
-        
+
         if ($searchObject->getResultTotal() > 0) {
             // Assign interface variables
             $summary = $searchObject->getResultSummary();
             $interface->assign('recordCount', $summary['resultTotal']);
             $interface->assign('recordStart', $summary['startRecord']);
-            
+
             // We can't use the provided endRecord value (see note below about
             // setting limit), so we need to calculate it manually:
             $endRecord = $summary['startRecord'] + 9;
@@ -168,7 +168,7 @@ class DualResults extends Action
 
         // Save the URL of this search to the session so we can return to it easily:
         $_SESSION['lastSearchURL'] = str_replace('/Search/Results', '/Search/DualResults', $searchObject->renderSearchUrl());
-        
+
         // Save the display query too, so we can use it e.g. in the breadcrumbs
         $_SESSION['lastSearchDisplayQuery'] = $searchObject->displayQuery();
     }
