@@ -609,6 +609,7 @@ class AxiellWebServices implements DriverInterface
         foreach ($loans as $loan) {
             $trans = array();
             $trans['id'] = $loan->catalogueRecord->id;
+            $trans['item_id'] = $loan->id;
             $trans['title'] = $loan->catalogueRecord->title;
             $trans['duedate'] = $loan->loanDueDate;
             $trans['renewable'] = $loan->loanStatus->isRenewable == 'yes';
@@ -664,7 +665,7 @@ class AxiellWebServices implements DriverInterface
     public function renewMyItems($renewDetails)
     {
         $succeeded = 0;
-        $results = array();
+        $results = array('blocks' => array(), 'details' => array());
         foreach ($renewDetails['details'] as $id) {
             $username = $renewDetails['patron']['cat_username'];
             $password = $renewDetails['patron']['cat_password'];
@@ -673,17 +674,20 @@ class AxiellWebServices implements DriverInterface
             $result = $this->doSOAPRequest($this->loans_wsdl, 'RenewLoans', $functionResult, $username, array('renewLoansRequest' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'loans' => array($id))));
 
             if (PEAR::isError($result)) {
-                $results[$id] = array(
+                $results['details'][$id] = array(
                     'success' => false,
                     'status' => 'Renewal failed', // TODO
                     'sys_message' => $result->getMessage()
                 );
             } else {
-                $results[$details] = array(
-                    'success' => true,
-                    'status' => 'Loan renewed', // TODO
-                    'sys_message' => '',
-                    'item_id' => $details,
+                $status = trim($result->$functionResult->loans->loan->loanStatus->status);
+                $success = $status === 'isRenewedToday';
+
+                $results['details'][$id] = array(
+                    'success' => $success,
+                    'status' => $success ? 'Loan renewed' : 'Renewal failed',
+                    'sysMessage' => $status,
+                    'item_id' => $id,
                     'new_date' => $this->formatDate($result->$functionResult->loans->loan->loanDueDate),
                     'new_time' => ''
                 );
