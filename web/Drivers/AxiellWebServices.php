@@ -611,7 +611,7 @@ class AxiellWebServices implements DriverInterface
             $trans['id'] = $loan->catalogueRecord->id;
             $trans['title'] = $loan->catalogueRecord->title;
             $trans['duedate'] = $loan->loanDueDate;
-            $trans['renewable'] = ($loan->loanStatus->isRenewable == 'yes') ? true : false;
+            $trans['renewable'] = $loan->loanStatus->isRenewable == 'yes';
             $trans['message'] = $this->mapStatus($loan->loanStatus->status);
             $trans['barcode'] = $loan->id;
             $trans['renewalCount'] = max(array(0, $this->config['Loans']['renewalLimit'] - $loan->remainingRenewals));
@@ -774,7 +774,7 @@ class AxiellWebServices implements DriverInterface
             $hold['type'] = $reservation->reservationStatus;
             $hold['id'] = $reservation->catalogueRecord->id;
             $hold['location'] = $reservation->pickUpBranchId;
-            $hold['reqnum'] = $reservation->isDeletable == yes ? isset($reservation->id) ? $reservation->id : '' : '';
+            $hold['reqnum'] = ($reservation->isDeletable == 'yes' && isset($reservation->id)) ? $reservation->id : '';
             $hold['pickupnum'] = isset($reservation->pickUpNo) ? $reservation->pickUpNo : '';
             $hold['expire'] = $this->formatDate($expireDate);
             $hold['create'] = $reservation->validFromDate;
@@ -1066,14 +1066,8 @@ class AxiellWebServices implements DriverInterface
     /**
      * Set patron phone number
      *
-     * @param array $patron Patron array
-     *
-     * @return array Response
-     */
-  /**
-     * Set patron phone number
-     *
-     * @param array $patron Patron array
+     * @param array  $patron Patron array
+     * @param string $phone  Phone number
      *
      * @return array Response
      */
@@ -1112,8 +1106,8 @@ class AxiellWebServices implements DriverInterface
             $results = array(
                 'success' => true,
                 'status' => 'Phone number changed',
-                'sys_message' => '',
-        );
+                'sys_message' => ''
+            );
         }
         return $results;
     }
@@ -1166,16 +1160,16 @@ class AxiellWebServices implements DriverInterface
 
 
     /**
+     * Send a SOAP request
      *
-     * @param string    $wsdl           Name of the wsdl file
-     * @param string    $function       Name of the function
-     * @param string    $functionResult Name of the Result tag
-     * @param string    $id             Username or record id
-     * @param array     $params         Parameters needed for the SOAP call
+     * @param string $wsdl           Name of the wsdl file
+     * @param string $function       Name of the function
+     * @param string $functionResult Name of the Result tag
+     * @param string $id             Username or record id
+     * @param array  $params         Parameters needed for the SOAP call
      *
      * @return object|PEAR_Error SOAP response or PEAR_Error
      */
-
     protected function doSOAPRequest($wsdl, $function, $functionResult, $id, $params)
     {
         $client = new SoapClient($wsdl, $this->soapOptions);
@@ -1232,12 +1226,11 @@ class AxiellWebServices implements DriverInterface
      *
      * @param string     $function Function name
      * @param string     $message  Error message
-     * @param string     $username User name for logging
+     * @param string     $id       ID for logging
      * @param SoapClient &$client  Soap client
      *
      * @return PEAR_Error PEAR Error message
      */
-
     protected function handleError($function, $message, $id, &$client)
     {
         $this->debugLog("$function Request failed for '$id'");

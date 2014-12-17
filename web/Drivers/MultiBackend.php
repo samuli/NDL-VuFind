@@ -410,12 +410,12 @@ class MultiBackend implements DriverInterface
      *
      * @param array $user The patron array from patronLogin
      *
-     * @return mixed int payable amount, 
-     * string error message (not translated) if all fees are not payable online 
-     * or if the total amount does not exceed or equal minimum payable fee, 
+     * @return mixed int payable amount,
+     * string error message (not translated) if all fees are not payable online
+     * or if the total amount does not exceed or equal minimum payable fee,
      * or false on error.
      * @access public
-     */    
+     */
     public function getOnlinePayableAmount($user)
     {
         $source = $this->getSource($user['cat_username']);
@@ -426,18 +426,18 @@ class MultiBackend implements DriverInterface
         if ($driver) {
             return $driver->getOnlinePayableAmount($this->stripIdPrefixes($user, $source));
         }
-        return new PEAR_Error('No suitable backend driver found');        
+        return new PEAR_Error('No suitable backend driver found');
     }
 
     /**
-     * Mark fees as paid. 
+     * Mark fees as paid.
      *
      * This is called after a successful online payment.
      *
      * @param array $user   The patron array from patronLogin
      * @param int   $amount Amount to be registered as payed.
      *
-     * @return mixed true if successful, false if payment register could 
+     * @return mixed true if successful, false if payment register could
      * not be inited, or PEAR_Error if registering failed.
      * @access public
      */
@@ -452,7 +452,7 @@ class MultiBackend implements DriverInterface
         if ($driver) {
             return $driver->markFeesAsPaid($this->stripIdPrefixes($user, $source), $amount);
         }
-        return new PEAR_Error('No suitable backend driver found');        
+        return new PEAR_Error('No suitable backend driver found');
     }
 
     /**
@@ -1120,7 +1120,7 @@ class MultiBackend implements DriverInterface
         }
         return '';
     }
-    
+
     /**
      * Get record source driver
      *
@@ -1140,11 +1140,12 @@ class MultiBackend implements DriverInterface
     /**
      * Set patron phone number
      *
-     * @param array $patron Patron array
+     * @param array  $patron Patron array
+     * @param string $phone  Phone number
      *
      * @return array
      */
-    public function setPhoneNumber($patron, $phone) 
+    public function setPhoneNumber($patron, $phone)
     {
         $source = $this->getSource($patron['id']);
         $driver = $this->getDriver($source);
@@ -1162,7 +1163,7 @@ class MultiBackend implements DriverInterface
      *
      * @return array
      */
-    public function setEmailAddress($patron, $email) 
+    public function setEmailAddress($patron, $email)
     {
         $source = $this->getSource($patron['id']);
         $driver = $this->getDriver($source);
