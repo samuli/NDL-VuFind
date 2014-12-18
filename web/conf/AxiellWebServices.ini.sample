@@ -8,3 +8,7 @@ patron_wsdl = axiell_patron.wsdl
 loans_wsdl = axiell_loans.wsdl
 payments_wsdl = axiell_payments.wsdl
 reservations_wsdl = axiell_reservations.wsdl
+
+[changePassword]
+minLength = 4
+maxLength = 4
