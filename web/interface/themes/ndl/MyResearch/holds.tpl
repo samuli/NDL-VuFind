@@ -135,6 +135,9 @@
             {if $resource.ils_details.publication_year}
               <strong>{translate text='Year of Publication'}:</strong> {$resource.ils_details.publication_year|escape}<br />
             {/if}
+            {if $resource.ils_details.note}
+            <strong>{translate text='Additional information'}:</strong> {$resource.ils_details.note|escape}<br />
+            {/if}
             </td>
             <td class="dueDate floatright">
             {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
@@ -157,8 +160,8 @@
             {/if}
             {if $resource.ils_details.modifiable == true}
                 <div class="changePickUpLocation">
-                    <span id="pickUpLoader"></span>
-                    <select id="pickUpLocation" data-reservationid="{if $resource.ils_details.reservation_id}{$resource.ils_details.reservation_id|escape}{/if}" data-created="{if $resource.ils_details.create}{$resource.ils_details.create}{/if}" data-expires="{if $resource.ils_details.expire}{$resource.ils_details.expire}{/if}">
+                    <span class="pickUpLoader"></span>
+                    <select data-reservationid="{if $resource.ils_details.reservation_id}{$resource.ils_details.reservation_id|escape}{/if}" data-created="{if $resource.ils_details.create}{$resource.ils_details.create|escape}{/if}" data-expires="{if $resource.ils_details.expire}{$resource.ils_details.expire|escape}{/if}">
                         {foreach from=$pickup item=library}
                         <option value="{$library.locationID|escape}" {if $library.locationDisplay == $resource.ils_details.location}selected="selected"{/if}>{$library.locationDisplay|escape}</option>
                         {/foreach}
@@ -377,20 +380,20 @@
 {literal}
 <script type="text/javascript">
     $(document).ready(function(){
-        $('select#pickUpLocation').change(function() {
+        $('.changePickUpLocation select').change(function() {
             $('.holdsMessage').fadeOut(100);
             var pickup = $(this).val();
             var created = $(this).data('created');
             var expires = $(this).data('expires');
             var reservationId = $(this).data('reservationid');
             var url = path + '/AJAX/JSON_Hold?' + $.param({method:'changePickupLocation', pickup :pickup, created:created, expires:expires, reservationId:reservationId });
-            $('#pickUpLoader').addClass('ajax_hold_request_loading');
+            $(this).prev('span').addClass('ajax_hold_request_loading');
             $.ajax({
                 type: "GET",
                 url: url,
                 dataType: 'json',
             }).always(function() {
-                $('#pickUpLoader').removeClass();
+                $('.pickUpLoader').removeClass('ajax_hold_request_loading');
                 if (!$('.holdsMessage').length ) {
                     $('.resultHead').append($('<div style="display:none;" class="holdsMessage"></div>'));
                 }

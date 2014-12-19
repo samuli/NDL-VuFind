@@ -3991,12 +3991,12 @@ a.fulltext.available {
     padding: 2px 2px 1px 20px;
 }
 .myResearch .smallNotification {
-    color: #CCC;
+    color: #999;
     font-size: 0.9em;
-    text-align: left;
-    font-weight:400;
-    line-height:1.1em;
-    max-width:50px;
+    font-weight: 500;
+    line-height: 1.1em;
+    max-width: 50px;
+    text-align: center;
 }
 
 /***** Results page blocks ****/

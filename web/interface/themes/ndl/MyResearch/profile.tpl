@@ -234,35 +234,9 @@
       var dialog = getPageInLightbox(url, "{/literal}{translate text="delete_account_title"}{literal}");
       e.preventDefault();
   });
-  {/literal}
-
-  {literal}
   $(document).ready(function() {
     $("#profile_form").validate();
-  {/literal}
-  {if $changePassword}{*
-    {literal}
-    $("#password_form").validate();
-    $("#password_form input[type='password']").each(function() {
-        $(this).rules("add", {
-            minlength: {/literal}{$changePassword.minLength}{literal},
-            maxlength: {/literal}{$changePassword.maxLength}{literal},
-            messages: {
-                {/literal}minlength: jQuery.format("{translate text="Minimum length `$smarty.ldelim`0`$smarty.rdelim` characters"}"){literal},
-                {/literal}maxlength: jQuery.format("{translate text="Maximum length `$smarty.ldelim`0`$smarty.rdelim` characters"}"){literal}
-            },
-        });
-    });
-    $("#newPassword2").rules("add", {
-        equalTo: '#newPassword',
-        messages: {
-            equalTo: "{/literal}{translate text='change_password_error_verification'}{literal}"
-        }
-    });
-    {/literal}
-  *}{/if}
-  {literal}
-  $('.editAddress').click(function(e) {
+    $('.editAddress').click(function(e) {
     var $account = $(this).closest('.profileGroup');
     var data = {
       'changeAddressRequest':true,

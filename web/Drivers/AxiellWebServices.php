@@ -214,17 +214,30 @@ class AxiellWebServices implements DriverInterface
         } else {
             $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
         }
-        foreach ($vfHoldings as $key => $location) {
+        foreach ($vfHoldings as $key => &$location) {
             $branches = array();
+            $holdingCount = 0;
+            $notHoldable = 0;
             if (isset($location['holdings']) && is_array($location['holdings'])) {
+                $holdingCount = count($location['holdings']);
                 foreach ($location['holdings'] as $i => $holding) {
+                    if (isset($holding['status'])
+                        && ($holding['status'] == 'Ordered'
+                        || $holding['status'] == 'On Reference Desk')
+                    ) {
+                        $notHoldable++;
+                    }
                     $branches[$i] = $holding['branch'];
+                }
+                if ($notHoldable == $holdingCount) {
+                    $location['is_holdable'] = 0;
                 }
                 array_multisort($branches, SORT_ASC, $vfHoldings[$key]['holdings']);
             }
         }
         return empty($vfHoldings) ? false : $vfHoldings;
     }
+
 
     /**
      * This is responsible for iterating the organisation holdings
@@ -773,9 +786,7 @@ class AxiellWebServices implements DriverInterface
         $reservations = is_object($result->$functionResult->reservations->reservation) ? array($result->$functionResult->reservations->reservation) : $result->$functionResult->reservations->reservation;
 
         foreach ($reservations as $reservation) {
-
             $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
-
             $hold = array();
             $hold['type'] = $reservation->reservationStatus;
             $hold['id'] = $reservation->catalogueRecord->id;
@@ -792,6 +803,7 @@ class AxiellWebServices implements DriverInterface
             $hold['volume'] = isset($reservation->catalogueRecord->volume) ? $reservation->catalogueRecord->volume : '';
             $hold['publication_year'] = isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '';
             $hold['title'] = isset($reservation->catalogueRecord->titles) ? $reservation->catalogueRecord->titles : '';
+            $hold['note'] = isset($reservation->note) ? $reservation->note : '';
             $holdsList[] = $hold;
         }
 
@@ -828,12 +840,10 @@ class AxiellWebServices implements DriverInterface
 
         $id = isset($holdDetails['issueId'])
         && $holdDetails['issueId'] != ''
-        && $holdDetails['issueId']
             ? $holdDetails['issueId'] : $holdDetails['id'];
 
         $functionResult = 'getReservationBranchesResult';
         $result = $this->doSOAPRequest($this->reservations_wsdl, 'getReservationBranches', $functionResult, $username, array('getReservationBranchesParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage(), 'country' => 'FI', 'reservationEntities' => $id, 'reservationType' => 'normal')));
-
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -953,11 +963,15 @@ class AxiellWebServices implements DriverInterface
     {
         global $configArray;
 
-        $bibId = isset($holdDetails['issueId'])
+        if (isset($holdDetails['issueId'])
             && $holdDetails['issueId'] != ''
-            && $holdDetails['issueId']
-            ? $holdDetails['issueId'] : $holdDetails['id'];
-
+        ) {
+            $bibId = $holdDetails['issueId'];
+            $reservationSource = 'holdings';
+        } else {
+            $bibId = $holdDetails['id'];
+            $reservationSource = 'catalogueRecordDetail';
+        }
 
         $username = $holdDetails['patron']['cat_username'];
         $password = $holdDetails['patron']['cat_password'];
@@ -976,7 +990,7 @@ class AxiellWebServices implements DriverInterface
         $pickUpLocation = $holdDetails['pickUpLocation'];
         list($organisation, $branch) = explode('.', $pickUpLocation, 2);
 
-        $result = $this->doSOAPRequest($this->reservations_wsdl, 'addReservation', 'addReservationResult', $username, array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => 'catalogueRecordDetail', 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));
+        $result = $this->doSOAPRequest($this->reservations_wsdl, 'addReservation', 'addReservationResult', $username, array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => $reservationSource, 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));
 
         if (PEAR::isError($result)) {
             return array(

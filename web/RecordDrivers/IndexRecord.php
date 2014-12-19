@@ -815,15 +815,28 @@ class IndexRecord implements RecordInterface
 
         // Load real-time data if available:
         $holdings = $this->getRealTimeHoldings($patron);
-        $interface->assign('holdings', $holdings);
-       
+
+        // Get patron to see if holds can be placed
+        $patron = UserAccount::isLoggedIn() ? UserAccount::catalogLogin() : false;
+        if (PEAR::isError($patron)) {
+            $patron = false;
+        }
+
+        // Get record driver
+        $id = $this->getUniqueID();
+        $db = ConnectionManager::connectToIndex();
+        if (!($record = $db->getRecord($id))) {
+            PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
+        }
+        $recordDriver = RecordDriverFactory::initRecordDriver($record);
+
         $holdCount = 0;
         $requestCount = 0;
         if (is_array($holdings)) {
-            foreach ($holdings as $locationArray) {
+            foreach ($holdings as &$locationArray) {
                 if (is_array($locationArray)) {
-                    foreach ($locationArray as $location) {
-                        if (is_array($location) && isset($location['status']) 
+                    foreach ($locationArray as &$location) {
+                        if (is_array($location) && isset($location['status'])
                             && isset($location['status']['reservations'])
                         ) {
                             $requestCount = $location['status']['reservations'];
@@ -835,10 +848,22 @@ class IndexRecord implements RecordInterface
                                 }
                             }
                         }
+                        if (isset($location['reservableId'])
+                            && $location['reservableId']
+                            && $location['reservableId'] != ''
+                            && $patron !== false
+                        ) {
+                            $location['reservableIdLink'] =
+                                $recordDriver->getRealTimeJournalIssueHold(
+                                    $location['reservableId'], $id
+                                );
+                        }
                     }
                 }
             }
         }
+
+        $interface->assign('holdings', $holdings);
         $interface->assign('holdCount', $holdCount);
         $interface->assign('requestCount', $requestCount);
         $interface->assign('history', $this->getRealTimeHistory());
