@@ -139,7 +139,7 @@ class HoldLogic
             }
 
             $mode = CatalogConnection::getHoldsMode();
-            
+
             if ($mode == "disabled") {
                  $holdings = $this->standardHoldings($result);
             } else if ($mode == "driver") {
@@ -148,7 +148,7 @@ class HoldLogic
                 $holdings = $this->generateHoldings($result, $mode);
             }
         }
-        // Don't format holdings as we want to keep call numbers separate 
+        // Don't format holdings as we want to keep call numbers separate
         // and it would ruin notes and summaries
         //return $this->formatHoldings($holdings);
         return $this->sortHoldings($holdings);
@@ -203,9 +203,13 @@ class HoldLogic
                 }
             }
         }
-        $checkHolds = !$disallowHolds && $this->catalog->checkFunction("Holds", $id);
-        $checkCallSlips = !$disallowHolds && $this->catalog->checkFunction("CallSlips", $id);
-        $checkUBRequests = !$disallowHolds && $this->catalog->checkFunction("UBRequests", $id);
+        if ($disallowHolds) {
+            return $holdings;
+        }
+        // checkFunction returns an array or false, so make sure to keep the array
+        $checkHolds = $this->catalog->checkFunction('Holds', $id);
+        $checkCallSlips = $this->catalog->checkFunction('CallSlips', $id);
+        $checkUBRequests = $this->catalog->checkFunction('UBRequests', $id);
         if (count($result)) {
             foreach ($result as $copy) {
                 $show = !in_array($copy['location'], $this->hideHoldings);
@@ -292,7 +296,7 @@ class HoldLogic
             $checkHolds = $this->catalog->checkFunction("Holds", $id);
             $checkCallSlips = $this->catalog->checkFunction("CallSlips", $id);
             $checkUBRequests = $this->catalog->checkFunction("UBRequests", $id);
-            
+
             if (is_array($holdings)) {
                 // Generate Links
                 // Loop through each holding
@@ -499,14 +503,14 @@ class HoldLogic
 
         return $link;
     }
-    
+
     /**
-     * Support method to rearrange the holdings array by location, 
+     * Support method to rearrange the holdings array by location,
      * call number, and number.
-     * 
+     *
      * @param array $holdings An associative array of location => item array
      *
-     * @return array          An associative array keyed by location 
+     * @return array          An associative array keyed by location
      * @access protected
      */
     protected function sortHoldings($holdings)
@@ -522,6 +526,6 @@ class HoldLogic
             $items = array_reverse($items);
         }
         return $holdings;
-    }    
+    }
 }
 ?>

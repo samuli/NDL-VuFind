@@ -157,8 +157,11 @@ class HoldLogicTitle
                 $disallowHolds = count(array_intersect($record['format'], $configArray['Catalog']['disable_driver_hold_actions']));
             }
         }
+        if ($disallowHolds) {
+            return false;
+        }
         // Get Hold Details
-        $checkHolds = !$disallowHolds && $this->catalog->checkFunction("Holds", $id);
+        $checkHolds = $this->catalog->checkFunction('Holds', $id);
         $data = array(
             'id' => $id,
             'level' => "title"
@@ -223,7 +226,7 @@ class HoldLogicTitle
                 }
                 $addlink = $holdings && $allHoldable;
             }
-                
+
             if ($addlink) {
                 if ($checkHolds['function'] == "getHoldLink") {
                     /* Return opac link */
