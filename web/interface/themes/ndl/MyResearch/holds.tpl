@@ -159,14 +159,15 @@
               {/if}
             {/if}
             {if $resource.ils_details.modifiable == true}
-                <div class="changePickUpLocation">
-                    <span class="pickUpLoader"></span>
-                    <select data-reservationid="{if $resource.ils_details.reservation_id}{$resource.ils_details.reservation_id|escape}{/if}" data-created="{if $resource.ils_details.create}{$resource.ils_details.create|escape}{/if}" data-expires="{if $resource.ils_details.expire}{$resource.ils_details.expire|escape}{/if}">
-                        {foreach from=$pickup item=library}
-                        <option value="{$library.locationID|escape}" {if $library.locationDisplay == $resource.ils_details.location}selected="selected"{/if}>{$library.locationDisplay|escape}</option>
-                        {/foreach}
-                    </select>
-                </div>
+              <div class="changePickUpLocation">
+                <strong>{translate text='pick_up_location'}:</strong>
+                <span class="pickUpLoader"></span>
+                <select data-reservationid="{if $resource.ils_details.reservation_id}{$resource.ils_details.reservation_id|escape}{/if}" data-created="{if $resource.ils_details.create}{$resource.ils_details.create|escape}{/if}" data-expires="{if $resource.ils_details.expire}{$resource.ils_details.expire|escape}{/if}">
+                  {foreach from=$pickup item=library}
+                  <option value="{$library.locationID|escape}" {if $library.locationDisplay == $resource.ils_details.location}selected="selected"{/if}>{$library.locationDisplay|escape}</option>
+                  {/foreach}
+                </select>
+              </div>
             {elseif !empty($pickupDisplay)}
               <strong>{translate text='pick_up_location'}:</strong>
               {if $pickupTranslate}{translate text=$pickupDisplay}{else}{$pickupDisplay|escape}{/if}
