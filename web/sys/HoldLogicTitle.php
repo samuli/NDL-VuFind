@@ -91,53 +91,6 @@ class HoldLogicTitle
     }
 
     /**
-     * Public method for getting journal issue level holds
-     *
-     * @param string $id       A journal issue level ID
-     * @param string $recordId Bib ID
-     *
-     * @return array A sorted results set
-     * @access public
-     */
-
-    public function getJournalIssueHoldLink($id, $recordId)
-    {
-        global $configArray;
-
-        $siteUrl = $configArray['Site']['url'];
-        $data = array(
-            "issueId" => $id,
-            "id" => $recordId
-        );
-
-        // get HMACKeys
-        $checkHolds = $this->catalog->checkFunction("Holds", $id);
-        if ($checkHolds && is_array($checkHolds)) {
-            $HMACKeys = $checkHolds['HMACKeys'];
-        }
-
-        // Generate HMAC
-        $HMACkey = generateHMAC($HMACKeys, $data);
-
-        // Add Params
-        foreach ($data as $key => $param) {
-            $needle = in_array($key, $HMACKeys);
-            if ($needle) {
-                $queryString[] = $key. "=" .urlencode($param);
-            }
-        }
-
-        //Add HMAC
-        $queryString[] = "hashKey=" . $HMACkey;
-
-        // Build Params
-        $urlParams = "?" . implode("&", $queryString);
-
-        $holdLink = $siteUrl."/Record/".urlencode($recordId)."/Hold".$urlParams."#tabnav";
-        return $holdLink;
-    }
-
-    /**
      * Protected method for driver defined title holds
      *
      * @param string $id     A Bib ID

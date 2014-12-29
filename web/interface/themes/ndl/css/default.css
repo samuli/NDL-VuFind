@@ -3865,6 +3865,7 @@ a.fulltext.available {
 }
 .holdPlace {
     color:#00a2b5;
+    white-space: nowrap;
 }
 .callSlipPlace {
     background-repeat:no-repeat;
@@ -5470,39 +5471,6 @@ h5.recordTabHeader {
     padding-top: 1.5em;
 }
 
-.holdingsContainerHeader dl.dropdown dd ul,
-#recordProvidedBy dl.dropdown dd ul {
-    overflow-x: hidden;
-    overflow-y: auto;
-    max-height: 450px;
-}
-
-.holdingsContainerHeader dl.dropdown {
-    font-size: 13px;
-    min-width: 260px;
-}
-
-.holdingsContainerHeader dl.dropdown dt > a {
-    background: url("../images/white_30.png");
-    margin-left: 10px;
-    display:inline-block;
-    padding: 9px 15px;
-}
-
-.holdingsContainerHeader dl.dropdown dd ul {
-    margin-left:10px;
-}
-
-.holdingsContainerHeader .holdRequestTotals {
-    float: right;
-    font-size: 0.96em;
-    font-weight: 500;
-}
-
-.holdingsContainerHeader .requestCount {
-    margin-right: 10px;
-}
-
 .dropdownMenuIcon {
     background-image: url("../images/icons16-24px-02_white.png");
     background-position: 1px -2324px;
@@ -5665,20 +5633,6 @@ table.datagrid td {
     padding:0;
 }
 
-.profileGroup .editAddress {
-    padding: 3px 0px 1px 25px;
-}
-
-.userGuider .editAddress {
-	background: none;
-	padding: 0px;
-}
-
-.addressChangeDescription {
-    opacity:.7;
-}
-
-
 #dyntabnav .holdingsContainerHeader .menuHolder,
 #dyntabnav .holdingsContainerHeader h5 {
     background:#18a3b7;
@@ -5692,7 +5646,45 @@ table.datagrid td {
 
 #dyntabnav .holdingsContainerHeader .menuHolder {
     height: 30px;
-    padding: 8px 0px;
+    padding: 8px 8px 8px 0;
+}
+#dyntabnav .holdingsContainerHeader .menuHolder .singleItem {
+    float: left;
+    padding: 4px 8px 8px 8px;
+}
+
+.holdingsContainerHeader dl.dropdown dd ul,
+#recordProvidedBy dl.dropdown dd ul {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 450px;
+}
+
+.holdingsContainerHeader dl.dropdown {
+    font-size: 13px;
+    min-width: 260px;
+}
+
+.holdingsContainerHeader dl.dropdown dt > a {
+    background: url("../images/white_30.png");
+    margin-left: 10px;
+    display:inline-block;
+    padding: 9px 15px;
+}
+
+.holdingsContainerHeader dl.dropdown dd ul {
+    margin-left:10px;
+}
+
+.holdingsContainerHeader .holdingTotals {
+    float: right;
+    font-size: 0.96em;
+    font-weight: 500;
+    padding-top: 4px;
+}
+
+.holdingsContainerHeader .requestCount {
+    margin-right: 10px;
 }
 
 #dyntabnav .holdingsContainer p.accessRights {
@@ -6556,6 +6548,19 @@ padding-right: 20px;
     margin-top: 3px;
     margin-bottom:8px;
     padding: 5px 6px;
+}
+
+.profileGroup .editAddress {
+    padding: 3px 0px 1px 25px;
+}
+
+.userGuider .editAddress {
+  background: none;
+  padding: 0px;
+}
+
+.addressChangeDescription {
+    opacity:.7;
 }
 
 /* Public list */

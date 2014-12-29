@@ -190,26 +190,26 @@ class HoldLogic
 
         $holdings = array();
 
-        // Are holds allowed?
-        $disallowHolds = false;
-        $id = null;
-        $record = current($result);
-        if ($record) {
-            $id = $record['id'];
-            if (isset($configArray['Catalog']['disable_driver_hold_actions'])) {
-                $db = ConnectionManager::connectToIndex();
-                if ($rec = $db->getRecord($id)) {
-                    $disallowHolds = count(array_intersect($rec['format'], $configArray['Catalog']['disable_driver_hold_actions']));
-                }
-            }
-        }
-        if ($disallowHolds) {
+        if (empty($result)) {
             return $holdings;
         }
+
+        $id = $result[0]['id'];
+        // Are holds allowed?
+        $disallowHolds = false;
+        if (isset($configArray['Catalog']['disable_driver_hold_actions'])) {
+            $db = ConnectionManager::connectToIndex();
+            if ($record = $db->getRecord($id)) {
+                $disallowHolds = array_intersect($record['format'], $configArray['Catalog']['disable_driver_hold_actions'])
+                    ? true
+                    : false;
+            }
+        }
         // checkFunction returns an array or false, so make sure to keep the array
-        $checkHolds = $this->catalog->checkFunction('Holds', $id);
-        $checkCallSlips = $this->catalog->checkFunction('CallSlips', $id);
-        $checkUBRequests = $this->catalog->checkFunction('UBRequests', $id);
+        $checkHolds = $disallowHolds ? false : $this->catalog->checkFunction('Holds', $id);
+        $checkCallSlips = $disallowHolds ? false : $this->catalog->checkFunction('CallSlips', $id);
+        $checkUBRequests = $disallowHolds ? false : $this->catalog->checkFunction('UBRequests', $id);
+        $user = UserAccount::isLoggedIn();
         if (count($result)) {
             foreach ($result as $copy) {
                 $show = !in_array($copy['location'], $this->hideHoldings);
@@ -224,6 +224,24 @@ class HoldLogic
                             // set a flag so we can check later via AJAX:
                             $copy['check'] = (strcmp($copy['addLink'], 'check') == 0)
                                 ? true : false;
+                        }
+                        // Kludge for Axiell
+                        if (isset($copy['holdings']) && $user) {
+                            $holdLinks = array();
+                            foreach ($copy['holdings'] as &$holding) {
+                                if (isset($holding['addLink']) && $holding['addLink'] && strcmp($holding['addLink'], 'block') !== 0) {
+                                    $link = $this->_getHoldDetails(
+                                        $holding, $checkHolds['HMACKeys']
+                                    );
+                                    $holding['link'] = $link;
+                                    $holdLinks[$link]= 1;
+                                }
+                            }
+                            // If each holding contains the same link, add it to the
+                            // parent level
+                            if (count($holdLinks) == 1) {
+                                $copy['link'] = key($holdLinks);
+                            }
                         }
                     }
                     if ($checkCallSlips !== false) {

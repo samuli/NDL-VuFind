@@ -355,7 +355,7 @@ class JSON extends Action
             $holdings = array();
         }
 
-        $holdCount = 0;
+        $itemCount = 0;
         $requestCount = 0;
         $locationCount = 0;
         $branchCount = 0;
@@ -374,31 +374,31 @@ class JSON extends Action
                 if (isset($location['status']['reservations'])) {
                     $requestCount = $location['status']['reservations'];
                 }
-                if (isset($location['status']['available']) 
+                if (isset($location['status']['available'])
                     && $location['status']['available']
                 ) {
                     $availableLocationCount++;
                 }
-                if (isset($location['status']['availableCount']) 
+                if (isset($location['status']['availableCount'])
                     && $location['status']['availableCount'] > 0
                 ) {
                     $availableCount += $location['status']['availableCount'];
                 }
-                if (isset($location['status']['text']) 
-                    && $location['status']['text'] != '' 
+                if (isset($location['status']['text'])
+                    && $location['status']['text'] != ''
                     && $closestDueDate == ''
                 ) {
                     $itemStatusText = $location['status']['text'];
                 }
-                if (isset($location['status']['dueDateStamp']) 
-                    && $location['status']['dueDateStamp'] != '' 
-                    && isset($location['status']['closestDueDate']) 
+                if (isset($location['status']['dueDateStamp'])
+                    && $location['status']['dueDateStamp'] != ''
+                    && isset($location['status']['closestDueDate'])
                     && $location['status']['closestDueDate'] != ''
                 ) {
                     $dueDate = $location['status']['dueDateStamp'];
                     if ($closestDueDateStamp < $dueDate) {
                         $closestDueDate = $location['status']['closestDueDate'];
-                        if (isset($location['status']['text']) 
+                        if (isset($location['status']['text'])
                             && $location['status']['text'] != ''
                         ) {
                             $itemStatusText = $location['status']['text'];
@@ -414,12 +414,12 @@ class JSON extends Action
                 if (is_array($location['holdings'])) {
                     foreach ($location['holdings'] as $holding) {
                         if (isset($holding['total'])) {
-                            $holdCount += $holding['total'];
+                            $itemCount += $holding['total'];
                         }
                         $branchCount++;
                     }
                 }
-                if (isset($location['is_holdable']) 
+                if (isset($location['is_holdable'])
                     && $location['is_holdable']
                 ) {
                     $isHoldable = true;
@@ -435,7 +435,7 @@ class JSON extends Action
         $branchTreshold = isset($configArray['Site']['branchTreshold'])
             ? $configArray['Site']['branchTreshold'] : 15;
 
-        $interface->assign('holdCount', $holdCount);
+        $interface->assign('itemCount', $itemCount);
         $interface->assign('requestCount', $requestCount);
         $interface->assign('branchCount', $branchCount);
         $interface->assign('locationCount', $locationCount);
@@ -877,11 +877,11 @@ class JSON extends Action
         include_once 'services/Cart/Export.php';
 
         global $configArray;
-        
+
         unset($_SESSION['no_store']);
         $_SESSION['exportIDS'] =  $_POST['ids'];
         $_SESSION['exportFormat'] = $_POST['format'];
-        
+
         $url = Export::getExportUrl();
         $html = '<p><a class="save" onclick="hideLightbox();" href="';
         if (strtolower($_POST['format']) == 'refworks') {
@@ -1136,7 +1136,7 @@ class JSON extends Action
         if (strpos($id, 'metalib.', 0) === 0) {
             $db = new MetaLib();
         } else {
-            $db = ConnectionManager::connectToIndex();            
+            $db = ConnectionManager::connectToIndex();
         }
 
         if (!($record = $db->getRecord($id))) {

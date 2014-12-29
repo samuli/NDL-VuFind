@@ -83,11 +83,6 @@ class Hold extends Record
                 return false;
             }
 
-            if (isset($_REQUEST['issueId'])) {
-                $interface->assign('issueId', $_REQUEST['issueId']);
-                $this->gatheredDetails['issueId'] = $_REQUEST['issueId'];
-            }
-
             // Assign FollowUp Details required for login and catalog login
             $interface->assign('followup', true);
             $interface->assign('recordId', $this->recordDriver->getUniqueID());

@@ -953,36 +953,6 @@ class MarcRecord extends IndexRecord
     }
 
     /**
-     * Get a link for placing a journal issue level hold.
-     *
-     * @param string $id       A journal issue level ID
-     * @param string $recordId Bib ID
-     *
-     * @return mixed A url if a hold is possible, boolean false if not
-     * @access protected
-     */
-    public function getRealTimeJournalIssueHold($id, $recordId)
-    {
-        global $configArray;
-
-        $biblioLevel = $this->getBibliographicLevel();
-
-        if ("serial" == strtolower($biblioLevel)) {
-            $titleHoldEnabled = CatalogConnection::getTitleHoldsMode();
-
-            if ($titleHoldEnabled != "disabled") {
-                include_once 'sys/HoldLogicTitle.php';
-
-                // Connect to catalog
-                $catalog = ConnectionManager::connectToCatalog();
-                $holdLogic = new HoldLogicTitle($catalog);
-                return $holdLogic->getJournalIssueHoldLink($id, $recordId);
-            }
-        }
-        return false;
-    }
-
-    /**
      * Get an array of strings describing relationships to other items.
      *
      * @return array

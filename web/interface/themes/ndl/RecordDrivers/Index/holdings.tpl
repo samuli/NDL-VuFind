@@ -58,7 +58,27 @@
           <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
       {/if}
       {if $catalogAccounts && !$ublink && !$holdingTitleHold}
+        {if $driver != 'AxiellWebServices'}
           <span>{translate text="title_cant_place_hold"}</span>
+        {else}
+          {assign var="holdLink" value=false}
+          {foreach from=$holdings item=holding}
+            {if !$holdLink}
+              {if $holding.0.link}
+                {assign var="holdLink" value=true}
+              {else}
+                {foreach from=$holding.holdings item=singleHolding}
+                  {if $singleHolding.0.link}
+                    {assign var="holdLink" value=true}
+                  {/if}
+                {/foreach}
+              {/if} 
+            {/if}
+          {/foreach}
+          {if !$holdLink}
+            <span>{translate text="title_cant_place_hold"}</span>
+          {/if}
+        {/if}
       {/if}
       {if $holdingTitleHold == 'block'}
           {translate text="hold_error_blocked"}
@@ -258,29 +278,27 @@
   </div>
 {else}
   <div class="holdingsContainerHeader">
-      <h5>{translate text=$source prefix='source_'}
-        {if $holdings}
-          <div class="holdRequestTotals">
-            <span class="requestCount">{translate text="Request queue"}: {$requestCount}</span>
-            <span class="holdCount">{translate text="Total number of items"}: {$holdCount}</span>
-          </div>
-        {/if}
-      </h5>
+    <div class="menuHolder">
+    {if $coreMergedRecordData.dedup_data}
+      <select id="dedupRecordHoldingsMenu" name="deduprecordHoldingsMenu" class="dropdown jumpMenuURL">
+        {foreach from=$coreMergedRecordData.dedup_data key=source item=dedupData name=loop}
+        <option value="{$url}/Record/{$dedupData.id|escape:"url"}#holdingstab"{if $dedupData.id == $id} selected="selected"{/if}>{translate text=$source prefix='source_'}</option>
+        {/foreach}
+      </select>
+    {else}
+      <div class="singleItem">{translate text=$source prefix='source_'}</div>
+    {/if}
+    {if $holdings}
+      <div class="holdingTotals">
+        <span class="requestCount">{translate text="Request queue"}: {$requestCount}</span>
+        <span class="holdCount">{translate text="Total number of items"}: {$itemCount}</span>
+      </div>
+    {/if}
+    </div>
   </div>
   <div class="holdingsContainer clearfix driver-{$driver}">
     {if !$holdings}
        <h5>{translate text="No holdings information available"}</h5>
-    {else} 
-      <div>
-         {* Display link to access rights for records from fennica, viola and vaari *} 
-        {if $coreSource == 'fennica' || $coreSource == 'viola' || $coreSource == 'vaari'}  
-        <p class="accessRights"><a href="
-        {if $coreSource == 'fennica' || $coreSource == 'viola'}{if $userLang == 'fi'}http://www.kansalliskirjasto.fi/kokoelmatjapalvelut/lainaus/kansalliskokoelmankaytosta.html{elseif $userLang == 'sv'}http://www.nationalbiblioteket.fi/tjanster/lainaus/kansalliskokoelmankaytosta.html{else}http://www.nationallibrary.fi/services/lainaus/kansalliskokoelmankaytosta.html{/if}
-        {elseif $coreSource == 'vaari'}http://www.varastokirjasto.fi/{if $userLang == 'fi'}kaukolainaus/varastokirjaston-palvelut-henkiloasiakkaille/{elseif $userLang == 'sv'}utlaning/service-for-privatkunder/{else}loans-and-requests/ill-services-for-private-customers/{/if}
-        {/if}
-        " target="_blank">{translate text="Record access rights"}</a></p>
-        {/if}
-      </div>
     {/if}
     {foreach from=$holdings item=location name=locations}
       {if $location.0.status.text == "Available"}
@@ -304,12 +322,8 @@
             </span>
           </th>
           <th class="locationLink">{$location.0.callnumber}
-            {if $location.0.journal && $location.0.is_holdable && $user && $user->cat_username && $location.0.reservableIdLink}
-              {if $holdingTitleHold != 'block'}
-                  <a class="button buttonFinna holdPlace" href="{$location.0.reservableIdLink|escape}">{translate text="title_hold_place"}</a>
-              {elseif $holdingTitleHold == 'block'}
-                  {translate text="hold_error_blocked"}
-              {/if}
+            {if $holdingTitleHold != 'block' && $location.0.link}
+              <a class="button buttonFinna holdPlace" href="{$location.0.link|escape}">{translate text="Place a Hold"}</a>
             {/if}
           </th>
         </tr>
@@ -335,7 +349,12 @@
                 <span class="statusExtra">{translate text="status_Ordered"}: {$holding.ordered}</span>
               {/if}
             </td>
-            <td class="availableOfTotal">{translate text="Available items"}: {$holding.available} / {$holding.total}</td>
+            <td class="availableOfTotal">
+              {translate text="Available items"}: {$holding.available} / {$holding.total}
+              {if !$location.0.link & $holdingTitleHold != 'block' && $holding.link}
+                <a class="holdPlace" href="{$holding.link|escape}">{translate text="Place a Hold"}</a>
+              {/if}
+            </td>
           </tr>
         {/foreach}
       </table>

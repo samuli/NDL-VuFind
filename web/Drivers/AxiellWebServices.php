@@ -59,7 +59,15 @@ class AxiellWebServices implements DriverInterface
         'soap_version' => SOAP_1_1,
         'exceptions' => true,
         'trace' => 1,
-        'connection_timeout' => 60
+        'connection_timeout' => 60,
+        'typemap' => array(
+            array(
+                'type_ns' => 'http://www.w3.org/2001/XMLSchema',
+                'type_name' => 'anySimpleType',
+                'from_xml' => array('\AxiellWebServices', 'anySimpleTypeToString'),
+                'to_xml' => array('\AxiellWebServices', 'stringToAnySimpleType')
+        )
+        )
     );
 
     /**
@@ -186,18 +194,16 @@ class AxiellWebServices implements DriverInterface
             return $result;
         }
 
-        $vfHoldings = array();
-
         if (!isset($result->$functionResult->catalogueRecord->compositeHolding)) {
-            return $vfHoldings;
+            return array();
         }
 
         $holdings = is_object($result->$functionResult->catalogueRecord->compositeHolding)
             ? array($result->$functionResult->catalogueRecord->compositeHolding)
             : $result->$functionResult->catalogueRecord->compositeHolding;
 
+        $vfHoldings = array();
         if ($holdings[0]->type == 'year') {
-
             foreach ($holdings as $holding) {
                 $year = $holding->value;
                 $holdingsEditions = is_object($holding->compositeHolding)
@@ -214,30 +220,18 @@ class AxiellWebServices implements DriverInterface
         } else {
             $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
         }
-        foreach ($vfHoldings as $key => &$location) {
+        // Sort holdings
+        foreach ($vfHoldings as $key => $location) {
             $branches = array();
-            $holdingCount = 0;
-            $notHoldable = 0;
             if (isset($location['holdings']) && is_array($location['holdings'])) {
-                $holdingCount = count($location['holdings']);
                 foreach ($location['holdings'] as $i => $holding) {
-                    if (isset($holding['status'])
-                        && ($holding['status'] == 'Ordered'
-                        || $holding['status'] == 'On Reference Desk')
-                    ) {
-                        $notHoldable++;
-                    }
                     $branches[$i] = $holding['branch'];
-                }
-                if ($notHoldable == $holdingCount) {
-                    $location['is_holdable'] = 0;
                 }
                 array_multisort($branches, SORT_ASC, $vfHoldings[$key]['holdings']);
             }
         }
         return empty($vfHoldings) ? false : $vfHoldings;
     }
-
 
     /**
      * This is responsible for iterating the organisation holdings
@@ -262,10 +256,12 @@ class AxiellWebServices implements DriverInterface
                 if ($holdingsBranch[0]->type == 'branch') {
                     foreach ($holdingsBranch as $branch) {
                         $branchName = $branch->value;
-                        $reservationStatus = $branch->reservationButtonStatus ==
-                            'reservationOk';
                         $reservableId = isset($branch->reservable)
                             ? $branch->reservable : '';
+                        // This holding is only holdable if it has a reservable id
+                        // different from the record id
+                        $holdable = $branch->reservationButtonStatus ==
+                            'reservationOk' && $reservableId != $id;
                         $departments = is_object($branch->holdings->holding) ?
                             array($branch->holdings->holding) :
                             $branch->holdings->holding;
@@ -293,7 +289,13 @@ class AxiellWebServices implements DriverInterface
                             // Group journals by issue number
                             $journal = false;
                             if ($year || $edition) {
-                                $group = $year . ', ' . $edition;
+                                if ($year && $edition
+                                    && strncmp($year, $edition, strlen($year)) == 0
+                                ) {
+                                    $group = $edition;
+                                } else {
+                                    $group = "$year, $edition";
+                                }
                                 $journal = true;
                             }
 
@@ -346,7 +348,9 @@ class AxiellWebServices implements DriverInterface
                                 'duedate'      => $dueDate,
                                 'location'     => $locationName,
                                 'id'           => $id,
-                                'is_holdable'  => $reservationStatus,
+                                'is_holdable'  => $holdable,
+                                'addLink'      => $holdable ? 'hold' : false,
+                                'item_id'      => $reservableId,
                                 'ordered'      => $nofOrdered,
                                 'status'       => $status,
                                 'total'        => $nofTotal
@@ -368,6 +372,7 @@ class AxiellWebServices implements DriverInterface
                                 $shelfMark = isset($department->shelfMark) ?
                                     $department->shelfMark : '';
                                 $vfHoldings[$vfKey] = array(
+                                    'id' => $id,
                                     'callnumber'   => $shelfMark,
                                     'holdings' => array(),
                                     'journal'      => $journal,
@@ -382,8 +387,7 @@ class AxiellWebServices implements DriverInterface
                                         'reservations' => $reservations,
                                     ),
                                     'title' => $group,
-                                    'is_holdable' => $reservationStatus,
-                                    'reservableId' => $branch->reservable
+                                    'number' => $vfKey
                                 );
                             }
 
@@ -838,9 +842,8 @@ class AxiellWebServices implements DriverInterface
         $username = $user['cat_username'];
         $password = $user['cat_password'];
 
-        $id = isset($holdDetails['issueId'])
-        && $holdDetails['issueId'] != ''
-            ? $holdDetails['issueId'] : $holdDetails['id'];
+        $id = !empty($holdDetails['item_id'])
+            ? $holdDetails['item_id'] : $holdDetails['id'];
 
         $functionResult = 'getReservationBranchesResult';
         $result = $this->doSOAPRequest($this->reservations_wsdl, 'getReservationBranches', $functionResult, $username, array('getReservationBranchesParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage(), 'country' => 'FI', 'reservationEntities' => $id, 'reservationType' => 'normal')));
@@ -849,44 +852,42 @@ class AxiellWebServices implements DriverInterface
         }
 
         $locationsList = array();
-        if (!isset($result->$functionResult->organisations->organisation))
+        if (!isset($result->$functionResult->organisations->organisation)) {
             return $locationsList;
-        $organisations = is_object($result->$functionResult->organisations->organisation) ?
-            array($result->$functionResult->organisations->organisation) :
-            $result->$functionResult->organisations->organisation;
+        }
+        $organisations = is_object($result->$functionResult->organisations->organisation)
+            ? array($result->$functionResult->organisations->organisation)
+            : $result->$functionResult->organisations->organisation;
 
         foreach ($organisations as $organisation) {
+            if (!isset($organisation->branches->branch)) {
+                continue;
+            }
 
             $organisationID = $organisation->id;
 
-            if (!isset($organisation->branches->branch))
-                continue;
-
             // TODO: Make it configurable whether organisation names should be included in the location name
-            $branches = is_object($organisation->branches->branch) ?
-              array($organisation->branches->branch) :
-              $organisation->branches->branch;
+            $branches = is_object($organisation->branches->branch)
+                ? array($organisation->branches->branch)
+                : $organisation->branches->branch;
 
             if (is_object($organisation->branches->branch)) {
                 $locationsList[] = array(
-                    'locationID' => $organisationID . "." .  $organisation->branches->branch->id,
+                    'locationID' => $organisationID . '.' .  $organisation->branches->branch->id,
                     'locationDisplay' => $organisation->branches->branch->name
                 );
-            }
-            else foreach ($organisation->branches->branch as $branch) {
-                $locationsList[] = array(
-                    'locationID' => $organisationID . "." . $branch->id,
-                    'locationDisplay' => $branch->name
-                );
+            } else {
+                foreach ($organisation->branches->branch as $branch) {
+                    $locationsList[] = array(
+                        'locationID' => $organisationID . '.' . $branch->id,
+                        'locationDisplay' => $branch->name
+                    );
+                }
             }
         }
 
-        // Sort the location list
-        $location = array();
-        foreach ($locationsList as $key => $row) {
-            $location[$key] = $row['locationDisplay'];
-        }
-        array_multisort($location, SORT_REGULAR, $locationsList);
+        // Sort pick up locations
+        usort($locationsList, array($this, 'pickUpLocationsSortFunction'));
 
         return $locationsList;
     }
@@ -963,23 +964,21 @@ class AxiellWebServices implements DriverInterface
     {
         global $configArray;
 
-        if (isset($holdDetails['issueId'])
-            && $holdDetails['issueId'] != ''
-        ) {
-            $bibId = $holdDetails['issueId'];
+        if (isset($holdDetails['item_id']) && $holdDetails['item_id']) {
+            $entityId = $holdDetails['item_id'];
             $reservationSource = 'holdings';
         } else {
-            $bibId = $holdDetails['id'];
+            $entityId = $holdDetails['id'];
             $reservationSource = 'catalogueRecordDetail';
         }
 
         $username = $holdDetails['patron']['cat_username'];
         $password = $holdDetails['patron']['cat_password'];
 
-        $validFromDate = date("Y-m-d");
+        $validFromDate = date('Y-m-d');
 
         $validToDate = $this->dateFormat->convertFromDisplayDate(
-            "Y-m-d", $holdDetails['requiredBy']
+            'Y-m-d', $holdDetails['requiredBy']
         );
 
         if (PEAR::isError($validToDate)) {
@@ -990,7 +989,7 @@ class AxiellWebServices implements DriverInterface
         $pickUpLocation = $holdDetails['pickUpLocation'];
         list($organisation, $branch) = explode('.', $pickUpLocation, 2);
 
-        $result = $this->doSOAPRequest($this->reservations_wsdl, 'addReservation', 'addReservationResult', $username, array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'reservationEntities' => $bibId, 'reservationSource' => $reservationSource, 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));
+        $result = $this->doSOAPRequest($this->reservations_wsdl, 'addReservation', 'addReservationResult', $username, array('addReservationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => 'en', 'reservationEntities' => $entityId, 'reservationSource' => $reservationSource, 'reservationType' => 'normal', 'organisationId' => $organisation, 'pickUpBranchId' => $branch, 'validFromDate' => $validFromDate, 'validToDate' => $validToDate )));
 
         if (PEAR::isError($result)) {
             return array(
@@ -1262,6 +1261,33 @@ class AxiellWebServices implements DriverInterface
         return $results;
     }
 
+    /**
+     * Convert anySimpleType from XML to a string
+     *
+     * @param string $xml XML fragment to convert
+     *
+     * @return string Converted string
+     */
+    public static function anySimpleTypeToString($xml)
+    {
+        if (preg_match('/>(.*)</', $xml, $matches)) {
+            return $matches[1];
+        }
+        return '';
+    }
+
+    /**
+     * Convert anySimpleType from string to XML
+     *
+     * @param string $value String to convert
+     *
+     * @return string String converted to XML
+     */
+    public static function stringToAnySimpleType($value)
+    {
+        return '<BOGUS>' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8')
+            . '</BOGUS>';
+    }
 
     /**
      * Send a SOAP request
@@ -1471,6 +1497,30 @@ class AxiellWebServices implements DriverInterface
         }
         $msg = date('Y-m-d H:i:s') . ' [' . getmypid() . "] $msg\n";
         file_put_contents($this->logFile, $msg, FILE_APPEND);
+    }
+
+    /**
+     * Sort function for sorting pickup locations
+     *
+     * @param array $a Pickup location
+     * @param array $b Pickup location
+     *
+     * @return number
+     */
+    protected function pickUpLocationsSortFunction($a, $b)
+    {
+        $pickUpLocationOrder = isset($this->config['Holds']['pickUpLocationOrder']) ? explode(":", $this->config['Holds']['pickUpLocationOrder']) : array();
+        $pickUpLocationOrder = array_flip($pickUpLocationOrder);
+        if (isset($pickUpLocationOrder[$a['locationID']])) {
+            if (isset($pickUpLocationOrder[$b['locationID']])) {
+                return $pickUpLocationOrder[$a['locationID']] - $pickUpLocationOrder[$b['locationID']];
+            }
+            return -1;
+        }
+        if (isset($pickUpLocationOrder[$b['locationID']])) {
+            return 1;
+        }
+        return strcasecmp($a['locationDisplay'], $b['locationDisplay']);
     }
 }
 
