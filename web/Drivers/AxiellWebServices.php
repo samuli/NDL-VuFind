@@ -1079,15 +1079,14 @@ class AxiellWebServices implements DriverInterface
     }
 
     /**
-     * Change Hold
+     * Change pickup location
      *
-     * This is responsible for editing a hold
+     * This is responsible for changing the pickup location of a hold
      *
      * @param string $patron      Patron array
      * @param string $holdDetails The request details
      *
-     * @return mixed           True if successful, false if unsuccessful, PEAR_Error
-     * on error
+     * @return mixed True if successful, false if unsuccessful, PEAR_Error on error
      * @access public
      */
     public function changePickupLocation($patron, $holdDetails)
