@@ -58,45 +58,46 @@ class Database extends BrowseExtended
         if (isset($_SERVER['HTTP_REFERER'])) {
             $parts = parse_url($_SERVER['HTTP_REFERER']);
             $pathParts = explode('/', $parts['path']);
-            
+
             $refAction = array_pop($pathParts);
             $refModule = array_pop($pathParts);
-        
+
             $returnUrl = null;
             $siteUrl = $interface->get_template_vars('url');
 
             if ($refModule === 'MetaLib') {
                 if ($refAction === 'Home') {
-                    // Called from MetaLib/Home: 
+                    // Called from MetaLib/Home:
                     // return to same page and reset previous MetaLib search term.
                     $returnUrl = "$siteUrl/MetaLib/Home";
                     unset($_SESSION['metalibLookfor']);
                 } else if ($refAction === 'Search') {
-                    if (stripos($_SESSION['lastSearchURL'], 
-                        '/MetaLib/Search') !== false
-                    ) {
-                        // Called from MetaLib/Search: 
+                    $fromMetaLibSearch = stripos(
+                        $_SESSION['lastSearchURL'], '/MetaLib/Search'
+                    ) !== false;
+                    if ($fromMetaLibSearch) {
+                        // Called from MetaLib/Search:
                         // Set return url to current MetaLib search.
                         $returnUrl = $_SESSION['lastSearchURL'];
                     } else {
-                        // Previous search was outside MetaLib: 
+                        // Previous search was outside MetaLib:
                         // reset search term and return to MetaLib/Home.
                         $returnUrl = "$siteUrl/MetaLib/Home";
                         unset($_SESSION['metalibLookfor']);
                     }
                 }
-            } else if ($refModule == 'Browse' 
-                && $refAction === 'Database' 
+            } else if ($refModule == 'Browse'
+                && $refAction === 'Database'
                 && isset($_SESSION['backToMetaLibURL'])
             ) {
-                // Called from Browse/Database: 
+                // Called from Browse/Database:
                 // use stored return url.
-                $returnUrl = $_SESSION['backToMetaLibURL'];            
+                $returnUrl = $_SESSION['backToMetaLibURL'];
             } else {
                 // Called outside Browse/Database and MetaLib:
                 // no need to display link back to MetaLib.
                 unset($_SESSION['backToMetaLibURL']);
-                unset($_SESSION['metalibLookfor']);            
+                unset($_SESSION['metalibLookfor']);
             }
 
             if ($returnUrl && $interface->get_template_vars('metalibEnabled')) {
@@ -110,12 +111,12 @@ class Database extends BrowseExtended
             unset($_SESSION['metalibLookfor']);
         }
 
-       
+
         if (isset($_REQUEST['refLookfor'])) {
             $_SESSION['metalibLookfor'] = $_REQUEST['refLookfor'];
-        }       
+        }
         $metalibSearch = null;
-        if (isset($_SESSION['metalibLookfor']) 
+        if (isset($_SESSION['metalibLookfor'])
             && $_SESSION['metalibLookfor'] !== ''
         ) {
             $metalibSearch = $this->getBrowseUrl(
@@ -151,12 +152,12 @@ class Database extends BrowseExtended
         $searchTermReplaced = false;
         if ($params) {
             $params = explode('&', $params);
-            
+
             // Url parameters that should be reset when moving between Search and Browse.
             $reset = array(
                 'prefilter', 'page', 'prefiltered', 'type', 'refLookfor', 'set'
             );
-            
+
             $tmp = array();
             foreach ($params as $param) {
                 $var = explode('=', $param);
@@ -172,13 +173,13 @@ class Database extends BrowseExtended
                 } else if (!in_array($var[0], $reset)) {
                     $tmp[] = $param;
                 }
-            }            
+            }
         }
         if (!$searchTermReplaced && $lookfor) {
-            $tmp[] = "lookfor=$lookfor";            
+            $tmp[] = "lookfor=$lookfor";
         }
 
-        
+
         $url = $configArray['Site']['url'];
         $url .=  strcmp($action, 'Database') === 0 ? '/Browse' : '/MetaLib';
         $url .= "/$action?";

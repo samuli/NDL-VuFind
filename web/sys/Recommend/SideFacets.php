@@ -47,7 +47,7 @@ class SideFacets implements RecommendationInterface
     private $_checkboxFacetsSection;
     protected $_hierarchicalFacets = array();
     protected $_hiddenFacets = array();
-    
+
     /**
      * Constructor
      *
@@ -87,8 +87,8 @@ class SideFacets implements RecommendationInterface
         // Get a list of fields that should be displayed as a hierarchy.
         if (isset($config['SpecialFacets']['hierarchical'])) {
             $this->_hierarchicalFacets = $config['SpecialFacets']['hierarchical'];
-        }        
-        
+        }
+
         // Get a list of fields that should be open on default.
         if (isset($config['SpecialFacets']['default'])) {
             $this->_defaultFacets = $config['SpecialFacets']['default'];
@@ -102,7 +102,7 @@ class SideFacets implements RecommendationInterface
         } else {
             $this->_hiddenFacets = array();
         }
-        
+
         // Checkbox facets:
         $checkboxFacets
             = ($checkboxSection && isset($config[$checkboxSection]))
@@ -119,14 +119,14 @@ class SideFacets implements RecommendationInterface
             if (isset($config[$section])) {
                 $data = $config[$section];
                  $this->_checkboxFacetsSection[$val] = $data;
-                
+
                 foreach ($data as $filter => $translationKey) {
                     $sectionKey = is_array($filter)
-                        ? array_pop(array_keys($filter)) 
+                        ? array_pop(array_keys($filter))
                         : $filter;
 
                     // Store facet section id as 'parent'
-                    $this->_checkboxFacets[$filter] 
+                    $this->_checkboxFacets[$filter]
                         = array('desc' => $translationKey, 'data' => array('parent' => $key));
                 }
             }
@@ -135,7 +135,7 @@ class SideFacets implements RecommendationInterface
         //collection keyword filter
         $this->_collectionKeywordFilter
             = isset($config['Collection_Keyword']['search']) ? $config['Collection_Keyword']['search'] : false;
-        
+
     }
 
     /**
@@ -164,7 +164,7 @@ class SideFacets implements RecommendationInterface
     /**
      * process
      *
-     * Called after the SearchObject has performed its main search.  This may be 
+     * Called after the SearchObject has performed its main search.  This may be
      * used to extract necessary information from the SearchObject or to perform
      * completely unrelated processing.
      *
@@ -179,13 +179,13 @@ class SideFacets implements RecommendationInterface
         $checkboxFilters = $this->_searchObject->getCheckboxFacets();
         $checkboxStatus = $this->_searchObject->getCheckboxFacetStatus();
 
-        // Checkbox filters displayed inside facet sections        
+        // Checkbox filters displayed inside facet sections
         $checkboxFiltersSection = array();
 
         // Checkbox filters displayed at the beginning of side navi
         $checkboxFiltersFacetNavi = array();
 
-        // Divide checkbox filters into two groups (regular & inside facet section):        
+        // Divide checkbox filters into two groups (regular & inside facet section):
         foreach ($checkboxFilters as $key => $data) {
             $match = false;
             if ($this->_checkboxFacetsSection) {
@@ -194,7 +194,7 @@ class SideFacets implements RecommendationInterface
                         if ($data['filter'] == $filter) {
                             // This goes inside a facet section
                             $checkboxFiltersSection[$secKey][$filter] = $data;
-                            $match = true;                        
+                            $match = true;
                         }
                     }
                     if ($match) {
@@ -202,10 +202,10 @@ class SideFacets implements RecommendationInterface
                     }
                 }
             }
-            // No match found: this is a regular checkbox filter, 
+            // No match found: this is a regular checkbox filter,
             // and is not displayed inside a facet section.
             if (!$match) {
-                $checkboxFiltersFacetNavi[$key] = $data;                
+                $checkboxFiltersFacetNavi[$key] = $data;
             }
         }
 
@@ -224,13 +224,13 @@ class SideFacets implements RecommendationInterface
             $activeFacets[] = $filter[0]['field'];
         }
 
-        // Checkbox filters inside facet sections (unlike regular checkbox filters) 
+        // Checkbox filters inside facet sections (unlike regular checkbox filters)
         // are also displayed as active filters, and therefore need to be added to 'filterList'.
         $filterListWithCheckbox = $this->_searchObject->getFilterList(false);
         foreach ($filterListWithCheckbox as $key => $filters) {
             foreach ($filters as $filterData) {
                 $filter = $filterData['field'] . ':' . $filterData['value'];
-                
+
                 foreach ($checkboxFiltersSection as $sectionKey => $sectionFilters) {
                     foreach ($sectionFilters as $sectionFilter => $translationCode) {
                         if ($filter == $sectionFilter) {
@@ -245,7 +245,7 @@ class SideFacets implements RecommendationInterface
 
         $showLocalFiltersNote = count($filterList) > 0;
 
-        // Check if there are active checkbox filters 
+        // Check if there are active checkbox filters
         foreach ($checkboxFilters as $filter) {
             if ($filter['selected']) {
                 $interface->assign('activeCheckboxFilters', true);
@@ -253,7 +253,7 @@ class SideFacets implements RecommendationInterface
                 break;
             }
         }
-        
+
         // Display notification of active local filters (facet or checkbox)
         $interface->assign('showLocalFiltersNote', $showLocalFiltersNote);
 
@@ -272,7 +272,7 @@ class SideFacets implements RecommendationInterface
         $interface->assign('hierarchicalFacets', $this->_hierarchicalFacets);
         $interface->assign('defaultFacets', $this->_defaultFacets);
         $interface->assign('hiddenFacets', $this->_hiddenFacets);
-        
+
         $interface->assign(
             'sideFacetSet', $this->_searchObject->getFacetList($this->_mainFacets)
         );
@@ -323,10 +323,10 @@ class SideFacets implements RecommendationInterface
         }
         return $result;
     }
-    
+
     protected function processNewItemsFacet($filterList) {
         global $interface;
-        $newItemsValues = array('[NOW-1YEAR TO NOW]', 
+        $newItemsValues = array('[NOW-1YEAR TO NOW]',
             '[NOW-6MONTHS TO NOW]',
             '[NOW-3MONTHS TO NOW]',
             '[NOW-1MONTHS TO NOW]',
@@ -340,7 +340,7 @@ class SideFacets implements RecommendationInterface
                 if ($filter['field'] === 'first_indexed') {
                     $this->_searchObject->removeFilter('first_indexed:' . $filter['value']);
                     $removedValue = $filter['value'];
-                }                
+                }
             }
         }
         $newItemsLinks = array();
@@ -352,11 +352,11 @@ class SideFacets implements RecommendationInterface
             );
         }
         if ($removedValue) {
-            if(!in_array($removedValue, $newItemsValues)) {
+            if (!in_array($removedValue, $newItemsValues)) {
                 $datePart = substr($removedValue, 1, 20);
                 $interface->assign('newItemsDate', $datePart);
             }
-            
+
             // Put the filter back on for ordering purposes.
             $this->_searchObject->addFilter('first_indexed:' . $removedValue);
         }
