@@ -872,6 +872,13 @@ class AxiellWebServices implements DriverInterface
 
         $locationsList = array();
         if (!isset($result->$functionResult->organisations->organisation)) {
+            // If we didn't get any pickup locations for item_id, fall back to id
+            // and try again... This seems to happen when there are only ordered
+            // items in the branch
+            if (!empty($holdDetails['item_id'])) {
+                unset($holdDetails['item_id']);
+                return $this->getPickUpLocations($user, $holdDetails);
+            }
             return $locationsList;
         }
         $organisations = is_object($result->$functionResult->organisations->organisation)
