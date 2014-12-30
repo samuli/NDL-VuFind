@@ -167,6 +167,7 @@
                   <option value="{$library.locationID|escape}" {if $library.locationDisplay == $resource.ils_details.location}selected="selected"{/if}>{$library.locationDisplay|escape}</option>
                   {/foreach}
                 </select>
+                <span class="msg"/>
               </div>
             {elseif !empty($pickupDisplay)}
               <strong>{translate text='pick_up_location'}:</strong>
@@ -233,14 +234,12 @@
   <form name="cancelCallSlipForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelCallSlip">
   <table>
     <tr class="bulkActionButtons"><th><h3>{translate text="Call Slips"}</h3></th>
-        <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div> -->
-        <th class="alignRight"  colspan="2">
-          <input type="submit" class="button buttonFinna holdCancel" name="cancelSelectedCallSlips" value="{translate text="call_slip_cancel_selected"}" onclick="return confirm('{translate text="confirm_call_slip_cancel_selected_text}')" />
-          <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAllCallSlips" value="{translate text='call_slip_cancel_all'}" onclick="return confirm('{translate text="confirm_call_slip_cancel_all_text}')" />
-        </th>
-      </tr>
-
-
+      <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div> -->
+      <th class="alignRight"  colspan="2">
+        <input type="submit" class="button buttonFinna holdCancel" name="cancelSelectedCallSlips" value="{translate text="call_slip_cancel_selected"}" onclick="return confirm('{translate text="confirm_call_slip_cancel_selected_text}')" />
+        <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAllCallSlips" value="{translate text='call_slip_cancel_all'}" onclick="return confirm('{translate text="confirm_call_slip_cancel_all_text}')" />
+      </th>
+    </tr>
 
     <tr class="recordSet">
     {foreach from=$callSlipList item=resource name="recordLoop"}
@@ -382,32 +381,30 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('.changePickUpLocation select').change(function() {
-            $('.holdsMessage').fadeOut(100);
+            $(this).next('span.msg').html('huuhaa').hide();
             var pickup = $(this).val();
             var created = $(this).data('created');
             var expires = $(this).data('expires');
             var reservationId = $(this).data('reservationid');
-            var url = path + '/AJAX/JSON_Hold?' + $.param({method:'changePickupLocation', pickup :pickup, created:created, expires:expires, reservationId:reservationId });
+            var url = path + '/AJAX/JSON_Hold?' + $.param({method:'changePickupLocation', pickup:pickup, created:created, expires:expires, reservationId:reservationId });
             $(this).prev('span').addClass('ajax_hold_request_loading');
             $.ajax({
                 type: "GET",
                 url: url,
                 dataType: 'json',
+                context: this
             }).always(function() {
-                $('.pickUpLoader').removeClass('ajax_hold_request_loading');
-                if (!$('.holdsMessage').length ) {
-                    $('.resultHead').append($('<div style="display:none;" class="holdsMessage"></div>'));
-                }
+                $(this).prev('span').removeClass('ajax_hold_request_loading');
             }).done(function(msg) {
                 var holdsMsg = '';
                 if (msg.status == 'OK') {
-                    holdsMsg = '<p class="success">{/literal}{translate text="call_slip_change_success"}{literal}</p>';
+                    holdsMsg = '<p class="success">{/literal}{translate text="hold_change_success"}{literal}</p>';
                 } else {
-                    holdsMsg = '<p class="error">{/literal}{translate text="call_slip_change_fail"}{literal}</p>';
+                    holdsMsg = '<p class="error">{/literal}{translate text="hold_change_fail"}{literal}</p>';
                 }
-                $('.holdsMessage').html(holdsMsg).fadeIn(100);
+                $(this).next('span.msg').html(holdsMsg).fadeIn(100);
             }).error(function(msg) {
-                $('.holdsMessage').html('<p class="error">{/literal}{translate text="call_slip_change_fail"}{literal}</p>').fadeIn(100);
+                $(this).next('span.msg').html('<p class="error">{/literal}{translate text="hold_change_fail"}{literal}</p>').fadeIn(100);
             });
         });
     });
