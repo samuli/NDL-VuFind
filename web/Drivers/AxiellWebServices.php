@@ -626,10 +626,15 @@ class AxiellWebServices implements DriverInterface
         $loans = is_object($result->$functionResult->loans->loan) ? array($result->$functionResult->loans->loan) : $result->$functionResult->loans->loan;
 
         foreach ($loans as $loan) {
+            $title = $loan->catalogueRecord->title;
+            if ($loan->note) {
+                $title .= ' (' . $loan->note . ')';
+            }
+
             $trans = array();
             $trans['id'] = $loan->catalogueRecord->id;
             $trans['item_id'] = $loan->id;
-            $trans['title'] = $loan->catalogueRecord->title;
+            $trans['title'] = $title;
             $trans['duedate'] = $loan->loanDueDate;
             $trans['renewable'] = $loan->loanStatus->isRenewable == 'yes';
             $trans['message'] = $this->mapStatus($loan->loanStatus->status);
@@ -791,23 +796,28 @@ class AxiellWebServices implements DriverInterface
 
         foreach ($reservations as $reservation) {
             $expireDate = $reservation->reservationStatus == 'fetchable' ? $reservation->pickUpExpireDate : $reservation->validToDate;
-            $hold = array();
-            $hold['type'] = $reservation->reservationStatus;
-            $hold['id'] = $reservation->catalogueRecord->id;
-            $hold['location'] = $reservation->pickUpBranchId;
-            $hold['reqnum'] = ($reservation->isDeletable == 'yes' && isset($reservation->id)) ? $reservation->id : '';
-            $hold['pickupnum'] = isset($reservation->pickUpNo) ? $reservation->pickUpNo : '';
-            $hold['expire'] = $this->formatDate($expireDate);
-            $hold['create'] = $reservation->validFromDate;
-            $hold['position'] = isset($reservation->queueNo) ? $reservation->queueNo : '-';
-            $hold['available'] = $reservation->reservationStatus == 'fetchable';
-            $hold['modifiable'] = $reservation->reservationStatus == 'active';
-            $hold['item_id'] = '';
-            $hold['reservation_id'] = $reservation->id;
-            $hold['volume'] = isset($reservation->catalogueRecord->volume) ? $reservation->catalogueRecord->volume : '';
-            $hold['publication_year'] = isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '';
-            $hold['title'] = isset($reservation->catalogueRecord->titles) ? $reservation->catalogueRecord->titles : '';
-            $hold['note'] = isset($reservation->note) ? $reservation->note : '';
+            $title = isset($reservation->catalogueRecord->title) ? $reservation->catalogueRecord->title : '';
+            if (isset($reservation->note)) {
+                $title .= ' (' . $reservation->note . ')';
+            }
+
+            $hold = array(
+                'type' => $reservation->reservationStatus,
+                'id' => $reservation->catalogueRecord->id,
+                'location' => $reservation->pickUpBranchId,
+                'reqnum' => ($reservation->isDeletable == 'yes' && isset($reservation->id)) ? $reservation->id : '',
+                'pickupnum' => isset($reservation->pickUpNo) ? $reservation->pickUpNo : '',
+                'expire' => $this->formatDate($expireDate),
+                'create' => $reservation->validFromDate,
+                'position' => isset($reservation->queueNo) ? $reservation->queueNo : '-',
+                'available' => $reservation->reservationStatus == 'fetchable',
+                'modifiable' => $reservation->reservationStatus == 'active',
+                'item_id' => '',
+                'reservation_id' => $reservation->id,
+                'volume' => isset($reservation->catalogueRecord->volume) ? $reservation->catalogueRecord->volume : '',
+                'publication_year' => isset($reservation->catalogueRecord->publicationYear) ? $reservation->catalogueRecord->publicationYear : '',
+                'title' => $title
+            );
             $holdsList[] = $hold;
         }
 
@@ -1314,8 +1324,8 @@ class AxiellWebServices implements DriverInterface
             }
 
             if ($this->verbose) {
-                $this->debugLog("$function Request: " . $client->__getLastRequest());
-                $this->debugLog("$function Response: " . $client->__getLastResponse());
+                $this->debugLog("$function Request: " . $this->formatXML($client->__getLastRequest()));
+                $this->debugLog("$function Response: " . $this->formatXML($client->__getLastResponse()));
             }
 
             $statusAWS = $result->$functionResult->status;
@@ -1364,9 +1374,9 @@ class AxiellWebServices implements DriverInterface
     protected function handleError($function, $message, $id, &$client)
     {
         $this->debugLog("$function Request failed for '$id'");
+        $this->debugLog("$function Request: " . $this->formatXML($client->__getLastRequest()));
+        $this->debugLog("$function Response: " . $this->formatXML($client->__getLastResponse()));
         $this->debugLog("AWS error: '$message'");
-        $this->debugLog("$function Request: " . $client->__getLastRequest());
-        $this->debugLog("$function Response: " . $client->__getLastResponse());
 
         $status = array (
             // Axiell system status error messages
@@ -1521,6 +1531,22 @@ class AxiellWebServices implements DriverInterface
             return 1;
         }
         return strcasecmp($a['locationDisplay'], $b['locationDisplay']);
+    }
+
+    /**
+     * Pretty-print an XML string
+     *
+     * @param string $xml XML string
+     *
+     * @return string Pretty XML string
+     */
+    protected function formatXML($xml)
+    {
+        $dom = new DOMDocument('1.0');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xml);
+        return $dom->saveXML();
     }
 }
 

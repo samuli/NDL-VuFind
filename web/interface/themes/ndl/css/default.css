@@ -6404,7 +6404,8 @@ padding-right: 20px;
     clear: both;
     display: inline-block;
     float: right;
-    margin-left:50px;
+    margin-left: 50px;
+    white-space: nowrap;
 }
 
 .myResearch.holdsList.driver-AxiellWebServices .positionDetails {

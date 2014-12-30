@@ -79,13 +79,19 @@ class CheckedOut extends MyResearch
                         }
                         $driver = RecordDriverFactory::initRecordDriver($record);
 
+                        if (!empty($data['title'])) {
+                            $title = $data['title'];
+                        } else {
+                            $title = isset($record['title'])
+                                ? $record['title'] : null;
+                        }
+
                         $current += array(
                             'id' => $record['id'],
                             'isbn' => isset($record['isbn']) ? $record['isbn'] : null,
                             'author' =>
                                 isset($record['author']) ? $record['author'] : null,
-                            'title' =>
-                                isset($record['title']) ? $record['title'] : null,
+                            'title' => $title,
                             'format' => $formats,
                             'summImages' => $driver ? $driver->getAllImages() : null,
                             'summThumb' => $driver ? $driver->getThumbnail() : null,
@@ -174,7 +180,7 @@ class CheckedOut extends MyResearch
             // Add Patron Data to Submitted Data
             $gatheredDetails['patron'] = $patron;
             $renewResult = $this->catalog->renewMyItems($gatheredDetails);
-            
+
             if (!PEAR::isError($renewResult) && $renewResult !== false) {
                 // Assign Blocks to the Template
                 $interface->assign('blocks', $renewResult['blocks']);

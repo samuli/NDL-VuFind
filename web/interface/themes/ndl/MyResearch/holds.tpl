@@ -96,7 +96,7 @@
 		
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
-              <a href="{$url}/Record/{$resource.id|escape:"url"}" class="title">{$resource.title|escape}</a>
+              <a href="{$url}/Record/{$resource.id|escape:"url"}" class="title">{if !empty($resource.ils_details.title)}{$resource.ils_details.title|escape}{else}{$resource.title|escape}{/if}</a>
             {* If the record is not available in Solr, perhaps the ILS driver sent us a title we can show... *}
             {elseif !empty($resource.ils_details.title)}
               {$resource.ils_details.title|escape}
