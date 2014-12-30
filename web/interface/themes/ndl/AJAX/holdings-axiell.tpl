@@ -93,7 +93,7 @@
             {if $isHoldable}
               {if !$user}
                 {if $driverMode || $titleDriverMode}
-                    <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id|escape}">{translate text="title_hold_place"}</a>
+                    <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id|escape}%23tabnav">{translate text="title_hold_place"}</a>
                 {else}
                   <span>{translate text="title_cant_place_hold"}</span>
                 {/if}
