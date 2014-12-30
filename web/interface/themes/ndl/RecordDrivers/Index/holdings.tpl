@@ -323,7 +323,7 @@
           </th>
           <th class="locationLink">{$location.0.callnumber}
             {if $holdingTitleHold != 'block' && $location.0.link}
-              <a class="button buttonFinna holdPlace" href="{$location.0.link|escape}">{translate text="Place a Hold"}</a>
+              <a class="button buttonFinna holdPlace" href="{$location.0.link|escape}" data-title="{translate text="Place a Hold"} - {$location.0.title|escape}">{translate text="Place a Hold"}</a>
             {/if}
           </th>
         </tr>
@@ -345,14 +345,15 @@
               </span>
               {if $holding.duedate != '' && !$holding.availability}
                 <span class="statusExtra">{translate text="Due Date"}: <span class="returnDate">{$holding.duedate}</span></span>
-              {elseif $holding.ordered > 0}
-                <span class="statusExtra">{translate text="status_Ordered"}: {$holding.ordered}</span>
               {/if}
             </td>
             <td class="availableOfTotal">
+              {if $holding.ordered > 0}
+                {translate text="status_Ordered"}: {$holding.ordered}<br/>
+              {/if}
               {translate text="Available items"}: {$holding.available} / {$holding.total}
               {if !$location.0.link & $holdingTitleHold != 'block' && $holding.link}
-                <a class="holdPlace" href="{$holding.link|escape}">{translate text="Place a Hold"}</a>
+                <a class="holdPlace" href="{$holding.link|escape}" title="{translate text="Place a Hold"} - {$location.0.title|escape}">{translate text="Place a Hold"}</a>
               {/if}
             </td>
           </tr>
@@ -459,7 +460,8 @@ $(document).ready(function() {
     if (hashPos >= 0) {
       href = href.substring(0, hashPos);      
     }
-    var $dialog = getPageInLightbox(href + '&lightbox=1', $(this).text(), 'Record', '', id);
+    var title = $(this).data('title') ? $(this).data('title') : $(this).text();
+    var $dialog = getPageInLightbox(href + '&lightbox=1', title, 'Record', '', id);
     return false;
   });
 

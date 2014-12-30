@@ -371,7 +371,9 @@ class JSON extends Action
         foreach ($holdings as $location) {
 
             if (is_array($location) && isset($location['status'])) {
-                if (isset($location['status']['reservations'])) {
+                if (isset($location['status']['reservations'])
+                    && $location['status']['reservations'] > $requestCount
+                ) {
                     $requestCount = $location['status']['reservations'];
                 }
                 if (isset($location['status']['available'])

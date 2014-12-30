@@ -102,7 +102,11 @@
                   <a class="button buttonFinna" href="{$path}/MyResearch/Profile">{translate text="Add an account to place holds"}</a>
                 {else}
                   {if $holdingTitleHold && $holdingTitleHold != 'block'}
+                    {if $holdings.0.journal}
+                      <a class="button buttonFinna" href="{$path}/Record/{$id|escape}#tabnav">{translate text="title_hold_place"}</a>
+                    {else}
                       <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
+                    {/if}
                   {elseif $holdingTitleHold == 'block'}
                       {translate text="hold_error_blocked"}
                   {elseif !$holdingTitleHold}

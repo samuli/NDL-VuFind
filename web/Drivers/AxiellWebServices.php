@@ -247,6 +247,9 @@ class AxiellWebServices implements DriverInterface
      */
     protected function parseHoldings($organisationHoldings, $id, &$vfHoldings, $year, $edition)
     {
+        if ($organisationHoldings[0]->status == 'noHolding') {
+            return;
+        }
         if ($organisationHoldings[0]->type == 'organisation') {
             foreach ($organisationHoldings as $organisation) {
                 $group = $organisation->value;
@@ -288,13 +291,16 @@ class AxiellWebServices implements DriverInterface
 
                             // Group journals by issue number
                             $journal = false;
-                            if ($year || $edition) {
-                                if ($year && $edition
-                                    && strncmp($year, $edition, strlen($year)) == 0
-                                ) {
-                                    $group = $edition;
+                            if ($year !== '' || $edition !== '') {
+                                if ($year !== '' && $edition !== '') {
+                                    if (strncmp($year, $edition, strlen($year)) == 0
+                                    ) {
+                                        $group = $edition;
+                                    } else {
+                                        $group = "$year, $edition";
+                                    }
                                 } else {
-                                    $group = "$year, $edition";
+                                    $group = $year . $edition;
                                 }
                                 $journal = true;
                             }
@@ -371,12 +377,14 @@ class AxiellWebServices implements DriverInterface
                                     ? $organisation->nofReservations : 0;
                                 $shelfMark = isset($department->shelfMark) ?
                                     $department->shelfMark : '';
+                                $branchHoldable = $branch->reservationButtonStatus ==
+                                    'reservationOk';
                                 $vfHoldings[$vfKey] = array(
                                     'id' => $id,
                                     'callnumber'   => $shelfMark,
-                                    'holdings' => array(),
+                                    'holdings'     => array(),
                                     'journal'      => $journal,
-                                    'location' => $group,
+                                    'location'     => $group,
                                     'organisation' => $organisation->value,
                                     'status'       => array(
                                         'available' => false,
@@ -386,8 +394,9 @@ class AxiellWebServices implements DriverInterface
                                         'text' => '',
                                         'reservations' => $reservations,
                                     ),
-                                    'title' => $group,
-                                    'number' => $vfKey
+                                    'title'        => $group,
+                                    'number'       => $vfKey,
+                                    'is_holdable'  => $branchHoldable
                                 );
                             }
 

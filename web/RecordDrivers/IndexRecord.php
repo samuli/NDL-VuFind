@@ -821,20 +821,24 @@ class IndexRecord implements RecordInterface
         $requestCount = 0;
         if (is_array($holdings)) {
             foreach ($holdings as $locationArray) {
-                if (is_array($locationArray)) {
-                    foreach ($locationArray as $location) {
-                        if (is_array($location) && isset($location['status'])
-                            && isset($location['status']['reservations'])
+                if (!is_array($locationArray)) {
+                    continue;
+                }
+                foreach ($locationArray as $location) {
+                    if (is_array($location) && isset($location['status'])
+                        && isset($location['status']['reservations'])
+                    ) {
+                        if ($location['status']['reservations'] > $requestCount
                         ) {
                             $requestCount = $location['status']['reservations'];
                         }
-                        if (isset($location['holdings'])
-                            && is_array($location['holdings'])
-                        ) {
-                            foreach ($location['holdings'] as $holding) {
-                                if (isset($holding['total'])) {
-                                    $itemCount += $holding['total'];
-                                }
+                    }
+                    if (isset($location['holdings'])
+                        && is_array($location['holdings'])
+                    ) {
+                        foreach ($location['holdings'] as $holding) {
+                            if (isset($holding['total'])) {
+                                $itemCount += $holding['total'];
                             }
                         }
                     }
