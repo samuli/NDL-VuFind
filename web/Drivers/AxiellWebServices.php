@@ -1093,7 +1093,7 @@ class AxiellWebServices implements DriverInterface
      * @param string $patron      Patron array
      * @param string $holdDetails The request details
      *
-     * @return mixed True if successful, false if unsuccessful, PEAR_Error on error
+     * @return array Response
      * @access public
      */
     public function changePickupLocation($patron, $holdDetails)
@@ -1182,7 +1182,7 @@ class AxiellWebServices implements DriverInterface
             'useForSms'    => 'yes'
         );
 
-        if (isset($patron['phoneId'])) {
+        if (!empty($patron['phoneId'])) {
             $conf['id'] = $patron['phoneId'];
             $result = $this->doSOAPRequest($this->patron_wsdl, 'changePhone', 'changePhoneNumberResult', $username, array('changePhoneNumberParam' => $conf));
         } else {
@@ -1227,7 +1227,7 @@ class AxiellWebServices implements DriverInterface
             'isActive'     => 'yes'
         );
 
-        if (isset($patron['emailId'])) {
+        if (!empty($patron['emailId'])) {
             $conf['id'] = $patron['emailId'];
             $result = $this->doSOAPRequest($this->patron_wsdl, 'changeEmail', 'changeEmailAddressResult', $username, array('changeEmailAddressParam' => $conf));
         } else {
@@ -1237,7 +1237,7 @@ class AxiellWebServices implements DriverInterface
         if (PEAR::isError($result)) {
             $results = array(
                 'success' => false,
-                'status' => 'Set email address failed',
+                'status' => 'Changing the email address failed',
                 'sys_message' => $result->getMessage()
             );
         } else {
