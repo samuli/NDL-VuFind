@@ -1557,6 +1557,9 @@ class AxiellWebServices implements DriverInterface
      */
     protected function formatXML($xml)
     {
+        if (!$xml) {
+            return $xml;
+        }
         $dom = new DOMDocument('1.0');
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
