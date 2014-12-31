@@ -1257,6 +1257,7 @@ class AxiellWebServices implements DriverInterface
      * @param String $cardDetails Patron card data
      *
      * @return array Response
+     * @todo This function is not available at the moment
      */
     public function changePassword($cardDetails)
     {

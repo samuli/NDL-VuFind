@@ -36,6 +36,7 @@ defaultPickUpLocation = "1.001"
 ; used to manually set the order by entering location IDs as a colon-separated list.
 pickUpLocationOrder = "1.001:1.015:1.016"
 
-[changePassword]
-minLength = 4
-maxLength = 4
+; Can only be enabled when the functionality is available
+;[changePassword]
+;minLength = 4
+;maxLength = 4
