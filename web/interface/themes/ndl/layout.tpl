@@ -301,15 +301,17 @@
 
       <div id="nav" class="nav">
         <div class="content">
-          <ul id="headerMenu" role="navigation" aria-label="{translate text='Main Navigation'}">
-            {include file="header-menu.$userLang.tpl"}
-          </ul>
+          <nav role="navigation" aria-label="{translate text='Main Navigation'}">
+            <ul id="headerMenu">
+              {include file="header-menu.$userLang.tpl"}
+            </ul>
+          </nav>
           <div class="lang">
             {if is_array($allLangs) && count($allLangs) > 1}
             <ul role="list">
               {foreach from=$allLangs key=langCode item=langName}
                 {if $userLang != $langCode}
-                  <li role="option"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|escape:'html'}">
+                  <li role="listitem"><a href="{$fullPath|removeURLParam:'lng'|addURLParams:"lng=$langCode"|escape:'html'}">
                     {translate text=$langName}</a>
                   </li>
                 {/if}

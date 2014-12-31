@@ -159,7 +159,7 @@ function createDropdowns(){
         html += '<dd><ul id="owned_'+idName+'" role="menu" tabindex="0" aria-haspopup="true">';
         
         options.each(function(){
-            html += $(this).text()
+            html += $(this).text().trim()
                 ? '<li role="menuitem" tabindex="-1"><a href="#" class="big">' + 
                                               $(this).text() + '<span class="value">' + 
                                               $(this).val() + '</span></a></li>'
