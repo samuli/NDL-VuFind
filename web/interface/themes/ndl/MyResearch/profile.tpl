@@ -10,31 +10,46 @@
   <div class="content">
     <div class="resultHead grid_24">
       {if $userMsg}
-        <p class="success">{translate text=$userMsg}</p>
+        {if is_array($userMsg)}
+          {foreach from=$userMsg item=msg}
+            <p class="success">{translate text=$msg}</p>
+          {/foreach}
+        {else}
+          <p class="success">{translate text=$userMsg}</p>
+        {/if}
       {/if}
       {if $userError}
-        <p class="error">{translate text=$userError}</p>
+        {if is_array($userError)}
+          {foreach from=$userError item=msg}
+            <p class="error">{translate text=$msg}</p>
+          {/foreach}
+        {else}
+          <p class="error">{translate text=$userError}</p>
+        {/if}
       {/if}
       {if $errorMsg}
         <p class="error">{translate text=$errorMsg}</p>
       {/if}
     </div>
+    {* NDLBlankInclude *}
+    <p class="noContentMessage">{translate text='profile_instructions'}</p>
+    {* /NDLBlankInclude *}
     <div class="profileInfo grid_12 static">
+      {if $profile.blocks}
+        {foreach from=$profile.blocks item=block name=loop}
+          <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
+        {/foreach}
+      {/if}
       {if !($hideProfileEmailAddress && $hideDueDateReminder)}
-        <form method="post" action="{$url}/MyResearch/Profile" class="profile_form">
-          {* NDLBlankInclude *}
-              <p class="noContentMessage">{translate text='profile_instructions'}</p>
-          {* /NDLBlankInclude *}
-          {if $profile.blocks}
-            {foreach from=$profile.blocks item=block name=loop}
-              <p class="borrowingBlock"><strong>{translate text=$block|escape}</strong></p>
-            {/foreach}
-          {/if}
+        <div class="profileGroupContainer">
+        <form method="post" action="{$url}/MyResearch/Profile" class="profile_form" id="email_form">
           <h2>{translate text='Your Profile'}</h2>
           <table class="profileGroup">
             {if !$hideProfileEmailAddress}
               <tr>
-                <th>{translate text='Email'}</th><td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></input></td><td class="notif"><span class="userGuider">{if !$hideDueDateReminder}{translate text="notif_email"}{else}{translate text="notif_email_alert"}{/if}</span></td>
+                <th>{translate text='Email'}</th>
+                <td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></td>
+                <td class="notif"><span class="userGuider">{if !$hideDueDateReminder}{translate text="notif_email"}{else}{translate text="notif_email_alert"}{/if}</span></td>
               </tr>
             {/if}
             {if $libraryCard}
@@ -54,7 +69,6 @@
                     {else}
                       <td></td>
                     {/if}
-                  </th>
                 {else}
                   <input type="hidden" name="due_date_reminder" value="0" />
                 {/if}
@@ -66,20 +80,25 @@
             </tr>
           </table>
         </form>
+        </div>
         <div class="clear"></div>
       {/if}
       {if $catalogAccounts}
         <div class="clear"></div>
       {/if}
+      <div class="profileGroupContainer">
       {if $user->cat_username}
         {capture name="accountString" assign="accountString"}
           {foreach from=$catalogAccounts item=account}
             {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
-          {/foreach} 
-          {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
+          {/foreach}
+          {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''|translate_prefix:'source_'}
+          {if $source != $accountname}
+            {if !empty($accountname)}({/if}{$source}{if !empty($accountname)}){/if}
+          {/if}
         {/capture}
         <h2>{translate text="Library Card Settings"}: {$accountString}</h2>
-        <form method="post" action="{$url}/MyResearch/Profile" class="profile_form">
+        <form method="post" action="{$url}/MyResearch/Profile" class="profile_form" id="pickup_form">
           <table class="profileGroup">
             <tr>
               <th><label for="home_library">{translate text="Preferred pick up location"}</label></th>
@@ -102,33 +121,42 @@
             </tr>
             {if $showHomeLibForm}
               <tr>
-                <th colspan="3"><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
+                <th colspan="2"><input class="button buttonFinna left" type="submit" value="{translate text='Save'}" /></th>
               </tr>
             {/if}
-            {if $changePassword}
-              <tr><td colspan="3"><h3>{translate text='change_password_title'}</h3></td></tr>
+          </table>
+        </form>
+        {if $changePassword}
+          <form method="post" action="{$url}/MyResearch/Profile" class="profile_form" id="password_form">
+            <table class="profileGroup">
+              <tr><th colspan="3" class="hefty">{translate text='change_password_title'}</th></tr>
               <tr>
                 <th>{translate text='change_password_old_password'}:</th>
-                <td><input type="password" id="oldPassword" name="oldPassword" value=""></input></td>
+                <td><input type="password" id="oldPassword" name="oldPassword" value=""></td>
                 <td><span class="userGuider">{translate text='change_password_instructions'}</span></td>
               </tr>
               <tr>
                 <th>{translate text='change_password_new_password'}:</th>
-                <td><input type="password" id="newPassword" name="newPassword" value=""></input></td>
+                <td><input type="password" id="newPassword" name="newPassword" value=""></td>
                 <td></td>
               </tr>
               <tr>
                 <th>{translate text='change_password_new_password_again'}:</th>
-                <td><input type="password" id="newPassword2" name="newPassword2" value=""></input></td>
+                <td><input type="password" id="newPassword2" name="newPassword2" value=""></td>
                 <td></td>
               </tr>
               <tr>
                 <th><input class="button buttonFinna left" type="submit" value="{translate text='change_password_submit'}" /></th>
                 <td colspan="2"></td>
               </tr>
-            {/if}
+            </table>
+          </form>
+        {/if}
+        <form method="post" action="{$url}/MyResearch/Profile" class="profile_form" id="personal_form">
+          <table class="profileGroup">
             <tr>
-              <th colspan="2"><h3>{translate text='library_personal_details'}</h3></th>
+              <th colspan="2" class="hefty">{translate text='library_personal_details'}</th>
+              <td></td>
             </tr>
             <tr>
               <th>{translate text='First Name'}</th>
@@ -151,14 +179,13 @@
                 <td>{if $profile.address2}{$profile.address2|escape}{else}-{/if}</td>
                 <td></td>
               </tr>
-              <tr>
             {else}
               <tr>
                 <th>{translate text='Address'}</th>
                 <td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td>
                 <td>
                   <span class="userGuider">{translate text="address_change"}
-                  <a class="editAddress" href="#" data-email="{if $profile.email}{$profile.email|escape}{/if}" data-name="{if $profile.firstname}{$profile.firstname|escape}{/if} {if $profile.lastname}{$profile.lastname|escape}{/if}" data-library="{$accountString}" data-address="{if $profile.address1}{$profile.address1|escape}{/if}" data-zip="{if $profile.zip}{$profile.zip|escape}{/if}">{translate text="axiell_request_address_change"}</a>
+                  <a class="editAddress" href="#">{translate text="axiell_request_address_change"}</a>.
                 </span>
                 </td>
               </tr>
@@ -211,13 +238,14 @@
                 <td><td>
               </tr>
               <tr>
-                <td colspan="2">
-                  <a class="edit editAddress" href="#" data-email="{if $profile.email}{$profile.email|escape}{/if}" data-name="{if $profile.firstname}{$profile.firstname|escape}{/if} {if $profile.lastname}{$profile.lastname|escape}{/if}" data-library="{$accountString}" data-address="{if $profile.address1}{$profile.address1|escape}{/if}" data-zip="{if $profile.zip}{$profile.zip|escape}{/if}">{translate text="axiell_request_address_change"}</a>
+                <td colspan="3">
+                  <a class="edit editAddress" href="#">{translate text="axiell_request_address_change"}</a>
                 </td>
               </tr>
             {/if}
           </table>
         </form>
+      </div>
       {else}
         {include file="MyResearch/catalog-login.tpl"}
       {/if}
@@ -227,28 +255,44 @@
 </div>
 <div class="clear"></div>
 
-<script>
-   {literal}
-   $("#deleteAccount button").unbind().click(function(e) {
-      var url = path + '/AJAX/JSON_DeleteUser?method=init';
-      var dialog = getPageInLightbox(url, "{/literal}{translate text="delete_account_title"}{literal}");
-      e.preventDefault();
-  });
-  $(document).ready(function() {
-    $("#profile_form").validate();
-    $('.editAddress').click(function(e) {
-    var $account = $(this).closest('.profileGroup');
-    var data = {
-      'changeAddressRequest':true,
-      'email': $(this).data('email'),
-      'name': $(this).data('name'),
-      'address': $(this).data('address'),
-      'zip': $(this).data('zip'),
-      'library': $(this).data('library').replace(/\s+/g, ' ').trim()
-    };
-    var $dialog = getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_edit_personal_details"}{literal}', '', '', '', data);
+<script type="text/javascript">
+  {literal}
+  $("#deleteAccount button").unbind().click(function(e) {
+    var url = path + '/AJAX/JSON_DeleteUser?method=init';
+    var dialog = getPageInLightbox(url, "{/literal}{translate text="delete_account_title"}{literal}");
     e.preventDefault();
   });
+  $(document).ready(function() {
+    $("#email_form").validate();
+    $("#personal_form").validate();
+    $('.editAddress').click(function(e) {
+      var params = {
+        'changeAddressRequest': true
+      };
+      getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_address_change_request"}{literal}', '', '', '', params);
+      e.preventDefault();
+    });
+  {/literal}
+  {if $changePassword}
+    {literal}
+    $("#password_form").validate();
+    $("#newPassword").rules("add", {
+        minlength: {/literal}{$changePassword.minLength}{literal},
+        maxlength: {/literal}{$changePassword.maxLength}{literal},
+        messages: {
+            {/literal}minlength: jQuery.format("{translate text="Minimum length `$smarty.ldelim`0`$smarty.rdelim` characters"}"){literal},
+            {/literal}maxlength: jQuery.format("{translate text="Maximum length `$smarty.ldelim`0`$smarty.rdelim` characters"}"){literal}
+        }
+    });
+    $("#newPassword2").rules("add", {
+        equalTo: '#newPassword',
+        messages: {
+            equalTo: "{/literal}{translate text='change_password_error_verification'}{literal}"
+        }
+    });
+    {/literal}
+  {/if}
+  {literal}
   });
   {/literal}
 </script>
