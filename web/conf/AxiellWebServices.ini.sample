@@ -37,6 +37,6 @@ defaultPickUpLocation = "1.001"
 pickUpLocationOrder = "1.001:1.015:1.016"
 
 ; Can only be enabled when the functionality is available
-;[changePassword]
-;minLength = 4
-;maxLength = 4
+[changePassword]
+minLength = 4
+maxLength = 4
