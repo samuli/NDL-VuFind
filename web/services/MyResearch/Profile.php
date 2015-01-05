@@ -151,6 +151,8 @@ class Profile extends MyResearch
                             if ($result['success']) {
                                 $userMessages[] = 'change_password_ok';
                                 $user->changeCatalogPassword($_POST['newPassword']);
+                                // Re-retrieve patron to make sure it's up to date
+                                $patron = UserAccount::catalogLogin();
                             } else {
                                 $userErrors[] = $result['status'];
                             }
