@@ -250,187 +250,187 @@ class AxiellWebServices implements DriverInterface
         if ($organisationHoldings[0]->status == 'noHolding') {
             return;
         }
-        if ($organisationHoldings[0]->type == 'organisation') {
-            foreach ($organisationHoldings as $organisation) {
-                $group = $organisation->value;
-                $holdingsBranch = is_object($organisation->compositeHolding) ?
-                    array($organisation->compositeHolding) :
-                    $organisation->compositeHolding;
-                if ($holdingsBranch[0]->type == 'branch') {
-                    foreach ($holdingsBranch as $branch) {
-                        $branchName = $branch->value;
-                        $reservableId = isset($branch->reservable)
-                            ? $branch->reservable : '';
-                        // This holding is only holdable if it has a reservable id
-                        // different from the record id
-                        $holdable = $branch->reservationButtonStatus ==
-                            'reservationOk' && $reservableId != $id;
-                        $departments = is_object($branch->holdings->holding) ?
-                            array($branch->holdings->holding) :
-                            $branch->holdings->holding;
+        if ($organisationHoldings[0]->type != 'organisation') {
+            return;
+        }
+        foreach ($organisationHoldings as $organisation) {
+            $group = $organisation->value;
+            $holdingsBranch = is_object($organisation->compositeHolding) ?
+                array($organisation->compositeHolding) :
+                $organisation->compositeHolding;
+            if ($holdingsBranch[0]->type == 'branch') {
+                foreach ($holdingsBranch as $branch) {
+                    $branchName = $branch->value;
+                    $reservableId = isset($branch->reservable)
+                        ? $branch->reservable : '';
+                    // This holding is only holdable if it has a reservable id
+                    // different from the record id
+                    $holdable = $branch->reservationButtonStatus == 'reservationOk'
+                        && $reservableId != $id;
+                    $departments = is_object($branch->holdings->holding)
+                        ? array($branch->holdings->holding)
+                        : $branch->holdings->holding;
 
-                        foreach ($departments as $department) {
-                            // Get holding data
-                            $dueDate = isset($department->firstLoanDueDate)
-                                ? $this->dateFormat->convertToDisplayDate(
-                                    '* M d G:i:s e Y',
-                                    $department->firstLoanDueDate
-                                ) : '';
-                            $departmentName = $department->department;
-                            $locationName = isset($department->location) ?
-                                $department->location : '';
-                            $nofAvailableForLoan = isset(
-                                $department->nofAvailableForLoan) ?
-                                $department->nofAvailableForLoan : 0;
-                            $nofTotal = isset(
-                                $department->nofTotal) ?
-                                    $department->nofTotal : 0;
-                            $nofOrdered = isset(
-                                $department->nofOrdered) ?
-                                    $department->nofOrdered : 0;
+                    foreach ($departments as $department) {
+                        // Get holding data
+                        $dueDate = isset($department->firstLoanDueDate)
+                            ? $this->dateFormat->convertToDisplayDate(
+                                '* M d G:i:s e Y',
+                                $department->firstLoanDueDate
+                            ) : '';
+                        $departmentName = $department->department;
+                        $locationName = isset($department->location)
+                            ? $department->location : '';
+                        $nofAvailableForLoan
+                            = isset($department->nofAvailableForLoan)
+                            ? $department->nofAvailableForLoan : 0;
+                        $nofTotal = isset($department->nofTotal)
+                            ? $department->nofTotal : 0;
+                        $nofOrdered = isset($department->nofOrdered)
+                            ? $department->nofOrdered : 0;
 
-                            // Group journals by issue number
-                            $journal = false;
-                            if ($year !== '' || $edition !== '') {
-                                if ($year !== '' && $edition !== '') {
-                                    if (strncmp($year, $edition, strlen($year)) == 0
-                                    ) {
-                                        $group = $edition;
-                                    } else {
-                                        $group = "$year, $edition";
-                                    }
+                        // Group journals by issue number
+                        $journal = false;
+                        if ($year !== '' || $edition !== '') {
+                            if ($year !== '' && $edition !== '') {
+                                if (strncmp($year, $edition, strlen($year)) == 0) {
+                                    $group = $edition;
                                 } else {
-                                    $group = $year . $edition;
+                                    $group = "$year, $edition";
                                 }
-                                $journal = true;
-                            }
-
-                            // Status & availability
-                            $status = $department->status;
-                            $available = false;
-                            if ($status == 'availableForLoan'
-                                || $status == 'returnedToday'
-                            ) {
-                                $available = true;
-                            }
-
-                            // Special status: On reference desk
-                            if ($status == 'nonAvailableForLoan'
-                                && isset($department->nofReference)
-                                && $department->nofReference == 0
-                            ) {
-                                $status = 'onRefDesk';
-                            }
-
-                            // Status table
-                            $statusArray = array(
-                                'availableForLoan' => 'Available',
-                                'onLoan' => 'Charged',
-                                //'nonAvailableForLoan' => 'Not Available',
-                                'nonAvailableForLoan' => 'On Reference Desk',
-                                'onRefDesk' => 'On Reference Desk',
-                                'overdueLoan' => 'overdueLoan',
-                                'ordered' => 'Ordered',
-                                'returnedToday' => 'returnedToday'
-                            );
-
-                            // Convert status text
-                            if (isset($statusArray[$status])) {
-                                $status = $statusArray[$status];
                             } else {
-                                $this->debugLog(
-                                    'Unhandled status ' +
-                                    $department->status + " for $id"
-                                );
+                                $group = $year . $edition;
                             }
+                            $journal = true;
+                        }
 
-                            // Holding table
-                            $holding = array(
-                                'availability' => $available,
-                                'available'    => $nofAvailableForLoan,
-                                'organisation' => $organisation->value,
-                                'branch'       => $branchName,
-                                'department'   => $departmentName,
-                                'duedate'      => $dueDate,
-                                'location'     => $locationName,
-                                'id'           => $id,
-                                'is_holdable'  => $holdable,
-                                'addLink'      => $holdable ? 'hold' : false,
-                                'item_id'      => $reservableId,
-                                'ordered'      => $nofOrdered,
-                                'status'       => $status,
-                                'total'        => $nofTotal
+                        // Status & availability
+                        $status = $department->status;
+                        $available = false;
+                        if ($status == 'availableForLoan'
+                            || $status == 'returnedToday'
+                        ) {
+                            $available = true;
+                        }
+
+                        // Special status: On reference desk
+                        if ($status == 'nonAvailableForLoan'
+                            && isset($department->nofReference)
+                            && $department->nofReference == 0
+                        ) {
+                            $status = 'onRefDesk';
+                        }
+
+                        // Status table
+                        $statusArray = array(
+                            'availableForLoan' => 'Available',
+                            'onLoan' => 'Charged',
+                            //'nonAvailableForLoan' => 'Not Available',
+                            'nonAvailableForLoan' => 'On Reference Desk',
+                            'onRefDesk' => 'On Reference Desk',
+                            'overdueLoan' => 'overdueLoan',
+                            'ordered' => 'Ordered',
+                            'returnedToday' => 'returnedToday'
+                        );
+
+                        // Convert status text
+                        if (isset($statusArray[$status])) {
+                            $status = $statusArray[$status];
+                        } else {
+                            $this->debugLog(
+                                'Unhandled status ' +
+                                $department->status + " for $id"
                             );
+                        }
 
-                            $vfKey = false;
-                            // Does this location exist?
-                            foreach ($vfHoldings as $key => $vfHolding) {
-                                if ($vfHolding['location'] == $group) {
-                                    $vfKey = $key;
-                                }
+                        // Holding table
+                        $holding = array(
+                            'availability' => $available,
+                            'available'    => $nofAvailableForLoan,
+                            'organisation' => $organisation->value,
+                            'branch'       => $branchName,
+                            'department'   => $departmentName,
+                            'duedate'      => $dueDate,
+                            'location'     => $locationName,
+                            'id'           => $id,
+                            'is_holdable'  => $holdable,
+                            'addLink'      => $holdable ? 'hold' : false,
+                            'item_id'      => $reservableId,
+                            'ordered'      => $nofOrdered,
+                            'status'       => $status,
+                            'total'        => $nofTotal,
+                            'reservations' => isset($branch->nofReservations)
+                                ? $branch->nofReservations : 0
+                        );
+
+                        $vfKey = false;
+                        // Does this location exist?
+                        foreach ($vfHoldings as $key => $vfHolding) {
+                            if ($vfHolding['location'] == $group) {
+                                $vfKey = $key;
                             }
+                        }
 
-                            // If new location, initialize
-                            if ($vfKey === false) {
-                                $vfKey = count($vfHoldings);
-                                $reservations = isset($organisation->nofReservations)
-                                    ? $organisation->nofReservations : 0;
-                                $shelfMark = isset($department->shelfMark) ?
-                                    $department->shelfMark : '';
-                                $branchHoldable = $branch->reservationButtonStatus ==
-                                    'reservationOk';
-                                $vfHoldings[$vfKey] = array(
-                                    'id' => $id,
-                                    'callnumber'   => $shelfMark,
-                                    'holdings'     => array(),
-                                    'journal'      => $journal,
-                                    'location'     => $group,
-                                    'organisation' => $organisation->value,
-                                    'status'       => array(
-                                        'available' => false,
-                                        'availableCount' => 0,
-                                        'closestDueDate' => '',
-                                        'dueDateStamp' => '',
-                                        'text' => '',
-                                        'reservations' => $reservations,
-                                    ),
-                                    'title'        => $group,
-                                    'number'       => $vfKey,
-                                    'is_holdable'  => $branchHoldable
-                                );
+                        // If new location, initialize
+                        if ($vfKey === false) {
+                            $vfKey = count($vfHoldings);
+                            $reservations = isset($organisation->nofReservations)
+                                ? $organisation->nofReservations : 0;
+                            $shelfMark = isset($department->shelfMark) ?
+                                $department->shelfMark : '';
+                            $branchHoldable = $branch->reservationButtonStatus ==
+                                'reservationOk';
+                            $vfHoldings[$vfKey] = array(
+                                'id' => $id,
+                                'callnumber'   => $shelfMark,
+                                'holdings'     => array(),
+                                'journal'      => $journal,
+                                'location'     => $group,
+                                'organisation' => $organisation->value,
+                                'status'       => array(
+                                    'available' => false,
+                                    'availableCount' => 0,
+                                    'closestDueDate' => '',
+                                    'dueDateStamp' => '',
+                                    'text' => '',
+                                    'reservations' => $reservations,
+                                ),
+                                'title'        => $group,
+                                'number'       => $vfKey,
+                                'is_holdable'  => $branchHoldable
+                            );
+                        }
+
+                        $vfHoldings[$vfKey]['holdings'][] = $holding;
+
+                        // Location level
+                        $availableLocation
+                            = $vfHoldings[$vfKey]['status']['available'];
+
+                        if ($available) {
+                            $vfHoldings[$vfKey]['status']['availableCount']++;
+                            $vfHoldings[$vfKey]['status']['text'] = 'Available';
+                            $vfHoldings[$vfKey]['status']['available'] = true;
+                        } else if ($dueDate != '' && !$availableLocation) {
+                            $thisDueDate
+                                = strtotime($department->firstLoanDueDate);
+                            $closestDueDate
+                                = $vfHoldings[$vfKey]['status']['dueDateStamp'];
+
+                            // If no closest due date set or
+                            // if closest due date > this due date, then save
+                            if ($closestDueDate == ''
+                                || $closestDueDate > $thisDueDate
+                            ) {
+                                $vfHoldings[$vfKey]['status']['dueDateStamp']
+                                    = $thisDueDate;
+                                $vfHoldings[$vfKey]['status']['closestDueDate']
+                                    = $dueDate;
                             }
-
-                            $vfHoldings[$vfKey]['holdings'][] = $holding;
-
-                            // Location level
-                            $availableLocation
-                                = $vfHoldings[$vfKey]['status']['available'];
-
-                            if ($available) {
-                                $vfHoldings[$vfKey]['status']['availableCount']++;
-                                $vfHoldings[$vfKey]['status']['text'] = 'Available';
-                                $vfHoldings[$vfKey]['status']['available'] = true;
-                            } else if ($dueDate != '' && !$availableLocation) {
-                                $thisDueDate
-                                    = strtotime($department->firstLoanDueDate);
-                                $closestDueDate
-                                    = $vfHoldings[$vfKey]['status']['dueDateStamp'];
-
-                                // If no closest due date set or
-                                // if closest due date > this due date, then save
-                                if ($closestDueDate == ''
-                                    || $closestDueDate > $thisDueDate
-                                ) {
-                                    $vfHoldings[$vfKey]['status']['dueDateStamp']
-                                        = $thisDueDate;
-                                    $vfHoldings[$vfKey]['status']['closestDueDate']
-                                        = $dueDate;
-                                }
-                                $vfHoldings[$vfKey]['status']['text']
-                                    = 'Closest due';
-                            } else if (!$availableLocation) {
-                                $vfHoldings[$vfKey]['status']['text'] = $status;
-                            }
+                            $vfHoldings[$vfKey]['status']['text']
+                                = 'Closest due';
+                        } else if (!$availableLocation) {
+                            $vfHoldings[$vfKey]['status']['text'] = $status;
                         }
                     }
                 }
