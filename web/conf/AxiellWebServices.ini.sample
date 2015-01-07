@@ -25,7 +25,7 @@ defaultRequiredDate = 0:1:0
 
 ; extraHoldFields - A colon-separated list used to display extra visible fields in the
 ; place holds form. Supported values are "requiredByDate" and "pickUpLocation"
-extraHoldFields = pickUpLocation:requiredByDate
+extraHoldFields = pickUpLocation
 
 ; A Pick Up Location Code used to pre-select the pick up location drop down list and
 ; provide a default option if others are not available. Must correspond with one of
