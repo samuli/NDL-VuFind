@@ -5906,6 +5906,13 @@ table.holdingsContainerHolding .callSlipPlace {
 
 .holdingsContainer.driver-AxiellWebServices td.copyTitle {
     font-weight: normal;
+    width: auto;
+    vertical-align: none;
+}
+
+.holdingsContainer.driver-AxiellWebServices td,
+.holdingsContainer.driver-AxiellWebServices th {
+    vertical-align: baseline; 
 }
 
 .holdingsContainer.driver-AxiellWebServices td.copyTitle .holdingOrganisation {
@@ -5921,7 +5928,7 @@ table.holdingsContainerHolding .callSlipPlace {
 }
 
 .holdingsContainer.driver-AxiellWebServices tr:nth-child(even) {
-	  background-color: #f0f8ff;
+	  background-color: #f7f7f7;
 }
 
 /* Comments */
