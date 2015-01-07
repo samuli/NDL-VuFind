@@ -601,6 +601,70 @@ class AxiellWebServices implements DriverInterface
                 }
             }
         }
+
+
+        $user['messagingServices'] = array();
+        $services = array('pickUpNotice', 'overdueNotice', 'dueDateAlert');
+
+        foreach ($services as $service) {
+            $data = array(
+                'active' => false,
+                'type' => translate("axiell_messaging_settings_type_$service")
+            );
+            if ($service == 'dueDateAlert') {
+                $data['sendMethods']['email'] = array('active' => false);
+            } else {
+                $data['sendMethods'] = array(
+                    'snailMail' => array('active' => false),
+                    'email' => array('active' => false),
+                    'sms' => array('active' => false)
+                );
+            }
+            $user['messagingServices'][$service] = $data;
+        }
+        
+        if (isset($info->messageServices)) {
+            foreach ($info->messageServices->messageService as $service) {
+                $methods = array();
+                $type = $service->serviceType;
+                $numOfDays = $service->nofDays->value;
+                $active = $service->isActive === 'yes';
+
+                if (array_values((array)$service->sendMethods) === (array)$service->sendMethods) {
+                    foreach ($service->sendMethods as $method) {
+                        $user['messagingServices'][$type]['sendMethods'][$method->value]['active'] = $method->isActive === 'yes';
+                    }
+                } else {
+                    if (isset($service->sendMethods->sendMethod->value)) {
+                        $user['messagingServices'][$type]['sendMethods'][$service->sendMethods->sendMethod->value]['active'] = $service->sendMethods->sendMethod->isActive === 'yes';
+                    }
+                }
+                foreach ($user['messagingServices'][$type]['sendMethods'] as $key => &$data) {
+                    $typeLabel = translate("axiell_messaging_settings_type_$type");
+                    $methodLabel = translate("axiell_messaging_settings_method_$key");
+
+                    if ($numOfDays > 0) {
+                        $days = translate(
+                            $numOfDays == 1 
+                            ? 'axiell_messaging_settings_num_of_days' 
+                            : 'axiell_messaging_settings_num_of_days_plural'
+                        );
+                        $methodLabel = str_replace('{1}', $numOfDays, $days);
+                    }
+                    
+                    if (!$active) {
+                        $methodLabel = translate('axiell_messaging_settings_method_none');
+                    }
+                    $data['method'] = $methodLabel;
+                }
+                
+                if (isset($user['messagingServices'][$type])) {
+                    $user['messagingServices'][$type]['active'] = $active;
+                    $user['messagingServices'][$type]['numOfDays'] = $numOfDays;                
+                }
+            }
+        }
+
         return $user;
     }
 

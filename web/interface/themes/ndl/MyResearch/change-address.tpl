@@ -1,5 +1,4 @@
 <form method="post" action="{$url}/MyResearch/Profile" class="address_form profile_form">
-    <h2>{translate text="axiell_request_address_change"}</h2>
     <table class="profileGroup">
         <tr>
             <th>{translate text='Address'}</th>
@@ -18,5 +17,5 @@
     </table>
 </form>
 <span class="addressChangeDescription">
-{translate text="axiell_address_change_description"}
+  {translate text="axiell_request_change_description"}
 </span>

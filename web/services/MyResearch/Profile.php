@@ -110,18 +110,85 @@ class Profile extends MyResearch
                 if (isset($_POST['changeAddressLine1'])
                     && isset($_POST['changeAddressZip'])
                 ) {
+                    $profile = $this->catalog->getMyProfile($patron);
+                    $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+                    $data['oldAddress1'] = isset($profile['address1']) ? $profile['address1'] : '';
+                    $data['oldZip'] = isset($profile['zip']) ? $profile['zip'] : '';
+
                     $result = $this->sendEmail(
                         $patron,
-                        filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING)
+                        $data,
+                        'Osoitteenmuutospyyntö',
+                        'Emails/change-address.tpl'
                     );
                     if (!PEAR::isError($result)) {
-                        $userMessages[] = 'address_change_email_sent';
+                        $userMessages[] = 'axiell_request_change_email_sent';
                     } else {
                         error_log(
-                            'Sending of address change requeste mail failed: '
+                            'Sending of address change request mail failed: '
                             . $result->getMessage()
                         );
-                        $userErrors[] = 'address_change_email_failed';
+                        $userErrors[] = 'axiell_request_change_email_failed';
+                    }
+                }
+
+                // Messaging settings request form
+                if (isset($_POST['changeMessagingSettingsRequest'])) {
+                    $profile = $this->catalog->getMyProfile($patron);
+                    if (isset($profile['messagingServices'])) {
+                        $interface->assign('services', $profile['messagingServices']);
+                        $emailDays = array();
+                        foreach (array(1,2,3,4,5) as $day) {
+                            if ($day == 1) {
+                                $label = translate("axiell_messaging_settings_num_of_days");
+                            } else {
+                                $label = translate("axiell_messaging_settings_num_of_days_plural");
+                                $label = str_replace('{1}', $day, $label);
+                            }
+                            $emailDays[] = $label;
+                        }
+                        
+                        $interface->assign('emailDays', $emailDays);
+                        $interface->assign('days', array(1,2,3,4,5));
+                        $interface->display('/MyResearch/change-messaging-settings.tpl');
+                        
+                        return;
+                    }
+                }
+
+                // Messaging settings request
+                if (isset($_POST['changeMessagingSettings'])) {
+                    // Translator for email message (always in Finnish) 
+                    $translator = new I18N_Translator(
+                        array('lang', 'lang_local'), 'fi', $configArray['System']['debug']
+                    );
+                    
+                    $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+                    $data['pickUpNotice'] = $translator->translate('axiell_messaging_settings_method_' . $data['pickUpNotice']);
+                    $data['overdueNotice'] = $translator->translate('axiell_messaging_settings_method_' . $data['overdueNotice']);
+                    if ($data['dueDateAlert'] == 0) {
+                        $data['dueDateAlert'] = $translator->translate('axiell_messaging_settings_method_none');
+                    } else if ($data['dueDateAlert'] == 1) {
+                        $data['dueDateAlert'] = $translator->translate('axiell_messaging_settings_num_of_days');
+                    } else {
+                        $txt = $translator->translate('axiell_messaging_settings_num_of_days_plural');
+                        $txt = str_replace('{1}', $data['dueDateAlert'], $txt);
+                        $data['dueDateAlert'] = $txt;
+                    }
+                    $result = $this->sendEmail(
+                        $patron,
+                        $data,
+                        'Viestiasetusten muutospyyntö',
+                        'Emails/change-messaging-settings.tpl'
+                    );
+                    if (!PEAR::isError($result)) {
+                        $userMessages[] = 'axiell_request_change_email_sent';
+                    } else {
+                        error_log(
+                            'Sending of messaging settings change request mail failed: '
+                            . $result->getMessage()
+                        );
+                        $userErrors[] = 'axiell_request_change_email_failed';
                     }
                 }
 
@@ -268,13 +335,15 @@ class Profile extends MyResearch
     /**
      * Send address change request email
      *
-     * @param array $patron Patron
-     * @param array $data   Array of address information to send
+     * @param array $patron   Patron
+     * @param array $data     Array of information to send
+     * @param array $subject  String Subject
+     * @param array $template String Email template 
      *
      * @return mixed      Boolean true on success, PEAR_Error on failure.
      * @access protected
      */
-    protected function sendEmail($patron, $data)
+    protected function sendEmail($patron, $data, $subject, $template)
     {
         global $interface;
         global $configArray;
@@ -285,11 +354,11 @@ class Profile extends MyResearch
             && isset($driver[0])
             && isset($datasources[$driver[0]])
             && (isset($datasources[$driver[0]]['feedbackEmail'])
-            || isset($datasources[$driver[0]]['addressChangeRequestEmail']))
+            || isset($datasources[$driver[0]]['patronSettingsChangeRequestEmail']))
         ) {
             $emailSource = $datasources[$driver[0]];
-            $to = isset($emailSource['addressChangeRequestEmail'])
-                ? $emailSource['addressChangeRequestEmail']
+            $to = isset($emailSource['patronSettingsChangeRequestEmail'])
+                ? $emailSource['patronSettingsChangeRequestEmail']
                 : $emailSource['feedbackEmail'];
         } else {
             $to = $configArray['Site']['email'];
@@ -308,22 +377,17 @@ class Profile extends MyResearch
             . (isset($profile['lastname']) ? $profile['lastname'] : '')
         );
 
-        $subject = 'Osoitteenmuutospyyntö';
         $interface->assign('library', $library);
         $interface->assign('username', $username);
         $interface->assign('name', $name);
         $interface->assign('email', isset($patron['email']) ? $patron['email'] : '');
-        $interface->assign(
-            'oldAddress1', isset($profile['address1']) ? $profile['address1'] : ''
-        );
-        $interface->assign(
-            'oldZip', isset($profile['zip']) ? $profile['zip'] : ''
-        );
-        $interface->assign('address1', $data['changeAddressLine1']);
-        $interface->assign('zip', $data['changeAddressZip']);
-        $body = $interface->fetch('Emails/change-address.tpl');
+        $interface->assign('data', $data);
+
+        $body = $interface->fetch($template);
 
         $mail = new VuFindMailer();
+        //echo("send: $to, from: " . $configArray['Site']['email'] . ", subj: $subject, body: $body");
+
         return $mail->send($to, $configArray['Site']['email'], $subject, $body);
     }
 

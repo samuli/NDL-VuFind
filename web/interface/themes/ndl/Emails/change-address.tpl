@@ -4,8 +4,8 @@ Käyttäjätunnus: {$username}
 Nimi: {$name}
 Sähköpostiosoite: {$email}
 
-Uusi osoite: {$address1}
-Uusi postitoimipaikka: {$zip}
+Uusi osoite: {$data.changeAddressLine1}
+Uusi postitoimipaikka: {$data.changeAddressZip}
 
-Vanha osoite: {$oldAddress1}
-Vanha postitoimipaikka: {$oldZip}
+Vanha osoite: {$data.oldAddress1}
+Vanha postitoimipaikka: {$data.oldZip}

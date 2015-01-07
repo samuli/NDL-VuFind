@@ -126,6 +126,27 @@
             {/if}
           </table>
         </form>
+        {if count($profile.messagingServices)}
+        <table class="profileGroup messagingSettings">          
+          <tr><td colspan="3"><h3>{translate text='axiell_messaging_settings_title'}</h3></td></tr>
+          {foreach from=$profile.messagingServices item=service name=loop}
+          <tr><td colspan="3">{$service.type}: 
+            {assign var="methodFound" value="0"}
+            {foreach from=$service.sendMethods item=method name=loop2}
+              {if $method.active}{if $methdodFound}, {/if}{assign var="methodFound" value="1"}{$method.method}{/if}
+            {/foreach}
+            {if !$methodFound}
+              {translate text="axiell_messaging_settings_method_none"}
+            {/if}
+          </td></tr>
+          {/foreach}
+          <tr>
+            <td>
+              <a class="editMessagingSettings" href="#">{translate text="axiell_request_messaging_settings_change"}</a>
+            </td>
+          </tr>
+        </table>
+        {/if}
         {if $changePassword}
           <form method="post" action="{$url}/MyResearch/Profile" class="profile_form" id="password_form">
             <table class="profileGroup">
@@ -269,7 +290,7 @@
       var params = {
         'changeAddressRequest': true
       };
-      getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_address_change_request"}{literal}', '', '', '', params);
+      getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_address_change"}{literal}', '', '', '', params);
       e.preventDefault();
     });
   {/literal}
@@ -293,7 +314,29 @@
     {/literal}
   {/if}
   {literal}
+  $('.editAddress').click(function(e) {
+    var $account = $(this).closest('.profileGroup');
+    var data = {
+      'changeAddressRequest':true,
+      'email': $(this).data('email'),
+      'name': $(this).data('name'),
+      'address': $(this).data('address'),
+      'zip': $(this).data('zip'),
+      'library': $(this).data('library').replace(/\s+/g, ' ').trim()
+    };
+    var $dialog = getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_address_change"}{literal}', '', '', '', data);
+    e.preventDefault();
   });
+
+  $('.editMessagingSettings').unbind('click').on('click', function(e) {
+    var data = {
+      'changeMessagingSettingsRequest':true,
+    };
+    var $dialog = getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_messaging_settings_change"}{literal}', '', '', '', data);
+    e.preventDefault();
+  });
+
+});
   {/literal}
 </script>
 

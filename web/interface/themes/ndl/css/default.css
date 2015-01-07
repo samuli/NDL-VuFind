@@ -2314,6 +2314,9 @@ margin-top: -54px;
 	  table-layout: fixed;
 	  width: 100%;
 }
+.myResearch table.profileGroup.messagingSettings {
+    margin-bottom: 20px;
+}
 
 .myResearch table.profileGroup td,.myResearch table.profileGroup th {
     border: none;    
