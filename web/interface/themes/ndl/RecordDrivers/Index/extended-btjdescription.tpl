@@ -14,9 +14,9 @@
              {/literal}{if $driver != 'AxiellWebServices'}{literal}
               $("#btjdescription").show();
              {/literal}{else}{literal}
-               $(this).wrapInner('<div class="truncateField"></div>');
+               $(this).wrapInner('<div class="recordSummary truncateField"></div>');
                $("#btjdescription").show();
-               $(this).find('.truncateField').collapse({maxRows: 4, more: "{/literal}{translate text="more"}{literal}", less: "{/literal}{translate text="less"}{literal}"});
+               $(this).find('.truncateField').collapse({maxRows: 4, more: " ", less: " "});
              {/literal}{/if}{literal}
            }
          });
