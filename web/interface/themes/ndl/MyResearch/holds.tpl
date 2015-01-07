@@ -226,10 +226,14 @@
 
   {* Call Slips *}
   {if $driver != 'AxiellWebServices'}
-  <h2>{translate text='Call Slips'}:      {foreach from=$catalogAccounts item=account}
-        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
-     {/foreach} 
-            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
+  <h2>{translate text='Call Slips'}:
+      {foreach from=$catalogAccounts item=account}
+        {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+      {/foreach} 
+      {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''|translate_prefix:'source_'}
+      {if $source != $accountname}
+        {if !empty($accountname)}({/if}{$source}{if !empty($accountname)}){/if}</h2>
+      {/if}
     </h2>
     {if is_array($callSlipList)}
   <form name="cancelCallSlipForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelCallSlip">
