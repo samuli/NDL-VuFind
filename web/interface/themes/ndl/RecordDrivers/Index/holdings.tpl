@@ -329,12 +329,7 @@
         </tr>
         {foreach from=$location.0.holdings item=holding name=holding}
           <tr class="copyDetails {if $smarty.foreach.holding.first}first{/if}">
-            {if $smarty.foreach.holding.first}
-              <td class="copyTitle">{translate text="Library unit"}</td>
-            {else}
-              <td></td>
-            {/if}
-            <td class="copyNumber">{if $location.0.journal}{$holding.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}</td>
+            <td colspan="2" class="copyTitle"><span class="holdingOrganisation">{if $location.0.journal}{$holding.organisation}, {/if}{$holding.branch}</span><span class="holdingDepartment">, {$holding.department}{if $holding.location}, {$holding.location}{/if}</span></td>
             <td class="copyInfo" colspan="2">
               <span class="{if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
               {if $holding.availability}

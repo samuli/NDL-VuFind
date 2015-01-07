@@ -5904,8 +5904,12 @@ table.holdingsContainerHolding .callSlipPlace {
     font-weight:400;
 }
 
-.holdingsContainer.driver-AxiellWebServices td.copyNumber {
-    font-weight:500;
+.holdingsContainer.driver-AxiellWebServices td.copyTitle {
+    font-weight: normal;
+}
+
+.holdingsContainer.driver-AxiellWebServices td.copyTitle .holdingOrganisation {
+    font-weight: bold;
 }
 
 .holdingsContainer.driver-AxiellWebServices td.availableOfTotal {
@@ -5914,6 +5918,10 @@ table.holdingsContainerHolding .callSlipPlace {
 
 .holdingsContainer.driver-AxiellWebServices tr.rowSummary.format-Journal {
     display:none;
+}
+
+.holdingsContainer.driver-AxiellWebServices tr:nth-child(even) {
+	  background-color: #f0f8ff;
 }
 
 /* Comments */
