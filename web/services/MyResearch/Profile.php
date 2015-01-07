@@ -386,8 +386,6 @@ class Profile extends MyResearch
         $body = $interface->fetch($template);
 
         $mail = new VuFindMailer();
-        //echo("send: $to, from: " . $configArray['Site']['email'] . ", subj: $subject, body: $body");
-
         return $mail->send($to, $configArray['Site']['email'], $subject, $body);
     }
 

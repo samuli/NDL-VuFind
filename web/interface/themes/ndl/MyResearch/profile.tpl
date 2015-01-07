@@ -315,16 +315,10 @@
   {/if}
   {literal}
   $('.editAddress').click(function(e) {
-    var $account = $(this).closest('.profileGroup');
-    var data = {
-      'changeAddressRequest':true,
-      'email': $(this).data('email'),
-      'name': $(this).data('name'),
-      'address': $(this).data('address'),
-      'zip': $(this).data('zip'),
-      'library': $(this).data('library').replace(/\s+/g, ' ').trim()
+    var params = {
+      'changeAddressRequest': true
     };
-    var $dialog = getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_address_change"}{literal}', '', '', '', data);
+    getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_address_change"}{literal}', '', '', '', data);
     e.preventDefault();
   });
 
@@ -332,7 +326,7 @@
     var data = {
       'changeMessagingSettingsRequest':true,
     };
-    var $dialog = getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_messaging_settings_change"}{literal}', '', '', '', data);
+    getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_messaging_settings_change"}{literal}', '', '', '', data);
     e.preventDefault();
   });
 
