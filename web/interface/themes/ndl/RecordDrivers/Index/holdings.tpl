@@ -234,37 +234,35 @@
                 {elseif $row.use_unknown_message}
                   <span class="unknown">{translate text="status_unknown_message"}</span>
                 {else}
-                  {if $patronFunctions}
-                    {if $row.availability}
-                      {assign var=availCount value=$availCount+1}
-                      {* Begin Available Items (Holds) *}
-                      <span class="available">{translate text="Available"}</span>
-                      {if $row.link}
-                        <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Place a Hold"}{else}{translate text="Check Hold"}{/if}</span></a>
-                      {/if}
-                      {if $row.callSlipLink}
-                        <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="call_slip_place_text"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
-                      {/if}
+                  {if $row.availability}
+                    {assign var=availCount value=$availCount+1}
+                    {* Begin Available Items (Holds) *}
+                    <span class="available">{translate text="Available"}</span>
+                    {if $patronFunctions && $row.link}
+                      <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Place a Hold"}{else}{translate text="Check Hold"}{/if}</span></a>
+                    {/if}
+                    {if $patronFunctions && $row.callSlipLink}
+                      <a class="callSlipPlace{if $row.checkCallSlip} checkCallSlipRequest{/if}" href="{$row.callSlipLink|escape}"><span>{if !$row.checkCallSlip}{translate text="call_slip_place_text"}{else}{translate text="Check Call Slip Request"}{/if}</span></a>
+                    {/if}
+                  {else}
+                  {* Begin Unavailable Items (Recalls) *}
+                    {if is_null($row.availability)}
+                    <span class="availabilityUnknown" data-status="{$row.status}">{translate text=$row.status prefix='status_'}</span>
                     {else}
-                    {* Begin Unavailable Items (Recalls) *}
-                      {if is_null($row.availability)}
-                      <span class="availabilityUnknown" data-status="{$row.status}">{translate text=$row.status prefix='status_'}</span>
-                      {else}
-                      <span class="checkedout">{translate text=$row.status prefix='status_'}</span>
-                      {/if}
-                      {if $row.returnDate} <span class="statusExtra"><span class="returnDate">{$row.returnDate|escape}</span></span>
-                      {/if}
-                      {if $row.duedate}
-                      {* N.B. The "returnDate duedate" classes on the next line are needed for the JS below to work properly *}
-                      <span class="statusExtra">{translate text="Due"}: <span class="returnDate duedate">{$row.duedate|escape}</span></span>
+                    <span class="checkedout">{translate text=$row.status prefix='status_'}</span>
+                    {/if}
+                    {if $row.returnDate} <span class="statusExtra"><span class="returnDate">{$row.returnDate|escape}</span></span>
+                    {/if}
+                    {if $row.duedate}
+                    {* N.B. The "returnDate duedate" classes on the next line are needed for the JS below to work properly *}
+                    <span class="statusExtra">{translate text="Due"}: <span class="returnDate duedate">{$row.duedate|escape}</span></span>
 
-                      {/if}
-                      {if $row.requests_placed > 0}
-                        <span>{translate text="Requests"}: {$row.requests_placed|escape}</span>
-                      {/if}
-                      {if $row.link}
-                        <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Recall This"}{else}{translate text="Check Recall"}{/if}</span></a>
-                      {/if}
+                    {/if}
+                    {if $row.requests_placed > 0}
+                      <span>{translate text="Requests"}: {$row.requests_placed|escape}</span>
+                    {/if}
+                    {if $patronFunctions && $row.link}
+                      <a class="holdPlace{if $row.check} checkRequest{/if}" href="{$row.link|escape}"><span>{if !$row.check}{translate text="Recall This"}{else}{translate text="Check Recall"}{/if}</span></a>
                     {/if}
                   {/if}
                 {/if}
@@ -329,12 +327,7 @@
         </tr>
         {foreach from=$location.0.holdings item=holding name=holding}
           <tr class="copyDetails {if $smarty.foreach.holding.first}first{/if}">
-            {if $smarty.foreach.holding.first}
-              <td class="copyTitle">{translate text="Library unit"}</td>
-            {else}
-              <td></td>
-            {/if}
-            <td class="copyNumber">{if $location.0.journal}{$holding.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}</td>
+            <td colspan="2" class="copyTitle"><span class="holdingOrganisation">{if $location.0.journal}{$holding.organisation}, {/if}{$holding.branch}</span><span class="holdingDepartment">, {$holding.department}{if $holding.location}, {$holding.location}{/if}</span></td>
             <td class="copyInfo" colspan="2">
               <span class="{if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
               {if $holding.availability}

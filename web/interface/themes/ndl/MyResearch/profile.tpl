@@ -48,7 +48,7 @@
             {if !$hideProfileEmailAddress}
               <tr>
                 <th>{translate text='Email'}</th>
-                <td><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></td>
+                <th><input type="text" name="email" value="{$email|escape}" class="{jquery_validation email='Email address is invalid'}"></th>
                 <td class="notif"><span class="userGuider">{if !$hideDueDateReminder}{translate text="notif_email"}{else}{translate text="notif_email_alert"}{/if}</span></td>
               </tr>
             {/if}
@@ -150,11 +150,11 @@
         {if $changePassword}
           <form method="post" action="{$url}/MyResearch/Profile" class="profile_form" id="password_form">
             <table class="profileGroup">
-              <tr><th colspan="3" class="hefty">{translate text='change_password_title'}</th></tr>
+              <tr><th colspan="2" class="hefty">{translate text='change_password_title'}</th><th></th></tr>
               <tr>
                 <th>{translate text='change_password_old_password'}:</th>
                 <td><input type="password" id="oldPassword" name="oldPassword" value=""></td>
-                <td><span class="userGuider">{translate text='change_password_instructions'}</span></td>
+                <td class="notif"><span class="userGuider">{translate text='change_password_instructions'}</span></td>
               </tr>
               <tr>
                 <th>{translate text='change_password_new_password'}:</th>
@@ -177,7 +177,7 @@
           <table class="profileGroup">
             <tr>
               <th colspan="2" class="hefty">{translate text='library_personal_details'}</th>
-              <td></td>
+              <th></th>
             </tr>
             <tr>
               <th>{translate text='First Name'}</th>
@@ -204,7 +204,7 @@
               <tr>
                 <th>{translate text='Address'}</th>
                 <td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td>
-                <td>
+                <td class="notif">
                   <span class="userGuider">{translate text="address_change"}
                   <a class="editAddress" href="#">{translate text="axiell_request_address_change"}</a>.
                 </span>

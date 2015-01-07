@@ -1067,9 +1067,13 @@ class AxiellWebServices implements DriverInterface
 
         $validFromDate = date('Y-m-d');
 
-        $validToDate = $this->dateFormat->convertFromDisplayDate(
-            'Y-m-d', $holdDetails['requiredBy']
-        );
+        if (!isset($holdDetails['requiredBy'])) {
+            $validToDate = $this->getDefaultRequiredByDate();
+        } else {
+            $validToDate = $this->dateFormat->convertFromDisplayDate(
+                'Y-m-d', $holdDetails['requiredBy']
+            );
+        }
 
         if (PEAR::isError($validToDate)) {
             // Hold Date is invalid
@@ -1321,7 +1325,6 @@ class AxiellWebServices implements DriverInterface
      * @param String $cardDetails Patron card data
      *
      * @return array Response
-     * @todo This function is not available at the moment
      */
     public function changePassword($cardDetails)
     {
@@ -1631,6 +1634,25 @@ class AxiellWebServices implements DriverInterface
         $dom->loadXML($xml);
         return $dom->saveXML();
     }
+
+    /**
+     * Get default required by date, functionally identical to
+     * services/Record/Hold::getDefaultDueDate
+     *
+     * @return string Date stamp
+     */
+    protected function getDefaultRequiredByDate()
+    {
+        list($d, $m, $y) = isset($this->config['Holds']['defaultRequiredDate'])
+             ? explode(':', $this->config['Holds']['defaultRequiredDate'])
+             : array(0, 1, 0);
+        $date = mktime(
+            0, 0, 0, date('m')+$m, date('d')+$d, date('Y')+$y
+        );
+
+        return $this->dateFormat->convertFromDisplayDate(
+            'Y-m-d',
+            $this->dateFormat->convertToDisplayDate('U', $date)
+        );
+    }
 }
-
-

@@ -409,6 +409,9 @@
 		text-align:right;
 		font-size:0.9em;	
 	}
+	.myResearch .userGuider {
+		background:none;	
+	}
 	.module-MyResearch h2, .myResearch h2 {
 		line-height: auto;
 	}

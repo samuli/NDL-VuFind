@@ -5140,7 +5140,9 @@ div.coverImagesLessLink {
 
 #recordMetadata.driver-AxiellWebServices .citation td#btjdescription_text {
     padding: 0 0 5px 0;
-    font-size:1.1em;
+    color: rgb(116, 116, 116);
+	font-size: 1.2em;
+	line-height: 1.36em;
 }
 
 .citation tr, .citation td {
@@ -5905,8 +5907,19 @@ table.holdingsContainerHolding .callSlipPlace {
     font-weight:400;
 }
 
-.holdingsContainer.driver-AxiellWebServices td.copyNumber {
-    font-weight:500;
+.holdingsContainer.driver-AxiellWebServices td.copyTitle {
+    font-weight: normal;
+    width: auto;
+    vertical-align: none;
+}
+
+.holdingsContainer.driver-AxiellWebServices td,
+.holdingsContainer.driver-AxiellWebServices th {
+    vertical-align: baseline; 
+}
+
+.holdingsContainer.driver-AxiellWebServices td.copyTitle .holdingOrganisation {
+    font-weight: bold;
 }
 
 .holdingsContainer.driver-AxiellWebServices td.availableOfTotal {
@@ -5915,6 +5928,10 @@ table.holdingsContainerHolding .callSlipPlace {
 
 .holdingsContainer.driver-AxiellWebServices tr.rowSummary.format-Journal {
     display:none;
+}
+
+.holdingsContainer.driver-AxiellWebServices tr:nth-child(even) {
+	  background-color: #f7f7f7;
 }
 
 /* Comments */

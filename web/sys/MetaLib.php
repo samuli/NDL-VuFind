@@ -236,7 +236,7 @@ class MetaLib
                     // Clean and validate input -- note that index may be in a
                     // different field depending on whether this is a basic or
                     // advanced search.
-                    $lookfor = urlencode($params['lookfor']);
+                    $lookfor = $params['lookfor'];
                     if (isset($params['field'])) {
                         $index = $params['field'];
                     } else if (isset($params['index'])) {
@@ -681,7 +681,8 @@ class MetaLib
     protected function callXServer($operation, $params)
     {
         $request = new Proxy_Request($this->config['General']['url'], array('method' => 'POST'));
-        $xml = simplexml_load_string('<x_server_request/>');
+        // Declare UTF-8 encoding so that SimpleXML won't encode characters.
+        $xml = simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><x_server_request/>');
         $op = $xml->addChild($operation);
         $this->paramsToXml($op, $params);
 
