@@ -825,10 +825,18 @@ url_blacklist[] = 'Kuvaus'
 url_blacklist[] = 'Kansikuva' 
 
 ; Whether to use BTJ links in records for images and descriptions. Default is false.
+; IMPORTANT: Review content providers' terms of service before turning this on.
+;            Terms may change, and not all content sources are appropriate for all
+;            applications.  The existence of functionality in VuFind does not imply
+;            suitability for any particular situation.
 ;btj_links = true
 
 ; Whether to use Kirjavälitys links in records for images and descriptions.
 ; Default is false.
+; IMPORTANT: Review content providers' terms of service before turning this on.
+;            Terms may change, and not all content sources are appropriate for all
+;            applications.  The existence of functionality in VuFind does not imply
+;            suitability for any particular situation.
 ;kirjavalitys_links = true
 
 ; The following two sections control the Alphabetic Browse module.
