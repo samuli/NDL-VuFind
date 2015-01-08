@@ -5926,6 +5926,11 @@ table.holdingsContainerHolding .callSlipPlace {
     color: #777;
 }
 
+.holdingsContainer.driver-AxiellWebServices .requestCount {
+	  font-weight: normal;
+    color: #777;
+}
+
 .holdingsContainer.driver-AxiellWebServices tr.rowSummary.format-Journal {
     display:none;
 }

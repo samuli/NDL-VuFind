@@ -39,7 +39,11 @@
         {/if}
         {if $collapseLocations}<span class="arrowIndicator collapsed"></span>{/if}
       </th>
+      {if !$holdings.0.journal}
       <th>{translate text="Requests"} {$requestCount}, {translate text="axiell_items"} {$itemCount}</th>
+      {else}
+      <th></th>
+      {/if}
     </tr>
     {foreach from=$holdings item=location name=locations}
       <tr class="{if $collapseLocations}collapsed{/if}">
