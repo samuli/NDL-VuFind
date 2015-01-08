@@ -609,15 +609,15 @@ class AxiellWebServices implements DriverInterface
         foreach ($services as $service) {
             $data = array(
                 'active' => false,
-                'type' => translate("axiell_messaging_settings_type_$service")
+                'type' => translate("messaging_settings_type_$service")
             );
             if ($service == 'dueDateAlert') {
                 $data['sendMethods']['email'] = array('active' => false);
             } else {
                 $data['sendMethods'] = array(
-                    'snailMail' => array('active' => false),
-                    'email' => array('active' => false),
-                    'sms' => array('active' => false)
+                    'snailMail' => array('active' => false, 'type' => 'letter'),
+                    'email' => array('active' => false, 'type' => 'email'),
+                    'sms' => array('active' => false, 'type' => 'sms')
                 );
             }
             $user['messagingServices'][$service] = $data;
@@ -640,20 +640,21 @@ class AxiellWebServices implements DriverInterface
                     }
                 }
                 foreach ($user['messagingServices'][$type]['sendMethods'] as $key => &$data) {
-                    $typeLabel = translate("axiell_messaging_settings_type_$type");
-                    $methodLabel = translate("axiell_messaging_settings_method_$key");
+                    $methodType = $data['type'];
+                    $typeLabel = translate("messaging_settings_type_$type");
+                    $methodLabel = translate("messaging_settings_method_$methodType");
 
                     if ($numOfDays > 0) {
                         $days = translate(
                             $numOfDays == 1 
-                            ? 'axiell_messaging_settings_num_of_days' 
-                            : 'axiell_messaging_settings_num_of_days_plural'
+                            ? 'messaging_settings_num_of_days'
+                            : 'messaging_settings_num_of_days_plural'
                         );
                         $methodLabel = str_replace('{1}', $numOfDays, $days);
                     }
                     
                     if (!$active) {
-                        $methodLabel = translate('axiell_messaging_settings_method_none');
+                        $methodLabel = translate('messaging_settings_method_none');
                     }
                     $data['method'] = $methodLabel;
                 }

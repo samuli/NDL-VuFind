@@ -6578,6 +6578,7 @@ padding-right: 20px;
     padding: 5px 6px;
 }
 
+.profileGroup .editMessagingSettings,
 .profileGroup .editAddress {
     padding: 3px 0px 1px 25px;
 }

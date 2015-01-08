@@ -140,9 +140,9 @@ class Profile extends MyResearch
                         $emailDays = array();
                         foreach (array(1,2,3,4,5) as $day) {
                             if ($day == 1) {
-                                $label = translate("axiell_messaging_settings_num_of_days");
+                                $label = translate("messaging_settings_num_of_days");
                             } else {
-                                $label = translate("axiell_messaging_settings_num_of_days_plural");
+                                $label = translate("messaging_settings_num_of_days_plural");
                                 $label = str_replace('{1}', $day, $label);
                             }
                             $emailDays[] = $label;
@@ -164,14 +164,14 @@ class Profile extends MyResearch
                     );
                     
                     $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                    $data['pickUpNotice'] = $translator->translate('axiell_messaging_settings_method_' . $data['pickUpNotice']);
-                    $data['overdueNotice'] = $translator->translate('axiell_messaging_settings_method_' . $data['overdueNotice']);
+                    $data['pickUpNotice'] = $translator->translate('messaging_settings_method_' . $data['pickUpNotice']);
+                    $data['overdueNotice'] = $translator->translate('messaging_settings_method_' . $data['overdueNotice']);
                     if ($data['dueDateAlert'] == 0) {
-                        $data['dueDateAlert'] = $translator->translate('axiell_messaging_settings_method_none');
+                        $data['dueDateAlert'] = $translator->translate('messaging_settings_method_none');
                     } else if ($data['dueDateAlert'] == 1) {
-                        $data['dueDateAlert'] = $translator->translate('axiell_messaging_settings_num_of_days');
+                        $data['dueDateAlert'] = $translator->translate('messaging_settings_num_of_days');
                     } else {
-                        $txt = $translator->translate('axiell_messaging_settings_num_of_days_plural');
+                        $txt = $translator->translate('messaging_settings_num_of_days_plural');
                         $txt = str_replace('{1}', $data['dueDateAlert'], $txt);
                         $data['dueDateAlert'] = $txt;
                     }
