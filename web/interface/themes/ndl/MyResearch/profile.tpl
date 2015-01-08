@@ -128,9 +128,9 @@
         </form>
         {if count($profile.messagingServices)}
         <table class="profileGroup messagingSettings">          
-          <tr><td colspan="3"><h3>{translate text='messaging_settings_title'}</h3></td></tr>
+          <tr><td><h3>{translate text='messaging_settings_title'}</h3></td></tr>
           {foreach from=$profile.messagingServices item=service name=loop}
-          <tr><td colspan="3">{$service.type}: 
+          <tr><td>{$service.type}: 
             {assign var="methodFound" value="0"}
             {foreach from=$service.sendMethods item=method name=loop2}
               {if $method.active}{if $methdodFound}, {/if}{assign var="methodFound" value="1"}{$method.method}{/if}
