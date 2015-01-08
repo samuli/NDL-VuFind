@@ -286,10 +286,16 @@
     {else}
       <div class="singleItem">{translate text=$source prefix='source_'}</div>
     {/if}
-    {if $holdings}
+    {assign var="journal" value="0"}
+    {foreach from=$holdings item=location}
+      {if $location.0.journal}
+        {assign var="journal" value="1"}
+      {/if}
+    {/foreach}
+    {if $holdings && !$journal}
       <div class="holdingTotals">
-        <span class="requestCount">{translate text="Request queue"}: {$requestCount}</span>
-        <span class="holdCount">{translate text="Total number of items"}: {$itemCount}</span>
+        <span class="requestCount">{translate text="Requests"}: {$requestCount}</span>
+        <span class="holdingCount">{translate text="Total number of items"}: {$itemCount}</span>
       </div>
     {/if}
     </div>
@@ -318,6 +324,21 @@
                 {translate text="status_`$status`"}
               {/if}
             </span>
+            {if $journal}
+              {assign var=commonReservations value=$location.0.status.reservations}
+              {assign var=maxReservations value=0}
+              {foreach from=$location.0.holdings item=holding}
+                {if $holding.reservations != $commonReservations}
+                  {assign var=commonReservations value=false}
+                {/if}
+                {if $holding.reservations > $maxReservations}
+                  {assign var=maxReservations value=$holding.reservations}
+                {/if}
+              {/foreach}
+              {if $location.0.status.reservations || $maxReservations}
+                <span class="requestCount">({translate text="Requests"}: {if $location.0.status.reservations}{$location.0.status.reservations}{else}{$maxReservations}{/if})</span>
+              {/if}
+            {/if}
           </th>
           <th class="locationLink">{$location.0.callnumber}
             {if $holdingTitleHold != 'block' && $location.0.link}
@@ -327,7 +348,7 @@
         </tr>
         {foreach from=$location.0.holdings item=holding name=holding}
           <tr class="copyDetails {if $smarty.foreach.holding.first}first{/if}">
-            <td colspan="2" class="copyTitle"><span class="holdingOrganisation">{if $location.0.journal}{$holding.organisation}, {/if}{$holding.branch}</span><span class="holdingDepartment">, {$holding.department}{if $holding.location}, {$holding.location}{/if}</span></td>
+            <td colspan="2" class="copyTitle"><span class="holdingOrganisation">{if $journal}{$holding.organisation}, {/if}{$holding.branch}</span><span class="holdingDepartment">, {$holding.department}{if $holding.location}, {$holding.location}{/if}</span></td>
             <td class="copyInfo" colspan="2">
               <span class="{if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
               {if $holding.availability}
@@ -343,6 +364,9 @@
             <td class="availableOfTotal">
               {if $holding.ordered > 0}
                 {translate text="status_Ordered"}: {$holding.ordered}<br/>
+              {/if}
+              {if $holding.reservations && $commonReservations === false}
+                {translate text="Requests"}: {$holding.reservations}<br/>
               {/if}
               {translate text="Available items"}: {$holding.available} / {$holding.total}
               {if !$location.0.link & $holdingTitleHold != 'block' && $holding.link}

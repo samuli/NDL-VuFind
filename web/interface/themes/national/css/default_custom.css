@@ -192,3 +192,7 @@ ul.organisations li:nth-child(even) {
     height: 35px;
     margin-left: 3px;
 }
+
+.resultHoldingsContainer .holdingsPlaceHold {
+	  display: none;
+}
