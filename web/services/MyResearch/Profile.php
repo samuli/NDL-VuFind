@@ -122,13 +122,13 @@ class Profile extends MyResearch
                         'Emails/change-address.tpl'
                     );
                     if (!PEAR::isError($result)) {
-                        $userMessages[] = 'axiell_request_change_email_sent';
+                        $userMessages[] = 'request_change_email_sent';
                     } else {
                         error_log(
                             'Sending of address change request mail failed: '
                             . $result->getMessage()
                         );
-                        $userErrors[] = 'axiell_request_change_email_failed';
+                        $userErrors[] = 'request_change_email_failed';
                     }
                 }
 
@@ -182,13 +182,13 @@ class Profile extends MyResearch
                         'Emails/change-messaging-settings.tpl'
                     );
                     if (!PEAR::isError($result)) {
-                        $userMessages[] = 'axiell_request_change_email_sent';
+                        $userMessages[] = 'request_change_email_sent';
                     } else {
                         error_log(
                             'Sending of messaging settings change request mail failed: '
                             . $result->getMessage()
                         );
-                        $userErrors[] = 'axiell_request_change_email_failed';
+                        $userErrors[] = 'request_change_email_failed';
                     }
                 }
 
