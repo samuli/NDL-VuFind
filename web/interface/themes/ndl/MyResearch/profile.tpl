@@ -128,21 +128,21 @@
         </form>
         {if count($profile.messagingServices)}
         <table class="profileGroup messagingSettings">          
-          <tr><td colspan="3"><h3>{translate text='axiell_messaging_settings_title'}</h3></td></tr>
+          <tr><td><h3>{translate text='messaging_settings_title'}</h3></td></tr>
           {foreach from=$profile.messagingServices item=service name=loop}
-          <tr><td colspan="3">{$service.type}: 
+          <tr><td>{$service.type}: 
             {assign var="methodFound" value="0"}
             {foreach from=$service.sendMethods item=method name=loop2}
               {if $method.active}{if $methdodFound}, {/if}{assign var="methodFound" value="1"}{$method.method}{/if}
             {/foreach}
             {if !$methodFound}
-              {translate text="axiell_messaging_settings_method_none"}
+              {translate text="messaging_settings_method_none"}
             {/if}
           </td></tr>
           {/foreach}
           <tr>
             <td>
-              <a class="editMessagingSettings" href="#">{translate text="axiell_request_messaging_settings_change"}</a>
+              <a class="edit editMessagingSettings" href="#">{translate text="request_messaging_settings_change"}</a>
             </td>
           </tr>
         </table>
@@ -206,7 +206,7 @@
                 <td>{if $profile.address1}{$profile.address1|escape}{else}-{/if}</td>
                 <td class="notif">
                   <span class="userGuider">{translate text="address_change"}
-                  <a class="editAddress" href="#">{translate text="axiell_request_address_change"}</a>.
+                  <a class="editAddress" href="#">{translate text="request_address_change"}</a>.
                 </span>
                 </td>
               </tr>
@@ -260,7 +260,7 @@
               </tr>
               <tr>
                 <td colspan="3">
-                  <a class="edit editAddress" href="#">{translate text="axiell_request_address_change"}</a>
+                  <a class="edit editAddress" href="#">{translate text="request_address_change"}</a>
                 </td>
               </tr>
             {/if}
@@ -290,7 +290,7 @@
       var params = {
         'changeAddressRequest': true
       };
-      getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_address_change"}{literal}', '', '', '', params);
+      getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="request_address_change"}{literal}', '', '', '', params);
       e.preventDefault();
     });
   {/literal}
@@ -315,16 +315,10 @@
   {/if}
   {literal}
   $('.editAddress').click(function(e) {
-    var $account = $(this).closest('.profileGroup');
-    var data = {
-      'changeAddressRequest':true,
-      'email': $(this).data('email'),
-      'name': $(this).data('name'),
-      'address': $(this).data('address'),
-      'zip': $(this).data('zip'),
-      'library': $(this).data('library').replace(/\s+/g, ' ').trim()
+    var params = {
+      'changeAddressRequest': true
     };
-    var $dialog = getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_address_change"}{literal}', '', '', '', data);
+    getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="request_address_change"}{literal}', '', '', '', data);
     e.preventDefault();
   });
 
@@ -332,7 +326,7 @@
     var data = {
       'changeMessagingSettingsRequest':true,
     };
-    var $dialog = getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="axiell_request_messaging_settings_change"}{literal}', '', '', '', data);
+    getLightbox('MyResearch', 'Profile', null, null, '{/literal}{translate text="request_messaging_settings_change"}{literal}', '', '', '', data);
     e.preventDefault();
   });
 

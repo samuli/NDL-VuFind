@@ -17,5 +17,5 @@
     </table>
 </form>
 <span class="addressChangeDescription">
-  {translate text="axiell_request_change_description"}
+  {translate text="request_change_description"}
 </span>
