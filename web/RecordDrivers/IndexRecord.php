@@ -898,7 +898,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('listThumb', $this->getThumbnail());
         $interface->assign('listBuilding', $this->getBuilding());
         $interface->assign('listDate', $this->getPublicationDates());
-
+        $interface->assign('listISBN', $this->getCleanISBN());
         // Extract user metadata from the database:
         $notes = array();
         $data = $user->getSavedData($id, $listId);
@@ -968,6 +968,7 @@ class IndexRecord implements RecordInterface
             $data['author'] = $this->getPrimaryAuthor();
             $data['dates'] = $this->getPublicationDates();
             $data['url'] = $configArray['Site']['url'] . '/Record/' . urlencode($this->getUniqueID());
+            $data['summary'] = $this->getSummary();
 
             $building = $this->getBuilding();
             $data['building'] = translate('facet_' . rtrim($building[0], '/'));

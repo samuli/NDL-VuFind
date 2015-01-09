@@ -95,7 +95,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
         {if $coreThumbLarge}<a id="thumbnail_link" href="{$path}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large" onclick="launchFancybox(this); return false;" rel="{$id}">{/if}
         <span></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
         {if $coreThumbLarge}</a>
-        {js filename="init_fancybox.js"}
+        {js filename="init_image_popup.js"}
         {/if}
         
         {else}

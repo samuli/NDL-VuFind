@@ -3,8 +3,7 @@
 {js filename="ajax_common.js"}
 {js filename="collection_record.js"}
 {js filename="check_save_statuses.js"}
-{* Fancybox for images *}
-{js filename="init_fancybox.js"}
+{js filename="init_image_popup.js"}
 {if !empty($addThis)}
 <script type="text/javascript" src="https://s7.addthis.com/js/250/addthis_widget.js?pub={$addThis|escape:"url"}"></script>
 {/if}

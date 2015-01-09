@@ -6619,7 +6619,10 @@ padding-right: 20px;
     margin-top: 10px;
 }
 
-.fancyNotes .heading,
+.imagePopupHolder .listNotes {
+    display: none;
+}
+.imagePopupHolder .listNotes .heading,
 .module-List .result .notes .heading {
     margin-top: 10px;
     font-weight: bold;
@@ -7767,25 +7770,17 @@ div.commentDetails > * {
     z-index:2;
 }
 
-/** fancybox text styles **/
+/** image popup text styles **/
 
-.fancyTitle {
- font-size:1.2em;
- margin:0.2em 0;
-}
-.fancyAuthorAndDates {
-
-}
-                                          
-.fancyLink {
+.imagePopupHolder .recordLink {
     text-align:right;
 }
 
-.fancyLink a {
+.imagePopupHolder .recordLink a {
     display:inline-block;
 }
 
-.fancyLink a:before {
+.imagePopupHolder .recordLink a:before {
     background-image: url("../images/icons16-24px-02_turquoise.png");
     background-position: 2px -2370px;    
     content: "";
@@ -7796,35 +7791,27 @@ div.commentDetails > * {
     width: 17px;
 }
 
-.fancybox-skin {
-    min-width: 160px;
-    word-wrap: break-word;
-}
-
-.fancybox-overlay .fancybox-skin {
-    float: left;
-}
-.fancyImageRights {
+.imagePopupHolder .imageRights {
     margin-top: 20px;
     margin-bottom: 20px;
     overflow: visible;
 }
-.fancyImageRights > div > span {
+.imagePopupHolder .imageRights .rights span {
     font-weight: bold;
 }
 
-.fancyImageRights > div {
+.imagePopupHolder .imageRights > div {
     float: left;
 }
-.fancyImageRights .copyrightLink {
+.imagePopupHolder .imageRights .copyrightLink {
     margin-top: -1px;
     position: inherit;
 }
-.fancyImageRights .rights {
+
+.imagePopupHolder .imageRights .rights {
     margin-right: 10px;
 }
-
-.fancyImageRights .copyrightLink a:after {
+.imagePopupHolder .imageRights .copyrightLink a:after {
     background-image: url(../images/icons16-24px-02_turquoise.png);
     background-position: 2px -2318px;
     background-repeat: no-repeat;
@@ -7835,18 +7822,74 @@ div.commentDetails > * {
     width: 20px;
     content: "";
 }
-.fancyImageRights .lessLink {
+.imagePopupHolder .imageRights .lessLink {
     display: none;
     margin-left: 0;
+    margin-top: 10px;
     clear: both;
 }
-.fancyImageRights .lessLink a:after {
+.imagePopupHolder .imageRights .lessLink a:after {
     background-position: 2px -2270px;
 }
-.fancyImageRights .copyright {
+.imagePopupHolder .imageRights .copyright {
     clear: both;
     display: none;
 }
+
+.imagePopupHolder {
+    text-align: center;
+    padding: 1em;
+    text-align: center;
+    padding: 1em;
+    margin: auto;
+    width: 90%;
+    height: 90%;
+    
+}
+
+.imagePopupHolder .content {
+    text-align: left;
+    background-color: #ffffff;
+    clear: right;
+    width: 30%; 
+    height: 100%;
+    float: left;
+    text-align: left;
+}
+
+.imagePopupHolder .image {
+    float: left;
+    position: relative;
+    z-index: 99999999;
+    background-color: red;
+    min-width: 100px;
+    min-height: 100px;
+}
+
+.imagePopupHolder .image img {
+    max-height: 80%;
+    width: auto;
+}
+
+@media all and (max-width:800px) {
+    .imagePopupHolder .image { 
+        width: 100%;
+        float:none;
+    }
+
+    .imagePopupHolder .content { 
+        width: 100%;
+    }
+}
+.mfp-preloader {
+    width: 100%;
+    background-color: red;
+    width: 100px;
+    height: 100px;
+}
+
+
+
 
 
 

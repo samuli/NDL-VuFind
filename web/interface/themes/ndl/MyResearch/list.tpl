@@ -5,7 +5,7 @@ vufindString.authError = "{translate text="You must be logged in first"}";
 </script>
  
 {js filename="bulk_actions.js"}
-{js filename="init_fancybox.js"}
+{js filename="init_image_popup.js"}
 {if $bookBag}
 <script type="text/javascript">
 vufindString.bulk_noitems_advice = "{translate text="bulk_noitems_advice"}";

@@ -78,7 +78,7 @@
             {if $coreThumbLarge}{if $img_count > 1}<a class="title fancybox-trigger" id="thumbnail_link" data-id="{$id|escape:"url"}" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large"><span></span>{else}<a data-id="{$id|escape:"url"}" class="fancybox fancybox.image" href="{$coreThumbLarge|escape}" rel="gallery">{/if}{/if}
             <span></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
             {if $coreThumbLarge}</a>
-              {js filename="init_fancybox.js"}
+              {js filename="init_image_popup.js"}
             {/if}
           {else}
             {* <img src="{$path}/bookcover.php" alt="{translate text='No Cover Image'}"> *}

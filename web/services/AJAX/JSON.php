@@ -1042,6 +1042,69 @@ class JSON extends Action
     }
 
     /**
+     * Return record data to be displayed in image popup.
+     *
+     * @return void
+     * @access public
+     */
+    protected function getImagePopup()
+    {
+        global $interface;
+        global $configArray;
+
+        $id = $_GET['id'];
+
+        $db = null;
+        if (strpos($id, 'metalib.', 0) === 0) {
+            $db = new MetaLib();
+        } else {
+            $db = ConnectionManager::connectToIndex();
+        }
+
+        if (!($record = $db->getRecord($id))) {
+            return $this->output('Record not found: ' . $id, JSON::STATUS_ERROR);
+        }
+        $rec = RecordDriverFactory::initRecordDriver($record);
+
+        $tpl = 'RecordDrivers/Index/result-image-popup.tpl';
+
+        
+        $img = $configArray['Site']['url'];
+        $img .= isset($_GET['isn'])
+            ? '/bookcover.php?isn=' . urlencode($_GET['isn'])
+            : '/thumbnail.php?id=' . urlencode($id)
+        ;
+        if (isset($_GET['index'])) {
+            $img .= '&index=' . $_GET['index'];
+        }
+        $img .= "&size=large";
+        $data = $rec->getLightboxData();
+        
+        $interface->assign('img', $img);
+        $interface->assign('title', $data['title']);
+        $interface->assign('author', $data['author']);
+        $interface->assign('building', $data['building']);
+        $interface->assign('url', $data['url']);
+        $interface->assign('dates', $data['dates']);
+        if (isset($data['summary'])) {
+            $interface->assign('summary', $data['summary']);           
+        }
+        if (isset($data['rights'])) {
+            if (isset($data['rights']['copyright'])) {
+                $interface->assign('copyright', $data['rights']['copyright']);
+            }
+            if (isset($data['rights']['link'])) {
+                $interface->assign('copyrightLink', $data['rights']['link']);
+            }
+            if (isset($data['rights']['description'])) {
+                $interface->assign('copyrightDescription', $data['rights']['description']);
+            }            
+        }
+
+        return $interface->display($tpl);
+    }
+
+    /**
      * Fetch Links from resolver given an OpenURL and format as HTML
      * and output the HTML content in JSON object.
      *
@@ -1122,30 +1185,6 @@ class JSON extends Action
                 echo $interface->fetch($tpl);
             }
         }
-    }
-
-    /**
-     * Return record data to be displayed in lightbox.
-     *
-     * @return void
-     * @access public
-     */
-    protected function getRecordData()
-    {
-        $id = urldecode($_GET['id']);
-
-        $db = null;
-        if (strpos($id, 'metalib.', 0) === 0) {
-            $db = new MetaLib();
-        } else {
-            $db = ConnectionManager::connectToIndex();
-        }
-
-        if (!($record = $db->getRecord($id))) {
-            return $this->output('Record not found: ' . $id, JSON::STATUS_ERROR);
-        }
-        $rec = RecordDriverFactory::initRecordDriver($record);
-        return $this->output($rec->getLightboxData(), JSON::STATUS_OK);
     }
 
     /**

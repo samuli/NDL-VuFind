@@ -1,12 +1,11 @@
 <!-- START of: MetaLib/result-list.tpl -->
 
-<div class="result recordId" id="record{$record.ID.0|escape}">
+<div class="result recordId" id="record{$record.ID.0|escape}"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}>
   <div class="resultColumn1">
     <div class="coverDiv">
       <div class="resultNoImage"><p>{translate text='No image'}</p></div>
       <div class="resultImage">
         <a class="title fancybox fancybox.image" data-id="{$record.ID.0|escape:"url"}"
-           {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}
            href="{$path}/bookcover.php?size=large{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" 
           id="thumbnail_link_{$record.ID.0|escape:"url"}" 
           rel="gallery">

@@ -1,5 +1,5 @@
 <!-- START of: List/home.tpl -->
-{js filename="init_fancybox.js"}
+{js filename="init_image_popup.js"}
 
 
 <div id="listHeader">

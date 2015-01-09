@@ -1,18 +1,73 @@
 $(document).ready(function() {
-    $(".fancybox-trigger").click(function(e) {
+  $('.fancybox').magnificPopup({
+      type:'ajax',      
+      //tLoading: '',
+      callbacks: {
+          ajaxContentAdded: function() {
+              $(".imagePopup .imageRights .copyrightLink a").on("click", function() {
+                  var mode = $(this).data("mode") == 1;                                      
+                  
+                  var moreLink = $(".imagePopup .imageRights .moreLink");
+                  var lessLink = $(".imagePopup .imageRights .lessLink");
+                  
+                  moreLink.toggle(!mode);
+                  lessLink.toggle(mode);
+                  
+                  $(".imagePopup .imageRights .copyright").toggle(mode);
+                  return false;                                      
+              });
+          }
+      },
+      gallery: {
+          enabled: true,
+          preload: [0,2],
+          navigateByImgClick: true,
+          arrowMarkup: '<button title="%title%" type="button" class="mfp-arrow mfp-arrow-%dir%"></button>', // markup of an arrow button
+          tPrev: trPrev,
+          tNext: trNext,
+          tCounter: ''
+      }
+  });
+});
+
+$('.imageLighbox .image img').load(function() {
+    $(this).fadeIn('slow');
+});
+
+
+$(document).ready(function() {
+    $(".fancybox-trigger2").click(function(e) {
         e.preventDefault();
         $("a[href='" + $(this).attr('href') + "']").eq(0).click();
     });
 
-    $('.fancybox').fancybox({ 
-        nextEffect: 'none', 
-        prevEffect: 'none',
-        autoSize: true,
+    $('.fancybox2').fancybox({ 
+        nextEffect: 'fade', 
+        prevEffect: 'fade',
+        //autoSize: false,
+        height: '90%',
+
+        autoWidth: false,
+        //autoHeight: true,
+        //width: '50%',
+        //height: '90%',
+        openEffect: 'fade',
+        /*
+        maxWidth: 800,
+        maxHeight: 300,
+        fitToView: false,
+        width: '30%',
+        height: '20%',
+        autoSize: false,
+        closeClick: false,
+        openEffect: 'none',
+        closeEffect: 'none',
+*/
         beforeLoad: function() {
             this.title = '&nbsp;';
         },
         
-        afterLoad   : function() {
+        afterLoad2   : function() {
             $('.fancybox-skin').fadeTo(0, 0);
 
             var id = $(this.element).data('id');
@@ -122,7 +177,7 @@ $(document).ready(function() {
                         }
 
                         $('.fancybox-title').html(title);
-                        $.fancybox.update();
+                        //$.fancybox.update();
                         $('.fancybox-skin').delay(200).fadeTo(100, 1);
 
                         $(".fancyImageRights .copyrightLink a").on("click", function() {

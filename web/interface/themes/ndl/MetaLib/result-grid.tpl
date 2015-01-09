@@ -1,6 +1,6 @@
 <!-- START of: MetaLib/result-grid.tpl -->
 
-<div class="gridRecordBox result recordId" id="record{$record.ID.0|escape}">
+<div class="gridRecordBox result recordId" id="record{$record.ID.0|escape}"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}>
   <div class="span-3 last addToFavLink">
     <a id="saveRecord{$record.ID.0|escape}" href="{$url}/MetaLib/Save?id={$record.ID.0|escape:"url"}" class="fav tool saveMetaLibRecord" title="{translate text='Add to favorites'}"></a>
   </div>      
@@ -26,7 +26,6 @@
     <div class="resultNoImage"><p>{translate text='No image'}</p></div>
     <div class="resultImage">
       <a class="title fancybox fancybox.image" data-id="{$record.ID.0|escape:"url"}" 
-         {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}
          href="{$path}/bookcover.php?size=large{if $record.ISBN.0}&amp;isn={$record.ISBN.0|@formatISBN}{/if}{if $record.ContentType.0}&amp;contenttype={$record.ContentType.0|escape:"url"}{/if}" 
         id="thumbnail_link_{$record.ID.0|escape:"url"}" 
         rel="gallery">

@@ -1,11 +1,17 @@
-<div id="record{$summId|escape}" class="gridRecordBox recordId" >
+<div id="record{$summId|escape}" class="gridRecordBox recordId"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}>
   {assign var=img_count value=$summImages|@count}
   {if $img_count > 1}
     <div class="imagelinks">
     {foreach from=$summImages item=desc name=imgLoop}
-      <a href="{$url}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title"  onclick="launchFancybox(this); return false;" onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; return false;" />
-      {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+    {if $smarty.foreach.imgLoop.iteration <= 5}
+      <a data-id="{$summId|escape:"url"}" class="title imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&isn={$summISBN|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+         {if $smarty.foreach.imgLoop.iteration > 4}
+            &hellip;
+         {else}
+            {if $desc}{$desc|escape}{else}{$smarty.foreach.imgLoop.iteration + 1}{/if}
+         {/if}
       </a>
+    {/if}
     {/foreach}
     </div>
   {/if}
@@ -40,7 +46,7 @@
     <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
   {if $summThumb}
       <div class="resultImage">
-          <a class="title fancybox fancybox.image" data-id="{$summId|escape:"url"}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}href="{$summThumb|escape}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+          <a class="title imagePopup" data-id="{$summId|escape:"url"}" href="{$path}/AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&isn={$summISBN|escape:"url"}" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
               <img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" />
           </a>
       </div>

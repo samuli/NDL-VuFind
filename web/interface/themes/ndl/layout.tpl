@@ -38,8 +38,7 @@
 
     {css media="screen, projection" filename="../js/jquery-ui-1.8.23.custom/css/smoothness/jquery-ui-1.8.23.custom.css"}
 
-    {* Load Fancybox css *}
-    {css media="screen" filename="fancybox/jquery.fancybox.css"}
+    {css media="screen" filename="magnific-popup.css"}
 
     {* Load JSTree css *}
     {css media="screen" filename="../js/jsTree/themes/apple/style.css"}
@@ -103,12 +102,8 @@
       var trNext = "{translate text="Next"}";
       var trPrev = "{translate text="Prev"}";
       var trClose = "{translate text="Close"}";
-      var trListNotes = "{translate text="Description"}";
       var trMore = "{translate text="More"}";
       var trLess = "{translate text="less"}";      
-      var trImageRights = '{translate text="Image Rights"}';
-      var trSeeAlso = '{translate text="See also"}';
-      var trToRecord = '{translate text="To the record"}';
 
       var listList = [
       {if $listList}
@@ -148,9 +143,8 @@
     {* Load custom javascript functions *}
     {js filename="custom.js"}
 
-    {* load Fancybox *}
-    {js filename="fancybox/jquery.fancybox.pack.js"}
-    
+    {js filename="jquery.magnific-popup.min.js"}
+
     {* Load dynamic facets *}
     {js filename="facets.js"}
 
