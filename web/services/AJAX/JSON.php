@@ -1100,7 +1100,8 @@ class JSON extends Action
                 $interface->assign('copyrightDescription', $data['rights']['description']);
             }            
         }
-
+        $interface->assign('recordType', $data['recordType']);
+ 
         return $interface->display($tpl);
     }
 

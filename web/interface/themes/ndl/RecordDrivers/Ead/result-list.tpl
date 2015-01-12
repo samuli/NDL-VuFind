@@ -42,7 +42,7 @@
       <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
     {if $img_count == 1}
         <div class="resultImage">
-            <a class="title imagePopup" data-id="{$summId|escape:"url"}" href="{$path}//AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+            <a class="title imagePopup" data-id="{$summId|escape:"url"}" href="{$path}/AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
                 <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
             </a>
         </div>

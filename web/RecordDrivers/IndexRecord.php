@@ -972,7 +972,7 @@ class IndexRecord implements RecordInterface
 
             $building = $this->getBuilding();
             $data['building'] = translate('facet_' . rtrim($building[0], '/'));
-
+            $data['recordType'] = $this->fields['recordtype'];
             if ($rights = $this->getImageRights()) {
                 $data['rights'] = $rights;
             }

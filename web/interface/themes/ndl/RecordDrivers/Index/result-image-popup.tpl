@@ -1,8 +1,9 @@
-<div class="imagePopupHolder">
+<div class="imagePopupHolder {$recordType}">
   <div class="image">
     <img src="{$img}" />
   </div>
 
+    
   <div class="content">
     <h3 class="title">{$title}</h3>
     <div class="authorAndDates">
