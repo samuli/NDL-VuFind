@@ -937,6 +937,7 @@ class IndexRecord implements RecordInterface
         global $configArray;
 
         $data = array();
+        $data['thumbLarge'] = $this->getThumbnail('large');
         if (strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {
             // MetaLib record
             $data['title'] = $this->fields['Title'][0];

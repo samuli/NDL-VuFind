@@ -1068,23 +1068,16 @@ class JSON extends Action
 
         $tpl = 'RecordDrivers/Index/result-image-popup.tpl';
 
-        
-        $img = $configArray['Site']['url'];
-        $img .= isset($_GET['isn'])
-            ? '/bookcover.php?isn=' . urlencode($_GET['isn'])
-            : '/thumbnail.php?id=' . urlencode($id)
-        ;
+        $data = $rec->getLightboxData();
+        $img = $data['thumbLarge'];
         if (isset($_GET['index'])) {
             $img .= '&index=' . $_GET['index'];
         }
-        $img .= "&size=large";
-        $data = $rec->getLightboxData();
-        
-        $interface->assign('img', $img);
+
+        $interface->assign('thumbLarge', $img);
         $interface->assign('title', $data['title']);
         $interface->assign('author', $data['author']);
         $interface->assign('building', $data['building']);
-        $interface->assign('url', $data['url']);
         $interface->assign('dates', $data['dates']);
         if (isset($data['summary'])) {
             $interface->assign('summary', $data['summary']);           

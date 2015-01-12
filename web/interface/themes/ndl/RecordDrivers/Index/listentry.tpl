@@ -16,7 +16,7 @@
     <div class="imagelinks">
 {foreach from=$summImages item=desc name=imgLoop}
    {if $smarty.foreach.imgLoop.iteration <= 3}
-      <a data-id="{$listId|escape:"url"}" class="title imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}{if $listISBN}&isn={$listISBN|escape:"url"}{/if}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+      <a data-id="{$listId|escape:"url"}" class="title imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}{if $listISBN}&isn={$listISBN|escape:"url"}{/if}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 2}
             &hellip;
          {else}

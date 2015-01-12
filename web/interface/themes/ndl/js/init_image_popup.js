@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $(".imagePopup-trigger").click(function(e) {
         e.preventDefault();
-        $(this).closest('.result').find('.imagelinks a').eq(0).click();
+        $("a[href='" + $(this).attr('href') + "']").eq(0).click();
      });
 });
 

@@ -4,7 +4,7 @@
     <div class="imagelinks">      
     {foreach from=$summImages item=desc name=imgLoop}
       {if $smarty.foreach.imgLoop.iteration <= 5}
-        <a data-id="{$summId|escape:"url"}" class="title imagePopup"  href="{$path}/AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; return false;" rel="gallery" />
+        <a data-id="{$summId|escape:"url"}" class="title imagePopup"  href="{$path}/AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 4}
             &hellip;
          {else}
@@ -20,7 +20,7 @@
   </div>
   <div class="gridContent">
     <div class="gridTitleBox" >
-      <a class="gridTitle" href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}" id="thumbnail_link_{$summId|escape:"url"}" >
+      <a class="gridTitle" href="{$url}/{if $summCollection}Collection{else}Record{/if}/{$summId|escape:"url"}" >
       {if !$summTitle}{translate text='Title not available'}{elseif !empty($summHighlightedTitle)}{$summHighlightedTitle|truncate:80:"..."|highlight}{else}{$summTitle|truncate:80:"..."|escape}{/if}
       </a>
       <div class="gridPublished">

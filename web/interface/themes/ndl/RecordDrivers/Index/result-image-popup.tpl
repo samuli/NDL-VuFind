@@ -1,6 +1,6 @@
 <div class="imagePopupHolder {$recordType}">
   <div class="image">
-    <img src="{$img}" />
+    <img src="{$thumbLarge}" />
   </div>
 
     
