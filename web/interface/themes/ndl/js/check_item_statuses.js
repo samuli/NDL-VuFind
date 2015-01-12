@@ -1,11 +1,7 @@
 $(document).ready(function() {
     $('.recordId').unbind('inview').one('inview', function() {
         var id = $(this).attr('id').substr('record'.length);
-        if ($(this).attr('data-driver') && $(this).data('driver') == 'AxiellWebServices') {
-            checkAxiellItemStatuses(id, $(this));
-        } else {
-            checkItemStatuses([id]);
-        }
+        checkItemStatuses([id]);
     });
 
     selectItem();
@@ -33,7 +29,7 @@ function checkItemStatuses(id) {
                             && $('#callnumAndLocation' + safeId).length > 0
                         ) {
                             // Full status mode is on -- display the HTML and hide extraneous junk:
-                            $('#callnumAndLocation' + safeId).empty().append(result.full_status).show();
+                            $('#locationDetails' + safeId).empty().append(result.full_status).show();
                             $('#callnumber' + safeId).hide();
                             $('#location' + safeId).hide();
                             $('.hideIfDetailed' + safeId).hide();
@@ -99,25 +95,6 @@ function checkItemStatuses(id) {
     }
 }
 
-function checkAxiellItemStatuses(id, $record) {
-    if (id.length) {
-        $record.find('div[id*="callnumAndLocation"] > span').show();
-        $record.find('div[id*="locationDetails"]').empty();
-        $.ajax({
-            dataType: 'json',
-            url: path + '/AJAX/JSON?method=getAxiellItemStatuses',
-            data: {id:id},
-            success: function(response) {
-                if(response.status == 'OK' && response.data.length > 0) {
-                   $record.find('div[id*="locationDetails"]').append(response.data).removeClass('hide').show();
-                } else {
-                }
-                $record.find('div[id*="callnumAndLocation"] > span').hide();
-            }
-        });
-    }
-}
-
 function selectItem() {
     $('.dedupform').change(function() {
         var id = $(this).val();
@@ -146,11 +123,7 @@ function selectItem() {
         $('#location'+safeId).addClass('ajax_availability').show();
 
         var $record = $(this).closest('.recordId');
-        if ($record.attr('data-driver') && $record.data('driver') == 'AxiellWebServices') {
-            checkAxiellItemStatuses(id, $record);
-        } else {
-            checkItemStatuses([id]);
-        }
-    })
+        checkItemStatuses([id]);
+    });
     
 }

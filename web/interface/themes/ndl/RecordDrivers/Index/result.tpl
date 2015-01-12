@@ -1,5 +1,5 @@
 <!-- START of: RecordDrivers/Index/result.tpl -->
-<div class="result recordId" id="record{$summId|escape}" data-driver="{$driver}">
+<div class="result recordId" id="record{$summId|escape}">
 
 <div class="resultColumn1">
 
