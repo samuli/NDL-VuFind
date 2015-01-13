@@ -7,11 +7,18 @@ $(document).ready(function() {
 
 $(document).ready(function() {
   $('.imagePopup').magnificPopup({
-      type:'ajax',      
+      type:'ajax',
+	  removalDelay: 300,
+
+  	// Class that is added to popup wrapper and background
+ 	 // make it unique to apply your CSS animations just to this exact popup
+  	mainClass: 'mfp-fade',
+	tLoading: "Ladataan sisältöä...",
       //tLoading: '',
       callbacks: {
           ajaxContentAdded: function() {
               $(".imagePopupHolder .image img").one("load", function() {
+				  $(".imagePopupHolder .image").addClass('loaded');
                   resizeImagePopupContent();
                }).each(function() {
                   if(this.complete) {
@@ -70,6 +77,7 @@ $(document).ready(function() {
           tNext: trNext,
           tCounter: ''
       }
+	  
   });
 });
 

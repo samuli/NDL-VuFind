@@ -1,21 +1,22 @@
 <div class="imagePopupHolder {$recordType}">
+  <div class="imagePopupContainer">
   <div class="image">
-    <img src="{$thumbLarge}" />
+    {if $img}<img src="{$img}" />{/if}
+    {if $thumbLarge}<img src="{$thumbLarge}" />{/if}
   </div>
-
-    
   <div class="content">
     <h3 class="title">{$title}</h3>
     <div class="authorAndDates">
-      {if $author}<p>{$author}</p>{/if}
+      <p>
+      {if $author}{$author}{/if}
       {foreach from=$dates item=item}
-      <p>{$item}</p>
-      {/foreach}      
+      	{$item} 
+      {/foreach}
+      </p>      
     </div>
     {if $building}<div class="building">{$building}</div>{/if}
     {if $summary}
     <div class="summary">
-      <h3>{translate text="Description"}</h3>
       {foreach from=$summary item=item}
       <p>{$item}</p>
       {/foreach}      
@@ -31,7 +32,7 @@
         <span>{translate text="Image Rights"}:</span> <a target="_blank" href="{$copyrightLink}">{$copyright}</a>
       </div>
       {if $copyrightDescription}
-      <div class="moreLink copyrightLink"><a data-mode="1" href="#">Lisää</a></div>
+      <div class="moreLink copyrightLink"><a data-mode="1" href="">Lisää</a></div>
       <div class="copyright">
         {foreach from=$copyrightDescription item=item}
         <p>{$item}</p>
@@ -40,11 +41,12 @@
         <a href="{$copyrightLink}">{translate text="See also"}</a>
         {/if}
       </div>
-      <div class="lessLink copyrightLink"><a data-mode="0" href="#">vähemmän</a></div>
+      <div class="lessLink copyrightLink"><a data-mode="0" href="">vähemmän</a></div>
       {/if}
     </div>
-  </div>
+    <div style="clear: both;"></div>
+</div>
 
   <div style="clear: both;"></div>
-
+</div>
 </div>

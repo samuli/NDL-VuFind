@@ -7771,9 +7771,25 @@ div.commentDetails > * {
 }
 
 /** image popup text styles **/
-
+.imagePopupHolder .authorAndDates, .imagePopupHolder .building {
+	font-size: 12px;
+	letter-spacing: 0.5px;
+	font-weight: 500;
+	margin-top: -10px;
+}
+.imagePopupHolder h3.title {
+	padding: 0px 0px 0px;
+	letter-spacing: 0.2px;
+} 
+.imagePopupHolder .building {
+	margin-top:0;
+}
+.imagePopupHolder .summary {
+	color: rgb(90, 90, 90);
+	letter-spacing: 0.2px; 
+}
 .imagePopupHolder .recordLink {
-    text-align:right;
+    text-align:left;
 }
 
 .imagePopupHolder .recordLink a {
@@ -7790,18 +7806,22 @@ div.commentDetails > * {
     margin-top: 2px;
     width: 17px;
 }
-
+.imagePopupHolder.marc .building {
+	display:none;	
+}
 .imagePopupHolder .imageRights {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    overflow: visible;
+	text-align: left;
+	padding:10px 0px;
+	margin-top: 10px;
+	border-top: 1px solid lightgrey;
+	color:#666;
 }
 .imagePopupHolder .imageRights .rights span {
     font-weight: bold;
 }
 
 .imagePopupHolder .imageRights > div {
-    float: left;
+    text-align: left;
 }
 .imagePopupHolder .imageRights .copyrightLink {
     margin-top: -1px;
@@ -7835,57 +7855,165 @@ div.commentDetails > * {
     clear: both;
     display: none;
 }
+.mfp-inline-holder .mfp-content, .mfp-ajax-holder .mfp-content {
+	width:auto;	
+	background: #fff;
+	max-width: 99%;
+	box-shadow: 0px 10px 40px rgba(1,1,1,0.8);
+}
+/*.mfp-bg {
+	opacity:0;
+	background:black;
+	transition:all 0.2s ease-in-out;
+}
+ .mfp-bg.mfp-ready {
+	opacity:0.85; 
+ }*/
 
 .imagePopupHolder {
-    text-align: center;
-    padding: 1em;
-    text-align: center;
-    padding: 1em;
-    margin: auto;
-    width: 90%;
-    height: 90%;
-    
+	text-align: center;
+	margin: auto;
+	width: 100%;
+	height: 90%;  
 }
 
+.imagePopupContainer {
+	display: inline-block;
+	display: inline-flex;
+	width: auto;
+	background: white;
+	padding-bottom: 5px;
+}
 .imagePopupHolder .content {
+	padding: 0 50px 0 15px;
     text-align: left;
     background-color: #ffffff;
     clear: right;
-    width: 30%; 
+    width: auto; 
     height: 100%;
     float: left;
     text-align: left;
+	transition: height 0.3s ease-in-out;
+	max-width:350px;
+	min-width:20%;
 }
 
 .imagePopupHolder .image {
     float: left;
-    position: relative;
-    z-index: 99999999;
-    background-color: red;
-    min-width: 100px;
-    min-height: 100px;
+	max-width: 68%
+	z-index: 99999999;
+	min-width: 130px;
+	min-height: 130px;
+	margin-bottom: -5px;
+	padding: 10px;
+	margin-right: 20px;
+	text-align:left;
+	background-image:url(../images/ajax_loading.gif);
+	background-position: 75px 60px;
 }
+.imagePopupHolder .image:after {
+	content: 'Ladataan kuvaa';
+	position: absolute;
+	left: 35px;
+	top: 92px;
+	color: lightgrey;
+}
+.imagePopupHolder .image.loaded:after {
+	content: 'Ei kuvaa';
+	position: absolute;
+	left: 30px;
+	top: 30px;
+	padding: 30px 30px;
+	border: 1px solid lightgrey;
+	color: lightgrey;
+}
+.imagePopupHolder .image.loaded {
+	background-image: none;	
+}
+.imagePopupHolder.lido .image {
+	padding: 10px 1%;
+	background: white;
+	max-width: 68%;
+}
+.imagePopupHolder .summary {
+		margin:10px 0px;
+}	
 
 .imagePopupHolder .image img {
-    max-height: 80%;
+	position: relative;
+	z-index: 10;
+	max-height: 680px;
+    max-width: 100%;
     width: auto;
+
+}
+.mfp-close-btn-in .mfp-close {
+	background: #fff;	
+}
+.mfp-wrap {
+	z-index: 20001;	
 }
 
 @media all and (max-width:800px) {
-    .imagePopupHolder .image { 
-        width: 100%;
-        float:none;
+	.imagePopupHolder {
+		width: 100%;
+		max-height:90%;	
+	}
+	.imagePopupContainer {
+	display: block;
+	}
+    .imagePopupHolder .image, .imagePopupHolder.lido .image { 
+        width: auto;
+		float: none;
+		margin: auto;
+		max-width: 100%;
+		padding: 0;
+		margin-right: 0px;
+		text-align: center;
     }
+	.imagePopupHolder h3.title {
+		border:none;	
+	}
+	.imagePopupHolder .image:after {
+		left: 28%;
+		top: 20%;
+		color: rgb(153, 149, 149);
+	}
+	.imagePopupHolder .image.loaded:after {
+		left: 40%;
+		top: 8px;
+	}
+	.imagePopupHolder .recordLink {
+   	 	padding:10px 0px;
+		margin: 0px 20px;
+	}	
 
     .imagePopupHolder .content { 
         width: 100%;
+		text-align: center;
+		padding: 0px 0px 20px;
+		max-width:800px;
     }
+	.imagePopupHolder .content h3 {
+		padding: 0px 10px;
+	}
+	.imagePopupHolder .summary {
+		padding: 5px 20px 0px;
+		text-align: left;
+	}	
+	.imagePopupHolder .imageRights {
+		padding: 10px 0px;
+		margin: 0px 20px;
+	}
 }
 .mfp-preloader {
-    width: 100%;
-    background-color: red;
-    width: 100px;
-    height: 100px;
+	background-color: rgba(2, 2, 2, 0.37);
+	width: 160px;
+	margin: auto;
+	padding: 50px 0px;
+	color: #CCC;
+	margin-top: -50px;
+	opacity: 0.8;
 }
 
 
@@ -7975,5 +8103,37 @@ span#showDate {
 }
 
 
+/* Testing animation */
+/* overlay at start */
+.mfp-fade.mfp-bg {
+  opacity: 0;
 
+  -webkit-transition: all 0.15s ease-out;
+  -moz-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+/* overlay animate in */
+.mfp-fade.mfp-bg.mfp-ready {
+  opacity: 0.9;
+}
+/* overlay animate out */
+.mfp-fade.mfp-bg.mfp-removing {
+  opacity: 0;
+}
 
+/* content at start */
+.mfp-fade.mfp-wrap .mfp-content {
+  opacity: 0;
+
+  -webkit-transition: all 0.15s ease-out;
+  -moz-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+}
+/* content animate it */
+.mfp-fade.mfp-wrap.mfp-ready .mfp-content {
+  opacity: 1;
+}
+/* content animate out */
+.mfp-fade.mfp-wrap.mfp-removing .mfp-content {
+  opacity: 0;
+}
