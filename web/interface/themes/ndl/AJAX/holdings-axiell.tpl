@@ -1,10 +1,10 @@
 <!-- START of: AJAX/holdings-axiell.tpl -->
 
-{if $locationTreshold < $locationCount}
+{if $locationThreshold < $locationCount}
   {assign var="collapseLocations" value=true}
 {/if}
 
-{if $branchTreshold < $branchCount}
+{if $branchThreshold < $branchCount}
   {assign var="collapseBranch" value=true}
 {/if}
 
@@ -13,7 +13,7 @@
     <tr><td><span>{translate text="No holdings information available"}</span></tr></td>
   {else}
     <tr class="resultHoldingsHeading">
-      <th class="{if $collapseLocations}collapsible collapsed{/if}">
+      <th{if $collapseLocations} class="collapsible collapsed"{/if}>
         {if $availableLocationCount > 0}
           <span class="availability available">
               {if $journal}
@@ -46,11 +46,11 @@
       {/if}
     </tr>
     {foreach from=$holdings item=location name=locations}
-      <tr class="{if $collapseLocations}collapsed{/if}">
+      <tr{if $collapseLocations} class="collapsed"{/if}>
         <td colspan="2">
           <table>
             <tr>
-              <th class="{if $collapseBranch}collapsible collapsed{/if}"><span class="indent">{if $collapseBranch}<span class="arrowIndicator collapsed"></span>{/if}
+              <th{if $collapseBranch} class="collapsible collapsed"{/if}><span class="indent">{if $collapseBranch}<span class="arrowIndicator collapsed"></span>{/if}
                 {$location.title} 
                 {if $collapseBranch}
                   {if $location.status.availableCount > 0}
@@ -65,7 +65,7 @@
               <th>{$location.callnumber}</th>
             </tr>
             {foreach from=$location.holdings item=holding name=holding}
-              <tr class="{if $collapseBranch}collapsed{/if}">
+              <tr{if $collapseBranch} class="collapsed"{/if}>
                 <td class="copyNumber">
                   <span class="holdingText indent {if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
                     {if $journal}{$holding.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}

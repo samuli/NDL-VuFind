@@ -275,6 +275,7 @@ class JSON extends Action
 
         // Loop through all the status information that came back
         $statuses = array();
+        $patron = null;
         foreach ($results as $record) {
             // Skip errors and empty records:
             if (!PEAR::isError($record) && count($record)) {
@@ -284,19 +285,32 @@ class JSON extends Action
                     continue;
                 }
 
-                if ($locationSetting == "group") {
-                    $current = $this->_getItemStatusGroup(
-                        $record, $messages, $callnumberSetting
+                // Special case for Axiell holdings
+                if (isset($record[0]['holdings'])) {
+                    if ($patron === null) {
+                        $patron = UserAccount::catalogLogin();
+                    }
+                    $current = array(
+                        'id' => $record[0]['id'],
+                        'full_status' => $this->getAxiellItemStatusFull(
+                            $record, $catalog, $patron
+                        )
                     );
                 } else {
-                    $current = $this->_getItemStatus(
-                        $record, $messages, $locationSetting, $callnumberSetting
-                    );
-                }
+                    if ($locationSetting == "group") {
+                        $current = $this->_getItemStatusGroup(
+                            $record, $messages, $callnumberSetting
+                        );
+                    } else {
+                        $current = $this->_getItemStatus(
+                            $record, $messages, $locationSetting, $callnumberSetting
+                        );
+                    }
 
-                // If a full status display has been requested, append the HTML:
-                if ($showFullStatus) {
-                    $current['full_status'] = $this->_getItemStatusFull($record);
+                    // If a full status display has been requested, append the HTML:
+                    if ($showFullStatus) {
+                        $current['full_status'] = $this->_getItemStatusFull($record);
+                    }
                 }
 
                 $statuses[] = $current;
@@ -325,156 +339,6 @@ class JSON extends Action
 
         // Done
         return $this->output($statuses, JSON::STATUS_OK);
-    }
-
-    /**
-     * Get Axiell Item Statuses
-     *
-     * This is responsible for printing the Axiell holdings information for a
-     * collection of records in JSON format.
-     *
-     * @return void
-     * @access public
-     * @author Erik Henriksson <erik.henriksson@helsinki.fi>
-     */
-    public function getAxiellItemStatuses()
-    {
-        global $interface;
-        global $configArray;
-        $id = $_GET['id'];
-        $catalog = ConnectionManager::connectToCatalog();
-        if (!$catalog || !$catalog->status) {
-            return $this->output(
-                translate('An error has occurred'), JSON::STATUS_ERROR
-            );
-        }
-        $holdings = $catalog->getStatus($id);
-        if (PEAR::isError($holdings)) {
-            return $this->output($holdings->getMessage(), JSON::STATUS_ERROR);
-        } else if (!is_array($holdings)) {
-            $holdings = array();
-        }
-
-        $itemCount = 0;
-        $requestCount = 0;
-        $locationCount = 0;
-        $branchCount = 0;
-        $availableLocationCount = 0;
-        $availableCount = 0;
-        $itemStatusText = '';
-        $closestDueDate = '';
-        $closestDueDateStamp = 0;
-        $journal = false;
-        $itemStatusText = '';
-        $isHoldable = false;
-
-        foreach ($holdings as $location) {
-
-            if (is_array($location) && isset($location['status'])) {
-                if (isset($location['status']['reservations'])
-                    && $location['status']['reservations'] > $requestCount
-                ) {
-                    $requestCount = $location['status']['reservations'];
-                }
-                if (isset($location['status']['available'])
-                    && $location['status']['available']
-                ) {
-                    $availableLocationCount++;
-                }
-                if (isset($location['status']['availableCount'])
-                    && $location['status']['availableCount'] > 0
-                ) {
-                    $availableCount += $location['status']['availableCount'];
-                }
-                if (isset($location['status']['text'])
-                    && $location['status']['text'] != ''
-                    && $closestDueDate == ''
-                ) {
-                    $itemStatusText = $location['status']['text'];
-                }
-                if (isset($location['status']['dueDateStamp'])
-                    && $location['status']['dueDateStamp'] != ''
-                    && isset($location['status']['closestDueDate'])
-                    && $location['status']['closestDueDate'] != ''
-                ) {
-                    $dueDate = $location['status']['dueDateStamp'];
-                    if ($closestDueDateStamp < $dueDate) {
-                        $closestDueDate = $location['status']['closestDueDate'];
-                        if (isset($location['status']['text'])
-                            && $location['status']['text'] != ''
-                        ) {
-                            $itemStatusText = $location['status']['text'];
-                        }
-                    }
-                }
-                $locationCount++;
-            }
-            if (is_array($location)) {
-                if (isset($location['journal']) && $location['journal']) {
-                    $journal = true;
-                }
-                if (is_array($location['holdings'])) {
-                    foreach ($location['holdings'] as $holding) {
-                        if (isset($holding['total'])) {
-                            $itemCount += $holding['total'];
-                        }
-                        $branchCount++;
-                    }
-                }
-                if (isset($location['is_holdable'])
-                    && $location['is_holdable']
-                ) {
-                    $isHoldable = true;
-                }
-            }
-        }
-
-        $interface->assign('id', $id);
-        $interface->assign('holdings', $holdings);
-
-        $locationTreshold = isset($configArray['Site']['locationTreshold'])
-            ? $configArray['Site']['locationTreshold'] : 5;
-        $branchTreshold = isset($configArray['Site']['branchTreshold'])
-            ? $configArray['Site']['branchTreshold'] : 15;
-
-        $interface->assign('itemCount', $itemCount);
-        $interface->assign('requestCount', $requestCount);
-        $interface->assign('branchCount', $branchCount);
-        $interface->assign('locationCount', $locationCount);
-        $interface->assign('availableLocationCount', $availableLocationCount);
-        $interface->assign('availableCount', $availableCount);
-        $interface->assign('closestDueDate', $closestDueDate);
-        $interface->assign('itemStatusText', $itemStatusText);
-        $interface->assign('isHoldable', $isHoldable);
-        $interface->assign('locationTreshold', $locationTreshold);
-        $interface->assign('branchTreshold', $branchTreshold);
-        $interface->assign('journal', $journal);
-
-        $db = ConnectionManager::connectToIndex();
-        if (!($record = $db->getRecord($id))) {
-            PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
-        }
-        $recordDriver = RecordDriverFactory::initRecordDriver($record);
-        $interface->assign('patronFunctions', $recordDriver->hasPatronFunctions());
-
-        if ("driver" == CatalogConnection::getHoldsMode()) {
-            $interface->assign('driverMode', true);
-        }
-
-        if ("driver" == CatalogConnection::getTitleHoldsMode()) {
-            $interface->assign('titleDriverMode', true);
-        }
-
-        if ($patron = UserAccount::catalogLogin()) {
-            if (!PEAR::isError($patron)) {
-                $holdLogic = new HoldLogicTitle($catalog);
-                $holdingTitleHold = $holdLogic->getHold($id, $patron);
-                $interface->assign('holdingTitleHold', $holdingTitleHold);
-            }
-        }
-
-        $html = $interface->fetch('AJAX/holdings-axiell.tpl');
-        return $this->output($html, JSON::STATUS_OK);
     }
 
     /**
@@ -1165,6 +1029,142 @@ class JSON extends Action
         $output = array('data'=>$data,'status'=>$status);
         echo json_encode($output);
         exit;
+    }
+
+    /**
+     * Support method for getItemStatuses() -- Get Axiell Full Item Status
+     *
+     * @param array  $holdings Holdings for the record
+     * @param object $catalog  Catalog connection
+     * @param array  $patron   Patron
+     *
+     * @return void
+     * @access public
+     * @author Erik Henriksson <erik.henriksson@helsinki.fi>
+     * @author Ere Maijala <ere.maijala@helsinki.fi>
+     */
+    protected function getAxiellItemStatusFull($holdings, $catalog, $patron)
+    {
+        global $interface;
+        global $configArray;
+
+        $itemCount = 0;
+        $requestCount = 0;
+        $locationCount = 0;
+        $branchCount = 0;
+        $availableLocationCount = 0;
+        $availableCount = 0;
+        $itemStatusText = '';
+        $closestDueDate = '';
+        $closestDueDateStamp = 0;
+        $journal = false;
+        $itemStatusText = '';
+        $isHoldable = false;
+
+        foreach ($holdings as $location) {
+            if (is_array($location) && isset($location['status'])) {
+                if (isset($location['status']['reservations'])
+                    && $location['status']['reservations'] > $requestCount
+                ) {
+                    $requestCount = $location['status']['reservations'];
+                }
+                if (isset($location['status']['available'])
+                    && $location['status']['available']
+                ) {
+                    $availableLocationCount++;
+                }
+                if (isset($location['status']['availableCount'])
+                    && $location['status']['availableCount'] > 0
+                ) {
+                    $availableCount += $location['status']['availableCount'];
+                }
+                if (isset($location['status']['text'])
+                    && $location['status']['text'] != ''
+                    && $closestDueDate == ''
+                ) {
+                    $itemStatusText = $location['status']['text'];
+                }
+                if (isset($location['status']['dueDateStamp'])
+                    && $location['status']['dueDateStamp'] != ''
+                    && isset($location['status']['closestDueDate'])
+                    && $location['status']['closestDueDate'] != ''
+                ) {
+                    $dueDate = $location['status']['dueDateStamp'];
+                    if ($closestDueDateStamp < $dueDate) {
+                        $closestDueDate = $location['status']['closestDueDate'];
+                        if (isset($location['status']['text'])
+                            && $location['status']['text'] != ''
+                        ) {
+                            $itemStatusText = $location['status']['text'];
+                        }
+                    }
+                }
+                $locationCount++;
+            }
+            if (is_array($location)) {
+                if (isset($location['journal']) && $location['journal']) {
+                    $journal = true;
+                }
+                if (is_array($location['holdings'])) {
+                    foreach ($location['holdings'] as $holding) {
+                        if (isset($holding['total'])) {
+                            $itemCount += $holding['total'];
+                        }
+                        $branchCount++;
+                    }
+                }
+                if (isset($location['is_holdable'])
+                    && $location['is_holdable']
+                ) {
+                    $isHoldable = true;
+                }
+            }
+        }
+
+        $id = $holdings[0]['id'];
+        $interface->assign('id', $id);
+        $interface->assign('holdings', $holdings);
+
+        $locationThreshold = isset($configArray['Site']['locationThreshold'])
+            ? $configArray['Site']['locationThreshold'] : 5;
+        $branchThreshold = isset($configArray['Site']['branchThreshold'])
+            ? $configArray['Site']['branchThreshold'] : 15;
+
+        $interface->assign('itemCount', $itemCount);
+        $interface->assign('requestCount', $requestCount);
+        $interface->assign('branchCount', $branchCount);
+        $interface->assign('locationCount', $locationCount);
+        $interface->assign('availableLocationCount', $availableLocationCount);
+        $interface->assign('availableCount', $availableCount);
+        $interface->assign('closestDueDate', $closestDueDate);
+        $interface->assign('itemStatusText', $itemStatusText);
+        $interface->assign('isHoldable', $isHoldable);
+        $interface->assign('locationThreshold', $locationThreshold);
+        $interface->assign('branchThreshold', $branchThreshold);
+        $interface->assign('journal', $journal);
+
+        $db = ConnectionManager::connectToIndex();
+        if (!($record = $db->getRecord($id))) {
+            PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
+        }
+        $recordDriver = RecordDriverFactory::initRecordDriver($record);
+        $interface->assign('patronFunctions', $recordDriver->hasPatronFunctions());
+
+        if ("driver" == CatalogConnection::getHoldsMode()) {
+            $interface->assign('driverMode', true);
+        }
+
+        if ("driver" == CatalogConnection::getTitleHoldsMode()) {
+            $interface->assign('titleDriverMode', true);
+        }
+
+        if (!PEAR::isError($patron)) {
+            $holdLogic = new HoldLogicTitle($catalog);
+            $holdingTitleHold = $holdLogic->getHold($id, $patron);
+            $interface->assign('holdingTitleHold', $holdingTitleHold);
+        }
+
+        return $interface->fetch('AJAX/holdings-axiell.tpl');
     }
 
     /**
