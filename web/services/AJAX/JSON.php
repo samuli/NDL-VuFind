@@ -930,37 +930,9 @@ class JSON extends Action
         }
         $rec = RecordDriverFactory::initRecordDriver($record);
 
-        $tpl = 'RecordDrivers/Index/result-image-popup.tpl';
-
-        $data = $rec->getLightboxData();
-        $img = $data['thumbLarge'];
-        if (isset($_GET['index'])) {
-            $img .= '&index=' . $_GET['index'];
-        }
-
-        $interface->assign('id', $id);        
-        $interface->assign('thumbLarge', $img);
-        $interface->assign('url', $data['url']);
-        $interface->assign('title', $data['title']);
-        $interface->assign('author', $data['author']);
-        $interface->assign('building', $data['building']);
-        $interface->assign('dates', $data['dates']);
-        if (isset($data['summary'])) {
-            $interface->assign('summary', $data['summary']);           
-        }
-        if (isset($data['rights'])) {
-            if (isset($data['rights']['copyright'])) {
-                $interface->assign('copyright', $data['rights']['copyright']);
-            }
-            if (isset($data['rights']['link'])) {
-                $interface->assign('copyrightLink', $data['rights']['link']);
-            }
-            if (isset($data['rights']['description'])) {
-                $interface->assign('copyrightDescription', $data['rights']['description']);
-            }            
-        }
-        $interface->assign('recordType', $data['recordType']);
- 
+        $index = isset($_GET['index']) ? $_GET['index'] : 0;
+        $tpl = $rec->getImagePopup($index);
+        
         return $interface->display($tpl);
     }
 

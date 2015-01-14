@@ -486,7 +486,7 @@ function init480Mobile() {
         $("#480mobileSecond #move480mobile").appendTo("#480mobileFirst" );
     }
 }
-
+/*
 function loadRecordDescription(id, target, imagePopup) {
     console.log("load: " + id);
     var url = path + '/AJAX/AJAX_Description?id=' + id;
@@ -504,3 +504,4 @@ function loadRecordDescription(id, target, imagePopup) {
         }
     });
 }
+*/

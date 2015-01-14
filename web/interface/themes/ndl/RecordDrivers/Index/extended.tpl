@@ -13,12 +13,6 @@
   </tr>
   {/if}
   
-  {* BTJ description start *}
-  {if $driver != 'AxiellWebServices'}
-    {include file='RecordDrivers/Index/extended-btjdescription.tpl'}
-  {/if} 
-  {* BTJ description end *}
-
   {if !empty($extendedDateSpan)}
   {assign var=extendedContentDisplayed value=1}
   <tr valign="top" class="extendedDateSpan">

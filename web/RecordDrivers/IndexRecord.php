@@ -921,33 +921,35 @@ class IndexRecord implements RecordInterface
     }
 
     /**
-     * Return record data to be used in lightbox.
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display image popup.
      *
-     * @return array array with keys:
-     *   'title'    Title
-     *   'author'   Authors
-     *   'dates'    Publication date
-     *   'url'      Record URL
-     *   'building' Translated building name
-     *   'rights'   Image rights, see RecordDriver::getRights
+     * @param int $index Index of image to display
+     *
+     * @return string           Name of Smarty template file to display.
      * @access public
      */
-    public function getLightboxData()
+    public function getImagePopup($index)
     {
         global $configArray;
+        global $interface;
 
-        $data = array();
-        $data['thumbLarge'] = $this->getThumbnail('large');
-        if (isset($this->fields['ID']) && strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {
+        $interface->assign('id', $this->getUniqueID());
+        $img = $this->getThumbnail('large');
+        if ($index) {
+            $img .= '&index=' . $index;
+        }
+        $interface->assign('thumbLarge', $img);
+        if (isset($this->fields['ID']) && strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {            
             // MetaLib record
-            $data['title'] = $this->fields['Title'][0];
-            $data['url'] = $configArray['Site']['url'] . '/MetaLib/Record?id=' . urlencode($this->fields['ID'][0]);
+            $interface->assign('title', $this->fields['Title'][0]);
+            $interface->assign('url', $configArray['Site']['url'] . '/MetaLib/Record?id=' . urlencode($this->fields['ID'][0]));
             if (isset($this->fields['Author']) && $this->fields['Author']) {
-                $data['author'] = implode(', ', $this->fields['Author']);
+                $interface->assign('author', implode(', ', $this->fields['Author']));
             }
 
             if (isset($this->fields['Source']) && $this->fields['Source']) {
-                $data['building'] = implode(', ', $this->fields['Source']);
+                $interface->assign('building', implode(', ', $this->fields['Source']));
             }
 
             if (isset($this->fields['PublicationDate_xml']) && $this->fields['PublicationDate_xml']) {
@@ -961,24 +963,34 @@ class IndexRecord implements RecordInterface
                 if (isset($date['year'])) {
                     $date['dates'] .= $date['year'];
                 }
+                $interface->assign('dates', $date['dates']);
             } else if (isset($this->fields['PublicationDate']) && $this->fields['PublicationDate']) {
-                $data['dates'] = $this->fields['PublicationDate'][0];
+                $interface->assign('dates', $this->fields['PublicationDate'][0]);
             }
         } else {
-            $data['title'] = $this->getTitle();
-            $data['author'] = $this->getPrimaryAuthor();
-            $data['dates'] = $this->getPublicationDates();
-            $data['url'] = $configArray['Site']['url'] . '/Record/' . urlencode($this->getUniqueID());
-            $data['summary'] = $this->getSummary();
+            $interface->assign('title', $this->getTitle());
+            $interface->assign('author', $this->getPrimaryAuthor());
+            $interface->assign('dates', $this->getPublicationDates());
+            $interface->assign('url', $configArray['Site']['url'] . '/Record/' . urlencode($this->getUniqueID()));
+            $interface->assign('summary', $this->getSummary());
 
             $building = $this->getBuilding();
-            $data['building'] = translate('facet_' . rtrim($building[0], '/'));
-            $data['recordType'] = $this->fields['recordtype'];
-            if ($rights = $this->getImageRights()) {
-                $data['rights'] = $rights;
+            $interface->assign('building', translate('facet_' . rtrim($building[0], '/')));
+            $interface->assign('recordType', $this->fields['recordtype']);
+        }
+        if ($rights = $this->getImageRights()) {
+            if (isset($rights['copyright'])) {
+                $interface->assign('copyright', $rights['copyright']);
+            }
+            if (isset($rights['link'])) {
+                $interface->assign('copyrightLink', $rights['link']);
+            }
+            if (isset($rights['description'])) {
+                $interface->assign('copyrightDescription', $rights['description']);
             }
         }
-        return $data;
+    
+        return 'RecordDrivers/Index/result-image-popup.tpl';
     }
 
     /**
