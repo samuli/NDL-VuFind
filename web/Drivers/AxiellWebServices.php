@@ -612,7 +612,7 @@ class AxiellWebServices implements DriverInterface
                 'type' => translate("messaging_settings_type_$service")
             );
             if ($service == 'dueDateAlert') {
-                $data['sendMethods']['email'] = array('active' => false);
+                $data['sendMethods']['email'] = array('active' => false, 'type' => 'email');
             } else {
                 $data['sendMethods'] = array(
                     'snailMail' => array('active' => false, 'type' => 'letter'),
