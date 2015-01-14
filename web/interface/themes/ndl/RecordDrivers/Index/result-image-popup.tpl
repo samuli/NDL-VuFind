@@ -1,8 +1,13 @@
 <div class="imagePopupHolder {$recordType}">
   <div class="imagePopupContainer">
   <div class="image">
-    {if $img}<img src="{$img}" />{/if}
-    {if $thumbLarge}<img src="{$thumbLarge}" />{/if}
+    <span class="loading">{translate text="Loading"}</span>
+    <span class="noimage">{translate text="No Image"}</span>    
+    {if $thumbLarge}
+    <img src="{$thumbLarge}" />
+    {elseif $img}
+
+    {/if}
   </div>
   <div class="content">
     <h3 class="title">{$title}</h3>
@@ -15,17 +20,37 @@
       </p>      
     </div>
     {if $building}<div class="building">{$building}</div>{/if}
-    {if $summary}
     <div class="summary">
+      {if $recordType == 'marc'}
+      <div>
+      <img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
+        <script type="text/javascript">
+        //<![CDATA[
+        var path = {$path|@json_encode};
+        var id = {$id|@json_encode};
+        
+        {literal}
+        $(document).ready(function() {          
+          $(".imagePopupHolder .summary > div").load(path + '/AJAX/AJAX_Description?id=' + id, function(response, status, xhr) {
+            if (response.length != 0) {
+              resizeImagePopupContent();
+            }
+          })
+        });
+        {/literal}
+        //]]>
+        </script>
+      </div>
+      {elseif $summary}
       {foreach from=$summary item=item}
       <p>{$item}</p>
-      {/foreach}      
+      {/foreach}
+      {/if}
     </div>
-    {/if}
     <div class="listNotes">
-      <p class="heading">{translate text="Description"}:</p>
+      <p><span class="heading">{translate text="Description"}</span><span class="notes-user"></span>:</p>
       <p class="text">{$listNotes}</p>      
-    </div>    
+    </div>
     <div class="recordLink"><a href="{$url}">{translate text="To the record"}</a></div>
     <div class="imageRights">
       <div class="rights">

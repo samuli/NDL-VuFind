@@ -487,3 +487,20 @@ function init480Mobile() {
     }
 }
 
+function loadRecordDescription(id, target, imagePopup) {
+    console.log("load: " + id);
+    var url = path + '/AJAX/AJAX_Description?id=' + id;
+    target.load(url, function(response, status, xhr) {
+        if (imagePopup) {
+            resizeImagePopupContent();
+        }
+        if (response.length != 0) {
+            
+
+            //$(this).wrapInner('<div class="recordSummary truncateField"></div>');
+            //$("#description").show();
+            //$(this).find('.truncateField').collapse({maxRows: 4, more: " ", less: " "});
+            
+        }
+    });
+}

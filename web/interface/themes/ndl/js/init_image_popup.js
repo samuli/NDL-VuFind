@@ -87,6 +87,7 @@ function resizeImagePopupContent() {
     content.css("height", "auto");
     
     if ($(window).width() > 800) {
-        content.height(Math.max(content.height(), $('.imagePopupHolder .image').height()));                  
+        var h = Math.max(content.height(), $('.imagePopupHolder .image').height());        
+        content.height(h);                  
     }
 }

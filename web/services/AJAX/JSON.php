@@ -1074,6 +1074,7 @@ class JSON extends Action
             $img .= '&index=' . $_GET['index'];
         }
 
+        $interface->assign('id', $id);        
         $interface->assign('thumbLarge', $img);
         $interface->assign('title', $data['title']);
         $interface->assign('author', $data['author']);

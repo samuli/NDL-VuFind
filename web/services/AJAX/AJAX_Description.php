@@ -68,10 +68,12 @@ class AJAX_Description extends Action
         $id = $_GET['id'];
         
         $localFile = 'interface/cache/description_' . urlencode($id) . '.txt';
-        if (is_readable($localFile)) {
+        $maxAge = isset($configArray['Content']['summarycachetime']) ? $configArray['Content']['summarycachetime'] : 1440;
+
+        if (false && is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
             // Load local cache if available
             header('Content-type: text/plain');
-            echo readfile($localFile);
+            echo file_get_contents($localFile);
             return;
         } else {    
             // Get URL
@@ -81,14 +83,23 @@ class AJAX_Description extends Action
             }
             $recordDriver = RecordDriverFactory::initRecordDriver($record);
             
-            $url = $recordDriver->getDescriptionURL();
+            $url = $recordDriver->getDescriptionURL();            
             // Get, manipulate, save and display content if available
             if ($url) {
                 if ($content = @file_get_contents($url)) {
                     $content = preg_replace('/.*<.B>(.*)/', '\1', $content);
+
                     $content = strip_tags($content);
+
+                    // Replace line breaks with <br>
+                    $content = preg_replace('/(\r|\n)+/', '\1\1', $content);
+                    $content = preg_replace('/\r|\n/', '<br>', $content);
+                    
                     $content = utf8_encode($content); 
                     file_put_contents($localFile, $content);
+
+
+                    $content .= $content .= $content;
                     echo $content;
                 }    
             }
