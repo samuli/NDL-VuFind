@@ -52,29 +52,25 @@
 
 .mfp-inline-holder .mfp-content, .mfp-ajax-holder .mfp-content {
   width: 100%;
-  cursor: auto; }
+  cursor: default; }
 
 .mfp-ajax-cur {
-  cursor: progress; }
+  cursor: default; }
 
 .mfp-zoom-out-cur, .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
-  cursor: -moz-zoom-out;
-  cursor: -webkit-zoom-out;
-  cursor: zoom-out; }
+  cursor: default; }
 
 .mfp-zoom {
-  cursor: pointer;
-  cursor: -webkit-zoom-in;
-  cursor: -moz-zoom-in;
-  cursor: zoom-in; }
+  cursor: default; }
 
 .mfp-auto-cursor .mfp-content {
-  cursor: auto; }
+  cursor: default; }
 
 .mfp-close, .mfp-arrow, .mfp-preloader, .mfp-counter {
   -webkit-user-select: none;
   -moz-user-select: none;
-  user-select: none; }
+  user-select: none;
+  cursor: default; }
 
 .mfp-loading.mfp-figure {
   display: none; }
@@ -114,7 +110,34 @@ button.mfp-close, button.mfp-arrow {
   padding: 0;
   z-index: 1046;
   -webkit-box-shadow: none;
-  box-shadow: none; }
+  box-shadow: none;
+  background: rgba(0, 0, 0, 0.1); }
+.mfp-container button.mfp-close {
+	transition: opacity 0.3s ease-in-out;
+	opacity:0;	
+}
+.mfp-container .mfp-arrow {
+	transition: all 0.3s ease-in-out; 
+}
+.mfp-container .mfp-arrow-right {
+	right:-300px;
+	transition-delay:1s;	
+}
+.mfp-container:hover .mfp-arrow-right {
+	right:0px;	
+	transition-delay:0s;
+}
+.mfp-container .mfp-arrow-left {
+	left:-300px;
+	transition-delay:1s;	
+}
+.mfp-container:hover .mfp-arrow-left {
+	left:0px;
+	transition-delay:0s;
+}
+.mfp-container:hover button.mfp-close {
+	opacity: 0.8;	
+}
 button::-moz-focus-inner {
   padding: 0;
   border: 0; }
@@ -199,19 +222,19 @@ button::-moz-focus-inner {
 .mfp-arrow-left {
   left: 0; }
   .mfp-arrow-left:after, .mfp-arrow-left .mfp-a {
-    border-right: 17px solid #FFF;
+    
     margin-left: 31px; }
   .mfp-arrow-left:before, .mfp-arrow-left .mfp-b {
     margin-left: 25px;
-    border-right: 27px solid #3F3F3F; }
+    border-right: 27px solid #FFF; }
 
 .mfp-arrow-right {
   right: 0; }
   .mfp-arrow-right:after, .mfp-arrow-right .mfp-a {
-    border-left: 17px solid #FFF;
+    
     margin-left: 39px; }
   .mfp-arrow-right:before, .mfp-arrow-right .mfp-b {
-    border-left: 27px solid #3F3F3F; }
+    border-left: 27px solid #FFF; }
 
 .mfp-iframe-holder {
   padding-top: 40px;
@@ -281,7 +304,7 @@ img.mfp-img {
   top: 100%;
   left: 0;
   width: 100%;
-  cursor: auto; }
+  cursor: default; }
 
 .mfp-title {
   text-align: left;
@@ -339,9 +362,6 @@ img.mfp-img {
  }
 
 @media all and (max-width: 900px) {
-  .mfp-arrow {
-    -webkit-transform: scale(0.75);
-    transform: scale(0.75); }
 
   .mfp-arrow-left {
     -webkit-transform-origin: 0;
