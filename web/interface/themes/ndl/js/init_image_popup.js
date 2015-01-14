@@ -11,6 +11,16 @@ $(document).ready(function() {
 	    tLoading: trLoading,
         callbacks: {
             ajaxContentAdded: function() {
+                var type = $(".imagePopupHolder").data("type");
+                if (type == 'marc') {
+                    // Load description                    
+                    $(".imagePopupHolder .summary > div").load(path + '/AJAX/AJAX_Description?id=' + id, function(response, status, xhr) {
+                        if (response.length != 0) {
+                            resizeImagePopupContent();
+                        }
+                    });
+                }
+
                 $(".imagePopupHolder .image img").one("load", function() {
 				    $(".imagePopupHolder .image").addClass('loaded');
                     resizeImagePopupContent();

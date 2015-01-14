@@ -1,4 +1,4 @@
-<div class="imagePopupHolder {$recordType}">
+<div class="imagePopupHolder {$recordType}" data-type="{$recordType}">
   <div class="imagePopupContainer">
     <div class="image">
       <span class="noimage">{translate text="No Image"}</span>    
@@ -21,22 +21,6 @@
         {if $recordType == 'marc'}
         <div>
           <img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
-          <script type="text/javascript">
-          //<![CDATA[
-          var path = {$path|@json_encode};
-          var id = {$id|@json_encode};
-          
-          {literal}
-          $(document).ready(function() {          
-            $(".imagePopupHolder .summary > div").load(path + '/AJAX/AJAX_Description?id=' + id, function(response, status, xhr) {
-              if (response.length != 0) {
-                resizeImagePopupContent();
-              }
-            })
-          });
-          {/literal}
-          //]]>
-          </script>
         </div>
         {elseif $summary}
         {foreach from=$summary item=item}
