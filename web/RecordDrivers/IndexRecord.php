@@ -941,7 +941,7 @@ class IndexRecord implements RecordInterface
         if (isset($this->fields['ID']) && strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {
             // MetaLib record
             $data['title'] = $this->fields['Title'][0];
-            $data['url'] = $configArray['Site']['url'] . '/MetaLib/Record/' . urlencode($this->fields['ID'][0]);
+            $data['url'] = $configArray['Site']['url'] . '/MetaLib/Record?id=' . urlencode($this->fields['ID'][0]);
             if (isset($this->fields['Author']) && $this->fields['Author']) {
                 $data['author'] = implode(', ', $this->fields['Author']);
             }

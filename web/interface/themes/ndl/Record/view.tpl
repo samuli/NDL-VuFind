@@ -107,7 +107,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
         <div class="coverImageLinks{if $img_count > 6} snippet{/if}">
         {foreach from=$coreImages item=desc name=imgLoop}
-            <a data-id="{$id|escape:"url"}" href="{$path}/AJAX/JSON?method=getImagePopup&id={$id|escape:"url"}{if $isbn}&isn={$isbn|escape:"url"}{/if}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title imagePopup" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
+            <a data-id="{$id|escape:"url"}" href="{$path}/AJAX/JSON?method=getImagePopup&id={$id|escape:"url"}{if $isbn}&isn={$isbn|escape:"url"}{/if}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title imagePopup" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$path}/AJAX/JSON?method=getImagePopup&id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
             </a>
           {/foreach}
           </div>

@@ -5138,13 +5138,12 @@ div.coverImagesLessLink {
     padding:0 0 0 1em;
 }
 
-#recordMetadata.driver-AxiellWebServices .citation td#btjdescription_text {
+#recordMetadata #description_text {
     padding: 0 0 5px 0;
     color: rgb(116, 116, 116);
 	font-size: 1.2em;
 	line-height: 1.36em;
 }
-
 .citation tr, .citation td {
     vertical-align:top;
 }
@@ -7861,22 +7860,12 @@ div.commentDetails > * {
 	max-width: 99%;
 	box-shadow: 0px 10px 40px rgba(1,1,1,0.8);
 }
-/*.mfp-bg {
-	opacity:0;
-	background:black;
-	transition:all 0.2s ease-in-out;
-}
- .mfp-bg.mfp-ready {
-	opacity:0.85; 
- }*/
-
 .imagePopupHolder {
 	text-align: center;
 	margin: auto;
 	width: 100%;
 	height: 90%;  
 }
-
 .imagePopupContainer {
 	display: inline-block;
 	display: inline-flex;
@@ -7897,8 +7886,18 @@ div.commentDetails > * {
 	max-width:350px;
 	min-width:20%;
 }
+.imagePopupHolder .content .summary {
+    min-width: 200px;
+}
 
-.imagePopupHolder .image {
+.imagePopupHolder .image img {
+    display: none;
+}
+.imagePopupHolder .image.noimage img,
+.imagePopupHolder .image.loaded img {
+    display: inline-block;
+}
+.imagePopupHolder .image {    
     float: left;
 	max-width: 68%
 	z-index: 99999999;
@@ -7911,15 +7910,14 @@ div.commentDetails > * {
 	background-image:url(../images/ajax_loading.gif);
 	background-position: 75px 60px;
 }
-.imagePopupHolder .image:after {
-	content: 'Ladataan kuvaa';
+.imagePopupHolder .image .loading {
 	position: absolute;
-	left: 35px;
+	left: 55px;
 	top: 92px;
-	color: lightgrey;
+	color: lightgrey;    
 }
-.imagePopupHolder .image.loaded:after {
-	content: 'Ei kuvaa';
+.imagePopupHolder .image .noimage {
+    display: none;
 	position: absolute;
 	left: 30px;
 	top: 30px;
@@ -7927,31 +7925,36 @@ div.commentDetails > * {
 	border: 1px solid lightgrey;
 	color: lightgrey;
 }
+.imagePopupHolder .image.loaded .loading {
+    display: none;
+}
+.imagePopupHolder .image.loaded .noimage {
+    display: block;
+}
 .imagePopupHolder .image.loaded {
 	background-image: none;	
-}
-.imagePopupHolder.lido .image {
-	padding: 10px 1%;
-	background: white;
-	max-width: 68%;
 }
 .imagePopupHolder .summary {
 		margin:10px 0px;
 }	
-
 .imagePopupHolder .image img {
 	position: relative;
 	z-index: 10;
 	max-height: 680px;
     max-width: 100%;
     width: auto;
-
 }
 .mfp-close-btn-in .mfp-close {
 	background: #fff;	
 }
 .mfp-wrap {
 	z-index: 20001;	
+}
+
+@media all and (max-width:1170px) {
+    .imagePopupHolder .image {
+        max-width: 500px;
+    }
 }
 
 @media all and (max-width:800px) {
@@ -7974,12 +7977,12 @@ div.commentDetails > * {
 	.imagePopupHolder h3.title {
 		border:none;	
 	}
-	.imagePopupHolder .image:after {
+	.imagePopupHolder .image .loading {
 		left: 28%;
 		top: 20%;
 		color: rgb(153, 149, 149);
 	}
-	.imagePopupHolder .image.loaded:after {
+	.imagePopupHolder .image.loaded .noimage {
 		left: 40%;
 		top: 8px;
 	}
@@ -7987,6 +7990,10 @@ div.commentDetails > * {
    	 	padding:10px 0px;
 		margin: 0px 20px;
 	}	
+
+    .imagePopupHolder .content .summary {
+        max-width: 400px; 
+    } 
 
     .imagePopupHolder .content { 
         width: 100%;
@@ -8015,11 +8022,6 @@ div.commentDetails > * {
 	margin-top: -50px;
 	opacity: 0.8;
 }
-
-
-
-
-
 
 /** Hopscotch context-help  **/
 

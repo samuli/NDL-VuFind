@@ -1,6 +1,6 @@
 <!-- START of: RecordDrivers/Index/listentry.tpl -->
 
-<div class="listentry recordId" id="record{$listId|escape}" data-recordid="{$listId|escape}"{if $listNotes} data-notes="{foreach from=$listNotes item=item}{$item|escape:'html'}{/foreach}"{/if}>
+<div class="listentry recordId" id="record{$listId|escape}" data-recordid="{$listId|escape}"{if $listNotes} data-notes="{foreach from=$listNotes item=item}{$item|escape:'html'}{/foreach}"{/if}{if $listUsername} data-notes-user="{$listUsername|escape:'html'}"{/if}>
  <div class="checkboxFilter">
   <div class="resultCheckbox">
     <input id="checkbox_{$listId|regex_replace:'/[^a-z0-9]/':''|escape}" type="checkbox" name="ids[]" value="{$listId|escape}" class="checkbox_ui checkbox"/>

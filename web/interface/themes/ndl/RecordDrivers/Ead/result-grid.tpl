@@ -1,4 +1,4 @@
-<div id="record{$summId|escape}" class="gridRecordBox recordId"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}>
+<div id="record{$summId|escape}" class="gridRecordBox recordId"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}{if $listUsername} data-notes-user="{$listUsername|escape:'html'}"{/if}>
   {assign var=img_count value=$summImages|@count}
   {if $img_count > 1}
     <div class="imagelinks">      

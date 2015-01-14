@@ -1,5 +1,5 @@
 <!-- START of: RecordDrivers/Index/result.tpl -->
-<div class="result recordId" id="record{$summId|escape}" data-driver="{$driver}"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}>
+<div class="result recordId" id="record{$summId|escape}" data-driver="{$driver}"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}{if $listUsername} data-notes-user="{$listUsername|escape:'html'}"{/if}>
 
 <div class="resultColumn1">
 

@@ -38,7 +38,7 @@
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
     <tr valign="top" class="description">
-      <td id="description_text" colspan="2">
+      <td id="description_text" class="indexRecord" colspan="2">
         <img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
         <script type="text/javascript">
         //<![CDATA[

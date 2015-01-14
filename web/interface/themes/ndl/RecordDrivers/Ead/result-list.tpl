@@ -1,5 +1,5 @@
 <!-- START of: RecordDrivers/Ead/result-list.tpl -->
-<div class="result recordId" id="record{$summId|escape}"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}>
+<div class="result recordId" id="record{$summId|escape}"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}{if $listUsername} data-notes-user="{$listUsername|escape:'html'}"{/if}>
 
 <div class="resultColumn1">
 

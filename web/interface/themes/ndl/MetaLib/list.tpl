@@ -58,7 +58,6 @@
 
 </div> {* resultHeader *}
 {* End Listing Options *}
-{js filename="init_image_popup.js"}
 {* Main Listing *}
 <div class="resultListContainer">
   <div class="content">

@@ -104,6 +104,7 @@
       var trClose = "{translate text="Close"}";
       var trMore = "{translate text="More"}";
       var trLess = "{translate text="less"}";      
+      var trLoading = "{translate text="Loading"}";      
 
       var listList = [
       {if $listList}

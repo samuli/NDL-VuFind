@@ -1076,6 +1076,7 @@ class JSON extends Action
 
         $interface->assign('id', $id);        
         $interface->assign('thumbLarge', $img);
+        $interface->assign('url', $data['url']);
         $interface->assign('title', $data['title']);
         $interface->assign('author', $data['author']);
         $interface->assign('building', $data['building']);
