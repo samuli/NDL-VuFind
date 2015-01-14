@@ -25,9 +25,9 @@ $(document).ready(function() {
                 
                 var magnificPopup = $.magnificPopup.instance;
                 var src = magnificPopup.currItem.src;
-
                 var rec = magnificPopup.currItem.el.closest(".recordId");
 
+                // Public list notes
                 var listNotes = rec.data("notes");
                 if (typeof(listNotes) != "undefined") {
                     notesHolder.show();
@@ -39,6 +39,7 @@ $(document).ready(function() {
                     }
                 }
 
+                // Image copyright information
                 $(".imagePopupHolder .imageRights .copyrightLink a").on("click", function() {
                     var mode = $(this).data("mode") == 1;                                      
                     
