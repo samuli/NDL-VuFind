@@ -16,7 +16,7 @@
     <div class="imagelinks">
 {foreach from=$summImages item=desc name=imgLoop}
    {if $smarty.foreach.imgLoop.iteration <= 3}
-      <a data-id="{$listId|escape:"url"}" class="title imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}{if $listISBN}&isn={$listISBN|escape:"url"}{/if}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+      <a data-id="{$listId|escape:"url"}" class="title imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$listId|escape:"url"}{if $listISBN}&amp;isn={$listISBN|escape:"url"}{/if}&amp;index={$smarty.foreach.imgLoop.iteration-1}&amp;size=large"  onmouseover="document.getElementById('thumbnail_{$listId|escape:"url"}').src='{$path}/thumbnail.php?id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$listId|escape:"url"}').href='{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 2}
             &hellip;
          {else}
@@ -30,13 +30,13 @@
     <div class="resultNoImage"><p>{translate text='No image'}</p></div>
     {if $img_count > 1}
         <div class="resultImage">
-            <a class="title imagePopup-trigger" href="{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}{if $listISBN}&isn={$listISBN|escape:"url"}{/if}&index=0&size=large" id="thumbnail_link_{$listId|escape:"url"}">
+            <a class="title imagePopup-trigger" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$listId|escape:"url"}{if $listISBN}&amp;isn={$listISBN|escape:"url"}{/if}&amp;index=0&amp;size=large" id="thumbnail_link_{$listId|escape:"url"}">
                <img id="thumbnail_{$listId|escape:"url"}" src="{$path}/thumbnail.php?id={$listId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
             </a>
         </div>
     {elseif $img_count == 1 || $listThumb}
         <div class="resultImage">
-            <a class="imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&id={$listId|escape:"url"}{if $listISBN}&isn={$listISBN|escape:"url"}{/if}&index=0&size=large" rel="gallery" id="thumbnail_link_{$listId|escape:"url"}" data-id="{$listId|escape:"url"}"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a>
+            <a class="imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$listId|escape:"url"}{if $listISBN}&amp;isn={$listISBN|escape:"url"}{/if}&amp;index=0&amp;size=large" rel="gallery" id="thumbnail_link_{$listId|escape:"url"}" data-id="{$listId|escape:"url"}"><img id="thumbnail_{$listId|escape:"url"}" src="{$listThumb|escape}" class="summcover" alt="{translate text='Cover Image'}"/></a>
         </div>    
     {/if}  
   </div>

@@ -9,6 +9,9 @@ $(document).ready(function() {
     $('.imagePopup').magnificPopup({
         type:'ajax',
 	    tLoading: trLoading,
+        ajax: {
+            cursor: ''
+        },
         callbacks: {
             ajaxContentAdded: function() {
                 var popup = $(".imagePopupHolder");
