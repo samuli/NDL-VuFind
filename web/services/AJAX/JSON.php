@@ -906,6 +906,37 @@ class JSON extends Action
     }
 
     /**
+     * Return record data to be displayed in image popup.
+     *
+     * @return void
+     * @access public
+     */
+    protected function getImagePopup()
+    {
+        global $interface;
+        global $configArray;
+
+        $id = $_GET['id'];
+
+        $db = null;
+        if (strpos($id, 'metalib.', 0) === 0) {
+            $db = new MetaLib();
+        } else {
+            $db = ConnectionManager::connectToIndex();
+        }
+
+        if (!($record = $db->getRecord($id))) {
+            return $this->output('Record not found: ' . $id, JSON::STATUS_ERROR);
+        }
+        $rec = RecordDriverFactory::initRecordDriver($record);
+
+        $index = isset($_GET['index']) ? $_GET['index'] : 0;
+        $tpl = $rec->getImagePopup($index);
+        
+        return $interface->display($tpl);
+    }
+
+    /**
      * Fetch Links from resolver given an OpenURL and format as HTML
      * and output the HTML content in JSON object.
      *
@@ -986,30 +1017,6 @@ class JSON extends Action
                 echo $interface->fetch($tpl);
             }
         }
-    }
-
-    /**
-     * Return record data to be displayed in lightbox.
-     *
-     * @return void
-     * @access public
-     */
-    protected function getRecordData()
-    {
-        $id = urldecode($_GET['id']);
-
-        $db = null;
-        if (strpos($id, 'metalib.', 0) === 0) {
-            $db = new MetaLib();
-        } else {
-            $db = ConnectionManager::connectToIndex();
-        }
-
-        if (!($record = $db->getRecord($id))) {
-            return $this->output('Record not found: ' . $id, JSON::STATUS_ERROR);
-        }
-        $rec = RecordDriverFactory::initRecordDriver($record);
-        return $this->output($rec->getLightboxData(), JSON::STATUS_OK);
     }
 
     /**

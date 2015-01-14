@@ -174,29 +174,30 @@ class LidoRecord extends IndexRecord
     }
 
     /**
-     * Return record data to be used in lightbox.
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display image popup.
      *
-     * @return array array with keys:
-     *   'title'    Title
-     *   'author'   Authors
-     *   'dates'    Publication date
-     *   'url'      Record URL
-     *   'building' Translated building-code
-     *   'rights'   Image rights, see RecrodDriver::getImageRights
+     * @param int $index Index of image to display
+     *
+     * @return string           Name of Smarty template file to display.
      * @access public
      */
-    public function getLightboxData()
+    public function getImagePopup($index)
     {
-        $data = parent::getLightboxData();
+        global $interface;
+
+        $tpl = parent::getImagePopup($index);
         if ($dates = $this->getResultDates()) {
-            $data['dates'] = $dates[0];
             if ($dates[1] && $dates[1] != $dates[0]) {
-                $data['dates'] .= '- ' . $dates[1];
+                $interface->assign('dates', $dates[0] . '&ndash;' . $dates[1]);
+            } else {
+                $interface->assign('dates', $dates[0]);
             }
         } else {
-            unset($data['dates']);
+            $interface->assign('dates', null);
         }
-        return $data;
+        
+        return $tpl;
     }
 
     /**

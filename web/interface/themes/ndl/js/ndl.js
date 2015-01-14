@@ -486,4 +486,3 @@ function init480Mobile() {
         $("#480mobileSecond #move480mobile").appendTo("#480mobileFirst" );
     }
 }
-

@@ -56,7 +56,7 @@ Käyttäjätietojen käsittelystä on laadittu rekisteriseloste: <a href="{/lite
 <li>
 <strong>Digitaaliset aineistot:</strong> Digitaalisten aineistojen kohdalla Finnassa on linkki aineistoa hallinnoivan organisaation sivustolle. Näillä sivustoilla oleviin aineistoihin voi liittyä lakiin tai sopimuksiin liittyviä oikeuksia tai rajoituksia. Oikeuksista ja rajoituksista kerrotaan sisältöjä hallinnoivien organisaatioiden sivustoilla.</li>
 <li>
-<strong>Kuvat:</strong> Joidenkin aineistojen kohdalla Finnassa on kuva esimerkiksi museoesineestä, taideteoksesta, valokuvasta tai kirjan kannesta. Näihin ns. esikatselukuviin voi liittyä käytön rajoituksia samalla tavalla kuin aineistoja hallinnoivien organisaatioiden sivustoilla oleviin aineistoihin.
+<strong id="image_rights">Kuvat:</strong> Joidenkin aineistojen kohdalla Finnassa on kuva esimerkiksi museoesineestä, taideteoksesta, valokuvasta tai kirjan kannesta. Näihin ns. esikatselukuviin voi liittyä käytön rajoituksia samalla tavalla kuin aineistoja hallinnoivien organisaatioiden sivustoilla oleviin aineistoihin.
 </li>
 </ul>
 <!-- TÄMÄ VASTA KUN TUONTANNOSSA:

@@ -386,6 +386,9 @@ coverbackground = ffffff
 ; The path is relative to web subdirectory of the VuFind install directory:
 noCoverAvailableImage = images/noCover2.gif
 
+; How long book summaries are cached locally in minutes. Default is one day
+; summarycachetime = 1440
+
 ; You can select from Syndetics, SyndeticsPlus, Amazon Editorial, Amazon or the
 ; Guardian
 ;   Note: Guardian reviews contain embedded advertisements. If the API key is not

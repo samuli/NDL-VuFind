@@ -20,7 +20,7 @@
   {/if}
  <div class="clear"></div>
 </div>
-{js filename="init_fancybox.js"} *}
+{js filename="init_image_popup.js"} *}
 
   {if $errorMsg || $infoMsg}
     <div class="messages">

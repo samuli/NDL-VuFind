@@ -1393,6 +1393,8 @@ class MarcRecord extends IndexRecord
      */
     public function getDescriptionURL()
     {
+        global $configArray;
+
         $url = '';
         $type = '';
         foreach ($this->marcRecord->getFields('856') as $url) {
@@ -1408,7 +1410,8 @@ class MarcRecord extends IndexRecord
                 }
             }
         }
-        return false;
+        
+        return 'http://siilo-kk.lib.helsinki.fi/getText.php?query=' . $this->getCleanISBN();
     }
 
     /**
@@ -1812,15 +1815,17 @@ class MarcRecord extends IndexRecord
      */
     protected function urlAllowed($url)
     {
+        global $configArray;
+
         // BTJ
-        if (strstr($url, 'http://arvo.btj.com/')) {
+        if (preg_match('/^(http|https):.*\.btj\.com\//', $url)) {
             if (!isset($configArray['Record']['btj_links'])
                 || !$configArray['Record']['btj_links']
             ) {
                 return false;
             }
         }
-
+        
         // Kirjavälitys
         if (strstr($url, 'http://data.kirjavalitys.fi/')) {
             if (!isset($configArray['Record']['kirjavalitys_links'])
@@ -1829,7 +1834,7 @@ class MarcRecord extends IndexRecord
                 return false;
             }
         }
-
+        
         return true;
     }
 }
