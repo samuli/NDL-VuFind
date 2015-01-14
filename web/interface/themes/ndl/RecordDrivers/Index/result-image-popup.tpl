@@ -1,7 +1,6 @@
 <div class="imagePopupHolder {$recordType}">
   <div class="imagePopupContainer">
     <div class="image">
-      <span class="loading">{translate text="Loading"}</span>
       <span class="noimage">{translate text="No Image"}</span>    
       {if $thumbLarge}
       <img src="{$thumbLarge}" />

@@ -7917,7 +7917,7 @@ div.commentDetails > * {
 	position: absolute;
 	left: 30px;
 	top: 30px;
-	padding: 30px 30px;
+	padding: 20px 20px;
 	border: 1px solid lightgrey;
 	color: lightgrey;
 }
@@ -7959,9 +7959,10 @@ div.commentDetails > * {
 		max-height:90%;	
 	}
 	.imagePopupContainer {
-	display: block;
+	    display: block;
 	}
-    .imagePopupHolder .image, .imagePopupHolder.lido .image { 
+    .imagePopupHolder .image, 
+    .imagePopupHolder.lido .image { 
         width: auto;
 		float: none;
 		margin: auto;
@@ -7969,28 +7970,21 @@ div.commentDetails > * {
 		padding: 0;
 		margin-right: 0px;
 		text-align: center;
+	    background-position: center center;
     }
 	.imagePopupHolder h3.title {
 		border:none;	
 	}
-	.imagePopupHolder .image .loading {
-		left: 28%;
-		top: 20%;
-		color: rgb(153, 149, 149);
-	}
 	.imagePopupHolder .image.loaded .noimage {
-		left: 40%;
-		top: 8px;
+        display: inline-block;
+        text-align: center;
+		top: 15px;
+        left: auto;
 	}
 	.imagePopupHolder .recordLink {
    	 	padding:10px 0px;
 		margin: 0px 20px;
 	}	
-
-    .imagePopupHolder .content .summary {
-        max-width: 400px; 
-    } 
-
     .imagePopupHolder .content { 
         width: 100%;
 		text-align: center;
