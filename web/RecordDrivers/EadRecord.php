@@ -549,9 +549,7 @@ class EadRecord extends IndexRecord
         }
 
         return isset($rights['copyright']) || isset($rights['description'])
-            ? $rights
-            : parent::getImageRights()
-        ;
+            ? $rights : parent::getImageRights();
     }
 
     /**

@@ -1323,35 +1323,35 @@ class IndexRecord implements RecordInterface
             return null;
         }
 
-    	// ISBN/ISSN (mandatory)
-    	$retval['issn'] = $this->getCleanISSN();
-		$retval['isbn'] = $this->getCleanISBN();
-		if (! $retval['issn'] && ! $retval['isbn']) {
-			return null;
-		}
+        // ISBN/ISSN (mandatory)
+        $retval['issn'] = $this->getCleanISSN();
+        $retval['isbn'] = $this->getCleanISBN();
+        if (! $retval['issn'] && ! $retval['isbn']) {
+            return null;
+        }
 
-    	// Year (optional)
-    	$year = $this->getPublicationDates();
-    	if (!empty($year) && $year[0]) {
-    		$retval['year'] = $year[0];
-    	} else {
-    	    $retval['year'] = '';
-    	}
+        // Year (optional)
+        $year = $this->getPublicationDates();
+        if (!empty($year) && $year[0]) {
+            $retval['year'] = $year[0];
+        } else {
+            $retval['year'] = '';
+        }
 
-    	// Volume (optional)
-    	$retval['volume'] = $this->getContainerVolume();
+        // Volume (optional)
+        $retval['volume'] = $this->getContainerVolume();
 
-    	// Issue (optional)
-    	$retval['issue'] = $this->getContainerIssue();
+        // Issue (optional)
+        $retval['issue'] = $this->getContainerIssue();
 
-    	// Institute (optional)
-		if (!isset($configArray['OpenURL']['institute'])) {
-		    $retval['institute'] = '';
-		} else {
-		    $retval['institute'] = trim($configArray['OpenURL']['institute']);
-		}
+        // Institute (optional)
+        if (!isset($configArray['OpenURL']['institute'])) {
+            $retval['institute'] = '';
+        } else {
+            $retval['institute'] = trim($configArray['OpenURL']['institute']);
+        }
 
-    	return $retval;
+        return $retval;
     }
 
     /**
@@ -3311,10 +3311,10 @@ class IndexRecord implements RecordInterface
         $searchObject->initBrowseScreen();
         $searchObject->disableLogging();
         $searchObject->setQueryString($query);
-       	$result = $searchObject->processSearch();
+        $result = $searchObject->processSearch();
         $searchObject->close();
         if (PEAR::isError($result)) {
-        	PEAR::raiseError($result->getMessage());
+            PEAR::raiseError($result->getMessage());
         }
         return $result['response']['numFound'];
     }
@@ -3344,10 +3344,10 @@ class IndexRecord implements RecordInterface
         $searchObject->initBrowseScreen();
         $searchObject->disableLogging();
         $searchObject->setQueryString($query);
-       	$result = $searchObject->processSearch();
+        $result = $searchObject->processSearch();
         $searchObject->close();
         if (PEAR::isError($result)) {
-        	PEAR::raiseError($result->getMessage());
+            PEAR::raiseError($result->getMessage());
         }
         $res = array();
         if (isset($result['response']['docs'][0]['dedup_data'])) {

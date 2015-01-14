@@ -2841,10 +2841,6 @@ div[id*="locationDetails"] {
     color:rgb(120,120,120);
 }
 
-div[data-driver="AxiellWebServices"] div[id*="locationDetails"] {
-    margin:0;
-}
-
 .resultHoldingsContainer {
     table-layout: fixed;
     width:100%;
