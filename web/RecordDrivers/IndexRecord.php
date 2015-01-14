@@ -2198,7 +2198,7 @@ class IndexRecord implements RecordInterface
 
         return array(
             'description' => array(translate('Image Rights Default')),
-            'link' => $configArray['Site']['url'] . '/Content/terms_conditions'
+            'link' => $configArray['Site']['url'] . '/Content/terms_conditions#image_rights'
         );
     }
 
