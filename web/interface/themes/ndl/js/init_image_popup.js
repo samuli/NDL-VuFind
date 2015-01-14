@@ -11,7 +11,9 @@ $(document).ready(function() {
 	    tLoading: trLoading,
         callbacks: {
             ajaxContentAdded: function() {
-                var type = $(".imagePopupHolder").data("type");
+                var popup = $(".imagePopupHolder");
+                var type = popup.data("type");
+                var id = popup.data("id");
                 if (type == 'marc') {
                     // Load description                    
                     $(".imagePopupHolder .summary > div").load(path + '/AJAX/AJAX_Description?id=' + id, function(response, status, xhr) {

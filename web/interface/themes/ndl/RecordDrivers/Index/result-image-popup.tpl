@@ -1,4 +1,4 @@
-<div class="imagePopupHolder {$recordType}" data-type="{$recordType}">
+<div class="imagePopupHolder {$recordType}" data-type="{$recordType}" data-id="{$id}">
   <div class="imagePopupContainer">
     <div class="image">
       <span class="noimage">{translate text="No Image"}</span>    
@@ -16,7 +16,7 @@
         {/foreach}
         </p>      
       </div>
-      {if $building}<div class="building">{$building}</div>{/if}
+      {if $building}<div class="building">{translate text=$building prefix="facet_"}</div>{/if}
       <div class="summary">
         {if $recordType == 'marc'}
         <div>

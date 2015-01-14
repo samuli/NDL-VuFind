@@ -975,7 +975,7 @@ class IndexRecord implements RecordInterface
             $interface->assign('summary', $this->getSummary());
 
             $building = $this->getBuilding();
-            $interface->assign('building', translate('facet_' . rtrim($building[0], '/')));
+            $interface->assign('building', rtrim($building[0], '/'));
             $interface->assign('recordType', $this->fields['recordtype']);
         }
         if ($rights = $this->getImageRights()) {

@@ -189,7 +189,7 @@ class LidoRecord extends IndexRecord
         $tpl = parent::getImagePopup($index);
         if ($dates = $this->getResultDates()) {
             if ($dates[1] && $dates[1] != $dates[0]) {
-                $interface->assign('dates', $dates[0] . '- ' . $dates[1]);
+                $interface->assign('dates', $dates[0] . '&ndash;' . $dates[1]);
             } else {
                 $interface->assign('dates', $dates[0]);
             }

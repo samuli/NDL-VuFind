@@ -93,8 +93,8 @@ class AJAX_Description extends Action
                     $content = strip_tags($content);
 
                     // Replace line breaks with <br>
-                    $content = preg_replace('/(\r|\n)+/', '<br><br>', $content);
-                    
+                    $content = preg_replace('/(\r\n|\n|\r){3,}/', "<br><br>", $content);
+
                     $content = utf8_encode($content); 
                     file_put_contents($localFile, $content);
 
