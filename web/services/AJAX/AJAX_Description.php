@@ -72,7 +72,7 @@ class AJAX_Description extends Action
         $localFile = 'interface/cache/description_' . urlencode($id) . '.txt';
         $maxAge = isset($configArray['Content']['summarycachetime']) ? $configArray['Content']['summarycachetime'] : 1440;
 
-        if (false && is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
+        if (is_readable($localFile) && time() - filemtime($localFile) < $maxAge * 60) {
             // Load local cache if available
             header('Content-type: text/plain');
             echo file_get_contents($localFile);
