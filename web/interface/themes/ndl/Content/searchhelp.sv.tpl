@@ -109,6 +109,12 @@
   <pre class="code">\!-huutomerkki hakuehtona</pre>
   <p>Obs! <strong>NOT</strong>-operatorn kan användas på motsvarande sätt som denna operator. <strong>NOT</strong>-operatorn kan dock ge mera resultat som ändå innehåller söktermen som skulle uteslutas.
   </p>      
+  <h3 title="Phrase searches">Frassökning</h3>
+  <p>Du kan göra en exakt frassökning genom att skriva dina sökord inom citationstecken. </p>
+  <p>Till exempel: du söker poster som innehåller frasen ”medeltidens historia”, inte t.ex. ”medeltidens kulturhistoria”: </p>
+  <pre class="code">"keskiajan historia"</pre>
+  <p>Man kan också använda frassökning för enskilda söktermer, då visas bara poster som innehåller sökordet exakt så som det är skrivet, och inte t.ex. böjt på olika sätt. 
+  </p>
   {/literal}
 {/capture}
 {capture append="sections"}

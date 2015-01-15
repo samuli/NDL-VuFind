@@ -120,19 +120,19 @@
   <p>Om man använder operatorn <strong>OR</strong> visas de poster som innehåller en eller flera av de termer som operatorn kombinerar.</p>
   <p> Till exempel: du söker poster som innehåller antingen ”economics Keynes” eller bara ”Keynes”: </p>
   <pre class="code">"economics Keynes" OR Keynes</pre>
-  <h3 title="-">Bindestreck (-)</h3>
-  <p>Bindestrecket (-) avlägsnar de poster från sökresultaten, vilka innehåller termen efter strecket.
+  <h3 title="!-">!-</h3>
+  <p>Operatoren avlägsnar de poster från sökresultaten, vilka innehåller termen efter den.
   </p>
   <p>Exempel: sökes poster med termen "economics" men inte termen "Keynes": 
   </p>
-  <pre class="code">economics -Keynes</pre>
-  <p>Obs! Bindestreck kan inte användas i sökningar med en enda sökterm.</p>
+  <pre class="code">economics !-Keynes</pre>
+  <p>Obs! Denna operator kan inte användas i sökningar med en enda sökterm.</p>
   <p>Exempel: följande sökning ger inga resultat:</p>
-  <pre class="code">-economics</pre>
-  <p>Obs! Om någon av söktermen börjar med bindestreck, fås strecket med i sökningen med ett bakstreck (\):</p>
-  <p>Exempel: sökes boken <i>Da Vinci -koodi</i> (finsk översättning):<p>
-  <pre class="code">Da Vinci \-koodi</pre>
-  <p>Obs! <strong>NOT</strong>-operatorn kan användas på motsvarande sätt som bindestrecket. <strong>NOT</strong>-operatorn kan dock ge mera resultat som ändå innehåller söktermen som skulle uteslutas.
+  <pre class="code">!-economics</pre>
+  <p>Obs! Om någon av söktermen börjar med denna operator, fås strecket med i sökningen med ett bakstreck (\):</p>
+  <p>Exempel: sökningen <i>!-merkki hakuehtona</i> (på finska):<p>
+  <pre class="code">\!-huutomerkki hakuehtona</pre>
+  <p>Obs! <strong>NOT</strong>-operatorn kan användas på motsvarande sätt som denna operator. <strong>NOT</strong>-operatorn kan dock ge mera resultat som ändå innehåller söktermen som skulle uteslutas.
   </p>      
   <h3 title="Phrase searches">Frassökning</h3>
   <p>Du kan göra en exakt frassökning genom att skriva dina sökord inom citationstecken. </p>
