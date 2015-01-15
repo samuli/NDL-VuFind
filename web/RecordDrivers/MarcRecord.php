@@ -194,16 +194,23 @@ class MarcRecord extends IndexRecord
      */
     public function getHoldings($patron = false)
     {
+        global $configArray;
         global $interface;
 
-        if ("driver" == CatalogConnection::getHoldsMode()) {
+        $disallowHolds = isset($configArray['Catalog']['disable_driver_hold_actions'])
+            && array_intersect(
+                $this->fields['format'],
+                $configArray['Catalog']['disable_driver_hold_actions']
+            ) ? true : false;
+
+        if (!$disallowHolds && "driver" == CatalogConnection::getHoldsMode()) {
             $interface->assign('driverMode', true);
             if (!UserAccount::isLoggedIn()) {
                 $interface->assign('showLoginMsg', true);
             }
         }
 
-        if ("driver" == CatalogConnection::getTitleHoldsMode()) {
+        if (!$disallowHolds && "driver" == CatalogConnection::getTitleHoldsMode()) {
             $interface->assign('titleDriverMode', true);
             if (!UserAccount::isLoggedIn()) {
                 $interface->assign('showTitleLoginMsg', true);
@@ -1410,7 +1417,7 @@ class MarcRecord extends IndexRecord
                 }
             }
         }
-        
+
         return 'http://siilo-kk.lib.helsinki.fi/getText.php?query=' . $this->getCleanISBN();
     }
 
@@ -1825,7 +1832,7 @@ class MarcRecord extends IndexRecord
                 return false;
             }
         }
-        
+
         // Kirjavälitys
         if (strstr($url, 'http://data.kirjavalitys.fi/')) {
             if (!isset($configArray['Record']['kirjavalitys_links'])
@@ -1834,7 +1841,7 @@ class MarcRecord extends IndexRecord
                 return false;
             }
         }
-        
+
         return true;
     }
 }
