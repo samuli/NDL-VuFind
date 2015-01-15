@@ -85,7 +85,6 @@ class EadRecord extends IndexRecord
 
         $interface->assign('coreIsPartOfArchiveSeries', $this->isPartOfArchiveSeries());
 
-        $interface->assign('coreYearRange', $this->getYearRange());
         $interface->assign('coreOrigination', $this->getOrigination());
         $interface->assign('coreOriginationId', $this->getOriginationID());
         $interface->assign('corePhysicalLocation', $this->getPhysicalLocation());
@@ -137,7 +136,6 @@ class EadRecord extends IndexRecord
 
         $template = parent::getSearchResult($view);
 
-        $interface->assign('summYearRange', $this->getYearRange());
         $interface->assign('summOrigination', $this->getOrigination());
         $interface->assign('summOriginationId', $this->getOriginationID());
         $interface->assign('summPhysicalLocation', $this->getPhysicalLocation());
@@ -158,8 +156,6 @@ class EadRecord extends IndexRecord
         global $interface;
 
         parent::getCollectionMetadata();
-
-        $interface->assign('collYearRange', $this->getYearRange());
 
         // Send back the template name:
         return 'RecordDrivers/Hierarchy/collection-info.tpl';
@@ -280,42 +276,6 @@ class EadRecord extends IndexRecord
             }
         }
         return $urls;
-    }
-
-    /**
-     * Get the date range of the record as a year or range of years
-     *
-     * @return string
-     * @access protected
-     */
-    protected function getYearRange()
-    {
-        if (isset($this->fields['unit_sdaterange'])) {
-            $range = explode(' ', $this->fields['unit_sdaterange'], 2);
-            if (!$range) {
-                return null;
-            }
-            $range[0] *= 86400;
-            $range[1] *= 86400;
-            $startDate = new DateTime("@{$range[0]}");
-            $endDate = new DateTime("@{$range[1]}");
-
-            $startYear = $startDate->format('Y');
-            $endYear = $endDate->format('Y');
-            $yearRange = '';
-            if ($startYear != '-9999') {
-                $yearRange .= $startYear;
-            }
-            // print out a range (xxxx-xxxx) if $endYear != $startYear
-            if ($endYear != $startYear) {
-                $yearRange .= '-';
-                if ($endYear != '9999') {
-                    $yearRange .= $endYear;
-                }
-            }
-            return $yearRange;
-        }
-        return '';
     }
 
     /**

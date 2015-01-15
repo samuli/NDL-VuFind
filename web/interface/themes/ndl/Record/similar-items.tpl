@@ -17,7 +17,7 @@
       {else}
       <span class="icon format{$similar.format|lower|regex_replace:"/[^a-z]/":""}">
       {/if}*}
-        <a href="{$url}/Record/{$similar.id|escape:"url"}" title="{$similar.title|escape}">{$similar.title|truncate:70:"..."|escape}</a>{if $similar.publishDate}&nbsp;{$similar.publishDate.0|escape}{elseif $similar.summYearRange}&nbsp;{$similar.summYearRange|escape}{/if}
+        <a href="{$url}/Record/{$similar.id|escape:"url"}" title="{$similar.title|escape}">{$similar.title|truncate:70:"..."|escape}</a>{if $similar.publishDate}&nbsp;{$similar.publishDate.0|escape}{/if}
         {if $similar.author}<div class="author">{$similar.author|escape}</div>{/if}
     </li>
     {/foreach}

@@ -28,7 +28,7 @@
         </a>
       </div>
       {/if}
-      <h1>{$collTitle|escape} {if $collYearRange}({$collYearRange|escape}){/if}</h1>
+      <h1>{$collTitle|escape}</h1>
       <p>{$collSummary|escape}</p>
     </div>
     <div style="clear: left;"></div>

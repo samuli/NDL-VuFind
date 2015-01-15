@@ -816,14 +816,14 @@ class IndexRecord implements RecordInterface
         // Load real-time data if available:
         $holdings = $this->getRealTimeHoldings($patron);
         $interface->assign('holdings', $holdings);
-       
+
         $holdCount = 0;
         $requestCount = 0;
         if (is_array($holdings)) {
             foreach ($holdings as $locationArray) {
                 if (is_array($locationArray)) {
                     foreach ($locationArray as $location) {
-                        if (is_array($location) && isset($location['status']) 
+                        if (is_array($location) && isset($location['status'])
                             && isset($location['status']['reservations'])
                         ) {
                             $requestCount = $location['status']['reservations'];
@@ -962,7 +962,7 @@ class IndexRecord implements RecordInterface
             $data['author'] = $this->getPrimaryAuthor();
             $data['dates'] = $this->getPublicationDates();
             $data['url'] = $configArray['Site']['url'] . '/Record/' . urlencode($this->getUniqueID());
-            
+
             $building = $this->getBuilding();
             $data['building'] = translate('facet_' . rtrim($building[0], '/'));
 
@@ -1283,7 +1283,7 @@ class IndexRecord implements RecordInterface
 
         // All images
         $interface->assign('summImages', $this->getAllImages());
-        
+
         // Record driver
         $id = $this->getUniqueID();
         $catalog = ConnectionManager::connectToCatalog();
@@ -1294,9 +1294,9 @@ class IndexRecord implements RecordInterface
                 $driver = $catalog->getSourceDriver($id);
             }
         }
-        
+
         $interface->assign('driver', $driver);
-        
+
         // Send back the template to display:
         return 'RecordDrivers/Index/result-' . $view . '.tpl';
     }
@@ -1504,26 +1504,6 @@ class IndexRecord implements RecordInterface
             || !array_key_exists('docs', $similar['response'])
         ) {
             PEAR::raiseError(new PEAR_Error('Cannot Load similar items'));
-        }
-
-        // Loop over similar records, create record drivers for them and
-        // (if available) use the getYearRange method to insert a year range
-        // in the array for every record
-        foreach ($similar['response']['docs'] as &$similarRecordArray) {
-            $similarRecord = $this->db->getRecord($similarRecordArray['id']);
-            if (!$similarRecord) {
-                PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
-            }
-
-            $similarRecordDriver
-                = RecordDriverFactory::initRecordDriver($similarRecord);
-
-            if (method_exists($similarRecordDriver, 'getYearRange')
-                && is_callable(array($similarRecordDriver, 'getYearRange'))
-            ) {
-                $similarRecordArray['summYearRange']
-                    = $similarRecordDriver->getYearRange();
-            }
         }
 
         // Send the similar items to the template; if there is only one, we need
