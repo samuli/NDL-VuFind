@@ -1288,9 +1288,9 @@ class MarcRecord extends IndexRecord
                 ? $field->getSubfield('t')->getData() : '';
         $diff        = $field->getSubfield('c')
                 ? $field->getSubfield('c')->getData() : '';
-        $issn        = $field->getSubfield('x') 
+        $issn        = $field->getSubfield('x')
                 ? $field->getSubfield('x')->getData() : '';
-        $isbn        = $field->getSubfield('z') 
+        $isbn        = $field->getSubfield('z')
                 ? $field->getSubfield('z')->getData() : '';
         if ($diff) {
             $title .= " $diff";
@@ -1374,7 +1374,7 @@ class MarcRecord extends IndexRecord
                 $type = $type->getData();
                 if ("IMAGE" == $type || "image/jpeg" == $type) {
                     $address = $url->getSubfield('u');
-                    if ($address) {
+                    if ($address && $this->urlAllowed($address->getData())) {
                         $address = $address->getData();
                         $urls[$address] = '';
                     }
@@ -1393,6 +1393,8 @@ class MarcRecord extends IndexRecord
      */
     public function getDescriptionURL()
     {
+        global $configArray;
+
         $url = '';
         $type = '';
         foreach ($this->marcRecord->getFields('856') as $url) {
@@ -1401,14 +1403,15 @@ class MarcRecord extends IndexRecord
                 $type = $type->getData();
                 if ("TEXT" == $type || "text/html" == $type) {
                     $address = $url->getSubfield('u');
-                    if ($address) {
+                    if ($address && $this->urlAllowed($address->getData())) {
                         $address = $address->getData();
                         return $address;
                     }
                 }
             }
         }
-        return false;
+        
+        return 'http://siilo-kk.lib.helsinki.fi/getText.php?query=' . $this->getCleanISBN();
     }
 
     /**
@@ -1430,7 +1433,7 @@ class MarcRecord extends IndexRecord
                 $type = $type->getData();
                 if ("IMAGE" == $type || "image/jpeg" == $type) {
                     $address = $url->getSubfield('u');
-                    if ($address) {
+                    if ($address && $this->urlAllowed($address->getData())) {
                         return $configArray['Site']['url'] . '/thumbnail.php?id=' .
                             urlencode($this->getUniqueID()) . '&size=' . urlencode($size);
                     }
@@ -1803,6 +1806,37 @@ class MarcRecord extends IndexRecord
         return $notes;
     }
 
+    /**
+     * Check whether it is allowed to use an image or description URL.
+     *
+     * @param string $url URL to check
+     *
+     * @return boolean True if the url can be used
+     */
+    protected function urlAllowed($url)
+    {
+        global $configArray;
+
+        // BTJ
+        if (preg_match('/^(http|https):.*\.btj\.com\//', $url)) {
+            if (!isset($configArray['Record']['btj_links'])
+                || !$configArray['Record']['btj_links']
+            ) {
+                return false;
+            }
+        }
+        
+        // Kirjavälitys
+        if (strstr($url, 'http://data.kirjavalitys.fi/')) {
+            if (!isset($configArray['Record']['kirjavalitys_links'])
+                || !$configArray['Record']['kirjavalitys_links']
+            ) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }
 
 ?>

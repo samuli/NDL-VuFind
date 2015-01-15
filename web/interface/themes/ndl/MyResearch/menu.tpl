@@ -10,7 +10,7 @@
       {/if}
 	  {if in_array('myAccount', $contextHelp)}<span id="contextHelp_myAccount" class="showHelp">{translate text="Search Tips"}</span>{/if}
 
-      <form action="" method="post" class="">
+      <form method="post">
         <select id="myResearchMenuMobile" name="myresearchmenumobile" class="jumpMenuURL">
         <option value="{$url}/MyResearch/Profile"{if $pageTemplate=="profile.tpl"} selected="selected"{/if}>{translate text='Profile'}</option>
         {if $libraryCard}

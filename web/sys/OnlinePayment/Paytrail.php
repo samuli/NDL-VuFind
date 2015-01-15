@@ -78,13 +78,13 @@ class Paytrail implements OnlinePaymentInterface
     /**
      * Start Paytrail transaction.
      *
-     * @param string $patronId            Patron's catalog username (e.g. barcode)
-     * @param int    $amount              Payment amount without transaction fee (in cents)
-     * @param int    $transactionFee      Transaction fee (in cents)
-     * @param array  $fines               Fines that belong to the transaction
-     * @param string $currency            Currency
-     * @param string $statusParams        URL parameter for payment status in callback requests
-     * @param string $transactionIdParams URL parameter for transaction Id in callback requests
+     * @param string $patronId           Patron's catalog username (e.g. barcode)
+     * @param int    $amount             Payment amount without transaction fee (in cents)
+     * @param int    $transactionFee     Transaction fee (in cents)
+     * @param array  $fines              Fines that belong to the transaction
+     * @param string $currency           Currency
+     * @param string $statusParam        URL parameter for payment status in callback requests
+     * @param string $transactionIdParam URL parameter for transaction Id in callback requests
      *
      * @return false on error, otherwise redirects to Paytrail.
      * @access public
@@ -98,20 +98,20 @@ class Paytrail implements OnlinePaymentInterface
 
         $base = $configArray['Site']['url'];
         $urlset = new Paytrail_Module_Rest_Urlset(
-            "$base/MyResearch/Fines?$statusParam=" . self::PAYMENT_SUCCESS . "&$transactionIdParam=" . urlencode($orderNumber), 
-            "$base/MyResearch/Fines?$statusParam=" . self::PAYMENT_FAILURE . "&$transactionIdParam=" . urlencode($orderNumber), 
-            "$base/AJAX/PaytrailNotify?$statusParam=" . self::PAYMENT_NOTIFY . "&$transactionIdParam=" . urlencode($orderNumber), 
+            "$base/MyResearch/Fines?$statusParam=" . self::PAYMENT_SUCCESS . "&$transactionIdParam=" . urlencode($orderNumber),
+            "$base/MyResearch/Fines?$statusParam=" . self::PAYMENT_FAILURE . "&$transactionIdParam=" . urlencode($orderNumber),
+            "$base/AJAX/PaytrailNotify?$statusParam=" . self::PAYMENT_NOTIFY . "&$transactionIdParam=" . urlencode($orderNumber),
             ""  // pending-url not in use
         );
 
         $totAmount = ($amount+$transactionFee)/100.00;
         $payment = new Paytrail_Module_Rest_Payment_S1($orderNumber, $urlset, $totAmount);
-        
+
         if (!$module = $this->initPaytrail()) {
-            error_log("Paytrail: error starting payment processing.");            
+            error_log("Paytrail: error starting payment processing.");
             return false;
         }
-        
+
         try {
             $result = $module->processPayment($payment);
         } catch (Paytrail_Exception $e) {
@@ -122,7 +122,7 @@ class Paytrail implements OnlinePaymentInterface
 
         $t = new Transaction();
         $t->transaction_id = $orderNumber;
-        $t->driver = reset(explode('.', $patronId, 2)); 
+        $t->driver = reset(explode('.', $patronId, 2));
         $t->user_id = isset($user) && is_object($user) ? $user->id : null;
         $t->amount = $amount;
         $t->transaction_fee = $transactionFee;
@@ -136,15 +136,15 @@ class Paytrail implements OnlinePaymentInterface
             error_log('Paytrail: error creating transaction');
             return false;
         }
-        
+
         foreach ($fines as $fine) {
             if (!$t->addFee($fine, $user, $currency)) {
                 error_log('Paytrail: error adding fee to transaction.');
                 return false;
             }
         }
-        
-        header("Location: {$result->getUrl()}");        
+
+        header("Location: {$result->getUrl()}");
     }
 
     /**
@@ -152,9 +152,9 @@ class Paytrail implements OnlinePaymentInterface
      *
      * @param array $params Response variables
      *
-     * @return string error message (not translated) 
+     * @return string error message (not translated)
      *   or associative array with keys:
-     *     'markFeesAsPaid' (boolean) true if payment was successful and fees 
+     *     'markFeesAsPaid' (boolean) true if payment was successful and fees
      *     should be registered as paid.
      *     'transactionId' (string) Transaction ID.
      *     'amount' (int) Amount to be registered (does not include transaction fee).
@@ -162,13 +162,13 @@ class Paytrail implements OnlinePaymentInterface
      */
     public function processResponse($params)
     {
-        $status = $params['payment'];        
+        $status = $params['payment'];
         $orderNum = $params['ORDER_NUMBER'];
         $timestamp = $params['TIMESTAMP'];
 
         $tr = new Transaction();
 
-        if (!$tr->isTransactionInProgress($orderNum)) {            
+        if (!$tr->isTransactionInProgress($orderNum)) {
             return 'online_payment_transaction_already_processed_or_unknown';
         }
 
@@ -181,13 +181,13 @@ class Paytrail implements OnlinePaymentInterface
         $paid = false;
         if ($status == self::PAYMENT_SUCCESS || $status == self::PAYMENT_NOTIFY) {
             if (!$module = $this->initPaytrail()) {
-                return 'online_payment_failed';                
+                return 'online_payment_failed';
             }
             if (!$module->confirmPayment(
-                $params["ORDER_NUMBER"], 
-                $params["TIMESTAMP"], 
-                $params["PAID"], 
-                $params["METHOD"], 
+                $params["ORDER_NUMBER"],
+                $params["TIMESTAMP"],
+                $params["PAID"],
+                $params["METHOD"],
                 $params["RETURN_AUTHCODE"]
             )) {
                 error_log("Paytrail: error processing response: invalid checksum");
@@ -216,7 +216,7 @@ class Paytrail implements OnlinePaymentInterface
      * Init Paytrail module with configured merchantId, secret and URL.
      *
      * @return Paytrail_Module_Rest module.
-     */    
+     */
     protected function initPaytrail()
     {
         foreach (array('merchantId', 'secret', 'url') as $req) {
@@ -225,7 +225,7 @@ class Paytrail implements OnlinePaymentInterface
                 return false;
             }
         }
-        return new Paytrail_Module_Rest($this->config['merchantId'], $this->config['secret'], $this->config['url']);        
+        return new Paytrail_Module_Rest($this->config['merchantId'], $this->config['secret'], $this->config['url']);
     }
 
     /**

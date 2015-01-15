@@ -10,13 +10,13 @@
     <div class="searchFormOuterWrapper">
       <div class="searchFormWrapper">
 	      <div class="overLabelWrapper">
-	        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} mainFocus clearable" placeholder="{translate text='Find'}&hellip;" role="textbox" aria-autocomplete="list" aria-haspopup="true" />
+	        <input id="searchForm_input" type="text" name="lookfor" value="{$lookfor|escape}" class="last{if $autocomplete} autocomplete typeSelector:searchForm_type{/if} mainFocus clearable" placeholder="{translate text='Find'}&hellip;" role="textbox" aria-autocomplete="list" aria-haspopup="true" autocomplete="off"/>
 	      </div>
 	        {if $prefilterList}
 	      <div class="styled_select">
 	        <select id="searchForm_filter" class="searchForm_styled" name="prefilter">
 	    {foreach from=$prefilterList item=searchDesc key=searchVal}    
-	          <option value="{$searchVal|escape}"{if $searchVal == $activePrefilter || ($activePrefilter == null && $searchVal == "-") } selected="selected"{/if}>{$searchDesc|translate}</option>
+	          <option value="{$searchVal|escape}"{if $searchVal == $activePrefilter || ($activePrefilter == null && $searchVal == "-") } selected="selected"{/if}>{if $searchDesc == ''} {else}{$searchDesc|translate}{/if}</option>
 	    {/foreach}
 	        </select>
 	      </div>

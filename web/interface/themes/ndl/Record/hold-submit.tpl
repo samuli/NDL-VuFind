@@ -62,7 +62,7 @@
             {/if}
           </select>
         {else}
-          {if count($pickup) > 1}
+          {if count($pickup) != 1}
             <strong>{translate text="pick_up_location"}:</strong><br/>
             <select name="gatheredDetails[pickUpLocation]">
             {if $defaultPickUpLocation === false}

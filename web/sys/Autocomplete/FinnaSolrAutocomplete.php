@@ -93,7 +93,7 @@ class FinnaSolrAutocomplete extends SolrAutocomplete implements AutocompleteInte
                         if (stristr($normalizedFieldContent, $normalizedQuery)) {
                             $results[] = $fieldContent;
                             break 2;
-                        }                            
+                        }
                     }
                 }
             }
@@ -106,8 +106,20 @@ class FinnaSolrAutocomplete extends SolrAutocomplete implements AutocompleteInte
 
         return array_unique($results);
     }
-    function normalize ($str) {
-        return preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);~i', '$1', 
-                            htmlentities($str, ENT_COMPAT, 'UTF-8'));
+
+    /**
+     * Normalize a string for autcomplete
+     *
+     * @param string $str String to normalize
+     *
+     * @return string Normalized string
+     */
+    function normalize($str)
+    {
+        return preg_replace(
+            '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);~i',
+            '$1',
+            htmlentities($str, ENT_COMPAT, 'UTF-8')
+        );
     }
 }

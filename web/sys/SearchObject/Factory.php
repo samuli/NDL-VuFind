@@ -96,12 +96,12 @@ class SearchObjectFactory
             break;
         case 'PCI':
         case 'PCIAdvanced':
-        	$type = 'PCI';
-        	break;
+            $type = 'PCI';
+            break;
         case 'MetaLib':
         case 'MetaLibAdvanced':
-        	$type = 'MetaLib';
-        	break;
+            $type = 'MetaLib';
+            break;
         default:
             $type = 'Solr';
             break;

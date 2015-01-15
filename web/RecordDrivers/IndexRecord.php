@@ -816,30 +816,36 @@ class IndexRecord implements RecordInterface
         // Load real-time data if available:
         $holdings = $this->getRealTimeHoldings($patron);
         $interface->assign('holdings', $holdings);
-       
-        $holdCount = 0;
+
+        $itemCount = 0;
         $requestCount = 0;
         if (is_array($holdings)) {
             foreach ($holdings as $locationArray) {
-                if (is_array($locationArray)) {
-                    foreach ($locationArray as $location) {
-                        if (is_array($location) && isset($location['status']) 
-                            && isset($location['status']['reservations'])
+                if (!is_array($locationArray)) {
+                    continue;
+                }
+                foreach ($locationArray as $location) {
+                    if (is_array($location) && isset($location['status'])
+                        && isset($location['status']['reservations'])
+                    ) {
+                        if ($location['status']['reservations'] > $requestCount
                         ) {
                             $requestCount = $location['status']['reservations'];
                         }
-                        if (is_array($location['holdings'])) {
-                            foreach ($location['holdings'] as $holding) {
-                                if (isset($holding['total'])) {
-                                    $holdCount += $holding['total'];
-                                }
+                    }
+                    if (isset($location['holdings'])
+                        && is_array($location['holdings'])
+                    ) {
+                        foreach ($location['holdings'] as $holding) {
+                            if (isset($holding['total'])) {
+                                $itemCount += $holding['total'];
                             }
                         }
                     }
                 }
             }
         }
-        $interface->assign('holdCount', $holdCount);
+        $interface->assign('itemCount', $itemCount);
         $interface->assign('requestCount', $requestCount);
         $interface->assign('history', $this->getRealTimeHistory());
 
@@ -892,7 +898,7 @@ class IndexRecord implements RecordInterface
         $interface->assign('listThumb', $this->getThumbnail());
         $interface->assign('listBuilding', $this->getBuilding());
         $interface->assign('listDate', $this->getPublicationDates());
-
+        $interface->assign('listISBN', $this->getCleanISBN());
         // Extract user metadata from the database:
         $notes = array();
         $data = $user->getSavedData($id, $listId);
@@ -915,32 +921,35 @@ class IndexRecord implements RecordInterface
     }
 
     /**
-     * Return record data to be used in lightbox.
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display image popup.
      *
-     * @return array array with keys:
-     *   'title'    Title
-     *   'author'   Authors
-     *   'dates'    Publication date
-     *   'url'      Record URL
-     *   'building' Translated building name
-     *   'rights'   Image rights, see RecordDriver::getRights
+     * @param int $index Index of image to display
+     *
+     * @return string           Name of Smarty template file to display.
      * @access public
      */
-    public function getLightboxData()
+    public function getImagePopup($index)
     {
         global $configArray;
+        global $interface;
 
-        $data = array();
-        if (strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {
+        $interface->assign('id', $this->getUniqueID());
+        $img = $this->getThumbnail('large');
+        if ($index) {
+            $img .= '&index=' . $index;
+        }
+        $interface->assign('thumbLarge', $img);
+        if (isset($this->fields['ID']) && strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {            
             // MetaLib record
-            $data['title'] = $this->fields['Title'][0];
-            $data['url'] = $configArray['Site']['url'] . '/MetaLib/Record/' . urlencode($this->fields['ID'][0]);
+            $interface->assign('title', $this->fields['Title'][0]);
+            $interface->assign('url', $configArray['Site']['url'] . '/MetaLib/Record?id=' . urlencode($this->fields['ID'][0]));
             if (isset($this->fields['Author']) && $this->fields['Author']) {
-                $data['author'] = implode(', ', $this->fields['Author']);
+                $interface->assign('author', implode(', ', $this->fields['Author']));
             }
 
             if (isset($this->fields['Source']) && $this->fields['Source']) {
-                $data['building'] = implode(', ', $this->fields['Source']);
+                $interface->assign('building', implode(', ', $this->fields['Source']));
             }
 
             if (isset($this->fields['PublicationDate_xml']) && $this->fields['PublicationDate_xml']) {
@@ -954,23 +963,34 @@ class IndexRecord implements RecordInterface
                 if (isset($date['year'])) {
                     $date['dates'] .= $date['year'];
                 }
+                $interface->assign('dates', $date['dates']);
             } else if (isset($this->fields['PublicationDate']) && $this->fields['PublicationDate']) {
-                $data['dates'] = $this->fields['PublicationDate'][0];
+                $interface->assign('dates', $this->fields['PublicationDate'][0]);
             }
         } else {
-            $data['title'] = $this->getTitle();
-            $data['author'] = $this->getPrimaryAuthor();
-            $data['dates'] = $this->getPublicationDates();
-            $data['url'] = $configArray['Site']['url'] . '/Record/' . urlencode($this->getUniqueID());
-            
-            $building = $this->getBuilding();
-            $data['building'] = translate('facet_' . rtrim($building[0], '/'));
+            $interface->assign('title', $this->getTitle());
+            $interface->assign('author', $this->getPrimaryAuthor());
+            $interface->assign('dates', $this->getPublicationDates());
+            $interface->assign('url', $configArray['Site']['url'] . '/Record/' . urlencode($this->getUniqueID()));
+            $interface->assign('summary', $this->getSummary());
 
-            if ($rights = $this->getImageRights()) {
-                $data['rights'] = $rights;
+            $building = $this->getBuilding();
+            $interface->assign('building', rtrim($building[0], '/'));
+            $interface->assign('recordType', $this->fields['recordtype']);
+        }
+        if ($rights = $this->getImageRights()) {
+            if (isset($rights['copyright'])) {
+                $interface->assign('copyright', $rights['copyright']);
+            }
+            if (isset($rights['link'])) {
+                $interface->assign('copyrightLink', $rights['link']);
+            }
+            if (isset($rights['description'])) {
+                $interface->assign('copyrightDescription', $rights['description']);
             }
         }
-        return $data;
+    
+        return 'RecordDrivers/Index/result-image-popup.tpl';
     }
 
     /**
@@ -1283,7 +1303,7 @@ class IndexRecord implements RecordInterface
 
         // All images
         $interface->assign('summImages', $this->getAllImages());
-        
+
         // Record driver
         $id = $this->getUniqueID();
         $catalog = ConnectionManager::connectToCatalog();
@@ -1294,9 +1314,9 @@ class IndexRecord implements RecordInterface
                 $driver = $catalog->getSourceDriver($id);
             }
         }
-        
+
         $interface->assign('driver', $driver);
-        
+
         // Send back the template to display:
         return 'RecordDrivers/Index/result-' . $view . '.tpl';
     }
@@ -1315,35 +1335,35 @@ class IndexRecord implements RecordInterface
             return null;
         }
 
-    	// ISBN/ISSN (mandatory)
-    	$retval['issn'] = $this->getCleanISSN();
-		$retval['isbn'] = $this->getCleanISBN();
-		if (! $retval['issn'] && ! $retval['isbn']) {
-			return null;
-		}
+        // ISBN/ISSN (mandatory)
+        $retval['issn'] = $this->getCleanISSN();
+        $retval['isbn'] = $this->getCleanISBN();
+        if (! $retval['issn'] && ! $retval['isbn']) {
+            return null;
+        }
 
-    	// Year (optional)
-    	$year = $this->getPublicationDates();
-    	if (!empty($year) && $year[0]) {
-    		$retval['year'] = $year[0];
-    	} else {
-    	    $retval['year'] = '';
-    	}
+        // Year (optional)
+        $year = $this->getPublicationDates();
+        if (!empty($year) && $year[0]) {
+            $retval['year'] = $year[0];
+        } else {
+            $retval['year'] = '';
+        }
 
-    	// Volume (optional)
-    	$retval['volume'] = $this->getContainerVolume();
+        // Volume (optional)
+        $retval['volume'] = $this->getContainerVolume();
 
-    	// Issue (optional)
-    	$retval['issue'] = $this->getContainerIssue();
+        // Issue (optional)
+        $retval['issue'] = $this->getContainerIssue();
 
-    	// Institute (optional)
-		if (!isset($configArray['OpenURL']['institute'])) {
-		    $retval['institute'] = '';
-		} else {
-		    $retval['institute'] = trim($configArray['OpenURL']['institute']);
-		}
+        // Institute (optional)
+        if (!isset($configArray['OpenURL']['institute'])) {
+            $retval['institute'] = '';
+        } else {
+            $retval['institute'] = trim($configArray['OpenURL']['institute']);
+        }
 
-    	return $retval;
+        return $retval;
     }
 
     /**
@@ -2178,7 +2198,7 @@ class IndexRecord implements RecordInterface
 
         return array(
             'description' => array(translate('Image Rights Default')),
-            'link' => $configArray['Site']['url'] . '/Content/terms_conditions'
+            'link' => $configArray['Site']['url'] . '/Content/terms_conditions#image_rights'
         );
     }
 
@@ -3303,10 +3323,10 @@ class IndexRecord implements RecordInterface
         $searchObject->initBrowseScreen();
         $searchObject->disableLogging();
         $searchObject->setQueryString($query);
-       	$result = $searchObject->processSearch();
+        $result = $searchObject->processSearch();
         $searchObject->close();
         if (PEAR::isError($result)) {
-        	PEAR::raiseError($result->getMessage());
+            PEAR::raiseError($result->getMessage());
         }
         return $result['response']['numFound'];
     }
@@ -3336,10 +3356,10 @@ class IndexRecord implements RecordInterface
         $searchObject->initBrowseScreen();
         $searchObject->disableLogging();
         $searchObject->setQueryString($query);
-       	$result = $searchObject->processSearch();
+        $result = $searchObject->processSearch();
         $searchObject->close();
         if (PEAR::isError($result)) {
-        	PEAR::raiseError($result->getMessage());
+            PEAR::raiseError($result->getMessage());
         }
         $res = array();
         if (isset($result['response']['docs'][0]['dedup_data'])) {

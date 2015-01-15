@@ -71,13 +71,13 @@ class OnlinePaymentMonitor extends ReminderTask
 
     /**
      * Constructor
-
-     * @param int $expireHours            Number of days before considering unregistered
+     *
+     * @param int    $expireHours         Number of days before considering unregistered
      *                                    transaction to be an expired one
      * @param string $mainDir             The main VuFind directory. Each web directory
      *                                    must reside under this (default: ..)
      * @param string $internalErrEmail    Email address for internal error reporting
-     * @param string $formEmail           Sender email address for notification of expired transactions.
+     * @param string $fromEmail           Sender email address for notification of expired transactions.
      * @param string $reportIntervalHours Interval when to re-send report of unresolved transactions.
      *
      * @return void
@@ -126,13 +126,13 @@ class OnlinePaymentMonitor extends ReminderTask
         $failedCnt = 0;
         $registeredCnt = 0;
         $remindCnt = 0;
-        
+
         $user = false;
         $report = array();
 
 
         // Attempt to re-register paid transactions whose registration has failed.
-        $tr = new Transaction();	
+        $tr = new Transaction();
         foreach ($tr->getFailedTransactions() as $t) {
             $this->msg("  Registering transaction id {$t->id} / {$t->transaction_id}");
 
@@ -151,8 +151,8 @@ class OnlinePaymentMonitor extends ReminderTask
                 if (!$t->setTransactionReported($t->transaction_id)) {
                     $this->err('    Failed to update transaction ' . $t->transaction_id . 'as reported');
                 }
-              
-                $transaction = clone($t);              
+
+                $transaction = clone($t);
                 $transaction->complete = Transaction::STATUS_REGISTRATION_EXPIRED;
                 if ($transaction->update($t) === false) {
                     $this->err('    Failed to update transaction ' . $t->transaction_id . 'as expired.');
@@ -196,12 +196,12 @@ class OnlinePaymentMonitor extends ReminderTask
             }
         }
 
-        // Report paid and unregistered transactions whose registration 
+        // Report paid and unregistered transactions whose registration
         // can not be re-tried:
         $tr = new Transaction();
         foreach ($tr->getUnresolvedTransactions($this->reportIntervalHours) as $t) {
             $this->msg("  Transaction id {$t->transaction_id} still unresolved.");
-            
+
             if (!$t->setTransactionReported($t->transaction_id)) {
                 $this->err('    Failed to update transaction ' . $t->transaction_id . ' as reported');
             }

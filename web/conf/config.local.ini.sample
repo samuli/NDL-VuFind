@@ -42,6 +42,7 @@ available = true
 ;login = https://haka.funet.fi/shibboleth/WAYF
 
 [ContextHelp]
+tabs = "0"
 search = "0"
 searchAdvanced = "0"
 searchPCI = "0"

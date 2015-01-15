@@ -1,6 +1,6 @@
 <!-- START of: MyResearch/catalog-login.tpl -->
 
-<div class="clear" />
+<div class="clear"></div>
 
 {if $offlineMode == "ils-offline"}
   <div class="sysInfo">

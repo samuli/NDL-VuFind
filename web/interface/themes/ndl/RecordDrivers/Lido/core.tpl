@@ -78,7 +78,7 @@
 
 End Cover Image *}
 
-{if $coreSummary}<div class="recordSummary truncateField">{$coreSummary|escape|nl2br}</div>{/if}
+{if $coreSummary}<div id="description_text" class="recordSummary truncateField">{$coreSummary|escape|nl2br}</div>{/if}
 
 {* Display Main Details *}
 <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">

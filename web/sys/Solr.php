@@ -1225,8 +1225,8 @@ class Solr implements IndexEngine
         // Build Filter Query
         $this->_mergeBuildingPriority = array();
         if (is_array($filter) && count($filter)) {
-            // Change 'online_boolean' filter to 'online_str_mv' 
-            // if sources contain merged records (i.e. if deduplication is enabled). 
+            // Change 'online_boolean' filter to 'online_str_mv'
+            // if sources contain merged records (i.e. if deduplication is enabled).
             if (($pos = array_search('online_boolean:"1"', $filter)) !== false) {
                 $searchSettings = getExtraConfigArray('searches');
                 if (isset($searchSettings['Records']['merged_records'])
@@ -1239,14 +1239,14 @@ class Solr implements IndexEngine
                         foreach (explode(',', $sources) as $source) {
                             $tmp[] = "\"$source\"";
                         }
-                        $filter[$pos] 
-                            = 'online_str_mv:(' . implode(' OR ', $tmp) . ')';                        
+                        $filter[$pos]
+                            = 'online_str_mv:(' . implode(' OR ', $tmp) . ')';
                     } else {
                         $filter[$pos] = 'online_str_mv:*';
                     }
-                }                
+                }
             }
-            
+
             $options['fq'] = $filter;
             foreach ($filter as $f) {
                 if (strncmp($f, 'building:', 9) == 0) {
@@ -2019,7 +2019,31 @@ class Solr implements IndexEngine
             // STEP 3 -- unescape valid brackets/braces
             '[', ']', '{', '}');
         $input = preg_replace($patterns, $matches, $input);
-        return $input;
+
+        // Escape unquoted minus sign and convert unquoted exclamation + minus sign
+        // to minus.
+        $result = '';
+        $inQuotes = false;
+        $prev = '';
+        $prev2 = '';
+        foreach (str_split($input) as $c) {
+            if ($c == '"') {
+                $inQuotes = !$inQuotes;
+            }
+            if (!$inQuotes && $c == '-' && $prev != "\\") {
+                if ($prev == '!' && $prev2 != "\\") {
+                    $result = substr($result, 0, -1) . '-';
+                } else {
+                    $result .= "\\$c";
+                }
+                continue;
+            }
+            $prev2 = $prev;
+            $prev = $c;
+            $result .= $c;
+        }
+
+        return $result;
     }
 
     /**

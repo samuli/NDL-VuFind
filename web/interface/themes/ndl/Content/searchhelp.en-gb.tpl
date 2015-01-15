@@ -73,15 +73,15 @@
   <p>To search for documents that contain either "economics Keynes" or just "Keynes" use the query:</p>
   <pre class="code">"economics Keynes" OR Keynes</pre>
   
-  <h3 title="-">Hyphen (-)</h3>
-  <p>The hyphen (-) excludes records that contain the term following the hyphen.</p>
+  <h3 title="!-">!-</h3>
+  <p>The "!-" operator excludes records that contain the following term.</p>
   <p>To search for documents that contain "economics" but not "Keynes" use the query:</p>
-  <pre class="code">economics -Keynes</pre>
-  <p>Note: The hyphen cannot be used with just one term. For example, the following search will return no results:</p>
-  <pre class="code">-economics</pre>
-  <p>Note: If the term begins with the hyphen, it can be included by using the backslash (\). For example: to search the book Da Vinci -koodi (in Finnish) use the query:</p>
-  <pre class="code">Da Vinci \-koodi</pre>
-  <p>Note: The <strong>NOT</strong> operator can be used similarly with the hyphen. However, the <strong>NOT</strong> operator returns more results, some of which may contain the term following <strong>NOT</strong>.</p>
+  <pre class="code">economics !-Keynes</pre>
+  <p>Note: The operator cannot be used with just one term. For example, the following search will return no results:</p>
+  <pre class="code">!-economics</pre>
+  <p>Note: If the term begins with the operator, it can be included by using the backslash (\). For example: to search for <i>!-merkki hakuehtona</i> (in Finnish) use the query:</p>
+  <pre class="code">\!-merkki hakuehtona</pre>
+  <p>Note: The <strong>NOT</strong> operator can be used similarly with this operator. However, the <strong>NOT</strong> operator returns more results, some of which may contain the term following <strong>NOT</strong>.</p>
   
   <h3 name="Phrase searches">Phrase searches</h3>
   <p>Search term or terms enclosed in quotation marks will be used literally.</p>

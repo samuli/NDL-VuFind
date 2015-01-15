@@ -76,13 +76,66 @@ class JSON_Hold extends JSON
                             foreach ($results as &$result) {
                                 $result['locationDisplay'] = translate(array('prefix' => 'location_', 'text' => $result['locationDisplay']));
                             }
-                        
+
                             return $this->output(
                                 array(
                                     'locations' => $results
                                ), JSON::STATUS_OK
                             );
                         }
+                    }
+                }
+            }
+        }
+        return $this->output(translate('An error has occurred'), JSON::STATUS_ERROR);
+    }
+
+    /**
+     * Change pick up location of a hold
+     *
+     * @return void
+     * @access public
+     */
+    public function changePickUpLocation()
+    {
+        if (isset($_REQUEST['reservationId'])) {
+            // check if user is logged in
+            $user = UserAccount::isLoggedIn();
+            if (!$user) {
+                return $this->output(
+                    array(
+                        'msg' => translate('You must be logged in first')
+                    ), JSON::STATUS_NEED_AUTH
+                );
+            }
+            $catalog = ConnectionManager::connectToCatalog();
+            if ($catalog && $catalog->status) {
+                if ($patron = UserAccount::catalogLogin()) {
+                    if (!PEAR::isError($patron)) {
+                        $result = $catalog->changePickupLocation(
+                            $patron,
+                            array(
+                                'pickup' => $_REQUEST['pickup'],
+                                'reservationId' => $_REQUEST['reservationId'],
+                                'created' => $_REQUEST['created'],
+                                'expires' => $_REQUEST['expires'])
+                        );
+
+                        if (!$result['success']) {
+                            return $this->output(
+                                array(
+                                    $result['sysMessage']
+                                ), JSON::STATUS_ERROR
+                            );
+                        }
+
+                        return $this->output(
+                            array(
+                                $result
+                            ), JSON::STATUS_OK
+                        );
+                    } else {
+                        return $this->output($patron->getMessage(), JSON::STATUS_ERROR);
                     }
                 }
             }

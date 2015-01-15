@@ -46,12 +46,13 @@
       {foreach from=$catalogAccounts item=account}
         {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
       {/foreach} 
-      {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
-
-
-    
+      {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''|translate_prefix:'source_'}
+      {if $source != $accountname}
+        {if !empty($accountname)}({/if}{$source}{if !empty($accountname)}){/if}</h2>
+      {/if}
+    </h2>
   </div>
-    {if $cancelForm && $recordList}
+  {if $cancelForm && $recordList}
     
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
   <table>
@@ -96,7 +97,7 @@
 		
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
-              <a href="{$url}/Record/{$resource.id|escape:"url"}" class="title">{$resource.title|escape}</a>
+              <a href="{$url}/Record/{$resource.id|escape:"url"}" class="title">{if !empty($resource.ils_details.title)}{$resource.ils_details.title|escape}{else}{$resource.title|escape}{/if}</a>
             {* If the record is not available in Solr, perhaps the ILS driver sent us a title we can show... *}
             {elseif !empty($resource.ils_details.title)}
               {$resource.ils_details.title|escape}
@@ -135,6 +136,9 @@
             {if $resource.ils_details.publication_year}
               <strong>{translate text='Year of Publication'}:</strong> {$resource.ils_details.publication_year|escape}<br />
             {/if}
+            {if $resource.ils_details.note}
+            <strong>{translate text='Additional information'}:</strong> {$resource.ils_details.note|escape}<br />
+            {/if}
             </td>
             <td class="dueDate floatright">
             {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}
@@ -155,7 +159,18 @@
                 {assign var="pickupDisplay" value=$resource.ils_details.location}
               {/if}
             {/if}
-            {if !empty($pickupDisplay)}
+            {if $resource.ils_details.modifiable == true}
+              <div class="changePickUpLocation">
+                <strong>{translate text='pick_up_location'}:</strong>
+                <span class="pickUpLoader"></span>
+                <select data-reservationid="{if $resource.ils_details.reservation_id}{$resource.ils_details.reservation_id|escape}{/if}" data-created="{if $resource.ils_details.create}{$resource.ils_details.create|escape}{/if}" data-expires="{if $resource.ils_details.expire}{$resource.ils_details.expire|escape}{/if}">
+                  {foreach from=$pickup item=library}
+                  <option value="{$library.locationID|escape}" {if $library.locationDisplay == $resource.ils_details.location}selected="selected"{/if}>{$library.locationDisplay|escape}</option>
+                  {/foreach}
+                </select>
+                <span class="msg"/>
+              </div>
+            {elseif !empty($pickupDisplay)}
               <strong>{translate text='pick_up_location'}:</strong>
               {if $pickupTranslate}{translate text=$pickupDisplay}{else}{$pickupDisplay|escape}{/if}
               <br />
@@ -211,23 +226,25 @@
 
   {* Call Slips *}
   {if $driver != 'AxiellWebServices'}
-  <h2>{translate text='Call Slips'}:      {foreach from=$catalogAccounts item=account}
-        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
-     {/foreach} 
-            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}
+  <h2>{translate text='Call Slips'}:
+      {foreach from=$catalogAccounts item=account}
+        {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+      {/foreach} 
+      {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''|translate_prefix:'source_'}
+      {if $source != $accountname}
+        {if !empty($accountname)}({/if}{$source}{if !empty($accountname)}){/if}</h2>
+      {/if}
     </h2>
     {if is_array($callSlipList)}
   <form name="cancelCallSlipForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelCallSlip">
   <table>
     <tr class="bulkActionButtons"><th><h3>{translate text="Call Slips"}</h3></th>
-        <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div> -->
-        <th class="alignRight"  colspan="2">
-          <input type="submit" class="button buttonFinna holdCancel" name="cancelSelectedCallSlips" value="{translate text="call_slip_cancel_selected"}" onclick="return confirm('{translate text="confirm_call_slip_cancel_selected_text}')" />
-          <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAllCallSlips" value="{translate text='call_slip_cancel_all'}" onclick="return confirm('{translate text="confirm_call_slip_cancel_all_text}')" />
-        </th>
-      </tr>
-
-
+      <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAllCallSlips" /></div> -->
+      <th class="alignRight"  colspan="2">
+        <input type="submit" class="button buttonFinna holdCancel" name="cancelSelectedCallSlips" value="{translate text="call_slip_cancel_selected"}" onclick="return confirm('{translate text="confirm_call_slip_cancel_selected_text}')" />
+        <input type="submit" class="button buttonFinna holdCancelAll" name="cancelAllCallSlips" value="{translate text='call_slip_cancel_all'}" onclick="return confirm('{translate text="confirm_call_slip_cancel_all_text}')" />
+      </th>
+    </tr>
 
     <tr class="recordSet">
     {foreach from=$callSlipList item=resource name="recordLoop"}
@@ -256,7 +273,6 @@
           {assign var=summThumb value=$resource.summThumb}  
           {assign var=summId value=$resource.id}          
           {assign var=img_count value=$summImages|@count}
-     
 
             {* If $resource.id is set, we have the full Solr record loaded and should display a link... *}
             {if !empty($resource.id)}
@@ -365,5 +381,39 @@
 </div>
 
 <div class="clear"></div>
+
+{literal}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.changePickUpLocation select').change(function() {
+            $(this).next('span.msg').html('huuhaa').hide();
+            var pickup = $(this).val();
+            var created = $(this).data('created');
+            var expires = $(this).data('expires');
+            var reservationId = $(this).data('reservationid');
+            var url = path + '/AJAX/JSON_Hold?' + $.param({method:'changePickupLocation', pickup:pickup, created:created, expires:expires, reservationId:reservationId });
+            $(this).prev('span').addClass('ajax_hold_request_loading');
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                context: this
+            }).always(function() {
+                $(this).prev('span').removeClass('ajax_hold_request_loading');
+            }).done(function(msg) {
+                var holdsMsg = '';
+                if (msg.status == 'OK') {
+                    holdsMsg = '<p class="success">{/literal}{translate text="hold_change_success"}{literal}</p>';
+                } else {
+                    holdsMsg = '<p class="error">{/literal}{translate text="hold_change_fail"}{literal}</p>';
+                }
+                $(this).next('span.msg').html(holdsMsg).fadeIn(100);
+            }).error(function(msg) {
+                $(this).next('span.msg').html('<p class="error">{/literal}{translate text="hold_change_fail"}{literal}</p>').fadeIn(100);
+            });
+        });
+    });
+</script>
+{/literal}
 
 <!-- END of: MyResearch/holds.tpl -->

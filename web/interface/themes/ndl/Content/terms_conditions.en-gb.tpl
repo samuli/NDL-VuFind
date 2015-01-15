@@ -58,7 +58,7 @@ A personal data file description has been prepared for handling user information
 <li>
 <strong>Digital material:</strong> In the case of digital material, Finna provides a link to the website of the organisation which controls the material in question. Statutory or contractual rights and restrictions may apply to material available through such websites. Any rights and restrictions are specified on the websites.</li>
 <li>
-<strong>Images:</strong> Finna displays images of a number of museum pieces, works of art, photographs and book covers. Such preview images may be subject to use restrictions similar to those applicable to material on the websites of participating organisations.
+<strong id="image_rights">Images:</strong> Finna displays images of a number of museum pieces, works of art, photographs and book covers. Such preview images may be subject to use restrictions similar to those applicable to material on the websites of participating organisations.
 </li>
 </ul>
 <!-- TÄMÄ VASTA KUN TUONTANNOSSA:

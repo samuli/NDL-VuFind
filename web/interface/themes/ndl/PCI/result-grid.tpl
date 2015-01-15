@@ -24,11 +24,6 @@
 
   <div class="coverDiv">
     <div class="resultNoImage format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""} format{$record.format|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
-    {if $summThumb}
-    <div class="resultImage">
-      <a href="{$summThumb|regex_replace:"/&size=small/":"&size=large"|escape}" onclick="launchFancybox(this); return false;" rel="{$summId|escape:"url"}"><img src="{$summThumb|escape}" class="summcover" alt="{translate text='Cover Image'}" /></a>
-    </div>
-    {/if}
   </div>
 
   <div class="clear"></div>

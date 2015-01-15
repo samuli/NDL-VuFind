@@ -1,5 +1,5 @@
 <!-- START of: RecordDrivers/Ead/result-list.tpl -->
-<div class="result recordId" id="record{$summId|escape}">
+<div class="result recordId" id="record{$summId|escape}"{if $listNotes} data-notes="{$listNotes|escape:'html'}"{/if}{if $listUsername} data-notes-user="{$listUsername|escape:'html'}"{/if}>
 
 <div class="resultColumn1">
 
@@ -18,7 +18,7 @@
       <div class="imagelinks">
     {foreach from=$summImages item=desc name=imgLoop}
       {if $smarty.foreach.imgLoop.iteration <= 5}
-        <a data-id="{$summId|escape:"url"}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}class="title fancybox fancybox.image"  href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
+        <a data-id="{$summId|escape:"url"}" class="title imagePopup"  href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$summId|escape:"url"}&amp;index={$smarty.foreach.imgLoop.iteration-1}&amp;size=large"  onmouseover="document.getElementById('thumbnail_{$summId|escape:"url"}').src='{$path}/thumbnail.php?id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small'; document.getElementById('thumbnail_link_{$summId|escape:"url"}').href='{$path}/AJAX/JSON?method=getImagePopup&id={$summId|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" rel="gallery" />
          {if $smarty.foreach.imgLoop.iteration > 4}
             &hellip;
          {else}
@@ -42,13 +42,13 @@
       <div class="resultNoImage format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}"></div>
     {if $img_count == 1}
         <div class="resultImage">
-            <a class="title fancybox fancybox.image" data-id="{$summId|escape:"url"}" {if $listNotes}data-notes="{$listNotes|escape:'html'}" {/if}href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
+            <a class="title imagePopup" data-id="{$summId|escape:"url"}" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$summId|escape:"url"}&amp;index=0&amp;size=large" id="thumbnail_link_{$summId|escape:"url"}" rel="gallery">
                 <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
             </a>
         </div>
     {elseif $img_count > 1}
     <div class="resultImage">
-        <a class="title fancybox-trigger" href="{$path}/thumbnail.php?id={$summId|escape:"url"}&index=0&size=large" id="thumbnail_link_{$summId|escape:"url"}">
+        <a class="title imagePopup-trigger" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$summId|escape:"url"}&amp;index=0&amp;size=large" id="thumbnail_link_{$summId|escape:"url"}">
             <img id="thumbnail_{$summId|escape:"url"}" src="{$path}/thumbnail.php?id={$summId|escape:"url"}&size=small" class="summcover" alt="{translate text='Cover Image'}" />
         </a>
     </div>    

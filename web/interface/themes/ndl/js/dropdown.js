@@ -67,6 +67,15 @@ function initDropdowns() {
         // send menuOpen/menuClose events
         var event = mode ? 'menuOpen' : 'menuClose';
         $(this).trigger(event);
+        
+        if (mode) {
+            // Reposition dropdown if it does not fit on the screen.
+            var ul = $(this).find('ul');
+            if (ul.offset().left < 10) {
+                var w = ul.width();
+                $(this).offset({left: ul.width() + 10});
+            }
+        }
 
         // save state
         $(this).data("menuOpen", mode ? 1 : 0);
@@ -95,7 +104,7 @@ function initDropdowns() {
                 a.html(".");
                 var singleLineHeight = a.height();
                 var txtLen = txt.length;
-                var ind = 0;            
+                var ind = 0;
                 while(ind <= txtLen) {
                     truncated = txt.substring(0,ind++);
                     a.html(truncated + " &nbsp;");
@@ -143,24 +152,24 @@ function createDropdowns(){
             classNames += " dropdownStatic";
         }
 
-        var html = '<dl id="'+target+'" class="' + classNames + ' ' + idName + '"';
-        html += '></dl>';
-        $(this).hide().addClass('stylingDone').before(html);
-
-        $('#'+target).append('<dt><a href="#">' + selected.text() + 
+        var html = '<dl id="'+target+'" class="' + classNames + ' ' + idName + '">';
+        html += '<dt><a href="#">' + selected.text() + 
                              '<span class="value">' + selected.val() + 
-                             '</span></a></dt>');
-        
-        $("#"+target).append('<dd><ul id="owned_'+idName+'" role="menu" tabindex="0" aria-haspopup="true"></ul></dd>');
+                             '</span></a></dt>';
+        html += '<dd><ul id="owned_'+idName+'" role="menu" tabindex="0" aria-haspopup="true">';
         
         options.each(function(){
-            if ($(this).text()) {
-                $("#"+target+" dd ul").append('<li role="menuitem" tabindex="-1"><a href="#" class="big">' + 
+            html += $(this).text().trim()
+                ? '<li role="menuitem" tabindex="-1"><a href="#" class="big">' + 
                                               $(this).text() + '<span class="value">' + 
-                                              $(this).val() + '</span></a></li>');
-            } else {
-                $("#"+target+" dd ul").append('<li style="height: 2px"><hr/></li>');
-            }
+                                              $(this).val() + '</span></a></li>'
+                : '<li style="height: 2px"><hr/></li>'
+            ;
         });
+
+        html += '</ul></dd></dl>';
+
+        $(this).hide().addClass('stylingDone').before(html);
+
     })
 }

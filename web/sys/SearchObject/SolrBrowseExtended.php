@@ -47,6 +47,8 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
      * Initialise the object from the global
      *  search parameters in $_REQUEST.
      *
+     * @param string $browseType Browse type
+     *
      * @return boolean
      * @access public
      */
@@ -82,8 +84,8 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
         $this->setSort($sort);
 
 
-        $searchType = !isset($_REQUEST['type']) && isset($settings['type']) 
-            ? $settings['type'] 
+        $searchType = !isset($_REQUEST['type']) && isset($settings['type'])
+            ? $settings['type']
             : false
         ;
         if ($searchType) {
@@ -91,8 +93,8 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
         }
 
         return true;
-    } 
-    
+    }
+
     /**
      * Basic 'getter' for view mode.
      *
@@ -133,14 +135,14 @@ class SearchObject_SolrBrowseExtended extends SearchObject_Solr
      */
     public function renderSearchUrl($includeLocalFilters = true)
     {
-        // Temporarily reset 'sort', so that the setting used 
-        // in browsing (by default 'title') does not get included in the URL 
+        // Temporarily reset 'sort', so that the setting used
+        // in browsing (by default 'title') does not get included in the URL
         // and carried along when the user returns from browsing.
         $sort = $this->sort;
         $this->sort = null;
         $url = parent::renderSearchUrl($includeLocalFilters);
         $this->sort = $sort;
-        
+
         return $url;
     }
 

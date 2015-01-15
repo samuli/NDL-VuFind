@@ -43,7 +43,7 @@ class LidoRecord extends IndexRecord
 {
     // LIDO record
     protected $xml;
-    
+
     /**
      * Constructor.  We build the object using all the data retrieved
      * from the (Solr) index (which also happens to include the
@@ -59,10 +59,10 @@ class LidoRecord extends IndexRecord
     public function __construct($indexFields)
     {
         parent::__construct($indexFields);
-        
+
         $this->xml = simplexml_load_string($this->fields['fullrecord']);
     }
-    
+
     /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display core metadata (the details shown in the
@@ -82,17 +82,17 @@ class LidoRecord extends IndexRecord
         $interface->assign('coreSubjectActors', $this->getSubjectActors());
         $interface->assign('coreSubjectDetails', $this->getSubjectDetails());
         $interface->assign('coreFormatClassifications', $this->getFormatClassifications());
-        $interface->assign('coreMeasurements', $this->getMeasurements());        
+        $interface->assign('coreMeasurements', $this->getMeasurements());
         $interface->assign('coreEvents', $this->getEvents());
         $interface->assign('coreInscriptions', $this->getInscriptions());
         $interface->assign('coreWebResource', $this->getWebResource());
         $interface->assign('coreLocalIdentifiers', $this->getLocalIdentifiers());
         // todo: corerights
         $interface->assign('coreIdentifier', $this->getIdentifier());
-        
+
         return 'RecordDrivers/Lido/core.tpl';
     }
-        
+
     /**
      * Assign necessary Smarty variables and return a template name for the current
      * view to load in order to display a summary of the item suitable for use in
@@ -107,9 +107,9 @@ class LidoRecord extends IndexRecord
     {
         global $configArray;
         global $interface;
-        
+
         parent::getSearchResult($view);
-    
+
         $interface->assign('summImages', $this->getAllImages());
         if (in_array('Image', $this->getFormats()) && $this->getSubtitle() == '') {
             if ($this->getHighlightedTitle()) {
@@ -118,7 +118,7 @@ class LidoRecord extends IndexRecord
             $interface->assign('summTitle', $this->getTitle());
         }
         $interface->assign('summSubtitle', $this->getSubtitle());
-        
+
         $mainFormat = $this->getFormats();
         if (is_array($mainFormat)) {
             $mainFormat = $mainFormat[0];
@@ -142,7 +142,7 @@ class LidoRecord extends IndexRecord
         if (isset($this->fields['event_use_displayplace_str'])) {
             $interface->assign('summUsePlace', $this->fields['event_use_displayplace_str']);
         }
-        
+
         return 'RecordDrivers/Lido/result-' . $view . '.tpl';
     }
 
@@ -158,10 +158,10 @@ class LidoRecord extends IndexRecord
      *
      * @return string           Name of Smarty template file to display.
      * @access public
-     */    
+     */
     public function getListEntry($user, $listId = null, $allowEdit = true)
     {
-        
+
         global $interface;
 
         $res = parent::getListEntry($user, $listId, $allowEdit);
@@ -174,34 +174,35 @@ class LidoRecord extends IndexRecord
     }
 
     /**
-     * Return record data to be used in lightbox.
+     * Assign necessary Smarty variables and return a template name to
+     * load in order to display image popup.
      *
-     * @return array array with keys:
-     *   'title'    Title
-     *   'author'   Authors
-     *   'dates'    Publication date
-     *   'url'      Record URL
-     *   'building' Translated building-code
-     *   'rights'   Image rights, see RecrodDriver::getImageRights
+     * @param int $index Index of image to display
+     *
+     * @return string           Name of Smarty template file to display.
      * @access public
-     */    
-    public function getLightboxData()
+     */
+    public function getImagePopup($index)
     {
-        $data = parent::getLightboxData();
+        global $interface;
+
+        $tpl = parent::getImagePopup($index);
         if ($dates = $this->getResultDates()) {
-            $data['dates'] = $dates[0];
             if ($dates[1] && $dates[1] != $dates[0]) {
-                $data['dates'] .= '- ' . $dates[1];
-            }            
+                $interface->assign('dates', $dates[0] . '&ndash;' . $dates[1]);
+            } else {
+                $interface->assign('dates', $dates[0]);
+            }
         } else {
-            unset($data['dates']);
-        }        
-        return $data;
+            $interface->assign('dates', null);
+        }
+        
+        return $tpl;
     }
 
     /**
      * Return an associative array of image URLs associated with this record (key = URL,
-     * value = description), if available; false otherwise. 
+     * value = description), if available; false otherwise.
      *
      * @param string $size Size of requested images
      *
@@ -215,7 +216,7 @@ class LidoRecord extends IndexRecord
         foreach ($this->xml->xpath('/lidoWrap/lido/administrativeMetadata/resourceWrap/resourceSet/resourceRepresentation') as $node) {
             if ($node->linkResource) {
                 $attributes = $node->attributes();
-                if (!$attributes->type 
+                if (!$attributes->type
                     || (($size != 'large' && $attributes->type == 'thumb') || $size == 'large' && $attributes->type == 'large' || $attributes->type == 'zoomview')
                 ) {
                     $url = (string)$node->linkResource;
@@ -225,7 +226,7 @@ class LidoRecord extends IndexRecord
         }
         return $urls;
     }
-    
+
     /**
      * Return a URL to a thumbnail preview of the record, if available; false
      * otherwise.
@@ -272,7 +273,7 @@ class LidoRecord extends IndexRecord
     {
         return false;
     }
-    
+
     /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display the full record information on the Staff
@@ -294,11 +295,11 @@ class LidoRecord extends IndexRecord
         if ($doc->loadXML($xml)) {
             $doc->formatOutput = true;
             $geshi = new GeSHi($doc->saveXML(), 'xml');
-            $geshi->enable_classes(); 
+            $geshi->enable_classes();
             $interface->assign('record', $geshi->parse_code());
         }
         $interface->assign('details', $this->fields);
-        
+
         return 'RecordDrivers/Lido/staff.tpl';
     }
 
@@ -312,14 +313,14 @@ class LidoRecord extends IndexRecord
     {
         return isset($this->fields['identifier']) ? $this->fields['identifier'] : array();
     }
-    
+
     /**
      * Get subject dates
      *
      * @return array
      * @access protected
      */
-    protected function getSubjectDates() 
+    protected function getSubjectDates()
     {
         $results = array();
         foreach ($this->xml->xpath('lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectDate/displayDate') as $node) {
@@ -327,7 +328,7 @@ class LidoRecord extends IndexRecord
         }
         return $results;
     }
-    
+
     /**
      * Get subject places
      *
@@ -340,7 +341,7 @@ class LidoRecord extends IndexRecord
         foreach ($this->xml->xpath('lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectPlace/displayPlace') as $node) {
             $results[] = (string)$node;
         }
-        return $results;	
+        return $results;
     }
 
     /**
@@ -355,16 +356,16 @@ class LidoRecord extends IndexRecord
         foreach ($this->xml->xpath('lido/descriptiveMetadata/objectRelationWrap/subjectWrap/subjectSet/subject/subjectActor/actor/nameActorSet/appellationValue') as $node) {
             $results[] = (string)$node;
         }
-        return $results;	
+        return $results;
     }
-    
+
     /**
      * Get subject details
      *
      * @return array
      * @access protected
      */
-    protected function getSubjectDetails() 
+    protected function getSubjectDetails()
     {
         $results = array();
         foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/titleWrap/titleSet/appellationValue[@label='aiheen tarkenne']") as $node) {
@@ -372,7 +373,7 @@ class LidoRecord extends IndexRecord
         }
         return $results;
     }
-    
+
     /**
      * Get an array of alternative titles for the record.
      *
@@ -414,7 +415,7 @@ class LidoRecord extends IndexRecord
                     $endDateType = 'Y-m-d';
                     if (strlen($startDate) == 7) {
                         $startDateType = 'Y-m';
-                    }                    
+                    }
                     if (strlen($endDate) == 7) {
                         $endDateType = 'Y-m';
                     }
@@ -439,11 +440,11 @@ class LidoRecord extends IndexRecord
             }
             $method = isset($node->eventMethod->term) ? (string)$node->eventMethod->term : '';
             $materials = array();
-            
+
             if (isset($node->eventMaterialsTech->displayMaterialsTech)) {
                 // Use displayMaterialTech (default)
                 $materials[] = (string)$node->eventMaterialsTech->displayMaterialsTech;
-            } else if (isset($node->eventMaterialsTech->materialsTech)) {                
+            } else if (isset($node->eventMaterialsTech->materialsTech)) {
                 // display label not defined, build from materialsTech
                 $materials = array();
                 foreach ($node->xpath('eventMaterialsTech/materialsTech') as $materialsTech) {
@@ -481,10 +482,10 @@ class LidoRecord extends IndexRecord
                 }
                 if (isset($node->eventPlace->place->partOfPlace)) {
                     foreach ($node->eventPlace->place->partOfPlace as $partOfPlace) {
-                        $partOfPlaceName = array(); 
+                        $partOfPlaceName = array();
                         while (isset($partOfPlace->namePlaceSet)):
                         if (trim((string)$partOfPlace->namePlaceSet->appellationValue) != '') {
-                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? trim((string)$partOfPlace->namePlaceSet->appellationValue) : '';                            
+                            $partOfPlaceName[] = isset($partOfPlace->namePlaceSet->appellationValue) ? trim((string)$partOfPlace->namePlaceSet->appellationValue) : '';
                         }
                         $partOfPlace = $partOfPlace->partOfPlace;
                         endwhile;
@@ -492,7 +493,7 @@ class LidoRecord extends IndexRecord
                     }
                 }
             } else {
-                $places[] = $place;    
+                $places[] = $place;
             }
             $actors = array();
             if (isset($node->eventActor)) {
@@ -500,7 +501,7 @@ class LidoRecord extends IndexRecord
                     if (isset($actor->actorInRole->actor->nameActorSet->appellationValue) && trim($actor->actorInRole->actor->nameActorSet->appellationValue) != '') {
                         $role = isset($actor->actorInRole->roleActor->term) ? $actor->actorInRole->roleActor->term : '';
                         $actors[] = array('name'  => $actor->actorInRole->actor->nameActorSet->appellationValue, 'role' => $role);
-                    }        
+                    }
                 }
             }
             $culture = isset($node->culture->term) ? (string)$node->culture->term : '';
@@ -509,7 +510,7 @@ class LidoRecord extends IndexRecord
                 'place' => $places, 'actors' => $actors, 'culture' => $culture, 'description' => $description);
             $events[$type][] = $event;
         }
-        return $events;    
+        return $events;
     }
 
     /**
@@ -543,12 +544,12 @@ class LidoRecord extends IndexRecord
                     } else {
                         $results[] = (string)$classificationNode;
                     }
-                }                
+                }
             }
-        }     
+        }
         return $results;
     }
-    
+
     /**
      * Get an array of inscriptions for the record.
      *
@@ -565,10 +566,10 @@ class LidoRecord extends IndexRecord
             if ($label) {
                 $results[] = (string)$node . ' (' . $label . ')';
             } else {
-                $results[] = (string)$node;  
+                $results[] = (string)$node;
 
             }
-        }    
+        }
         return $results;
     }
 
@@ -581,7 +582,7 @@ class LidoRecord extends IndexRecord
     protected function getLocalIdentifiers()
     {
         $results = array();
-        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/repositoryWrap/repositorySet/workID") as $node) { 
+        foreach ($this->xml->xpath("lido/descriptiveMetadata/objectIdentificationWrap/repositoryWrap/repositorySet/workID") as $node) {
             $type = null;
             $attributes = $node->attributes();
             $type = isset($attributes->type) ? $attributes->type : '';
@@ -589,10 +590,10 @@ class LidoRecord extends IndexRecord
             if (($type) && trim((string)$node) != '') {
                 $results[] = (string)$node . ' (' . $type . ')';
             }
-        }    
+        }
         return $results;
     }
-    
+
     /**
      * Get the web resource link from the record.
      *
@@ -615,17 +616,17 @@ class LidoRecord extends IndexRecord
     {
         $results = array();
         if (isset($this->fields['measurements'])) {
-            $results = $this->fields['measurements'];            
+            $results = $this->fields['measurements'];
             $confParam = 'lido_augment_display_measurement_with_extent';
             if ($this->getDataSourceConfigurationValue($confParam)) {
                 if ($extent = $this->xml->xpath('lido/descriptiveMetadata/objectIdentificationWrap/objectMeasurementsWrap/objectMeasurementsSet/objectMeasurements/extentMeasurements')) {
                     $results[0] = "$results[0] ($extent[0])";
-                } 
+                }
             }
         }
         return $results;
     }
-    
+
     /**
      * Get all authors apart from presenters
      *
@@ -643,10 +644,10 @@ class LidoRecord extends IndexRecord
                     }
                 }
             }
-        }    
+        }
         return $authors;
     }
-        
+
     /**
      * Get an array of dates for results list display
      *
@@ -666,16 +667,16 @@ class LidoRecord extends IndexRecord
         $range[1] *= 86400;
         $startDate = new DateTime("@{$range[0]}");
         $endDate = new DateTime("@{$range[1]}");
-        if ($startDate->format('m') == 1 && $startDate->format('d') == 1 
+        if ($startDate->format('m') == 1 && $startDate->format('d') == 1
             && $endDate->format('m') == 12 && $endDate->format('d') == 31
         ) {
             return array($startDate->format('Y'), $endDate->format('Y'));
         }
         $date = new VuFindDate();
         return array(
-            $date->convertToDisplayDate('U', $range[0]), 
+            $date->convertToDisplayDate('U', $range[0]),
             $date->convertToDisplayDate('U', $range[1])
-        );        
+        );
     }
 
     /**
@@ -715,9 +716,7 @@ class LidoRecord extends IndexRecord
         }
 
         return isset($rights['copyright']) || isset($rights['description'])
-            ? $rights
-            : parent::getImageRights()
-        ;
+            ? $rights : parent::getImageRights();
     }
 
     /**
@@ -735,9 +734,9 @@ class LidoRecord extends IndexRecord
                 $conceptID = $conceptID[0];
                 $attributes = $conceptID->attributes();
                 if ($attributes->type && strtolower($attributes->type) == 'copyright') {
-                    if ($desc = $rights->xpath('term')) {                        
+                    if ($desc = $rights->xpath('term')) {
                         return array((string)$desc[0]);
-                    } 
+                    }
                 }
             }
         }
@@ -763,7 +762,7 @@ class LidoRecord extends IndexRecord
                 $attributes = $conceptID->attributes();
                 if ($attributes->type && strtolower($attributes->type) == 'copyright') {
                     $data = array();
-                    
+
                     $copyright = (string)$conceptID;
                     $data['copyright'] = $copyright;
 
