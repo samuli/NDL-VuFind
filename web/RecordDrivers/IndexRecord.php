@@ -940,7 +940,7 @@ class IndexRecord implements RecordInterface
             $img .= '&index=' . $index;
         }
         $interface->assign('thumbLarge', $img);
-        if (isset($this->fields['ID']) && strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {            
+        if (isset($this->fields['ID']) && strpos($this->fields['ID'][0], 'metalib.', 0) === 0) {
             // MetaLib record
             $interface->assign('title', $this->fields['Title'][0]);
             $interface->assign('url', $configArray['Site']['url'] . '/MetaLib/Record?id=' . urlencode($this->fields['ID'][0]));
@@ -989,7 +989,7 @@ class IndexRecord implements RecordInterface
                 $interface->assign('copyrightDescription', $rights['description']);
             }
         }
-    
+
         return 'RecordDrivers/Index/result-image-popup.tpl';
     }
 
@@ -1524,26 +1524,6 @@ class IndexRecord implements RecordInterface
             || !array_key_exists('docs', $similar['response'])
         ) {
             PEAR::raiseError(new PEAR_Error('Cannot Load similar items'));
-        }
-
-        // Loop over similar records, create record drivers for them and
-        // (if available) use the getYearRange method to insert a year range
-        // in the array for every record
-        foreach ($similar['response']['docs'] as &$similarRecordArray) {
-            $similarRecord = $this->db->getRecord($similarRecordArray['id']);
-            if (!$similarRecord) {
-                PEAR::raiseError(new PEAR_Error('Record Does Not Exist'));
-            }
-
-            $similarRecordDriver
-                = RecordDriverFactory::initRecordDriver($similarRecord);
-
-            if (method_exists($similarRecordDriver, 'getYearRange')
-                && is_callable(array($similarRecordDriver, 'getYearRange'))
-            ) {
-                $similarRecordArray['summYearRange']
-                    = $similarRecordDriver->getYearRange();
-            }
         }
 
         // Send the similar items to the template; if there is only one, we need
