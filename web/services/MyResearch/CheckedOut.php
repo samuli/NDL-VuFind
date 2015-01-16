@@ -188,8 +188,24 @@ class CheckedOut extends MyResearch
                 // Assign Results to the Template
                 $interface->assign('renewResult', $renewResult['details']);
 
-                return true;
+                // Successful and failed renewals
+                $notRenewed = 0;
+                foreach ($renewResult['details'] as $item) {
+                    if (!$item['success']) {
+                        $notRenewed++;
+                    }
+                }
+                $renewed = count($renewResult['details'])-$notRenewed;
+                if ($renewed > 0) {
+                    $interface->assign('renewMsgOK', 'renew_ok');
+                    $interface->assign('renewMsgOKCount', $renewed);
+                }
+                if ($notRenewed > 0) {
+                    $interface->assign('renewMsgFailed', 'renew_not_ok');
+                    $interface->assign('renewMsgFailedCount', $notRenewed);
+                }
 
+                return true;
             } else {
                  $interface->assign('errorMsg', 'renew_system_error');
             }

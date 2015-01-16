@@ -56,7 +56,7 @@
     
   <form name="cancelForm" action="{$url|escape}/MyResearch/Holds" method="post" id="cancelHold">
   <table>
-    <tr class="bulkActionButtons"><th><h3>{translate text="Holds"}</h3></th>
+    <tr class="bulkActionButtons"><th><h3>{translate text="Holds"} ({$recordList|@count})</h3></th>
         <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div> -->
         <th class="alignRight"  colspan="2">
           <input type="submit" class="button buttonFinna holdCancel" name="cancelSelected" value="{translate text="hold_cancel_selected"}" onclick="return confirm('{translate text="confirm_hold_cancel_selected_text}')" />
