@@ -31,8 +31,9 @@
     {/foreach} 
     {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''|translate_prefix:'source_'}
     {if $source != $accountname}
-      {if !empty($accountname)}({/if}{$source}{if !empty($accountname)}){/if}</h2>
+      {if !empty($accountname)}({/if}{$source}{if !empty($accountname)}){/if}
     {/if}
+    </h2>
     {if $blocks}
       {foreach from=$blocks item=block}
         <p class="info">{translate text=$block}</p>
