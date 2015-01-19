@@ -1,5 +1,13 @@
 <!-- START of: RecordDrivers/Ead/core.tpl -->
 
+{if is_array($recordFormat)}
+  {assign var=mainFormat value=$recordFormat.0} 
+  {assign var=displayFormat value=$recordFormat|@end} 
+{else}
+  {assign var=mainFormat value=$recordFormat} 
+  {assign var=displayFormat value=$recordFormat} 
+{/if}
+
 <div id="recordMetadata">
     
   {* Display Title *}
@@ -77,13 +85,6 @@
     <tr valign="top" class="recordFormat">
       <th>{translate text='Format'}: </th>
       <td>
-        {if is_array($recordFormat)}
-          {assign var=mainFormat value=$recordFormat.0} 
-          {assign var=displayFormat value=$recordFormat|@end} 
-        {else}
-          {assign var=mainFormat value=$recordFormat} 
-          {assign var=displayFormat value=$recordFormat} 
-        {/if}
         <span class="iconlabel format{$mainFormat|lower|regex_replace:"/[^a-z0-9]/":""} format{$displayFormat|lower|regex_replace:"/[^a-z0-9]/":""}">{translate text=$displayFormat prefix='format_'}</span>
         {if !empty($extendedPhysical)}
           {assign var=extendedContentDisplayed value=1}
