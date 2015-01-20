@@ -90,19 +90,19 @@
   <p>Esimerkki: etsitään tietueita, joissa esiintyy joko "economics Keynes" tai ainoastaan "Keynes":
   </p>
   <pre class="code">"economics Keynes" OR Keynes</pre>
-  <h3 title="-">Yhdysmerkki (-)</h3>
-  <p>Yhdysmerkki (-) poistaa hakutuloksista tietueet, joissa esiintyy kyselyssä merkkiä seuraava termi.
+  <h3 title="!-">!-</h3>
+  <p>Merkkiyhdistelmällä <strong>!-</strong> voidaan poistaa hakutuloksista tietueet, joissa esiintyy kyselyssä merkkiä seuraava termi.
   </p>
   <p>Esimerkki: etsitään tietueita, joissa on termi "economics" mutta ei termiä "Keynes":
   </p>
-  <pre class="code">economics -Keynes</pre>
-  <p>Huomio! Yhdysmerkkiä ei voi käyttää yksitermisissä kyselyissä.</p>
+  <pre class="code">economics !-Keynes</pre>
+  <p>Huomio! Merkkiyhdistelmää ei voi käyttää yksitermisissä kyselyissä.</p>
   <p>Esimerkki: seuraava kysely ei tuota lainkaan tuloksia:</p>
-  <pre class="code">-economics</pre>
-  <p>Huomio! Jos jokin hakutermeistä alkaa yhdysmerkillä, saadaan se otettua mukaan kyselyyn käyttämällä kenoviivaa (\).</p>
-  <p>Esimerkki: etsitään kirjaa nimeltä <i>Da Vinci -koodi</i>:<p>
-  <pre class="code">Da Vinci \-koodi</pre>
-  <p>Huomio! <strong>NOT</strong>-operaattoria voidaan käyttää samaan tapaan yhdysmerkin kanssa. <strong>NOT</strong>-operaattori antaa kuitenkin yhdysmerkkiä enemmän hakutuloksia, joissa osassa saattaa esiintyä pois suljettava hakutermi.
+  <pre class="code">!-economics</pre>
+  <p>Huomio! Jos jokin hakutermeistä alkaa tällä merkkiyhdistelmällä, saadaan se otettua mukaan kyselyyn käyttämällä kenoviivaa (\).</p>
+  <p>Esimerkki: etsitään hakusanoilla <i>!-merkki hakuehtona</i>:<p>
+  <pre class="code">\!-merkki hakuehtona</pre>
+  <p>Huomio! <strong>NOT</strong>-operaattoria voidaan käyttää samaan tapaan tämän merkkiyhdistelmän kanssa. <strong>NOT</strong>-operaattori antaa kuitenkin yhdysmerkkiä enemmän hakutuloksia, joissa osassa saattaa esiintyä pois suljettava hakutermi.
   </p>
   <h3 title="Phrase searches">Fraasihaut</h3>
   <p>Tarkan fraasihaun voi tehdä kirjoittamalla hakusanat lainausmerkkeihin.</p>

@@ -37,9 +37,29 @@
 
   {* Display Main Details *}
   <table cellpadding="2" cellspacing="0" border="0" class="citation" summary="{translate text='Bibliographic Details'}">
-    {if $driver == 'AxiellWebServices'}
-      {include file='RecordDrivers/Index/extended-btjdescription.tpl'}
-    {/if}
+    <tr valign="top" class="description">
+      <td id="description_text" colspan="2">
+        <img src="{path filename="images/ajax_loading.gif"}" alt="{translate text='Loading data...'}"/>
+        <script type="text/javascript">
+        //<![CDATA[
+        var path = {$path|@json_encode};
+        var id = {$id|@json_encode};
+        
+        {literal}
+        $(document).ready(function() {
+         $("#description_text").load(path + '/AJAX/AJAX_Description?id=' + id, function(response, status, xhr) {
+            if (response.length != 0) {
+              $(this).wrapInner('<div class="recordSummary truncateField"></div>');
+              $(this).find('.truncateField').collapse({maxRows: 4, more: " ", less: " "});
+            }
+        })
+        });
+        //]]>
+        {/literal}
+        </script>          
+      </td>
+    </tr>
+    
     {* Commented out since these are normally displayed in the links section 
     {if !empty($coreNextTitles)}
     <tr valign="top" class="recordNextTitles">

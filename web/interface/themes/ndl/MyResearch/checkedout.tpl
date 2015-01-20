@@ -11,10 +11,12 @@
     {if !empty($catalogAccounts)}
   <div class="grid_24">
   <div class="resultHead">
-  {if $errorMsg || $infoMsg}
+  {if $errorMsg || $infoMsg || $renewMsgOK || $renewMsgFailed}
     <div class="messages">
     {if $errorMsg}<p class="error">{$errorMsg|translate}</p>{/if}
     {if $infoMsg}<p class="info">{$infoMsg|translate}{if $showExport} <a class="save" target="_new" href="{$showExport|escape}">{translate text="export_save"}</a>{/if}</p>{/if}
+    {if $renewMsgOK}<p class="success">{$renewMsgOKCount} {$renewMsgOK|translate}</p>{/if}
+    {if $renewMsgFailed}<p class="error">{$renewMsgFailedCount} {$renewMsgFailed|translate}</p>{/if}
     </div>
   {/if}
   {if $user->cat_username}
@@ -25,9 +27,12 @@
     {/if}
     <h2>{translate text='Your Checked Out Items'}:      
     {foreach from=$catalogAccounts item=account}
-        	{if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
-     {/foreach} 
-            {if !empty($accountname)}({/if}{assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''}{translate text=$source prefix='source_'}{if !empty($accountname)}){/if}</h2>
+      {if $account.cat_username == $currentCatalogAccount}{$account.account_name|escape}{assign var=accountname value=$account.account_name|escape}{/if}
+    {/foreach} 
+    {assign var=source value=$user->cat_username|regex_replace:'/\..*?$/':''|translate_prefix:'source_'}
+    {if $source != $accountname}
+      {if !empty($accountname)}({/if}{$source}{if !empty($accountname)}){/if}</h2>
+    {/if}
     {if $blocks}
       {foreach from=$blocks item=block}
         <p class="info">{translate text=$block}</p>
@@ -40,7 +45,7 @@
 
     <table>  
     <tr class="bulkActionButtons">
-    	<th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"}</h3>
+    	<th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"} ({$transList|@count})</h3>
         <!-- <div class="allCheckboxBackground"><input type="checkbox" class="selectAllCheckboxes" name="selectAll" id="addFormCheckboxSelectAll" /></div> -->       
          <span style="float:right;vertical-align:middle">
           <input type="submit" class="button buttonFinna renew" name="renewSelected" value="{translate text="renew_selected"}" />
@@ -51,15 +56,10 @@
       {else}
       <table>
       <tr class="bulkActionButtons">
-      <th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"}</h3>
+      <th colspan="3"><h3 style="display:inline-block">{translate text="Checked Out Items"} ({$transList|@count})</h3>
       </tr>
       {/if}
 
-      {if $errorMsg}
-      <tr><th colspan="3"><p class="error">{translate text=$errorMsg}</p></th></tr>
-      {/if}
-  
-    
     {foreach from=$transList item=resource name="recordLoop"}
       <tr class="result{if ($smarty.foreach.recordLoop.iteration % 2) == 0} alt{/if}">
       <td class="myCheckbox">

@@ -107,7 +107,7 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
 
         <div class="coverImageLinks{if $img_count > 6} snippet{/if}">
         {foreach from=$coreImages item=desc name=imgLoop}
-            <a data-id="{$id|escape:"url"}" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large" class="title fancybox fancybox.image" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
+            <a data-id="{$id|escape:"url"}" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$id|escape:"url"}{if $isbn}&amp;isn={$isbn|escape:"url"}{/if}&amp;index={$smarty.foreach.imgLoop.iteration-1}&amp;size=large" class="title imagePopup" onmouseover="document.getElementById('thumbnail').src='{$url}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=medium'; document.getElementById('thumbnail_link').href='{$path}/AJAX/JSON?method=getImagePopup&id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=large'; return false;" style="background-image:url('{$path}/thumbnail.php?id={$id|escape:"url"}&index={$smarty.foreach.imgLoop.iteration-1}&size=small');" rel="{$id|escape:"url"}"><span></span>
             </a>
           {/foreach}
           </div>
@@ -122,10 +122,10 @@ vufindString.bookbagStatusFull = "{translate text="bookbag_full"}";
           </div>
         {/if}
         
-        {if $coreThumbLarge}{if $img_count > 1}<a class="title fancybox-trigger" id="thumbnail_link" href="{$url}/thumbnail.php?id={$id|escape:"url"}&index=0&size=large"><span></span>{else}<a data-id="{$id|escape:"url"}" class="fancybox fancybox.image" href="{$coreThumbLarge|escape}" rel="gallery">{/if}{/if}
+        {if $coreThumbLarge}{if $img_count > 1}<a class="title imagePopup-trigger" id="thumbnail_link" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$id|escape:"url"}{if $isbn}&amp;isn={$isbn|escape:"url"}{/if}&amp;index=0&amp;size=large"><span></span>{else}<a data-id="{$id|escape:"url"}" class="imagePopup" href="{$path}/AJAX/JSON?method=getImagePopup&amp;id={$id|escape:"url"}{if $isbn}&amp;isn={$isbn|escape:"url"}{/if}&amp;index=0&amp;size=large" rel="gallery">{/if}{/if}
         <span></span><img id="thumbnail" alt="{translate text="Cover Image"}" class="recordcover" src="{$coreThumbMedium|escape}" style="padding:0" />
         {if $coreThumbLarge}</a>
-        {js filename="init_fancybox.js"}
+        {js filename="init_image_popup.js"}
         {/if}
         
         {else}

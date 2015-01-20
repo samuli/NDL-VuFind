@@ -1,11 +1,11 @@
-Osoitteen muutospyyntö, {$data.library}
+Osoitteenmuutospyyntö, {$library}
 
-Käyttäjätunnus: {$data.username}
-Nimi: {$data.name}
-Sähköpostiosoite: {$data.email}
+Käyttäjätunnus: {$username}
+Nimi: {$name}
+Sähköpostiosoite: {$email}
 
 Uusi osoite: {$data.changeAddressLine1}
 Uusi postitoimipaikka: {$data.changeAddressZip}
 
-Vanha osoite: {$data.oldAddress}
+Vanha osoite: {$data.oldAddress1}
 Vanha postitoimipaikka: {$data.oldZip}

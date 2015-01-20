@@ -95,20 +95,26 @@
   <p>Exempel: Sök efter resurser, som handlar Österbotten eller Västerbotten:
   </p>
   <pre class="code">österbotten OR västerbotten</pre>
-  <h3 title="-">Bindestreck (-)</h3>
-  <p>Bindestrecket (-) avlägsnar de poster från sökresultaten, vilka innehåller termen efter strecket.
+  <h3 title="!-">!-</h3>
+  <p>Operatoren avlägsnar de poster från sökresultaten, vilka innehåller termen efter den.
   </p>
   <p>Exempel: sökes poster med termen "economics" men inte termen "Keynes": 
   </p>
-  <pre class="code">economics -Keynes</pre>
-  <p>Obs! Bindestreck kan inte användas i sökningar med en enda sökterm.</p>
+  <pre class="code">economics !-Keynes</pre>
+  <p>Obs! Denna operator kan inte användas i sökningar med en enda sökterm.</p>
   <p>Exempel: följande sökning ger inga resultat:</p>
-  <pre class="code">-economics</pre>
-  <p>Obs! Om någon av söktermen börjar med bindestreck, fås strecket med i sökningen med ett bakstreck (\):</p>
-  <p>Exempel: sökes boken <i>Da Vinci -koodi</i> (finsk översättning):<p>
-  <pre class="code">Da Vinci \-koodi</pre>
-  <p>Obs! <strong>NOT</strong>-operatorn kan användas på motsvarande sätt som bindestrecket. <strong>NOT</strong>-operatorn kan dock ge mera resultat som ändå innehåller söktermen som skulle uteslutas.
+  <pre class="code">!-economics</pre>
+  <p>Obs! Om någon av söktermen börjar med denna operator, fås strecket med i sökningen med ett bakstreck (\):</p>
+  <p>Exempel: sökningen <i>!-merkki hakuehtona</i> (på finska):<p>
+  <pre class="code">\!-huutomerkki hakuehtona</pre>
+  <p>Obs! <strong>NOT</strong>-operatorn kan användas på motsvarande sätt som denna operator. <strong>NOT</strong>-operatorn kan dock ge mera resultat som ändå innehåller söktermen som skulle uteslutas.
   </p>      
+  <h3 title="Phrase searches">Frassökning</h3>
+  <p>Du kan göra en exakt frassökning genom att skriva dina sökord inom citationstecken. </p>
+  <p>Till exempel: du söker poster som innehåller frasen ”medeltidens historia”, inte t.ex. ”medeltidens kulturhistoria”: </p>
+  <pre class="code">"keskiajan historia"</pre>
+  <p>Man kan också använda frassökning för enskilda söktermer, då visas bara poster som innehåller sökordet exakt så som det är skrivet, och inte t.ex. böjt på olika sätt. 
+  </p>
   {/literal}
 {/capture}
 {capture append="sections"}

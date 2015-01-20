@@ -54,11 +54,17 @@ class Profile extends MyResearch
         global $interface;
         global $user;
 
+        // Collect all messages so that nothing is overwritten
+        $userMessages = array();
+        $userErrors = array();
+
+
+        // These require just a login
         if (UserAccount::isLoggedIn()) {
             // Update email address
             if (isset($_POST['email'])) {
                 if ($user->changeEmailAddress($_POST['email'])) {
-                    $interface->assign('userMsg', 'profile_update');
+                    $userMessages[] = 'profile_update';
                 }
             }
             $interface->assign('email', $user->email);
@@ -67,38 +73,15 @@ class Profile extends MyResearch
             if (isset($_POST['due_date_reminder'])) {
                 $interval = $_POST['due_date_reminder'];
                 if (is_numeric($interval) && $interval >= 0) {
-                    if ($user->changeDueDateReminder($_POST['due_date_reminder'])) {
-                        $interface->assign('userMsg', 'profile_update');
+                    if ($user->changeDueDateReminder(
+                        $_POST['due_date_reminder']
+                    )
+                    ) {
+                        $userMessages[] = 'profile_update';
                     }
                 }
             }
             $interface->assign('dueDateReminder', $user->due_date_reminder);
-
-            // Change Password
-            if (isset($_POST['oldPassword'])
-                && isset($_POST['newPassword'])
-                && isset($_POST['newPassword2'])
-            ) {
-                if ($_POST['newPassword'] !== $_POST['newPassword2']) {
-                    $interface->assign(
-                        'userError', 'change_password_error_verification'
-                    );
-                } else {
-                    $result = $this->changePassword(
-                        $_POST['oldPassword'], $_POST['newPassword']
-                    );
-                    if (PEAR::isError($result)) {
-                        $interface->assign('userError', $result->getMessage());
-                    } else {
-                        if ($result['success']) {
-                            $interface->assign('userMsg', 'change_password_ok');
-                            $user->changeCatalogPassword($_POST['newPassword']);
-                        } else {
-                            $interface->assign('userError', $result['status']);
-                        }
-                    }
-                }
-            }
         }
 
         // Get My Profile
@@ -106,76 +89,179 @@ class Profile extends MyResearch
             if (PEAR::isError($patron)) {
                 $this->handleCatalogError($patron);
             } else {
-                if (isset($_POST['home_library']) &&  $_POST['home_library'] != "") {
-                    $home_library = $_POST['home_library'];
-                    $updateProfile = $user->changeHomeLibrary($home_library);
-                    if ($updateProfile == true) {
-                        $interface->assign('userMsg', 'profile_update');
+                // Address change request form
+                if (isset($_POST['changeAddressRequest'])) {
+                    $profile = $this->catalog->getMyProfile($patron);
+                    if (!PEAR::isError($profile)) {
+                        $interface->assign(
+                            'address1',
+                            isset($profile['address1']) ? $profile['address1'] : ''
+                        );
+                        $interface->assign(
+                            'zip',
+                            isset($profile['zip']) ? $profile['zip'] : ''
+                        );
+                    }
+                    $interface->display('/MyResearch/change-address.tpl');
+                    return;
+                }
+
+                // Address change request
+                if (isset($_POST['changeAddressLine1'])
+                    && isset($_POST['changeAddressZip'])
+                ) {
+                    $profile = $this->catalog->getMyProfile($patron);
+                    $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+                    $data['oldAddress1'] = isset($profile['address1']) ? $profile['address1'] : '';
+                    $data['oldZip'] = isset($profile['zip']) ? $profile['zip'] : '';
+
+                    $result = $this->sendEmail(
+                        $patron,
+                        $data,
+                        'Osoitteenmuutospyyntö',
+                        'Emails/change-address.tpl'
+                    );
+                    if (!PEAR::isError($result)) {
+                        $userMessages[] = 'request_change_email_sent';
+                    } else {
+                        error_log(
+                            'Sending of address change request mail failed: '
+                            . $result->getMessage()
+                        );
+                        $userErrors[] = 'request_change_email_failed';
                     }
                 }
+
+                // Messaging settings request form
+                if (isset($_POST['changeMessagingSettingsRequest'])) {
+                    $profile = $this->catalog->getMyProfile($patron);
+                    if (isset($profile['messagingServices'])) {
+                        $interface->assign('services', $profile['messagingServices']);
+                        $emailDays = array();
+                        foreach (array(1,2,3,4,5) as $day) {
+                            if ($day == 1) {
+                                $label = translate("messaging_settings_num_of_days");
+                            } else {
+                                $label = translate("messaging_settings_num_of_days_plural");
+                                $label = str_replace('{1}', $day, $label);
+                            }
+                            $emailDays[] = $label;
+                        }
+                        
+                        $interface->assign('emailDays', $emailDays);
+                        $interface->assign('days', array(1,2,3,4,5));
+                        $interface->display('/MyResearch/change-messaging-settings.tpl');
+                        
+                        return;
+                    }
+                }
+
+                // Messaging settings request
+                if (isset($_POST['changeMessagingSettings'])) {
+                    // Translator for email message (always in Finnish) 
+                    $translator = new I18N_Translator(
+                        array('lang', 'lang_local'), 'fi', $configArray['System']['debug']
+                    );
+                    
+                    $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+                    $data['pickUpNotice'] = $translator->translate('messaging_settings_method_' . $data['pickUpNotice']);
+                    $data['overdueNotice'] = $translator->translate('messaging_settings_method_' . $data['overdueNotice']);
+                    if ($data['dueDateAlert'] == 0) {
+                        $data['dueDateAlert'] = $translator->translate('messaging_settings_method_none');
+                    } else if ($data['dueDateAlert'] == 1) {
+                        $data['dueDateAlert'] = $translator->translate('messaging_settings_num_of_days');
+                    } else {
+                        $txt = $translator->translate('messaging_settings_num_of_days_plural');
+                        $txt = str_replace('{1}', $data['dueDateAlert'], $txt);
+                        $data['dueDateAlert'] = $txt;
+                    }
+                    $result = $this->sendEmail(
+                        $patron,
+                        $data,
+                        'Viestiasetusten muutospyyntö',
+                        'Emails/change-messaging-settings.tpl'
+                    );
+                    if (!PEAR::isError($result)) {
+                        $userMessages[] = 'request_change_email_sent';
+                    } else {
+                        error_log(
+                            'Sending of messaging settings change request mail failed: '
+                            . $result->getMessage()
+                        );
+                        $userErrors[] = 'request_change_email_failed';
+                    }
+                }
+
+                // Change home library
+                if (isset($_POST['home_library']) && $_POST['home_library'] != "") {
+                    $home_library = $_POST['home_library'];
+                    if ($user->changeHomeLibrary($home_library)) {
+                        $userMessages[] = 'profile_update';
+                    } else {
+                        $userErrors[] = 'profile_update_failed';
+                    }
+                }
+                // Change Password
+                if (isset($_POST['oldPassword'])
+                    && isset($_POST['newPassword'])
+                    && isset($_POST['newPassword2'])
+                ) {
+                    if ($_POST['newPassword'] !== $_POST['newPassword2']) {
+                        $userErrors[] = 'change_password_error_verification';
+                    } else {
+                        $result = $this->changePassword(
+                            $_POST['oldPassword'], $_POST['newPassword']
+                        );
+                        if (PEAR::isError($result)) {
+                            $userErrors[] = $result->getMessage();
+                        } else {
+                            if ($result['success']) {
+                                $userMessages[] = 'change_password_ok';
+                                $user->changeCatalogPassword($_POST['newPassword']);
+                                // Re-retrieve patron to make sure it's up to date
+                                $patron = UserAccount::catalogLogin();
+                            } else {
+                                $userErrors[] = $result['status'];
+                            }
+                        }
+                    }
+                }
+
+                // Change phone number
                 if (isset($_POST['phone_number'])) {
                     $phoneNumber = trim($_POST['phone_number']);
                     if (preg_match('/^[\+]?[ \d\-]+\d+$/', $phoneNumber)) {
                         $result = $this->catalog->setPhoneNumber(
-                            $patron,  $phoneNumber
+                            $patron, $phoneNumber
                         );
                         if ($result['success']) {
-                            $interface->assign('userMsg', 'profile_update');
-                            $patron['phone'] = $phoneNumber;
+                            $userMessages[] = 'phone_updated';
+                            // Re-retrieve patron to make sure it's up to date
+                            $patron = UserAccount::catalogLogin();
                         } else {
-                            $interface->assign('userError', $result['sys_message']);
+                            $userErrors[] = $result['sys_message'];
                         }
                     } else {
-                        $interface->assign('userError', 'Phone Number is invalid');
+                        $userErrors[] = 'Phone Number is invalid';
                     }
                 }
+                // Change email address
                 if (isset($_POST['email_address'])) {
                     $email = trim($_POST['email_address']);
                     if (Mail_RFC822::isValidInetAddress($email)) {
                         $result = $this->catalog->setEmailAddress($patron, $email);
                         if ($result['success']) {
-                            $interface->assign('userMsg', 'profile_update');
-                            $patron['email'] = $email;
+                            $userMessages[] = 'email_updated';
+                            // Re-retrieve patron to make sure it's up to date
+                            $patron = UserAccount::catalogLogin();
                         } else {
-                            $interface->assign('userError', $result['sys_message']);
+                            $userErrors[] = $result['sys_message'];
                         }
                     } else {
-                        $interface->assign('userError', 'Email address is invalid');
+                        $userErrors[] = 'Email address is invalid';
                     }
                 }
-                if (isset($_POST['changeAddressRequest'])) {
-                    $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-                    $interface->assign('email', $_POST['email']);
-                    $interface->assign('name', $_POST['name']);
-                    $interface->assign('library', $_POST['library']);
-                    $interface->assign('address', $_POST['address']);
-                    $interface->assign('zip', $_POST['zip']);
-                    $interface->assign('username', $patron['cat_username']);
-                    $interface->display('/MyResearch/change-address.tpl');
-                    return;
-                }
-            
-                if (isset($_POST['changeAddressLine1'])
-                    && isset($_POST['changeAddressZip'])
-                ) {
-                    $driver = explode('.', $patron['cat_username'], 2);
-                    $datasources = getExtraConfigArray('datasources');
-                    $to = (is_array($driver)
-                        && isset($driver[0])
-                        && isset($datasources[$driver[0]])
-                        && isset($datasources[$driver[0]]['feedbackEmail'])
-                    )
-                        ? $datasources[$driver[0]]['feedbackEmail']
-                        : $configArray['Site']['email'];
-                    $result = $this->sendEmail(
-                        filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING), $to
-                    );
-                    if (!PEAR::isError($result)) {
-                        $interface->assign('userMsg', 'address_change_email_sent');
-                    } else {
-                        $interface->assign('userError', $result->getMessage());
-                    }
-                }
+
                 $result = $this->catalog->getMyProfile($patron);
                 if (!PEAR::isError($result)) {
                     $result['home_library'] = $user->home_library;
@@ -188,6 +274,8 @@ class Profile extends MyResearch
                     );
                     $interface->assign('pickup', $libs);
                     $interface->assign('profile', $result);
+                } else {
+                    $userErrors[] = $result->getMessage();
                 }
                 $result = $this->catalog->checkFunction('changePassword');
                 if ($result !== false) {
@@ -199,6 +287,10 @@ class Profile extends MyResearch
         } else {
             Login::setupLoginFormVars();
         }
+
+        $interface->assign('userMsg', array_unique($userMessages));
+        $interface->assign('userError', array_unique($userErrors));
+
 
         $interface->assign(
             'hideDueDateReminder',
@@ -243,20 +335,55 @@ class Profile extends MyResearch
     /**
      * Send address change request email
      *
-     * @param array  $data Array of values to send
-     * @param string $to   Email recipient
+     * @param array $patron   Patron
+     * @param array $data     Array of information to send
+     * @param array $subject  String Subject
+     * @param array $template String Email template 
      *
      * @return mixed      Boolean true on success, PEAR_Error on failure.
      * @access protected
      */
-    protected function sendEmail($data, $to)
+    protected function sendEmail($patron, $data, $subject, $template)
     {
         global $interface;
         global $configArray;
 
-        $subject = 'Osoitteen muutospyyntö';
+        $driver = explode('.', $patron['cat_username'], 2);
+        $datasources = getExtraConfigArray('datasources');
+        if (is_array($driver)
+            && isset($driver[0])
+            && isset($datasources[$driver[0]])
+            && (isset($datasources[$driver[0]]['feedbackEmail'])
+            || isset($datasources[$driver[0]]['patronSettingsChangeRequestEmail']))
+        ) {
+            $emailSource = $datasources[$driver[0]];
+            $to = isset($emailSource['patronSettingsChangeRequestEmail'])
+                ? $emailSource['patronSettingsChangeRequestEmail']
+                : $emailSource['feedbackEmail'];
+        } else {
+            $to = $configArray['Site']['email'];
+        }
+
+        $profile = $this->catalog->getMyProfile($patron);
+        if (PEAR::isError($profile)) {
+            return $profile;
+        }
+
+        list($library, $username) = explode('.', $patron['cat_username']);
+        $library = translate(array('text' => $library, 'prefix' => 'source_'));
+        $name = trim(
+            (isset($profile['firstname']) ? $profile['firstname'] : '')
+            . ' '
+            . (isset($profile['lastname']) ? $profile['lastname'] : '')
+        );
+
+        $interface->assign('library', $library);
+        $interface->assign('username', $username);
+        $interface->assign('name', $name);
+        $interface->assign('email', isset($patron['email']) ? $patron['email'] : '');
         $interface->assign('data', $data);
-        $body = $interface->fetch('Emails/change-address.tpl');
+
+        $body = $interface->fetch($template);
 
         $mail = new VuFindMailer();
         return $mail->send($to, $configArray['Site']['email'], $subject, $body);

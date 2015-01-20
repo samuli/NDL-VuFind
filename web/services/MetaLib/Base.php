@@ -59,7 +59,7 @@ class Base extends Action
 
         if (!$interface->get_template_vars('metalibEnabled')) {
             PEAR::raiseError(new PEAR_Error("MetaLib is not enabled."));
-        }        
+        }
 
         $interface->assign('currentTab', 'MetaLib');
 
@@ -85,7 +85,7 @@ class Base extends Action
 
             $interface->assign('searchSet', "_ird:$ird");
         } else {
-            // Select first set by default 
+            // Select first set by default
             $interface->assign('searchSet', current(array_keys($sets)));
         }
 
@@ -94,7 +94,7 @@ class Base extends Action
             $action = new Database();
             $interface->assign('browseDatabases', $action->getBrowseUrl('Database'));
         }
-        
+
         $interface->assign('metalibSearchTypes', $this->searchObject->getBasicTypes());
         $interface->assign('metalibSearchSets', $sets);
         $interface->assign('metalibRecentDatabases', $this->searchObject->getRecentDatabases());
@@ -103,10 +103,15 @@ class Base extends Action
         set_time_limit(60);
     }
 
+    /**
+     * Checks if browse functionality is enabled
+     *
+     * @return boolean True if browse is enabled
+     */
     protected function isBrowseEnabled()
     {
         $searchSettings = getExtraConfigArray('searches');
-        
+
         if (isset($searchSettings['BrowseExtended'])) {
             foreach ($searchSettings['BrowseExtended'] as $key => $val) {
                 if (strcmp('Database', $key) === 0 && (boolean)$val) {

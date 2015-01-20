@@ -62,10 +62,10 @@ class SearchObject_SolrCollection extends SearchObject_Solr
     {
         global $module;
         global $action;
-        
+
         $searchSettings = getExtraConfigArray('searches');
-        //get collection specific sort options
-    	if (isset($searchSettings['CollectionModuleSort'])) {
+        // Get collection specific sort options
+        if (isset($searchSettings['CollectionModuleSort'])) {
             $this->sortOptions = $searchSettings['CollectionModuleSort'];
         } else {
             $this->sortOptions = array('title' => 'sort_title',

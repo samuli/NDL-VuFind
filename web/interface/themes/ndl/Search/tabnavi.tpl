@@ -1,6 +1,6 @@
 <!-- START of: Search/tabnavi.tpl -->
 
-<div class="ui-tabs ui-widget tabNavi" role="navigation" aria-label="{translate text='Search Type Navigation'}">
+<div class="ui-tabs ui-widget tabNavi searchIndex" role="navigation" aria-label="{translate text='Search Type Navigation'}">
   <div class="content">
     <div class="grid_24">
       <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix">
@@ -76,6 +76,9 @@
 
       {/if}
 
+      {if in_array('tabs', $contextHelp)}
+         <li class="contextHelp"><span id="contextHelp_tabs" class="showHelp">{translate text="Search Tips"}</span></li>
+      {/if}
       </ul>
     </div>
   </div>

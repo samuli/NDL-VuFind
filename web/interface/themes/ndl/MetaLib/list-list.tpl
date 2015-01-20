@@ -41,3 +41,5 @@
 {include file="Search/paging.tpl" position="Bottom"}
 
 {include file="piwik.tpl"}
+
+{js filename="init_image_popup.js"}

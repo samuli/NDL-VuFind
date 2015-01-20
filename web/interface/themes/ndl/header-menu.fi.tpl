@@ -1,6 +1,6 @@
 <!-- START of: header-menu.fi.tpl -->
 
-<li class="menuHome" tabindex="0"><a href="{$path}/" id="navHome" aria-labelled-by="{translate text='Home page'}"><span>{translate text='Home page'}</span></a></li>
+<li class="menuHome" tabindex="0"><a href="{$path}/" id="navHome" aria-label="{translate text='Home page'}"><span>{translate text='Home page'}</span></a></li>
 
 <li class="menuAbout" tabindex="0"><a href="{$path}/Content/about" id="navAbout"><span style="line-height: 1.5em;">{translate text='navigation_about'}</span></a></li>
 

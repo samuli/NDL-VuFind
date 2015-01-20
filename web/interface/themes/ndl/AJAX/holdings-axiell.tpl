@@ -1,10 +1,10 @@
 <!-- START of: AJAX/holdings-axiell.tpl -->
 
-{if $locationTreshold < $locationCount}
+{if $locationThreshold < $locationCount}
   {assign var="collapseLocations" value=true}
 {/if}
 
-{if $branchTreshold < $branchCount}
+{if $branchThreshold < $branchCount}
   {assign var="collapseBranch" value=true}
 {/if}
 
@@ -13,7 +13,7 @@
     <tr><td><span>{translate text="No holdings information available"}</span></tr></td>
   {else}
     <tr class="resultHoldingsHeading">
-      <th class="{if $collapseLocations}collapsible collapsed{/if}">
+      <th{if $collapseLocations} class="collapsible collapsed"{/if}>
         {if $availableLocationCount > 0}
           <span class="availability available">
               {if $journal}
@@ -39,14 +39,18 @@
         {/if}
         {if $collapseLocations}<span class="arrowIndicator collapsed"></span>{/if}
       </th>
-      <th>{translate text="Requests"} {$requestCount}, {translate text="axiell_items"} {$holdCount}</th>
+      {if !$holdings.0.journal}
+      <th>{translate text="Requests"} {$requestCount}, {translate text="axiell_items"} {$itemCount}</th>
+      {else}
+      <th></th>
+      {/if}
     </tr>
     {foreach from=$holdings item=location name=locations}
-      <tr class="{if $collapseLocations}collapsed{/if}">
+      <tr{if $collapseLocations} class="collapsed"{/if}>
         <td colspan="2">
           <table>
             <tr>
-              <th class="{if $collapseBranch}collapsible collapsed{/if}"><span class="indent">{if $collapseBranch}<span class="arrowIndicator collapsed"></span>{/if}
+              <th{if $collapseBranch} class="collapsible collapsed"{/if}><span class="indent">{if $collapseBranch}<span class="arrowIndicator collapsed"></span>{/if}
                 {$location.title} 
                 {if $collapseBranch}
                   {if $location.status.availableCount > 0}
@@ -61,10 +65,10 @@
               <th>{$location.callnumber}</th>
             </tr>
             {foreach from=$location.holdings item=holding name=holding}
-              <tr class="{if $collapseBranch}collapsed{/if}">
+              <tr{if $collapseBranch} class="collapsed"{/if}>
                 <td class="copyNumber">
                   <span class="holdingText indent {if $holding.availability || $holding.status=="On Reference Desk"}available{else}checkedout{/if}">
-                    {if $journal}{$location.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}
+                    {if $journal}{$holding.organisation}, {/if}{$holding.branch}, {$holding.department}{if $holding.location}, {$holding.location}{/if}
                   </span>
                 </td>
                 <td> 
@@ -74,7 +78,7 @@
                     {if $holding.duedate != '' && !$holding.availability}
                       {translate text="Closest due"} {$holding.duedate}
                     {elseif $holding.ordered > 0}
-                      {translate text="status_Ordered} {$holding.ordered}
+                      {translate text="status_Ordered"} {$holding.ordered}
                     {else}
                       {translate text="status_`$holding.status`"}
                     {/if}
@@ -93,7 +97,7 @@
             {if $isHoldable}
               {if !$user}
                 {if $driverMode || $titleDriverMode}
-                    <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id|escape}">{translate text="title_hold_place"}</a>
+                    <a class="button buttonFinna" href="{$path}/MyResearch/Home?followup=true&followupModule=Record&followupAction={$id|escape}%23tabnav">{translate text="title_hold_place"}</a>
                 {else}
                   <span>{translate text="title_cant_place_hold"}</span>
                 {/if}
@@ -102,7 +106,11 @@
                   <a class="button buttonFinna" href="{$path}/MyResearch/Profile">{translate text="Add an account to place holds"}</a>
                 {else}
                   {if $holdingTitleHold && $holdingTitleHold != 'block'}
+                    {if $holdings.0.journal}
+                      <a class="button buttonFinna" href="{$path}/Record/{$id|escape}#tabnav">{translate text="title_hold_place"}</a>
+                    {else}
                       <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
+                    {/if}
                   {elseif $holdingTitleHold == 'block'}
                       {translate text="hold_error_blocked"}
                   {elseif !$holdingTitleHold}

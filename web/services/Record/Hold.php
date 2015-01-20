@@ -169,7 +169,7 @@ class Hold extends Record
                         // the value has not been tampered with:
                         if (!$this->validatePickUpInput($extraHoldFields, $libs)) {
                             $this->assignError(
-                                array('status' => 'error_inconsistent_parameters')
+                                array('status' => 'hold_invalid_pickup')
                             );
                         } else if ($this->_placeHold($patron)) {
                             // If we made it this far, we're ready to place the hold;

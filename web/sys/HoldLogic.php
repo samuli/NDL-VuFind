@@ -139,7 +139,7 @@ class HoldLogic
             }
 
             $mode = CatalogConnection::getHoldsMode();
-            
+
             if ($mode == "disabled") {
                  $holdings = $this->standardHoldings($result);
             } else if ($mode == "driver") {
@@ -148,7 +148,7 @@ class HoldLogic
                 $holdings = $this->generateHoldings($result, $mode);
             }
         }
-        // Don't format holdings as we want to keep call numbers separate 
+        // Don't format holdings as we want to keep call numbers separate
         // and it would ruin notes and summaries
         //return $this->formatHoldings($holdings);
         return $this->sortHoldings($holdings);
@@ -186,17 +186,30 @@ class HoldLogic
      */
     protected function driverHoldings($result)
     {
+        global $configArray;
+
         $holdings = array();
 
-        // Are holds allowed?
-        $id = null;
-        $record = current($result);
-        if ($record) {
-            $id = $record['id'];
+        if (empty($result)) {
+            return $holdings;
         }
-        $checkHolds = $this->catalog->checkFunction("Holds", $id);
-        $checkCallSlips = $this->catalog->checkFunction("CallSlips", $id);
-        $checkUBRequests = $this->catalog->checkFunction("UBRequests", $id);
+
+        $id = $result[0]['id'];
+        // Are holds allowed?
+        $disallowHolds = false;
+        if (isset($configArray['Catalog']['disable_driver_hold_actions'])) {
+            $db = ConnectionManager::connectToIndex();
+            if ($record = $db->getRecord($id)) {
+                $disallowHolds = array_intersect($record['format'], $configArray['Catalog']['disable_driver_hold_actions'])
+                    ? true
+                    : false;
+            }
+        }
+        // checkFunction returns an array or false, so make sure to keep the array
+        $checkHolds = $disallowHolds ? false : $this->catalog->checkFunction('Holds', $id);
+        $checkCallSlips = $disallowHolds ? false : $this->catalog->checkFunction('CallSlips', $id);
+        $checkUBRequests = $disallowHolds ? false : $this->catalog->checkFunction('UBRequests', $id);
+        $user = UserAccount::isLoggedIn();
         if (count($result)) {
             foreach ($result as $copy) {
                 $show = !in_array($copy['location'], $this->hideHoldings);
@@ -211,6 +224,24 @@ class HoldLogic
                             // set a flag so we can check later via AJAX:
                             $copy['check'] = (strcmp($copy['addLink'], 'check') == 0)
                                 ? true : false;
+                        }
+                        // Kludge for Axiell
+                        if (isset($copy['holdings']) && $user) {
+                            $holdLinks = array();
+                            foreach ($copy['holdings'] as &$holding) {
+                                if (isset($holding['addLink']) && $holding['addLink'] && strcmp($holding['addLink'], 'block') !== 0) {
+                                    $link = $this->_getHoldDetails(
+                                        $holding, $checkHolds['HMACKeys']
+                                    );
+                                    $holding['link'] = $link;
+                                    $holdLinks[$link]= 1;
+                                }
+                            }
+                            // If each holding contains the same link, add it to the
+                            // parent level
+                            if (count($holdLinks) == 1) {
+                                $copy['link'] = key($holdLinks);
+                            }
                         }
                     }
                     if ($checkCallSlips !== false) {
@@ -283,7 +314,7 @@ class HoldLogic
             $checkHolds = $this->catalog->checkFunction("Holds", $id);
             $checkCallSlips = $this->catalog->checkFunction("CallSlips", $id);
             $checkUBRequests = $this->catalog->checkFunction("UBRequests", $id);
-            
+
             if (is_array($holdings)) {
                 // Generate Links
                 // Loop through each holding
@@ -490,14 +521,14 @@ class HoldLogic
 
         return $link;
     }
-    
+
     /**
-     * Support method to rearrange the holdings array by location, 
+     * Support method to rearrange the holdings array by location,
      * call number, and number.
-     * 
+     *
      * @param array $holdings An associative array of location => item array
      *
-     * @return array          An associative array keyed by location 
+     * @return array          An associative array keyed by location
      * @access protected
      */
     protected function sortHoldings($holdings)
@@ -513,6 +544,6 @@ class HoldLogic
             $items = array_reverse($items);
         }
         return $holdings;
-    }    
+    }
 }
 ?>

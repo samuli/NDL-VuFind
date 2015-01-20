@@ -61,7 +61,7 @@ Det finns en registerbeskrivning för hanteringen av användaruppgifter: <a href
 <li>
 <strong>Digitaliserat material:</strong> Finna ger länken till den organisation som förvaltar det digitaliserade materialet. Materialet på organisationens webbplats kan omfattas av rättigheter eller begränsningar som regleras i lag eller avtal. Information om rättigheterna och begränsningarna finns på den förvaltande organisationens webbplats.</li>
 <li>
-<strong>Bilder:</strong> Finna har bilder t.ex. av vissa museiföremål, konstverk, foton och bokpärmar. Användningen av de här bilderna kan vara begränsad på samma sätt som användningen av materialet på de förvaltande organisationernas webbplatser.
+<strong id="image_rights">Bilder:</strong> Finna har bilder t.ex. av vissa museiföremål, konstverk, foton och bokpärmar. Användningen av de här bilderna kan vara begränsad på samma sätt som användningen av materialet på de förvaltande organisationernas webbplatser.
 </li>
 </ul>
 <!-- TÄMÄ VASTA KUN TUONTANNOSSA:
