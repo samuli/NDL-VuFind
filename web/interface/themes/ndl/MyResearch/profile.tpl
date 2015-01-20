@@ -267,8 +267,6 @@
           </table>
         </form>
       </div>
-      {else}
-        {include file="MyResearch/catalog-login.tpl"}
       {/if}
     </div>
     <div id="deleteAccount"><button class="button buttonFinna">{translate text="delete_account_title"}</button></div>
