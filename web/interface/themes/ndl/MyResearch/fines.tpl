@@ -143,8 +143,6 @@
     </table>
     {/if}
     {/if}
-  {else}
-    {include file="MyResearch/catalog-login.tpl"}
   {/if}
   </div>
 </div>

@@ -373,8 +373,6 @@
       <div class="noContentMessage">{translate text='You do not have any requests placed'}.</div>
     {/if}
     {/if}
-  {else}
-    {include file="MyResearch/catalog-login.tpl"}
   {/if}
   </div>
 </div>

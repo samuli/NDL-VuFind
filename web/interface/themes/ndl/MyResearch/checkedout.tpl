@@ -190,8 +190,6 @@
       <div class="noContentMessage">{translate text='You do not have any items checked out'}.</div>
     {/if}
     {/if}
-  {else}
-    {include file="MyResearch/catalog-login.tpl"}
   {/if}
   </div>
 </div>
