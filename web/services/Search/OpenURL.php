@@ -183,7 +183,7 @@ class OpenURL extends Action
                 );
             }
         }
-        if ($results) {
+        if (isset($results) && $results) {
             if ($params['date'] || $params['volume'] || $params['issue']
                 || $params['spage']
             ) {
