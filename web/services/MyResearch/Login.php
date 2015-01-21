@@ -72,8 +72,8 @@ class Login extends Action
             die();
         }
 
-        
-        
+
+
         // Assign the followup task to come back to after they login -- note that
         //     we need to check for a pre-existing followup task in case we've
         //     looped back here due to an error (bad username/password, etc.).
@@ -102,13 +102,13 @@ class Login extends Action
             //     parameter.  If we've looped back due to user error and already
             //     have a recordId parameter, remember it for future reference.
             if (isset($_REQUEST['delete'])) {
-                $mode = !isset($_REQUEST['mode']) ? 
+                $mode = !isset($_REQUEST['mode']) ?
                     '' : '&mode=' . urlencode($_REQUEST['mode']);
                 $interface->assign(
                     'recordId', 'delete=' .  urlencode($_REQUEST['delete']) . $mode
                 );
             } else if (isset($_REQUEST['save'])) {
-                $mode = !isset($_REQUEST['mode']) ? 
+                $mode = !isset($_REQUEST['mode']) ?
                     '' : '&mode=' . urlencode($_REQUEST['mode']);
                 $interface->assign(
                     'recordId', 'save=' . urlencode($_REQUEST['save']) . $mode
@@ -133,9 +133,9 @@ class Login extends Action
             }
             $interface->assign('extraParams', $extraParams);
         }
-        
+
         Login::setupLoginFormVars();
-        
+
         $interface->setPageTitle('Login');
         $interface->setTemplate('login.tpl');
         $interface->display('layout.tpl');
@@ -143,25 +143,43 @@ class Login extends Action
 
     /**
      * Set up required variables for the login form to display properly
-     * 
+     *
      * @return void
      */
     static public function setupLoginFormVars()
     {
         global $configArray;
         global $interface;
-        
+
         if (isset($configArray['Catalog']['driver'])  && $configArray['Catalog']['driver'] == 'MultiBackend') {
             $multiBackend = new MultiBackend();
-            $interface->assign('loginTargets', $multiBackend->getLoginDrivers());
+            $loginTargets = $multiBackend->getLoginDrivers();
+            if (empty($loginTargets)) {
+                $e = new Exception();
+                error_log(
+                    "Login: setupLoginFormVars: Got empty target list from MultiBackend driver. Call stack:\n"
+                    . $e->getTraceAsString() . "\nServer variables:\n"
+                    . print_r($_SERVER, true) . "\nRequest:\n"
+                    . print_r($_REQUEST, true)
+                );
+            }
+            $interface->assign('loginTargets', $loginTargets);
             $interface->assign('defaultLoginTarget', isset($_REQUEST['login_target']) ? $_REQUEST['login_target'] : $multiBackend->getDefaultLoginDriver());
+        } else {
+            $e = new Exception();
+            error_log(
+                "Login: setupLoginFormVars: MultiBackend driver not available. Call stack:\n"
+                . $e->getTraceAsString() . "\nServer variables:\n"
+                . print_r($_SERVER, true) . "\nRequest:\n"
+                . print_r($_REQUEST, true)
+            );
         }
 
         if (isset($_REQUEST['lightbox'])) {
             $interface->assign('lightbox', true);
         }
     }
-    
+
     /**
     * Return all authorization methods in use
     *
@@ -170,7 +188,7 @@ class Login extends Action
     static public function getActiveAuthorizationMethods()
     {
         global $configArray;
-        
+
         $setAuthorizationMethods = array();
         if (isset($configArray['Authorization']['authentication_methods'])) {
             $setAuthorizationMethods = $configArray['Authorization']['authentication_methods'];
@@ -183,7 +201,7 @@ class Login extends Action
         ) {
             $setActiveMethods[] = 'MozillaPersona';
         }
-        if ((!isset($configArray['Authentication']['libraryCard']) 
+        if ((!isset($configArray['Authentication']['libraryCard'])
             || $configArray['Authentication']['libraryCard'])
             && in_array('ILS', $setAuthorizationMethods)
         ) {
@@ -196,7 +214,7 @@ class Login extends Action
             $setActiveMethods[] = 'Shibboleth';
         }
         return $setActiveMethods;
-    }    
+    }
 }
 
 ?>
