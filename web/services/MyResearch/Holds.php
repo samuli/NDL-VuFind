@@ -27,6 +27,7 @@
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 require_once 'services/MyResearch/MyResearch.php';
+require_once 'services/MyResearch/Login.php';
 
 /**
  * Holds action for MyResearch module
@@ -174,6 +175,8 @@ class Holds extends MyResearch
             }
             $driver = isset($patron['driver']) ? $patron['driver'] : '';
             $interface->assign('driver', $driver);
+        } else {
+            Login::setupLoginFormVars();
         }
 
         $interface->setTemplate('holds.tpl');
