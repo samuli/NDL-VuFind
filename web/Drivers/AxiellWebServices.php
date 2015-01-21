@@ -203,7 +203,7 @@ class AxiellWebServices implements DriverInterface
             : $result->$functionResult->catalogueRecord->compositeHolding;
 
         $vfHoldings = array();
-        if ($holdings[0]->type == 'year') {
+        if (isset($holdings[0]->type) && $holdings[0]->type == 'year') {
             foreach ($holdings as $holding) {
                 $year = $holding->value;
                 $holdingsEditions = is_object($holding->compositeHolding)
@@ -622,7 +622,7 @@ class AxiellWebServices implements DriverInterface
             }
             $user['messagingServices'][$service] = $data;
         }
-        
+
         if (isset($info->messageServices)) {
             foreach ($info->messageServices->messageService as $service) {
                 $methods = array();
@@ -646,22 +646,22 @@ class AxiellWebServices implements DriverInterface
 
                     if ($numOfDays > 0) {
                         $days = translate(
-                            $numOfDays == 1 
+                            $numOfDays == 1
                             ? 'messaging_settings_num_of_days'
                             : 'messaging_settings_num_of_days_plural'
                         );
                         $methodLabel = str_replace('{1}', $numOfDays, $days);
                     }
-                    
+
                     if (!$active) {
                         $methodLabel = translate('messaging_settings_method_none');
                     }
                     $data['method'] = $methodLabel;
                 }
-                
+
                 if (isset($user['messagingServices'][$type])) {
                     $user['messagingServices'][$type]['active'] = $active;
-                    $user['messagingServices'][$type]['numOfDays'] = $numOfDays;                
+                    $user['messagingServices'][$type]['numOfDays'] = $numOfDays;
                 }
             }
         }
