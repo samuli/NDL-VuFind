@@ -278,9 +278,6 @@ class MultiBackend implements DriverInterface
             return unserialize($_SESSION['logins'][$hash]);
         }
         $source = $this->getSource($username);
-        if (!$source) {
-            $source = $this->getDefaultLoginDriver();
-        }
         $driver = $this->getDriver($source);
         if (PEAR::isError($driver)) {
             if ($driver->getMessage() == 'catalog_connection_failed') {
