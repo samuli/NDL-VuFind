@@ -598,7 +598,7 @@ abstract class SearchObject_Base
             return false;
         }
 
-        
+
 
 
         // If lookfor is an array, we may be dealing with a legacy Advanced
@@ -789,7 +789,7 @@ abstract class SearchObject_Base
     protected function initLimit()
     {
         // Check for a limit parameter in the url.
-        if (isset($_REQUEST['limit']) && $_REQUEST['limit'] != $_SESSION['lastUserLimit']) {
+        if (isset($_REQUEST['limit']) && isset($_SESSION['lastUserLimit']) && $_REQUEST['limit'] != $_SESSION['lastUserLimit']) {
             // make sure the url parameter is a valid limit
             $validLimits = $this->getLimitOptions();
             if (in_array($_REQUEST['limit'], $validLimits)) {
@@ -799,7 +799,7 @@ abstract class SearchObject_Base
             }
         }
         // If we got this far, setting was missing or invalid; load the default
-        $this->limit = isset($_SESSION['lastUserLimit']) ? 
+        $this->limit = isset($_SESSION['lastUserLimit']) ?
             $_SESSION['lastUserLimit'] : $this->defaultLimit;
         $_SESSION['lastUserLimit'] = null;
     }
