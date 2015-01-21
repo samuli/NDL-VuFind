@@ -278,6 +278,11 @@ class MultiBackend implements DriverInterface
             return unserialize($_SESSION['logins'][$hash]);
         }
         $source = $this->getSource($username);
+        if (!$source) {
+            $e = new Exception();
+            error_log("Login attempt with '$username' without source prefix. Call stack:\n" . $e->getTraceAsString());
+            return new PEAR_Error('No suitable backend driver found');
+        }
         $driver = $this->getDriver($source);
         if (PEAR::isError($driver)) {
             if ($driver->getMessage() == 'catalog_connection_failed') {
