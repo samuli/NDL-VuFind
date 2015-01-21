@@ -90,10 +90,9 @@ class Fines extends MyResearch
                 $driver = isset($patron['driver']) ? $patron['driver'] : '';
                 $interface->assign('driver', $driver);
             }
-        } else {
-            Login::setupLoginFormVars();
         }
 
+        Login::setupLoginFormVars();
         $interface->setTemplate('fines.tpl');
         $interface->setPageTitle('My Fines');
         $interface->display('layout.tpl');
