@@ -1648,7 +1648,7 @@ EOT;
         $pickUpLocation = !empty($holdDetails['pickUpLocation'])
             ? $holdDetails['pickUpLocation'] : $this->defaultPickUpLocation;
         $itemId = isset($holdDetails['item_id']) ? $holdDetails['item_id'] : false;
-        $comment = $holdDetails['comment'];
+        $comment = isset($holdDetails['comment']) ? $holdDetails['comment'] : '';
         $bibId = $holdDetails['id'];
         // Request was initiated before patron was logged in -
         // Let's determine Hold Type now
