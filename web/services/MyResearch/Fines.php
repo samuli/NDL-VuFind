@@ -33,6 +33,7 @@ require_once 'services/MyResearch/lib/Transaction.php';
 require_once 'services/MyResearch/lib/User.php';
 require_once 'sys/OnlinePayment/OnlinePaymentFactory.php';
 require_once 'sys/OnlinePayment/Paytrail_Module_Rest.php';
+require_once 'services/MyResearch/Login.php';
 
 /**
  * Fines action for MyResearch module
@@ -89,6 +90,8 @@ class Fines extends MyResearch
                 $driver = isset($patron['driver']) ? $patron['driver'] : '';
                 $interface->assign('driver', $driver);
             }
+        } else {
+            Login::setupLoginFormVars();
         }
 
         $interface->setTemplate('fines.tpl');

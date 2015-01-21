@@ -27,6 +27,7 @@
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
 require_once 'services/MyResearch/MyResearch.php';
+require_once 'services/MyResearch/Login.php';
 
 /**
  * CheckedOut action for MyResearch module
@@ -108,6 +109,8 @@ class CheckedOut extends MyResearch
                     $interface->assign('profile', $profile);
                 }
             }
+        } else {
+            Login::setupLoginFormVars();
         }
         $interface->assign('transList', $transList);
         $interface->setTemplate('checkedout.tpl');
