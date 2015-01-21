@@ -175,10 +175,9 @@ class Holds extends MyResearch
             }
             $driver = isset($patron['driver']) ? $patron['driver'] : '';
             $interface->assign('driver', $driver);
-        } else {
-            Login::setupLoginFormVars();
         }
 
+        Login::setupLoginFormVars();
         $interface->setTemplate('holds.tpl');
         $interface->setPageTitle('Holds and Requests');
         $interface->display('layout.tpl');

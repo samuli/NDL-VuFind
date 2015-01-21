@@ -147,22 +147,22 @@ class Profile extends MyResearch
                             }
                             $emailDays[] = $label;
                         }
-                        
+
                         $interface->assign('emailDays', $emailDays);
                         $interface->assign('days', array(1,2,3,4,5));
                         $interface->display('/MyResearch/change-messaging-settings.tpl');
-                        
+
                         return;
                     }
                 }
 
                 // Messaging settings request
                 if (isset($_POST['changeMessagingSettings'])) {
-                    // Translator for email message (always in Finnish) 
+                    // Translator for email message (always in Finnish)
                     $translator = new I18N_Translator(
                         array('lang', 'lang_local'), 'fi', $configArray['System']['debug']
                     );
-                    
+
                     $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                     $data['pickUpNotice'] = $translator->translate('messaging_settings_method_' . $data['pickUpNotice']);
                     $data['overdueNotice'] = $translator->translate('messaging_settings_method_' . $data['overdueNotice']);
@@ -284,13 +284,10 @@ class Profile extends MyResearch
                 $driver = isset($patron['driver']) ? $patron['driver'] : '';
                 $interface->assign('driver', $driver);
             }
-        } else {
-            Login::setupLoginFormVars();
         }
 
         $interface->assign('userMsg', array_unique($userMessages));
         $interface->assign('userError', array_unique($userErrors));
-
 
         $interface->assign(
             'hideDueDateReminder',
@@ -304,6 +301,7 @@ class Profile extends MyResearch
             && (boolean)$configArray['Site']['hideProfileEmailAddress']
         );
 
+        Login::setupLoginFormVars();
         $interface->setTemplate('profile.tpl');
         $interface->setPageTitle('My Profile');
         $interface->display('layout.tpl');
@@ -338,7 +336,7 @@ class Profile extends MyResearch
      * @param array $patron   Patron
      * @param array $data     Array of information to send
      * @param array $subject  String Subject
-     * @param array $template String Email template 
+     * @param array $template String Email template
      *
      * @return mixed      Boolean true on success, PEAR_Error on failure.
      * @access protected

@@ -110,9 +110,9 @@ class CheckedOut extends MyResearch
                     $interface->assign('profile', $profile);
                 }
             }
-        } else {
-            Login::setupLoginFormVars();
         }
+
+        Login::setupLoginFormVars();
         $interface->setTemplate('checkedout.tpl');
         $interface->setPageTitle('Checked Out Items');
         $interface->display('layout.tpl');
