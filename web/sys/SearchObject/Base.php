@@ -789,7 +789,7 @@ abstract class SearchObject_Base
     protected function initLimit()
     {
         // Check for a limit parameter in the url.
-        if (isset($_REQUEST['limit']) && isset($_SESSION['lastUserLimit']) && $_REQUEST['limit'] != $_SESSION['lastUserLimit']) {
+        if (isset($_REQUEST['limit']) && (!isset($_SESSION['lastUserLimit']) || $_REQUEST['limit'] != $_SESSION['lastUserLimit'])) {
             // make sure the url parameter is a valid limit
             $validLimits = $this->getLimitOptions();
             if (in_array($_REQUEST['limit'], $validLimits)) {
