@@ -153,26 +153,8 @@ class Login extends Action
 
         if (isset($configArray['Catalog']['driver'])  && $configArray['Catalog']['driver'] == 'MultiBackend') {
             $multiBackend = new MultiBackend();
-            $loginTargets = $multiBackend->getLoginDrivers();
-            if (empty($loginTargets)) {
-                $e = new Exception();
-                error_log(
-                    "Login: setupLoginFormVars: Got empty target list from MultiBackend driver. Call stack:\n"
-                    . $e->getTraceAsString() . "\nServer variables:\n"
-                    . print_r($_SERVER, true) . "\nRequest:\n"
-                    . print_r($_REQUEST, true)
-                );
-            }
-            $interface->assign('loginTargets', $loginTargets);
+            $interface->assign('loginTargets', $multiBackend->getLoginDrivers());
             $interface->assign('defaultLoginTarget', isset($_REQUEST['login_target']) ? $_REQUEST['login_target'] : $multiBackend->getDefaultLoginDriver());
-        } else {
-            $e = new Exception();
-            error_log(
-                "Login: setupLoginFormVars: MultiBackend driver not available. Call stack:\n"
-                . $e->getTraceAsString() . "\nServer variables:\n"
-                . print_r($_SERVER, true) . "\nRequest:\n"
-                . print_r($_REQUEST, true)
-            );
         }
 
         if (isset($_REQUEST['lightbox'])) {
