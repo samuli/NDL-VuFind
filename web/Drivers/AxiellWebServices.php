@@ -1407,7 +1407,7 @@ class AxiellWebServices implements DriverInterface
             $result = $client->$function($params);
 
             if ($this->durationLogPrefix) {
-                file_put_contents($this->durationLogPrefix . '_' . $function . '.log', round(microtime(true) - $startTime, 4) . "\n", FILE_APPEND);
+                file_put_contents($this->durationLogPrefix . '_' . $function . '.log', date('Y-m-d H:i:s ') . round(microtime(true) - $startTime, 4) . "\n", FILE_APPEND);
             }
 
             $statusAWS = $result->$functionResult->status;
