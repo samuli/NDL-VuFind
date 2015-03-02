@@ -333,6 +333,9 @@ class IndexRecord implements RecordInterface
         // Datasource for this record has patron functions
         $interface->assign('patronFunctions', $this->hasPatronFunctions());
 
+        // Original languages
+        $interface->assign('coreOriginalLanguage', $this->getOriginalLanguages());
+
         // Send back the template name:
         return 'RecordDrivers/Index/core.tpl';
     }
@@ -2601,6 +2604,18 @@ class IndexRecord implements RecordInterface
     {
         return isset($this->fields['language']) ?
             $this->fields['language'] : array();
+    }
+
+    /**
+     * Get an array of all the original languages associated with the record.
+     *
+     * @return array
+     * @access protected
+     */
+    protected function getOriginalLanguages()
+    {
+        return isset($this->fields['original_lng_str_mv']) ?
+            $this->fields['original_lng_str_mv'] : array();
     }
 
     /**

@@ -232,6 +232,13 @@
     </tr>
     {/if}
 
+    {if $coreOriginalLanguage}
+    <tr valign="top" class="originalLanguage">
+      <th>{translate text='original_work_language'}: </th>
+      <td>{foreach from=$coreOriginalLanguage item=lang}{translate text=$lang prefix='facet_'}<br/>{/foreach}</td>
+    </tr>
+    {/if}
+
     {if !empty($coreProjectedPublicationDate)}
     <tr valign="top" class="coreProjectedPublicationDate">
       <th>{translate text='Projected Publication Date'}: </th>
