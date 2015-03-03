@@ -1070,10 +1070,23 @@ class JSON extends Action
         $itemStatusText = '';
         $isHoldable = false;
 
-        foreach ($holdings as $location) {
+        foreach ($holdings as &$location) {
             if (is_array($location)) {
                 $journal = isset($location['journal']) && $location['journal'];
 
+                if (is_array($location['holdings'])) {
+                    foreach ($location['holdings'] as $holding) {
+                        if (isset($holding['total'])) {
+                            $itemCount += $holding['total'];
+                        }                        
+                        if (isset($holding['status'])
+                            && trim($holding['status']) === JSON::REFERENCE_DESK_STATUS
+                        ) {
+                            $location['status']['availableCount']++;
+                        }
+                        $branchCount++;
+                    }
+                }
 
                 if (isset($location['status'])) {
                     if (isset($location['status']['reservations'])
@@ -1093,13 +1106,6 @@ class JSON extends Action
                         $availableCount += $location['status']['availableCount'];
                     }
                     
-                    if ($journal) {
-                        if (isset($location['status']['text'])
-                            && trim($location['status']['text']) === JSON::REFERENCE_DESK_STATUS
-                        ) {
-                            $availableCount++;                            
-                        }
-                    }
                     if (isset($location['status']['text'])
                         && $location['status']['text'] != ''
                         && $closestDueDate == ''
@@ -1122,20 +1128,6 @@ class JSON extends Action
                         }
                     }
                     $locationCount++;
-                }
-                if (is_array($location['holdings'])) {
-                    foreach ($location['holdings'] as $holding) {
-                        if (isset($holding['total'])) {
-                            $itemCount += $holding['total'];
-                        }                        
-                        if (!$journal 
-                            && isset($holding['status']) 
-                            && trim($holding['status']) === JSON::REFERENCE_DESK_STATUS
-                        ) {
-                            $availableCount++;
-                        } 
-                        $branchCount++;
-                    }
                 }
                 if (isset($location['is_holdable'])
                     && $location['is_holdable']
