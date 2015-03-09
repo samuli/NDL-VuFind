@@ -748,9 +748,6 @@
     #dyntabnav.ui-tabs .ui-tabs-nav li {
        border-bottom:3px solid #B3E3E9 !important;
     }
-  .holdingsContainerHeading .locationLink {
-        display:none;
-    }
     .holdingsContainerHeading .location {
         width:48%;
     }

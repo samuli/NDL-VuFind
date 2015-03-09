@@ -5417,7 +5417,10 @@ h5.recordTabHeader {
     width: 20px;
     height: 20px;
 }
-
+/* Override addthis own styles */
+#addThis .at4-icon.aticon-facebook, #addThis .at4-icon.aticon-twitter, #addThis .at4-icon.aticon-google_plusone_share {
+	background: none !important;	
+}
 #recordProvidedBy {
     border-top: 1px solid #bcdce0;
     margin-bottom: 0.5em;
