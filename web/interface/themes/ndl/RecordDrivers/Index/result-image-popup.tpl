@@ -7,12 +7,12 @@
       {/if}
     </div>
     <div class="content">
-      <h3 class="title">{$title}</h3>
+      <h3 class="title">{$title|escape}</h3>
       <div class="authorAndDates">
         <p>
-          {if $author}{$author}{/if}
+          {if $author}{$author|escape}{/if}
           {foreach from=$dates item=item}
-      	  {$item} 
+      	  {$item|escape}
         {/foreach}
         </p>      
       </div>
@@ -24,24 +24,24 @@
         </div>
         {elseif $summary}
         {foreach from=$summary item=item}
-        <p>{$item}</p>
+        <p>{$item|escape}</p>
       {/foreach}
       {/if}
       </div>
       <div class="listNotes">
         <p><span class="heading">{translate text="Description"}</span><span class="notes-user"></span>:</p>
-        <p class="text">{$listNotes}</p>      
+        <p class="text">{$listNotes|escape}</p>
       </div>
       <div class="recordLink"><a href="{$url}">{translate text="To the record"}</a></div>
       <div class="imageRights">
         <div class="rights">
-          <span>{translate text="Image Rights"}:</span> {if $copyrightLink}<a target="_blank" href="{$copyrightLink}">{/if}{$copyright}{if $copyrightLink}</a>{/if}
+          <span>{translate text="Image Rights"}:</span> {if $copyrightLink}<a target="_blank" href="{$copyrightLink}">{/if}{$copyright|escape}{if $copyrightLink}</a>{/if}
         </div>
         {if $copyrightDescription}
         <div class="moreLink copyrightLink"><a data-mode="1" href="">Lisää</a></div>
         <div class="copyright">
           {foreach from=$copyrightDescription item=item}
-          <p>{$item}</p>
+          <p>{$item|escape}</p>
           {/foreach}
           {if $copyrightLink && !$copyright}
           <a href="{$copyrightLink}">{translate text="See also"}</a>
