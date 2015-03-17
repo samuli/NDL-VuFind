@@ -54,6 +54,8 @@ class AxiellWebServices implements DriverInterface
     protected $logFile = '';
     protected $durationLogPrefix = '';
     protected $verbose = false;
+    protected $holdingsOrganisationOrder;
+    protected $holdingsBranchOrder;
 
     protected $soapOptions = array(
         'soap_version' => SOAP_1_1,
@@ -107,6 +109,10 @@ class AxiellWebServices implements DriverInterface
         if (isset($this->config['Debug']['log'])) {
             $this->logFile = $this->config['Debug']['log'];
         }
+        $this->holdingsOrganisationOrder = isset($this->config['Holdings']['holdingsOrganisationOrder']) ? explode(":", $this->config['Holdings']['holdingsOrganisationOrder']) : array();
+        $this->holdingsOrganisationOrder = array_flip($this->holdingsOrganisationOrder);
+        $this->holdingsBranchOrder = isset($this->config['Holdings']['holdingsBranchOrder']) ? explode(":", $this->config['Holdings']['holdingsBranchOrder']) : array();
+        $this->holdingsBranchOrder = array_flip($this->holdingsBranchOrder);
 
         // Set up object for formatting dates and times:
         $this->dateFormat = new VuFindDate();
@@ -220,16 +226,15 @@ class AxiellWebServices implements DriverInterface
         } else {
             $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
         }
-        // Sort holdings
+
+        // Sort Organisations
+        usort($vfHoldings, array($this, 'holdingsOrganisationSortFunction'));
+
+        // Sort Branches
         foreach ($vfHoldings as $key => $location) {
-            $branches = array();
-            if (isset($location['holdings']) && is_array($location['holdings'])) {
-                foreach ($location['holdings'] as $i => $holding) {
-                    $branches[$i] = $holding['branch'];
-                }
-                array_multisort($branches, SORT_ASC, $vfHoldings[$key]['holdings']);
-            }
+            usort($vfHoldings[$key]['holdings'], array($this, 'holdingsBranchSortFunction'));
         }
+
         return empty($vfHoldings) ? false : $vfHoldings;
     }
 
@@ -255,12 +260,14 @@ class AxiellWebServices implements DriverInterface
         }
         foreach ($organisationHoldings as $organisation) {
             $group = $organisation->value;
+            $organisationId = $organisation->id;
             $holdingsBranch = is_object($organisation->compositeHolding) ?
                 array($organisation->compositeHolding) :
                 $organisation->compositeHolding;
             if ($holdingsBranch[0]->type == 'branch') {
                 foreach ($holdingsBranch as $branch) {
                     $branchName = $branch->value;
+                    $branchId = $branch->id;
                     $reservableId = isset($branch->reservable)
                         ? $branch->reservable : '';
                     // This holding is only holdable if it has a reservable id
@@ -345,21 +352,23 @@ class AxiellWebServices implements DriverInterface
 
                         // Holding table
                         $holding = array(
-                            'availability' => $available,
-                            'available'    => $nofAvailableForLoan,
-                            'organisation' => $organisation->value,
-                            'branch'       => $branchName,
-                            'department'   => $departmentName,
-                            'duedate'      => $dueDate,
-                            'location'     => $locationName,
-                            'id'           => $id,
-                            'is_holdable'  => $holdable,
-                            'addLink'      => $holdable ? 'hold' : false,
-                            'item_id'      => $reservableId,
-                            'ordered'      => $nofOrdered,
-                            'status'       => $status,
-                            'total'        => $nofTotal,
-                            'reservations' => isset($branch->nofReservations)
+                            'availability'      => $available,
+                            'available'         => $nofAvailableForLoan,
+                            'organisation'      => $group,
+                            'organisation_id'   => $organisationId,
+                            'branch'            => $branchName,
+                            'branch_id'         => $branchId,
+                            'department'        => $departmentName,
+                            'duedate'           => $dueDate,
+                            'location'          => $locationName,
+                            'id'                => $id,
+                            'is_holdable'       => $holdable,
+                            'addLink'           => $holdable ? 'hold' : false,
+                            'item_id'           => $reservableId,
+                            'ordered'           => $nofOrdered,
+                            'status'            => $status,
+                            'total'             => $nofTotal,
+                            'reservations'      => isset($branch->nofReservations)
                                 ? $branch->nofReservations : 0
                         );
 
@@ -1597,6 +1606,61 @@ class AxiellWebServices implements DriverInterface
         }
         $msg = date('Y-m-d H:i:s') . ' [' . getmypid() . "] $msg\n";
         file_put_contents($this->logFile, $msg, FILE_APPEND);
+    }
+
+
+    /**
+     * Sort function for sorting holdings locations according to organisation
+     *
+     * @param array $a Holdings location
+     * @param array $b Holdings location
+     *
+     * @return number
+     */
+    protected function holdingsOrganisationSortFunction($a, $b)
+    {
+        if (isset($this->holdingsOrganisationOrder[$a['holdings'][0]['organisation_id']])) {
+            if (isset($this->holdingsOrganisationOrder[$b['holdings'][0]['organisation_id']])) {
+
+                return $this->holdingsOrganisationOrder[$a['holdings'][0]['organisation_id']] - $this->holdingsOrganisationOrder[$b['holdings'][0]['organisation_id']];
+            }
+            return -1;
+        }
+        if (isset($this->holdingsOrganisationOrder[$b['holdings'][0]['organisation_id']])) {
+            return 1;
+        }
+        return strcasecmp($a['organisation'], $b['organisation']);
+    }
+
+    /**
+     * Sort function for sorting holdings locations according to branch
+     *
+     * @param array $a Holdings location
+     * @param array $b Holdings location
+     *
+     * @return number
+     */
+
+    protected function holdingsBranchSortFunction($a, $b)
+    {
+        $locationA = $a['branch'] . " " . $a['department'];
+        $locationB = $b['branch'] . " " . $b['department'];
+
+        if (isset($this->holdingsBranchOrder[$a['branch_id']])) {
+            if (isset($this->holdingsBranchOrder[$b['branch_id']])) {
+                $order = $this->holdingsBranchOrder[$a['branch_id']] - $this->holdingsBranchOrder[$b['branch_id']];
+                if ($order == 0) {
+                    return strcasecmp($locationA, $locationB);
+                }
+                return $order;
+            }
+            return -1;
+        }
+        if (isset($this->holdingsBranchOrder[$b['branch_id']])) {
+            return 1;
+        }
+
+        return strcasecmp($locationA, $locationB);
     }
 
     /**
