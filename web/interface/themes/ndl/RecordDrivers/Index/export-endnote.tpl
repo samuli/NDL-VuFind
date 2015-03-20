@@ -78,3 +78,6 @@
 %U {$item}
 {/foreach}
 {/if}
+{literal}
+
+{/literal}
