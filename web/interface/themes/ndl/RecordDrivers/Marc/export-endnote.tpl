@@ -47,7 +47,7 @@
 {/if}
 {else}
 %0 Generic
-{/if}   
+{/if}
 {assign var=marcField value=$marc->getField('100')}
 {if $marcField}
 %A {$marcField|getvalue:'a'}
@@ -132,3 +132,6 @@
 %7 {$field|getvalue:'a'}
 {/foreach}
 {/if}
+{literal}
+
+{/literal}
