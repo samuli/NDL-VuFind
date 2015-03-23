@@ -97,7 +97,8 @@ class HierarchyTreeGenerator_JSTree extends HierarchyTreeGenerator
         } elseif ($source == "Solr") {
             foreach ($inHierarchies as $hierarchyTopID) {
                 if (!empty($hierarchyTopID)) {
-                    $hierarchies[$hierarchyTopID] = $inHierarchiesTitle[$i];
+                    $hierarchies[$hierarchyTopID] = isset($inHierarchiesTitle[$i])
+                        ? $inHierarchiesTitle[$i] : '';
                 }
                 $i++;
             }
