@@ -1064,6 +1064,13 @@ class Solr implements IndexEngine
             'q' => $query, 'rows' => $limit, 'start' => $start, 'indent' => 'yes'
         );
 
+        // Force sort by title_sort for empty search sorted by score
+        if ($limit > 0 && $query == '*:*'
+            && (empty($sort) || $sort == 'score desc')
+        ) {
+            $sort = 'title asc';
+        }
+
         // Add Sorting
         if ($sort && !empty($sort)) {
             // There may be multiple sort options (ranked, with tie-breakers);
