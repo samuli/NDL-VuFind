@@ -1104,9 +1104,8 @@ class MarcRecord extends IndexRecord
      * Get an array of summary strings for the record.
      *
      * @return array
-     * @access protected
      */
-    protected function getSummary()
+    public function getSummary()
     {
         return $this->getFieldArray('520');
     }

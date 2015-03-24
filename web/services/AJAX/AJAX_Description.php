@@ -51,12 +51,12 @@ class AJAX_Description extends Action
     public function __construct()
     {
         parent::__construct();
-        $_SESSION['no_store'] = true; 
+        $_SESSION['no_store'] = true;
     }
-    
+
     /**
      * Get description and return html snippet
-     * 
+     *
      * @return void
      */
     public function launch()
@@ -68,7 +68,7 @@ class AJAX_Description extends Action
         }
 
         $id = $_GET['id'];
-        
+
         $localFile = 'interface/cache/description_' . urlencode($id) . '.txt';
         $maxAge = isset($configArray['Content']['summarycachetime']) ? $configArray['Content']['summarycachetime'] : 1440;
 
@@ -77,14 +77,14 @@ class AJAX_Description extends Action
             header('Content-type: text/plain');
             echo file_get_contents($localFile);
             return;
-        } else {    
+        } else {
             // Get URL
             $db = ConnectionManager::connectToIndex();
             if (!($record = $db->getRecord($id))) {
                 return;
             }
             $recordDriver = RecordDriverFactory::initRecordDriver($record);
-            $url = $recordDriver->getDescriptionURL();            
+            $url = $recordDriver->getDescriptionURL();
             // Get, manipulate, save and display content if available
             if ($url) {
                 if ($content = @file_get_contents($url)) {
@@ -95,11 +95,15 @@ class AJAX_Description extends Action
                     // Replace line breaks with <br>
                     $content = preg_replace('/(\r\n|\n|\r){3,}/', "<br><br>", $content);
 
-                    $content = utf8_encode($content); 
+                    $content = utf8_encode($content);
                     file_put_contents($localFile, $content);
 
                     echo $content;
-                }    
+                    return;
+                }
+            }
+            if ($summary = $recordDriver->getSummary()) {
+                echo implode('<br><br>', $summary);
             }
         }
     }

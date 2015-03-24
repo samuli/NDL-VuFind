@@ -997,7 +997,7 @@ class IndexRecord implements RecordInterface
     }
 
     /**
-     * getMapView - gets the map view template.
+     * Gets the map view template.
      *
      * @return string template name
      * @access public
@@ -1439,7 +1439,6 @@ class IndexRecord implements RecordInterface
      *
      * @return void
      * @access private
-     *
      */
     private function _assignCollectionRecordCollectionData($hierarchyDriver = false)
     {
@@ -2000,7 +1999,7 @@ class IndexRecord implements RecordInterface
     }
 
     /**
-     * hasMap - checks the long_lat field to determine if this record can be
+     * Checks the long_lat field to determine if this record can be
      * displayed on a map.
      *
      * @return bool
@@ -2912,9 +2911,8 @@ class IndexRecord implements RecordInterface
      * Get an array of summary strings for the record.
      *
      * @return array
-     * @access protected
      */
-    protected function getSummary()
+    public function getSummary()
     {
         // We need to return an array, so if we have a description, turn it into an
         // array as needed (it should be a flat string according to the default
@@ -3208,8 +3206,7 @@ class IndexRecord implements RecordInterface
     }
 
     /**
-     * getGoogleMapMarker - gets the JSON needed to display the record on a google
-     * map.
+     * Sets the JSON needed to display the record on a google map.
      *
      * @return string JSON
      * @access protected

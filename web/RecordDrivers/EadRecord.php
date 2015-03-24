@@ -620,9 +620,8 @@ class EadRecord extends IndexRecord
      * Get an array of summary strings for the record.
      *
      * @return array
-     * @access protected
      */
-    protected function getSummary()
+    public function getSummary()
     {
         // We need to return an array, so if we have a description, turn it into an
         // array as needed (it should be a flat string according to the default
