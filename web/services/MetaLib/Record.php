@@ -119,68 +119,74 @@ class Record extends Base
         global $interface;
         global $configArray;
 
-        // Send basic information to the template.
-        $interface->assign('record', $this->record);
-        $interface->setPageTitle($this->record['Title'][0]);
+        if (isset($_REQUEST['export'])) {
+            $ml = new MetaLib();
+            $format = strtolower($_REQUEST['export']);
+            return $interface->fetch($ml->export($this->record, $format, true));
+        } else {
+            // Send basic information to the template.
+            $interface->assign('record', $this->record);
+            $interface->setPageTitle($this->record['Title'][0]);
 
 
-        // Assign the ID of the last search so the user can return to it.
-        $lastsearch = isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false;
-        $interface->assign('lastsearch', $lastsearch);
+            // Assign the ID of the last search so the user can return to it.
+            $lastsearch = isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false;
+            $interface->assign('lastsearch', $lastsearch);
 
-        if ($lastsearch) {
-            // Retrieve active filters and assign them to searchbox template.
-            // Since SearchObjects use $_REQUEST to init filters, we stash the current $_REQUEST 
-            // and fill it temporarily with URL parameters from last search.
+            if ($lastsearch) {
+                // Retrieve active filters and assign them to searchbox template.
+                // Since SearchObjects use $_REQUEST to init filters, we stash the current $_REQUEST 
+                // and fill it temporarily with URL parameters from last search.
 
-            $query = parse_url($lastsearch, PHP_URL_QUERY);
-            parse_str($query, $vars);
-            $oldReq = $_REQUEST;
+                $query = parse_url($lastsearch, PHP_URL_QUERY);
+                parse_str($query, $vars);
+                $oldReq = $_REQUEST;
 
-            $_REQUEST = $vars;
+                $_REQUEST = $vars;
 
-            $searchObject = SearchObjectFactory::initSearchObject('MetaLib');
-            $searchObject->init();
-            // This is needed for facet labels
-            $searchObject->initRecommendations();
+                $searchObject = SearchObjectFactory::initSearchObject('MetaLib');
+                $searchObject->init();
+                // This is needed for facet labels
+                $searchObject->initRecommendations();
                         
-            $filterList = $searchObject->getFilterList();
-            $filterListOthers = $searchObject->getFilterListOthers();
-            $checkboxFilters = $searchObject->getCheckboxFacets();
-            $filterUrlParams = $searchObject->getfilterUrlParams();
+                $filterList = $searchObject->getFilterList();
+                $filterListOthers = $searchObject->getFilterListOthers();
+                $checkboxFilters = $searchObject->getCheckboxFacets();
+                $filterUrlParams = $searchObject->getfilterUrlParams();
             
-            if (isset($vars['lookfor'])) {
-                $interface->assign('lookfor', $vars['lookfor']);
-            }
-            $interface->assign('filterUrlParam', $filterUrlParams[0]);
-            $interface->assign(compact('filterList'));
-            $interface->assign(compact('filterListOthers'));
-            $interface->assign('checkboxFilters', $checkboxFilters);
+                if (isset($vars['lookfor'])) {
+                    $interface->assign('lookfor', $vars['lookfor']);
+                }
+                $interface->assign('filterUrlParam', $filterUrlParams[0]);
+                $interface->assign(compact('filterList'));
+                $interface->assign(compact('filterListOthers'));
+                $interface->assign('checkboxFilters', $checkboxFilters);
 
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                // Set followup module & action for next search
-                $parts = parse_url($_SERVER['HTTP_REFERER']);
-                $pathParts = explode('/', $parts['path']);
+                if (isset($_SERVER['HTTP_REFERER'])) {
+                    // Set followup module & action for next search
+                    $parts = parse_url($_SERVER['HTTP_REFERER']);
+                    $pathParts = explode('/', $parts['path']);
                 
-                $refAction = array_pop($pathParts);
-                $refModule = array_pop($pathParts);   
+                    $refAction = array_pop($pathParts);
+                    $refModule = array_pop($pathParts);   
                 
-                $interface->assign('followupSearchModule', $refModule);
-                $interface->assign('followupSearchAction', $refAction);
+                    $interface->assign('followupSearchModule', $refModule);
+                    $interface->assign('followupSearchAction', $refAction);
+                }
+
+                $_REQUEST = $oldReq;
             }
 
-            $_REQUEST = $oldReq;
+            // Set bX flag
+            $interface->assign(
+                'bXEnabled', isset($configArray['bX']['token'])
+                ? true : false
+            );
+
+            // Display Page
+            $interface->setTemplate('record.tpl');
+            $interface->display('layout.tpl');
         }
-
-        // Set bX flag
-        $interface->assign(
-            'bXEnabled', isset($configArray['bX']['token'])
-            ? true : false
-        );
-
-        // Display Page
-        $interface->setTemplate('record.tpl');
-        $interface->display('layout.tpl');
     }
 }       
    

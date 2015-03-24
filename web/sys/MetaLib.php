@@ -184,6 +184,58 @@ class MetaLib
     }
 
     /**
+     * Export record to RefWorks or EndNote.
+     *
+     * @param array   $record Record,
+     * @param string  $format Export format (refworks or endnote).
+     * @param boolean $render Return rendered template output or the template name?
+     *
+     * @return void|string
+     * @access public
+     */
+    public function export($record, $format, $render = false)
+    {
+        global $configArray;
+        global $interface;
+
+        $formats = null;
+        $tpl = null;
+        if ($format == 'refworks') {
+            $exportUrl = $configArray['Site']['url'] . '/MetaLib/Record?id=' .
+                urlencode($record['ID'][0]) . '&export=refworks_data';
+            $url = $configArray['RefWorks']['url'] . '/express/expressimport.asp';
+            $url .= '?vendor=' . urlencode($configArray['RefWorks']['vendor']);
+            $url .= '&filter=RefWorks%20Tagged%20Format&url=' . urlencode($exportUrl);
+            header("Location: {$url}");
+            die();
+        } else if ($format == 'refworks_data') {
+            header('Content-type: text/plain; charset=utf-8');
+            $tpl = 'MetaLib/export-refworks.tpl';
+        } else if ($format == 'endnote') {
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: private", false);
+            header('Content-type: application/x-endnote-refer');
+            header("Content-Disposition: attachment; filename=\"vufind.enw\";");
+            $tpl = 'MetaLib/export-endnote.tpl';
+        }
+
+        $interface->assign('record', $record);
+
+        if ($tpl) {
+            if ($render) {
+                echo $interface->fetch($tpl);
+                exit();
+            } else {
+                return $tpl;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Escape a string for inclusion as part of a MetaLib parameter.
      *
      * @param string $input The string to escape.

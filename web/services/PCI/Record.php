@@ -27,6 +27,9 @@
  */
 require_once 'Base.php';
 
+require_once 'RecordDrivers/IndexRecord.php';
+
+require_once 'sys/PCI.php';
 require_once 'sys/SearchObject/PCI.php';
 
 require_once 'services/MyResearch/lib/User.php';
@@ -68,13 +71,16 @@ class Record extends Base
 
         // Fetch Record
         $pci = new SearchObject_PCI();
-        $record = $pci->getRecord($_REQUEST['id']);
+        $this->record = $record = $pci->getRecord($_REQUEST['id']);
           
         // Set Proxy URL
         $interface->assign(
             'proxy', isset($configArray['EZproxy']['host'])
             ? $configArray['EZproxy']['host'] : false
         );
+
+        $indexRec = new IndexRecord(array());
+        $interface->assign('exportFormats',  $indexRec->getExportFormats());
 
         // Send record ID to template
         $interface->assign('id', $_REQUEST['id']);
@@ -98,71 +104,73 @@ class Record extends Base
         global $interface;
         global $configArray;
 
-        // Assign the ID of the last search so the user can return to it.
-        $lastsearch = isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false;
-        $interface->assign('lastsearch', $lastsearch);
+        if (isset($_REQUEST['export'])) {
+            $pci = new PCI();
+            $format = strtolower($_REQUEST['export']);
+            return $pci->export($this->record, $format, $format !== 'refworks');
+        } else {
+            // Assign the ID of the last search so the user can return to it.
+            $lastsearch = isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false;
+            $interface->assign('lastsearch', $lastsearch);
 
 
-        if ($lastsearch) {
-            // Retrieve active filters and assign them to searchbox template.
-            // Since SearchObjects use $_REQUEST to init filters, we stash the current $_REQUEST 
-            // and fill it temporarily with URL parameters from last search.
+            if ($lastsearch) {
+                // Retrieve active filters and assign them to searchbox template.
+                // Since SearchObjects use $_REQUEST to init filters, we stash the current $_REQUEST 
+                // and fill it temporarily with URL parameters from last search.
 
-            $query = parse_url($lastsearch, PHP_URL_QUERY);
-            parse_str($query, $vars);
-            $oldReq = $_REQUEST;
+                $query = parse_url($lastsearch, PHP_URL_QUERY);
+                parse_str($query, $vars);
+                $oldReq = $_REQUEST;
 
-            $_REQUEST = $vars;
+                $_REQUEST = $vars;
 
-            $searchObject = SearchObjectFactory::initSearchObject('PCI');
-            $searchObject->init();
-            // This is needed for facet labels
-            $searchObject->initRecommendations();
+                $searchObject = SearchObjectFactory::initSearchObject('PCI');
+                $searchObject->init();
+                // This is needed for facet labels
+                $searchObject->initRecommendations();
                         
-            $filterList = $searchObject->getFilterList();
-            $filterListOthers = $searchObject->getFilterListOthers();
-            $checkboxFilters = $searchObject->getCheckboxFacets();
-            $filterUrlParams = $searchObject->getfilterUrlParams();
+                $filterList = $searchObject->getFilterList();
+                $filterListOthers = $searchObject->getFilterListOthers();
+                $checkboxFilters = $searchObject->getCheckboxFacets();
+                $filterUrlParams = $searchObject->getfilterUrlParams();
 
-            if (isset($vars['lookfor'])) {
-                $interface->assign('lookfor', $vars['lookfor']);
-            }
-            $interface->assign('filterUrlParam', $filterUrlParams[0]);
-            $interface->assign(compact('filterList'));
-            $interface->assign(compact('filterListOthers'));
-            $interface->assign('checkboxFilters', $checkboxFilters);
+                if (isset($vars['lookfor'])) {
+                    $interface->assign('lookfor', $vars['lookfor']);
+                }
+                $interface->assign('filterUrlParam', $filterUrlParams[0]);
+                $interface->assign(compact('filterList'));
+                $interface->assign(compact('filterListOthers'));
+                $interface->assign('checkboxFilters', $checkboxFilters);
 
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                // Set followup module & action for next search
-                $parts = parse_url($_SERVER['HTTP_REFERER']);
-                $pathParts = explode('/', $parts['path']);
+                if (isset($_SERVER['HTTP_REFERER'])) {
+                    // Set followup module & action for next search
+                    $parts = parse_url($_SERVER['HTTP_REFERER']);
+                    $pathParts = explode('/', $parts['path']);
                 
-                $refAction = array_pop($pathParts);
-                $refModule = array_pop($pathParts);   
+                    $refAction = array_pop($pathParts);
+                    $refModule = array_pop($pathParts);   
                 
-                $interface->assign('followupSearchModule', $refModule);
-                $interface->assign('followupSearchAction', $refAction);
+                    $interface->assign('followupSearchModule', $refModule);
+                    $interface->assign('followupSearchAction', $refAction);
+                }
+
+                $_REQUEST = $oldReq;
             }
 
-            $_REQUEST = $oldReq;
-        }
-
-        $interface->assign(
-            'lastsearchdisplayquery',
-            isset($_SESSION['lastSearchDisplayQuery']) ? $_SESSION['lastSearchDisplayQuery'] : false
-        );
+            $interface->assign(
+                'lastsearchdisplayquery',
+                isset($_SESSION['lastSearchDisplayQuery']) ? $_SESSION['lastSearchDisplayQuery'] : false
+            );
         
-        // Whether embedded openurl autocheck is enabled
-        if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
-            $interface->assign('openUrlAutoCheck', true);
+            // Whether embedded openurl autocheck is enabled
+            if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
+                $interface->assign('openUrlAutoCheck', true);
+            }
+
+            // Display Page
+            $interface->setTemplate('record.tpl');
+            $interface->display('layout.tpl');
         }
-        
-
-
-
-
-        // Display Page
-        $interface->setTemplate('record.tpl');
-        $interface->display('layout.tpl');
     }
 }
