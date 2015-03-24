@@ -95,7 +95,8 @@ class Record extends Base
         $interface->assign('id', $_REQUEST['id']);
         
         // Send down legal export formats (if any):
-        $interface->assign('exportFormats', $this->recordDriver->getExportFormats());
+        
+        $interface->assign('exportFormats',  array('RefWorks', 'EndNote'));
         
         // Set AddThis User
         $interface->assign(

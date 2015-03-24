@@ -27,8 +27,6 @@
  */
 require_once 'Base.php';
 
-require_once 'RecordDrivers/IndexRecord.php';
-
 require_once 'sys/PCI.php';
 require_once 'sys/SearchObject/PCI.php';
 
@@ -79,8 +77,7 @@ class Record extends Base
             ? $configArray['EZproxy']['host'] : false
         );
 
-        $indexRec = new IndexRecord(array());
-        $interface->assign('exportFormats',  $indexRec->getExportFormats());
+        $interface->assign('exportFormats',  array('RefWorks', 'EndNote'));
 
         // Send record ID to template
         $interface->assign('id', $_REQUEST['id']);
