@@ -23,6 +23,8 @@ T1 {$record.title}
 {foreach from=$record.url item=item}
 UL {$item}
 {/foreach}
+{else if $record.backlink}
+UL {$record.backlink}
 {/if}
 {if $record.ISSN}
 SN {$record.ISSN}

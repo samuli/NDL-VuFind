@@ -20,6 +20,11 @@ T1 {$record.Title[0]}
 {if $record.ISSN[0]}
 SN {$record.ISSN[0]}
 {/if}
+{if $record.url}
+{foreach from=$record.url item=item}
+UL {$item}
+{/foreach}
+{/if}
 {literal}
 
 {/literal}

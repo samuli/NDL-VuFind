@@ -23,6 +23,8 @@
 {foreach from=$record.url item=item}
 %U {$item}
 {/foreach}
+{else if $record.backlink}
+%U {$record.backlink}
 {/if}
 {if $record.snippet}
 %X {$record.snippet}

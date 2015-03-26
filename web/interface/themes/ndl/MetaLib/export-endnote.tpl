@@ -20,6 +20,11 @@
 {if $record.ISSN[0]}
 %@ {$record.ISSN[0]}
 {/if}
+{if $record.url}
+{foreach from=$record.url item=item}
+%U {$item}
+{/foreach}
+{/if}
 {literal}
 
 {/literal}
