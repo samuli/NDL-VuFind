@@ -341,6 +341,19 @@ EOD;
         $formats = null;
         $tpl = null;
         if ($format == 'refworks') {
+            // Save record to the database, so that also 
+            // restricted records can be retrieved by RefWorks.
+            $resource = new Resource();
+            $resource->record_id = $record['id'];
+            $resource->source = 'PCI';
+            if (!$resource->find(true)) {
+                $resource->data = serialize($record);
+                $resource->insert();
+            } else {
+                $resource->data = serialize($record);
+                $resource->update();
+            }
+
             $exportUrl = $configArray['Site']['url'] . '/PCI/Record?id=' .
                 urlencode($record['id']) . '&export=refworks_data';
             $url = $configArray['RefWorks']['url'] . '/express/expressimport.asp';
