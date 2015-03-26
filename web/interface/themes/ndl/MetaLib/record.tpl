@@ -99,6 +99,20 @@
                 </div>
               </li>
             {/if}
+            {if is_array($exportFormats) && count($exportFormats) > 0}
+              <li>
+                <a href="{$url}/Record/{$id|escape:"url"}/Export?style={$exportFormats.0|escape:"url"}" class="export exportMenu">{translate text="Export Record"}</a>
+                <ul class="menu offscreen" id="exportMenu">
+                {foreach from=$exportFormats item=exportFormat}
+                   <li><a {if $exportFormat=="RefWorks"}target="{$exportFormat}Main" {/if}href="{$url}/MetaLib/Record?id={$id|escape:"url"}&export={$exportFormat|escape:"url"}">{translate text="Export to"} {$exportFormat|escape}</a></li>
+                {/foreach}
+                   <li>
+                     <div id="qrcode"><span class="overlay"></span></div>
+                     {js filename="qrcodeNDL.js"}
+                   </li>
+                </ul>
+              </li>
+            {/if}
           {if $record.Source}
             <div id="recordProvidedBy">
               <label for="deduprecordMenu">{translate text='Record Provided By'}</label>

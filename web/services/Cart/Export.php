@@ -27,6 +27,9 @@
  */
 
 require_once 'Bulk.php';
+require_once 'sys/MetaLib.php';
+require_once 'sys/PCI.php';
+require_once 'sys/SearchObject/PCI.php';
 
 /**
  * Bulk Exporter
@@ -386,31 +389,54 @@ class Export extends Bulk
 
         foreach ($ids as $id) {
             // Retrieve the record from the index
-            if (!($record = $this->db->getRecord($id))) {
-                $errorMsgDetails[] = $id;
-            } else {
-                $recordDetails = RecordDriverFactory::initRecordDriver($record);
-                // Assign core metadata to be sure export has all necessary values
-                // available:
-                $recordDetails->getCoreMetadata();
-                $result = $recordDetails->getExport($format);
-                if (!empty($result)) {
-                    $interface->assign('id', $id);
+            list($index,$recId) = explode('.', $id, 2);
+            $current = null;
 
-                    $current = $interface->fetch($result);
-                    // For MARC-XML, extract <record> from <collection>:
-                    if ($format == 'MARCXML') {
-                        $current = $this->extractXMLRecord($current);
+            if ($index === 'pci' || $index === 'metalib') {
+                $format = strtolower($format);
+                if ($index === 'pci') {
+                    $db = new SearchObject_PCI();
+                    if ($rec = $db->getRecord($id)) {
+                        $pci = new PCI();
+                        $current = $interface->fetch($pci->export($rec, $format));
                     }
-                    if (!empty($current)) {
-                        $exportDetails[] = $current;
+                } else if ($index === 'metalib') {
+                    $db = new MetaLib();
+                    if ($rec = $db->getRecord($id)) {
+                        $current = $interface->fetch($db->export($rec, $format));
                     }
+                }
+                if ($current) {
+                    $exportDetails[] = $current;
                 } else {
                     $errorMsgDetails[] = $id;
                 }
+            } else {
+                if (!($record = $this->db->getRecord($id))) {
+                    $errorMsgDetails[] = $id;
+                } else {
+                    $recordDetails = RecordDriverFactory::initRecordDriver($record);
+                    // Assign core metadata to be sure export has all necessary values
+                    // available:
+                    $recordDetails->getCoreMetadata();
+                    $result = $recordDetails->getExport($format);
+                    if (!empty($result)) {
+                        $interface->assign('id', $id);
+
+                        $current = $interface->fetch($result);
+                        // For MARC-XML, extract <record> from <collection>:
+                        if ($format == 'MARCXML') {
+                            $current = $this->extractXMLRecord($current);
+                        }
+                        if (!empty($current)) {
+                            $exportDetails[] = $current;
+                        }
+                    } else {
+                        $errorMsgDetails[] = $id;
+                    }
+                }
             }
         }
-        
         // MARC-XML needs a container close at the end:
         if ($format == 'MARCXML') {
             $exportDetails[] = '</collection>';

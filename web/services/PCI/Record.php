@@ -27,6 +27,7 @@
  */
 require_once 'Base.php';
 
+require_once 'sys/PCI.php';
 require_once 'sys/SearchObject/PCI.php';
 
 require_once 'services/MyResearch/lib/User.php';
@@ -68,13 +69,15 @@ class Record extends Base
 
         // Fetch Record
         $pci = new SearchObject_PCI();
-        $record = $pci->getRecord($_REQUEST['id']);
+        $this->record = $record = $pci->getRecord($_REQUEST['id']);
           
         // Set Proxy URL
         $interface->assign(
             'proxy', isset($configArray['EZproxy']['host'])
             ? $configArray['EZproxy']['host'] : false
         );
+
+        $interface->assign('exportFormats',  array('RefWorks', 'EndNote'));
 
         // Send record ID to template
         $interface->assign('id', $_REQUEST['id']);
@@ -97,6 +100,12 @@ class Record extends Base
     {
         global $interface;
         global $configArray;
+
+        if (isset($_REQUEST['export'])) {
+            $pci = new PCI();
+            $format = strtolower($_REQUEST['export']);
+            return $pci->export($this->record, $format, $format !== 'refworks');
+        }
 
         // Assign the ID of the last search so the user can return to it.
         $lastsearch = isset($_SESSION['lastSearchURL']) ? $_SESSION['lastSearchURL'] : false;
@@ -156,13 +165,10 @@ class Record extends Base
         if (isset($configArray['OpenURL']['autocheck']) && $configArray['OpenURL']['autocheck']) {
             $interface->assign('openUrlAutoCheck', true);
         }
-        
-
-
-
 
         // Display Page
         $interface->setTemplate('record.tpl');
         $interface->display('layout.tpl');
+
     }
 }

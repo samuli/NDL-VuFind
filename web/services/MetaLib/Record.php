@@ -95,7 +95,8 @@ class Record extends Base
         $interface->assign('id', $_REQUEST['id']);
         
         // Send down legal export formats (if any):
-        $interface->assign('exportFormats', $this->recordDriver->getExportFormats());
+        
+        $interface->assign('exportFormats',  array('RefWorks', 'EndNote'));
         
         // Set AddThis User
         $interface->assign(
@@ -118,6 +119,12 @@ class Record extends Base
     {
         global $interface;
         global $configArray;
+
+        if (isset($_REQUEST['export'])) {
+            $ml = new MetaLib();
+            $format = strtolower($_REQUEST['export']);
+            return $interface->fetch($ml->export($this->record, $format, true));
+        }
 
         // Send basic information to the template.
         $interface->assign('record', $this->record);
@@ -181,6 +188,7 @@ class Record extends Base
         // Display Page
         $interface->setTemplate('record.tpl');
         $interface->display('layout.tpl');
+
     }
 }       
    

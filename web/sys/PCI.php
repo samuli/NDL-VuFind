@@ -320,6 +320,113 @@ EOD;
     }
 
     /**
+     * Export record to RefWorks or EndNote.
+     *
+     * @param array   $record Record
+     * @param string  $format Export format (refworks or endnote).
+     * @param boolean $render Return rendered template output or the template name?
+     *
+     * @return void|string
+     * @access public
+     */
+    public function export($record, $format, $render = false)
+    {
+        global $configArray;
+        global $interface;
+
+        if ($record['author']) {
+            $record['author2'] = array_slice($record['author'], 1);
+        }
+
+        $formats = null;
+        $tpl = null;
+        if ($format == 'refworks') {
+            // Save record to the database, so that also 
+            // restricted records can be retrieved by RefWorks.
+            $resource = new Resource();
+            $resource->record_id = $record['id'];
+            $resource->source = 'PCI';
+            if (!$resource->find(true)) {
+                $resource->data = serialize($record);
+                $resource->insert();
+            } else {
+                $resource->data = serialize($record);
+                $resource->update();
+            }
+
+            $exportUrl = $configArray['Site']['url'] . '/PCI/Record?id=' .
+                urlencode($record['id']) . '&export=refworks_data';
+            $url = $configArray['RefWorks']['url'] . '/express/expressimport.asp';
+            $url .= '?vendor=' . urlencode($configArray['RefWorks']['vendor']);
+            $url .= '&filter=RefWorks%20Tagged%20Format&url=' . urlencode($exportUrl);
+            header("Location: {$url}");
+            die();
+        } else if ($format == 'refworks_data') {
+            header('Content-type: text/plain; charset=utf-8');
+
+            if ($record['format']) {
+                $formats = array(
+                    'article' => 'Journal Article',
+                    'audio' => 'Sound Recording',
+                    'video' => 'Video/ DVD',
+                    'book' => 'Book, Whole',
+                    'book_chapter' => 'Book Section',
+                    'journal' => 'Journal, Electronic'
+                );
+            }
+
+            $record['format']
+                = array_key_exists($record['format'], $formats)
+                ? $formats[$record['format']]
+                : 'General'
+            ;
+
+            $tpl = 'PCI/export-refworks.tpl';
+        } else if ($format == 'endnote') {
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: private", false);
+            header('Content-type: application/x-endnote-refer');
+            header("Content-Disposition: attachment; filename=\"vufind.enw\";");
+
+            if ($record['format']) {
+                $formats = array(
+                    'article' => 'Journal Article',
+                    'audio' => 'Audiovisual Material',
+                    'audio_video' => 'Audiovisual Material',
+                    'video' => 'Audiovisual Material',
+                    'book' => 'Book',
+                    'book_chapter' => 'Book Section',
+                    'conference_proceeding' => 'Conference Proceedings',
+                    'database' => 'Online Database',
+                    'journal' => 'Journal'
+                 );
+            }
+
+            $record['format']
+                = array_key_exists($record['format'], $formats)
+                ? $formats[$record['format']]
+                : 'Generic'
+            ;
+
+            $tpl = 'PCI/export-endnote.tpl';
+        }
+
+        if ($tpl) {
+            $interface->assign('record', $record);
+            if ($render) {
+                echo $interface->fetch($tpl);
+                exit();
+            } else {
+                return $tpl;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Call PCI Web Services API
      *
      * @param array $searchString XML parameters as a string
