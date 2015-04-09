@@ -21,6 +21,15 @@
   <h1 class="recordTitle">{$coreShortTitle|escape}{if $coreSubtitle}&nbsp;: {$coreSubtitle|escape}{/if}</h1>
   {* End Title *}
 
+  {* Uniform Title *}
+  {if $coreUniformTitles}
+  <div class="uniformTitles">
+    {foreach from=$coreUniformTitles item=uniformTitle loop=titleLoop}
+      {$uniformTitle|escape}<br/>
+    {/foreach}
+  </div>
+  {/if}
+  
   {* Display Cover Image, commented out since already in view.tpl
   {if $coreThumbMedium}
     {if $coreThumbLarge}<a href="{$coreThumbLarge|escape}">{/if}

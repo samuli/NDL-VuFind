@@ -5133,12 +5133,15 @@ div.coverImagesLessLink {
 #recordMetadata.driver-AxiellWebServices .citation td {
     padding:0 0 0 1em;
 }
-
+#recordMetadata .uniformTitles {
+	  margin-top: 0.3em;
+	  font-size: 1.2em;
+}
 #recordMetadata #description_text {
     padding: 0 0 5px 0;
     color: rgb(116, 116, 116);
-	font-size: 1.2em;
-	line-height: 1.36em;
+    font-size: 1.2em;
+    line-height: 1.36em;
 }
 .citation tr, .citation td {
     vertical-align:top;
@@ -5993,6 +5996,12 @@ form#commentRecord {
 form#commentRecord #comment {
     vertical-align: middle;
 }
+
+/** Component parts **/
+#componentparts .nonLinkedTitle {
+    font-style: italic;
+}
+
 
 /** Forms **/
 

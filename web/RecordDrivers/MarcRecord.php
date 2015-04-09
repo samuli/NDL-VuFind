@@ -363,12 +363,9 @@ class MarcRecord extends IndexRecord
 
         // Collect the values of all the 979 fields and their subfields into
         // an array of arrays to be handed to a template for display.
-        $fields = $this->marcRecord->getFields('979');
-        if (!$fields) {
-            return null;
-        }
         $partOrderCounter = 0;
-        foreach ($fields as $field) {
+        $componentparts = array();
+        foreach ($this->marcRecord->getFields('979') as $field) {
             $partOrderCounter++;
             $partAuthors = array();
             $uniformTitle = '';
@@ -440,6 +437,59 @@ class MarcRecord extends IndexRecord
                 'otherAuthors' => $partOtherAuthors,
             );
         }
+
+        // Try field 700 if 979 is empty
+        if (!$componentparts) {
+            foreach ($this->marcRecord->getFields('700') as $field) {
+                if (!$field->getSubfield('t')) {
+                    continue;
+                }
+                $partOrderCounter++;
+
+                $partTitle = $this->getSubfieldArray($field, array('t', 'm', 'n', 'r', 'h', 'i', 'g', 'n', 'p', 's', 'l', 'o', 'k'));
+                $partTitle = reset($partTitle);
+                $partAuthors = $this->getSubfieldArray($field, array('a', 'q', 'b', 'c', 'd', 'e'));
+
+                $partPresenters = array();
+                $partArrangers = array();
+                $partOtherAuthors = array();
+                foreach ($partAuthors as $author) {
+                    if (isset($configArray['Record']['presenter_roles'])) {
+                        foreach ($configArray['Record']['presenter_roles'] as $role) {
+                            $author = trim($author);
+                            if (substr($author, -strlen($role) - 2) == ", $role") {
+                                $partPresenters[] = $author;
+                                continue 2;
+                            }
+                        }
+                    }
+                    if (isset($configArray['Record']['arranger_roles'])) {
+                        foreach ($configArray['Record']['arranger_roles'] as $role) {
+                            if (substr($author, -strlen($role) - 2) == ", $role") {
+                                $partArrangers[] = $author;
+                                continue 2;
+                            }
+                        }
+                    }
+                    $partOtherAuthors[] = $author;
+                }
+
+                $componentparts[] = array(
+                    'number' => $partOrderCounter,
+                    'title' => $partTitle,
+                    'link' => null,
+                    'author' => implode('; ', $partAuthors), // For backward compatibility
+                    'authors' => $partAuthors,
+                    'uniformTitle' => '',
+                    'duration' => '',
+                    'presenters' => $partPresenters,
+                    'arrangers' => $partArrangers,
+                    'otherAuthors' => $partOtherAuthors,
+                );
+
+            }
+        }
+
         // Assign the appropriate variable and return the template name:
         $interface->assign('componentparts', $componentparts);
         return 'RecordDrivers/Marc/componentparts.tpl';
@@ -496,6 +546,7 @@ class MarcRecord extends IndexRecord
         if ($this->marcRecord->getFields('505')) {
             return true;
         }
+
         return false;
     }
 
@@ -511,6 +562,13 @@ class MarcRecord extends IndexRecord
         if ($this->marcRecord->getFields('979')) {
             return true;
         }
+        // Alternatively, are there titles in 700 fields?
+        foreach ($this->marcRecord->getFields('700') as $field) {
+            if ($field->getSubfield('t')) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -1490,6 +1548,7 @@ class MarcRecord extends IndexRecord
         global $interface;
 
         $interface->assign('coreOtherLinks', $this->getOtherLinks());
+        $interface->assign('coreUniformTitles', $this->getUniformTitles());
 
         // Call the parent method:
         return parent::getCoreMetadata();
@@ -1713,6 +1772,11 @@ class MarcRecord extends IndexRecord
             $fields = $this->marcRecord->getFields($fieldCode);
             if (is_array($fields)) {
                 foreach ($fields as $field) {
+                    // Leave out 700 fields containing subfield 't' (these go to the
+                    // contents list)
+                    if ($fieldCode == '700' && $field->getSubfield('t')) {
+                        continue;
+                    }
                     $role = $this->getSubfieldArray($field, array('e'));
                     $role = empty($role) ? '' : mb_strtolower($role[0]);
                     if ($role && in_array($role, $configArray['Record']['presenter_roles'])) {
@@ -1745,6 +1809,11 @@ class MarcRecord extends IndexRecord
             $fields = $this->marcRecord->getFields($fieldCode);
             if (is_array($fields)) {
                 foreach ($fields as $field) {
+                    // Leave out 700 fields containing subfield 't' (these go to the
+                    // contents list)
+                    if ($fieldCode == '700' && $field->getSubfield('t')) {
+                        continue;
+                    }
                     $role = $this->getSubfieldArray($field, array('e'));
                     $role = empty($role) ? '' : mb_strtolower($role[0]);
                     if (!$role || !in_array($role, $configArray['Record']['presenter_roles'])) {
@@ -1842,6 +1911,25 @@ class MarcRecord extends IndexRecord
         }
 
         return true;
+    }
+
+    /**
+     * Get uniform titles.
+     *
+     * @return array
+     */
+    protected function getUniformTitles()
+    {
+        $results = [];
+        foreach (array('130', '240') as $fieldCode) {
+            foreach ($this->marcRecord->getFields($fieldCode) as $field) {
+                foreach ($field->getSubfields() as $subfield) {
+                    $subfields[] = $subfield->getData();
+                }
+                $results[] = implode(' ', $subfields);
+            }
+        }
+        return $results;
     }
 }
 
