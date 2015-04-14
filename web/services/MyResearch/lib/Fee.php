@@ -52,7 +52,7 @@ class Fee extends DB_DataObject
     public $currency;                        // string(3) not_null
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Fee',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Fee',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

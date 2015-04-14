@@ -52,7 +52,7 @@ class Comments extends DB_DataObject
     public $created;                         // datetime(19)  not_null binary
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Comments',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Comments',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
@@ -68,25 +68,25 @@ class Comments extends DB_DataObject
      */
     public function getComments($recordId)
     {
-        $recordId = $this->escape($recordId);        
+        $recordId = $this->escape($recordId);
         $sql = "SELECT comments.*, user.firstname || user.lastname as fullname, " .
                "user.email " .
-               "FROM comments " . 
-               "RIGHT OUTER JOIN user ON comments.user_id = user.id " . 
-               "JOIN comments_record ON comments.id = comments_record.comment_id " . 
+               "FROM comments " .
+               "RIGHT OUTER JOIN user ON comments.user_id = user.id " .
+               "JOIN comments_record ON comments.id = comments_record.comment_id " .
                "WHERE comments_record.record_id = '$recordId' " .
-               "AND comments.visible = 1 " . 
-               "ORDER BY comments.created ";        
+               "AND comments.visible = 1 " .
+               "ORDER BY comments.created ";
 
         $commentList = array();
 
         $result = $this->query($sql);
-        
+
         $date = new VuFindDate();
         if ($this->N) {
             while ($this->fetch()) {
                 $comment = clone($this);
-                $comment->created = $date->convertToDisplayDate('Y-m-d H:i:s', $comment->created) . ' ' . 
+                $comment->created = $date->convertToDisplayDate('Y-m-d H:i:s', $comment->created) . ' ' .
                     $date->convertToDisplayTime('Y-m-d H:i:s', $comment->created);
                 $commentList[] = $comment;
             }
@@ -94,7 +94,7 @@ class Comments extends DB_DataObject
 
         return $commentList;
     }
-    
+
     /**
      * Get average rating from ratings associated with this record.
      *
@@ -105,19 +105,19 @@ class Comments extends DB_DataObject
      */
     public function getAverageRating($recordId)
     {
-        $recordId = $this->escape($recordId);        
+        $recordId = $this->escape($recordId);
         $sql = "SELECT AVG(comments.rating) as average, " .
                "COUNT(comments.id) as numberOfRatings " .
-               "FROM comments " . 
-               "JOIN comments_record ON comments.id = comments_record.comment_id " . 
+               "FROM comments " .
+               "JOIN comments_record ON comments.id = comments_record.comment_id " .
                "WHERE comments_record.record_id = '$recordId' " .
                "AND comments.rating IS NOT NULL " .
                "AND comments.visible = 1";
-        $this->query($sql);      
+        $this->query($sql);
         $this->fetch();
         return (array('ratingAverage' => $this->average, 'ratingCount' => $this->numberOfRatings));
     }
-        
+
     /**
      * Get number of comments on record.
      *
@@ -128,16 +128,16 @@ class Comments extends DB_DataObject
      */
     public function getCommentCount($recordId)
     {
-        $recordId = $this->escape($recordId);        
+        $recordId = $this->escape($recordId);
         $sql = "SELECT count(comments_record.id) as numberOfComments " .
-                "FROM comments_record " . 
-                "JOIN comments ON comments.id = comments_record.comment_id " . 
+                "FROM comments_record " .
+                "JOIN comments ON comments.id = comments_record.comment_id " .
                 "WHERE comments_record.record_id = '$recordId' " .
                 "AND comments.visible = 1";
-         $this->query($sql);  
+         $this->query($sql);
          $this->fetch();
          return $this->numberOfComments;
-    }    
+    }
 
     /**
      * Add links to records.
@@ -161,7 +161,7 @@ class Comments extends DB_DataObject
 
     /**
      * Verify links to records
-     * 
+     *
      * @param string[] $recordIdArray Array of record IDs
      *
      * @return boolean True if any links were fixed
@@ -178,9 +178,9 @@ class Comments extends DB_DataObject
             while ($commentsRecord->fetch()) {
                 if (!in_array($commentsRecord->record_id, $recordIdArray)) {
                     $commentsRecord->delete();
-                    $fixed = true;            
-                }    
-            }           
+                    $fixed = true;
+                }
+            }
         }
         // Add missing links
         foreach ($recordIdArray as $recordId) {

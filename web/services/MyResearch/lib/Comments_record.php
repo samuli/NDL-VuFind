@@ -47,7 +47,7 @@ class Comments_record extends DB_DataObject
     public $comment_id;
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Comments_record',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Comments_record',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

@@ -63,15 +63,15 @@ class Transaction extends DB_DataObject
     public $reported;                        // datetime(19)  not_null binary
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Transaction',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Transaction',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
     // @codingStandardsIgnoreEnd
 
-    const STATUS_PROGRESS              = 0;    
+    const STATUS_PROGRESS              = 0;
     const STATUS_COMPLETE              = 1;
-    
+
     const STATUS_CANCELLED             = 2;
     const STATUS_PAID                  = 3;
     const STATUS_PAYMENT_FAILED        = 4;
@@ -117,19 +117,19 @@ class Transaction extends DB_DataObject
 
     /**
      * Check if payment is permitted for the patron.
-     * 
+     *
      * Payment is not permitted if:
-     *   - patron has a transaction in progress and translation maximum duration 
+     *   - patron has a transaction in progress and translation maximum duration
      *     has not been exceeded
-     *   - patron has a paid transaction that has not been registered as paid 
+     *   - patron has a paid transaction that has not been registered as paid
      *     to the ILS
      *
      * @param string $patronId               Patron's Catalog username (barcode).
-     * @param int    $transactionMaxDuration Maximum wait time (in minutes) after 
-     * which a started, and not processed, transaction is considered to have been 
-     * interrupted by the user.   
+     * @param int    $transactionMaxDuration Maximum wait time (in minutes) after
+     * which a started, and not processed, transaction is considered to have been
+     * interrupted by the user.
      *
-     * @return mixed true if payment is permitted, 
+     * @return mixed true if payment is permitted,
      * error message if payment is not permitted, false on error
      * @access public
      */
@@ -137,9 +137,9 @@ class Transaction extends DB_DataObject
     {
         $duration = mysql_real_escape_string($transactionMaxDuration);
         $patronId = mysql_real_escape_string($patronId);
-        
+
         $transaction = new Transaction();
-        $transaction->whereAdd("cat_username = '$patronId'"); 
+        $transaction->whereAdd("cat_username = '$patronId'");
         $transaction->whereAdd('complete = ' . self::STATUS_PROGRESS);
         $transaction->whereAdd("NOW() < DATE_ADD(created, INTERVAL $duration MINUTE)");
 
@@ -147,22 +147,22 @@ class Transaction extends DB_DataObject
             // Transaction still in progress
             return 'online_payment_in_progress';
         }
-        
+
         $statuses = array(
-            self::STATUS_REGISTRATION_FAILED, 
+            self::STATUS_REGISTRATION_FAILED,
             self::STATUS_REGISTRATION_EXPIRED,
             self::STATUS_FINES_UPDATED
         );
 
         $transaction = new Transaction();
-        $transaction->whereAdd("cat_username = '$patronId'"); 
+        $transaction->whereAdd("cat_username = '$patronId'");
         $transaction->whereAdd('complete in (' . implode(',', $statuses) . ')');
 
         if ($transaction->find()) {
             // Transaction could not be registered and is waiting to be resolved manually.
             return 'online_payment_registration_failed';
         }
-        
+
         return true;
     }
 
@@ -171,15 +171,15 @@ class Transaction extends DB_DataObject
      *
      * @return array transactions or false on error.
      * @access public
-     */    
+     */
     public function getFailedTransactions()
     {
-        $t = new Transaction();	
+        $t = new Transaction();
         $t->whereAdd('complete = ' . self::STATUS_REGISTRATION_FAILED);
         $t->whereAdd('paid > 0');
         $t->orderBy('user_id');
         $t->find();
-        
+
         $items = array();
         while ($t->fetch()) {
             $items[] = $t;
@@ -194,10 +194,10 @@ class Transaction extends DB_DataObject
      *
      * @return array transactions or false on error.
      * @access public
-     */    
+     */
     public function getUnresolvedTransactions($interval)
     {
-        $t = new Transaction();	
+        $t = new Transaction();
         $t->whereAdd('complete = ' . self::STATUS_REGISTRATION_EXPIRED . ' OR complete = ' . self::STATUS_FINES_UPDATED);
         $t->whereAdd('paid > 0');
         $t->whereAdd("reported = 0 OR NOW() > DATE_ADD(reported, INTERVAL $interval HOUR)");
@@ -218,13 +218,13 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function isTransactionInProgress($transactionId)
     {
         if (!$t = $this->getTransaction($transactionId)) {
             return false;
         }
-        
+
         return $t->complete == self::STATUS_PROGRESS;
     }
 
@@ -236,10 +236,10 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionPaid($transactionId, $timestamp)
     {
-        return $this->updateTransactionStatus($transactionId, $timestamp, self::STATUS_PAID, 'paid'); 
+        return $this->updateTransactionStatus($transactionId, $timestamp, self::STATUS_PAID, 'paid');
     }
 
    /**
@@ -249,10 +249,10 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionCancelled($transactionId)
     {
-        return $this->updateTransactionStatus($transactionId, false, self::STATUS_CANCELLED, 'cancel'); 
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_CANCELLED, 'cancel');
     }
 
    /**
@@ -262,11 +262,11 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionRegistered($transactionId)
     {
-        
-        return $this->updateTransactionStatus($transactionId, false, self::STATUS_COMPLETE, 'register_ok'); 
+
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_COMPLETE, 'register_ok');
     }
 
    /**
@@ -277,10 +277,10 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionRegistrationFailed($transactionId, $msg)
     {
-        return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_FAILED, $msg); 
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_FAILED, $msg);
     }
 
    /**
@@ -291,7 +291,7 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionExpired($transactionId, $timestamp)
     {
         return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_EXPIRED);
@@ -304,10 +304,10 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionResolved($transactionId)
     {
-        return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_RESOLVED); 
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_REGISTRATION_RESOLVED);
     }
 
    /**
@@ -317,10 +317,10 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionFinesUpdated($transactionId)
     {
-        return $this->updateTransactionStatus($transactionId, false, self::STATUS_FINES_UPDATED, 'fines_updated'); 
+        return $this->updateTransactionStatus($transactionId, false, self::STATUS_FINES_UPDATED, 'fines_updated');
     }
 
    /**
@@ -330,7 +330,7 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionReported($transactionId)
     {
         if (!$t = $this->getTransaction($transactionId)) {
@@ -348,10 +348,10 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     public function setTransactionUnknownPaymentResponse($transactionId, $msg)
     {
-        return $this->updateTransactionStatus($transactionId, false, 'unknown_response', $msg);        
+        return $this->updateTransactionStatus($transactionId, false, 'unknown_response', $msg);
     }
 
    /**
@@ -364,16 +364,16 @@ class Transaction extends DB_DataObject
      *
      * @return boolean success
      * @access public
-     */    
+     */
     protected function updateTransactionStatus($transactionId, $timestamp, $status, $statusMsg = false)
     {
         if (!$t = $this->getTransaction($transactionId)) {
             return false;
         }
-        
+
         if ($status !== false) {
             if ($timestamp === false) {
-                $timestamp = time(); 
+                $timestamp = time();
             }
             $dateStr = date("Y-m-d H:i:s", $timestamp);
             if ($status == self::STATUS_PAID) {
@@ -381,7 +381,7 @@ class Transaction extends DB_DataObject
             } else if ($status == self::STATUS_COMPLETE) {
                 $t->registered = $dateStr;
             }
-            
+
             $t->complete = $status;
         }
         if ($statusMsg) {
@@ -398,7 +398,7 @@ class Transaction extends DB_DataObject
      *
      * @return Transaction transaction or false on error
      * @access public
-     */    
+     */
     public function getTransaction($transactionId)
     {
         $t = new Transaction();

@@ -49,7 +49,7 @@ class Comments_inappropriate extends DB_DataObject
     public $created;
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Comments_inaappropiate',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Comments_inaappropiate',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

@@ -49,7 +49,7 @@ class Transaction_fees extends DB_DataObject
     public $fee_id;                          // int(11)  not_null multiple_key
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Transaction_fees',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Transaction_fees',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
