@@ -56,7 +56,7 @@ class SearchEntry extends DB_DataObject
     public $schedule_base_url;               // string(255)
     
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Search',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('Search',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

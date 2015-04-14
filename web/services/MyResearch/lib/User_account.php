@@ -53,7 +53,7 @@ class User_account extends DB_DataObject
     public $saved;                           // timestamp(19)  not_null unsigned zerofill binary timestamp
     
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User_account',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User_account',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE

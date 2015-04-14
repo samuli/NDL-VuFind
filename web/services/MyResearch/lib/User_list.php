@@ -51,7 +51,7 @@ class User_list extends DB_DataObject
     public $public;                          // int(11)  not_null
 
     /* Static get */
-    function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User_list',$k,$v); }
+    static function staticGet($k,$v=NULL) { return DB_DataObject::staticGet('User_list',$k,$v); }
 
     /* the code above is auto generated do not remove the tag below */
     ###END_AUTOCODE
