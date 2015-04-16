@@ -29,7 +29,8 @@
     <tr valign="top">
         <td>{$componentpart.number|escape}</td>
         <td>{if $componentpart.link}<a href="{$componentpart.link|escape}">{else}<span class="nonLinkedTitle">{/if}{$componentpart.title|escape}{if $componentpart.link}</a>{else}</span>{/if}<br/>
-	        <span title="{foreach from=$componentpart.otherAuthors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/foreach}">
+          {if $componentpart.uniformTitle}{$componentpart.uniformTitle|escape}<br/>{/if}
+	        <span class="partAuthors{if !$componentpart.link || $componentpart.uniformTitle}Padded{/if}" title="{foreach from=$componentpart.otherAuthors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/foreach}">
 	          {foreach from=$componentpart.otherAuthors item=author name=authorloop}{if $smarty.foreach.authorloop.iteration < 4}{if $smarty.foreach.authorloop.iteration > 1} ; {/if}{$author|escape}{/if}{if $smarty.foreach.authorloop.iteration == 4} ...{/if}{/foreach}
 	        </span>
 	      </td>
