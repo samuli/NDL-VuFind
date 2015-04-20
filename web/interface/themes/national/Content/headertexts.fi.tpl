@@ -1,5 +1,19 @@
 <!-- START of: Content/headertexts.fi.tpl -->
 <div id="headerTexts">
+    <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>
+        <p>Tekijä: Olympia-kuva Oy<br/>
+           Sijainti: Helsingin kaupunginmuseo</p>
+        <a href="{$url}/Record/hkm.HKMS000005%3Akm0000mrfs">Aineistotietoon »</a>
+    </div>
+     <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>
+        <p>Tekijä: Olympia-kuva Oy<br/>
+           Sijainti: Helsingin kaupunginmuseo</p>
+        <a href="{$url}/Record/hkm.HKMS000005%3Akm0000mrfs">Aineistotietoon »</a>
+    </div>
      <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
@@ -14,6 +28,8 @@
            Sijainti: Museoviraston kuvakokoelmat</p>
         <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">Aineistotietoon »</a>
     </div>
+</div>
+    <!-- 
     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
@@ -21,16 +37,7 @@
            Sijainti: Suomen merimuseon kokoelmat</p>
         <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">Aineistotietoon »</a>
     </div>
-     <div>
-        <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
-        <p>Tekijä: Ei tiedossa<br/>
-           Sijainti: Suomen merimuseon kokoelmat</p>
-        <a href="{$url}/Record/musketti.M012%3ASMK201307%3A1">Aineistotietoon »</a>
-    </div>
-</div>
-    <!-- 
-        <div>
+    <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Kuva maalauksesta, jossa Favell täysissä purjeissa merellä, takana Suomen lippu</p>
         <p>Tekijä: Ei tiedossa<br/>
