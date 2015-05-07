@@ -54,7 +54,7 @@ Det finns en registerbeskrivning för hanteringen av användaruppgifter:
 Det finns en registerbeskrivning för hanteringen av användaruppgifter: <a href="{/literal}{$url}{literal}/Content/register_details">Registerbeskrivning</a>
 </p>
 <br/>
-<h3>Användarvillkor</h3>
+<h3><a class="anchor" name="terms">Användarvillkor</a></h3>
 <p>I Finna kan användarna söka i arkivens, bibliotekens och museernas material. För användningen av materialet gäller följande villkor:</p>
 <ul>
 <li><strong>Beskrivningarna:</strong> Alla kan fritt använda metadata som visas i samband med sökresultaten.</li>

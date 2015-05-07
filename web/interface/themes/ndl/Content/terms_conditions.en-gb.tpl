@@ -51,7 +51,7 @@ Finna accounts created using a library card or a Mozilla Persona or Haka usernam
 A personal data file description has been prepared for handling user information: <a href="{/literal}{$url}{literal}/Content/register_details">Register details</a>
 </p>
 <br/>
-<h3>Terms and conditions</h3>
+<h3><a class="anchor" name="terms">Terms and conditions</a></h3>
 <p>Users of Finna may search for information from the collections of archives, libraries and museums. The following terms and conditions apply to the use of material:</p>
 <ul>
 <li><strong>Metadata:</strong> The metadata presented in conjunction with search results can be freely used by all.</li>

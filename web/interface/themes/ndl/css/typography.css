@@ -86,11 +86,14 @@ h1, .grand {
     font-size: 2.004em;
     line-height: 1.2em;
 }
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, h3 a.anchor {
     color: inherit;
     font-weight: bold;
     margin: .75em 0 .75em;
     text-transform: none;
+}
+h3 a.anchor {
+	text-decoration: none;
 }
 .tiny, .small, small, .big, .hefty, .large, .grand, .overgrand {
     margin: 0;

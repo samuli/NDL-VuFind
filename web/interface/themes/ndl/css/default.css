@@ -8152,3 +8152,142 @@ span#showDate {
 .mfp-fade.mfp-wrap.mfp-removing .mfp-content {
   opacity: 0;
 }
+
+/* Content pages special styling */
+.aboutpage .finnafititle img {
+    margin: 3px 19px 20px -3px;
+    float:left;
+}
+.aboutpage .finnafititle h3 {
+   line-height:3em;
+}
+.aboutpage .finnafiimage, .aboutpage .finnafitext, .aboutpage .screenshotwrapper {
+   display: inline;
+   float: left;
+}
+.aboutpage .otherfinnascreenshots, .aboutpage .otherfinnasites {
+    margin-left: 5px;
+}
+.aboutpage .finnafiimage {
+    display: inline;
+    float: left;
+	margin: 3px 18px 20px 5px;
+}
+.aboutpage .finnafitext {
+    width: 550px;
+	padding-left: 15px;
+}
+.aboutpage #finnafiscreenshot {
+   width: 264px;
+   height: 143px;
+}
+.aboutpage .otherfinnascreenshots h3 {
+   margin-bottom: 0.5em;
+}
+.aboutpage .otherfinnasites_comment {
+   margin-top: 1.5em;
+}
+.aboutpage .otherfinnasites_comment p {
+   margin-bottom: 0;
+}
+.aboutpage .screenshotwrapper {
+   width: 16%;
+   margin-right: 10px;
+   height: 137px;
+   text-align: left;
+   white-space: nowrap;
+   position: relative;
+}
+.aboutpage .beta {
+   position: absolute;
+   line-height: 1;
+   top: 0;
+   right: 0;
+   padding: 1px 2px;
+   text-transform: uppercase;
+   background-color: #13AEBE;
+   color: #fff;
+}
+.aboutpage .screenshotwrapper img {
+   width: 151px;
+   height: 82px;
+}
+.module-Content #main .aboutpage .contentSection .screenshotwrapper, .module-Content #main .aboutpage .contentSection .screenshotwrapper p, .module-Content #main .aboutpage .contentSection .screenshotwrapper h5 {
+   margin-bottom: 0;
+   font-size: 13px;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   color: #464646;
+}
+.module-Content #main .aboutpage .contentSection .screenshotwrapper:hover {
+   text-decoration: none;
+}
+.module-Content #main .aboutpage .contentSection .screenshotwrapper p {
+   color: #00a3b5;
+}
+.aboutpage .screenshotwrapper h5 {
+   margin: 1px 0 0;
+   line-height: 1.1;
+}
+.module-Content #main .sectionsWithHeadings .contentSection:first-child h2:first-child {
+   margin-top: 1.1em;
+}
+.module-Content #main .sectionsWithHeadings .contentSection p, 
+.module-Content #main .sectionsWithHeadings .contentSection li {
+	font-size: 15px;
+}
+.module-Content #main .sectionsWithHeadings {
+	margin-bottom: -48px;
+}
+.module-Content #main .sectionsWithHeadings .grid_18, 
+.module-Content #main .sectionsWithHeadings .grid_24_inner {
+	padding-bottom: 20px;
+}
+.module-Content #main .sectionsWithHeadings .content .finnafititle, 
+.module-Content #main .sectionsWithHeadings .content .otherfinnasites {
+   padding-bottom: 0;
+}
+/* tablet */
+@media only screen and (max-width: 1020px) {
+   .aboutpage .finnafitext {
+      width: 305px;
+   }
+   .aboutpage .screenshotwrapper {
+      width: 20%;
+      height: 131px;
+   }
+   .aboutpage .screenshotwrapper img {
+      width: 141px;
+      height: 76px;
+   }
+}
+/* handheld */
+@media only screen and (max-width: 730px) {
+   .aboutpage .finnafiimage {
+       width: 100% !important;
+       margin-left:0px !important;
+   }
+   .aboutpage .finnafititle {
+   }
+   .aboutpage #finnafiscreenshot {
+      width: 78%;
+	  height: auto;
+   }
+o9   .aboutpage .finnafitext {
+      width: 390px;
+   }
+   .aboutpage .finnafiimage, .aboutpage .finnafitext {
+      padding-left: 2px;
+   }
+   .aboutpage .screenshotwrapper {
+       width: 42%;
+	   height: 163px;
+   }
+   .aboutpage .screenshotwrapper img {
+      width: 195px;
+      height: 106px;
+   }
+   .module-Content #main .aboutpage .contentSection .screenshotwrapper, .module-Content #main .aboutpage .contentSection .screenshotwrapper p, .module-Content #main .aboutpage .contentSection .screenshotwrapper h5 {
+	   font-size: 14px;
+   }
+}

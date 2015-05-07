@@ -49,7 +49,7 @@ Kirjastokortti-, Mozilla Persona- ja Haka-tunnuksia käyttäen luodut Finna-tili
 Käyttäjätietojen käsittelystä on laadittu rekisteriseloste: <a href="{/literal}{$url}{literal}/Content/register_details">Rekisteriseloste</a>
 </p>
 <br/>
-<h3>Käyttöehdot</h3>
+<h3><a class="anchor" name="terms">Käyttöehdot</a></h3>
 <p>Finnan käyttäjät voivat hakea tietoa arkistojen, kirjastojen ja museoiden aineistoista. Aineistojen käyttöä koskevat seuraavat ehdot:</p>
 <ul>
 <li><strong>Kuvailutiedot:</strong> Hakutulosten yhteydessä esitettäviä kuvailutietoja voivat kaikki käyttää vapaasti.</li>
