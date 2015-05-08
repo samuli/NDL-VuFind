@@ -10,9 +10,9 @@
 <div class="clear"></div>
 <div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
 <div class="finnafitext">
-<p>Finna.fi tuo Suomen <a href="{$url}/Content/Organisations">museoiden, kirjastojen ja arkistojen</a> aineistot kaikkien saataville. </p> 
-<p>Pääset selaamaan ja lukemaan <a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>verkossa saatavilla</a> olevia aineistoja.</p>
-<p>Voit myös mm. <a href="{$url}/MyResearch/Home">uusia lainoja ja tehdä varauksia</a> eri kirjastojen aineistoihin yhdestä ja samasta paikasta.</p>
+<p>Finna.fi tuo Suomen <a href="https://www.finna.fi/Content/Organisations">museoiden, kirjastojen ja arkistojen</a> aineistot kaikkien saataville. </p> 
+<p>Pääset selaamaan ja lukemaan <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>verkossa saatavilla</a> olevia aineistoja.</p>
+<p>Voit myös mm. <a href="https://www.finna.fi/MyResearch/Home">uusia lainoja ja tehdä varauksia</a> eri kirjastojen aineistoihin yhdestä ja samasta paikasta.</p>
 <p>Löydät finna.fi:stä samalla haulla kaikille avoimet aineistot, jotka mukana olevat organisaatiot tarjoavat.</p>
 </div>
 <div class="clear"></div>
@@ -45,7 +45,7 @@
 <li>{translate text=$target prefix='source_'}</li>
 {/foreach}
 </ul>
-<p>Voit käyttää näitä toiminnallisuuksia, kun olet <a href="{$url}/MyResearch/Home">kirjautunut Finnaan</a> ja sinulla on kyseisen kirjaston kirjastokortti.</p>
+<p>Voit käyttää näitä toiminnallisuuksia, kun olet <a href="https://www.finna.fi/MyResearch/Home">kirjautunut Finnaan</a> ja sinulla on kyseisen kirjaston kirjastokortti.</p>
 <p>Joihinkin <em>arkistoaineistoihin</em> voi tehdä käyttölupahakemuksen Finnan aineistotietojen yhteydestä löytyvillä linkeillä.</p>
 <p>Tulevaisuudessa Finnassa on mahdollista käyttää myös <em>museoiden</em> digitaalisia palveluja.</p>
 </div>
@@ -62,7 +62,7 @@
 
 <h3>Finnan vastuutahot</h3>
 <p>
-Kansalliskirjasto vastaa Finnan kehittämisestä ja ylläpidosta, mutta palvelua kehitetään yhdessä Finnan yhteistyökumppanien kanssa. Finnan sisällöistä vastaavat palveluun osallistuvat <a href='{$url}/Content/Organisations'>arkistot, kirjastot ja museot</a>. Finna on osa opetus- ja kulttuuriministeriön <a href='http://www.kdk.fi/fi/tietoa-hankkeesta'>Kansallinen digitaalinen kirjasto</a> -hanketta.
+Kansalliskirjasto vastaa Finnan kehittämisestä ja ylläpidosta, mutta palvelua kehitetään yhdessä Finnan yhteistyökumppanien kanssa. Finnan sisällöistä vastaavat palveluun osallistuvat <a href='https://www.finna.fi/Content/Organisations'>arkistot, kirjastot ja museot</a>. Finna on osa opetus- ja kulttuuriministeriön <a href='http://www.kdk.fi/fi/tietoa-hankkeesta'>Kansallinen digitaalinen kirjasto</a> -hanketta.
 </p>
 <h3>Finnan ohjelmisto</h3>
 <p>Finna on toteutettu VuFind- ja muilla avoimen lähdekoodin ohjelmistoilla, ja sen lähdekoodi on kaikkien halukkaiden hyödynnettävissä. Lue <a href="http://www.kdk.fi/fi/asiakasliittyma/ohjelmiston-kehittaeminen" target="_blank">lisätietoa ohjelmiston kehittämisestä</a>.</p>

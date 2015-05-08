@@ -10,9 +10,9 @@
 <div class="clear"></div>
 <div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
 <div class="finnafitext">
-<p>Finna.fi ger tillgång till material i Finlands <a href="{$url}/Content/Organisations">museer, bibliotek och arkiv</a>. </p> 
-<p>Du kan bläddra bland och läsa <a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>material som finns på nätet</a>.</p>
-<p>Du kan också bl.a. <a href="{$url}/MyResearch/Home">förnya lån och reservera material</a> i olika bibliotek på ett och samma ställe.</p>
+<p>Finna.fi ger tillgång till material i Finlands <a href="https://www.finna.fi/Content/Organisations?lng=sv">museer, bibliotek och arkiv</a>. </p> 
+<p>Du kan bläddra bland och läsa <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list&lng=sv'>material som finns på nätet</a>.</p>
+<p>Du kan också bl.a. <a href="https://www.finna.fi/MyResearch/Home?lng=sv">förnya lån och reservera material</a> i olika bibliotek på ett och samma ställe.</p>
 <p>I Finna hittar du allt tillgängligt material som de medverkande organisationerna erbjuder med samma sökning.</p>
 </div>
 <div class="clear"></div>
@@ -45,7 +45,7 @@
 <li>{translate text=$target prefix='source_'}</li>
 {/foreach}
 </ul>
-<p>Om du har det aktuella bibliotekets lånekort kan du använda tjänsterna genom att <a href="{$url}/MyResearch/Home">logga in på Finna</a>.</p>
+<p>Om du har det aktuella bibliotekets lånekort kan du använda tjänsterna genom att <a href="https://www.finna.fi/MyResearch/Home?lng=sv">logga in på Finna</a>.</p>
 <p>Man kan ansöka om behörighet till vissa <em>arkivmaterial</em> via länkarna i posten.</p>
 <p>I framtiden kommer man också att kunna använda <em>museernas</em> digitala tjänster i Finna.</p>
 </div>
@@ -61,7 +61,7 @@
 
 <h3>Finnas ansvariga parter</h3>
 <p>
-Nationalbiblioteket ansvarar för utvecklingen och administrationen av Finna, men tjänsten utvecklas tillsammans med Finnas samarbetspartner. De <a href='{$url}/Content/Organisations'>arkiv, bibliotek och museer</a> som medverkar i Finna ansvarar för innehållet. Finna är en del av undervisnings- och kulturministeriets projekt <a href='http://www.kdk.fi/sv/information-om-projektet'>Det nationella digitala biblioteket</a> (NDL).
+Nationalbiblioteket ansvarar för utvecklingen och administrationen av Finna, men tjänsten utvecklas tillsammans med Finnas samarbetspartner. De <a href='https://www.finna.fi/Content/Organisations?lng=sv'>arkiv, bibliotek och museer</a> som medverkar i Finna ansvarar för innehållet. Finna är en del av undervisnings- och kulturministeriets projekt <a href='http://www.kdk.fi/sv/information-om-projektet'>Det nationella digitala biblioteket</a> (NDL).
 </p>
 <h3>Finnas program</h3>
 <p>Finna har skapats med hjälp av VuFind och andra program med öppen källkod, och Finnas källkod får användas fritt. Läs <a href="http://www.kdk.fi/fi/asiakasliittyma/ohjelmiston-kehittaeminen" target="_blank">mer om utvecklingen av programmet</a>.</p>

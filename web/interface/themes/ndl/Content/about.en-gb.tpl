@@ -10,9 +10,9 @@
 <div class="clear"></div>
 <div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
 <div class="finnafitext">
-<p>Finna.fi provides free access to material from Finnish <a href="{$url}/Content/Organisations">museums, libraries and archives</a>. </p> 
-<p>You can browse and read material <a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>available on the web</a>.</p>
-<p>You can also <a href="{$url}/MyResearch/Home">renew loans and reserve material</a> from various libraries in one place.</p>
+<p>Finna.fi provides free access to material from Finnish <a href="https://www.finna.fi/Content/Organisations?lng=en-gb">museums, libraries and archives</a>. </p> 
+<p>You can browse and read material <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list&lng=en-gb'>available on the web</a>.</p>
+<p>You can also <a href="https://www.finna.fi/MyResearch/Home?lng=en-gb">renew loans and reserve material</a> from various libraries in one place.</p>
 <p>Finna.fi is your one stop destination for searching the freely available material provided by the partner organisations.</p>
 </div>
 <div class="clear"></div>
@@ -45,7 +45,7 @@
 <li>{translate text=$target prefix='source_'}</li>
 {/foreach}
 </ul>
-<p>After <a href="{$url}/MyResearch/Home">logging in to Finna</a>, these functions are available to you with a library card for the library in question.</p>
+<p>After <a href="https://www.finna.fi/MyResearch/Home?lng=en-gb">logging in to Finna</a>, these functions are available to you with a library card for the library in question.</p>
 <p>An application for browsing <em>archive</em> material, that requires permission to use, can be made through links found in Finna content data.</p>
 <p>In the future, digital <em>museum</em> services will also be available in Finna.</p>
 </div>
@@ -62,7 +62,7 @@
 
 <h3>Organisations responsible for Finna</h3>
 <p>
-The National Library of Finland bears the main responsibility for developing and maintaining Finna, but the actual development work is carried out together with Finna partners. The <a href='{$url}/Content/Organisations'>archives, libraries and museums</a> involved in Finna are responsible for its content. Finna is part of the <a href='http://www.kdk.fi/en/information-on-the-project'>National Digital Library (NDL)</a> project of the Ministry of Education and Culture.
+The National Library of Finland bears the main responsibility for developing and maintaining Finna, but the actual development work is carried out together with Finna partners. The <a href='https://www.finna.fi/Content/Organisations?lng=en-gb'>archives, libraries and museums</a> involved in Finna are responsible for its content. Finna is part of the <a href='http://www.kdk.fi/en/information-on-the-project'>National Digital Library (NDL)</a> project of the Ministry of Education and Culture.
 </p>
 <h3>Finna software</h3>
 <p>Finna has been constructed using VuFind and other open-source software, and its source code is freely available to all. Read <a href="http://www.kdk.fi/en/public-interface/software-development" target="_blank">more about the development of the software</a>.</p>
