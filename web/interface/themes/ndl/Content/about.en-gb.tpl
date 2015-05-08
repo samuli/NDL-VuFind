@@ -1,31 +1,76 @@
 <!-- START of: Content/about.en-gb.tpl -->
 
-{assign var="title" value="About Finna"}
+{assign var="title" value="What is Finna?"}
+<div class="sectionsWithHeadings aboutpage">
 {capture append="sections"}
-<h2>The treasures of Finland’s archives, libraries and museums with a single search.</h2>
+<div class="grid_24 grid_24_inner">
+<div class="grid_18 finnafititle">
+	<img src="{$url}/interface/themes/ndl/images/finna-logo_black_notext.png" /><h2>Finna.fi</h2>
+</div>
+<div class="clear"></div>
+<div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
+<div class="finnafitext">
+<p>Finna.fi provides free access to material from Finnish <a href="{$url}/Content/Organisations">museums, libraries and archives</a>. </p> 
+<p>You can browse and read material <a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>available on the web</a>.</p>
+<p>You can also <a href="{$url}/MyResearch/Home">renew loans and reserve material</a> from various libraries in one place.</p>
+<p>Finna.fi is your one stop destination for searching the freely available material provided by the partner organisations.</p>
+</div>
+<div class="clear"></div>
+{/capture}
+{capture append="sections"}
+<div class="grid_24 grid_24_inner">
+<div class="grid_20 otherfinnasites">
+	<h2>Other Finna search services</h2>
+    <p>Finna is a search service entity containing several sites in addition to the nationwide finna.fi site. The content of organisation-specific sites is usually limited to the material of those individual organisations.</p>
+</div>
+<div class="clear"></div>
+<div class="otherfinnascreenshots">
+{include file="Content/finna-sites.tpl"}
+</div>
+<div class="clear"></div>
+<div class="grid_20 otherfinnasites otherfinnasites_comment">
+    <p>The <strong>university of applied sciences and university library Finna sites</strong> contain international, scientific and electronic library material compiled and provided by an outsourced party for a fee. Most of this material is limited to students and staff at the institute of higher education in question.</p>
+</div>
 
-<p class="ingress">Finna is a user-friendly online service which provides access to the collections and services of archives, libraries and museums.</p>
+</div>
+<div class="clear"></div>
+{/capture}
+{capture append="sections"}
+<div class="grid_20">
+<h2>Finna is much more than a search service</h2>
 
-<p>The test version of Finna was published in December 2012. Finna is under constant development, and new functionalities are being added. New organisations continue to join Finna in stages. The test version includes materials from the following organisations:</p>
+<p>Through Finna, you can not only search for material, but also gain access to it. Currently, the following <em>libraries</em> provide functions for reserving material, renewing loans and other activities in Finna:</p>
+<ul>
+{foreach from=$loginTargets item=target}
+<li>{translate text=$target prefix='source_'}</li>
+{/foreach}
+</ul>
+<p>After <a href="{$url}/MyResearch/Home">logging in to Finna</a>, these functions are available to you with a library card for the library in question.</p>
+<p>An application for browsing <em>archive</em> material, that requires permission to use, can be made through links found in Finna content data.</p>
+<p>In the future, digital <em>museum</em> services will also be available in Finna.</p>
+</div>
+{/capture}
+{capture append="sections"}
+<div class="grid_20">
+<h2>About Finna</h2>
 
-<p>
-	<ul>
-	  <li>The Library of the University of Jyväskylä</li>
-	  <li>The National Archives of Finland</li>
-	  <li>The National Library of Finland</li>
-	  <li>Lusto - the Finnish Forest Museum and the other museums participating in the Kantapuu database (Nurmes Town Museum, Pielinen Museum, the Ilomantsi Museum Foundation, the Forestry Museum of Lapland and the Verla Mill Museum.</li>
-	  <li>National Board of Antiquities</li>
-          <li>Tuusula Art Museum</li>
-	  <li>The Finnish National Gallery</li>
-	</ul>
+<h3>User rights</h3>
+<p>Finna’s catalogue data are freely available, but statutory or contractual restrictions may apply to the digital images and back cover texts displayed in Finna, as well as to the digital content and metadata linked to in Finna. Read <a href="{$url}/Content/terms_conditions#terms">more about user rights</a>.</p>
+<h3>Development of Finna</h3>
+<p>Finna will be developed gradually as new organisations join the service. The beta version of the service was launched in December 2012 and the first official version in October 2013. If you cannot find the information that you are searching for in Finna, check back later to see if it has been added. 
 </p>
 
-<p>Finna is intended for all seekers of information and inspiration. Through the online service, you can easily search for material such as images, documents, newspapers, academic research articles, videos and sound recordings on any topic. The materials are all available through the same service, and the user does not have to know beforehand which organisation originally produced the material. In future, it will be possible to use the digital services of archives, libraries and museums through Finna.</p>
+<h3>Organisations responsible for Finna</h3>
+<p>
+The National Library of Finland bears the main responsibility for developing and maintaining Finna, but the actual development work is carried out together with Finna partners. The <a href='{$url}/Content/Organisations'>archives, libraries and museums</a> involved in Finna are responsible for its content. Finna is part of the <a href='http://www.kdk.fi/en/information-on-the-project'>National Digital Library (NDL)</a> project of the Ministry of Education and Culture.
+</p>
+<h3>Finna software</h3>
+<p>Finna has been constructed using VuFind and other open-source software, and its source code is freely available to all. Read <a href="http://www.kdk.fi/en/public-interface/software-development" target="_blank">more about the development of the software</a>.</p>
 
-<p>The National Library of Finland established Finna in cooperation with archives, libraries and museums, and continues as its main administrator. Finna is built on VuFind and other open source programmes.</p>
-
-<p>Finna is part of the National Digital Library (NDL) project of the Ministry of Education and Culture. For more information on the NDL project and Finna, please visit the project website at  <a href="http://www.kdk.fi/en">www.kdk.fi/en</a></p>
+</div>
+</div>
 {/capture}
 {include file="$module/content.tpl" title=$title sections=$sections}
+</div>
 
 <!-- END of: Content/about.en-gb.tpl -->
