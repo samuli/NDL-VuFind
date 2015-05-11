@@ -28,7 +28,7 @@
           <span class="value">{$path}/MetaLib/Home</span></a>
         </li>
         {/if}
-         <li>
+        <li>
           <a class="big" href="#">
           <span>{translate text="Browse the Catalog"}</span>
           <span>{translate text="catalog_desc"}</span>
@@ -44,13 +44,27 @@
   </dl>
 </li>
 
-<li class="menuAbout menuAbout_{$userLang}"><a href="{$path}/Content/Organisations" role="menuitem">{translate text="Organisations"}</a></li>
-
-<li class="menuAbout menuAbout_{$userLang}"><a href="{$path}/Content/about" role="menuitem"><span>{translate text="About Finna"}</span></a></li>
+<li class="menuAbout menuAbout_{$userLang}">
+  <dl class="dropdown dropdownStatic stylingDone">
+    <dt><a href="#">{translate text='navigation_about_finna'}</a></dt>
+    <dd>
+      <ul class="subNav" role="menu">
+        <li><a class="big" href="#">
+          <span>{translate text="navigation_organizations"}</span>
+          <span>{translate text="navigation_organizations_desc"}</span>
+          <span class="value">{$path}/Content/Organisations</span></a>
+        </li>
+        <li><a class="big" href="#">
+          <span>{translate text="navigation_about_finna"}</span>
+          <span>{translate text="navigation_about_finna_desc"}</span>
+          <span class="value">{$path}/Content/about</span></a>
+        </li>
+      </ul>
+    </dd>
+  </dl>
+</li>
 
 <li class="menuHelp menuHelp_{$userLang}"><a href="{$path}/Content/searchhelp" role="menuitem"><span>{translate text='navigation_search_tips'}</span></a></li>
-
-<li class="menuFeedback"><a href="{$path}/Feedback/Home" role="menuitem"><span>{translate text='navigation_feedback'}</span></a></li>
 
 {include file="login-element.tpl"}
 

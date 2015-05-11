@@ -65,7 +65,7 @@
 The National Library of Finland bears the main responsibility for developing and maintaining Finna, but the actual development work is carried out together with Finna partners. The <a href='https://www.finna.fi/Content/Organisations?lng=en-gb'>archives, libraries and museums</a> involved in Finna are responsible for its content. Finna is part of the <a href='http://www.kdk.fi/en/information-on-the-project'>National Digital Library (NDL)</a> project of the Ministry of Education and Culture.
 </p>
 <h3>Finna software</h3>
-<p>Finna has been constructed using VuFind and other open-source software, and its source code is freely available to all. Read <a href="http://www.kdk.fi/en/public-interface/software-development" target="_blank">more about the development of the software</a>.</p>
+<p>Finna has been constructed using VuFind and other open-source software, and its source code is freely available to all. Read <a href="http://www.kdk.fi/en/public-interface/software-development">more about the development of the software</a>.</p>
 
 </div>
 </div>

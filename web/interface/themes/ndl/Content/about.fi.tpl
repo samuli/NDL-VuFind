@@ -65,7 +65,7 @@
 Kansalliskirjasto vastaa Finnan kehittämisestä ja ylläpidosta, mutta palvelua kehitetään yhdessä Finnan yhteistyökumppanien kanssa. Finnan sisällöistä vastaavat palveluun osallistuvat <a href='https://www.finna.fi/Content/Organisations'>arkistot, kirjastot ja museot</a>. Finna on osa opetus- ja kulttuuriministeriön <a href='http://www.kdk.fi/fi/tietoa-hankkeesta'>Kansallinen digitaalinen kirjasto</a> -hanketta.
 </p>
 <h3>Finnan ohjelmisto</h3>
-<p>Finna on toteutettu VuFind- ja muilla avoimen lähdekoodin ohjelmistoilla, ja sen lähdekoodi on kaikkien halukkaiden hyödynnettävissä. Lue <a href="http://www.kdk.fi/fi/asiakasliittyma/ohjelmiston-kehittaeminen" target="_blank">lisätietoa ohjelmiston kehittämisestä</a>.</p>
+<p>Finna on toteutettu VuFind- ja muilla avoimen lähdekoodin ohjelmistoilla, ja sen lähdekoodi on kaikkien halukkaiden hyödynnettävissä. Lue <a href="http://www.kdk.fi/fi/asiakasliittyma/ohjelmiston-kehittaeminen">lisätietoa ohjelmiston kehittämisestä</a>.</p>
 </div>
 </div>
 {/capture}

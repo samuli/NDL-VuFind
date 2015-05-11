@@ -64,7 +64,7 @@
 Nationalbiblioteket ansvarar för utvecklingen och administrationen av Finna, men tjänsten utvecklas tillsammans med Finnas samarbetspartner. De <a href='https://www.finna.fi/Content/Organisations?lng=sv'>arkiv, bibliotek och museer</a> som medverkar i Finna ansvarar för innehållet. Finna är en del av undervisnings- och kulturministeriets projekt <a href='http://www.kdk.fi/sv/information-om-projektet'>Det nationella digitala biblioteket</a> (NDL).
 </p>
 <h3>Finnas program</h3>
-<p>Finna har skapats med hjälp av VuFind och andra program med öppen källkod, och Finnas källkod får användas fritt. Läs <a href="http://www.kdk.fi/fi/asiakasliittyma/ohjelmiston-kehittaeminen" target="_blank">mer om utvecklingen av programmet</a>.</p>
+<p>Finna har skapats med hjälp av VuFind och andra program med öppen källkod, och Finnas källkod får användas fritt. Läs <a href="http://www.kdk.fi/fi/asiakasliittyma/ohjelmiston-kehittaeminen">mer om utvecklingen av programmet</a>.</p>
 </div>
 </div>
 {/capture}
