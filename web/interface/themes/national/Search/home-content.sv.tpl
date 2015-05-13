@@ -2,11 +2,13 @@
 
 <div id="introduction" class="section clearfix">
   <div class="content">
-    <div class="grid_14">
+    <div class="grid_14 finnafifrontpage">
       <div id="siteDescription">
         <h2>För alla som söker information och upplevelser</h2>
-        <p>Finna är en sökportal som samlar material från olika arkiv, bibliotek och museer. Innehållet utökas kontinuerligt.
-</p><p>I Finna kan du också bläddra och läsa i flera hundratusen<a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'> e-resurser.</a></p>
+        <p>Finna.fi innehåller redan {$indexRecordCount} poster.<br />
+        <a href="{$path}/Content/Organisations">Vems material finns i finna.fi?</a></p>
+        <p>I Finna kan du ta del av det innehåll som är tillgängligt via nätet, förnya lån, beställa material och mycket annat.<br />
+        <a href="{$path}/Content/about">{translate text="navigation_about_finna"}</a></p>
       </div>
     </div>
     <div class="grid_10 push_right">

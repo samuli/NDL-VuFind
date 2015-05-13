@@ -2,10 +2,13 @@
 
 <div id="introduction" class="section clearfix">
   <div class="content">
-    <div class="grid_14">
+    <div class="grid_14 finnafifrontpage">
       <div id="siteDescription">
        <h2>For seekers of information and inspiration</h2>
-        <p>The Finna information search service brings together the collections of Finnish archives, libraries and museums.</p><p> New content is continuously added to the service, which can also be used to browse and read from thousands of <a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>electronic resources.</a></p>
+        <p>There are already {$indexRecordCount} entries at finna.fi.<br />
+        <a href="{$path}/Content/Organisations">Whose content can you find at finna.fi?</a></p>
+        <p>At Finna, you can browse content available on the web, renew loans, order material, and do much more.<br />
+        <a href="{$path}/Content/about">{translate text="navigation_about_finna"}</a></p>
       </div>
     </div>
     <div class="grid_10 push_right">

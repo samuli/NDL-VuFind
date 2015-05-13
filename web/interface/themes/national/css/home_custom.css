@@ -7,7 +7,7 @@
     float: none;
 }
 
-/*** Header: Blurb */
+/*** Header */
 
 #blurb {
     margin:20px 0 0;
@@ -34,6 +34,26 @@
     padding-bottom:0;
 }
 
+.header-home #searchFormHeader {
+    padding-top: 60px;
+}
+
+@media only screen and (max-width: 1020px) {
+   .header-home #searchFormHeader {
+       padding-top: 45px !important;
+   }
+}
+
+#searchFormHeader #searchFormContainer {
+    padding-bottom: 0;
+}
+
+.searchFormOuterWrapper .advancedLinkWrapper {
+	margin: 4px 0 2px;
+	display: inline-block;
+	height: 16px;
+}
+
 /* Section: Introduction */
 
 .section .content {
@@ -53,7 +73,18 @@
 .section#introduction #siteDescription,
 #topSearches {
     border-right: none;
-    padding: 25px 60px 20px 0;
+    padding: 25px 50px 20px 10px;
+}
+
+.finnafifrontpage #siteDescription p {
+   font-weight: normal;
+   font-size: 16px;
+   line-height: 1.2em; 
+   padding-bottom: 14px;
+}
+
+.finnafifrontpage #siteDescription p a {
+   font-weight: bold;
 }
 
 .section#introduction .grid_10 {

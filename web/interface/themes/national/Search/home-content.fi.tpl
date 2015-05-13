@@ -2,11 +2,13 @@
 
 <div id="introduction" class="section clearfix">
   <div class="content">
-    <div class="grid_14">
+    <div class="grid_14 finnafifrontpage">
       <div id="siteDescription">
         <h2>Tietoa tarvitseville ja elämyksiä etsiville</h2>
-        <p>Finna on tiedonhakupalvelu, joka kokoaa yhteen aineistoja arkistoista, kirjastoista ja museoista. Sisältö täydentyy jatkuvasti uusilla aineistoilla.
-</p><p>Palvelun kautta pääset selaamaan ja lukemaan myös satoja tuhansia <a href='{$url}/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>sähköisiä aineistoja.</a></p>
+        <p>Finna.fi:stä löydät jo {$indexRecordCount} aineistotietoa.<br />
+        <a href="{$path}/Content/Organisations">Kenen aineistoja on finna.fi:ssä?</a></p>
+        <p>Finnassa voit katsella verkossa saatavilla olevia sisältöjä, uusia lainoja, tilata aineistoja, ja paljon muuta.<br />
+        <a href="{$path}/Content/about">{translate text="navigation_about_finna"}</a></p>
       </div>
     </div>
     <div class="grid_10 push_right">

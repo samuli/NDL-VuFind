@@ -74,6 +74,7 @@
 
     <div class="searchFormOuterWrapper">
       <div id="480mobileSecond" class="advancedLinkWrapper{if $pciEnabled} PCIEnabled{/if}{if $metalibEnabled} MetaLibEnabled{/if}">
+      &nbsp;
       {if ($module == 'Search' && $action == 'Home') || $module == 'Browse' }
         {if $module == 'Browse'}
             <a href="{$path}/Search/Home" class="small homeLink">{translate text="Local Search"}</a>
@@ -85,7 +86,7 @@
          {if $metalibEnabled}
             <a href="{$path}/MetaLib/Home" class="small metalibLink">{translate text="MetaLib Search"}</a>
          {/if}
-      {/if}     
+      {/if}
       </div>
     </div>
 
