@@ -3,19 +3,20 @@
 {assign var="title" value="What is Finna?"}
 <div class="sectionsWithHeadings aboutpage">
 {capture append="sections"}
-<div class="grid_24 grid_24_inner">
-<div class="grid_18 finnafititle">
+<div class="grid_24 grid_24_inner finnafiwrapper">
+  <div class="grid_18 finnafititle">
 	<img src="{$url}/interface/themes/ndl/images/finna-logo_black_notext.png" /><h2>Finna.fi</h2>
+  </div>
+  <div class="clear"></div>
+  <div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
+  <div class="finnafitext">
+    <p>Finna.fi provides free access to material from Finnish <a href="https://www.finna.fi/Content/Organisations?lng=en-gb">museums, libraries and archives</a>. </p> 
+    <p>You can browse and read material <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list&lng=en-gb'>available on the web</a>.</p>
+    <p>You can also <a href="https://www.finna.fi/MyResearch/Home?lng=en-gb">renew loans and reserve material</a> from various libraries in one place.</p>
+    <p>Finna.fi is your one stop destination for searching the freely available material provided by the partner organisations.</p>
+  </div>
+  <div class="clear"></div>
 </div>
-<div class="clear"></div>
-<div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
-<div class="finnafitext">
-<p>Finna.fi provides free access to material from Finnish <a href="https://www.finna.fi/Content/Organisations?lng=en-gb">museums, libraries and archives</a>. </p> 
-<p>You can browse and read material <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list&lng=en-gb'>available on the web</a>.</p>
-<p>You can also <a href="https://www.finna.fi/MyResearch/Home?lng=en-gb">renew loans and reserve material</a> from various libraries in one place.</p>
-<p>Finna.fi is your one stop destination for searching the freely available material provided by the partner organisations.</p>
-</div>
-<div class="clear"></div>
 {/capture}
 {capture append="sections"}
 <div class="grid_24 grid_24_inner">
@@ -51,7 +52,7 @@
 </div>
 {/capture}
 {capture append="sections"}
-<div class="grid_20">
+<div class="grid_20 grid_20_inner">
 <h2>About Finna</h2>
 
 <h3>User rights</h3>

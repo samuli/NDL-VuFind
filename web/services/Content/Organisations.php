@@ -113,7 +113,7 @@ class Organisations extends Action
             );
         }
 
-        $file = 'Organisations.tpl';
+        $file = 'Organisations.' . $interface->getLanguage() . '.tpl';
         $interface->setPageTitle(translate("content-organisations"));
         $interface->setTemplate($file);
         $interface->assign('organisations', $res);

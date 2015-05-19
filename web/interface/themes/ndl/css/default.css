@@ -8154,6 +8154,9 @@ span#showDate {
 }
 
 /* Content pages special styling */
+.module-Content #main .sectionsWithHeadings.aboutpage .grid_24_inner.finnafiwrapper {
+    padding-bottom: 0;
+}
 .aboutpage .finnafititle img {
     margin: 3px 19px 20px -3px;
     float:left;
@@ -8229,23 +8232,44 @@ span#showDate {
    margin: 1px 0 0;
    line-height: 1.1;
 }
-.module-Content #main .sectionsWithHeadings .contentSection:first-child h2:first-child {
-   margin-top: 1.1em;
+.module-Content #main .sectionsWithHeadings .contentSection h2:first-child {
+   margin-top: 1.25em;
+}
+.module-Content #main .sectionsWithHeadings .contentSection:last-child .content {
+   padding-bottom: 1.25em;
+}
+.module-Content #main .sectionsWithHeadings .contentHeader {
+   margin-bottom: 3px;
 }
 .module-Content #main .sectionsWithHeadings .contentSection p, 
 .module-Content #main .sectionsWithHeadings .contentSection li {
 	font-size: 15px;
 }
+.module-Content #main .contentSection .hyphenatelongwords {
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+}
 .module-Content #main .sectionsWithHeadings {
-	margin-bottom: -48px;
+	margin-bottom: -58px;
 }
 .module-Content #main .sectionsWithHeadings .grid_18, 
+.module-Content #main .sectionsWithHeadings .grid_20_inner, 
 .module-Content #main .sectionsWithHeadings .grid_24_inner {
 	padding-bottom: 20px;
 }
 .module-Content #main .sectionsWithHeadings .content .finnafititle, 
 .module-Content #main .sectionsWithHeadings .content .otherfinnasites {
    padding-bottom: 0;
+}
+.module-Content #main .sectionsWithHeadings .content .finnafititle {
+   margin-top: 30px;
+}
+.module-Content .sectionsWithHeadings .contentSection {
+   padding-bottom: 20px;
+   margin-left: -12px;
 }
 /* tablet */
 @media only screen and (max-width: 1020px) {

@@ -25,7 +25,6 @@ a, .ui-widget-content a {
 .menuLogin {
     border-color: #eee;
 }
-
 .lang a {
     color: #fff;
 }
@@ -35,6 +34,91 @@ a, .ui-widget-content a {
 #header .lang li {
     border-color: #eee;
 }
+
+/** Content / whoparticipates (organisations) begin  **/
+.module-Content #main .whoparticipates .contentSection .content .bodytextwrapper p, 
+.module-Content #main .whoparticipates .contentSection .content a.link {
+    font-size: 15px !important;
+}
+.module-Content #main .whoparticipates .contentSection .content .bodytextwrapper p {
+    max-width: 790px;
+	margin-bottom: 8px;
+}
+.module-Content #main .whoparticipates .contentSection .content .organisationContainer li {
+    font-size: 13px;
+}
+.module-Content #main .whoparticipates .contentSection .content a.link,
+.module-Content #main .whoparticipates .contentSection .forWhomWrapper .domains p {
+	margin-left: 3px;
+}
+.organisationWrapper, .forWhomWrapper {
+	margin: 0 3px;	
+}
+.organisationWrapper h4, .forWhomWrapper h4 {
+    font-size: 15px;
+}
+.organisationWrapper h4, .organisationWrapper h3 {
+    margin-left: 5px;
+}
+.forWhomWrapper h4, .forWhomWrapper h3 {
+    margin-left: 3px;
+}
+.forWhomWrapper a.link {
+    display: block;
+}
+.forWhomWrapper a.link .magnifier {
+    display: inline-block;
+    width: 22px;
+    height: 35px;
+	background-image: url("../../ndl/images/icons16-24px-02_turquoise.png");
+    background-position: 5px -946px;
+}
+.organisationContainer {
+	margin: 15px 0 6px 0;
+}
+.forWhomContainer {
+	margin: 6px 0 -14px -3px !important;
+}
+.organisationContainer .organisations, .forWhomContainer .domains {
+    margin:0 !important;
+	padding:0px 5px 0px 0px;
+}
+ul.organisations li, .forWhomContainer .domains p, .forWhomContainer .domains a.link  {
+    clear: both;
+    overflow: auto;
+}
+ul.organisations li {
+    margin: 0;
+    margin-top: 1px;
+	padding: 0 5px;
+    list-style-type: none;
+    list-style-position: outside;
+	letter-spacing:0.2px;
+}
+ul.organisations li:nth-child(even) {
+	background:#F5F5F5;		
+}
+ul.organisations li div.name {
+    float: left;
+    margin-top: 6px;
+	margin-bottom:6px;
+	max-width: 84%;
+}
+ul.organisations li div.link {
+    float: right;
+}
+ul.organisations li div.link a {
+	background-image: url("../../ndl/images/icons16-24px-02_turquoise.png");
+    width: 30px;
+    height: 35px;
+}
+ul.organisations li div.link a {
+    background-position: 5px -941px;
+    display: block;
+    margin-left: 3px;
+}
+/** end of Content / whoparticipates (organisations)  **/
+
 @media only screen and (max-width: 1020px) {
 	.menuLogin {
         border-left: 0 none;
@@ -43,10 +127,10 @@ a, .ui-widget-content a {
         padding-left: 0;
     }
 	.organisationContainer {
-		margin:0px !important;
+		margin: 0 !important;
 	}
-	.organisationWrapper {
-		margin-left:3px !important;	
+	.organisationWrapper, .forWhomWrapper {
+		margin-left: 3px !important;	
 		margin-right:3px !important;
 	}
 }
@@ -54,14 +138,24 @@ a, .ui-widget-content a {
     #headerMenu {
 		max-width: 350px;
     }
-	.grid_8.organisationWrapper {
+	.forWhomContainer {
+		margin: 0 0 0 5px !important;
+	}
+	.grid_7.organisationWrapper, .grid_8.organisationWrapper, .grid_9.organisationWrapper, .grid_10.organisationWrapper, .grid_7.forWhomWrapper, .grid_8.forWhomWrapper, .grid_9.forWhomWrapper, .grid_10.forWhomWrapper {
 		width:100% !important;
-		clear:both;	
-		margin-left:0px !important;
+		clear:both;
 		margin-right:0px !important;
+    }
+	.grid_7.organisationWrapper, .grid_8.organisationWrapper, .grid_9.organisationWrapper, .grid_10.organisationWrapper {
+		margin-left:0px !important;
 		margin-bottom:30px;
 	}
+    .grid_7.forWhomWrapper, .grid_8.forWhomWrapper, .grid_9.forWhomWrapper, .grid_10.forWhomWrapper {
+        margin-left: -5px !important;
+        margin-bottom: 0;
+    }
 }
+
 #headerMenu ul li span {
     color: #444;
 }
@@ -127,9 +221,6 @@ span.dynatree-node a {
     background-image: url("../../national/images/header_background_4.jpg");
 }
 
-.organsationsTable, .organisationsTable th, .organisationsTable td {
-	vertical-align:top;
-}
 .tableHeaders {
 	font-size:1.2em;
 	letter-spacing:0.3px;
@@ -143,52 +234,6 @@ span.dynatree-node a {
 
 #mapSearch {
 	display:none;
-}
-
-
-/** Content/organisations  **/
-.organisationContainer {
-	margin:0px;	
-}
-.organisations {
-    margin:0 !important;
-	padding:0px 5px 0px 0px;
-}
-.organisationWrapper h4 {
-	margin-left:5px;	
-}
-.organisationWrapper {
-	margin:0px 3px;	
-}
-ul.organisations li {
-    clear: both;
-    overflow: auto;
-    list-style-type: none;
-    margin: 0;
-    margin-top: 1px;
-	padding:0px 5px;
-    list-style-position: outside;
-	letter-spacing:0.2px;
-}
-ul.organisations li:nth-child(even) {
-	background:#F5F5F5;		
-}
-.organisations li div.name {
-    float: left;
-    margin-top: 6px;
-	margin-bottom:6px;
-	max-width: 84%;
-}
-.organisations li div.link {
-    float: right;
-}
-.organisations li div.link a {
-    background-image: url("../../ndl/images/icons16-24px-02_turquoise.png");
-    background-position: 5px -941px;
-    display: block;
-    width: 30px;
-    height: 35px;
-    margin-left: 3px;
 }
 
 .resultHoldingsContainer .holdingsPlaceHold {

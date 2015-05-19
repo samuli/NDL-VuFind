@@ -3,19 +3,20 @@
 {assign var="title" value="Vad är Finna?"}
 <div class="sectionsWithHeadings aboutpage">
 {capture append="sections"}
-<div class="grid_24 grid_24_inner">
-<div class="grid_18 finnafititle">
-	<img src="{$url}/interface/themes/ndl/images/finna-logo_black_notext.png" /><h2>Finna.fi</h2>
+<div class="grid_24 grid_24_inner finnafiwrapper">
+  <div class="grid_18 finnafititle">
+    <img src="{$url}/interface/themes/ndl/images/finna-logo_black_notext.png" /><h2>Finna.fi</h2>
+  </div>
+  <div class="clear"></div>
+  <div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
+  <div class="finnafitext">
+    <p>Finna.fi ger tillgång till material i Finlands <a href="https://www.finna.fi/Content/Organisations?lng=sv">museer, bibliotek och arkiv</a>. </p> 
+    <p>Du kan bläddra bland och läsa <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list&lng=sv'>material som finns på nätet</a>.</p>
+    <p>Du kan också bl.a. <a href="https://www.finna.fi/MyResearch/Home?lng=sv">förnya lån och reservera material</a> i olika bibliotek på ett och samma ställe.</p>
+    <p>I Finna hittar du allt tillgängligt material som de medverkande organisationerna erbjuder med samma sökning.</p>
+  </div>
+  <div class="clear"></div>
 </div>
-<div class="clear"></div>
-<div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
-<div class="finnafitext">
-<p>Finna.fi ger tillgång till material i Finlands <a href="https://www.finna.fi/Content/Organisations?lng=sv">museer, bibliotek och arkiv</a>. </p> 
-<p>Du kan bläddra bland och läsa <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list&lng=sv'>material som finns på nätet</a>.</p>
-<p>Du kan också bl.a. <a href="https://www.finna.fi/MyResearch/Home?lng=sv">förnya lån och reservera material</a> i olika bibliotek på ett och samma ställe.</p>
-<p>I Finna hittar du allt tillgängligt material som de medverkande organisationerna erbjuder med samma sökning.</p>
-</div>
-<div class="clear"></div>
 {/capture}
 {capture append="sections"}
 <div class="grid_24 grid_24_inner">
@@ -51,7 +52,7 @@
 </div>
 {/capture}
 {capture append="sections"}
-<div class="grid_20">
+<div class="grid_20 grid_20_inner">
 <h2>Om Finna</h2>
 
 <h3>Rätt att använda materialet</h3>

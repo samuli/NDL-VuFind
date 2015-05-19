@@ -1,10 +1,10 @@
-<!-- START of: Content/Organisations.fi.tpl -->
+<!-- START of: Content/organisationlist.tpl -->
 
-{assign var="title" value="organisations_topic"|translate"}
-{capture append="sections"}
-
-<p class="grid_18">{translate text="organisations_text"}</p>
-<div class="grid_24 organisationContainer">
+<div class="grid_24">
+<h2>{translate text="organisations_topic"}</h2>
+</div>
+<div class="grid_24 bodytextwrapper"><p>{translate text="organisations_text"}</p></div>
+<div class="grid_24 grid_24_inner organisationContainer">
 <div class="grid_8 organisationWrapper">
 <h4> {translate text="Archive_plural"} ({$cnt.arc})</h4>
 <ul class="organisations">
@@ -31,7 +31,4 @@
 </div>
 </div>
 
-{/capture}
-{include file="$module/content.tpl" title=$title sections=$sections}
-
-<!-- END of: Content/Organisations.fi.tpl -->
+<!-- END of: Content/organisationlist.tpl -->

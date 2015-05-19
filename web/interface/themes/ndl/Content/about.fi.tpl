@@ -3,19 +3,20 @@
 {assign var="title" value="Mikä Finna on?"}
 <div class="sectionsWithHeadings aboutpage">
 {capture append="sections"}
-<div class="grid_24 grid_24_inner">
-<div class="grid_18 finnafititle">
+<div class="grid_24 grid_24_inner finnafiwrapper">
+  <div class="grid_18 finnafititle">
 	<img src="{$url}/interface/themes/ndl/images/finna-logo_black_notext.png" /><h2>Finna.fi</h2>
+  </div>
+  <div class="clear"></div>
+  <div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
+  <div class="finnafitext">
+    <p>Finna.fi tuo Suomen <a href="https://www.finna.fi/Content/Organisations">museoiden, kirjastojen ja arkistojen</a> aineistot kaikkien saataville. </p> 
+    <p>Pääset selaamaan ja lukemaan <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>verkossa saatavilla</a> olevia aineistoja.</p>
+    <p>Voit myös mm. <a href="https://www.finna.fi/MyResearch/Home">uusia lainoja ja tehdä varauksia</a> eri kirjastojen aineistoihin yhdestä ja samasta paikasta.</p>
+    <p>Löydät finna.fi:stä samalla haulla kaikille avoimet aineistot, jotka mukana olevat organisaatiot tarjoavat.</p>
+  </div>
+  <div class="clear"></div>
 </div>
-<div class="clear"></div>
-<div class="finnafiimage responsiveColumns"><img src="{$url}/interface/themes/ndl/images/finnafrontpages/finnafi.jpg" id="finnafiscreenshot"/></div>
-<div class="finnafitext">
-<p>Finna.fi tuo Suomen <a href="https://www.finna.fi/Content/Organisations">museoiden, kirjastojen ja arkistojen</a> aineistot kaikkien saataville. </p> 
-<p>Pääset selaamaan ja lukemaan <a href='https://www.finna.fi/Search/Results?lookfor=&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&view=list'>verkossa saatavilla</a> olevia aineistoja.</p>
-<p>Voit myös mm. <a href="https://www.finna.fi/MyResearch/Home">uusia lainoja ja tehdä varauksia</a> eri kirjastojen aineistoihin yhdestä ja samasta paikasta.</p>
-<p>Löydät finna.fi:stä samalla haulla kaikille avoimet aineistot, jotka mukana olevat organisaatiot tarjoavat.</p>
-</div>
-<div class="clear"></div>
 {/capture}
 {capture append="sections"}
 <div class="grid_24 grid_24_inner">
@@ -51,7 +52,7 @@
 </div>
 {/capture}
 {capture append="sections"}
-<div class="grid_20">
+<div class="grid_20 grid_20_inner">
 <h2>Tietoa Finnasta</h2>
 
 <h3>Käyttöoikeudet</h3>
