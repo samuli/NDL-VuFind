@@ -155,7 +155,9 @@
     #headerMenu {
         width:420px;
     }
-    
+    #headerMenu {
+		max-width: 350px;
+    }
     /* Header: Search Box */
     .content .searchFormOuterWrapper, .content .searchFormWrapper {
         width: 470px;
