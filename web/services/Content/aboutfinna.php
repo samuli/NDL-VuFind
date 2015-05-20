@@ -30,7 +30,7 @@ require_once 'Action.php';
 require_once 'services/MyResearch/Login.php';
 
 /**
- * about action for Content module
+ * aboutfinna action for Content module
  *
  * @category VuFind
  * @package  Controller_Help
@@ -38,7 +38,7 @@ require_once 'services/MyResearch/Login.php';
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     http://vufind.org/wiki/building_a_module Wiki
  */
-class about extends Action
+class aboutfinna extends Action
 {
     /**
      * Load a list of organizations whose library services are activate 
@@ -52,7 +52,7 @@ class about extends Action
         global $interface;
 
         Login::setupLoginFormVars();
-        $file = 'about.' . $interface->getLanguage() . '.tpl';
+        $file = 'aboutfinna.' . $interface->getLanguage() . '.tpl';
         $interface->setPageTitle(translate("content-about"));
         $interface->setTemplate($file);
         $interface->display('layout.tpl');

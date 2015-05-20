@@ -8252,6 +8252,10 @@ span#showDate {
     -o-hyphens: auto;
     hyphens: auto;
 }
+.module-Content #main .contentSection .content .bodytextwrapper p {
+    font-size: 15px;
+    max-width: 790px;
+}
 .module-Content #main .sectionsWithHeadings {
 	margin-bottom: -58px;
 }

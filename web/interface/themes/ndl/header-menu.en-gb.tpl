@@ -2,8 +2,6 @@
 
 <li class="menuHome" tabindex="0"><a href="{$path}/" id="navHome" aria-label="{translate text='Home page'}"><span>{translate text='Home page'}</span></a></li>
 
-<li class="menuAbout" tabindex="0"><a href="{$path}/Content/about" id="navAbout"><span style="line-height: 1.5em;">{translate text='navigation_about'}</span></a></li>
-
 <li class="menuSearch menuSearch_{$userLang}" tabindex="0" aria-haspopup="true">
   <dl class="dropdown dropdownStatic stylingDone">
     <dt><a href="#" id="navSearch">{translate text='navigation_search'}</a></dt>
@@ -39,6 +37,26 @@
           <span>Search history</span>
           <span>Your session-specific search history. To save your searches, please log in.</span>
           <span class="value">{$path}/Search/History</span></a>
+        </li>
+      </ul>
+    </dd>
+  </dl>
+</li>
+
+<li class="menuAbout" tabindex="0" aria-haspopup="true">
+  <dl class="dropdown dropdownStatic stylingDone">
+    <dt><a href="#" id="navSearch">{translate text='navigation_aboutus'}</a></dt>
+    <dd>
+      <ul class="subNav" id="subNavSearch" role="menu">
+        <li role="menuitem"><a class="big" href="#">
+          <span>{translate text='navigation_aboutus'}</span>
+          <span>De crudelitate et pietate etan sit melius amari quam timerivel et contra</span>
+          <span class="value">{$path}/Content/about</span></a>
+        </li>
+        <li><a class="big" href="#">
+          <span>{translate text="navigation_about_finna"}</span>
+          <span>{translate text="navigation_about_finna_desc"}</span>
+          <span class="value">{$path}/Content/aboutfinna</span></a>
         </li>
       </ul>
     </dd>

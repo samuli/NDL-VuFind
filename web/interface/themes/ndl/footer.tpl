@@ -3,7 +3,8 @@
 <div class="grid_8">
   <h2>{translate text='navigation_about'}</h2>
   <ul>
-    <li><a href="{$path}/Content/about">{translate text='navigation_about_finna'}</a></li>
+    <li><a href="{$path}/Content/about">{translate text='navigation_aboutus'}</a></li>
+    <li><a href="{$path}/Content/aboutfinna">{translate text='navigation_about_finna'}</a></li>
     <li><a href="{$path}/Content/terms_conditions">{translate text='navigation_terms_conditions'}</a></li>
     <li><a href="{$path}/Content/register_details">{translate text='navigation_register_details'}</a></li>
   </ul>
