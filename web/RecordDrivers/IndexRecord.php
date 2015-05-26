@@ -3534,7 +3534,7 @@ class IndexRecord implements RecordInterface
      * Is social media sharing allowed (i.e. Add This Tool).
      *
      * @return boolean
-     * @access protected
+     * @access public
      */
     public function allowSocialMediaSharing()
     {
