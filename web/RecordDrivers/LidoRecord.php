@@ -720,6 +720,18 @@ class LidoRecord extends IndexRecord
     }
 
     /**
+     * Is social media sharing allowed (i.e. Add This Tool).
+     *
+     * @return boolean
+     * @access protected
+     */
+    public function allowSocialMediaSharing()
+    {
+        $rights = $this->xml->xpath('lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource/rightsType/conceptID[@type="Social media links"]');
+        return empty($rights) || (string)$rights[0] != 'no';
+    }
+
+    /**
      * Get access restriction notes for the record.
      *
      * @return array
@@ -728,14 +740,14 @@ class LidoRecord extends IndexRecord
     protected function getAccessRestrictions()
     {
         if ($rights = $this->xml->xpath('lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource/rightsType')) {
-            $rights = $rights[0];
-
-            if ($conceptID = $rights->xpath('conceptID')) {
-                $conceptID = $conceptID[0];
-                $attributes = $conceptID->attributes();
-                if ($attributes->type && strtolower($attributes->type) == 'copyright') {
-                    if ($desc = $rights->xpath('term')) {
-                        return array((string)$desc[0]);
+            foreach ($rights as $right) {
+                if ($conceptID = $right->xpath('conceptID')) {
+                    $conceptID = $conceptID[0];
+                    $attributes = $conceptID->attributes();
+                    if ($attributes->type && strtolower($attributes->type) == 'copyright') {
+                        if ($desc = $right->xpath('term')) {
+                            return array((string)$desc[0]);
+                        }
                     }
                 }
             }

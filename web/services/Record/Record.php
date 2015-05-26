@@ -335,11 +335,13 @@ class Record extends Action
         // Send down legal export formats (if any):
         $interface->assign('exportFormats', $this->recordDriver->getExportFormats());
 
-        // Set AddThis User
-        $interface->assign(
-            'addThis', isset($configArray['AddThis']['key'])
-            ? $configArray['AddThis']['key'] : false
-        );
+        if ($this->recordDriver->allowSocialMediaSharing()) {
+            // Set AddThis User
+            $interface->assign(
+                'addThis', isset($configArray['AddThis']['key'])
+                ? $configArray['AddThis']['key'] : false
+            );
+        }
 
         // Set Proxy URL
         if (isset($configArray['EZproxy']['host'])) {

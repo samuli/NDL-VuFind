@@ -2206,7 +2206,7 @@ class IndexRecord implements RecordInterface
         }
         return false;
     }
-
+    
     /**
      * Get all subject headings associated with this record.  Each heading is
      * returned as an array of chunks, increasing from least specific to most
@@ -3528,6 +3528,17 @@ class IndexRecord implements RecordInterface
             }
         }
         return $urls;
+    }
+
+    /**
+     * Is social media sharing allowed (i.e. Add This Tool).
+     *
+     * @return boolean
+     * @access protected
+     */
+    public function allowSocialMediaSharing()
+    {
+        return true;
     }
 
     /**
