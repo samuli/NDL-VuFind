@@ -16,11 +16,21 @@
     </div>
 	<div>
         <p class="headerInfoLight">Information about the picture:</p>
-        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
-        <p>Photographer: Volker von Bonin<br />
+        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
+        <p>Photographer: Teuvo Kanerva<br />
            Location: Museoviraston kuvakokoelmat</p> 
-          <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">To the record »</a>
+          <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">To the record »</a>
     </div>
+    <div>
+        <p class="headerInfoLight">Information about the picture:</p>
+        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
+        <p>Photographer: Teuvo Kanerva<br />
+           Location: Museoviraston kuvakokoelmat</p> 
+          <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">To the record »</a>
+    </div>
+
+</div>
+	<!-- 
     <div>
         <p class="headerInfoLight">Information about the picture:</p>
         <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
@@ -28,9 +38,6 @@
            Location: Museoviraston kuvakokoelmat</p> 
           <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">To the record »</a>
     </div>
-
-</div>
-	<!-- 
     <div>
         <p class="headerInfoLight">Information about the picture:</p>
         <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>

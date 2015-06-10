@@ -16,11 +16,20 @@
     </div>    
 	<div>
         <p class="headerInfoLight">Information om bildet:</p>
-        <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
-        <p>Fotograf: Volker von Boni<br />
-           Belägenhet:  Museoviraston kuvakokoelma</p> 
-        <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">Till posten »</a>
+        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
+        <p>Fotograf: Teuvo Kanerva<br />
+           Belägenhet:  Museovirasto, Historian kuvakokoelma</p> 
+        <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">Till posten »</a>
     </div>
+    <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
+        <p>Fotograf: Teuvo Kanerva<br />
+           Belägenhet:  Museovirasto, Historian kuvakokoelma</p> 
+        <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">Till posten »</a>
+    </div>
+</div>
+   <!--
     <div>
         <p class="headerInfoLight">Information om bildet:</p>
         <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
@@ -28,8 +37,6 @@
            Belägenhet:  Museoviraston kuvakokoelma</p> 
         <a href="{$url}/Record/musketti.M012%3AHK6532%3A328">Till posten »</a>
     </div>
-</div>
-   <!--
     <div>
         <p class="headerInfoLight">Information om bildet:</p>
         <p class="headerInfoTitle">Emäntä Liisa Koskinen jäällä, taustalla j/m Murtaja</p>
