@@ -50,7 +50,7 @@
       <ul class="subNav" id="subNavSearch" role="menu">
         <li role="menuitem"><a class="big" href="#">
           <span>{translate text='navigation_aboutus'}</span>
-          <span>De crudelitate et pietate etan sit melius amari quam timerivel et contra</span>
+          <span>{translate text='navigation_aboutus_desc'}</span>
           <span class="value">{$path}/Content/about</span></a>
         </li>
         <li><a class="big" href="#">
