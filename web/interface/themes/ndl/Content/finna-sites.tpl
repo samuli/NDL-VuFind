@@ -76,6 +76,12 @@
     <p>hamk.finna.fi</p>
     <span class="beta">beta</span>
     </a>
+    <a class="screenshotwrapper" href="https://laurea.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/laurea.jpg" />
+    <h5>{translate text='facet_0/LAUREA'}</h5>
+    <p>laurea.finna.fi</p>
+    <span class="beta">beta</span>
+    </a>
     <div class="clear"></div>
 <h3>{translate text='University_library_plural'}</h3>
     <a class="screenshotwrapper" href="https://jyu.finna.fi">
