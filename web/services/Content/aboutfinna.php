@@ -53,7 +53,7 @@ class aboutfinna extends Action
 
         Login::setupLoginFormVars();
         $file = 'aboutfinna.' . $interface->getLanguage() . '.tpl';
-        $interface->setPageTitle(translate("content-about"));
+        $interface->setPageTitle(translate("content-aboutfinna"));
         $interface->setTemplate($file);
         $interface->display('layout.tpl');
     }
