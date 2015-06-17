@@ -89,7 +89,7 @@
 {if $marcField440 || $visible490 || $marcField830}
 {if $marcField440}
 {foreach from=$marcField440 item=field name=loop}
-%B {$field|getvalue:'a'}
+%B {$field|getvalue:'a'} ISSN {$field|getvalue:'x'} {$field|getvalue:'v'}
 {/foreach}
 {/if}
 {if $visible490}
@@ -101,7 +101,7 @@
 {/if}
 {if $marcField830}
 {foreach from=$marcField830 item=field name=loop}
-%B {$field|getvalue:'a'}
+%B {$field|getvalue:'a'} ISSN {$field|getvalue:'x'} {$field|getvalue:'v'}
 {/foreach}
 {/if}
 {/if}
@@ -119,7 +119,7 @@
 {/foreach}
 {/if}
 {assign var=marcField value=$marc->getField('245')}
-%T {$marcField|getvalue:'a'}{if $marcField|getvalue:'b'} {$marcField|getvalue:'b'|replace:'/':''}{/if}
+%T {$marcField|getvalue:'a'|regex_replace:'/\.$/':''|regex_replace:'/\s\/$/':''} {if $marcField|getvalue:'b'} {$marcField|getvalue:'b'|replace:'/':''|regex_replace:'/^\s*/':''|replace:'/':''}{/if}{if $marcField|getvalue:'n'}.{$marcField|getvalue:'n'}{/if} {if $marcField|getvalue:'p'}{$marcField|getvalue:'p'|replace:'/':''}{/if}
 {assign var=marcField value=$marc->getFields('856')}
 {if $marcField}
 {foreach from=$marcField item=field name=loop}

@@ -41,7 +41,7 @@ RT Generic
 RT Generic
 {/if}
 {assign var=marcField value=$marc->getField('245')}
-T1 {$marcField|getvalue:'a'}{if $marcField|getvalue:'b'} {$marcField|getvalue:'b'|replace:'/':''}{/if}
+T1 {$marcField|getvalue:'a'|regex_replace:'/\.$/':''|regex_replace:'/\s\/$/':''} {if $marcField|getvalue:'b'} {$marcField|getvalue:'b'|replace:'/':''|regex_replace:'/^\s*/':''|replace:'/':''}{/if}{if $marcField|getvalue:'n'}.{$marcField|getvalue:'n'}{/if} {if $marcField|getvalue:'p'}{$marcField|getvalue:'p'|replace:'/':''}{/if}
 
 {* Load the three possible series fields -- 440 is deprecated but
    still exists in many catalogs. *}
@@ -63,7 +63,7 @@ T1 {$marcField|getvalue:'a'}{if $marcField|getvalue:'b'} {$marcField|getvalue:'b
 {if $marcField440 || $visible490 || $marcField830}
 {if $marcField440}
 {foreach from=$marcField440 item=field name=loop}
-T2 {$field|getvalue:'a'}
+T2 {$field|getvalue:'a'} ISSN {$field|getvalue:'x'} {$field|getvalue:'v'}
 {/foreach}
 {/if}
 {if $visible490}
@@ -75,7 +75,7 @@ T2 {$field|getvalue:'a'}
 {/if}
 {if $marcField830}
 {foreach from=$marcField830 item=field name=loop}
-T2 {$field|getvalue:'a'}
+T2 {$field|getvalue:'a'} ISSN {$field|getvalue:'x'} {$field|getvalue:'v'}
 {/foreach}
 {/if}
 {/if}
@@ -85,7 +85,7 @@ A1 {$marcField|getvalue:'a'}
 {/if}
 {assign var=marcField value=$marc->getField('110')}
 {if $marcField}
-A1 {$marcField|getvalue:'a'}
+A1 {$marcField|getvalue:'a'|replace:';':''}
 {/if}
 {assign var=marcField value=$marc->getFields('700')}
 {if $marcField}
@@ -117,7 +117,7 @@ YR {$corePublicationDates}
 {if $corePublicationPlaces}
 {if is_array($corePublicationPlaces)}
 {foreach from=$corePublicationPlaces item=pubPlace name=loop}
-PP {$pubPlace}
+PP {$pubPlace|replace:':':''|replace:',':''}
 {/foreach}
 {else}
 PP {$corePublicationPlaces}
@@ -136,7 +136,7 @@ AB {$marcField|getvalue:'a'} {$marcField|getvalue:'b'}
 {/if}
 {assign var=marcField value=$marc->getField('300')}
 {if $marcField}
-OP {$marcField|getvalue:'a'}
+OP {$marcField|getvalue:'a'|replace:':':''|regex_replace:'/;$/':''}
 {/if}
 {assign var=marcField value=$marc->getField('500')}
 {if $marcField}
@@ -155,10 +155,15 @@ CN {foreach from=$marcField->getSubfields() item=subfield name=subloop}{$subfiel
 {if $marcField}
 SN {$marcField|getvalue:'a'}
 {/if}
+{assign var=marcField value=$marc->getField('022')}
+{if $marcField}
+SN {$marcField|getvalue:'a'}
+{/if}
 {assign var=marcField value=$marc->getFields('650')}
 {if $marcField}
 {foreach from=$marcField item=field name=loop}
-K1 {foreach from=$field->getSubfields() item=subfield name=subloop}{if !$smarty.foreach.subloop.first} : {/if}{assign var=subfield value=$subfield->getData()}{$subfield}{/foreach}
+K1 {foreach from=$field->getSubfields() item=subfield name=subloop}{if !in_array($subfield->getCode(), array('0', '2'))}{if !$smarty.foreach.subloop.first} : {/if}{assign var=subfield value=$subfield->getData()}{$subfield}{/if}{/foreach}
+
 {/foreach}{/if}
 {if $coreContainerTitle}
 JF {$coreContainerTitle}
