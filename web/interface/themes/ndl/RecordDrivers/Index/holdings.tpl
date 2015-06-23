@@ -29,6 +29,16 @@
       {/if}
     </div>
   {if $patronFunctions}
+    {if $driver != 'AxiellWebServices'}
+      {assign var="titleIsHoldable" value=true}
+    {else}
+      {assign var="titleIsHoldable" value=false}
+      {foreach from=$holdings item=location}
+        {if $location.0.is_holdable}
+          {assign var="titleIsHoldable" value=true}
+        {/if}
+      {/foreach}
+    {/if}
     <div class="holdingsPlaceHold">
     {assign var="ublink" value=false}
         {foreach from=$holdings item=holding}
@@ -54,7 +64,7 @@
           {/if}
         {/if}
       {/if}
-      {if $holdingTitleHold && $holdingTitleHold != 'block'}
+      {if $$holdingTitleHold && $holdingTitleHold != 'block' && $titleIsHoldable}
           <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
       {/if}
       {if $catalogAccounts && !$ublink && !$holdingTitleHold}
