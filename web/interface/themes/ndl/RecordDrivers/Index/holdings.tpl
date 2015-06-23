@@ -64,8 +64,16 @@
           {/if}
         {/if}
       {/if}
-      {if $$holdingTitleHold && $holdingTitleHold != 'block' && $titleIsHoldable}
+      {if $holdingTitleHold && $holdingTitleHold != 'block' && $titleIsHoldable}
           <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
+      {else}
+        {if $driver == 'AxiellWebServices'}
+          {if $holdingTitleHold == 'block'}
+              {translate text="hold_error_blocked"}
+          {else}
+            <span>{translate text="title_cant_place_hold"}</span>
+          {/if}
+        {/if}
       {/if}
       {if $catalogAccounts && !$ublink && !$holdingTitleHold}
         {if $driver != 'AxiellWebServices'}
