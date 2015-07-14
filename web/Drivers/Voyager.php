@@ -1125,15 +1125,18 @@ class Voyager implements DriverInterface
             ? preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field'])
             : '';
 
-        $secodary_login_field = isset($this->config['Catalog']['secondary_login_field'])
+        $secondary_login_field = isset($this->config['Catalog']['secondary_login_field'])
             ? $this->config['Catalog']['secondary_login_field'] : false;
         $secondary_login_field = preg_replace('/[^\w]/', '', $secondary_login_field);
 
         $login = json_decode($login);
         $secondaryLoginLower = null;
-        if (is_array($login) && $secondary_login_field) {
-            list($login, $secondaryLogin) = $login;
+
+	if (is_array($login)) {
+	  list($login, $secondaryLogin) = $login;
+	  if ($secondary_login_field) {
             $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
+	  }
         }
         $loginLower = mb_strtolower($login, 'UTF-8');
 
@@ -1144,7 +1147,11 @@ class Voyager implements DriverInterface
         // barcode shouldn't contain any characters outside the basic latin
         // characters and check login verification fields here.
 
-        $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN, PATRON.{$secondary_login_field} as SECONDARY_LOGIN";
+        $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN";
+	if ($secondary_login_field) {
+	  $sql .= ", PATRON.{$secondary_login_field} as SECONDARY_LOGIN";
+	}
+
         if ($fallback_login_field) {
             $sql .= ", PATRON.{$fallback_login_field} FALLBACK_LOGIN";
         }
@@ -1169,7 +1176,7 @@ class Voyager implements DriverInterface
                         continue;
                     }
                 }
-
+		
                 $loginColumnLower = !is_null($row['LOGIN'])
                     ? mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8')
                     : '';
