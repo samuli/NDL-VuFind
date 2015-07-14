@@ -81,6 +81,12 @@
       <br class="clear"/>
       <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
       <br class="clear"/>
+
+      <label for="login_password">{translate text='Password2'}</label>
+      <br class="clear"/>
+      <input id="login_password2" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
+      <br class="clear"/>
+
       <input class="button buttonFinna" type="reset" value="{translate text='confirm_create_account_abort'}"/>
       <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Login'}"/>
 

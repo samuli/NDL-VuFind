@@ -119,6 +119,10 @@ class JSON extends Action
         // Looks like we need utf8_encode to handle the password properly
         $password = utf8_encode(rc4Decrypt($salt, $password));
 
+        if (!is_array(json_decode($password))) {
+            return $this->output($msg, JSON::STATUS_ERROR);
+        }
+
         // Put the username/password in POST fields where the authentication module
         // expects to find them:
         $_POST['username'] = $_POST['ajax_username'];

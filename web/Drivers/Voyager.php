@@ -1125,6 +1125,18 @@ class Voyager implements DriverInterface
             ? preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field'])
             : '';
 
+        $secodary_login_field = isset($this->config['Catalog']['secondary_login_field'])
+            ? $this->config['Catalog']['secondary_login_field'] : false;
+        $secondary_login_field = preg_replace('/[^\w]/', '', $secondary_login_field);
+
+        $login = json_decode($login);
+        $secondaryLoginLower = null;
+        if (is_array($login) && $secondary_login_field) {
+            list($login, $secondaryLogin) = $login;
+            $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
+        }
+        $loginLower = mb_strtolower($login, 'UTF-8');
+
         // Turns out it's difficult and inefficient to handle the mismatching
         // character sets of the Voyager database in the query (in theory something
         // like "UPPER(UTL_I18N.RAW_TO_NCHAR(UTL_RAW.CAST_TO_RAW(PATRON.LAST_NAME), 'WE8ISO8859P1'))"
@@ -1132,7 +1144,7 @@ class Voyager implements DriverInterface
         // barcode shouldn't contain any characters outside the basic latin
         // characters and check login verification fields here.
 
-        $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN";
+        $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN, PATRON.{$secondary_login_field} as SECONDARY_LOGIN";
         if ($fallback_login_field) {
             $sql .= ", PATRON.{$fallback_login_field} FALLBACK_LOGIN";
         }
@@ -1146,10 +1158,18 @@ class Voyager implements DriverInterface
             $sqlStmt->bindParam(
                 ':barcode', strtolower($barcode), PDO::PARAM_STR
             );
-            $loginLower = mb_strtolower($login, 'UTF-8');
+
             $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower($barcode)));
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
+                if ($secondaryLoginLower !== null && $row['SECONDARY_LOGIN']) {
+                    $secondaryLoginColumnLower
+                        = mb_strtolower(utf8_encode($row['SECONDARY_LOGIN']), 'UTF-8');
+                    if ($secondaryLoginLower != $secondaryLoginColumnLower) {
+                        continue;
+                    }
+                }
+
                 $loginColumnLower = !is_null($row['LOGIN'])
                     ? mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8')
                     : '';
