@@ -551,6 +551,13 @@ class CatalogConnection
      */
     public function patronLogin($username, $password)
     {
+        $blacklisted = method_exists($this->driver, 'getBlacklistedPasswords') ?
+            $this->driver->getBlacklistedPasswords() : [];
+
+        if (in_array($password, $blacklisted)) {
+            return false;
+        }
+
         return $this->driver->patronLogin($username, $password);
     }
 

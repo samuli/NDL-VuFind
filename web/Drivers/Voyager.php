@@ -1103,6 +1103,18 @@ class Voyager implements DriverInterface
     }
 
     /**
+     * Return list of blacklisted passwords that can not be used to log in.
+     *
+     * @return array blacklisted passwords
+     */
+    public function getBlacklistedPasswords()
+    {
+        return isset($this->config['Catalog']['login_password_blacklist'])
+            ? $this->config['Catalog']['login_password_blacklist'] : []
+        ;
+    }
+
+    /**
      * Patron Login
      *
      * This is responsible for authenticating a patron against the catalog.

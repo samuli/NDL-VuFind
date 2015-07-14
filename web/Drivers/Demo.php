@@ -282,6 +282,16 @@ class Demo implements DriverInterface
     }
 
     /**
+     * Return list of blacklisted passwords that can not be used to log in.
+     *
+     * @return array blacklisted passwords
+     */
+    public function getBlacklistedPasswords()
+    {
+        return ['foo', 'bar'];
+    }
+
+    /**
      * Patron Login
      *
      * This is responsible for authenticating a patron against the catalog.
