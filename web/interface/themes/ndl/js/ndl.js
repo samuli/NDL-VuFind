@@ -486,3 +486,8 @@ function init480Mobile() {
         $("#480mobileSecond #move480mobile").appendTo("#480mobileFirst" );
     }
 }
+
+function updateSecondaryLoginFields() {
+    $(".secondaryLogin").hide().find('input[name="password[]"]').prop("disabled", true);
+    $("#secondaryLogin-" + $("#login_target").val()).show().find('input[name="password[]"]').prop("disabled", false);
+}

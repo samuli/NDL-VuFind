@@ -117,7 +117,11 @@ class JSON extends Action
         // Decrypt Password
         include_once 'Crypt/rc4.php';
         // Looks like we need utf8_encode to handle the password properly
-        $password = utf8_encode(rc4Decrypt($salt, $password));
+        $password = json_decode(utf8_encode(rc4Decrypt($salt, $password)));
+
+        if (!is_array($password)) {
+            return $this->output($msg, JSON::STATUS_ERROR);
+        }
 
         // Put the username/password in POST fields where the authentication module
         // expects to find them:

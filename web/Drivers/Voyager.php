@@ -1102,15 +1102,31 @@ class Voyager implements DriverInterface
         return preg_replace('/[^0-9a-zA-Z#&<>+^`~]+/', '', $pin);
     }
 
+    public function getSecondaryLoginField()
+    {
+        if (isset($this->config['Catalog']['secondary_login_field'])) {
+            list($field, $label) = explode(':', $this->config['Catalog']['secondary_login_field'], 2);
+            return ['field' => $field, 'label' => $label];
+        }
+        return false;
+    }
+
     /**
      * Patron Login
      *
      * This is responsible for authenticating a patron against the catalog.
      *
-     * @param string $barcode The patron barcode
-     * @param string $login   The patron's last name or PIN (depending on config)
+     * @param string       $barcode The patron barcode
+     * @param string|array $login   1. When secondary login field is enabled
+     *                              in the config AND when the user is either
+     *                              logging in or adding a new library card:
+     *                                Login values as an array
      *
-     * @return mixed          Associative array of patron info on successful login,
+     *                              2. All other cases:
+     *                                Patron's last name or PIN (depending on
+     *                                config) as a string
+     *
+     * @return mixed       Associative array of patron info on successful login,
      * null on unsuccessful login, PEAR_Error on error.
      * @access public
      */
@@ -1125,6 +1141,23 @@ class Voyager implements DriverInterface
             ? preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field'])
             : '';
 
+        $secondary_login_field = null;
+        if ($secondaryLoginField = $this->getSecondaryLoginField()) {
+            $secondary_login_field
+                = preg_replace('/[^\w]/', '', $secondaryLoginField['field']);
+        }
+        $secondaryLoginLower = null;
+
+        if (is_array($login)) {
+            // User is logging in or adding a new library card.
+            if ($secondary_login_field) {
+                list($login, $secondaryLogin) = $login;
+                $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
+            } else {
+                $login = $login[0];
+            }
+        }
+
         // Turns out it's difficult and inefficient to handle the mismatching
         // character sets of the Voyager database in the query (in theory something
         // like "UPPER(UTL_I18N.RAW_TO_NCHAR(UTL_RAW.CAST_TO_RAW(PATRON.LAST_NAME), 'WE8ISO8859P1'))"
@@ -1133,6 +1166,10 @@ class Voyager implements DriverInterface
         // characters and check login verification fields here.
 
         $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN";
+        if ($secondary_login_field) {
+            $sql .= ", PATRON.{$secondary_login_field} as SECONDARY_LOGIN";
+        }
+
         if ($fallback_login_field) {
             $sql .= ", PATRON.{$fallback_login_field} FALLBACK_LOGIN";
         }
@@ -1150,6 +1187,15 @@ class Voyager implements DriverInterface
             $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower($barcode)));
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
+                // If enabled, verify secondary login field first.
+                if ($secondaryLoginLower !== null && $row['SECONDARY_LOGIN']) {
+                    $secondaryLoginColumnLower
+                        = mb_strtolower(utf8_encode($row['SECONDARY_LOGIN']), 'UTF-8');
+                    if ($secondaryLoginLower != $secondaryLoginColumnLower) {
+                        continue;
+                    }
+                }
+
                 $loginColumnLower = !is_null($row['LOGIN'])
                     ? mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8')
                     : '';
