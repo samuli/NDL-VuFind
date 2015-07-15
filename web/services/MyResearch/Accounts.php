@@ -160,7 +160,7 @@ class Accounts extends MyResearch
         }
 
         if (is_array($password)) {
-            // Prevent secondary password from getting saved 
+            // Prevent secondary password from getting saved
             // to the database.
             $password = $password[0];
         }
