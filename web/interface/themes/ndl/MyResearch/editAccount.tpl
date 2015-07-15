@@ -44,7 +44,12 @@
     <label class="displayBlock" for="password">{translate text='Password'}</label>
     <input id="password" type="password" name="password" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
     <br class="clear"/>
-  <input class="button buttonFinna" type="submit" name="submit" {if $id}value="{translate text="Update"}"{else}value="{translate text="Save"}"{/if}/>
+    {if !$id}
+    <label class="displayBlock" for="password">{translate text='Password2'}</label>
+    <input id="password2" type="password" name="password" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
+    <br class="clear"/>
+    {/if}
+    <input class="button buttonFinna" type="submit" name="submit" {if $id}value="{translate text="Update"}"{else}value="{translate text="Save"}"{/if}/>
 </form>
 <script type="text/javascript">
   {literal}

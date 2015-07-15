@@ -153,7 +153,15 @@ class Login extends Action
 
         if (isset($configArray['Catalog']['driver'])  && $configArray['Catalog']['driver'] == 'MultiBackend') {
             $multiBackend = new MultiBackend();
-            $interface->assign('loginTargets', $multiBackend->getLoginDrivers());
+            $loginDrivers = $multiBackend->getLoginDrivers();
+            $secondaryLoginFields = [];
+            foreach ($loginDrivers as $id) {
+                if ($driver = $multiBackend->getDriver($id)) {
+                    $secondaryLoginFields[$id] = $driver->getSecondLoginField();
+                }
+            }
+            $interface->assign('loginTargets', $loginDrivers);
+            $interface->assign('secondaryLoginFields', $secondaryLoginFields);
             $interface->assign('defaultLoginTarget', isset($_REQUEST['login_target']) ? $_REQUEST['login_target'] : $multiBackend->getDefaultLoginDriver());
         }
 

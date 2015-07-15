@@ -1208,7 +1208,7 @@ class MultiBackend implements DriverInterface
      *
      * @return mixed On success a driver object, otherwise null
      */
-    protected function getDriver($source)
+    public function getDriver($source)
     {
         global $configArray;
 

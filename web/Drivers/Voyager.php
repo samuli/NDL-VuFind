@@ -1102,6 +1102,12 @@ class Voyager implements DriverInterface
         return preg_replace('/[^0-9a-zA-Z#&<>+^`~]+/', '', $pin);
     }
 
+    public function getSecondaryLoginField()
+    {
+        return isset($this->config['Catalog']['secondary_login_field'])
+            ? $this->config['Catalog']['secondary_login_field'] : false;
+    }
+
     /**
      * Patron Login
      *
@@ -1125,18 +1131,18 @@ class Voyager implements DriverInterface
             ? preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field'])
             : '';
 
-        $secondary_login_field = isset($this->config['Catalog']['secondary_login_field'])
-            ? $this->config['Catalog']['secondary_login_field'] : false;
-        $secondary_login_field = preg_replace('/[^\w]/', '', $secondary_login_field);
+        if ($secondary_login_field = $this->getSecondaryLoginField()) {
+            $secondary_login_field = preg_replace('/[^\w]/', '', $secondary_login_field);
+        }
 
         $login = json_decode($login);
         $secondaryLoginLower = null;
 
-	if (is_array($login)) {
-	  list($login, $secondaryLogin) = $login;
-	  if ($secondary_login_field) {
-            $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
-	  }
+        if (is_array($login)) {
+            list($login, $secondaryLogin) = $login;
+            if ($secondary_login_field) {
+                $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
+            }
         }
         $loginLower = mb_strtolower($login, 'UTF-8');
 
@@ -1148,9 +1154,9 @@ class Voyager implements DriverInterface
         // characters and check login verification fields here.
 
         $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN";
-	if ($secondary_login_field) {
-	  $sql .= ", PATRON.{$secondary_login_field} as SECONDARY_LOGIN";
-	}
+        if ($secondary_login_field) {
+            $sql .= ", PATRON.{$secondary_login_field} as SECONDARY_LOGIN";
+        }
 
         if ($fallback_login_field) {
             $sql .= ", PATRON.{$fallback_login_field} FALLBACK_LOGIN";
