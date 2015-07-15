@@ -48,7 +48,6 @@ class Accounts extends MyResearch
      */
     public function launch()
     {
-        //        die();
         global $configArray;
         global $interface;
         global $user;
@@ -146,8 +145,10 @@ class Accounts extends MyResearch
         $catalog = ConnectionManager::connectToCatalog();
 
         if (!isset($_REQUEST['id']) && !is_array($password)) {
+            // Possible secondary password missing when adding a new library card
             return false;
         } else if (isset($_REQUEST['id'])) {
+            // Existing libray card edited: secondary password not used
             $password = $password[0];
         }
 
@@ -157,12 +158,12 @@ class Accounts extends MyResearch
             $this->editAccount(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
             return false;
         }
-        
-        if (is_array($password)) {
-            $password = $password[0];            
-        }
-        
 
+        if (is_array($password)) {
+            // Prevent secondary password from getting saved 
+            // to the database.
+            $password = $password[0];
+        }
 
         $exists = false;
         $account = new User_account();

@@ -133,7 +133,7 @@ class Login extends Action
             }
             $interface->assign('extraParams', $extraParams);
         }
-        
+
         Login::setupLoginFormVars();
 
         $interface->setPageTitle('Login');
