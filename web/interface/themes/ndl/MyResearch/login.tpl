@@ -85,7 +85,7 @@
       {foreach from=$secondaryLoginFields key=driver item=secondaryLogin}
       <div id="secondaryLogin-{$driver}" class="secondaryLogin hide">
         <label class="displayBlock" for="secondaryLogin-{$driver}">{translate text=$secondaryLogin}</label>
-        <input id="secondaryLogin-{$driver}" type="text" name="password[]" value="" class="{jquery_validation required='This field is required'}" disabled="disabled"/>        
+        <input id="secondaryLogin-{$driver}" type="text" name="password[]" value="" class="{jquery_validation required='This field is required'}" disabled="disabled"/>
         <br class="clear"/>
       </div>
       {/foreach}
@@ -141,9 +141,9 @@
     });
 
      $("#login_target").on("change", function() {
-       updateSecondaryLoginFields();    
+       updateSecondaryLoginFields();
      });
-     updateSecondaryLoginFields();  
+     updateSecondaryLoginFields();
     </script>
     {/literal}    
   {/if}
@@ -181,9 +181,6 @@
             }
         });
     });
-
-
-
     </script>
     {/literal}
     {/if}

@@ -64,10 +64,10 @@
     });
 
     $("#login_target").on("change", function() {
-      updateSecondaryLoginFields();    
+      updateSecondaryLoginFields();
     });
 
-    updateSecondaryLoginFields();  
+    updateSecondaryLoginFields();
   });
   {/literal}
 </script>

@@ -1142,7 +1142,7 @@ class Voyager implements DriverInterface
             : '';
 
         $secondary_login_field = null;
-        if ($secondaryLoginField = $this->getSecondaryLoginField()) {            
+        if ($secondaryLoginField = $this->getSecondaryLoginField()) {
             $secondary_login_field
                 = preg_replace('/[^\w]/', '', $secondaryLoginField['field']);
         }
@@ -1157,7 +1157,6 @@ class Voyager implements DriverInterface
                 $login = $login[0];
             }
         }
-        $loginLower = mb_strtolower($login, 'UTF-8');
 
         // Turns out it's difficult and inefficient to handle the mismatching
         // character sets of the Voyager database in the query (in theory something
@@ -1184,6 +1183,7 @@ class Voyager implements DriverInterface
             $sqlStmt->bindParam(
                 ':barcode', strtolower($barcode), PDO::PARAM_STR
             );
+            $loginLower = mb_strtolower($login, 'UTF-8');
 
             $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower($barcode)));
             $sqlStmt->execute();
@@ -1196,7 +1196,7 @@ class Voyager implements DriverInterface
                         continue;
                     }
                 }
-		
+
                 $loginColumnLower = !is_null($row['LOGIN'])
                     ? mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8')
                     : '';
