@@ -1184,7 +1184,6 @@ class Voyager implements DriverInterface
                 ':barcode', strtolower($barcode), PDO::PARAM_STR
             );
             $loginLower = mb_strtolower($login, 'UTF-8');
-
             $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower($barcode)));
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
