@@ -542,11 +542,18 @@ class CatalogConnection
      *
      * This is responsible for authenticating a patron against the catalog.
      *
-     * @param string $username The patron username
-     * @param string $password The patron password
+     * @param string       $username The patron barcode
+     * @param string|array $password 1. When secondary login field is enabled
+     *                               in the config AND when the user is either
+     *                               logging in or adding a new library card:
+     *                                 Login values as an array
      *
-     * @return mixed           Associative array of patron info on successful
-     * login, null on unsuccessful login, PEAR_Error on error.
+     *                               2. All other cases:
+     *                                 Patron's last name or PIN (depending on
+     *                                 config) as a string
+     *
+     * @return mixed       Associative array of patron info on successful login,
+     * null on unsuccessful login, PEAR_Error on error.
      * @access public
      */
     public function patronLogin($username, $password)
