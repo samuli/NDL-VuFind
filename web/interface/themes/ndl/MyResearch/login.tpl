@@ -79,12 +79,16 @@
       <br class="clear"/>
       <label for="login_password">{translate text='Password'}</label>
       <br class="clear"/>
-      <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
+      <input id="login_password" type="password" name="password[]" class="{jquery_validation required='This field is required'}"/>
       <br class="clear"/>
 
-      <label for="login_password">{translate text='Password2'}</label>
-      <br class="clear"/>
-      <input id="login_password2" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
+      {foreach from=$secondaryLoginFields key=driver item=secondaryLogin}
+      <div id="secondaryLogin-{$driver}" class="secondaryLogin hide">
+        <label class="displayBlock" for="secondaryLogin-{$driver}">{translate text=$secondaryLogin}</label>
+        <input id="secondaryLogin-{$driver}" type="text" name="password[]" value="" class="{jquery_validation required='This field is required'}" disabled="disabled"/>        
+        <br class="clear"/>
+      </div>
+      {/foreach}
       <br class="clear"/>
 
       <input class="button buttonFinna" type="reset" value="{translate text='confirm_create_account_abort'}"/>
@@ -135,6 +139,11 @@
     $(document).ready(function() {        
        registerAjaxLogin($('.loginForm'), false);
     });
+
+     $("#login_target").on("change", function() {
+       updateSecondaryLoginFields();    
+     });
+     updateSecondaryLoginFields();  
     </script>
     {/literal}    
   {/if}
@@ -172,6 +181,9 @@
             }
         });
     });
+
+
+
     </script>
     {/literal}
     {/if}

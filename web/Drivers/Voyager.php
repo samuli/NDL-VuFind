@@ -1104,8 +1104,11 @@ class Voyager implements DriverInterface
 
     public function getSecondaryLoginField()
     {
-        return isset($this->config['Catalog']['secondary_login_field'])
-            ? $this->config['Catalog']['secondary_login_field'] : false;
+        if (isset($this->config['Catalog']['secondary_login_field'])) {
+            list($field, $label) = explode(':', $this->config['Catalog']['secondary_login_field'], 2);
+            return ['field' => $field, 'label' => $label];
+        }
+        return false;
     }
 
     /**
@@ -1113,10 +1116,13 @@ class Voyager implements DriverInterface
      *
      * This is responsible for authenticating a patron against the catalog.
      *
-     * @param string $barcode The patron barcode
-     * @param string $login   The patron's last name or PIN (depending on config)
+     * @param string       $barcode The patron barcode
+     * @param string|array $login   The patron's last name or PIN (depending on config)
+     *                              and optionally (depending on config and only when the user 
+     *                              attempts to log in with a library card or add a new library card) 
+     *                              secondary login.
      *
-     * @return mixed          Associative array of patron info on successful login,
+     * @return mixed       Associative array of patron info on successful login,
      * null on unsuccessful login, PEAR_Error on error.
      * @access public
      */
@@ -1131,17 +1137,20 @@ class Voyager implements DriverInterface
             ? preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field'])
             : '';
 
-        if ($secondary_login_field = $this->getSecondaryLoginField()) {
-            $secondary_login_field = preg_replace('/[^\w]/', '', $secondary_login_field);
+        $secondary_login_field = null;
+        if ($secondaryLoginField = $this->getSecondaryLoginField()) {            
+            $secondary_login_field = preg_replace('/[^\w]/', '', $secondaryLoginField['field']);
         }
+        //        die("sec: $secondary_login_field, login: " . var_export($login, true));
 
-        $login = json_decode($login);
         $secondaryLoginLower = null;
 
-        if (is_array($login)) {
-            list($login, $secondaryLogin) = $login;
+        if (is_array($login)) {            
             if ($secondary_login_field) {
+                list($login, $secondaryLogin) = $login;
                 $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
+            } else {
+                $login = $login[0];
             }
         }
         $loginLower = mb_strtolower($login, 'UTF-8');

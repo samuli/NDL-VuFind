@@ -42,12 +42,16 @@
     <label class="displayBlock" for="username">{translate text='Username'}</label>
     <input id="username" type="text" name="username" value="{$cat_username|escape}" class="{jquery_validation required='This field is required'}"/>
     <label class="displayBlock" for="password">{translate text='Password'}</label>
-    <input id="password" type="password" name="password" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
+    <input id="password" type="password" name="password[]" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
     <br class="clear"/>
     {if !$id}
-    <label class="displayBlock" for="password">{translate text='Password2'}</label>
-    <input id="password2" type="password" name="password" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
+    {foreach from=$secondaryLoginFields key=driver item=secondaryLogin}
+    <div id="secondaryLogin-{$driver}" class="secondaryLogin hide">
+    <label class="displayBlock" for="secondaryLogin-{$driver}">{translate text=$secondaryLogin}</label>
+    <input id="secondaryLogin-{$driver}" type="text" name="password[]" value="" class="{jquery_validation required='This field is required'}" disabled="disabled"/>
     <br class="clear"/>
+    </div>
+    {/foreach}
     {/if}
     <input class="button buttonFinna" type="submit" name="submit" {if $id}value="{translate text="Update"}"{else}value="{translate text="Save"}"{/if}/>
 </form>
@@ -58,6 +62,12 @@
     $("input").one("keydown", function () { 
       $("#errormessage").css({"visibility":"hidden"});
     });
+
+    $("#login_target").on("change", function() {
+      updateSecondaryLoginFields();    
+    });
+
+    updateSecondaryLoginFields();  
   });
   {/literal}
 </script>

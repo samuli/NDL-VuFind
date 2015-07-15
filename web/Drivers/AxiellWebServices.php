@@ -536,6 +536,10 @@ class AxiellWebServices implements DriverInterface
      */
     public function patronLogin($username, $password)
     {
+        if (is_array($password)) {
+            $password = $password[0];
+        }
+
         $functionResult = 'patronInformationResult';
         $result = $this->doSOAPRequest($this->patron_wsdl, 'getPatronInformation', $functionResult, $username, array('patronInformationParam' => array('arenaMember' => $this->arenaMember, 'user' => $username, 'password' => $password, 'language' => $this->getLanguage())));
 

@@ -48,6 +48,7 @@ class Accounts extends MyResearch
      */
     public function launch()
     {
+        //        die();
         global $configArray;
         global $interface;
         global $user;
@@ -143,12 +144,25 @@ class Accounts extends MyResearch
         }
 
         $catalog = ConnectionManager::connectToCatalog();
+
+        if (!isset($_REQUEST['id']) && !is_array($password)) {
+            return false;
+        } else if (isset($_REQUEST['id'])) {
+            $password = $password[0];
+        }
+
         $result = $catalog->patronLogin($username, $password);
         if (!$result || PEAR::isError($result)) {
             $interface->assign('errorMsg', $result ? $result->getMessage() : 'authentication_error_failed');
             $this->editAccount(isset($_REQUEST['id']) ? $_REQUEST['id'] : null);
             return false;
         }
+        
+        if (is_array($password)) {
+            $password = $password[0];            
+        }
+        
+
 
         $exists = false;
         $account = new User_account();

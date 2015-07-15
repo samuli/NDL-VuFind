@@ -212,7 +212,7 @@ function registerAjaxLogin(container, loginFromLightbox) {
                     var salt = response.data;
 
                     // get the user entered username/password
-                    var password = $(form).find('input[name="password"]').map(
+                    var password = $(form).find('input[name="password[]"]:visible').map(
                         function() {
                             return this.value;
                         }

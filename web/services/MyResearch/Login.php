@@ -133,7 +133,7 @@ class Login extends Action
             }
             $interface->assign('extraParams', $extraParams);
         }
-
+        
         Login::setupLoginFormVars();
 
         $interface->setPageTitle('Login');
@@ -157,9 +157,14 @@ class Login extends Action
             $secondaryLoginFields = [];
             foreach ($loginDrivers as $id) {
                 if ($driver = $multiBackend->getDriver($id)) {
-                    $secondaryLoginFields[$id] = $driver->getSecondLoginField();
+                    if (method_exists($driver, 'getSecondaryLoginField')) {
+                        if ($secondaryLogin = $driver->getSecondaryLoginField()) {
+                            $secondaryLoginFields[$id] = $secondaryLogin['label'];
+                        }
+                    }
                 }
             }
+
             $interface->assign('loginTargets', $loginDrivers);
             $interface->assign('secondaryLoginFields', $secondaryLoginFields);
             $interface->assign('defaultLoginTarget', isset($_REQUEST['login_target']) ? $_REQUEST['login_target'] : $multiBackend->getDefaultLoginDriver());
