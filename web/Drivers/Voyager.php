@@ -1117,10 +1117,14 @@ class Voyager implements DriverInterface
      * This is responsible for authenticating a patron against the catalog.
      *
      * @param string       $barcode The patron barcode
-     * @param string|array $login   The patron's last name or PIN (depending on config)
-     *                              and optionally (depending on config and only when the user 
-     *                              attempts to log in with a library card or add a new library card) 
-     *                              secondary login.
+     * @param string|array $login   1. When secondary login field is enabled
+     *                              in the config AND when the user is either
+     *                              logging in or adding a new library card:
+     *                                Login values as an array
+     *
+     *                              2. All other cases:
+     *                                Patron's last name or PIN (depending on
+     *                                config) as a string
      *
      * @return mixed       Associative array of patron info on successful login,
      * null on unsuccessful login, PEAR_Error on error.
@@ -1139,13 +1143,13 @@ class Voyager implements DriverInterface
 
         $secondary_login_field = null;
         if ($secondaryLoginField = $this->getSecondaryLoginField()) {            
-            $secondary_login_field = preg_replace('/[^\w]/', '', $secondaryLoginField['field']);
+            $secondary_login_field
+                = preg_replace('/[^\w]/', '', $secondaryLoginField['field']);
         }
-        //        die("sec: $secondary_login_field, login: " . var_export($login, true));
-
         $secondaryLoginLower = null;
 
-        if (is_array($login)) {            
+        if (is_array($login)) {
+            // User is logging in or adding a new library card.
             if ($secondary_login_field) {
                 list($login, $secondaryLogin) = $login;
                 $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
@@ -1184,6 +1188,7 @@ class Voyager implements DriverInterface
             $this->debugLogSQL(__FUNCTION__, $sql, array(':barcode' => strtolower($barcode)));
             $sqlStmt->execute();
             while ($row = $sqlStmt->fetch(PDO::FETCH_ASSOC)) {
+                // If enabled, verify secondary login field first.
                 if ($secondaryLoginLower !== null && $row['SECONDARY_LOGIN']) {
                     $secondaryLoginColumnLower
                         = mb_strtolower(utf8_encode($row['SECONDARY_LOGIN']), 'UTF-8');

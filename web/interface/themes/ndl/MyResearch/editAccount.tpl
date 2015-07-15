@@ -47,9 +47,9 @@
     {if !$id}
     {foreach from=$secondaryLoginFields key=driver item=secondaryLogin}
     <div id="secondaryLogin-{$driver}" class="secondaryLogin hide">
-    <label class="displayBlock" for="secondaryLogin-{$driver}">{translate text=$secondaryLogin}</label>
-    <input id="secondaryLogin-{$driver}" type="text" name="password[]" value="" class="{jquery_validation required='This field is required'}" disabled="disabled"/>
-    <br class="clear"/>
+      <label class="displayBlock" for="secondaryLogin-{$driver}">{translate text=$secondaryLogin}</label>
+      <input id="secondaryLogin-{$driver}" type="text" name="password[]" value="" class="{jquery_validation required='This field is required'}" disabled="disabled"/>
+      <br class="clear"/>
     </div>
     {/foreach}
     {/if}
