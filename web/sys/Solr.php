@@ -1621,7 +1621,9 @@ class Solr implements IndexEngine
 
         if ($method == 'GET') {
             $this->client->addRawQueryString($queryString);
+            $this->client->setBody('');
         } elseif ($method == 'POST') {
+            $this->client->addRawQueryString('');
             $this->client->setBody($queryString);
         }
 
