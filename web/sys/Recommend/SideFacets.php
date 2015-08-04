@@ -47,6 +47,7 @@ class SideFacets implements RecommendationInterface
     private $_checkboxFacetsSection;
     protected $_hierarchicalFacets = array();
     protected $_hiddenFacets = array();
+    protected $dateRangeVisFacet = '';
 
     /**
      * Constructor
@@ -136,6 +137,13 @@ class SideFacets implements RecommendationInterface
         $this->_collectionKeywordFilter
             = isset($config['Collection_Keyword']['search']) ? $config['Collection_Keyword']['search'] : false;
 
+        // Date range visualization field 
+        if (isset($config['SpecialFacets']['dateRangeVis'])) {
+            $this->dateRangeVisFacet = strtok($config['SpecialFacets']['dateRangeVis'], ':');
+        } else {
+            $this->dateRangeVisFacet = '';
+        }
+        
     }
 
     /**
@@ -273,9 +281,11 @@ class SideFacets implements RecommendationInterface
         $interface->assign('defaultFacets', $this->_defaultFacets);
         $interface->assign('hiddenFacets', $this->_hiddenFacets);
 
-        $interface->assign(
-            'sideFacetSet', $this->_searchObject->getFacetList($this->_mainFacets)
+        // Make sure any dateRangeVis facet is included in the facet list
+        $facetList = $this->_searchObject->getFacetList(
+            $this->_mainFacets, false, array($this->dateRangeVisFacet)
         );
+        $interface->assign('sideFacetSet', $facetList);
         $interface->assign('sideFacetLabel', 'Narrow Search');
         $this->processNewItemsFacet($filterList);
     }
@@ -324,7 +334,15 @@ class SideFacets implements RecommendationInterface
         return $result;
     }
 
-    protected function processNewItemsFacet($filterList) {
+    /**
+     * Process the new items facet
+     * 
+     * @param array $filterList List of filters
+     * 
+     * @return void
+     */
+    protected function processNewItemsFacet($filterList) 
+    {
         global $interface;
         $newItemsValues = array('[NOW-1YEAR TO NOW]',
             '[NOW-6MONTHS TO NOW]',

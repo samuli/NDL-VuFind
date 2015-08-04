@@ -749,7 +749,6 @@ class SearchObject_Solr extends SearchObject_Base
     /**
      * Add a prefix to facet requirements. Serves to
      *    limits facet sets to smaller subsets.
-     *
      *  eg. all facet data starting with 'R'
      *
      * @param string $prefix Data for prefix
@@ -1486,12 +1485,15 @@ class SearchObject_Solr extends SearchObject_Base
      * @param bool  $expandingLinks If true, we will include expanding URLs (i.e.
      * get all matches for a facet, not just a limit to the current search) in the
      * return array.
+     * @param array $alwaysListed   Any facet in this array is listed even
+     * if empty.
      *
      * @return array                Facets data arrays
      * @access public
      */
-    public function getFacetList($filter = null, $expandingLinks = false)
-    {
+    public function getFacetList(
+        $filter = null, $expandingLinks = false, $alwaysListed = array()
+    ) {
         // If there is no filter, we'll use all facets as the filter:
         if (is_null($filter)) {
             $filter = $this->facetConfig;
@@ -1516,7 +1518,9 @@ class SearchObject_Solr extends SearchObject_Base
         $validFields = array_keys($filter);
         foreach ($this->indexResult['facet_counts']['facet_fields'] as $field => $data) {
             // Skip filtered fields and empty arrays:
-            if (!in_array($field, $validFields) || count($data) < 1) {
+            if (!in_array($field, $validFields) 
+                || (count($data) < 1) && !in_array($field, $alwaysListed)
+            ) {
                 continue;
             }
             // Initialize the settings for the current field
