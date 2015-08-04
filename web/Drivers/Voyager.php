@@ -1141,16 +1141,16 @@ class Voyager implements DriverInterface
             ? preg_replace('/[^\w]/', '', $this->config['Catalog']['fallback_login_field'])
             : '';
 
-        $secondary_login_field = null;
-        if ($secondaryLoginField = $this->getSecondaryLoginField()) {
-            $secondary_login_field
-                = preg_replace('/[^\w]/', '', $secondaryLoginField['field']);
+        $secondaryLoginField = null;
+        if ($secondaryFieldInfo = $this->getSecondaryLoginField()) {
+            $secondaryLoginField
+                = preg_replace('/[^\w]/', '', $secondaryFieldInfo['field']);
         }
         $secondaryLoginLower = null;
 
         if (is_array($login)) {
             // User is logging in or adding a new library card.
-            if ($secondary_login_field) {
+            if ($secondaryLoginField) {
                 list($login, $secondaryLogin) = $login;
                 $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
             } else {
@@ -1166,8 +1166,8 @@ class Voyager implements DriverInterface
         // characters and check login verification fields here.
 
         $sql = "SELECT PATRON.PATRON_ID, PATRON.FIRST_NAME, PATRON.LAST_NAME, PATRON.{$login_field} as LOGIN";
-        if ($secondary_login_field) {
-            $sql .= ", PATRON.{$secondary_login_field} as SECONDARY_LOGIN";
+        if ($secondaryLoginField) {
+            $sql .= ", PATRON.{$secondaryLoginField} as SECONDARY_LOGIN";
         }
 
         if ($fallback_login_field) {
@@ -1199,9 +1199,34 @@ class Voyager implements DriverInterface
                 $loginColumnLower = !is_null($row['LOGIN'])
                     ? mb_strtolower(utf8_encode($row['LOGIN']), 'UTF-8')
                     : '';
-                if ((!is_null($row['LOGIN']) && ($loginColumnLower == $loginLower || $loginColumnLower == $this->sanitizePIN($loginLower)))
-                    || ($fallback_login_field && is_null($row['LOGIN']) && mb_strtolower(utf8_encode($row['FALLBACK_LOGIN']), 'UTF-8') == $loginLower)
-                ) {
+
+
+                // Case 1: Verify submitted primary login if it is defined for patron
+                $success 
+                    = !is_null($row['LOGIN']) 
+                    && ($loginColumnLower == $loginLower 
+                        || $loginColumnLower == $this->sanitizePIN($loginLower));
+
+                // Case 2: Same field used as fallback_login_field and secondary_login_field.
+                // Verify that primary login was not submitted and that primary login field 
+                // is not defined for patron.
+                if (!$success) {
+                    $success 
+                        = $fallback_login_field && $secondaryLoginField
+                        && $fallback_login_field === $secondaryLoginField
+                        && $loginLower == ''
+                        && is_null($row['LOGIN']);
+                }
+
+                // Case 3: Verify that submitted login matches fallback_login_field
+                if (!$success) {
+                    $success 
+                        = $fallback_login_field 
+                        && is_null($row['LOGIN']) 
+                        && mb_strtolower(utf8_encode($row['FALLBACK_LOGIN']), 'UTF-8') == $loginLower;
+                }
+
+                if ($success) {
                     $results = array(
                         'id' => utf8_encode($row['PATRON_ID']),
                         'firstname' => utf8_encode($row['FIRST_NAME']),
