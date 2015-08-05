@@ -486,3 +486,25 @@ function init480Mobile() {
         $("#480mobileSecond #move480mobile").appendTo("#480mobileFirst" );
     }
 }
+
+function updateSecondaryLoginFields() {
+    var loginForm = $("#loginForm");
+
+    loginForm.find("label.invalid").hide();
+    loginForm.find(".error").removeClass("error");
+    loginForm.validate();
+
+    loginForm.find(".secondaryLogin").hide().removeAttr("style").find('input[name="password[]"]').prop("disabled", true);
+
+    var field =  loginForm.find("#secondaryLogin-" + $("#login_target").val());
+    if (field.length) {
+        field = field.eq(0);
+        field.show();
+        field.find('input[name="password[]"]').prop("disabled", false);
+        // Password field is optional when secondary_login_field is in use
+        loginForm.find("#login_password").rules("remove", "required");
+    } else {
+        loginForm.find("#login_password").rules("add", "required");
+        loginForm.find("#login_password").rules("add", {messages: {required: trRequired}});
+    }
+}
