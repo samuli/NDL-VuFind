@@ -2512,6 +2512,15 @@ EOT;
      */
     public function changePassword($details)
     {
+        $newPIN = trim(
+            htmlspecialchars(
+                $this->sanitizePIN($details['newPassword']), ENT_COMPAT, 'UTF-8'
+            )
+        );
+        if ($this->isPasswordBlacklisted($newPIN)) {
+            return null;
+        }
+
         $patron = $details['patron'];
         $id = htmlspecialchars($patron['id'], ENT_COMPAT, 'UTF-8');
         $lastname = htmlspecialchars($patron['lastname'], ENT_COMPAT, 'UTF-8');
@@ -2525,11 +2534,6 @@ EOT;
             // Voyager requires the PIN code to be set even
             $oldPIN = '     ';
         }
-        $newPIN = trim(
-            htmlspecialchars(
-                $this->sanitizePIN($details['newPassword']), ENT_COMPAT, 'UTF-8'
-            )
-        );
         $barcode = htmlspecialchars($patron['cat_username'], ENT_COMPAT, 'UTF-8');
 
         $xml =  <<<EOT
