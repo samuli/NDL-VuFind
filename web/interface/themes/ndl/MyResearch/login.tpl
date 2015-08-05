@@ -79,7 +79,7 @@
       <br class="clear"/>
       <label for="login_password">{translate text='Password'}</label>
       <br class="clear"/>
-      <input id="login_password" type="password" name="password[]" class="{jquery_validation required='This field is required'}"/>
+      <input id="login_password" type="password" name="password[]"/>
       <br class="clear"/>
 
       {foreach from=$secondaryLoginFields key=driver item=secondaryLogin}
@@ -108,7 +108,6 @@
     <script type="text/javascript">
       {literal}
       $(document).ready(function() {
-        $("#loginForm").validate();      
         $("input").one("keydown", function () { 
           $("#errormessage").css({"visibility":"hidden"});
         });
@@ -134,6 +133,7 @@
     {/if}
     <script type="text/javascript">
     trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
+    trRequired = '{translate text="This field is required"}';
 
     {literal}
     $(document).ready(function() {        

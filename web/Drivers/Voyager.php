@@ -1149,6 +1149,9 @@ class Voyager implements DriverInterface
         $secondaryLoginLower = null;
 
         if (is_array($login)) {
+            if (count($login) == 1) {
+                return null;
+            }
             // User is logging in or adding a new library card.
             if ($secondaryLoginField) {
                 list($login, $secondaryLogin) = $login;
@@ -1206,7 +1209,7 @@ class Voyager implements DriverInterface
                     = !is_null($row['LOGIN']) 
                     && ($loginColumnLower == $loginLower 
                         || $loginColumnLower == $this->sanitizePIN($loginLower));
-
+                
                 // Case 2: Same field used as fallback_login_field and secondary_login_field.
                 // Verify that primary login was not submitted and that primary login field 
                 // is not defined for patron.
