@@ -1112,6 +1112,21 @@ class Voyager implements DriverInterface
     }
 
     /**
+     * Check if password is blacklisted and can not be used to log in.
+     *
+     * @param string $password Password
+     *
+     * @return boolean
+     */
+    public function isPasswordBlacklisted($password)
+    {
+        return isset($this->config['Catalog']['login_password_blacklist'])
+            ? in_array($password, $this->config['Catalog']['login_password_blacklist']) 
+            : false
+        ;
+    }
+
+    /**
      * Patron Login
      *
      * This is responsible for authenticating a patron against the catalog.
@@ -1132,6 +1147,10 @@ class Voyager implements DriverInterface
      */
     public function patronLogin($barcode, $login)
     {
+        if ($this->isPasswordBlacklisted($login)) {
+            return null;
+        }
+
         // Load the field used for verifying the login from the config file, and
         // make sure there's nothing crazy in there:
         $login_field = isset($this->config['Catalog']['login_field'])
