@@ -2518,7 +2518,7 @@ EOT;
             )
         );
         if ($this->isPasswordBlacklisted($newPIN)) {
-            return null;
+            return new PEAR_Error(translate('Password not allowed'));
         }
 
         $patron = $details['patron'];
