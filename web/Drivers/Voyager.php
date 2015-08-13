@@ -1167,8 +1167,8 @@ class Voyager implements DriverInterface
         }
         $secondaryLoginLower = null;
 
-        // User is logging in or adding a new library card.
         if (is_array($login)) {
+            // User is logging in or adding a new library card.
             if ($secondaryLoginField) {
                 if (count($login) == 1) {
                     return null;
