@@ -42,7 +42,7 @@
     <label class="displayBlock" for="username">{translate text='Username'}</label>
     <input id="username" type="text" name="username" value="{$cat_username|escape}" class="{jquery_validation required='This field is required'}"/>
     <label class="displayBlock" for="password">{translate text='Password'}</label>
-    <input id="password" type="password" name="password[]" value="{$cat_password|escape}" class="{jquery_validation required='This field is required'}"/>
+    <input id="login_password" type="password" name="password[]" value="{$cat_password|escape}" />
     <br class="clear"/>
     {if !$id}
     {foreach from=$secondaryLoginFields key=driver item=secondaryLogin}
@@ -56,6 +56,7 @@
     <input class="button buttonFinna" type="submit" name="submit" {if $id}value="{translate text="Update"}"{else}value="{translate text="Save"}"{/if}/>
 </form>
 <script type="text/javascript">
+  trRequired = '{translate text="This field is required"}';
   {literal}
   $(document).ready(function() {
     $("#editAccountForm").validate();      

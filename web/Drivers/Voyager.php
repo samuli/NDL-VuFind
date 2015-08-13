@@ -1147,7 +1147,7 @@ class Voyager implements DriverInterface
      */
     public function patronLogin($barcode, $login)
     {
-        if ($this->isPasswordBlacklisted($login)) {
+        if ($this->isPasswordBlacklisted(is_array($login) ? $login[0] : $login)) {
             return null;
         }
 
@@ -1167,19 +1167,19 @@ class Voyager implements DriverInterface
         }
         $secondaryLoginLower = null;
 
+        // User is logging in or adding a new library card.
         if (is_array($login)) {
-            if (count($login) == 1) {
-                return null;
-            }
-            // User is logging in or adding a new library card.
             if ($secondaryLoginField) {
+                if (count($login) == 1) {
+                    return null;
+                }
                 list($login, $secondaryLogin) = $login;
                 $secondaryLoginLower = mb_strtolower($secondaryLogin, 'UTF-8');
             } else {
                 $login = $login[0];
             }
         }
-
+        
         // Turns out it's difficult and inefficient to handle the mismatching
         // character sets of the Voyager database in the query (in theory something
         // like "UPPER(UTL_I18N.RAW_TO_NCHAR(UTL_RAW.CAST_TO_RAW(PATRON.LAST_NAME), 'WE8ISO8859P1'))"

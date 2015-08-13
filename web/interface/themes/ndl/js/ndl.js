@@ -489,13 +489,16 @@ function init480Mobile() {
 
 function updateSecondaryLoginFields() {
     var loginForm = $("#loginForm");
+    if (!loginForm.length) {
+        loginForm = $("#editAccountForm");
+    }
 
     loginForm.find("label.invalid").hide();
     loginForm.find(".error").removeClass("error");
     loginForm.validate();
 
     loginForm.find(".secondaryLogin").hide().removeAttr("style").find('input[name="password[]"]').prop("disabled", true);
-
+    
     var field =  loginForm.find("#secondaryLogin-" + $("#login_target").val());
     if (field.length) {
         field = field.eq(0);
