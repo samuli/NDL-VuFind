@@ -41,7 +41,7 @@
     class="mainFocus" placeholder="{translate text ='librarycard_placeholder'}"/>
     <label class="displayBlock" for="username">{translate text='Username'}</label>
     <input id="username" type="text" name="username" value="{$cat_username|escape}" class="{jquery_validation required='This field is required'}"/>
-    <label class="displayBlock" for="password">{translate text='Password'}</label>
+    <label class="displayBlock" for="login_password">{translate text='Password'}</label>
     <input id="login_password" type="password" name="password[]" value="{$cat_password|escape}" />
     <br class="clear"/>
     {if !$id}
