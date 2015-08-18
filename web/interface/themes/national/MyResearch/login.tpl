@@ -58,8 +58,19 @@
       <br class="clear"/>
       <label for="login_password">{translate text='Password'}</label>
       <br class="clear"/>
-      <input id="login_password" type="password" name="password" class="{jquery_validation required='This field is required'}"/>
+      <input id="login_password" type="password" name="password[]"/>
       <br class="clear"/>
+
+      {foreach from=$secondaryLoginFields key=driver item=secondaryLogin}
+      <div id="secondaryLogin-{$driver}" class="secondaryLogin hide">
+        <label class="displayBlock" for="secondaryLogin-{$driver}">{translate text=$secondaryLogin}</label>
+        <input id="secondaryLogin-{$driver}" type="text" name="password[]" value="" class="{jquery_validation required='This field is required'}" disabled="disabled"/>
+        <br class="clear"/>
+      </div>
+      {/foreach}
+      <br class="clear"/>
+
+
       <input class="button buttonFinna" type="reset" value="{translate text='confirm_create_account_abort'}"/>
       <input class="button buttonFinna" type="submit" name="submit" value="{translate text='Login'}"/>
       {if $followup}<input type="hidden" name="followup" value="{$followup|escape:"html"}"/>{/if}
@@ -76,7 +87,6 @@
     <script type="text/javascript">
       {literal}
       $(document).ready(function() {
-        $("#loginForm").validate();      
         $("input").one("keydown", function () { 
           $("#errormessage").css({"visibility":"hidden"});
         });
@@ -107,6 +117,10 @@
     $(document).ready(function() {        
        registerAjaxLogin($('.loginForm'), false);
     });
+    $("#login_target").on("change", function() {
+       updateSecondaryLoginFields();
+    });
+    updateSecondaryLoginFields();
     </script>
     {/literal}    
   {/if}
