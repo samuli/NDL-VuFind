@@ -56,13 +56,16 @@ function smarty_function_js($params, &$smarty)
 
     // Loop through the available themes looking for the requested JS file:
     $js = false;
+    $jsModified = false;
     foreach ($themes as $theme) {
         $theme = trim($theme);
 
         // If the file exists on the local file system, set $js to the relative
         // path needed to link to it from the web interface.
-        if (file_exists("{$local}/interface/themes/{$theme}/js/{$filename}")) {
+        $jsFile = "{$local}/interface/themes/{$theme}/js/{$filename}";
+        if (file_exists($jsFile)) {
             $js = "{$path}/interface/themes/{$theme}/js/{$filename}";
+            $jsModified = filemtime($jsFile);
             break;
         }
     }
@@ -70,14 +73,16 @@ function smarty_function_js($params, &$smarty)
     // If we couldn't find the file, check the global Javascript area; if that
     // still doesn't help, we shouldn't try to link to it:
     if (!$js) {
-        if (file_exists("{$local}/js/{$filename}")) {
+        $jsFile = "{$local}/js/{$filename}";
+        if (file_exists($jsFile)) {
             $js = "{$path}/js/{$filename}";
+            $jsModified = filemtime($jsFile);
         } else {
             return '';
         }
     }
 
     // We found the file -- build the script tag:
-    return "<script type=\"text/javascript\" src=\"{$js}\"></script>";
+    return "<script type=\"text/javascript\" src=\"{$js}?{$jsModified}\"></script>";
 }
 ?>
