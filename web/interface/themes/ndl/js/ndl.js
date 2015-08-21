@@ -498,8 +498,15 @@ function updateSecondaryLoginFields() {
     loginForm.validate();
 
     loginForm.find(".secondaryLogin").hide().removeAttr("style").find('input[name="password[]"]').prop("disabled", true);
-    
-    var field =  loginForm.find("#secondaryLogin-" + $("#login_target").val());
+
+    // Multiple libraries: drop-down
+    var target = $("#login_target");
+    if (!target.length) {
+        // One library: hidden field
+        target = $('input[name="login_target"]');
+    }
+
+    var field =  loginForm.find("#secondaryLogin-" + target.val());
     if (field.length) {
         field = field.eq(0);
         field.show();
