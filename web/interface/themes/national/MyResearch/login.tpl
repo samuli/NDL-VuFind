@@ -112,6 +112,7 @@
     {/if}
     <script type="text/javascript">
     trConfirmCreateAccountBtn = '{translate text="confirm_create_account_continue"}';
+    trRequired = '{translate text="This field is required"}';
 
     {literal}
     $(document).ready(function() {        
