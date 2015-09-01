@@ -5,7 +5,6 @@
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/vaski.jpg" />
     <h5>{translate text='facet_0/Vaski'}</h5>
     <p>vaski.finna.fi</p>
-    <span class="beta">beta</span>
     </a>
     <div class="clear"></div>
 <h3>{translate text='Museum_plural'}</h3>
@@ -31,37 +30,50 @@
     </a>
     <div class="clear"></div>
 <h3>{translate text='Polytechnic_library_plural'}</h3>
-    <a class="screenshotwrapper" href="https://samk.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/samk.jpg" />
-    <h5>{translate text='facet_0/SAMK'}</h5>
-    <p>samk.finna.fi</p>
+    <a class="screenshotwrapper" href="https://hamk.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/hamk.jpg" />
+    <h5>{translate text='facet_0/HAMK'}</h5>
+    <p>hamk.finna.fi</p>
     </a>
     <a class="screenshotwrapper" href="https://masto.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/masto.jpg" />
     <h5>{translate text='facet_0/PHKK'}</h5>
     <p>masto.finna.fi</p>
     </a>
-    <a class="screenshotwrapper" href="https://oamk.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/oamk.jpg" />
-    <h5>{translate text='facet_0/OAMK'}</h5>
-    <p>oamk.finna.fi</p>
-    </a>
-    <a class="screenshotwrapper" href="https://seamk.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/seamk.jpg" />
-    <h5>{translate text='facet_0/SEAMK'}</h5>
-    <p>seamk.finna.fi</p>
-    <span class="beta">beta</span>
-    </a>
-    <a class="screenshotwrapper" href="https://janet.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/janet.jpg" />
-    <h5>{translate text='facet_0/JAMK'}</h5>
-    <p>janet.finna.fi</p>
-    <span class="beta">beta</span>
+    <a class="screenshotwrapper" href="https://laurea.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/laurea.jpg" />
+    <h5>{translate text='facet_0/LAUREA'}</h5>
+    <p>laurea.finna.fi</p>
     </a>
     <a class="screenshotwrapper" href="https://metropolia.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/metropolia.jpg" />
     <h5>{translate text='facet_0/METROPOLIA'}</h5>
     <p>metropolia.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://oamk.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/oamk.jpg" />
+    <h5>{translate text='facet_0/OAMK'}</h5>
+    <p>oamk.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://samk.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/samk.jpg" />
+    <h5>{translate text='facet_0/SAMK'}</h5>
+    <p>samk.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://seamk.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/seamk.jpg" />
+    <h5>{translate text='facet_0/SEAMK'}</h5>
+    <p>seamk.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://tamk.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/tamk.jpg" />
+    <h5>{translate text='facet_0/TAMK'}</h5>
+    <p>tamk.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://janet.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/janet.jpg" />
+    <h5>{translate text='facet_0/JAMK'}</h5>
+    <p>janet.finna.fi</p>
     <span class="beta">beta</span>
     </a>
     <a class="screenshotwrapper" href="https://kaakkuri.finna.fi">
@@ -70,16 +82,16 @@
     <p>kaakkuri.finna.fi</p>
     <span class="beta">beta</span>
     </a>
-    <a class="screenshotwrapper" href="https://hamk.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/hamk.jpg" />
-    <h5>{translate text='facet_0/HAMK'}</h5>
-    <p>hamk.finna.fi</p>
+    <a class="screenshotwrapper" href="https://karelia.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/karelia.jpg" />
+    <h5>{translate text='facet_0/KARELIA'}</h5>
+    <p>karelia.finna.fi</p>
     <span class="beta">beta</span>
     </a>
-    <a class="screenshotwrapper" href="https://laurea.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/laurea.jpg" />
-    <h5>{translate text='facet_0/LAUREA'}</h5>
-    <p>laurea.finna.fi</p>
+    <a class="screenshotwrapper" href="https://tuamk.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/tuamk.jpg" />
+    <h5>{translate text='facet_0/TUAMK'}</h5>
+    <p>tuamk.finna.fi</p>
     <span class="beta">beta</span>
     </a>
     <div class="clear"></div>
