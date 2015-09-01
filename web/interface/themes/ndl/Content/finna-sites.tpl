@@ -112,6 +112,12 @@
     <p>aalto.finna.fi</p>
     <span class="beta">beta</span>
     </a>
+    <a class="screenshotwrapper" href="https://uef.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/uef.jpg" />
+    <h5>{translate text='facet_0/UEF'}</h5>
+    <p>uef.finna.fi</p>
+    <span class="beta">beta</span>
+    </a>
     <a class="screenshotwrapper" href="https://hanken.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/hanken.jpg" />
     <h5>{translate text='facet_0/SHH'}</h5>
