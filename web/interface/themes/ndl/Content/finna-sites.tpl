@@ -107,11 +107,6 @@
     <h5>{translate text='facet_0/JYU'}</h5>
     <p>jyu.finna.fi</p>
     </a>
-    <a class="screenshotwrapper" href="https://kansalliskirjasto.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/kansalliskirjasto.jpg" />
-    <h5>{translate text='facet_0/NLF'}</h5>
-    <p>kansalliskirjasto.finna.fi</p>
-    </a>
     <a class="screenshotwrapper" href="https://luc.finna.fi/ulapland">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/luc_ulapland.jpg" />
     <h5>{translate text='facet_0/LUC'}</h5>
@@ -127,6 +122,12 @@
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/uef.jpg" />
     <h5>{translate text='facet_0/UEF'}</h5>
     <p>uef.finna.fi</p>
+    <span class="beta">beta</span>
+    </a>
+    <a class="screenshotwrapper" href="https://kansalliskirjasto.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/kansalliskirjasto.jpg" />
+    <h5>{translate text='facet_0/NLF'}</h5>
+    <p>kansalliskirjasto.finna.fi</p>
     <span class="beta">beta</span>
     </a>
     <a class="screenshotwrapper" href="https://hanken.finna.fi">
