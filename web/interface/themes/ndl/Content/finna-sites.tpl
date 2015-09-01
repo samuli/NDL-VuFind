@@ -18,15 +18,15 @@
     <h5>{translate text='facet_0/HOTELLI- JA RAVINTOLAMUSEO'}</h5>
     <p>hrm.finna.fi</p>
     </a>
-    <a class="screenshotwrapper" href="https://lelumuseohevosenkenka.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/lelumuseohevosenkenka.jpg" />
-    <h5>{translate text='facet_0/HEVOSENKENKA'}</h5>
-    <p>lelumuseohevosenkenka.finna.fi</p>
-    </a>
     <a class="screenshotwrapper" href="https://museot.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/museot.jpg" />
     <h5>{translate text='Museum_plural'} ({translate text='facet_0/Museovirasto'})</h5>
     <p>museot.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://lelumuseohevosenkenka.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/lelumuseohevosenkenka.jpg" />
+    <h5>{translate text='facet_0/HEVOSENKENKA'}</h5>
+    <p>lelumuseohevosenkenka.finna.fi</p>
     </a>
     <div class="clear"></div>
 <h3>{translate text='Polytechnic_library_plural'}</h3>
@@ -88,6 +88,12 @@
     <p>karelia.finna.fi</p>
     <span class="beta">beta</span>
     </a>
+    <a class="screenshotwrapper" href="https://luc.finna.fi/lapinamk">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/luc_lapinamk.jpg" />
+    <h5>{translate text='facet_0/LUC'}</h5>
+    <p>luc.finna.fi/lapinamk</p>
+    <span class="beta">beta</span>
+    </a>
     <a class="screenshotwrapper" href="https://tuamk.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/tuamk.jpg" />
     <h5>{translate text='facet_0/TUAMK'}</h5>
@@ -105,6 +111,11 @@
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/kansalliskirjasto.jpg" />
     <h5>{translate text='facet_0/NLF'}</h5>
     <p>kansalliskirjasto.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://luc.finna.fi/ulapland">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/luc_ulapland.jpg" />
+    <h5>{translate text='facet_0/LUC'}</h5>
+    <p>luc.finna.fi/ulapland</p>
     </a>
     <a class="screenshotwrapper" href="https://aalto.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/aalto.jpg" />
