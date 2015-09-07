@@ -42,7 +42,7 @@ class QdcRecord extends IndexRecord
 {
     // QDC record
     protected $xml;
-    
+
     /**
      * Constructor.  We build the object using all the data retrieved
      * from the (Solr) index (which also happens to include the
@@ -58,10 +58,10 @@ class QdcRecord extends IndexRecord
     public function __construct($indexFields)
     {
         parent::__construct($indexFields);
-        
+
         $this->xml = simplexml_load_string($this->fields['fullrecord']);
     }
-    
+
     /**
      * Assign necessary Smarty variables and return a template name to
      * load in order to display core metadata (the details shown in the
@@ -73,15 +73,15 @@ class QdcRecord extends IndexRecord
     public function getCoreMetadata()
     {
         global $interface;
-        
+
         parent::getCoreMetadata();
         $interface->assign('coreAbstracts', $this->getAbstracts());
-        
+
         return 'RecordDrivers/Qdc/core.tpl';
-    }        
-    
+    }
+
     /**
-     * Return an associative array of abstracts associated with this record, if available; false otherwise. 
+     * Return an associative array of abstracts associated with this record, if available; false otherwise.
      *
      * @return array of abstracts using abstract languages as keys
      * @access protected
@@ -100,8 +100,43 @@ class QdcRecord extends IndexRecord
             }
             $abstracts[$lang] = $abstract;
         }
-        
+
         return $abstracts;
     }
-    
+
+    /**
+     * Return a URL to a thumbnail preview of the record, if available; false
+     * otherwise.
+     *
+     * @param array $size Size of thumbnail (small, medium or large -- small is
+     * default).
+     *
+     * @return mixed
+     * @access public
+     */
+    public function getThumbnail($size = 'small')
+    {
+        global $configArray;
+        if (isset($this->fields['thumbnail']) && $this->fields['thumbnail']) {
+            return $configArray['Site']['url'] . '/thumbnail.php?id=' .
+                urlencode($this->getUniqueID()) . '&size=' . urlencode($size);
+        }
+        return false;
+    }
+
+    /**
+     * Return the actual URL where a thumbnail can be retrieved, if available; false
+     * otherwise.
+     *
+     * @param array $size Size of thumbnail (small, medium or large -- small is
+     * default).
+     *
+     * @return mixed
+     * @access public
+     */
+    public function getThumbnailURL($size = 'small')
+    {
+        return empty($this->fields['thumbnail'])
+            ? false : $this->fields['thumbnail'];
+    }
 }
