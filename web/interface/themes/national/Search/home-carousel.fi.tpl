@@ -5,6 +5,15 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
+        {image src="designweek.png"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Finna @ Helsinki Design Week 11.9.2015</span></div>
+          <div class="pickup-text">Finna järjestää tapahtuman <em>Culture as Commons? – Designing with Digital Heritage</em>, jossa nuoret suunnittelijat luovat Finnan aineistoista jotain aivan uutta, L3 Muotoilumakasiinissa Jätkäsaaressa Pe 11.9.2015. Millaista uusiokäyttöä keksisit itse seuraavan linkin kuva-aarteille? <br />Tapahtuma on osa Helsinki Design Weekiä.
+            <a href="{$url}{'/List/140322?lookfor=&type=AllFields&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
         {image src="01lapset.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Lasten uusi mediakulttuuri: vauvatkin jo netissä</span></div>
@@ -29,15 +38,6 @@
           <div class="pickup-text">
             Matkalippuja, kulkuvälineitä ja valokuvia Helsingin kaupunginmuseon kokoelmista. Miltä näytti raitiovaunu 1920-luvulla? Entä muistatko bussilipun vuodelta 1986? Pääkaupungin joukkoliikenteen vaiheista kertova aineisto ulottuu 1900-luvun alusta nykypäivään.
             <a href="{$url}{'/Search/Results?lookfor=liikennelaitos&type=AllFields&filter[]=building%3A%220%2FHKM%2F%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
-        {image src="07sakuvat.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Ainutlaatuisia kuvia Suomen talvi-, jatko- ja Lapin sodista</span></div>
-          <div class="pickup-text">Edessäsi on ainutlaatuinen kuvakokoelma SA-kuva-arkisto, joka sisältää lähes 160 000 Suomen talvi-, jatko- ja Lapin sodan ajan  valokuvaa vuosilta 1939-1945. Pääosan kuvista ovat ottaneet Päämajan  alaisten tiedotuskomppanioiden kuvaajat. Talvisodan kuvamateriaali on  rintamamiesten omalla kalustollaan kuvaamaa. 
-            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>

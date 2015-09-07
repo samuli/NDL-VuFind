@@ -5,6 +5,15 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
+        {image src="07sakuvat.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Ainutlaatuisia kuvia Suomen talvi-, jatko- ja Lapin sodista</span></div>
+          <div class="pickup-text">Edessäsi on ainutlaatuinen kuvakokoelma SA-kuva-arkisto, joka sisältää lähes 160 000 Suomen talvi-, jatko- ja Lapin sodan ajan  valokuvaa vuosilta 1939-1945. Pääosan kuvista ovat ottaneet Päämajan  alaisten tiedotuskomppanioiden kuvaajat. Talvisodan kuvamateriaali on  rintamamiesten omalla kalustollaan kuvaamaa. 
+            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
         {image src="201411_03mttk.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Maatalouden tutkimuskeskuksen julkaisuja</span></div>
