@@ -1317,22 +1317,20 @@ class SearchObject_Solr extends SearchObject_Base
             return;
         }
 
-        // Do nothing if there are no suggestions
-        $suggestions = isset($this->indexResult['spellcheck']['suggestions']) ?
-            $this->indexResult['spellcheck']['suggestions'] : array();
-        if (count($suggestions) == 0) {
-            return;
-        }
-
-        // Loop through the array of search terms we have suggestions for
-        $suggestionList = array();
         // More than one word use collation suggestions
         $queryTerm = $this->_buildSpellingQuery();
         $useCollate = (str_word_count($queryTerm, 0) > 1);
 
+        // Loop through the array of search terms we have suggestions for
+        $suggestionList = array();
         if ($useCollate) {
+            $suggestions = isset($this->indexResult['spellcheck']['collations'])
+                ? $this->indexResult['spellcheck']['collations'] : array();
+            if (empty($suggestions)) {
+                return;
+            }
             foreach ($suggestions as $suggestion) {
-                if ($suggestion[0] != "collation") {
+                if ($suggestion[0] != 'collation') {
                     continue;
                 }
                 $suggestionList[$queryTerm]['freq'] = 0;
@@ -1345,6 +1343,12 @@ class SearchObject_Solr extends SearchObject_Base
                 array_splice($suggestionList[$queryTerm]['suggestions'], $this->spellingLimit);
             }
         } else {
+            // Do nothing if there are no suggestions
+            $suggestions = isset($this->indexResult['spellcheck']['suggestions']) ?
+                $this->indexResult['spellcheck']['suggestions'] : array();
+            if (count($suggestions) == 0) {
+                return;
+            }
             foreach ($suggestions as $suggestion) {
                 $ourTerm = $suggestion[0];
 
@@ -1518,7 +1522,7 @@ class SearchObject_Solr extends SearchObject_Base
         $validFields = array_keys($filter);
         foreach ($this->indexResult['facet_counts']['facet_fields'] as $field => $data) {
             // Skip filtered fields and empty arrays:
-            if (!in_array($field, $validFields) 
+            if (!in_array($field, $validFields)
                 || (count($data) < 1) && !in_array($field, $alwaysListed)
             ) {
                 continue;
