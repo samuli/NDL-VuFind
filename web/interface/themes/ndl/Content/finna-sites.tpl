@@ -18,9 +18,14 @@
     <h5>{translate text='facet_0/HOTELLI- JA RAVINTOLAMUSEO'}</h5>
     <p>hrm.finna.fi</p>
     </a>
+    <a class="screenshotwrapper" href="https://lappeenrannanmuseot.finna.fi/">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/lappeenrannanmuseot.jpg" />
+    <h5>{translate text='facet_0/LPRMUSEOT'}</h5>
+    <p>https://lappeenrannanmuseot.finna.fi/</p>
+    </a>
     <a class="screenshotwrapper" href="https://museot.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/museot.jpg" />
-    <h5>{translate text='Museum_plural'} ({translate text='facet_0/Museovirasto'})</h5>
+    <h5>{translate text='Museum_plural'}</h5>
     <p>museot.finna.fi</p>
     </a>
     <a class="screenshotwrapper" href="https://lelumuseohevosenkenka.finna.fi">
@@ -34,6 +39,16 @@
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/hamk.jpg" />
     <h5>{translate text='facet_0/HAMK'}</h5>
     <p>hamk.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://kamk.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/kamk.jpg" />
+    <h5>{translate text='facet_0/KAMK'}</h5>
+    <p>kamk.finna.fi</p>
+    </a>
+    <a class="screenshotwrapper" href="https://karelia.finna.fi">
+    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/karelia.jpg" />
+    <h5>{translate text='facet_0/KARELIA'}</h5>
+    <p>karelia.finna.fi</p>
     </a>
     <a class="screenshotwrapper" href="https://masto.finna.fi">
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/masto.jpg" />
@@ -80,12 +95,6 @@
     <img src="{$url}/interface/themes/ndl/images/finnafrontpages/kaakkuri.jpg" />
     <h5>{translate text='facet_0/XAMK'}</h5>
     <p>kaakkuri.finna.fi</p>
-    <span class="beta">beta</span>
-    </a>
-    <a class="screenshotwrapper" href="https://karelia.finna.fi">
-    <img src="{$url}/interface/themes/ndl/images/finnafrontpages/karelia.jpg" />
-    <h5>{translate text='facet_0/KARELIA'}</h5>
-    <p>karelia.finna.fi</p>
     <span class="beta">beta</span>
     </a>
     <a class="screenshotwrapper" href="https://luc.finna.fi/lapinamk">
