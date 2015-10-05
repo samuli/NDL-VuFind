@@ -2206,7 +2206,7 @@ class IndexRecord implements RecordInterface
         }
         return false;
     }
-    
+
     /**
      * Get all subject headings associated with this record.  Each heading is
      * returned as an array of chunks, increasing from least specific to most
@@ -3123,6 +3123,32 @@ class IndexRecord implements RecordInterface
     }
 
     /**
+     * Convert WKT envelope to array
+     *
+     * @param string $envelope WKT envelope
+     *
+     * @return array Results
+     */
+    protected function envelopeToArray($envelope)
+    {
+        $array = array();
+        $envelope = preg_replace('/.*\((.+)\).*/', '\\1', $envelope);
+        list($minX, $maxX, $maxY, $minY) = explode(' ', trim($envelope));
+        // Workaround for jquery geo issue preventing polygon with longitude
+        // -180.0 from being displayed (https://github.com/AppGeo/geo/issues/128)
+        if ((float)$minX === -180) {
+            $minX = -179.9999999;
+        }
+        return array(
+            array((float)$minX, (float)$minY),
+            array((float)$minX, (float)$maxY),
+            array((float)$maxX, (float)$maxY),
+            array((float)$maxX, (float)$minY),
+            array((float)$minX, (float)$minY)
+        );
+    }
+
+    /**
      * Convert WKT to array (support function for getGoogleMapMarker)
      *
      * @param string $wkt Well Known Text
@@ -3177,6 +3203,13 @@ class IndexRecord implements RecordInterface
             return array(
                 'title' => (string)$this->fields['title'],
                 'multipolygon' => $polygons
+            );
+        } elseif (strtolower(substr($wkt, 0, 8)) == 'envelope') {
+            return array(
+                'title' => (string)$this->fields['title'],
+                'polygon' => array(
+                    $this->envelopeToArray($wkt)
+                )
             );
         } else {
             $coordinates = explode(' ', $wkt);
