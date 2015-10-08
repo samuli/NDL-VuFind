@@ -1504,7 +1504,7 @@ class AxiellWebServices implements DriverInterface
             'addReservation'         => 'hold_error_system',
             'authenticatePatron'     => 'authentication_error_technical',
             'GetDebts'               => 'catalog_connection_failed',
-            'getPatronInformation'   => 'patron_login_error_technical',
+            'getPatronInformation'   => 'authentication_error_technical',
             'GetHoldings'            => 'catalog_connection_failed',
             'getReservations'        => 'hold_error_system',
             'getReservationBranches' => 'hold_error_system',
