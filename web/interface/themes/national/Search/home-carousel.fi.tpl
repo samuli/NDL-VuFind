@@ -5,11 +5,12 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
-        {image src="designweek.png"}
+        {image src="05finlandia.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Finna @ Helsinki Design Week 11.9.2015</span></div>
-          <div class="pickup-text">Finna järjestää tapahtuman <em>Culture as Commons? – Designing with Digital Heritage</em>, jossa nuoret suunnittelijat luovat Finnan aineistoista jotain aivan uutta, L3 Muotoilumakasiinissa Jätkäsaaressa Pe 11.9.2015. Millaista uusiokäyttöä keksisit itse seuraavan linkin kuva-aarteille? <br />Tapahtuma on osa Helsinki Design Weekiä.
-            <a href="{$url}{'/List/140322?lookfor=&type=AllFields&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
+          <div class="pickup-header"><span>Karhulan lasia</span></div>
+          <div class="pickup-text">
+            Karhulan lasitölkkejä, Gunnel Nymanin ja Göran Hongellin töitä 1930-luvulta, Tapio Wirkkalan Finlandia Vodka -pulloja. Lakkautetun Karhulan lasimuseon kokoelmista löytyy niin suomalaisille tuttua pakkauslasia, käsinpuhallettuja uniikkitöitä kuin unohdettuja design-helmiäkin. Osa Kymenlaakson museon Karhula-kokoelmasta on nyt digitoitu.
+            <a href="{$url}{'/Search/Results?lookfor=wirkkala+OR+"gunnel+nyman"+OR+käsityö&prefiltered=-&SearchForm_submit=Hae&filter[]=building%3A"1%2FKYMIMUSEO%2FKarhulan+lasikokoelma%2F"&filter[]=online_boolean%3A1&limit=100&sort=relevance&view=grid&retainFilters=1'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
@@ -23,21 +24,21 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="03ss.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Seurasaaren ulkomuseon esineitä ja valokuvia</span></div>
-          <div class="pickup-text">Seurasaaren talojen esineistöä ja valokuvia on digitoitu. Kurssin, Ivarsin, Pertinotsan, Hallan ja Kaukolan savutupien esineisiin pääsee tutustumaan nyt tarkemmin. Valokuvat esittelevät ulkomuseon taloja niiden alkuperäisillä paikoillaan, talojen siirtämistä Seurasaareen sekä aikaisempaa museotoimintaa. Uudemmat kuvat esittelevät museotaloja ja niiden interiöörejä.
-          <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
         {image src="02hkl.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Helsingin joukkoliikenteen historiaa</span></div>
           <div class="pickup-text">
             Matkalippuja, kulkuvälineitä ja valokuvia Helsingin kaupunginmuseon kokoelmista. Miltä näytti raitiovaunu 1920-luvulla? Entä muistatko bussilipun vuodelta 1986? Pääkaupungin joukkoliikenteen vaiheista kertova aineisto ulottuu 1900-luvun alusta nykypäivään.
             <a href="{$url}{'/Search/Results?lookfor=liikennelaitos&type=AllFields&filter[]=building%3A%220%2FHKM%2F%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="07sakuvat.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Ainutlaatuisia kuvia Suomen talvi-, jatko- ja Lapin sodista</span></div>
+          <div class="pickup-text">Edessäsi on ainutlaatuinen kuvakokoelma SA-kuva-arkisto, joka sisältää lähes 160 000 Suomen talvi-, jatko- ja Lapin sodan ajan  valokuvaa vuosilta 1939-1945. Pääosan kuvista ovat ottaneet Päämajan  alaisten tiedotuskomppanioiden kuvaajat. Talvisodan kuvamateriaali on  rintamamiesten omalla kalustollaan kuvaamaa. 
+            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
@@ -66,22 +67,21 @@
         </div>
       </li>
       <li class="grid_6">
+        {image src="03ss.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Seurasaaren ulkomuseon esineitä ja valokuvia</span></div>
+          <div class="pickup-text">Seurasaaren talojen esineistöä ja valokuvia on digitoitu. Kurssin, Ivarsin, Pertinotsan, Hallan ja Kaukolan savutupien esineisiin pääsee tutustumaan nyt tarkemmin. Valokuvat esittelevät ulkomuseon taloja niiden alkuperäisillä paikoillaan, talojen siirtämistä Seurasaareen sekä aikaisempaa museotoimintaa. Uudemmat kuvat esittelevät museotaloja ja niiden interiöörejä.
+          <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
         {image src="04ediths.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Edith Södergranin valokuvat  (Svenska litteratursällskapet)</span></div>
           <div class="pickup-text">
             Runoilija Edith Södergran (1892–1923) on yksi Suomen käännetyimmistä kirjailijoista, ja hänen ruotsinkielisistä runoistaan ilmestyy jatkuvasti uusia painoksia. 1990-luvulta lähtien hänet on tunnettu myös valokuvaajana: hänen valokuviaan Sveitsin Davosista ja Karjalankannaksen Raivolasta on säilynyt noin 400. Yksi Södergranin lempiaiheista ovat hänen kissansa.
             <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
-          </div>
-        </div>
-      </li>
-      <li class="grid_6">
-        {image src="05kultsa.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Kulttuuritalo rakennettiin talkoilla</span></div>
-          <div class="pickup-text">
-            Alvar Aallon suunnittelema ja talkootyönä rakennettu Kulttuuritalo oli työväenliikkeen voimannäyte. Talkookortistossa oli yli 5000 talkoolaisen nimet, työpanos vaihteli muutamasta tunnista jopa 400 työtuntiin. Valmistuessaan v. 1958 talo oli kaupungin ensimmäinen konserttisali. <em>Malmberg, Aleksi: Kulttuuritalo. Puoli vuosisataa tarinoita ja tapahtumia)</em>
-            <a href="{$url}{'/Search/Results?lookfor=Kulttuuritalon+rakentaminen+1955&type=AllFields&prefiltered=-&filter[]=online_boolean%3A%221%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
