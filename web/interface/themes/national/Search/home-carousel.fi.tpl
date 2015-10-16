@@ -34,11 +34,12 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="07sakuvat.jpg"}
+        {image src="04ediths.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Ainutlaatuisia kuvia Suomen talvi-, jatko- ja Lapin sodista</span></div>
-          <div class="pickup-text">Edessäsi on ainutlaatuinen kuvakokoelma SA-kuva-arkisto, joka sisältää lähes 160 000 Suomen talvi-, jatko- ja Lapin sodan ajan  valokuvaa vuosilta 1939-1945. Pääosan kuvista ovat ottaneet Päämajan  alaisten tiedotuskomppanioiden kuvaajat. Talvisodan kuvamateriaali on  rintamamiesten omalla kalustollaan kuvaamaa. 
-            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
+          <div class="pickup-header"><span>Edith Södergranin valokuvat  (Svenska litteratursällskapet)</span></div>
+          <div class="pickup-text">
+            Runoilija Edith Södergran (1892–1923) on yksi Suomen käännetyimmistä kirjailijoista, ja hänen ruotsinkielisistä runoistaan ilmestyy jatkuvasti uusia painoksia. 1990-luvulta lähtien hänet on tunnettu myös valokuvaajana: hänen valokuviaan Sveitsin Davosista ja Karjalankannaksen Raivolasta on säilynyt noin 400. Yksi Södergranin lempiaiheista ovat hänen kissansa.
+            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>
@@ -76,12 +77,11 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="04ediths.jpg"}
+        {image src="07sakuvat.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Edith Södergranin valokuvat  (Svenska litteratursällskapet)</span></div>
-          <div class="pickup-text">
-            Runoilija Edith Södergran (1892–1923) on yksi Suomen käännetyimmistä kirjailijoista, ja hänen ruotsinkielisistä runoistaan ilmestyy jatkuvasti uusia painoksia. 1990-luvulta lähtien hänet on tunnettu myös valokuvaajana: hänen valokuviaan Sveitsin Davosista ja Karjalankannaksen Raivolasta on säilynyt noin 400. Yksi Södergranin lempiaiheista ovat hänen kissansa.
-            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
+          <div class="pickup-header"><span>Ainutlaatuisia kuvia Suomen talvi-, jatko- ja Lapin sodista</span></div>
+          <div class="pickup-text">Edessäsi on ainutlaatuinen kuvakokoelma SA-kuva-arkisto, joka sisältää lähes 160 000 Suomen talvi-, jatko- ja Lapin sodan ajan  valokuvaa vuosilta 1939-1945. Pääosan kuvista ovat ottaneet Päämajan  alaisten tiedotuskomppanioiden kuvaajat. Talvisodan kuvamateriaali on  rintamamiesten omalla kalustollaan kuvaamaa. 
+            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Hakutulokseen »</a>
           </div>
         </div>
       </li>

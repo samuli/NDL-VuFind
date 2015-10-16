@@ -2,34 +2,52 @@
 <div id="headerTexts">
     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>
-        <p>Tekijä: Olympia-kuva Oy<br/>
-           Sijainti: Helsingin kaupunginmuseo</p>
-        <a href="{$url}/Record/hkm.HKMS000005%3Akm0000mrfs">Aineistotietoon »</a>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Tekijä: Lauri Anttila<br/>
+           Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
     </div>
-     <div>
+    <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>
-        <p>Tekijä: Olympia-kuva Oy<br/>
-           Sijainti: Helsingin kaupunginmuseo</p>
-        <a href="{$url}/Record/hkm.HKMS000005%3Akm0000mrfs">Aineistotietoon »</a>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Tekijä: Lauri Anttila<br/>
+           Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
     </div>
-     <div>
+    <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
-        <p>Kuvaaja: Teuvo Kanerva<br/>
-           Sijainti: Museoviraston kuvakokoelmat</p>
-        <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">Aineistotietoon »</a>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Tekijä: Lauri Anttila<br/>
+           Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
     </div>
-	<div>
+    <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
-        <p>Kuvaaja: Teuvo Kanerva<br/>
-           Sijainti: Museoviraston kuvakokoelmat</p>
-        <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">Aineistotietoon »</a>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Tekijä: Lauri Anttila<br/>
+           Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
     </div>
 </div>
     <!-- 
+     <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>
+        <p>Tekijä: Olympia-kuva Oy<br/>
+           Sijainti: Helsingin kaupunginmuseo</p>
+        <a href="{$url}/Record/hkm.HKMS000005%3Akm0000mrfs">Aineistotietoon »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
+        <p>Kuvaaja: Teuvo Kanerva<br/>
+           Sijainti: Museoviraston kuvakokoelmat</p>
+        <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">Aineistotietoon »</a>
+    </div>
 	<div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>

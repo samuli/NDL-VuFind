@@ -35,15 +35,15 @@
         </div>
       </li>
       <li class="grid_6">
-        {image src="07sakuvat.jpg"}
+        {image src="04ediths.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Pictures from Finland's Winter, Continuation and Lapland Wars</span></div>
+          <div class="pickup-header"><span>Edith Södergran’s photographs (by Svenska litteratursällskapet)</span></div>
           <div class="pickup-text">
-            What you have in front of you is a unique collection of photographs from the Wartime Photograph Archives ("SA-kuva-arkisto" in Finnish). It contains some 160,000 photographs from Finland's Winter War, Continuation War and Lapland War. Most of the pictures were taken by Information Company (IC) photographers.
-            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">To the search result »</a>
+            Poet Edith Södergran (1892–1923) is one of Finland’s most translated writers, whose poems in Swedish are regularly republished. Since the 1990s she has also been known for her photographs, of which about 400 taken in Davos in Switzerland and Raivola on the Karelian Isthmus have been preserved. One of her favourite subjects is her cats.
+            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">To the search result »</a>
           </div>
         </div>
-      </li>
+      </li>  
     </ul>
   </div>
   <div class="slide">
@@ -77,17 +77,17 @@
             <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">To the search result »</a>
           </div>
         </div>
-      </li>  
+      </li>
       <li class="grid_6">
-        {image src="04ediths.jpg"}
+        {image src="07sakuvat.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Edith Södergran’s photographs (by Svenska litteratursällskapet)</span></div>
+          <div class="pickup-header"><span>Pictures from Finland's Winter, Continuation and Lapland Wars</span></div>
           <div class="pickup-text">
-            Poet Edith Södergran (1892–1923) is one of Finland’s most translated writers, whose poems in Swedish are regularly republished. Since the 1990s she has also been known for her photographs, of which about 400 taken in Davos in Switzerland and Raivola on the Karelian Isthmus have been preserved. One of her favourite subjects is her cats.
-            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">To the search result »</a>
+            What you have in front of you is a unique collection of photographs from the Wartime Photograph Archives ("SA-kuva-arkisto" in Finnish). It contains some 160,000 photographs from Finland's Winter War, Continuation War and Lapland War. Most of the pictures were taken by Information Company (IC) photographers.
+            <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">To the search result »</a>
           </div>
         </div>
-      </li>  
+      </li>
     </ul>
   </div>
 </div>

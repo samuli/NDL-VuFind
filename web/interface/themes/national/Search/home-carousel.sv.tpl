@@ -35,11 +35,12 @@ Biljetter, fortskaffningsmedel och fotografier ur Helsingfors stadsmuseums samli
         </div>
       </li>
       <li class="grid_6">
-        {image src="07sakuvat.jpg"}
+        {image src="04ediths.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Bilder från vinter-, fortsättnings- och Lapplandskriget i Finland</span></div>
-          <div class="pickup-text">Framför dig har du Förvarsmaktens bildarkiv (SA-kuva-arkisto på finska) &endash; en unik bildsamling som består av nästan 160 000 fotografier från  vinterkriget, fortsättningskriget och Lapplandskriget i Finland. Största  delen har fotograferats av informationskompaniernas fotografer.
-          <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          <div class="pickup-header"><span>Edith Södergrans fotografier (Svenska litteratursällskapet)</span></div>
+          <div class="pickup-text">
+Lyrikern Edit Södergran (1892-1923) är en av Finlands mest översätta författare och hennes dikter på svenska utkommer ständigt i nyutgåvor. Hon är också sedan 1990-talet känd som fotograf och omkring 400 fotografier med motiv från Davos, Schweiz och Raivola på Karelska näset finns bevarade. Ett favoritmotiv är hennes katter.
+            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>
@@ -76,14 +77,13 @@ Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har an
             <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
-      </li>  
+      </li>
       <li class="grid_6">
-        {image src="04ediths.jpg"}
+        {image src="07sakuvat.jpg"}
         <div class="pickup-content">
-          <div class="pickup-header"><span>Edith Södergrans fotografier (Svenska litteratursällskapet)</span></div>
-          <div class="pickup-text">
-Lyrikern Edit Södergran (1892-1923) är en av Finlands mest översätta författare och hennes dikter på svenska utkommer ständigt i nyutgåvor. Hon är också sedan 1990-talet känd som fotograf och omkring 400 fotografier med motiv från Davos, Schweiz och Raivola på Karelska näset finns bevarade. Ett favoritmotiv är hennes katter.
-            <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          <div class="pickup-header"><span>Bilder från vinter-, fortsättnings- och Lapplandskriget i Finland</span></div>
+          <div class="pickup-text">Framför dig har du Förvarsmaktens bildarkiv (SA-kuva-arkisto på finska) &endash; en unik bildsamling som består av nästan 160 000 fotografier från  vinterkriget, fortsättningskriget och Lapplandskriget i Finland. Största  delen har fotograferats av informationskompaniernas fotografer.
+          <a href="{$url}{'/Search/Results?lookfor=&type=AllFields&filter%5B%5D=building%3A"1%2FSA-kuva%2FSA-kuva%2F"&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>

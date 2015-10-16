@@ -2,11 +2,38 @@
 <div id="headerTexts">
     <div>
         <p class="headerInfoLight">Information om bildet:</p>
-        <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>
-        <p>Fotograf: Olympia-kuva Oy<br />
-           Belägenhet: Helsingin kaupunginmuseo</p> 
-         <a href="{$url}/Record/hkm.HKMS000005%3Akm0000mrfs">Till posten »</a>
-    </div>  
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Aktör: Lauri Anttila<br/>
+           Belägenhet: Kiasma, Finlands Nationalglleri / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Till posten »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Aktör: Lauri Anttila<br/>
+           Belägenhet: Kiasma, Finlands Nationalglleri / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Till posten »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Aktör: Lauri Anttila<br/>
+           Belägenhet: Kiasma, Finlands Nationalglleri / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Till posten »</a>
+    </div>
+    <div>
+        <p class="headerInfoLight">Information om bildet:</p>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Aktör: Lauri Anttila<br/>
+           Belägenhet: Kiasma, Finlands Nationalglleri / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Till posten »</a>
+    </div>
+</div>
+   <!--
     <div>
         <p class="headerInfoLight">Information om bildet:</p>
         <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>
@@ -21,15 +48,6 @@
            Belägenhet:  Museovirasto, Historian kuvakokoelma</p> 
         <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">Till posten »</a>
     </div>
-    <div>
-        <p class="headerInfoLight">Information om bildet:</p>
-        <p class="headerInfoTitle">Uimareita Salpausselän urheilukeskuksella, hyppyrimäet</p>
-        <p>Fotograf: Teuvo Kanerva<br />
-           Belägenhet:  Museovirasto, Historian kuvakokoelma</p> 
-        <a href="{$url}/Record/musketti.M012%3AHK19920328B%3A296">Till posten »</a>
-    </div>
-</div>
-   <!--
     <div>
         <p class="headerInfoLight">Information om bildet:</p>
         <p class="headerInfoTitle">Jäänmurtajat Sampo ja Tarmo Pohjoissatamassa</p>
