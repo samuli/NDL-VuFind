@@ -5,6 +5,16 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
+        {image src="05kultsa.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Kulturhuset byggdes med talkokrafter</span></div>
+          <div class="pickup-text">
+            Kulturhuset, ritat av Alvar Aalto och uppfört med talkokrafter, är ett kraftprov av arbetarrörelsen. Kartoteket över arbetarna, vars insats varierade från några timmar till 400 timmar, omfattar mer än 5 000 namn. Huset som stod färdigt 1958 var stadens första konsertsal. <em>(Malmberg, Aleksi: Kulttuuritalo. Puoli vuosisataa tarinoita ja tapahtumia) </em>
+            <a href="{$url}{'/Search/Results?lookfor=Kulttuuritalon+rakentaminen+1955&type=AllFields&prefiltered=-&filter[]=online_boolean%3A%221%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
         {image src="201411_03mttk.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>MTT:s publikationer</span></div>

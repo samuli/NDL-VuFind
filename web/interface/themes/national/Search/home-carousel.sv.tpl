@@ -5,6 +5,16 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
+        {image src="05finlandia.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Glas från Karhula</span></div>
+          <div class="pickup-text">
+            Konservburkar, konstglas från 1930-talet design av Gunnel Nyman och Alvar Aalto, Tapio Wirkkalas Finlandia Vodka -flaskor. Allt detta och mycket mer kan du hitta från Karhula-samlingen som nu finns i digital form.
+            <a href="{$url}{'/Search/Results?lookfor=wirkkala+OR+"gunnel+nyman"+OR+käsityö&prefiltered=-&SearchForm_submit=Hae&filter[]=building%3A"1%2FKYMIMUSEO%2FKarhulan+lasikokoelma%2F"&filter[]=online_boolean%3A1&limit=100&sort=relevance&view=grid&retainFilters=1'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
        {image src="01lapset.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Barnens nya mediekultur: bebisar surfar på nätet</span></div>
@@ -14,16 +24,6 @@
           </div>
         </div>
       </li>
-      <li class="grid_6">
-        {image src="03ss.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Föremål och foton från Fölisöns friluftsmuseum</span></div>
-          <div class="pickup-text">
-            Foton på föremål och hus på Fölisöns friluftsmuseum har digitaliserats. Nu kan du titta närmare på föremål från Kurssi, Ivars, Pertinotja, Halla gård och Kaukola rökpörten. Fotona visar husen på sina ursprungliga platser, när de flyttas till Fölisön och tidigare museiverksamhet. De nyare bilderna visar museets hus och deras interiörer.
-            <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
-          </div>
-        </div>
-      </li>  
       <li class="grid_6">
         {image src="02hkl.jpg"}
         <div class="pickup-content">
@@ -68,22 +68,22 @@ Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har an
         </div>
       </li>
       <li class="grid_6">
+        {image src="03ss.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Föremål och foton från Fölisöns friluftsmuseum</span></div>
+          <div class="pickup-text">
+            Foton på föremål och hus på Fölisöns friluftsmuseum har digitaliserats. Nu kan du titta närmare på föremål från Kurssi, Ivars, Pertinotja, Halla gård och Kaukola rökpörten. Fotona visar husen på sina ursprungliga platser, när de flyttas till Fölisön och tidigare museiverksamhet. De nyare bilderna visar museets hus och deras interiörer.
+            <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>  
+      <li class="grid_6">
         {image src="04ediths.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Edith Södergrans fotografier (Svenska litteratursällskapet)</span></div>
           <div class="pickup-text">
 Lyrikern Edit Södergran (1892-1923) är en av Finlands mest översätta författare och hennes dikter på svenska utkommer ständigt i nyutgåvor. Hon är också sedan 1990-talet känd som fotograf och omkring 400 fotografier med motiv från Davos, Schweiz och Raivola på Karelska näset finns bevarade. Ett favoritmotiv är hennes katter.
             <a href="{$url}{'/Collection/sls.SLSA+566/Home?lookfor=&type=AllFields&page=1&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
-          </div>
-        </div>
-      </li>  
-      <li class="grid_6">
-        {image src="05kultsa.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Kulturhuset byggdes med talkokrafter</span></div>
-          <div class="pickup-text">
-            Kulturhuset, ritat av Alvar Aalto och uppfört med talkokrafter, är ett kraftprov av arbetarrörelsen. Kartoteket över arbetarna, vars insats varierade från några timmar till 400 timmar, omfattar mer än 5 000 namn. Huset som stod färdigt 1958 var stadens första konsertsal. <em>(Malmberg, Aleksi: Kulttuuritalo. Puoli vuosisataa tarinoita ja tapahtumia) </em>
-            <a href="{$url}{'/Search/Results?lookfor=Kulttuuritalon+rakentaminen+1955&type=AllFields&prefiltered=-&filter[]=online_boolean%3A%221%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
           </div>
         </div>
       </li>

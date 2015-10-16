@@ -5,6 +5,16 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
+        {image src="05finlandia.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Glass from Karhula</span></div>
+          <div class="pickup-text">
+            Karhula glassworks produced humble packaging glass, but also designs from for example Gunnel Nyman,  Alvar Aalto and Göran Hongell. Now you can find examples of these glass products and many others from digitised Karhula-collection.
+            <a href="{$url}{'/Search/Results?lookfor=wirkkala+OR+"gunnel+nyman"+OR+käsityö&prefiltered=-&SearchForm_submit=Hae&filter[]=building%3A"1%2FKYMIMUSEO%2FKarhulan+lasikokoelma%2F"&filter[]=online_boolean%3A1&limit=100&sort=relevance&view=grid&retainFilters=1'|escape:'html'}">To the search result »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
           {image src="01lapset.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Children’s new media culture: babies on the net</span></div>
@@ -14,16 +24,6 @@
           </div>
         </div>
       </li>
-      <li class="grid_6">
-        {image src="03ss.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Items from the Seurasaari Open-Air Museum</span></div>
-          <div class="pickup-text">
-            Objects from and photos of buildings in Seurasaari have been digitised. Visitors can explore objects from the Kurssi, Ivars, Pertinotsa, Halla and Kaukola cottages. The photos show the buildings in their original locations, the transfer of the buildings to Seurasaari, and earlier museum activities. More recent photos show the museum buildings and their interiors.
-            <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">To the search result »</a>
-          </div>
-        </div>
-      </li>  
        <li class="grid_6">
          {image src="02hkl.jpg"}
         <div class="pickup-content">
@@ -69,6 +69,16 @@
         </div>
       </li>
       <li class="grid_6">
+        {image src="03ss.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Items from the Seurasaari Open-Air Museum</span></div>
+          <div class="pickup-text">
+            Objects from and photos of buildings in Seurasaari have been digitised. Visitors can explore objects from the Kurssi, Ivars, Pertinotsa, Halla and Kaukola cottages. The photos show the buildings in their original locations, the transfer of the buildings to Seurasaari, and earlier museum activities. More recent photos show the museum buildings and their interiors.
+            <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">To the search result »</a>
+          </div>
+        </div>
+      </li>  
+      <li class="grid_6">
         {image src="04ediths.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Edith Södergran’s photographs (by Svenska litteratursällskapet)</span></div>
@@ -78,16 +88,6 @@
           </div>
         </div>
       </li>  
-      <li class="grid_6">
-        {image src="05kultsa.jpg"}
-        <div class="pickup-content">
-          <div class="pickup-header"><span>Helsinki Hall of Culture: built by volunteers</span></div>
-          <div class="pickup-text">
-            Designed by Alvar Aalto, the Helsinki Hall of Culture was a labour movement feat of strength. The building project register contains the names of over 5,000 volunteers, whose contributions extended from a few hours’ work to a maximum of 400. Finished in 1958, the building became the city’s first concert hall. <em>(Malmberg, Aleksi: Kulttuuritalo. Puoli vuosisataa tarinoita ja tapahtumia)</em>
-            <a href="{$url}{'/Search/Results?lookfor=Kulttuuritalon+rakentaminen+1955&type=AllFields&prefiltered=-&filter[]=online_boolean%3A%221%22&sort=relevance&view=grid&limit=100'|escape:'html'}">To the search result »</a>
-          </div>
-        </div>
-      </li>
     </ul>
   </div>
 </div>
