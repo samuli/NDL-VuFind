@@ -1667,7 +1667,8 @@ class AxiellWebServices implements DriverInterface
      */
     protected function holdingsJournalSortFunction($a, $b)
     {
-        return !empty($a['holdings']) && !empty($b['holdings']) 
+        return !empty($a['holdings'][0]['organisation']) 
+            && !empty($b['holdings'][0]['organisation']) 
             ? strcasecmp($b['holdings'][0]['organisation'], $a['holdings'][0]['organisation'])
             : strcasecmp($a['organisation'], $b['organisation'])
         ;
