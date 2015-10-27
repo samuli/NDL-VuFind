@@ -227,8 +227,21 @@ class AxiellWebServices implements DriverInterface
             $this->parseHoldings($holdings, $id, $vfHoldings, '', '');
         }
 
-        // Sort Organisations
-        usort($vfHoldings, array($this, 'holdingsOrganisationSortFunction'));
+        $journal = true;
+        foreach ($vfHoldings as $holding) {
+            if (!isset($holding['journal']) || !$holding['journal']) {
+                $journal = false;
+                break;
+            }
+        }
+
+        if (!$journal) {
+            // Sort Organisations
+            usort($vfHoldings, array($this, 'holdingsOrganisationSortFunction'));
+        } else {
+            // Sort journal issues
+            usort($vfHoldings, array($this, 'holdingsJournalSortFunction'));
+        }
 
         // Sort Branches
         foreach ($vfHoldings as $key => $location) {
@@ -1642,6 +1655,22 @@ class AxiellWebServices implements DriverInterface
             return 1;
         }
         return strcasecmp($a['organisation'], $b['organisation']);
+    }
+
+    /**
+     * Sort function for sorting journal holdings according to year
+     *
+     * @param array $a Holdings location
+     * @param array $b Holdings location
+     *
+     * @return number
+     */
+    protected function holdingsJournalSortFunction($a, $b)
+    {
+        return !empty($a['holdings']) && !empty($b['holdings']) 
+            ? strcasecmp($b['holdings'][0]['organisation'], $a['holdings'][0]['organisation'])
+            : strcasecmp($a['organisation'], $b['organisation'])
+        ;
     }
 
     /**
