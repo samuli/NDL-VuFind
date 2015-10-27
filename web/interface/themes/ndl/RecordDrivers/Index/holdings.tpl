@@ -64,20 +64,25 @@
           {/if}
         {/if}
       {/if}
+      {assign var="title_cant_place_hold_displayed" value="false"}
       {if $holdingTitleHold && $holdingTitleHold != 'block' && $titleIsHoldable}
           <a class="button buttonFinna holdPlace" href="{$holdingTitleHold|escape}">{translate text="title_hold_place"}</a>
       {else}
-        {if $driver == 'AxiellWebServices'}
+        {if !$showTitleLoginMsg && $driver == 'AxiellWebServices'}
           {if $holdingTitleHold == 'block'}
               {translate text="hold_error_blocked"}
           {else}
+            {assign var="title_cant_place_hold_displayed" value="true"}
             <span>{translate text="title_cant_place_hold"}</span>
           {/if}
         {/if}
       {/if}
       {if $catalogAccounts && !$ublink && !$holdingTitleHold}
         {if $driver != 'AxiellWebServices'}
-          <span>{translate text="title_cant_place_hold"}</span>
+          {if !$title_cant_place_hold_displayed}
+            {assign var="title_cant_place_hold_displayed" value="true"}
+            <span>{translate text="title_cant_place_hold"}</span>
+          {/if}
         {else}
           {assign var="holdLink" value=false}
           {foreach from=$holdings item=holding}
@@ -93,7 +98,8 @@
               {/if} 
             {/if}
           {/foreach}
-          {if !$holdLink}
+          {if !$holdLink && !$title_cant_place_hold_displayed}
+            {assign var="title_cant_place_hold_displayed" value="true"}
             <span>{translate text="title_cant_place_hold"}</span>
           {/if}
         {/if}
