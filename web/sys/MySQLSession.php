@@ -91,8 +91,8 @@ class MySQLSession extends SessionInterface
             // in seconds - easier for calculating duration
             $s->last_used = time();
             // in date format - easier to read
-            $s->created = date('Y-m-d h:i:s');
-            $s->data = $data; 
+            $s->created = date('Y-m-d H:i:s');
+            $s->data = $data;
             return $s->insert();
         }
     }
