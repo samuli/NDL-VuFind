@@ -2,38 +2,46 @@
 <div id="headerTexts">
     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
-        <p>Tekijä: Lauri Anttila<br/>
+        <p class="headerInfoTitle">Swan 1 (Becoming a Picture) (2008)</p>
+        <p>Tekijä: Anni Leppälä<br/>
            Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
         </p>
-        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3A83E7CEC7-0734-4256-BFEC-C55D0D76023D">Aineistotietoon »</a>
     </div>
     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
-        <p>Tekijä: Lauri Anttila<br/>
+        <p class="headerInfoTitle">Swan 1 (Becoming a Picture) (2008)</p>
+        <p>Tekijä: Anni Leppälä<br/>
            Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
         </p>
-        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3A83E7CEC7-0734-4256-BFEC-C55D0D76023D">Aineistotietoon »</a>
     </div>
     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
-        <p>Tekijä: Lauri Anttila<br/>
+        <p class="headerInfoTitle">Swan 1 (Becoming a Picture) (2008)</p>
+        <p>Tekijä: Anni Leppälä<br/>
            Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
         </p>
-        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3A83E7CEC7-0734-4256-BFEC-C55D0D76023D">Aineistotietoon »</a>
     </div>
     <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
-        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
-        <p>Tekijä: Lauri Anttila<br/>
+        <p class="headerInfoTitle">Swan 1 (Becoming a Picture) (2008)</p>
+        <p>Tekijä: Anni Leppälä<br/>
            Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
         </p>
-        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3A83E7CEC7-0734-4256-BFEC-C55D0D76023D">Aineistotietoon »</a>
     </div>
 </div>
     <!-- 
+     <div>
+        <p class="headerInfoLight">Kuvan tiedot:</p>
+        <p class="headerInfoTitle">Darwin suomalaisessa maisemassa (1972)</p>
+        <p>Tekijä: Lauri Anttila<br/>
+           Sijainti: Kiasma, Kansallisgalleria / Petri Virtanen
+        </p>
+        <a href="{$url}/Record/muusa.urn%3Auuid%3AA5AA56F6-80C3-49C8-9E45-222971A48ADC">Aineistotietoon »</a>
+     </div>
      <div>
         <p class="headerInfoLight">Kuvan tiedot:</p>
         <p class="headerInfoTitle">Helsingin olympialaiset 1952. Maantiepyöräily. -- dia, filmi, väri</p>

@@ -206,7 +206,7 @@ span.dynatree-node a {
 }
 
 .backgroundContainer {
-	background-position:center top;
+	background-position: left top;
 }
 .backgroundContainer.background-1 {
     background-image: url("../../national/images/header_background_1.jpg");
