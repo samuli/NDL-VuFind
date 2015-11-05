@@ -5,7 +5,56 @@
   <div class="slide">
     <ul>
       <li class="grid_6">
-        {image src="05kultsa.jpg"}
+        {image src="201510_ss_oldimage.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Föremål och foton från Fölisöns friluftsmuseum</span></div>
+          <div class="pickup-text">
+            Foton på föremål och hus på Fölisöns friluftsmuseum har digitaliserats. Nu kan du titta närmare på föremål från Kurssi, Ivars, Pertinotja, Halla gård och Kaukola rökpörten. Fotona visar husen på sina ursprungliga platser, när de flyttas till Fölisön och tidigare museiverksamhet. De nyare bilderna visar museets hus och deras interiörer.
+            <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=AND&lookfor0%5B%5D=Seurasaari&type0%5B%5D=AllFields&filter%5B%5D=sector_str_mv%3A%220%2Fmus%2F%22&orfilter%5B%5D=format%3A%220%2FImage%2F%22&orfilter%5B%5D=format%3A%220%2FPhysicalObject%2F%22&sort=last_indexed+desc&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="201510_designweek.png"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Finna @ Helsinki Design Week 11.9.2015</span></div>
+          <div class="pickup-text">Finnas evenemang <em>Culture as Commons? – Designing with Digital Heritage</em>, där unga designer skapar någonting helt nytt av materialet i Finna, fre. 11.9. Magasin L3, Busholmen. Hur skulle du själv återanvända bildskatterna i länken? Evenemanget hör till Helsinki Design Week.<br />Tapahtuma on osa Helsinki Design Weekiä.
+            <a href="{$url}{'/List/140322?lookfor=&type=AllFields&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="201510_hkl.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Helsingfors kollektivtrafiks historiar</span></div>
+          <div class="pickup-text">
+Biljetter, fortskaffningsmedel och fotografier ur Helsingfors stadsmuseums samlingar. Hur såg spårvagnarna ut på 1920-talet? Kommer du ihåg bussbiljetterna från 1986? Materialet som presenterar kollektivtrafikens historia omfattar perioden från början av 1900-talet till våra dagar.
+            <a href="{$url}{'/Search/Results?lookfor=liikennelaitos&type=AllFields&filter[]=building%3A%220%2FHKM%2F%22&sort=relevance&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="201510_vr.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>VR:s reseaffischer</span></div>
+          <div class="pickup-text">
+Finlands järnvägsmuseums affischsamling är från 1930–2000-talet. VR har använt affischerna på stationerna, i tågen och vid olika evenemang och har bytt till sig affischer från olika länder. Affischerna har skapats av bl.a. konstnärerna Erik Bruun, Osmo K. Oksanen och Juha Anttinen och fotograferna Fred Runeberg, E. Tolvanen och Yrjö Metsälä.
+            <a href="{$url}{'/Search/Results?lookfor=junamatkailu+matkailujulisteet+&type=AllFields&prefiltered=-&filter[]=online_boolean%3A"1"&filter[]=building%3A"0%2FSRM%2F"&view=grid&limit=100'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="201510_jumissa.jpg"}
+        <div class="pickup-content">
+          <div class="pickup-header"><span>Livshantering och droger: fakta och skönlitteratur</span></div>
+          <div class="pickup-text">
+            I Finna finns information och skönlitteratur som berättar om droganvändningens inverkan på förmågan att hantera sitt liv. Social- och hälsovårdsministeriet har (2006) producerat ett test för unga män, och Mihail Bulgakov skrev noveller på 1920-talet som baserar sig på vad han själv upplevt. Testet finns på nätet, Bulgakovs noveller kan man låna.</span>
+            <a href="{$url}{'/Search/Results?lookfor=el%C3%A4m%C3%A4nhallinta+huumeet&type=AllFields&filter[]=language%3A%22fin%22&filter[]=format%3A%220%2FBook%2F%22&filter[]=search_sdaterange_mv%3A%22[%22-4371587+12784%22+TO+%222932896+2932896%22]%22&search_sdaterange_mvtype=overlap&sort=relevance&view=list&limit=20'|escape:'html'}">Till sökresultatet »</a>
+          </div>
+        </div>
+      </li>
+      <li class="grid_6">
+        {image src="201510_kultsa.jpg"}
         <div class="pickup-content">
           <div class="pickup-header"><span>Kulturhuset byggdes med talkokrafter</span></div>
           <div class="pickup-text">

@@ -14,7 +14,7 @@
           </div>
         </div>
       </li>
-       <li class="grid_6">
+      <li class="grid_6">
          {image src="08syovytys.jpg"}
          <div class="pickup-content">
           <div class="pickup-header"><span>1980-l. taidegrafiikkaa Kiasman kokoelmista</span></div>
@@ -23,7 +23,7 @@
           <a href="{$url}{'/Search/Results?lookfor=syövytys&prefiltered=-&SearchForm_submit=Hae&filter%5B%5D=search_sdaterange_mv%3A%22%5B%22-4371587+3652%22+TO+%227304+2932896%22%5D%22&filter%5B%5D=building%3A%220%2FNykytaiteen+museo+Kiasma%2F%22&filter%5B%5D=format%3A%221%2FWorkOfArt%2FGraphic%2F%22&filter%5B%5D=online_boolean%3A1&search_sdaterange_mvtype=overlap&limit=100&sort=relevance&view=grid&retainFilters=1'|escape:'html'}">Hakutulokseen »</a>
            </div>
          </div>
-       </li>
+      </li>
       <li class="grid_6">
         {image src="03nobel.jpg"}
          <div class="pickup-content">
@@ -33,7 +33,7 @@
             <a href="{$url}{'/Search/Results?join=AND&bool0%5B%5D=OR&lookfor0%5B%5D=Aleksijevitš%2C+Svetlana&type0%5B%5D=Author&lookfor0%5B%5D=Aleksijevits%2C+Svetlana&type0%5B%5D=Author&filter%5B%5D=format%3A%220%2FBook%2F%22&sort=relevance&view=list'|escape:'html'}">Hakutulokseen »</a>
            </div>
          </div>
-       </li>
+      </li>
       <li class="grid_6">
         {image src="06uuni.jpg"}
         <div class="pickup-content">
