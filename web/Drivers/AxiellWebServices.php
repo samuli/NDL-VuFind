@@ -238,14 +238,20 @@ class AxiellWebServices implements DriverInterface
         if (!$journal) {
             // Sort Organisations
             usort($vfHoldings, array($this, 'holdingsOrganisationSortFunction'));
+
+            // Sort Branches
+            foreach ($vfHoldings as $key => $location) {
+                usort($vfHoldings[$key]['holdings'], array($this, 'holdingsBranchSortFunction'));
+            }
+
         } else {
             // Sort journal issues
             usort($vfHoldings, array($this, 'holdingsJournalSortFunction'));
-        }
 
-        // Sort Branches
-        foreach ($vfHoldings as $key => $location) {
-            usort($vfHoldings[$key]['holdings'], array($this, 'holdingsBranchSortFunction'));
+            // Sort organisations and branches
+            foreach ($vfHoldings as $key => $location) {
+                usort($vfHoldings[$key]['holdings'], [$this, 'holdingsJournalOrganisationSortFunction']);
+            }
         }
 
         return empty($vfHoldings) ? false : $vfHoldings;
@@ -1658,7 +1664,7 @@ class AxiellWebServices implements DriverInterface
     }
 
     /**
-     * Sort function for sorting journal holdings according to year
+     * Sort function for sorting journal holdings according to issue.
      *
      * @param array $a Holdings location
      * @param array $b Holdings location
@@ -1667,11 +1673,72 @@ class AxiellWebServices implements DriverInterface
      */
     protected function holdingsJournalSortFunction($a, $b)
     {
-        return !empty($a['holdings'][0]['organisation']) 
-            && !empty($b['holdings'][0]['organisation']) 
-            ? strcasecmp($b['holdings'][0]['organisation'], $a['holdings'][0]['organisation'])
-            : strcasecmp($a['organisation'], $b['organisation'])
-        ;
+        if (empty($a['holdings'][0]['organisation'])) {
+            return 1;
+        }
+        if (empty($b['holdings'][0]['organisation'])) {
+            return -1;
+        }
+        $a = $this->parseJournalIssue($a['holdings'][0]['organisation']);
+        $b = $this->parseJournalIssue($b['holdings'][0]['organisation']);
+
+        if (empty($a)) {
+            return 1;
+        }
+        if (empty($b)) {
+            return -1;
+        }
+
+        if ($a === $b) {
+            return 0;
+        }
+
+        $cnt = min(count($a), count($b));
+        $a = array_slice($a, 0, $cnt);
+        $b = array_slice($b, 0, $cnt);
+
+        $f = function ($str) {
+            return (reset(explode('-', $str)));
+        };
+
+        $a = array_map($f, $a);
+        $b = array_map($f, $b);
+
+        return $a > $b ? -1 : 1;
+    }
+
+    /**
+     * Utility function for parsing journal issue.
+     *
+     * @param string $issue Journal issue.
+     *
+     * @return array
+     */
+    protected function parseJournalIssue($issue)
+    {
+        $parts = explode(':', $issue);
+        return array_map('trim', $parts);
+    }
+
+    /**
+     * Sort function for sorting journal issue holdings locations
+     * according to organisation and branch
+     *
+     * @param array $a Holdings
+     * @param array $b Holdings
+     *
+     * @return number
+     */
+    protected function holdingsJournalOrganisationSortFunction($a, $b)
+    {
+        if ($a['organisation_id'] === $b['organisation_id']) {
+            return $this->holdingsBranchSortFunction($a, $b);
+        }
+
+        return $this->holdingsOrganisationSortFunction(
+            ['organisation' => $a['branch'], 'holdings' => [$a]],
+            ['organisation' => $b['branch'], 'holdings' => [$b]]
+        );
     }
 
     /**
