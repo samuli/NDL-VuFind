@@ -17,6 +17,9 @@
 {/if}
 
   <head>
+    {if ($module == 'Search' && $action == 'Results')}
+    <meta name="robots" content="noindex,follow">
+    {/if}
     {if ($module == 'Search' && $action == 'Results' && $pageTemplate == 'list-none.tpl')
       || ($module == 'PCI' && $action == 'Search' && $pageTemplate == 'list-none.tpl')
       || $module == 'MetaLib'}
