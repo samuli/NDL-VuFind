@@ -1607,7 +1607,11 @@ class MarcRecord extends IndexRecord
      */
     protected function getPrimaryAuthorForSearch()
     {
-        return $this->stripTrailingPunctuation($this->getFirstFieldValue('100', array('a', 'b', 'c')));
+        $author = $this->getFirstFieldValue('100', array('a', 'b', 'c'));
+        if (empty($author)) {
+            $author = parent::getPrimaryAuthorForSearch();
+        }
+        return $this->stripTrailingPunctuation($author);
     }
 
     /**
