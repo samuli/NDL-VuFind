@@ -609,7 +609,7 @@ abstract class SearchObject_Base
             if (count($_REQUEST['lookfor']) == 1) {
                 $_REQUEST['lookfor'] = $_REQUEST['lookfor'][0];
             } else {
-                PEAR::RaiseError(new PEAR_Error("Unsupported search URL."));
+                PEAR::raiseError(new PEAR_Error("Unsupported search URL."));
                 die();
             }
         }
@@ -972,7 +972,7 @@ abstract class SearchObject_Base
         date_default_timezone_set($oldTZ);
 
         if ($from > $to) {
-            PEAR::RaiseError(new PEAR_Error("Invalid date range specified."));
+            PEAR::raiseError(new PEAR_Error("Invalid date range specified."));
         }
 
         // Assume Solr syntax -- this should be overridden in child classes where
