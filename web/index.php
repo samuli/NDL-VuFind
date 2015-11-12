@@ -337,7 +337,7 @@ if (is_readable("services/$module/$action.php")) {
         PEAR::raiseError(new PEAR_Error('Unknown Action'));
     }
 } else {
-    PEAR::RaiseError(new PEAR_Error('Cannot Load Action'));
+    PEAR::raiseError(new PEAR_Error('Cannot Load Action'));
 }
 
 /**
@@ -482,8 +482,14 @@ function handlePEARError($error)
     $basicBacktrace = "\nBacktrace:\n";
     if (is_array($error->backtrace)) {
         foreach ($error->backtrace as $line) {
-            $basicBacktrace .= "{$line['file']} line {$line['line']} - " .
-                "class = {$line['class']}, function = {$line['function']}\n";
+            $class = isset($line['class']) ? $line['class'] : '-';
+            if (isset($line['file'])) {
+                $basicBacktrace .= "{$line['file']} line {$line['line']} - " .
+                    "class = $class, function = {$line['function']}\n";
+            } else {
+                $basicBacktrace .=
+                    "class = $class, function = {$line['function']}\n";
+            }
         }
     }
     $detailedBacktrace = "\nBacktrace:\n" . print_r($error->backtrace, true);
