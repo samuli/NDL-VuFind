@@ -59,6 +59,14 @@ class JSON_KeepAlive extends JSON
      */
     public function noop()
     {
+        global $configArray;
+
+        if (!empty($configArray['System']['healthCheckFile'])
+            && file_exists($configArray['System']['healthCheckFile'])
+        ) {
+            return $this->output('Health check file exists', self::STATUS_ERROR);
+        }
+
         // Verify that the index is up
         $searchObject = SearchObjectFactory::initSearchObject();
         $searchObject->init();
