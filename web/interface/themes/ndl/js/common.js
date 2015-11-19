@@ -632,25 +632,27 @@ function switchBodyClass() {
 
 $(document).ready(function(){
     if (typeof module !== 'undefined' && typeof action !== 'undefined' &&
-        (module == 'Search' || module == 'Record') && !$.cookie('noSurvey')) {
+        (module == 'Search' || module == 'Record')
+// && !$.cookie('noSurvey')
+) {
 
         var lang = $('html').attr('lang') || 'fi';
         var t1, t2, t3, t4;
 
         if (lang == 'fi') {
             t1 = 'Vastaa kyselyyn Finnasta!';
-            t2 = 'Voita Samsung Galaxy Tab 4 7.0';
+            t2 = 'Voita Samsung Galaxy Tab A 9,7" Wi-Fi';
             t3 = 'Ei kiitos!';
             t4 = 'Avaa kysely'
 
         } else if (lang == 'en-gb') {
             t1 = 'Take the Finna survey!';
-            t2 = 'Win a Samsung Galaxy Tab 4 7.0';
+            t2 = 'Win a Samsung Galaxy Tab A 9,7" Wi-Fi';
             t3 = 'No, thank you!';
             t4 = 'Start'
         } else if (lang == 'sv') {
             t1 = 'Svara på enkäten om Finna!';
-            t2 = 'Vinn en Samsung Galaxy Tab 4 7.0';
+            t2 = 'Vinn en Samsung Galaxy Tab A 9,7" Wi-Fi';
             t3 = 'Nej, tack!';
             t4 = 'Svara'
         }
@@ -658,7 +660,7 @@ $(document).ready(function(){
         var content = '<div id="survey" style="display:none;position: fixed;bottom: -500px;right: '+
             '-500px;z-index: 10000;padding: 25px;width: 240px;border-top-left-radius: 10px;'+
             'transition: all 0.6s ease-in-out;height: 280px;box-shadow: -10px -10px 75px 10px rgba(1,1,1,0.7);'+
-            'background: url('+path+'/interface/themes/ndl/images/galaxytab4.png) no-repeat 140px 20px;background-color: whitesmoke;">'+
+            'background: url('+path+'/interface/themes/ndl/images/galaxytab.png) no-repeat 140px 20px;background-color: whitesmoke;">'+
             '<a href="#" class="closeButton closeSurvey" style="position:absolute;width:48px;	height:48px;'+
             'background:url('+path+'/interface/themes/ndl/images/icons48px-02_turquoise.png);background-position:0px -196px;	top:-15px;'+
             'left:-15px;"></a><h2 style="width:120px;">'+t1+'</h2><h3 style="width:120px;">'+t2+'</h3>'+
@@ -675,7 +677,7 @@ $(document).ready(function(){
             }
 
             $('#survey').fadeOut(100);
-            $.cookie('noSurvey', 1);
+            $.cookie('noSurvey', 1, { path: '/' });
         });
     }
 });
